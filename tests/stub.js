@@ -6,7 +6,7 @@ const INIT=()=>{
   onSnapshot(cb){const f=()=>cb({docs:Object.entries(store[n]||{}).map(([id,d])=>({id,data:()=>d}))});subs.push(f);f();return()=>{}},
   orderBy(){return this},limit(){return this},
   add(d){store[n]=store[n]||{};store[n]['a'+Math.random()]=d;notify();return Promise.resolve()}}}
- function doc(path){const [c,i]=path.split('/');return {
+ function doc(path){const pp=path.split('/');const i=pp.pop();const c=pp.join('/');return {
   onSnapshot(cb){const f=()=>{const d=(store[c]||{})[i];cb({exists:!!d,data:()=>d,id:i})};subs.push(f);f();return()=>{}},
   set(d){store[c]=store[c]||{};store[c][i]=d;notify();return Promise.resolve()},
   update(d){store[c]=store[c]||{};store[c][i]=Object.assign(store[c][i]||{},d);notify();return Promise.resolve()},
@@ -34,7 +34,7 @@ const INIT=()=>{
  store.ticket_reviews={'2026-10-05-1':{score:88,good:'g',fix:'f',better:'b'}};
  store.audit={'2026-W41':{week:'2026-W41',date:'2026-10-11',verdict:'dikkat',headline:'Koçlar çalışıyor, bir uyarı var',checks:[{name:'warmup yazıldı',status:'ok',evidence:'5/5 ders'},{name:'link doğruluğu',status:'warn',evidence:'1 kaynak doğrulanamadı'},null,{status:'bad'}],findings:['Ticket seviyesi biraz kolay',7],proposals:[{id:'p1',text:'Günlük ticket sayısını 3 yap',risk:'low',applied:true},{id:'p2',text:'Seviye atlamayı 4 ticket yap',why:'3 çok kolay',risk:'high'}],note:'n'}};
 window.__notify=notify;
- window.claude={use:async n=>({db:{collection:coll,doc},user:{isOwner:()=>!window.__guest,canEdit:()=>!window.__guest,id:async()=>window.__guest?'uGuest':'uOwner',profiles:async(ids)=>Object.fromEntries(ids.map(i=>[i,{name:i==='uF1'?'Elif':i==='uF2'?'Mert':'Biri'}]))},
+ window.claude={use:async n=>({db:{collection:coll,doc},user:{isOwner:()=>!window.__guest,canEdit:()=>!window.__guest,id:async()=>window.__guest?'uGuest':'uOwner',me:async()=>({name:window.__guest?'Arkadaş':'Yusuf'}),profiles:async(ids)=>Object.fromEntries(ids.map(i=>[i,{name:i==='uF1'?'Elif':i==='uF2'?'Mert':'Biri'}]))},
   sample:Object.assign(async()=>({text:'cevap'}),{json:async(p,o)=>{ if(/destek talebi/.test(p)&&/JSON nesnesi/.test(p)) return {subject:'New laptop',from:{name:'Can',role:'HR',country:'TR'},body:'I need a laptop.',goal:'g',keywords:[{w:'laptop',tr:'dizüstü'}],skeleton:'We will ___.',model:'m',category:'onboarding'}; if(/JSON nesnesi/.test(p)) return {title:'Canlı Ders',hook:'h',blocks:[{t:'h',text:'a'},{t:'p',text:'b'},{t:'box',h:'x',text:'y'}],quiz:[{q:'q',answer:'a'}],interview:[],vocab:[],homework:'x',resources:[{title:'Ara',query:'vlan nedir',type:'video',why:'neden'}]}; if(/YUSUF'UN CEVABI/.test(p)) return {score:80,good:'g',fix:'f',better:'b'}; if(/destek talebi/.test(p)&&/JSON nesnesi/.test(p)) return {subject:'New laptop',from:{name:'Can',role:'HR',country:'TR'},body:'I need a laptop.',goal:'g',keywords:[{w:'laptop',tr:'dizüstü'}],skeleton:'We will ___.',model:'m',category:'onboarding'}; if(/Cevap için 4-6/.test(p)) return {keywords:[{w:'fix',tr:'düzeltmek'}]}; if(/Yusuf bir destek talebine/.test(p)) return {score:82,good:'Net yazdın',fix:'will kullan',better:'I will check it.',words:[{w:'check',tr:'kontrol'}]}; return q}}),
   mcp:{callTool:async()=>({payload:{}})},downloads:{save:async()=>{}}})[n]||null};
 };
