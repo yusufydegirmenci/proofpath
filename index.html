@@ -1163,6 +1163,7 @@ function renderToday(){
   var wc=welcomeCard();if(wc)out.push(wc);
   if(!wc&&!S.guest)out.push(h("div",{class:"row",style:"justify-content:flex-end"},h("button",{class:"btn ghost",type:"button",onclick:function(){goTab("rehber")}},"Nasıl kullanırım? Adım adım tur")));
   out.push(renderRoute());
+  out.push(plPanel());
   if(!S.guest)out.push(m5Panel());
   var wd_=new Date().getDay();if(wd_===0||wd_===1)out.push(wkPanel(wd_===1));
   var lgt=leagueTeaser();if(lgt)out.push(lgt);
@@ -5268,6 +5269,72 @@ function m5Panel(){
     h("div",{class:"lsn"},q.o.map(function(o,i){if(!o)return null;var cls="opt"+(M.ans!==null?(i===q.a?" good":(i===M.ans?" bad":"")):"");return h("button",{type:"button",class:cls,disabled:M.ans!==null,onclick:function(){m5Pick(i)}},String.fromCharCode(65+i)+". "+o)})),
     M.ans!==null?h("div",{class:"fb"+(M.ans===q.a?"":" bad")},h("b",null,M.ans===q.a?"Doğru. ":"Doğrusu "+String.fromCharCode(65+q.a)+". "),q.w):null,
     M.ans!==null?h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:m5Next},M.step<M.qs.length?"Sonraki":"Bitir"),qbFlagBtn(q)):null);
+}
+/* v35 seviye testi */
+var PL_KEY="ya_pl";
+S.pl={on:false,track:"ccna",qs:[],step:0,ans:null,ok:[],fin:false,msg:""};
+function plLoad(){try{var o=JSON.parse(localStorage.getItem(PL_KEY)||"null");return o&&typeof o==="object"?o:{}}catch(e){return {}}}
+function plSave(o){try{localStorage.setItem(PL_KEY,JSON.stringify(o))}catch(e){}}
+function plStart(){
+  var P=S.pl,r=rngf(Date.now()%1e9),pick=[];
+  [1,2,3].forEach(function(d){
+    var pool=[];QB.forEach(function(q,i){if(q.t===P.track&&q.d===d)pool.push(i)});
+    shuf(pool,r).slice(0,2).forEach(function(i){pick.push(i)});
+  });
+  if(pick.length<3){P.msg="Bu alanda yeterli soru yok.";draw();return}
+  P.qs=pick.map(function(i){var q=gmQB(i,r);q.i=i;q.d=QB[i].d;return q});
+  P.on=true;P.step=1;P.ans=null;P.ok=[];P.fin=false;P.msg="";draw();
+}
+function plPick(c){
+  var P=S.pl,q=P.qs[P.step-1];if(P.ans!==null||!q)return;
+  P.ans=c;P.ok.push(c===q.a?1:0);gsAnswer(q.k,c===q.a);draw();
+}
+function plLevel(P){
+  var pts=0,max=0;P.qs.forEach(function(q,i){max+=q.d;if(P.ok[i])pts+=q.d});
+  return max?Math.round((1+2*pts/max)*10)/10:1;
+}
+function plNext(){
+  var P=S.pl;
+  if(P.step<P.qs.length){P.step++;P.ans=null;draw();return}
+  var lv=plLevel(P);GS.sk[P.track]=lv;gsSave();
+  var o=plLoad();o[P.track]={lv:lv,n:P.qs.length,ok:P.ok.reduce(function(a,b){return a+b},0),d:today()};plSave(o);
+  P.fin=true;P.step=99;draw();
+}
+function plBand(lv){
+  return lv<1.5?["Sıfırdan başla","Önce Atölye > Atlas > Başlangıç kartlarını oku, sonra Başlangıç yolunun ilk projesini yap. Her gün 5 dakika yeter."]
+    :lv<2.3?["Temel var, boşlukları kapat","Akıllı turda oyna; yanlış yaptıkların otomatik tekrar gelir. Yol projesinde 2. aşamaya geç."]
+    :["İleri başlangıç","Zor sorulara ağırlık ver, yol projesini GitHub'a yükle ve İşe hazırlık sekmesinden CV'ni çıkar."];
+}
+function plShare(track,lv){
+  var nm=(GM_TN[track]||track),t="Proofpath seviye testi: "+nm+" "+lv.toFixed(1)+" / 3."+(ARTIFACT_URL?" Sen de dene: "+ARTIFACT_URL:"");
+  try{navigator.clipboard.writeText(t).then(function(){S.pl.msg="Kopyalandı.";draw()},function(){S.pl.msg=t;draw()})}catch(e){S.pl.msg=t;draw()}
+}
+function plPanel(){
+  var P=S.pl,saved=plLoad(),has=Object.keys(saved).length>0;
+  if(!P.on){
+    var seg=h("div",{class:"seg",role:"group","aria-label":"Alan"},TRK_LIST.map(function(o){return h("button",{type:"button","aria-pressed":P.track===o[0]?"true":"false",onclick:function(){P.track=o[0];P.msg="";draw()}},o[1])}));
+    var rows=has?TRK_LIST.filter(function(o){return saved[o[0]]}).map(function(o){var s=saved[o[0]];return h("span",{class:"pill"},o[1]+" "+s.lv.toFixed(1)+"/3")}):[];
+    return h("div",{class:"panel"},h("div",{class:"label"},has?"Seviyen":"Yeni misin?"),h("h2",null,has?"Seviye testini tekrarla":"Seviyeni belirle"),
+      h("div",{class:"small mute"},"6 kısa soru. Sonuca göre nereden başlayacağını söylerim; bilmediğin soruda tahmin etmen yeter."),
+      rows.length?h("div",{class:"row"},rows):null,seg,
+      h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:plStart},"Testi başlat")),
+      P.msg?h("div",{class:"small mute"},P.msg):null);
+  }
+  if(P.fin){
+    var lv=plLevel(P),b=plBand(lv),n=P.ok.reduce(function(a,c){return a+c},0);
+    return h("div",{class:"panel"},h("div",{class:"label"},"Sonuç · "+(GM_TN[P.track]||P.track)),h("h2",null,b[0]),
+      h("div",{class:"small"},n+" / "+P.qs.length+" doğru · seviye "+lv.toFixed(1)+" / 3"),
+      h("div",{class:"lbox"},h("p",{style:"margin:0"},b[1])),
+      h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:function(){P.on=false;goTab("atolye")}},"Atölyeye git"),
+        h("button",{class:"btn ghost",type:"button",onclick:function(){plShare(P.track,lv)}},"Sonucu kopyala"),
+        h("button",{class:"btn ghost",type:"button",onclick:function(){P.on=false;P.msg="";draw()}},"Kapat")),
+      P.msg?h("div",{class:"small mute"},P.msg):null);
+  }
+  var q=P.qs[P.step-1];
+  return h("div",{class:"panel"},h("div",{class:"label"},"Seviye testi · "+P.step+" / "+P.qs.length),h("h2",{style:"font-size:17px"},q.q),
+    h("div",{class:"lsn"},q.o.map(function(o,i){if(!o)return null;var cls="opt"+(P.ans!==null?(i===q.a?" good":(i===P.ans?" bad":"")):"");return h("button",{type:"button",class:cls,disabled:P.ans!==null,onclick:function(){plPick(i)}},String.fromCharCode(65+i)+". "+o)})),
+    P.ans!==null?h("div",{class:"fb"+(P.ans===q.a?"":" bad")},h("b",null,P.ans===q.a?"Doğru. ":"Doğrusu "+String.fromCharCode(65+q.a)+". "),q.w):null,
+    P.ans!==null?h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:plNext},P.step<P.qs.length?"Sonraki":"Sonucu gör")):null);
 }
 /* haftalık özet */
 function wkSum(mon){
