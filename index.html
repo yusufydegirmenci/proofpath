@@ -4557,7 +4557,7 @@ var ATLAS_EN=[
 /* ---- v26 Kavram Atlası ---- */
 S.at={tr:"sw",q:"",g:"",open:null,rev:{}};
 function atlasKnown(){try{return JSON.parse(localStorage.getItem("ya_atlas")||"{}")||{}}catch(e){return {}}}
-function atlasSave(k,v){var o=atlasKnown();if(v)o[k]=v;else delete o[k];try{localStorage.setItem("ya_atlas",JSON.stringify(o))}catch(e){}}
+function atlasSave(k,v){var o=atlasKnown();if(v)o[k]=v;else delete o[k];try{localStorage.setItem("ya_atlas",JSON.stringify(o))}catch(e){}syncPush()}
 var ATLAS_SEC=[
 {g:"Temeller",t:"CIA üçlüsü (CIA triad)",tr:"Gizlilik-Bütünlük-Erişilebilirlik",l:1,d:"Güvenliğin üç temel hedefi: Confidentiality (gizlilik: yalnızca yetkili okur), Integrity (bütünlük: veri izinsiz değişmez), Availability (erişilebilirlik: ihtiyaç anında çalışır).",b:"Banka kasası: içini yalnızca yetkili görür (gizlilik), paralar sayıldığı gibi durur (bütünlük), sen gittiğinde kasa açılabilir (erişilebilirlik).",x:"Hedef          | Saldırı örneği      | Koruma örneği\nGizlilik       | Veri sızıntısı      | Şifreleme, yetki\nBütünlük       | Kayıt değiştirme    | Hash, dijital imza\nErişilebilirlik| DDoS, fidye yazılımı| Yedek, yedekli sunucu",s:"Every control we add should protect confidentiality, integrity or availability.",e:"Güvenliği yalnızca gizlilik sanmak. Fidye yazılımı en çok erişilebilirliği vurur; yedek de bir güvenlik kontrolüdür.",q:"Bir web sitesinin DDoS ile çökmesi CIA'nın hangi ayağını etkiler?",a:"Erişilebilirlik (availability). Veri çalınmaz ya da değişmez ama hizmet kullanılamaz."},
 {g:"Temeller",t:"Simetrik ve asimetrik şifreleme",tr:"Tek anahtar / anahtar çifti",l:1,d:"Simetrik şifrelemede (ör. AES) tek anahtar hem kilitler hem açar; hızlıdır. Asimetrik şifrelemede (ör. RSA) açık (public) ve özel (private) anahtar çifti vardır; anahtar paylaşımı ve dijital imza için kullanılır.",b:"Simetrik: evin tek anahtarı. Asimetrik: herkesin mektup atabildiği bir posta kutusu (açık anahtar) ve yalnızca sende olan kutu anahtarı (özel anahtar).",x:"# Kendi bilgisayarında, kendi dosyanla dene:\nopenssl enc -aes-256-cbc -pbkdf2 -in not.txt -out not.enc\nopenssl enc -d -aes-256-cbc -pbkdf2 -in not.enc -out geri.txt\n# Aynı parola hem şifreler hem çözer = simetrik",s:"We use asymmetric keys to exchange a session key, then symmetric encryption for the actual data.",e:"Özel anahtarı paylaşmak. Paylaşılan her zaman açık anahtardır; özel anahtar kasadaki mühür gibi yalnızca sahibinde kalır.",q:"HTTPS bağlantısında büyük veri neden simetrik şifrelemeyle taşınır?",a:"Simetrik şifreleme çok daha hızlıdır. Asimetrik şifreleme ise başlangıçta anahtarı güvenle paylaşmak ve kimliği doğrulamak için kullanılır."},
@@ -4708,7 +4708,7 @@ function gmWeek(){
 }
 var GS={sk:{ccna:1.5,eng:1.5,sec:1.5,bk:1.5},bx:{},st:{}};
 try{var _gs=JSON.parse(localStorage.getItem("ya_gs")||"null");if(_gs&&typeof _gs==="object"){["ccna","eng","sec","bk"].forEach(function(t){var v=_gs.sk&&_gs.sk[t];if(typeof v==="number"&&v>=1&&v<=3)GS.sk[t]=v});if(_gs.st&&typeof _gs.st==="object"){Object.keys(_gs.st).slice(0,800).forEach(function(k){var v=_gs.st[k];if(/^\d+$/.test(k)&&Array.isArray(v)&&v.length===2&&v[0]>=0&&v[1]>=v[0]&&v[1]<5000)GS.st[k]=[v[0]|0,v[1]|0]})}if(_gs.bx&&typeof _gs.bx==="object"){Object.keys(_gs.bx).slice(0,400).forEach(function(k){var v=_gs.bx[k];if(/^\d+$/.test(k)&&typeof v==="number"&&v>=0&&v<=4)GS.bx[k]=v})}}}catch(e){}
-function gsSave(){try{localStorage.setItem("ya_gs",JSON.stringify(GS))}catch(e){}}
+function gsSave(){GS.ts=new Date().toISOString();try{localStorage.setItem("ya_gs",JSON.stringify(GS))}catch(e){}syncPush()}
 function gsAnswer(k,ok){
   var m=/^qb(\d+)$/.exec(k||"");if(!m)return;var i=+m[1],it=QB[i];if(!it)return;
   GS.bx[i]=ok?Math.min(4,(GS.bx[i]||0)+1):0;var st_=GS.st[i]||(GS.st[i]=[0,0]);st_[1]++;if(ok)st_[0]++;
@@ -5366,7 +5366,7 @@ function m5Panel(){
 var PL_KEY="ya_pl";
 S.pl={on:false,track:"ccna",qs:[],step:0,ans:null,ok:[],fin:false,msg:""};
 function plLoad(){try{var o=JSON.parse(localStorage.getItem(PL_KEY)||"null");return o&&typeof o==="object"?o:{}}catch(e){return {}}}
-function plSave(o){try{localStorage.setItem(PL_KEY,JSON.stringify(o))}catch(e){}}
+function plSave(o){try{localStorage.setItem(PL_KEY,JSON.stringify(o))}catch(e){}syncPush()}
 function plStart(){
   var P=S.pl,r=rngf(Date.now()%1e9),pick=[];
   [1,2,3].forEach(function(d){
@@ -5698,6 +5698,53 @@ function gateBox(G){
     h("div",{class:"small mute"},"Oyun seviyesi ve Atlas ilerlemesi bu cihazda saklanır."));
 }
 
+/* cihazlar arası eşitleme: oyun/soru ilerlemesi, Atlas, seviye testi */
+S._syncReady=false;S._syncLast="";S._syncT=null;
+function syncOut(){return {gs:{sk:GS.sk,bx:GS.bx,st:GS.st,ts:GS.ts||""},atlas:atlasKnown(),pl:plLoad()}}
+function syncPush(){
+  if(!S._syncReady||!S.db||!S.canWrite||S.guest)return;
+  clearTimeout(S._syncT);
+  S._syncT=setTimeout(function(){
+    var o=syncOut(),str=JSON.stringify(o);if(str===S._syncLast)return;if(!Object.keys(o.gs.st).length&&!Object.keys(o.gs.bx).length&&!Object.keys(o.atlas).length&&!Object.keys(o.pl).length)return;
+    if(str.length>400000)return;
+    S._syncLast=str;o.ts=new Date().toISOString();
+    S.db.doc("prefs/sync").set(o).catch(function(){S._syncLast=""});
+  },1200);
+}
+function syncApply(r){
+  var ch=false;
+  try{
+    if(r&&typeof r==="object"){
+      var g=r.gs;
+      if(g&&typeof g==="object"){
+        if(g.st&&typeof g.st==="object")Object.keys(g.st).slice(0,800).forEach(function(k){
+          var v=g.st[k];if(!(/^\d+$/.test(k)&&Array.isArray(v)&&v.length===2&&v[0]>=0&&v[1]>=v[0]&&v[1]<5000))return;
+          var l=GS.st[k];if(!l||v[1]>l[1]||(v[1]===l[1]&&v[0]>l[0])){GS.st[k]=[v[0]|0,v[1]|0];ch=true}});
+        if(g.bx&&typeof g.bx==="object")Object.keys(g.bx).slice(0,400).forEach(function(k){
+          var v=g.bx[k];if(/^\d+$/.test(k)&&typeof v==="number"&&v>=0&&v<=4&&v>(GS.bx[k]||0)){GS.bx[k]=v;ch=true}});
+        if(g.ts&&String(g.ts)>(GS.ts||"")&&g.sk&&typeof g.sk==="object"){
+          ["ccna","eng","sec","bk"].forEach(function(t){var v=g.sk[t];if(typeof v==="number"&&v>=1&&v<=3&&GS.sk[t]!==v){GS.sk[t]=v;ch=true}});
+          GS.ts=String(g.ts)}
+      }
+      if(r.atlas&&typeof r.atlas==="object"){
+        var a=atlasKnown(),ac=false;
+        Object.keys(r.atlas).slice(0,600).forEach(function(k){if(!a[k]&&r.atlas[k]){a[k]=r.atlas[k];ac=true}});
+        if(ac){try{localStorage.setItem("ya_atlas",JSON.stringify(a))}catch(e){}ch=true}
+      }
+      if(r.pl&&typeof r.pl==="object"){
+        var p=plLoad(),pc=false;
+        Object.keys(r.pl).slice(0,8).forEach(function(t){var v=r.pl[t];if(v&&typeof v==="object"&&typeof v.lv==="number"&&(!p[t]||String(v.d||"")>String(p[t].d||""))){p[t]={lv:v.lv,n:v.n|0,ok:v.ok|0,d:String(v.d||"").slice(0,10)};pc=true}});
+        if(pc){try{localStorage.setItem(PL_KEY,JSON.stringify(p))}catch(e){}ch=true}
+      }
+    }
+  }catch(e){}
+  if(ch){try{localStorage.setItem("ya_gs",JSON.stringify(GS))}catch(e){}}
+  S._syncReady=true;
+  if(r){var o=syncOut(),cp=JSON.parse(JSON.stringify(r));delete cp.ts;S._syncLast=JSON.stringify(cp)}
+  syncPush();
+  if(ch)sched();
+}
+
 /* ---- veri ---- */
 function listen(db,name,key){
   db.collection(name).onSnapshot(function(s){
@@ -5728,7 +5775,7 @@ if(window.claude&&window.claude.use){
     db.collection("league").onSnapshot(function(s){S.league=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});S.lgLoaded=true;resolveNames();sched()},function(){});
     db.collection("cheers").onSnapshot(function(s){S.cheers=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});sched()},function(){});
     db.collection("league_notes").onSnapshot(function(s){S.lnotes=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});sched()},function(){});
-    db.doc("prefs/jobs").onSnapshot(function(s){S.jobs=s.exists?(s.data()||null):null;sched()},function(){});
+    db.doc("prefs/sync").onSnapshot(function(s){syncApply(s.exists?s.data():null)},function(){syncApply(null)});db.doc("prefs/jobs").onSnapshot(function(s){S.jobs=s.exists?(s.data()||null):null;sched()},function(){});
     db.doc("prefs/cv").onSnapshot(function(s){if(s.exists){cvLoad(s.data())}sched()},function(){});
     db.doc("prefs/notes").onSnapshot(function(s){S.pn=s.exists?(s.data()||{}):{};sched()},function(){});
     db.doc("desk/main").onSnapshot(function(s){S.desk=s.exists?(s.data()||{}):{};sched()},function(){});
