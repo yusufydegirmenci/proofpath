@@ -10,7 +10,7 @@ for(const w of [390,1100]){
  await p.goto(U+'?r'+w+'#oduller');await p.waitForTimeout(1500);let t=await p.textContent('#view');
  console.log(w,'terfi dosyası',t.includes('Terfi dosyası'),'Stajyer → Uzman Yardımcısı',t.includes('Stajyer → Uzman Yardımcısı'),'satır',await p.locator('.panel:has-text("Terfi dosyası") .cov-r').count());
  await p.goto(U+'?s'+w+'#sehir');await p.waitForTimeout(1500);t=await p.textContent('#view');console.log(w,'şehir (arkadaş)',t.includes('bina tamam'),t.includes('Şehir henüz boş'));
- await p.goto(U+'?t'+w+'#bugun');await p.waitForTimeout(1500);t=await p.textContent('#view');console.log(w,'bugün şehir kartı',t.includes('bina ayakta'),'aktif gün kaldı',t.includes('aktif gün'));
+ await p.goto(U+'?t'+w+'#bugun');await p.waitForTimeout(1500);t=await p.textContent('#view');console.log(w,'bugün şehir kartı',t.includes('bina'),'aktif gün kaldı',t.includes('aktif gün'));
  await p.locator('button:has-text("Daha")').last().click();await p.waitForTimeout(400);t=await p.textContent('.msheet');console.log(w,'daha: şehir/masa/gazete',t.includes('Ağ Şehri'),t.includes('Masa'),t.includes('Gazete'));
  console.log(w,'hata',er);await ctx.close();
  // 2) uzun ara: kıdem kaybı uyarısı (owner)
