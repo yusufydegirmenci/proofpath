@@ -5494,6 +5494,27 @@ function cvDownload(kind){
   var blob=new Blob([kind==="html"?d.html:d.txt],{type:kind==="html"?"text/html":"text/plain"});
   S.dl.save({filename:nm+"-cv."+(kind==="html"?"html":"txt"),data:blob}).then(function(){S.cvMsg=kind==="html"?"Kaydedildi. Dosyayı tarayıcıda aç, Yazdır > PDF olarak kaydet.":"Kaydedildi.";draw()},function(e){S.cvMsg=(e&&e.code==="declined")?"Vazgeçtin.":"Kaydedilemedi.";draw()});
 }
+function cvPortfolio(){
+  var C=S.cv,en=C.lang==="en",R=JR.filter(function(r){return r.id===C.role})[0]||JR[0],P=cvProjects();
+  function E(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+  function url(u){u=String(u||"").trim();if(!u)return "";if(!/^https?:\/\//i.test(u))u="https://"+u;return /^https:\/\/[^\s"'<>]+$/i.test(u)?u:""}
+  var T=en?{pj:"Projects",sk:"Skills",ct:"Contact",pr:"in progress",ln:"Code on GitHub",sub:"Built with Proofpath"}:{pj:"Projeler",sk:"Beceriler",ct:"İletişim",pr:"devam ediyor",ln:"GitHub'da kod",sub:"Proofpath ile hazırlandı"};
+  var nm=C.name.trim()||(en?"Your Name":"Adın Soyadın"),sum=C.summary.trim()||(en?R.en1:R.tr1);
+  var sk=C.skills.trim()?C.skills.split(/[,\n;]+/).map(function(x){return x.trim()}).filter(Boolean):R.sk;
+  var links=[];if(url(C.github))links.push('<a href="'+E(url(C.github))+'">GitHub</a>');if(url(C.linkedin))links.push('<a href="'+E(url(C.linkedin))+'">LinkedIn</a>');
+  if(C.email.trim())links.push(E(C.email.trim()));if(C.city.trim())links.push(E(C.city.trim()));
+  var css=':root{--bg:#f4f1ea;--pn:#fbf9f4;--ink:#2b2a26;--mu:#6b685f;--ac:#2d7d74;--ln:#ddd8cb}@media(prefers-color-scheme:dark){:root{--bg:#1a1d21;--pn:#23272c;--ink:#dcd9d1;--mu:#9b978d;--ac:#6cc0b2;--ln:#343a40}}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,sans-serif}main{max-width:760px;margin:0 auto;padding:32px 16px 48px}h1{font-size:32px;margin:0 0 4px;line-height:1.15}h2{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--mu);margin:32px 0 12px}.role{color:var(--ac);font-weight:600;margin:0 0 12px}.sum{font-size:17px;margin:0 0 12px}.ct{color:var(--mu);font-size:14px}.ct a{color:var(--ac)}.ct span+span:before,.ct a+a:before,.ct a+span:before{content:" · "}.chips{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none}.chips li{background:var(--pn);border:1px solid var(--ln);border-radius:999px;padding:4px 12px;font-size:14px}.card{background:var(--pn);border:1px solid var(--ln);border-radius:12px;padding:16px;margin:0 0 12px}.card h3{margin:0 0 4px;font-size:17px}.card p{margin:0 0 8px}.card ul{margin:0 0 8px;padding-left:20px}.card a{color:var(--ac);font-weight:600}.tools{color:var(--mu);font-size:13px}.badge{font-size:12px;color:var(--mu);border:1px solid var(--ln);border-radius:999px;padding:1px 8px;margin-left:6px}footer{margin-top:40px;color:var(--mu);font-size:12px}';
+  var body='<main><h1>'+E(nm)+'</h1><p class="role">'+E(R.name)+'</p><p class="sum">'+E(sum)+'</p><div class="ct">'+links.join(" ")+'</div>'
+   +'<h2>'+T.sk+'</h2><ul class="chips">'+sk.slice(0,24).map(function(x){return "<li>"+E(x)+"</li>"}).join("")+'</ul>'
+   +(P.length?'<h2>'+T.pj+'</h2>'+P.map(function(p){return '<div class="card"><h3>'+E(en?p.en:p.tr)+(p.done?"":'<span class="badge">'+T.pr+'</span>')+'</h3>'+(p.out&&p.out.length?'<ul>'+p.out.slice(0,4).map(function(o){return "<li>"+E(o)+"</li>"}).join("")+'</ul>':"")+(p.tools?'<div class="tools">'+E(p.tools)+'</div>':"")+(url(p.link)?'<p><a href="'+E(url(p.link))+'">'+T.ln+'</a></p>':"")+'</div>'}).join(""):"")
+   +'<footer>'+T.sub+'</footer></main>';
+  return '<!doctype html><html lang="'+(en?"en":"tr")+'"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+E(nm)+'</title><style>'+css+'</style></head><body>'+body+'</body></html>';
+}
+function cvPortDownload(){
+  if(!S.dl){S.cvMsg="Bu görünümde indirme yok.";draw();return}
+  var blob=new Blob([cvPortfolio()],{type:"text/html"});
+  S.dl.save({filename:"index.html",data:blob}).then(function(){S.cvMsg="Kaydedildi. Bu dosyayı GitHub'da kullanıcıadın.github.io adlı herkese açık bir repoya index.html olarak yükle; Settings > Pages'ten yayınla.";draw()},function(e){S.cvMsg=(e&&e.code==="declined")?"Vazgeçtin.":"Kaydedilemedi.";draw()});
+}
 function cvField(k,label,ph,multi){
   var el=multi?h("textarea",{rows:3,maxlength:1200,placeholder:ph||"",onchange:function(e){S.cv[k]=e.target.value;cvSave()}}):h("input",{type:"text",maxlength:200,placeholder:ph||"",onchange:function(e){S.cv[k]=e.target.value;cvSave()}});
   el.value=S.cv[k]||"";
@@ -5516,7 +5537,7 @@ function atCv(){
     h("div",{class:"panel"},h("h3",null,"Deneyim, eğitim, diller"),cvField("exp","Deneyim (her satır bir iş: 'Şirket, görev, yıl, ne yaptın')","",true),cvField("edu","Eğitim (her satır bir okul)","",true),cvField("certs","Sertifikalar veya hazırlandıkların","",true),cvField("langs","Diller","Türkçe (anadil), İngilizce (A2)")),
     h("div",{class:"panel"},h("div",{class:"label"},"Önizleme"),h("pre",{class:"lcode",style:"white-space:pre-wrap"},d.txt),
       h("div",{class:"small mute"},d.projects?d.projects+" proje CV'ye eklendi.":"Henüz bitirdiğin ya da yarısını geçtiğin proje yok; yol projelerini yaptıkça burası kendiliğinden dolar."),
-      h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:function(){jrCopy(d.txt)}},"Metni kopyala"),h("button",{class:"btn ghost",type:"button",onclick:function(){cvDownload("html")}},"PDF için HTML kaydet"),h("button",{class:"btn ghost",type:"button",onclick:function(){cvDownload("txt")}},"Düz metin kaydet")),
+      h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:function(){jrCopy(d.txt)}},"Metni kopyala"),h("button",{class:"btn ghost",type:"button",onclick:function(){cvDownload("html")}},"PDF için HTML kaydet"),h("button",{class:"btn ghost",type:"button",onclick:function(){cvDownload("txt")}},"Düz metin kaydet"),h("button",{class:"btn ghost",type:"button",onclick:cvPortDownload},"Portfolyo sayfası (index.html)")),
       S.cvMsg?h("div",{class:"small mute"},S.cvMsg):null,S.jr.msg?h("div",{class:"small mute"},S.jr.msg):null)
   ];
 }
