@@ -1,0 +1,7 @@
+/* ---- v28: kapston projeler, sertifika haritası, portfolyo paketi ---- */
+var CERT_FACTS={
+ sec4:{lines:["Sınav kodu: SY0-801 (yeni sürüm 17 Kasım 2026'da çıkıyor; şu an SY0-701 geçerli)","90 dakika, en çok 90 soru (çoktan seçmeli ve uygulamalı), geçme puanı 750 / 900","Alan ağırlıkları: Genel kavramlar %16 · Tehdit ve saldırılar %24 · Mimari %19 · Operasyonlar %27 · Program yönetimi %14"],link:"https://www.comptia.org/en-us/certifications/security/",label:"CompTIA Security+ resmî sayfası"},
+ bk4:{lines:["Geçerli sınav DVA-C02: 65 soru, 130 dakika, 150 USD (AWS sayfası); son sınav günü 30 Kasım 2026","DVA-C03 için kayıt 27 Ekim 2026'da açılıyor; yeni konu listesi yayımlanınca bu proje güncellenmeli","Alan ağırlıkları (C02): Geliştirme %32 · Güvenlik %26 · Dağıtım %24 · Sorun giderme %18","AWS, işte deneyimi olmayanlara önce Cloud Practitioner'ı öneriyor"],link:"https://aws.amazon.com/certification/certified-developer-associate/",label:"AWS Developer Associate resmî sayfası"},
+ qa4:{lines:["ISTQB Certified Tester Foundation Level, müfredat sürümü v4.0","6 bölüm: temeller, yaşam döngüsünde test, statik test, test analizi ve tasarımı, test yönetimi, test araçları","Sınav biçimi ve fiyatı ülkeye/sağlayıcıya göre değişir; resmî sayfadan doğrula"],link:"https://www.istqb.org/certifications/certified-tester-foundation-level",label:"ISTQB CTFL resmî sayfası"}
+};
+(function(){var X={sec:PROJ_SEC4,qa:PROJ_QA4,bk:PROJ_BK4};PATHS_RAW.forEach(function(p){if(X[p.id])p.projects.push(X[p.id])})})();
