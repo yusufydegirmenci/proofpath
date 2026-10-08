@@ -14,7 +14,7 @@ async function session(b,ctx,dump,day,actions){
   return {dump:JSON.parse(out.store),gs:out.gs,er,view};
 }
 async function playRound(p){
-  await p.click('.gm-mode >> nth=0 >> button').catch(()=>{});await p.waitForTimeout(500);
+  await p.click('.gh-nav button:text-is("Arcade")');await p.click('.gt >> nth=0').catch(()=>{});await p.waitForTimeout(500);
   await p.click('.gm-card button:text-is("Başla")');
   for(let i=0;i<400;i++){if(i%4==0)await p.keyboard.press(['ArrowLeft','ArrowRight'][Math.floor(Math.random()*2)]);await p.waitForTimeout(200);if(await p.$('.gm-res'))break}
 }
