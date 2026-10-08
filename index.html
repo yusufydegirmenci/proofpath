@@ -909,7 +909,7 @@ function totalXp(){
   S.exams.forEach(function(d){t+=num(d.xp)});
   S.badges.forEach(function(d){t+=num(d.xp)});
   var ab=attemptXpByDate();Object.keys(ab).forEach(function(k){t+=ab[k]});
-  t+=projXp();t+=gameXp();
+  t+=projXp();t+=gameXp();t+=rtXp();
   return t;
 }
 function liveMinutes(){
@@ -942,7 +942,7 @@ function streakInfo(){
 }
 function rankInfo(){
   var xp=totalXp(),g=S.profile.gates||{},cur=RANKS[0],idx=0;
-  RANKS.forEach(function(r,i){if(xp>=r.xp&&(!r.gate||g[r.gate]===true)){cur=r;idx=i}});
+  RANKS.forEach(function(r,i){if(xp>=r.xp&&(!r.gate||g[r.gate]===true||gateAuto(r.gate))){cur=r;idx=i}});
   var nxt=RANKS[idx+1]||null;
   return {xp:xp,cur:cur,nxt:nxt};
 }
@@ -1121,12 +1121,12 @@ function renderHero(){
   hero.classList.remove("mini");
   var R=rankInfo(),st=streakInfo(),wk=weekInfo(),rust=rustList().length,td=new Date();
   var pct=R.nxt?Math.max(0,Math.min(100,(R.xp-R.cur.xp)/(R.nxt.xp-R.cur.xp)*100)):100;
-  var gateMissing=R.nxt&&R.xp>=R.nxt.xp&&!(S.profile.gates||{})[R.nxt.gate];
+  var gateMissing=R.nxt&&R.xp>=R.nxt.xp&&!gateOk(R.nxt.gate);
   var steps=routeSteps(),nxt=steps.filter(function(x){return !x.d})[0],done=steps.filter(function(x){return x.d}).length;
   var xpEl=h("b",null,R.xp);
   var stars=h("div",{class:"stars","aria-hidden":"true"},[[8,14],[18,40],[27,9],[36,26],[47,12],[58,36],[66,8],[74,22],[83,44],[91,16],[13,58],[52,52],[96,34],[42,30]].map(function(p){return h("i",{style:"left:"+p[0]+"%;top:"+p[1]+"px"})}));
   var days=["Pazar","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi"],mons=["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
-  hero.replaceChildren(h("div",{class:"aurora","aria-hidden":"true"},h("i"),h("i")),stars,h("div",{class:"orb","aria-hidden":"true"}),
+  hero.replaceChildren(h("div",{class:"aurora","aria-hidden":"true"},h("i"),h("i")),stars,h("button",{class:"orb",type:"button","aria-label":"Temayı değiştir. Şu an: "+themeName(),title:"Tema: "+themeName()+" (dokun, değiştir)",onclick:themeCycle}),
     h("div",{class:"hero-in"},
       academyBar(),
       h("div",{class:"greet"},h("div",{class:"label"},days[td.getDay()]+" · "+td.getDate()+" "+mons[td.getMonth()]),
@@ -1528,8 +1528,8 @@ bk:[["HTTP ve REST", "Temel", "Restoranda garson: sipariş fişi gider, tabak d�
 ["CloudTrail", "Gözlem ve sorun giderme", "Güvenlik kamerası kaydı: kim, ne zaman, ne yaptı."],
 ["Yeniden deneme, idempotency, üstel geri çekilme", "Mimari desenleri", "Kapıyı tekrar çalmak: aralığı açarak dene, çifte sipariş verme."]]};
 function starterTopics(track){
-  var done={};S.lessons.forEach(function(l){if(l.track===track&&l.topicId)done[l.topicId]=1});var nx=false;
-  return (STARTER[track]||[]).map(function(x,i){var id="s-"+track+"-"+(i+1),st=done[id]?"built":(!nx?"next":"open");if(st==="next")nx=true;return {id:id,track:track,name:x[0],area:x[1],analogy:x[2],status:st,mastery:done[id]?60:0,order:i,areaOrder:0,starter:true}});
+  var done={};S.lessons.forEach(function(l){if(l.track===track&&l.topicId)done[l.topicId]=1});var nx=false,off=plOffset(track,(STARTER[track]||[]).length);
+  return (STARTER[track]||[]).map(function(x,i){var id="s-"+track+"-"+(i+1),st=(done[id]||i<off)?"built":(!nx?"next":"open");if(st==="next")nx=true;return {id:id,track:track,name:x[0],area:x[1],analogy:x[2],status:st,mastery:(done[id]||i<off)?60:0,order:i,areaOrder:0,starter:true}});
 }
 function topicChoices(track){
   var T=topicsOf(track).filter(function(t){return t.status!=="locked"});
@@ -1831,7 +1831,7 @@ function draw(){
   if(S._rd===false&&rsd&&Date.now()-(S._t0||0)>5000)burst();
   S._rd=rsd;
   enhanceButtons();
-  checkMilestones();syncDesk();syncLeagueMe();
+  checkMilestones();syncDesk();syncLeagueMe();rtAward();
 }
 view.addEventListener("focusout",function(){setTimeout(function(){if(pending)sched()},150)});
 
@@ -1864,7 +1864,7 @@ function renderResources(l){
 function genLessonPrompt(track,t){
   var T=topicsOf(track);if(!T.length)T=starterTopics(track);var known=T.filter(function(x){return x.status==="built"||x.status==="building"}).map(function(x){return x.name});
   var eng=track==="eng";
-  return "Sen "+UN()+"'ın "+certName(track)+" koçusun. "+UN()+" bu alanda SIFIRDAN başlayan biri; küçümseme, 'kolay/basit' deme. Bugünkü KONU: "+t.name+" (alan: "+(t.area||"")+"). Benzetme ipucu: "+(t.analogy||"yok")+". "+UN()+"'ın bildiği konular: "+(known.join(", ")||"henüz yok")+". Yalnız bilinenlerle ve bu konuyla anlat; aynı anda en çok 1-2 yeni kavram.\n"+
+  return "Sen "+UN()+"'ın "+certName(track)+" koçusun. "+UN()+" bu alanda SIFIRDAN başlayan biri; küçümseme, 'kolay/basit' deme. Bugünkü KONU: "+t.name+" (alan: "+(t.area||"")+"). Benzetme ipucu: "+(t.analogy||"yok")+". "+UN()+"'ın bildiği konular: "+(known.join(", ")||"henüz yok")+". Yalnız bilinenlerle ve bu konuyla anlat; aynı anda en çok 1-2 yeni kavram."+plHint(track)+"\n"+
   ((track==="sec"||track==="bk")?"Yöntem: gerçek bir iş olayıyla başla (ör. 'API bir saat yanıt vermedi' ya da 'çalışan şüpheli e-posta aldı') → neden böyle oldu → savunma/uygulama adımları → sınav hedefine bağla ("+certName(track)+") → günlük hayat benzetmesi ('Yani ...') → benzetmenin bozulduğu yer (warn) → 3-5 komut ya da kod (cmd; yalnız kendi izole labında, doğru olmayan komut yazma). Dış kaynak kullanırsan metinde [1], [2] işareti koy ve sources dizisine {title,url} yaz (yalnız doğruladığın HTTPS bağlantı).\n":eng?"Yöntem: Türkçe cümleyi eklerine parçala, her parçanın İngilizcesini bul, sırala (ör. 'Kendinizi tanıtabilir misiniz?' → tanıt + -abil + -siniz → introduce + can + you → Can you introduce yourself?). split bloklarında bu yöntemi kullan (3 adet). Gramer ve kelime %100 doğru olsun.\n":"Yöntem: önce 'Sana şu talep gelebilir' → olası sebepler → çözüm adımları → 'işte bunun için öğrendin' zinciri; sonra günlük hayat benzetmesi ('Yani ...'), benzetmenin bozulduğu yer (warn), 3-5 komut (cmd, doğru olmayan komut yazma). Sorular özgün olsun, gerçek sınav sorusu kullanma.\n")+
   "ÇIKTI: yalnızca JSON nesnesi: {\"title\":\"kısa başlık\",\"hook\":\"tek cümle özet\",\"blocks\":[{\"t\":\"h\",\"text\":\"\"},{\"t\":\"p\",\"text\":\"\"},{\"t\":\"box\",\"h\":\"\",\"text\":\"\"},{\"t\":\"warn\",\"h\":\"\",\"text\":\"\"},{\"t\":\"steps\",\"h\":\"\",\"items\":[\"\"]},{\"t\":\"cmd\",\"text\":\"\"}"+(eng?",{\"t\":\"split\",\"tr\":\"\",\"parts\":[{\"tr\":\"\",\"q\":\"\",\"en\":\"\"}],\"result\":\"\"}":"")+"] (8-14 blok, düz metin, markdown yok),\"quiz\":[5 öğe {\"q\":\"\",\"options\":[\"\",\"\",\"\"],\"answer\":\"doğru cevap\",\"why\":\"sebep\"}],\"interview\":[2 öğe {\"q\":\"\",\"a\":\"\"}],\"vocab\":[5 öğe {\"term\":\"\",\"tr\":\"\",\"ex\":\"\"}],\"homework\":\"Sınıf sekmesinde 5 soru çöz + ...\",\"resources\":[3 öğe {\"title\":\"\",\"query\":\"YouTube'da aranacak somut arama ifadesi\",\"type\":\"video\",\"why\":\"neden bu\",\"length\":\"\",\"level\":\"başlangıç\"}] } . URL uydurma; yalnız query ver."+warmInstr(track);
 }
@@ -1884,7 +1884,7 @@ function genLesson(track){
     if(S.db)S.db.doc("lessons/"+doc.id).set(doc).catch(function(){});
   }).catch(function(e){G.err=sampleErr(e)}).then(function(){G.busy=false;G.ctl=null;draw()});
 }
-function routeSteps(){
+function routeStepsOld(){
   var td=today(),P=prog(),steps=[],rep=S.reports.filter(function(r){return r.date===td})[0];
   [["ccna","CCNA"],["eng","İngilizce"]].forEach(function(tr){
     var T=tr[0],has=lessonsOf(T).some(function(l){return l.date===td}),n=S.attempts.filter(function(a){return a.date===td&&a.track===T}).length;
@@ -1902,7 +1902,7 @@ function burst(){
   for(var i=0;i<36;i++)box.append(h("i",{style:"left:"+(Math.random()*100)+"%;background:"+cols[i%cols.length]+";animation-delay:"+(Math.random()*.5)+"s;animation-duration:"+(1.4+Math.random()*1)+"s;transform:rotate("+(Math.random()*180)+"deg)"}));
   document.body.append(box);setTimeout(function(){box.remove()},3000);
 }
-function renderRoute(){
+function renderRouteOld(){
   var steps=routeSteps(),done=steps.filter(function(x){return x.d}).length,nxt=steps.filter(function(x){return !x.d})[0];
   return h("div",{class:"panel route"},
     h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"},h("h2",null,"Bugünün rotası"),h("span",{class:"pill"+(done===steps.length?" ok":"")},done+" / "+steps.length)),
@@ -1982,14 +1982,17 @@ function renderLessonBase(){
     h("div",{class:"small mute"},"Sıra: önce Isınma, sonra Anlatım, sonra Mini sınav. Yeni ders her akşam gelir."),seg,
     list.length?h("div",{class:"lscroll"},list.slice(0,14).map(function(x){return h("button",{type:"button",class:"opt","aria-pressed":x===l?"true":"false",onclick:function(){L.id=x.id;L.ask={busy:false,ans:null,err:null};draw()}},x.date.slice(5)+(x.generated?" · canlı":"")+" · "+(x.title||"Ders").slice(0,22))})):null);
   out.push(head);
+  if(S.nonOwner&&S.pl.on&&S.pl.track===tr){out.push(plPanel());return out}
+  if(S.nonOwner&&!plLoad()[tr]){out.push(lessonPlacement(tr));return out}
   var G=S.gen,genBtn=h("div",{class:"panel"},h("div",{class:"small mute"},S.nonOwner?"Seviyene ve sıradaki konuya göre ders hazırlanır; yaklaşık yarım dakika sürer. Her ders bir sonraki konuya geçer.":"Bugünün dersi akşam hazırlanır. Beklemek istemezsen şimdi bir ders ürettirebilirsin; yaklaşık yarım dakika sürer."),
     h("div",{style:"display:flex;gap:8px;align-items:center;flex-wrap:wrap"},
       G.busy?h("button",{class:"btn ghost",type:"button",onclick:function(){if(G.ctl)G.ctl.abort()}},"Durdur"):h("button",{class:"btn",type:"button",disabled:!S.sample,onclick:function(){genLesson(tr)}},"Şimdi ders üret"),
       G.busy?h("span",{class:"small mute"},"Hazırlanıyor..."):null,!S.sample?h("span",{class:"small mute"},"Bu görünümde kullanılamıyor."):null),
     G.err?h("div",{class:"fb bad"},G.err):null);
-  if(!l){out.push(h("div",{class:"empty"},(S.nonOwner?"Henüz dersin yok. Aşağıdan ilk dersini üret; sıradaki konuya göre hazırlanır.":"Henüz ders yok. Koç akşam çalışınca ilk ders burada görünür.")));out.push(genBtn);return out}
+  if(!l){out.push(h("div",{class:"empty"},(S.nonOwner?"Henüz dersin yok. Aşağıdan ilk dersini üret; sıradaki konuya göre hazırlanır.":"Henüz ders yok. Koç akşam çalışınca ilk ders burada görünür.")));out.push(genBtn);out.push(lessonGuide(tr,null));return out}
   if(S.nonOwner||!list.some(function(x){return x.date===today()}))out.push(genBtn);
   var blocks=(Array.isArray(l.blocks)?l.blocks:[]).map(lblock).filter(Boolean);
+  out.push(lessonGuide(tr,l));
   out.push(lessonNav(l));
   var pvl=list[list.indexOf(l)+1];if(pvl){var rcp=recapCard(pvl,"Bir önceki ders");if(rcp)out.push(rcp)}
   var wu=renderWarmup(l);if(wu)out.push(wu);
@@ -3537,7 +3540,7 @@ function gzCard(x,ev){
     x.summary?h("p",{class:"small",style:"margin:4px 0 0"},x.summary):null,
     ev&&x.talk?h("p",{class:"small",style:"margin:4px 0 0"},h("b",null,past?"Neler anlatıldı: ":"Neler anlatılacak: "),x.talk):null,
     x.why?h("p",{class:"small",style:"margin:4px 0 0"},h("b",null,"Neden önemli: "),x.why):null,
-    h("div",{class:"row",style:"margin-top:6px"},h("a",{href:x.url,target:"_blank",rel:"noopener noreferrer"},ev?"Etkinlik sayfası":"Haberi oku"+(x.source?" · "+x.source:"")),
+    h("div",{class:"row",style:"margin-top:6px"},h("a",{href:x.url,target:"_blank",rel:"noopener noreferrer",onclick:function(){if(!num(prog().gz_n))setProg({gz_n:1})}},ev?"Etkinlik sayfası":"Haberi oku"+(x.source?" · "+x.source:"")),
       up&&S.mcp&&S.canWrite&&!S.guest?h("button",{class:"btn ghost",type:"button",onclick:function(){gzAddCal(x)}},"Takvime ekle"):null));
 }
 function renderGazete(){
@@ -4529,6 +4532,7 @@ function renderSettings(){
   return [syncPanel(),h("div",{class:"panel"},h("div",{class:"label"},"Rahat okuma"),h("h2",null,"Ekranı sana göre ayarla"),
     h("div",{class:"small mute"},"Bu ayarlar sadece bu cihazda geçerlidir ve hemen uygulanır."),
     pfSeg("Yazı boyu",[[0,"Normal"],[1,"Büyük"],[2,"Çok büyük"]],S.pf.fs,function(v){S.pf.fs=v;savePf()}),
+    pfSeg("Tema",[["auto","Otomatik"],["light","Açık"],["dark","Koyu"]],themeGet(),themeSet),
     pfSeg("Sade mod",[[false,"Kapalı"],[true,"Açık"]],S.pf.simple,function(v){S.pf.simple=v;savePf()}),
     h("div",{class:"small mute"},"Sade mod: sadece Bugün, Ders ve Sınıf kalır. Oyun öğeleri, Lig, Proje, Mülakat gizlenir; ekran sakinleşir."),
     pfSeg("Yüksek kontrast",[[false,"Kapalı"],[true,"Açık"]],S.pf.hc,function(v){S.pf.hc=v;savePf()}),
@@ -5503,7 +5507,7 @@ function plPanel(){
     return h("div",{class:"panel"},h("div",{class:"label"},"Sonuç · "+(GM_TN[P.track]||P.track)),h("h2",null,b[0]),
       h("div",{class:"small"},n+" / "+P.qs.length+" doğru · seviye "+lv.toFixed(1)+" / 3"),
       h("div",{class:"lbox"},h("p",{style:"margin:0"},b[1])),
-      h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:function(){P.on=false;goTab("atolye")}},"Atölyeye git"),
+      h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:function(){P.on=false;goTab(S.nonOwner?"ders":"atolye")}},S.nonOwner?"Derse başla":"Atölyeye git"),
         h("button",{class:"btn ghost",type:"button",onclick:function(){plShare(P.track,lv)}},"Sonucu kopyala"),
         h("button",{class:"btn ghost",type:"button",onclick:function(){P.on=false;P.msg="";draw()}},"Kapat")),
       P.msg?h("div",{class:"small mute"},P.msg):null);
@@ -5996,10 +6000,130 @@ function evPanel(R){
     h("div",{class:"row"},h("button",{class:"btn ghost",type:"button",onclick:function(){S.at2.sec="cv";draw()}},"CV'de gör"),h("button",{class:"btn ghost",type:"button",onclick:function(){goTab("mul")}},"Mülakat provası")));
 }
 
+/* ===== rota haritası, durak XP, kapılar, tema ===== */
+var RT_BONUS=20;
+(function(){var st=document.createElement("style");st.textContent=".jmap{display:grid;gap:0;margin:10px 0 4px}.jst{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:start;position:relative;padding:8px 0}.jst:not(:last-child)::after{content:\"\";position:absolute;left:16px;top:42px;bottom:-8px;width:2px;background:var(--line)}.jst.done:not(:last-child)::after{background:var(--ok,#2d7d74)}.jn{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:700 13px var(--f-mono);border:2px solid var(--line);background:var(--panel);color:var(--mute);z-index:1}.jst.done .jn{background:var(--ok,#2d7d74);border-color:var(--ok,#2d7d74);color:#fff}.jst.cur .jn{border-color:var(--net);color:var(--net);box-shadow:0 0 0 4px color-mix(in srgb,var(--net) 22%,transparent)}.jb{min-width:0;display:grid;gap:3px}.jb .t{font-weight:600;overflow-wrap:anywhere}.jst.done .jb .t{color:var(--mute);text-decoration:line-through}.jx{font:700 12px var(--f-mono);color:var(--gold,#b8892b);white-space:nowrap}.jst.done .jx{color:var(--ok,#2d7d74)}.jtag{font:600 10px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--net)}.rt-toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font:600 14px var(--f-body);z-index:50;box-shadow:0 6px 24px rgba(0,0,0,.25);animation:rtup .35s ease-out;max-width:90vw;text-align:center}@keyframes rtup{from{opacity:0;transform:translate(-50%,16px)}to{opacity:1;transform:translate(-50%,0)}}button.orb{border:0;padding:0;cursor:pointer;display:block}.hero .orb{z-index:3}";document.head.appendChild(st)})();
+function rtToast(msg){var d=document.createElement("div");d.className="rt-toast";d.setAttribute("role","status");d.textContent=msg;document.body.appendChild(d);setTimeout(function(){d.remove()},2800)}
+function rtTracks(){
+  var m={ccna:["ccna","eng"],qa:["bk","eng"],bk:["bk","eng"],sec:["sec","eng"],eng:["eng"]},g=S.onb&&S.onb.goal;
+  return (S.nonOwner&&m[g])?m[g]:["ccna","eng"];
+}
+function rtXpOf(x){return x.xp||0}
+function routeSteps(){
+  var td=today(),P=prog(),steps=[],tn={ccna:"CCNA",eng:"İngilizce",sec:"Siber",bk:"Backend"},tks=rtTracks().slice();
+  if(!S.nonOwner)["sec","bk"].forEach(function(T){if(lessonsOf(T).some(function(l){return l.date===td}))tks.push(T)});
+  tks.forEach(function(T){
+    var has=lessonsOf(T).some(function(l){return l.date===td});
+    steps.push({id:"ders-"+T,xp:20,tr:T,t:tn[T]+": dersi oku",d:!!P["read_"+T],go:function(){S.les.track=T;S.les.id=null;S.les.view="ders";goTab("ders")},b:"Dersi aç",note:has?null:(S.nonOwner?"Ders yoksa Ders ekranından üret; seviyene göre hazırlanır.":"Bugünün dersi akşam hazırlanır. Beklemek istemezsen Ders ekranından hemen üretebilirsin.")});
+    if(T==="ccna"||T==="eng"){var n=S.attempts.filter(function(a){return a.date===td&&a.track===T}).length;
+      steps.push({id:"sinif-"+T,xp:20,tr:T,t:tn[T]+": 5 canlı soru",d:n>=5,prog:Math.min(n,5)+"/5",go:function(){S.cls.track=T;S.cls.topicId=null;S.cls.phase="idle";goTab("sinif")},b:"Soruları çöz"})}
+  });
+  steps.push({id:"prac",xp:15,tr:"",t:"Alıştırma: karışık 5 soru",d:num(P.prac_n)>=5,go:function(){S.at2.sec="alistirma";S.pr.track="mix";S.pr.qs=[];S.pr.res=null;goTab("atolye")},b:"Turu aç",note:"Alanlar iç içe gelir; yanlışlar sonra tekrar çıkar."});
+  if(tks.indexOf("eng")>=0){
+    steps.push({id:"masa",xp:15,tr:"eng",t:"İngilizce: 1 destek talebi yanıtla",d:num(P.ticket_n)>=1,go:function(){goTab("masa")},b:"Talebi aç"});
+    steps.push({id:"ses",xp:5,tr:"eng",t:"İngilizce: 3 cümleyi sesli tekrar et",d:!!P.voice,toggle:function(){setProg({voice:!P.voice})},b:P.voice?"Geri al":"Yaptım, işaretle",note:"telefona kaydet, dinle"});
+  }
+  steps.push({id:"oyun",xp:10,tr:"",t:"Oyun: günün koşusu",d:num(gmDay(td).g_runs)>0,go:function(){goTab("oyun")},b:"Oyna"});
+  steps.push({id:"mul",xp:10,tr:"",t:"Mülakat: 1 soru prova et",d:num(P.mul_n)>=1,go:function(){goTab("mul")},b:"Soruya git"});
+  steps.push({id:"gz",xp:5,tr:"",t:"Gazete: 1 haber ya da etkinlik oku",d:num(P.gz_n)>=1,go:function(){S.lg=S.lg||{};goTab("gazete")},b:"Gazeteye git"});
+  steps.push({id:"proj",xp:20,tr:"",t:"Proje: 1 adım ilerle",d:num(P.proj_n)>=1,go:function(){goTab("proje")},b:"Projeye git"});
+  var rep=S.reports.filter(function(r){return r.date===td})[0];
+  steps.push({id:"rapor",xp:5,tr:"",t:"Bugünün 3 satırını kaydet",d:!!rep,go:function(){var el=document.getElementById("reportForm");if(el)el.scrollIntoView({behavior:"smooth",block:"center"});else goTab("bugun")},b:"Raporu doldur"});
+  return steps;
+}
+S._rtSent={};S._rtAcc={};S._ld={};
+function rtAward(){
+  if(!S.db||!S.canWrite||S.guest||!S.ready2||!S._ld.progress||!S._ld.attempts)return;
+  var td=today(),P=prog(),steps=routeSteps(),O={},gain=0,names=[];
+  steps.forEach(function(x){var k=td+x.id;if(x.d&&!P["rt_"+x.id]&&!S._rtSent[k]){S._rtSent[k]=1;O["rt_"+x.id]=1;gain+=x.xp;names.push(x.t)}});
+  if(steps.length&&steps.every(function(x){return x.d})&&!P.rt_all&&!S._rtSent[td+"all"]){S._rtSent[td+"all"]=1;O.rt_all=1;gain+=RT_BONUS;names.push("rota bonusu")}
+  if(!gain)return;
+  var base=Math.max(num(P.rtxp),num(S._rtAcc[td]));S._rtAcc[td]=base+gain;O.rtxp=base+gain;setProg(O);
+  rtToast("+"+gain+" XP · "+(names.length>1?names.length+" durak geçildi":names[0]));
+}
+function rtXp(){var t=0;S.progress.forEach(function(p){t+=Math.min(300,num(p.rtxp))});return t}
+function rtPossible(steps){var t=RT_BONUS;steps.forEach(function(x){t+=x.xp});return t}
+function renderRoute(){
+  var steps=routeSteps(),done=steps.filter(function(x){return x.d}).length,nxt=steps.filter(function(x){return !x.d})[0],P=prog();
+  var earned=Math.max(num(P.rtxp),num(S._rtAcc[today()])),poss=rtPossible(steps);
+  var R=rankInfo(),gate=R.nxt&&R.nxt.gate?gateReq(R.nxt.gate):"";
+  return h("div",{class:"panel route"},
+    h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"},h("h2",null,"Bugünün rotası"),h("span",{class:"pill"+(done===steps.length?" ok":"")},done+" / "+steps.length+" durak")),
+    h("div",{class:"small mute"},"Duraktan duraka ilerle. Her durak XP verir, hepsini bitirirsen +"+RT_BONUS+" bonus. Sıra önerilendir; istediğin duraktan başlayabilirsin."),
+    h("div",{class:"xpbar"},h("i",{style:"width:"+Math.min(100,earned/poss*100)+"%"})),
+    h("div",{class:"small mono",style:"display:flex;justify-content:space-between"},h("span",null,"bugün "+earned+" XP"),h("span",{class:"mute"},"en çok "+poss)),
+    nxt?null:h("div",{class:"lbox"},h("p",null,"Bütün duraklar tamam. Seri korundu, yarın yeni rota seni bekliyor.")),
+    h("div",{class:"jmap"},steps.map(function(x,i){return {x:x,i:i}}).filter(function(o){if(S._rtAll||!nxt)return true;var ni=steps.indexOf(nxt);return o.i>=ni-1&&o.i<=ni+3}).map(function(o){var x=o.x,i=o.i;return h("div",{class:"jst"+(x.d?" done":"")+(x===nxt?" cur":""),"data-track":x.tr||""},
+      h("div",{class:"jn"},x.d?"✓":String(i+1)),
+      h("div",{class:"jb"},x===nxt?h("span",{class:"jtag"},"buradasın"):null,h("div",{class:"t"},x.t+(x.prog?" ("+x.prog+")":"")),x.note&&!x.d?h("div",{class:"small mute"},x.note):null,
+        h("button",{class:"btn ghost",type:"button",style:"justify-self:start;margin-top:4px",onclick:function(){(x.go||x.toggle)()}},x.b)),
+      h("div",{class:"jx"},(x.d?"✓ ":"+")+x.xp+" XP"))})),
+    steps.length>5?h("div",{class:"row"},h("button",{class:"btn ghost",type:"button",onclick:function(){S._rtAll=!S._rtAll;draw()}},S._rtAll?"Daralt":"Bütün durakları göster ("+steps.length+")")):null,
+    h("details",null,h("summary",{class:"small"},"XP nasıl kazanılır, adil mi?"),
+      h("div",{class:"small mute"},"Herkes için aynı kurallar: rota durakları yukarıdaki değerlerde (günde en çok "+poss+"). Sınıfta cevap başına 5-15 XP, günlük en çok 100. Oyun günlük en çok "+GM_CAP+" (haftalık bonuslar ayrı). Proje adımı 10 XP × seviye, proje bitince +60 × seviye. Her XP bir iş yapınca gelir; bekleyerek ya da aynı şeyi tekrarlayarak artmaz."),
+      gate?h("div",{class:"small mute",style:"margin-top:6px"},"Sonraki rütbe için kapı: "+gate):null,
+      h("div",{class:"small mute",style:"margin-top:6px"},"Not: kurucunun hesabında günlük koç görevleri ek XP yazar; bu uygulama içi XP ile ayrı sayılır ve rütbe kapıları iki yoldan da açılabilir.")));
+}
+/* rütbe kapıları: kurucu sınavı ya da uygulama içi başarı */
+function gsTotals(){var n=0,ok=0;Object.keys(GS.st).forEach(function(k){n+=GS.st[k][1];ok+=GS.st[k][0]});return {n:n,ok:ok,acc:n?ok/n:0}}
+function gateAuto(g){
+  var t=gsTotals(),PL=plLoad(),lvok=Object.keys(PL).some(function(k){return PL[k]&&PL[k].lv>=2&&PL[k].n>=3});
+  if(g==="g1")return t.n>=20&&t.acc>=.8;
+  if(g==="g2")return t.n>=60&&t.acc>=.8&&lvok;
+  if(g==="g3")return t.n>=120&&t.acc>=.8&&(S.mock||[]).some(function(x){return x.avg>=7});
+  return false;
+}
+function gateOk(g){return (S.profile&&S.profile.gates||{})[g]===true||gateAuto(g)}
+function gateReq(g){
+  var t=gsTotals(),a=Math.round(t.acc*100);
+  if(g==="g1")return "kapı sınavı %80 ya da uygulamada en az 20 soruda %80 doğruluk (şimdi "+t.n+" soru, %"+a+")";
+  if(g==="g2")return "iki kapı sınavı ya da en az 60 soruda %80 doğruluk ve bir seviye testinde 2/3 (şimdi "+t.n+" soru, %"+a+")";
+  if(g==="g3")return "iki deneme sınavı ya da en az 120 soruda %80 doğruluk ve bir mülakat provasında 7/10 (şimdi "+t.n+" soru, %"+a+")";
+  return "";
+}
+/* tema */
+function themeGet(){try{return localStorage.getItem("ya_theme")||"auto"}catch(e){return "auto"}}
+function themeApply(){
+  var t=themeGet(),r=document.documentElement;
+  if(S._hostTheme===undefined)S._hostTheme=r.getAttribute("data-theme");
+  if(t==="auto"){if(S._hostTheme)r.setAttribute("data-theme",S._hostTheme);else r.removeAttribute("data-theme")}else r.setAttribute("data-theme",t);
+}
+function themeSet(t){try{localStorage.setItem("ya_theme",t)}catch(e){}themeApply();draw()}
+function themeCycle(){var o=["auto","light","dark"],t=themeGet();themeSet(o[(o.indexOf(t)+1)%3])}
+function themeName(){return {auto:"otomatik",light:"açık",dark:"koyu"}[themeGet()]}
+themeApply();
+/* ders girişi: seviye testi ve yönlendirme */
+function plOffset(track,N){var v=plLoad()[track];if(!v||v.skip||typeof v.lv!=="number")return 0;return v.lv<1.5?0:v.lv<2.3?Math.round(N*.25):Math.round(N*.5)}
+function plHint(track){var v=plLoad()[track];if(!v||v.skip||typeof v.lv!=="number")return "";return " Seviye testi sonucu: "+v.lv.toFixed(1)+"/3 ("+plBand(v.lv)[0]+"); anlatımı buna göre ayarla."}
+function lessonPlacement(tr){
+  var tn={ccna:"CCNA",eng:"İngilizce",sec:"Siber",bk:"Backend"}[tr]||tr;
+  return h("div",{class:"panel welcome"},h("div",{class:"label"},"Derse başlamadan"),h("h2",null,tn+": nereden başlayalım?"),
+    h("div",{class:"small mute"},"6 kısa soruyla seviyeni ölçerim. Bildiğin kısımları atlar, ilk dersi sana uygun konudan başlatırım. Bilmediğin soruda tahmin etmen yeter, puan kırılmaz."),
+    h("div",{style:"display:grid;gap:8px"},
+      h("button",{class:"btn",type:"button",onclick:function(){S.pl.track=tr;plStart()}},"Seviye testini yap (3 dakika)"),
+      h("button",{class:"btn ghost",type:"button",onclick:function(){var o=plLoad();o[tr]={lv:1,n:0,ok:0,d:today(),skip:true};plSave(o);draw()}},"Sıfırdan başlıyorum")));
+}
+function lessonGuide(tr,l){
+  var P=prog(),L=S.les,qs=(l&&Array.isArray(l.quiz))?l.quiz:[],marked=0;qs.forEach(function(q,i){if(L.mark[l.id+":"+i])marked++});
+  var cls=(tr==="ccna"||tr==="eng");
+  var st=[
+   {t:"Dersi oku",d:!!P["read_"+tr],h:"Isınma, anlatım, sonra en altta 'Dersi okudum'. Ders yoksa aşağıdan üret.",go:function(){var el=document.getElementById("ls-ders");if(el)el.scrollIntoView({behavior:"smooth"})}},
+   {t:"Mini sınav",d:qs.length>0&&marked>=qs.length,h:"Cevabı önce kendin düşün, sonra aç ve dürüstçe işaretle.",go:function(){var el=document.getElementById("ls-sinav");if(el)el.scrollIntoView({behavior:"smooth"})}},
+   cls?{t:"Sınıfta 5 soru çöz",d:S.attempts.filter(function(a){return a.date===today()&&a.track===tr}).length>=5,h:"Öğrendiğini gerçek iş durumlarında dene.",go:function(){S.cls.track=tr;S.cls.topicId=null;S.cls.phase="idle";goTab("sinif")}}:
+      {t:"Alıştırmada karışık tur",d:num(P.prac_n)>=5,h:"Alanlar iç içe gelir; unutmaya karşı en iyi yöntem budur.",go:function(){S.at2.sec="alistirma";S.pr.track="mix";S.pr.qs=[];S.pr.res=null;goTab("atolye")}}];
+  if(tr==="eng"||tr==="ccna")st.push({t:"Masada bir talebi yanıtla",d:num(P.ticket_n)>=1,h:"İş yerindeki gibi İngilizce yaz; ipucu ve puan alırsın.",go:function(){goTab("masa")}});
+  st.push({t:"Zorlandığın şeyi tekrar sor",d:false,h:"Yanlış yaptığın soruda 'Bunu tekrar sor' de; sistem onu yarın karşına çıkarır.",go:function(){S.at2.sec="alistirma";goTab("atolye")},opt:true});
+  var nx=st.filter(function(x){return !x.d&&!x.opt})[0];
+  return h("details",{class:"panel",open:S._lgOpen!==false,ontoggle:function(e){S._lgOpen=e.target.open}},h("summary",null,h("b",null,"Bu dersi nasıl çalışmalısın? "),h("span",{class:"small mute"},nx?"Sıradaki: "+nx.t:"Hepsi tamam")),
+    h("div",{class:"small mute"},"Sıra önemli: önce anla (ders), sonra hatırla (mini sınav), sonra kullan (sınıf ya da masa). Hepsini aynı gün yapman gerekmez; bugün en az bir tur yeter."),
+    h("div",{class:"jmap"},st.map(function(x,i){return h("div",{class:"jst"+(x.d?" done":"")+(x===nx?" cur":"")},h("div",{class:"jn"},x.d?"✓":String(i+1)),
+      h("div",{class:"jb"},x===nx?h("span",{class:"jtag"},"sıradaki"):null,h("div",{class:"t"},x.t+(x.opt?" (isteğe bağlı)":"")),h("div",{class:"small mute"},x.h),h("button",{class:"btn ghost",type:"button",style:"justify-self:start;margin-top:4px",onclick:x.go},"Git")),h("div",null))})));
+}
+
 /* ---- veri ---- */
 function listen(db,name,key){
   db.collection(name).onSnapshot(function(s){
-    S[key]=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return key==="lessons"?cleanLesson(x):key==="tickets"?cleanTicket(x):key==="audit"?cleanAudit(x):key==="projects"?cleanProject(x):x}).filter(Boolean);sched();
+    S._ld=S._ld||{};S._ld[key]=1;S[key]=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return key==="lessons"?cleanLesson(x):key==="tickets"?cleanTicket(x):key==="audit"?cleanAudit(x):key==="projects"?cleanProject(x):x}).filter(Boolean);sched();
   },function(){});
 }
 S.ready2=false;setTimeout(function(){S.ready2=true;sched()},2500);
@@ -6031,7 +6155,7 @@ if(window.claude&&window.claude.use){
     db.doc("prefs/notes").onSnapshot(function(s){S.pn=s.exists?(s.data()||{}):{};sched()},function(){});
     db.doc("desk/main").onSnapshot(function(s){S.desk=s.exists?(s.data()||{}):{};sched()},function(){});
     db.collection("attempts").orderBy("ts","desc").limit(400).onSnapshot(function(s){
-      S.attempts=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});sched();
+      S._ld=S._ld||{};S._ld.attempts=1;S.attempts=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});sched();
     },function(){});
     });
   });
