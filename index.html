@@ -1528,8 +1528,8 @@ bk:[["HTTP ve REST", "Temel", "Restoranda garson: sipariş fişi gider, tabak d�
 ["CloudTrail", "Gözlem ve sorun giderme", "Güvenlik kamerası kaydı: kim, ne zaman, ne yaptı."],
 ["Yeniden deneme, idempotency, üstel geri çekilme", "Mimari desenleri", "Kapıyı tekrar çalmak: aralığı açarak dene, çifte sipariş verme."]]};
 function starterTopics(track){
-  var done={};S.lessons.forEach(function(l){if(l.track===track&&l.topicId)done[l.topicId]=1});var nx=false,off=plOffset(track,(STARTER[track]||[]).length);
-  return (STARTER[track]||[]).map(function(x,i){var id="s-"+track+"-"+(i+1),st=(done[id]||i<off)?"built":(!nx?"next":"open");if(st==="next")nx=true;return {id:id,track:track,name:x[0],area:x[1],analogy:x[2],status:st,mastery:(done[id]||i<off)?60:0,order:i,areaOrder:0,starter:true}});
+  var done={};S.lessons.forEach(function(l){if(l.track===track&&l.topicId&&lcDone(l.topicId))done[l.topicId]=1});var nx=false,off=plOffset(track,(STARTER[track]||[]).length);
+  return (STARTER[track]||[]).map(function(x,i){var id="s-"+track+"-"+(i+1);if(lcDone(id))done[id]=1;var st=(done[id]||i<off)?"built":(!nx?"next":"open");if(st==="next")nx=true;return {id:id,track:track,name:x[0],area:x[1],analogy:x[2],status:st,mastery:(done[id]||i<off)?60:0,order:i,areaOrder:0,starter:true}});
 }
 function topicChoices(track){
   var T=topicsOf(track).filter(function(t){return t.status!=="locked"});
@@ -1973,13 +1973,74 @@ function lessonNav(l){
   return h("div",{class:"lnav",role:"navigation","aria-label":"Ders bölümleri"},items.map(function(x){
     return h("button",{type:"button",class:"opt",onclick:function(){var el=document.getElementById(x[0]);if(el)el.scrollIntoView({behavior:"smooth",block:"start"})}},x[1])}));
 }
+
+/* ---- v47: hazır ders, sıralı kilit, ısınma kapısı ---- */
+var LC_KEY="ya_lc",LC_FROM="2026-10-08";
+function lcLoad(){try{var o=JSON.parse(localStorage.getItem(LC_KEY)||"null");return o&&typeof o==="object"?o:{}}catch(e){return {}}}
+function lcHas(k,f){var o=lcLoad()[k];return !!(o&&o[f])}
+function lcSet(k,f,tr){if(!k||lcHas(k,f))return false;var o=lcLoad();o[k]=o[k]||{};o[k][f]=1;o[k].d=today();try{localStorage.setItem(LC_KEY,JSON.stringify(o))}catch(e){return false}syncPush();
+  if(tr&&lcDone(k)){lcCut(tr,{ts:new Date().toISOString(),pn:num(prog().prac_n),d:today()});setTimeout(function(){rtToast("Ders tamam. Sıradaki konu açıldı.");sched()},50)}return true}
+function lcUnset(k,f){var o=lcLoad();if(o[k]&&o[k][f]){delete o[k][f];try{localStorage.setItem(LC_KEY,JSON.stringify(o))}catch(e){}}}
+function lcCut(tr,v){var o=lcLoad();if(v){o._cut=o._cut||{};o._cut[tr]=v;try{localStorage.setItem(LC_KEY,JSON.stringify(o))}catch(e){}}return (o._cut&&o._cut[tr])||null}
+function lcDone(k){return lcHas(k,"w")&&lcHas(k,"r")&&lcHas(k,"q")&&lcHas(k,"p")}
+function lessonKey(l){return l.topicId||l.id}
+function lcGrand(l){return !l.virtual&&String(l.date||"")<LC_FROM}
+function lcSync(l){
+  var tr=l.track,k=lessonKey(l),P=prog(),qs=Array.isArray(l.quiz)?l.quiz:[],mk=0,was=lcDone(k),c=false,cut=lcCut(tr);
+  qs.forEach(function(q,i){if(S.les.mark[l.id+":"+i])mk++});
+  if((!qs.length||mk>=qs.length)&&lcSet(k,"q",tr))c=true;
+  var pr=(tr==="ccna"||tr==="eng")?S.attempts.filter(function(a){return a.date===today()&&a.track===tr&&(!cut||String(a.ts||"")>cut.ts)}).length>=5:(num(P.prac_n)-(cut&&cut.d===today()?cut.pn:0))>=5;
+  if(pr&&lcSet(k,"p",tr))c=true;
+  return c;
+}
+function baseQuiz(tr,t){
+  var tok=(t.name+" "+(t.area||"")).toLowerCase().split(/[^a-zçğıöşü0-9]+/).filter(function(w){return w.length>3});
+  var cand=QB.filter(function(x){return x.t===tr}).map(function(x){var tx=(x.q+" "+(x.w||"")).toLowerCase(),sc=0;tok.forEach(function(w){if(tx.indexOf(w)>=0)sc++});return {x:x,sc:sc}});
+  cand.sort(function(a,b){return b.sc-a.sc||a.x.d-b.x.d});
+  var pick=cand.slice(0,4).map(function(c){return c.x});
+  return pick.map(function(x){return {q:x.q,options:x.o.slice(),answer:x.o[x.a],why:x.w||""}});
+}
+function localWarm(l){
+  var t=l.topicId?topicById(l.topicId):null,nm=(t&&t.name)||l.title||"Bu konu",an=(t&&t.analogy)||l.hook||"";
+  var pv=null;if(t){var T=S.topics.length?topicsOf(l.track):starterTopics(l.track);for(var i=0;i<T.length;i++){if(T[i].id===t.id)break;pv=T[i]}}
+  var o={recap:[],concepts:[],words:[]};
+  if(pv)o.recap.push({point:"Önceki konu: "+pv.name,example:pv.analogy||""});
+  if(l.track!=="eng"&&nm)o.concepts.push({term:nm,tr:(t&&t.area)||"",summary:an||"Bugünün ana kavramı.",example:""});
+  return (o.recap.length||o.concepts.length)?o:{recap:[{point:"Bugünkü konuya geçmeden önce geçen çalıştığın şeyi bir cümleyle kendine anlat.",example:""}],concepts:[],words:[]};
+}
+function baseLesson(tr){
+  var tid=defaultTopic(tr),t=tid?topicById(tid):null;if(!t)return null;
+  var st=["Isınmayı bitir: bir önceki konuyu ve bugünkü kavramı gözden geçir.","Anlatımı oku, benzetmeyi kendi cümlenle yeniden anlat.","Mini sınavı cevabı açmadan önce yanıtla.",(tr==="ccna"||tr==="eng")?"Sınıfta 5 soru çöz.":"Alıştırmada 5 karışık soru çöz."];
+  var l={id:"base-"+t.id,virtual:true,generated:true,date:today(),track:tr,kind:"hazır ders",title:t.name,hook:t.analogy||"",topicId:t.id,
+    blocks:[{t:"h",text:"Bugünkü konu"},{t:"p",text:t.name+(t.area?" ("+t.area+" bölümü)":"")+" konusunu öğreniyorsun. Önce büyük resmi gör, sonra soruyla pekiştir."},
+      t.analogy?{t:"box",h:"Benzetme",text:t.analogy}:{t:"p",text:"Konuyu kendi cümlenle anlatabilir hale gelmek hedef."},
+      {t:"steps",h:"Bu konuyu şöyle çalış",items:st},
+      {t:"warn",h:"Hazır temel ders",text:"Bu ders her an hazır bekleyen temel çerçevedir. Daha zengin anlatım, örnek ve mülakat soruları için aşağıdan 'Ders üret' ile derinleştirebilirsin."}],
+    quiz:baseQuiz(tr,t),interview:[],vocab:[],resources:[],sources:[],warmup:localWarm({track:tr,topicId:t.id,title:t.name}),homework:(tr==="ccna"||tr==="eng")?"Sınıfta 5 soru çöz.":"Alıştırmada 5 karışık soru çöz.",coachNote:"",story:null};
+  return cleanLesson(l);
+}
+function lessonPath(tr,cur){
+  var T=S.topics.length?topicsOf(tr):starterTopics(tr);if(!T.length)return null;
+  var ci=0;for(var i=0;i<T.length;i++){if(cur&&T[i].id===cur.topicId){ci=i;break}}
+  if(!cur){for(var j=0;j<T.length;j++){if(T[j].status==="next"){ci=j;break}}}
+  var from=Math.max(0,ci-1),rows=T.slice(from,from+7),k=cur?lessonKey(cur):"";
+  var lab=[["w","Isınma"],["r","Oku"],["q","Mini sınav"],["p","Alıştırma"]];
+  return h("details",{class:"panel",open:S._lpOpen!==false,ontoggle:function(e){S._lpOpen=e.target.open}},h("summary",null,h("b",null,"Ders yolu "),h("span",{class:"small mute"},"sıradakini açmak için bu dersi bitir")),
+    h("div",{class:"small mute"},"Her konuda: Isınma, Oku, Mini sınav, Alıştırma. Dördü bitince sıradaki ders açılır. Ne zaman çalışacağın sana kalmış; kilit sadece sırayı korur."),
+    h("div",{style:"display:grid;gap:6px;margin-top:8px"},rows.map(function(t,i){
+      var idx=from+i,cu=cur&&t.id===cur.topicId,done=t.status==="built"||(cu&&lcDone(k)),lock=!done&&!cu&&t.status!=="next";
+      return h("div",{class:"jst"+(done?" done":"")+(cu?" cur":"")},h("div",{class:"jn"},done?"✓":lock?"🔒":String(idx+1)),
+        h("div",{class:"jb"},h("div",{class:"t"},t.name),
+          cu?h("div",{class:"small mute"},lab.map(function(x){return (lcHas(k,x[0])?"✓ ":"○ ")+x[1]}).join("  ")):lock?h("div",{class:"small mute"},"Önceki ders bitince açılır"):null),h("div",null))})));
+}
 function renderLessonBase(){
-  var L=S.les,tr=L.track,list=lessonsOf(tr),out=[];
+  var L=S.les,tr=L.track,list=lessonsOf(tr),realList=list,out=[];
+  var bl=baseLesson(tr);if(bl&&!list.some(function(x){return x.topicId===bl.topicId})&&(S.nonOwner||!list.some(function(x){return x.date===today()})))list=[bl].concat(list);
   var seg=h("div",{class:"seg",role:"group","aria-label":"Koç"},TRK_LIST.map(function(o){
     return h("button",{type:"button","aria-pressed":tr===o[0]?"true":"false",onclick:function(){L.track=o[0];L.id=null;L.ask={busy:false,ans:null,err:null};draw()}},o[1])}));
   var l=list.filter(function(x){return x.id===L.id})[0]||list[0];
   var head=h("div",{class:"panel"},h("h2",null,"Ders"),
-    h("div",{class:"small mute"},"Sıra: önce Isınma, sonra Anlatım, sonra Mini sınav. Yeni ders her akşam gelir."),seg,
+    h("div",{class:"small mute"},"Sıra: önce Isınma, sonra Anlatım, Mini sınav, Alıştırma. Hazır ders her an var; dört adım bitince sıradaki konu açılır."),seg,
     list.length?h("div",{class:"lscroll"},list.slice(0,14).map(function(x){return h("button",{type:"button",class:"opt","aria-pressed":x===l?"true":"false",onclick:function(){L.id=x.id;L.ask={busy:false,ans:null,err:null};draw()}},x.date.slice(5)+(x.generated?" · canlı":"")+" · "+(x.title||"Ders").slice(0,22))})):null);
   out.push(head);
   if(S.nonOwner&&S.pl.on&&S.pl.track===tr){out.push(plPanel());return out}
@@ -1990,11 +2051,28 @@ function renderLessonBase(){
       G.busy?h("span",{class:"small mute"},"Hazırlanıyor..."):null,!S.sample?h("span",{class:"small mute"},"Bu görünümde kullanılamıyor."):null),
     G.err?h("div",{class:"fb bad"},G.err):null);
   if(!l){out.push(h("div",{class:"empty"},(S.nonOwner?"Henüz dersin yok. Aşağıdan ilk dersini üret; sıradaki konuya göre hazırlanır.":"Henüz ders yok. Koç akşam çalışınca ilk ders burada görünür.")));out.push(genBtn);out.push(lessonGuide(tr,null));return out}
-  if(S.nonOwner||!list.some(function(x){return x.date===today()}))out.push(genBtn);
+  var curT=defaultTopic(tr),hasCur=realList.some(function(x){return x.topicId===curT});if(S.nonOwner?!hasCur:!realList.some(function(x){return x.date===today()}))out.push(genBtn);
   var blocks=(Array.isArray(l.blocks)?l.blocks:[]).map(lblock).filter(Boolean);
+  var lk=lessonKey(l);
+  if(!l.warmup&&!(S.les.wg[l.id]&&S.les.wg[l.id].w)){S.les.wg[l.id]=S.les.wg[l.id]||{};S.les.wg[l.id].w=localWarm(l)}
+  lcSync(l);
   out.push(lessonGuide(tr,l));
+  var lp=lessonPath(tr,l);if(lp)out.push(lp);
+  var pvl=list[list.indexOf(l)+1];
+  if(!lcGrand(l)&&!lcHas(lk,"w")){
+    var wu0=renderWarmup(l),ww=l.warmup||S.les.wg[l.id].w,its=ww?(tr==="eng"?ww.words:ww.concepts)||[]:[],rdy=0;
+    its.forEach(function(x,i){if(S.les.wk[l.id+":"+i])rdy++});
+    var allr=rdy>=its.length;
+    out.push(h("div",{class:"panel"},h("div",{class:"label"},"Kilitli: önce ısınma"),h("h2",null,l.title||"Ders"),
+      h("div",{class:"small mute"},"Derse girmeden önce kısa bir ısınma yap. Bu, öğrendiklerini hatırlatır ve anlatımı çok daha kolay anlamanı sağlar. Hazır olunca anlatım ve mini sınav açılır. İstediğin saatte, kendi hızında yapabilirsin.")));
+    if(pvl){var rcp0=recapCard(pvl,"Bir önceki ders");if(rcp0)out.push(rcp0)}
+    if(wu0)out.push(wu0);
+    out.push(h("div",{class:"panel"},h("button",{class:"btn",type:"button",disabled:!allr,onclick:function(){lcSet(lk,"w",tr);rtToast("Isınma tamam. Ders açıldı.");draw()}},"Isınmayı bitirdim, derse gir"),
+      h("div",{class:"small mute",style:"margin-top:6px"},its.length?(allr?"Hazırsın.":"Kartlarda 'Hazırım' de, sonra ders açılır. ("+rdy+"/"+its.length+")"):"Yukarıdaki özeti oku, sonra devam et.")));
+    return out;
+  }
   out.push(lessonNav(l));
-  var pvl=list[list.indexOf(l)+1];if(pvl){var rcp=recapCard(pvl,"Bir önceki ders");if(rcp)out.push(rcp)}
+  if(pvl){var rcp=recapCard(pvl,"Bir önceki ders");if(rcp)out.push(rcp)}
   var wu=renderWarmup(l);if(wu)out.push(wu);
   out.push(h("div",{class:"panel",id:"ls-ders"},
     h("div",{style:"display:flex;gap:8px;align-items:center;flex-wrap:wrap"},h("span",{class:"pill"+(tr==="eng"?" eng":" ok")},l.kind||"ders"),h("span",{class:"mono mute small"},l.date),h("span",{class:"pill",title:"Tahmini süre"},"≈ "+lessonMinutes(l)+" dk")),
@@ -2017,9 +2095,9 @@ function renderLessonBase(){
   var rc=renderResources(l);if(rc)out.push(rc);
   var srcs=Array.isArray(l.sources)?l.sources:[];
   if(srcs.some(function(x){return safeUrl(x&&x.url)}))out.push(h("div",{class:"panel",id:"ls-dipnot"},h("h2",null,"Dipnotlar"),h("div",{class:"small mute"},"Metindeki [n] işaretleri buradaki kaynağa gider."),h("ol",{class:"lsteps"},srcs.map(function(x,i){return safeUrl(x&&x.url)?h("li",{id:"fn-"+(i+1)},h("a",{href:x.url,target:"_blank",rel:"noopener"},x.title||x.url)):null}))));
-  var P=prog(),rd=!!P["read_"+tr];
+  var P=prog(),rd=lcGrand(l)?!!P["read_"+tr]:lcHas(lessonKey(l),"r");
   out.push(h("div",{class:"panel"},h("div",{style:"display:flex;gap:8px;align-items:center;flex-wrap:wrap"},
-    h("button",{class:"btn"+(rd?" ghost":""),type:"button",disabled:!S.db||!S.canWrite,onclick:function(){setProg((function(){var o={};o["read_"+tr]=!rd;return o})())}},rd?"Okundu (geri al)":"Dersi okudum"),
+    h("button",{class:"btn"+(rd?" ghost":""),type:"button",disabled:!S.db||!S.canWrite,onclick:function(){if(!lcGrand(l)){if(rd)lcUnset(lessonKey(l),"r");else lcSet(lessonKey(l),"r",tr)}setProg((function(){var o={};o["read_"+tr]=!rd;return o})());if(!lcGrand(l))sched()}},rd?"Okundu (geri al)":"Dersi okudum"),
     h("span",{class:"small mute"},rd?"Rotada işaretlendi.":"Bitirince işaretle; Bugün sekmesindeki rota güncellenir."))));
   /* koça sor + not */
   var A=L.ask,ta=h("textarea",{id:"l-ask",maxlength:500,placeholder:"Anlamadığın yeri yaz"}),ta2=h("textarea",{id:"l-note",maxlength:800,placeholder:"Koça not: örn. 'yarın VLAN'ı daha yavaş anlat', 'bu mülakat sorusunu sevdim'",oninput:function(e){L.noteText=e.target.value}});ta2.value=L.noteText||"";
@@ -5791,12 +5869,12 @@ function gateBox(G){
 
 /* cihazlar arası eşitleme: oyun/soru ilerlemesi, Atlas, seviye testi */
 S._syncReady=false;S._syncLast="";S._syncT=null;
-function syncOut(){return {gs:{sk:GS.sk,bx:GS.bx,st:GS.st,ts:GS.ts||""},atlas:atlasKnown(),pl:plLoad()}}
+function syncOut(){return {gs:{sk:GS.sk,bx:GS.bx,st:GS.st,ts:GS.ts||""},atlas:atlasKnown(),pl:plLoad(),lc:lcLoad()}}
 function syncPush(){
   if(!S._syncReady||!S.db||!S.canWrite||S.guest)return;
   clearTimeout(S._syncT);
   S._syncT=setTimeout(function(){
-    var o=syncOut(),str=JSON.stringify(o);if(str===S._syncLast)return;if(!Object.keys(o.gs.st).length&&!Object.keys(o.gs.bx).length&&!Object.keys(o.atlas).length&&!Object.keys(o.pl).length)return;
+    var o=syncOut(),str=JSON.stringify(o);if(str===S._syncLast)return;if(!Object.keys(o.gs.st).length&&!Object.keys(o.gs.bx).length&&!Object.keys(o.atlas).length&&!Object.keys(o.pl).length&&!Object.keys(o.lc||{}).length)return;
     if(str.length>400000)return;
     S._syncLast=str;o.ts=new Date().toISOString();
     S.db.doc("prefs/sync").set(o).then(function(){S._syncAt=new Date().toISOString();S._syncFail=false;S._syncRemoteN=Object.keys(o.gs.st).length;sched()}).catch(function(){S._syncLast="";S._syncFail=true;sched()});
@@ -5828,6 +5906,11 @@ function syncApply(r){
         var p=plLoad(),pc=false;
         Object.keys(r.pl).slice(0,8).forEach(function(t){var v=r.pl[t];if(v&&typeof v==="object"&&typeof v.lv==="number"&&(!p[t]||String(v.d||"")>String(p[t].d||""))){p[t]={lv:v.lv,n:v.n|0,ok:v.ok|0,d:String(v.d||"").slice(0,10)};pc=true}});
         if(pc){try{localStorage.setItem(PL_KEY,JSON.stringify(p))}catch(e){}ch=true}
+      }
+      if(r.lc&&typeof r.lc==="object"){
+        var lc=lcLoad(),lcc=false;
+        Object.keys(r.lc).slice(0,400).forEach(function(k){var v=r.lc[k];if(!v||typeof v!=="object")return;["w","r","q","p"].forEach(function(f){if(v[f]){lc[k]=lc[k]||{};if(!lc[k][f]){lc[k][f]=1;lc[k].d=String(v.d||"").slice(0,10);lcc=true}}})});
+        if(lcc){try{localStorage.setItem(LC_KEY,JSON.stringify(lc))}catch(e){}ch=true}
       }
     }
   }catch(e){}
@@ -6106,16 +6189,17 @@ function lessonPlacement(tr){
 function lessonGuide(tr,l){
   var P=prog(),L=S.les,qs=(l&&Array.isArray(l.quiz))?l.quiz:[],marked=0;qs.forEach(function(q,i){if(L.mark[l.id+":"+i])marked++});
   var cls=(tr==="ccna"||tr==="eng");
-  var st=[
-   {t:"Dersi oku",d:!!P["read_"+tr],h:"Isınma, anlatım, sonra en altta 'Dersi okudum'. Ders yoksa aşağıdan üret.",go:function(){var el=document.getElementById("ls-ders");if(el)el.scrollIntoView({behavior:"smooth"})}},
-   {t:"Mini sınav",d:qs.length>0&&marked>=qs.length,h:"Cevabı önce kendin düşün, sonra aç ve dürüstçe işaretle.",go:function(){var el=document.getElementById("ls-sinav");if(el)el.scrollIntoView({behavior:"smooth"})}},
-   cls?{t:"Sınıfta 5 soru çöz",d:S.attempts.filter(function(a){return a.date===today()&&a.track===tr}).length>=5,h:"Öğrendiğini gerçek iş durumlarında dene.",go:function(){S.cls.track=tr;S.cls.topicId=null;S.cls.phase="idle";goTab("sinif")}}:
-      {t:"Alıştırmada karışık tur",d:num(P.prac_n)>=5,h:"Alanlar iç içe gelir; unutmaya karşı en iyi yöntem budur.",go:function(){S.at2.sec="alistirma";S.pr.track="mix";S.pr.qs=[];S.pr.res=null;goTab("atolye")}}];
+  var gk=l?lessonKey(l):"",st=[
+   {t:"Isınma",d:lcHas(gk,"w")||(l&&lcGrand(l)),h:"Önceki konuyu hatırla, bugünün kavramlarına göz at. Bitirmeden ders açılmaz.",go:function(){var el=document.getElementById("ls-isinma");if(el)el.scrollIntoView({behavior:"smooth"})}},
+   {t:"Dersi oku",d:(l&&lcGrand(l))?!!P["read_"+tr]:lcHas(gk,"r"),h:"Isınma, anlatım, sonra en altta 'Dersi okudum'. Ders yoksa aşağıdan üret.",go:function(){var el=document.getElementById("ls-ders");if(el)el.scrollIntoView({behavior:"smooth"})}},
+   {t:"Mini sınav",d:(qs.length>0&&marked>=qs.length)||lcHas(gk,"q"),h:"Cevabı önce kendin düşün, sonra aç ve dürüstçe işaretle.",go:function(){var el=document.getElementById("ls-sinav");if(el)el.scrollIntoView({behavior:"smooth"})}},
+   cls?{t:"Sınıfta 5 soru çöz",d:lcHas(gk,"p")||S.attempts.filter(function(a){return a.date===today()&&a.track===tr}).length>=5,h:"Öğrendiğini gerçek iş durumlarında dene.",go:function(){S.cls.track=tr;S.cls.topicId=null;S.cls.phase="idle";goTab("sinif")}}:
+      {t:"Alıştırmada karışık tur",d:lcHas(gk,"p")||num(P.prac_n)>=5,h:"Alanlar iç içe gelir; unutmaya karşı en iyi yöntem budur.",go:function(){S.at2.sec="alistirma";S.pr.track="mix";S.pr.qs=[];S.pr.res=null;goTab("atolye")}}];
   if(tr==="eng"||tr==="ccna")st.push({t:"Masada bir talebi yanıtla",d:num(P.ticket_n)>=1,h:"İş yerindeki gibi İngilizce yaz; ipucu ve puan alırsın.",go:function(){goTab("masa")}});
   st.push({t:"Zorlandığın şeyi tekrar sor",d:false,h:"Yanlış yaptığın soruda 'Bunu tekrar sor' de; sistem onu yarın karşına çıkarır.",go:function(){S.at2.sec="alistirma";goTab("atolye")},opt:true});
   var nx=st.filter(function(x){return !x.d&&!x.opt})[0];
   return h("details",{class:"panel",open:S._lgOpen!==false,ontoggle:function(e){S._lgOpen=e.target.open}},h("summary",null,h("b",null,"Bu dersi nasıl çalışmalısın? "),h("span",{class:"small mute"},nx?"Sıradaki: "+nx.t:"Hepsi tamam")),
-    h("div",{class:"small mute"},"Sıra önemli: önce anla (ders), sonra hatırla (mini sınav), sonra kullan (sınıf ya da masa). Hepsini aynı gün yapman gerekmez; bugün en az bir tur yeter."),
+    h("div",{class:"small mute"},"Sıra önemli: önce anla (ders), sonra hatırla (mini sınav), sonra kullan (sınıf ya da masa). Dört adım bitince sıradaki konu açılır. Hepsini aynı gün yapman gerekmez; kendi hızında ilerle."),
     h("div",{class:"jmap"},st.map(function(x,i){return h("div",{class:"jst"+(x.d?" done":"")+(x===nx?" cur":"")},h("div",{class:"jn"},x.d?"✓":String(i+1)),
       h("div",{class:"jb"},x===nx?h("span",{class:"jtag"},"sıradaki"):null,h("div",{class:"t"},x.t+(x.opt?" (isteğe bağlı)":"")),h("div",{class:"small mute"},x.h),h("button",{class:"btn ghost",type:"button",style:"justify-self:start;margin-top:4px",onclick:x.go},"Git")),h("div",null))})));
 }

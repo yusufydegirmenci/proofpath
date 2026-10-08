@@ -12,7 +12,6 @@ for(let i=0;i<6;i++){await p.locator('.lsn .opt >> nth=1').click();await p.waitF
 t=await p.innerText('#view');console.log(w,'sonuç',/Derse başla/.test(t),(t.match(/seviye [\d.]+ \/ 3/)||[''])[0]);
 await p.click('button:text-is("Derse başla")');await p.waitForTimeout(400);
 t=await p.innerText('#view');await p.click('button:text-is("Şimdi ders üret")');await p.waitForTimeout(700);t=await p.innerText('#view');console.log(w,'rehber (ders sonrası)',/Bu dersi nasıl çalışmalısın/.test(t));console.log(w,'rehber kartı',/Bu dersi nasıl çalışmalısın/.test(t),'üret düğmesi',/Şimdi ders üret/.test(t),'ovf',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth));
-await p.click('button:text-is("Şimdi ders üret")');await p.waitForTimeout(700);
 const pr=await p.evaluate(()=>window.__prompts.slice(-1)[0]||'');console.log(w,'komutta seviye',/Seviye testi sonucu/.test(pr),'konu',(pr.match(/KONU: ([^(]{0,50})/)||[])[1]);
 await p.screenshot({path:'v41-ders-'+w+'.png'});console.log(w,er);await ctx.close()}
 await b.close()})();
