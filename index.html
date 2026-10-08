@@ -1659,13 +1659,13 @@ function calendarBlock(){
     var tm=time.value||"21:30",d=new Date();d.setDate(d.getDate()+1);
     var day=iso(d),p=tm.split(":"),eh=(+p[0]+1)%24,end=pad(eh)+":"+p[1];
     msg.textContent="Ekleniyor";btn.disabled=true;
-    S.mcp.callTool("Google Calendar","create_event",{summary:"Akademi: CCNA ve İngilizce",startTime:day+"T"+tm+":00+03:00",endTime:day+"T"+end+":00+03:00",timeZone:"Europe/Istanbul",
+    S.mcp.callTool("Google Calendar","create_event",{summary:"Proofpath: günlük çalışma",startTime:day+"T"+tm+":00",endTime:day+"T"+end+":00",timeZone:"Europe/Istanbul",
       recurrenceData:["RRULE:FREQ=DAILY"],description:"Panoyu aç, Sınıf sekmesinde dersi çöz, 3 satırlık raporu doldur: "+ARTIFACT_URL,useDefaultReminders:false,overrideReminders:[{method:"popup",minutes:10}]})
     .then(function(){msg.textContent="Takvime eklendi.";if(S.db)S.db.doc("profile/main").update({calendar:{created:true,time:tm,ts:new Date().toISOString()}}).catch(function(){})})
     .catch(function(e){btn.disabled=false;var c=e&&e.code;msg.textContent=(c==="not_in_manifest"||c==="approval_required")?"Takvim izni verilmedi.":(c==="server_not_connected"||c==="needs_reauth")?"Google Takvim bağlı değil. claude.ai Ayarlar > Bağlayıcılar bölümünden bağla.":"Eklenemedi, tekrar dene."});
   }},"Takvime koy");
   return h("div",{class:"panel"},h("h3",null,"Günlük çalışma saati"),
-    h("div",{class:"small mute"},"Koçlar 20:47 ve 21:12'de dersi hazırlar. Çalışma bloğunu bundan sonrasına koyman iyi olur."),
+    h("div",{class:"small mute"},"Koçlar dersleri 19:32 ile 21:12 arasında hazırlar. Çalışma bloğunu bundan sonrasına koyman iyi olur."),
     h("div",{class:"row",style:"align-items:end"},h("div",{class:"field",style:"flex:0 1 150px"},h("label",{for:"cal-time",class:"label"},"Başlangıç"),time),btn,msg));
 }
 function weeklyMd(){
