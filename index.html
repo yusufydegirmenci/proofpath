@@ -842,7 +842,7 @@ body{background:var(--bg)}
 <script>
 (function(){
 "use strict";
-var TABS=[["bugun","Bugün"],["ders","Ders"],["sinif","Sınıf"],["sehir","Ağ Şehri"],["oyun","Oyun"],["atolye","Atölye"],["ofis","Ofis"],["oku","Okuma"],["masa","Masa"],["lig","Lig"],["mul","Mülakat"],["proje","Proje"],["sozluk","Sözlük"],["rehber","Rehber"],["ayar","Ayarlar"],["sayilar","Sayılar"],["oduller","Ödüller"]];
+var TABS=[["bugun","Bugün"],["ders","Ders"],["sinif","Sınıf"],["sehir","Ağ Şehri"],["oyun","Oyun"],["atolye","Atölye"],["ofis","Ofis"],["oku","Okuma"],["masa","Masa"],["lig","Lig"],["gazete","Gazete"],["mul","Mülakat"],["proje","Proje"],["sozluk","Sözlük"],["rehber","Rehber"],["ayar","Ayarlar"],["sayilar","Sayılar"],["oduller","Ödüller"]];
 var CH={
  ayse:{n:"Ayşe",role:"Muhasebe. Teknik bilmez, acelecidir.",skin:"#e8b48f",hair:"#3b2a22",top:"#c2547a"},
  demir:{n:"Bay Demir",role:"Bölüm müdürü. Kısa konuşur, 'neden' diye sorar.",skin:"#d9a07c",hair:"#8c8c92",top:"#34506b"},
@@ -1696,7 +1696,7 @@ function downloadBlock(){
 /* ---- çizim ---- */
 var pending=false,raf=0;
 function sched(){if(raf)return;raf=requestAnimationFrame(function(){raf=0;draw()})}
-var NAV={bugun:["Bugün","M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z M12 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"],ders:["Ders","M5 4h13v15H7a2 2 0 0 0-2 2z M9 8h6 M9 12h6"],sinif:["Sınıf","M4 5h16v11H10l-5 4v-4H4z"],atolye:["Atölye","M14 4l6 6-9 9H5v-6z M13 5l6 6 M4 21h16"],oyun:["Oyun","M6 8h12a4 4 0 0 1 4 4v2a3 3 0 0 1-5.2 2L15 14H9l-1.8 2A3 3 0 0 1 2 14v-2a4 4 0 0 1 4-4z M7 11v3 M5.5 12.5h3 M16 11.5h.01 M18 13h.01"],sehir:["Şehir","M4 21V10h6v11 M10 21V4h7v17 M3 21h18 M13 8h1 M13 12h1 M13 16h1"],ofis:["Ofis","M3 8h18v12H3z M9 8V5h6v3 M3 13h18"],sozluk:["Sözlük","M4 5h13a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z M8 9h8 M8 13h5"],rehber:["Rehber","M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 8v.01 M11 12h1v5h1"],ayar:["Ayarlar","M4 7h10 M18 7h2 M4 17h2 M10 17h10 M16 5v4 M8 15v4"],proje:["Proje","M3 7h7l2 2h9v10H3z M12 12v4 M10 14h4"],mul:["Mülakat","M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z M5 11a7 7 0 0 0 14 0 M12 18v3"],lig:["Lig","M3 21h18 M5 21v-9h4v9 M10 21V6h4v15 M15 21v-6h4v6"],masa:["Masa","M3 9a2 2 0 0 0 0 6v3h18v-3a2 2 0 0 1 0-6V6H3z M14 6v12"],oku:["Okuma","M3 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H3z M21 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"],sayilar:["Sayılar","M4 20h16 M7 20v-7 M12 20V6 M17 20v-10"],oduller:["Ödüller","M7 4h10v5a5 5 0 0 1-10 0z M7 6H4v2a3 3 0 0 0 3 3 M17 6h3v2a3 3 0 0 1-3 3 M12 14v4 M8 20h8"]};
+var NAV={bugun:["Bugün","M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z M12 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"],ders:["Ders","M5 4h13v15H7a2 2 0 0 0-2 2z M9 8h6 M9 12h6"],sinif:["Sınıf","M4 5h16v11H10l-5 4v-4H4z"],atolye:["Atölye","M14 4l6 6-9 9H5v-6z M13 5l6 6 M4 21h16"],oyun:["Oyun","M6 8h12a4 4 0 0 1 4 4v2a3 3 0 0 1-5.2 2L15 14H9l-1.8 2A3 3 0 0 1 2 14v-2a4 4 0 0 1 4-4z M7 11v3 M5.5 12.5h3 M16 11.5h.01 M18 13h.01"],sehir:["Şehir","M4 21V10h6v11 M10 21V4h7v17 M3 21h18 M13 8h1 M13 12h1 M13 16h1"],ofis:["Ofis","M3 8h18v12H3z M9 8V5h6v3 M3 13h18"],sozluk:["Sözlük","M4 5h13a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z M8 9h8 M8 13h5"],rehber:["Rehber","M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 8v.01 M11 12h1v5h1"],ayar:["Ayarlar","M4 7h10 M18 7h2 M4 17h2 M10 17h10 M16 5v4 M8 15v4"],proje:["Proje","M3 7h7l2 2h9v10H3z M12 12v4 M10 14h4"],mul:["Mülakat","M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z M5 11a7 7 0 0 0 14 0 M12 18v3"],gazete:["Gazete","M4 5h13v14H6a2 2 0 0 1-2-2z M17 8h3v9a2 2 0 0 1-2 2 M7 9h7 M7 13h7"],lig:["Lig","M3 21h18 M5 21v-9h4v9 M10 21V6h4v15 M15 21v-6h4v6"],masa:["Masa","M3 9a2 2 0 0 0 0 6v3h18v-3a2 2 0 0 1 0-6V6H3z M14 6v12"],oku:["Okuma","M3 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H3z M21 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"],sayilar:["Sayılar","M4 20h16 M7 20v-7 M12 20V6 M17 20v-10"],oduller:["Ödüller","M7 4h10v5a5 5 0 0 1-10 0z M7 6H4v2a3 3 0 0 0 3 3 M17 6h3v2a3 3 0 0 1-3 3 M12 14v4 M8 20h8"]};
 
 /* ---- v24: ekran yardımı, açık düğme adları ---- */
 var HELPKEY="ya_help";
@@ -1710,6 +1710,7 @@ var TABHELP={
  ofis:["Hikâye ve haftalık denetim","Ofis hikâyesinin yeni bölümü ve Müdür'ün haftalık raporu burada. Müdür sistemi denetleyen yapay zekâdır.","Raporu oku. Öneri varsa Onayla veya Reddet'e bas; basmazsan hiçbir şey değişmez."],
  oku:["Kısa İngilizce hikâyeler","Cümleye veya kelimeye dokununca anlamını görürsün. Hoparlör düğmesi cümleyi sesli okur.","Bir hikâye seç, sesli oku, bilmediğin kelimeye dokun."],
  masa:["İş yeri simülasyonu","Gerçek bir destek talebine İngilizce cevap yazarsın. Kolaydan zora doğru seviyeler var.","Bir talep seç, ipuçlarına bak, cevabını yaz ve gönder. Kilitli seviye sıran gelince açılır."],
+ gazete:["Yazılım gazetesi","Her sabah derlenen haberler ve etkinlikler. Etkinliklerde tarih, yer, neler anlatılacağı ve neden önemli olduğu yazar; yaklaşanı takvimine ekleyebilirsin.","Haberler ya da Etkinlikler'i seç, üstten alanına göre süz, bağlantıdan kaynağı oku."],
  lig:["Arkadaş yarışması (isteğe bağlı)","Günde 8 soru çözülür. Yanlışta kartın arkasında doğru cevap ve nedeni çıkar.","Soruyu çöz. Yarışmak istemezsen sadece kendi gelişimine bak; girmek zorunda değilsin."],
  mul:["Mülakat antrenmanı","Gerçek mülakatta sorulabilecek sorular. Süre tutarak cevap prova edersin.","Bir soru seç, '60 sn başlat'a bas, sesli cevap ver, sonra model cevaba bak."],
  proje:["Proje atölyesi","Bir alan seç (siber güvenlik, test, backend) ve adım adım proje yap. Her adım: öğren, yap, kanıtla.","Seviyene uygun yolu aç, ilk adımı oku, yapınca işaretle."],
@@ -1751,7 +1752,7 @@ function draw(){
     var nv=NAV[t[0]]||[t[1],""];
     return h("button",{class:"tab"+(PRIMARY[t[0]]?"":" sec"),"data-t":t[0],role:"tab","aria-selected":t[0]===tab?"true":"false",onclick:function(){S.more=false;tab=t[0];try{history.replaceState(null,"","#"+tab)}catch(e){}draw();window.scrollTo(0,0)}},mi(nv[1]),h("span",null,nv[0]))}).concat([
     h("button",{class:"tab moreb",type:"button","aria-label":"Daha fazla sekme","aria-expanded":S.more?"true":"false","aria-selected":moreOn?"true":"false",onclick:function(){S.more=!S.more;draw()}},mi("M5 12h.01 M12 12h.01 M19 12h.01"),h("span",null,moreOn?(TT[tab]||["Daha"])[0]:"Daha"),pendingProposals()>0?h("i",{class:"ndot"}):null)]));
-  var body={bugun:renderToday,ders:renderLessonTop,sinif:renderClass,sehir:renderCity,oyun:renderGame,atolye:renderAtolye,ofis:renderOffice,oku:renderReader,masa:renderDesk,lig:renderLeague,mul:renderInterview,proje:renderProject,sozluk:renderGlossary,rehber:renderGuide,ayar:renderSettings,sayilar:renderNumbers,oduller:renderRewards}[tab]();
+  var body={bugun:renderToday,ders:renderLessonTop,sinif:renderClass,sehir:renderCity,oyun:renderGame,atolye:renderAtolye,ofis:renderOffice,oku:renderReader,masa:renderDesk,lig:renderLeague,gazete:renderGazete,mul:renderInterview,proje:renderProject,sozluk:renderGlossary,rehber:renderGuide,ayar:renderSettings,sayilar:renderNumbers,oduller:renderRewards}[tab]();
   var firstVisit=S._lastTab!==tab;
   var box=h("div",{style:"display:flex;flex-direction:column;gap:16px",class:S._lastTab!==tab?"enter":""},body);
   S._lastTab=tab;
@@ -2738,7 +2739,7 @@ function renderManager(){
 }
 
 /* ---- v15: cila (mini başlık, Daha menüsü, Akademi Kimliği) ---- */
-var TT={bugun:["Bugün","Günlük rota"],ders:["Ders","Bugünün dersi"],sinif:["Sınıf","Canlı sorular"],sehir:["Ağ Şehri","Bina bina ilerle"],oyun:["Oyun","Koş, sür, öğren"],atolye:["Atölye","Program ve alıştırma"],masa:["Masa","Destek talepleri"],lig:["Lig","Arkadaşlarla yarış"],proje:["Proje","Birlikte yapalım"],sozluk:["Sözlük","Kelimelerin anlamı"],rehber:["Rehber","Nasıl çalışır?"],ayar:["Ayarlar","Okuma"],mul:["Mülakat","Sesli prova"],oku:["Okuma","Çocuk öyküleri"],ofis:["Ofis","Hikâye ve Müdür"],sayilar:["Sayılar","İlerleme"],oduller:["Ödüller","Kimlik ve ödüller"]};
+var TT={bugun:["Bugün","Günlük rota"],ders:["Ders","Bugünün dersi"],sinif:["Sınıf","Canlı sorular"],sehir:["Ağ Şehri","Bina bina ilerle"],oyun:["Oyun","Koş, sür, öğren"],atolye:["Atölye","Program ve alıştırma"],masa:["Masa","Destek talepleri"],lig:["Lig","Arkadaşlarla yarış"],gazete:["Gazete","Haber ve etkinlikler"],proje:["Proje","Birlikte yapalım"],sozluk:["Sözlük","Kelimelerin anlamı"],rehber:["Rehber","Nasıl çalışır?"],ayar:["Ayarlar","Okuma"],mul:["Mülakat","Sesli prova"],oku:["Okuma","Çocuk öyküleri"],ofis:["Ofis","Hikâye ve Müdür"],sayilar:["Sayılar","İlerleme"],oduller:["Ödüller","Kimlik ve ödüller"]};
 var PRIMARY={bugun:1,ders:1,sinif:1,oyun:1,atolye:1};
 S.more=false;
 function miniHero(){
@@ -3437,16 +3438,72 @@ function renderJobsPool(){
       h("a",{href:u,target:"_blank",rel:"noopener noreferrer"},"İlana git"))})));
   return out;
 }
+/* v35 gazete: haberler ve etkinlikler (herkes okur, görev yazar) */
+S.gz=[];S.gzq={tag:"",view:"haber",msg:""};
+var GZ_TAGS=[["","Hepsi"],["qa","Test/QA"],["bk","Backend"],["sec","Siber"],["ai","Yapay zeka"],["cloud","Bulut"],["ag","Ağ/BT"],["kariyer","Kariyer"]];
+function gzClean(d){
+  if(!d||typeof d!=="object")return null;
+  var items=Array.isArray(d.items)?d.items:[];
+  var out=[];items.slice(0,60).forEach(function(x){
+    if(!x||typeof x!=="object"||!x.title)return;
+    var u=safeUrl(x.url);if(!u)return;
+    out.push({kind:x.kind==="etkinlik"?"etkinlik":"haber",title:String(x.title).slice(0,160),source:String(x.source||"").slice(0,60),url:u,summary:String(x.summary||"").slice(0,420),why:String(x.why||"").slice(0,320),tag:String(x.tag||"").slice(0,12),when:/^\d{4}-\d\d-\d\d/.test(String(x.when||""))?String(x.when).slice(0,16):"",where:String(x.where||"").slice(0,80),talk:String(x.talk||"").slice(0,420),cost:String(x.cost||"").slice(0,40),lang:String(x.lang||"").slice(0,4)});
+  });
+  return {id:String(d.id||""),date:String(d.date||d.id||"").slice(0,10),headline:String(d.headline||"").slice(0,200),items:out};
+}
+function gzEvents(){
+  var seen={},o=[];
+  S.gz.slice().sort(function(a,b){return b.date.localeCompare(a.date)}).slice(0,14).forEach(function(e){e.items.forEach(function(x){if(x.kind!=="etkinlik"||seen[x.url])return;seen[x.url]=1;o.push(x)})});
+  return o;
+}
+function gzDay(s){return String(s||"").slice(0,10)}
+function gzAddCal(x){
+  if(!S.mcp||!S.canWrite||S.guest||!x.when){return}
+  var d=gzDay(x.when),hm=/T(\d\d:\d\d)/.exec(x.when),st=hm?hm[1]:"10:00",eh=String((+st.slice(0,2)+2)%24).padStart(2,"0");
+  S.gzq.msg="Ekleniyor";draw();
+  S.mcp.callTool("Google Calendar","create_event",{summary:x.title.slice(0,100),startTime:d+"T"+st+":00",endTime:d+"T"+eh+st.slice(2)+":00",timeZone:"Europe/Istanbul",description:(x.summary||"")+" "+x.url,location:x.where||"",useDefaultReminders:false,overrideReminders:[{method:"popup",minutes:60}]})
+   .then(function(){S.gzq.msg="Takvime eklendi.";draw()},function(e){var c=e&&e.code;S.gzq.msg=(c==="not_in_manifest"||c==="approval_required")?"Takvim izni verilmedi.":"Eklenemedi.";draw()});
+}
+function gzCard(x,ev){
+  var up=ev&&x.when&&gzDay(x.when)>=today(),past=ev&&x.when&&gzDay(x.when)<today();
+  return h("div",{class:"lbox"},
+    h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:flex-start"},h("p",{style:"margin:0;font-weight:600"},x.title),x.tag?h("span",{class:"pill"},(GZ_TAGS.filter(function(t){return t[0]===x.tag})[0]||[0,x.tag])[1]):null),
+    ev?h("p",{class:"small",style:"margin:4px 0 0;font-weight:600"},[x.when?gzDay(x.when)+(/T/.test(x.when)?" "+x.when.slice(11,16):""):"tarih açıklanmadı",x.where,x.cost].filter(Boolean).join(" · ")):null,
+    x.summary?h("p",{class:"small",style:"margin:4px 0 0"},x.summary):null,
+    ev&&x.talk?h("p",{class:"small",style:"margin:4px 0 0"},h("b",null,past?"Neler anlatıldı: ":"Neler anlatılacak: "),x.talk):null,
+    x.why?h("p",{class:"small",style:"margin:4px 0 0"},h("b",null,"Neden önemli: "),x.why):null,
+    h("div",{class:"row",style:"margin-top:6px"},h("a",{href:x.url,target:"_blank",rel:"noopener noreferrer"},ev?"Etkinlik sayfası":"Haberi oku"+(x.source?" · "+x.source:"")),
+      up&&S.mcp&&S.canWrite&&!S.guest?h("button",{class:"btn ghost",type:"button",onclick:function(){gzAddCal(x)}},"Takvime ekle"):null));
+}
+function renderGazete(){
+  var Q=S.gzq,eds=S.gz.slice().sort(function(a,b){return b.date.localeCompare(a.date)}),cur=eds[0];
+  var seg=h("div",{class:"seg",role:"group","aria-label":"Bölüm"},[["haber","Haberler"],["etkinlik","Etkinlikler"]].map(function(o){return h("button",{type:"button","aria-pressed":Q.view===o[0]?"true":"false",onclick:function(){Q.view=o[0];Q.msg="";draw()}},o[1])}));
+  var tags=h("div",{class:"lscroll",style:"margin-top:8px"},GZ_TAGS.map(function(t){return h("button",{type:"button",class:"opt","aria-pressed":Q.tag===t[0]?"true":"false",onclick:function(){Q.tag=t[0];draw()}},t[1])}));
+  var out=[h("div",{class:"panel"},h("div",{class:"label"},"Gazete"+(cur?" · "+cur.date:"")),h("h2",null,cur&&cur.headline?cur.headline:"Yazılım dünyasından günün özeti"),seg,tags,
+    h("div",{class:"small mute",style:"margin-top:8px"},"Haberler ve etkinlikler her sabah otomatik derlenir; bağlantılar asıl kaynağa gider. Yazılar özet ve yorumdur, kararı vermeden önce kaynağı oku."),
+    Q.msg?h("div",{class:"small"},Q.msg):null)];
+  if(!cur){out.push(h("div",{class:"panel"},h("div",{class:"empty"},"İlk sayı henüz hazır değil. Günlük derleme görevi çalışınca burada çıkacak.")));return out}
+  if(Q.view==="haber"){
+    var L=cur.items.filter(function(x){return x.kind==="haber"&&(!Q.tag||x.tag===Q.tag)});
+    out.push(L.length?h("div",{class:"panel"},L.map(function(x){return gzCard(x,false)})):h("div",{class:"panel"},h("div",{class:"empty"},"Bu başlıkta bugün haber yok.")));
+  }else{
+    var E=gzEvents().filter(function(x){return !Q.tag||x.tag===Q.tag}),up=E.filter(function(x){return !x.when||gzDay(x.when)>=today()}).sort(function(a,b){return String(a.when||"9").localeCompare(String(b.when||"9"))}),pa=E.filter(function(x){return x.when&&gzDay(x.when)<today()}).sort(function(a,b){return b.when.localeCompare(a.when)});
+    out.push(h("div",{class:"panel"},h("h3",null,"Yaklaşanlar"),up.length?up.map(function(x){return gzCard(x,true)}):h("div",{class:"empty"},"Yaklaşan etkinlik bulunamadı.")));
+    if(pa.length)out.push(h("div",{class:"panel"},h("h3",null,"Geçenler ve anlatılanlar"),pa.slice(0,8).map(function(x){return gzCard(x,true)})));
+  }
+  return out;
+}
 function renderLeague(){
   var L=S.lg,out=[];
   if(S.guest&&!L._g){L._g=1}
-  out.push(seg([["bugun","Bugün"],["sira","Sıralama"],["arkadas","Arkadaşlar"],["ilan","İlanlar"],["profil","Profilim"]],L.view,function(v){L.view=v;L.cmp=null}));
+  out.push(seg([["bugun","Bugün"],["sira","Sıralama"],["arkadas","Arkadaşlar"],["ilan","İlanlar"],["gazete","Gazete"],["profil","Profilim"]],L.view,function(v){L.view=v;L.cmp=null}));
   if(S.guest&&L.view==="bugun"&&!(myLeague()))out.push(h("div",{class:"panel"},h("div",{class:"label"},"Misafir"),h("h2",null,"Proofpath Ligi'ne hoş geldin"),
     h("div",{class:"small mute"},"Önce Profilim'den başlangıç seviyeni ve haftalık hedefini seç, sonra günün 5 sorusunu çöz. Puanlar herkes için adil hesaplanır.")));
   if(L.view==="bugun")out=out.concat(renderChallenge());
   else if(L.view==="sira"){out=out.concat(renderBoard());var iv=renderInvite();if(iv)out.push(iv)}
   else if(L.view==="arkadas")out=out.concat(renderFriends());
   else if(L.view==="ilan")out=out.concat(renderJobsPool());
+  else if(L.view==="gazete")out=out.concat(renderGazete());
   else out=out.concat(renderProfile());
   return out;
 }
@@ -5611,7 +5668,7 @@ if(window.claude&&window.claude.use){
     if(user&&user.can){try{var w=user.can("data.write");Promise.resolve(w).then(function(v){if(v===false){S.canWrite=false;sched()}})}catch(e){}}
     db.doc("profile/main").onSnapshot(function(s){S.profile=s.exists?(s.data()||{}):{};sched()},function(){});
     db.doc("story/main").onSnapshot(function(s){S.story=s.exists?s.data():null;sched()},function(){});
-    listen(db,"topics","topics");listen(db,"jobpool","pool");listen(db,"projects","projects");listen(db,"days","days");listen(db,"exams","exams");
+    listen(db,"topics","topics");listen(db,"jobpool","pool");db.collection("gazete").onSnapshot(function(s){S.gz=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return gzClean(x)}).filter(Boolean);sched()},function(){});listen(db,"projects","projects");listen(db,"days","days");listen(db,"exams","exams");
     listen(db,"rewards","rewards");listen(db,"lessons","lessons");listen(db,"progress","progress");listen(db,"inbox","inbox");listen(db,"badges","badges");listen(db,"mistakes","mistakes");listen(db,"reading","reading");listen(db,"words","words");listen(db,"reports","reports");listen(db,"tickets","tickets");listen(db,"interview","interview");listen(db,"ticket_replies","treplies");listen(db,"ticket_reviews","treviews");listen(db,"audit","audit");listen(db,"audit_votes","avotes");
     db.collection("league").onSnapshot(function(s){S.league=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});S.lgLoaded=true;resolveNames();sched()},function(){});
     db.collection("cheers").onSnapshot(function(s){S.cheers=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});sched()},function(){});
