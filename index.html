@@ -4673,7 +4673,7 @@ function renderAtlas(){
   var inp=h("input",{type:"search",class:"at-q",placeholder:tr==="ba"?"Kavram ara: dosya, klasör, e-posta...":tr==="sec"?"Kavram ara: hash, MFA, SIEM...":tr==="bk"?"Kavram ara: IAM, Lambda, idempotent...":"Kavram ara: commit, API, present...","aria-label":"Kavram ara",value:S.at.q,oninput:function(e){S.at.q=e.target.value;listBox.replaceChildren.apply(listBox,atlasCards(tr))}});
   var out=[h("div",{class:"panel"},h("div",{class:"label"},"Kavram Atlası"),h("h2",null,tr==="ba"?"Sıfırdan başlayanlar atlası":tr==="en"?"İş İngilizcesi atlası":tr==="sec"?"Siber güvenlik atlası":tr==="bk"?"Backend atlası":"Stajyerin yazılım ve test atlası"),
     h("div",{class:"small mute"},"Her kavramda: tanım, günlük benzetme, örnek, mülakatta söylenişi, sık hata ve küçük bir soru var. Aç, oku, soruyu cevapla, işaretle."),seg,
-    h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"},h("span",{class:"pill ok"},done+" / "+L.length+" anladım"),h("span",{class:"small mute"},"İlerlemen bu cihazda saklanır")),
+    h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"},h("span",{class:"pill ok"},done+" / "+L.length+" anladım"),h("span",{class:"small mute"},"İlerlemen hesabına kaydedilir, her cihazda aynı gelir")),
     h("div",{class:"xpbar"},h("i",{style:"width:"+Math.round(done/L.length*100)+"%"}))),
     h("div",{class:"panel"},h("div",{class:"label"},"Günün kavramı"),h("h2",null,day.t),h("div",{class:"small"},day.d),
       h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:function(){S.at.open=atlasKey(tr,day);S.at.g="";S.at.q="";draw()}},"Aç ve öğren"))),
@@ -5033,7 +5033,7 @@ function renderGame(){
     h("div",{class:"panel"},h("div",{class:"label"},"Oyun alanı"),h("h2",null,"Ağ Koşusu ve Ağ Sürüşü"),
       h("div",{class:"small mute"},"Üç şeritli yolda koş ya da sür. Kapılarda soru çıkar, doğru cevabın şeridine geç. Öğrendiklerin oyunun yakıtı: kaçırdığın sorular tekrar karşına çıkar."),
       h("div",{class:"gm-opt"},h("b",null,"Konu"),trk),h("div",{class:"gm-opt"},h("b",null,"Tür"),skin),h("div",{class:"gm-opt"},h("b",null,"Hız"),spd),h("div",{class:"gm-opt"},h("b",null,"Ses ve titreşim"),snd)),
-    h("div",{class:"panel"},h("div",{class:"label"},"Seviyen ve oyun serisi"),h("div",{class:"gm-lv"},["ccna","eng","sec","bk"].map(function(t){var v=GS.sk[t],pc=Math.round((v-1)/2*100);return h("div",{class:"gm-l"},h("span",null,GM_TN[t]),h("span",{class:"xpbar"},h("i",{style:"width:"+Math.max(4,pc)+"%"})),h("small",{class:"mute"},v<1.7?"Başlangıç":v<2.35?"Orta":"İleri"))})),h("div",{class:"small mute"},"Oyun serisi: "+gmStreak()+" gün. Seviye bu cihazda saklanır ve Akıllı turu belirler.")),
+    h("div",{class:"panel"},h("div",{class:"label"},"Seviyen ve oyun serisi"),h("div",{class:"gm-lv"},["ccna","eng","sec","bk"].map(function(t){var v=GS.sk[t],pc=Math.round((v-1)/2*100);return h("div",{class:"gm-l"},h("span",null,GM_TN[t]),h("span",{class:"xpbar"},h("i",{style:"width:"+Math.max(4,pc)+"%"})),h("small",{class:"mute"},v<1.7?"Başlangıç":v<2.35?"Orta":"İleri"))})),h("div",{class:"small mute"},"Oyun serisi: "+gmStreak()+" gün. Seviye hesabına kaydedilir ve Akıllı turu belirler.")),
     h("div",{class:"panel"},h("div",{class:"label"},"Bugünün görevleri"),h("div",{class:"gm-ms"},gmMissions(dn).map(function(m){var ok=m.have>=m.need;return h("div",{class:"gm-m"+(ok?" ok":"")},h("span",{class:"cov-c"},ok?"✓":""),h("span",null,m.t,h("small",{class:"mute"}," · "+Math.min(m.have,m.need)+"/"+m.need)))})),h("div",{class:"small mute"},"Her görev +5 XP. Haftalık sandık: 4 gün oyna ve Patron'u yen, +20 XP"+(wk.dates.some(function(d){return gmDay(d).g_chest})?" (bu hafta açıldı).":"."))),
     h("div",{class:"gm-modes"},modes.map(function(m){
       var done=m[0]==="daily"?num(dn.g_runs)>0:m[0]==="boss"?wk.boss:false;
@@ -5448,7 +5448,7 @@ function mastPanel(){
   }).filter(Boolean);
   if(!any)return null;
   return h("div",{class:"panel"},h("div",{class:"label"},"Ustalık"),h("h2",null,"Soruları ne kadar biliyorsun"),
-    h("div",{class:"small mute"},"Denendi: doğruluk %70 altı. Aşina: %70 ve üstü. Yeterli: en az 2 denemede hepsi doğru. Usta: en az 3 deneme, %85 üstü doğruluk ve aralıklı tekrarda ilerlemiş. Bu cihazdaki cevaplardan hesaplanır; yanlış yapınca düzey düşer."),rows);
+    h("div",{class:"small mute"},"Denendi: doğruluk %70 altı. Aşina: %70 ve üstü. Yeterli: en az 2 denemede hepsi doğru. Usta: en az 3 deneme, %85 üstü doğruluk ve aralıklı tekrarda ilerlemiş. Hesabındaki cevaplardan hesaplanır; yanlış yapınca düzey düşer."),rows);
 }
 S.plan={hrs:5,role:"",msg:""};
 function planSteps(R){
@@ -5489,7 +5489,7 @@ function wkPanel(prev){
 function hardQs(){
   var a=Object.keys(GS.st).filter(function(k){var s=GS.st[k];return QB[+k]&&s[1]>=3&&s[0]/s[1]<.5}).sort(function(x,y){return GS.st[x][0]/GS.st[x][1]-GS.st[y][0]/GS.st[y][1]}).slice(0,5);
   if(!a.length)return null;
-  return h("div",{class:"panel"},h("h2",null,"Zorlandığın sorular"),h("div",{class:"small mute"},"Bu cihazda en az 3 kez karşılaştığın ve yarısından azını bildiğin sorular."),
+  return h("div",{class:"panel"},h("h2",null,"Zorlandığın sorular"),h("div",{class:"small mute"},"Hesabında en az 3 kez karşılaştığın ve yarısından azını bildiğin sorular."),
     a.map(function(k){var it=QB[+k],s=GS.st[k];return h("div",{class:"lbox"},h("p",{style:"margin:0 0 4px;font-weight:600"},it.q),h("p",{style:"margin:0"},"Doğru: "+it.o[it.a]+" · "+s[0]+"/"+s[1]+" doğru"),it.w?h("p",{class:"small mute",style:"margin:4px 0 0"},it.w):null)}));
 }
 /* işe hazırlık */
@@ -5695,7 +5695,7 @@ function gateEval(g){
 function gateBox(G){
   return h("div",{class:"rs-b do"},h("small",null,"Bu aşama kilitli"),h("p",null,"Aşağıdakileri tamamlayınca açılır. Kilit, bu adımın dayandığı dersleri öğrenmeden ilerlemeyesin diye var."),
     G.rows.map(function(r){return h("div",{class:"cov-r"+(r.ok?" ok":"")},h("span",{class:"cov-c"},r.ok?"✓":""),h("span",null,r.t,r.ok||!r.go?null:h("div",{style:"margin-top:6px"},h("button",{class:"btn ghost",type:"button",onclick:r.go[1]},r.go[0]))))}),
-    h("div",{class:"small mute"},"Oyun seviyesi ve Atlas ilerlemesi bu cihazda saklanır."));
+    h("div",{class:"small mute"},"Oyun seviyesi ve Atlas ilerlemesi hesabına kaydedilir."));
 }
 
 /* cihazlar arası eşitleme: oyun/soru ilerlemesi, Atlas, seviye testi */
