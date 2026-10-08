@@ -1985,11 +1985,36 @@ function lcCut(tr,v){var o=lcLoad();if(v){o._cut=o._cut||{};o._cut[tr]=v;try{loc
 function lcDone(k){return lcHas(k,"w")&&lcHas(k,"r")&&lcHas(k,"q")&&lcHas(k,"p")}
 function lessonKey(l){return l.topicId||l.id}
 function lcGrand(l){return !l.virtual&&String(l.date||"")<LC_FROM}
+function lessonListFor(tr){
+  var real=lessonsOf(tr),list=real,bl=baseLesson(tr);
+  if(bl&&!list.some(function(x){return x.topicId===bl.topicId})&&(S.nonOwner||!list.some(function(x){return x.date===today()})))list=[bl].concat(list);
+  return {list:list,real:real,bl:bl};
+}
+function keyTrack(k){
+  var m=/^s-([a-z]+)-\d+$/.exec(k);if(m)return m[1];
+  var x=S.lessons.filter(function(l){return l.topicId===k||l.id===k})[0];if(x)return x.track;
+  var t=S.topics.filter(function(q){return q.id===k})[0];return t&&t.track?t.track:null;
+}
+function lastStudy(T){var o=lcLoad(),best="";Object.keys(o).forEach(function(k){if(k.charAt(0)==="_")return;if(o[k]&&o[k].d&&keyTrack(k)===T&&String(o[k].d)>best)best=String(o[k].d)});return best}
+function activeLesson(){
+  var o=lcLoad(),best=null;
+  Object.keys(o).forEach(function(k){
+    if(k.charAt(0)==="_")return;var v=o[k];if(!v||!v.w||lcDone(k))return;
+    var tr=keyTrack(k);if(!tr)return;
+    var l=lessonListFor(tr).list.filter(function(x){return lessonKey(x)===k&&!lcGrand(x)})[0];if(!l)return;
+    if(!best||String(v.d||"")>String(best.d||""))best={l:l,track:tr,key:k,d:v.d};
+  });
+  return best;
+}
+function prNow(tr,cut){
+  var P=prog(),a=(tr==="ccna"||tr==="eng")&&S.attempts.filter(function(x){return x.date===today()&&x.track===tr&&(!cut||String(x.ts||"")>cut.ts)}).length>=5;
+  return a||(num(P.prac_n)-(cut&&cut.d===today()?cut.pn:0))>=5;
+}
 function lcSync(l){
   var tr=l.track,k=lessonKey(l),P=prog(),qs=Array.isArray(l.quiz)?l.quiz:[],mk=0,was=lcDone(k),c=false,cut=lcCut(tr);
   qs.forEach(function(q,i){if(S.les.mark[l.id+":"+i])mk++});
   if((!qs.length||mk>=qs.length)&&lcSet(k,"q",tr))c=true;
-  var pr=(tr==="ccna"||tr==="eng")?S.attempts.filter(function(a){return a.date===today()&&a.track===tr&&(!cut||String(a.ts||"")>cut.ts)}).length>=5:(num(P.prac_n)-(cut&&cut.d===today()?cut.pn:0))>=5;
+  var pr=prNow(tr,cut);
   if(pr&&lcSet(k,"p",tr))c=true;
   return c;
 }
@@ -2034,8 +2059,7 @@ function lessonPath(tr,cur){
           cu?h("div",{class:"small mute"},lab.map(function(x){return (lcHas(k,x[0])?"✓ ":"○ ")+x[1]}).join("  ")):lock?h("div",{class:"small mute"},"Önceki ders bitince açılır"):null),h("div",null))})));
 }
 function renderLessonBase(){
-  var L=S.les,tr=L.track,list=lessonsOf(tr),realList=list,out=[];
-  var bl=baseLesson(tr);if(bl&&!list.some(function(x){return x.topicId===bl.topicId})&&(S.nonOwner||!list.some(function(x){return x.date===today()})))list=[bl].concat(list);
+  var L=S.les,tr=L.track,LL=lessonListFor(tr),list=LL.list,realList=LL.real,out=[];
   var seg=h("div",{class:"seg",role:"group","aria-label":"Koç"},TRK_LIST.map(function(o){
     return h("button",{type:"button","aria-pressed":tr===o[0]?"true":"false",onclick:function(){L.track=o[0];L.id=null;L.ask={busy:false,ans:null,err:null};draw()}},o[1])}));
   var l=list.filter(function(x){return x.id===L.id})[0]||list[0];
@@ -2053,7 +2077,13 @@ function renderLessonBase(){
   if(!l){out.push(h("div",{class:"empty"},(S.nonOwner?"Henüz dersin yok. Aşağıdan ilk dersini üret; sıradaki konuya göre hazırlanır.":"Henüz ders yok. Koç akşam çalışınca ilk ders burada görünür.")));out.push(genBtn);out.push(lessonGuide(tr,null));return out}
   var curT=defaultTopic(tr),hasCur=realList.some(function(x){return x.topicId===curT});if(S.nonOwner?!hasCur:!realList.some(function(x){return x.date===today()}))out.push(genBtn);
   var blocks=(Array.isArray(l.blocks)?l.blocks:[]).map(lblock).filter(Boolean);
-  var lk=lessonKey(l);
+  var lk=lessonKey(l),act=activeLesson();
+  if(act&&!lcGrand(l)&&act.key!==lk&&!lcDone(lk)){
+    out.push(h("div",{class:"panel"},h("div",{class:"label"},"Önce bunu bitir"),h("h2",null,act.l.title||"Ders"),
+      h("div",{class:"small mute"},trName(act.track)+" dersine başladın. Daldan dala atlamak öğrenmeyi dağıtır. Bu dersin dört adımı (Isınma, Oku, Mini sınav, Alıştırma) bitince diğer dersler açılır. Bitirdiğin eski dersleri istediğin zaman tekrar açabilirsin."),
+      h("button",{class:"btn",type:"button",onclick:function(){S.les.track=act.track;S.les.id=act.l.id;draw()}},"Derse dön")));
+    return out;
+  }
   if(!l.warmup&&!(S.les.wg[l.id]&&S.les.wg[l.id].w)){S.les.wg[l.id]=S.les.wg[l.id]||{};S.les.wg[l.id].w=localWarm(l)}
   lcSync(l);
   out.push(lessonGuide(tr,l));
@@ -2569,7 +2599,7 @@ function renderReader(){
       return h("button",{type:"button",class:"chip kchip",onclick:function(){openWord(st,w,(st.s.filter(function(x){return x[0].toLowerCase().indexOf(w)>=0})[0]||[w])[0])}},h("b",null,w),h("span",{class:"small mute"},st.key[w]))}))));
   out.push(h("div",{class:"panel"},h("h2",null,"Anladın mı?"),
     st.q.map(function(q,i){var k=st.id+":q"+i;return h("div",{class:"lsn",style:"border-top:1px solid var(--line);padding-top:10px"},h("div",null,h("span",{class:"mono mute"},(i+1)+". "),q[0]),
-      h("button",{class:"btn ghost",type:"button",onclick:function(){R.qrev[k]=!R.qrev[k];draw()}},R.qrev[k]?"Gizle":"Cevabı göster"),R.qrev[k]?h("div",{class:"fb"},q[1]):null)})));
+      h("button",{class:"btn ghost",type:"button",onclick:function(){if(!R.qrev[k])setProg({oku_n:num(prog().oku_n)+1});R.qrev[k]=!R.qrev[k];draw()}},R.qrev[k]?"Gizle":"Cevabı göster"),R.qrev[k]?h("div",{class:"fb"},q[1]):null)})));
   var ta=h("textarea",{id:"rd-note",maxlength:900,placeholder:"Notların: anlamadığın yer, sevdiğin cümle, koçuna sorun",oninput:function(e){R.notes[st.id]=e.target.value}});
   ta.value=R.notes[st.id]!=null?R.notes[st.id]:(r&&r.notes)||"";
   var msg=h("span",{class:"small mute"},R.msg||"");
@@ -2900,14 +2930,32 @@ function miniHero(){
         h("span",{class:"hchip",title:"Seri"},mi(FLAME,st.n>0?"var(--rust)":"var(--mute)"),st.n))));
 }
 function moreSheet(){
-  var items=S.pf.simple?[["rehber","Rehber","Burada nasıl öğrenirsin?"],["sozluk","Sözlük","Kelimelerin anlamı"],["ayar","Ayarlar","Yazı boyu, Sade mod, tempo"]]:[["rehber","Rehber","Nasıl çalışır? Oyun kelimeleri ne demek?"],["sozluk","Sözlük","Bilmediğin kelimenin anlamı"],["ayar","Ayarlar (Rahat okuma)","Yazı boyu, Sade mod, yüksek kontrast, tempo"],["proje","Proje","Projeler aç, adımlara böl, bitirdikçe XP kazan"],["mul","Mülakat","30 soruluk sesli prova, süreli, model cevaplı"],["lig","Lig","Arkadaşlarla günlük sorular, haftalık sıralama"],["oku","Okuma","Çocuk öyküleri, kelime ve notların"],["ofis","Ofis","İş hikâyesi, kalıp merdiveni, Müdür raporu"],["sayilar","Sayılar","İlerleme grafikleri ve ısı haritası"],["oduller","Ödüller ve Kimlik","Ödüllerin ve paylaşılabilir Akademi Kimliğin"]];
   function close(){S.more=false;draw()}
+  var R=rankInfo(),C={proje:"var(--rust)",mul:"var(--net)",oku:"var(--eng)",ofis:"#8b6cff",sayilar:"var(--net)",lig:"var(--rust)",oduller:"var(--gold,#c9a227)",rehber:"var(--mute)",sozluk:"var(--eng)",ayar:"var(--mute)"};
+  function tile(k,t,d,cls){
+    var badge=k==="ofis"&&pendingProposals()>0;
+    return h("button",{class:"mt2"+(cls?" "+cls:""),type:"button",style:"--c:"+(C[k]||"var(--net)"),onclick:function(){S.more=false;goTab(k)}},
+      h("span",{class:"ic"},mi((NAV[k]||["",""])[1])),
+      cls==="sm"?h("b",null,t):h("span",{style:"display:grid;gap:2px;min-width:0"},h("b",null,t),d?h("small",null,d):null),
+      badge?h("span",{class:"pill ok"},"onay var"):null);
+  }
+  var sections;
+  if(S.pf.simple){
+    sections=[[null,[["rehber","Rehber","Burada nasıl öğrenirsin?"],["sozluk","Sözlük","Kelimelerin anlamı"],["ayar","Ayarlar","Yazı boyu, tema, tempo"]],""]];
+  }else{
+    sections=[["Çalış ve üret",[["proje","Proje","Adımlara böl, XP kazan"],["mul","Mülakat","Sesli prova, model cevap"],["oku","Okuma","Hikâye, kelime, not"],["ofis","Ofis","İş hikâyesi, Müdür raporu"]],""],
+      ["Takip ve ödül",[["sayilar","Sayılar","Grafik ve ısı haritası"],["lig","Lig","Arkadaşlarla sıralama"]],""],
+      ["Yardım",[["rehber","Rehber"],["sozluk","Sözlük"],["ayar","Ayarlar"]],"sm"]];
+  }
   return h("div",{class:"msheet-bg",onclick:function(e){if(e.target===e.currentTarget)close()}},
-    h("div",{class:"msheet",role:"dialog","aria-label":"Daha fazla"},h("div",{class:"grab"}),h("div",{class:"label"},"Daha fazla"),
-      items.map(function(x){
-        var badge=x[0]==="ofis"&&pendingProposals()>0;
-        return h("button",{class:"mrow",type:"button",onclick:function(){S.more=false;goTab(x[0])}},
-          h("span",{class:"mic"},mi((NAV[x[0]]||["",""])[1])),h("span",{class:"mtx"},h("b",null,x[1]),h("small",null,x[2])),badge?h("span",{class:"pill ok"},"onay bekliyor"):null)})));
+    h("div",{class:"msheet v2",role:"dialog","aria-label":"Daha fazla"},h("div",{class:"grab"}),
+      h("div",{class:"mhd"},h("h2",null,"Daha fazla"),h("div",{style:"display:flex;gap:8px;align-items:center"},h("span",{class:"mrk"},R.cur.n+" · "+R.xp+" XP"),h("button",{class:"mx",type:"button","aria-label":"Kapat",onclick:close},"×"))),
+      sections.map(function(sec){
+        var G=sec[2]==="sm";
+        var out=[sec[0]?h("div",{class:"label"},sec[0]):null,h("div",{class:"mgrid"+(G?" g3":"")},sec[1].map(function(x){return tile(x[0],x[1],x[2],G?"sm":"")}))];
+        if(sec[0]==="Takip ve ödül"){out[1].append(h("button",{class:"mt2 wide",type:"button",style:"--c:"+C.oduller,onclick:function(){S.more=false;goTab("oduller")}},
+          h("span",{class:"ic"},mi(NAV.oduller[1])),h("span",{style:"display:grid;gap:2px;min-width:0"},h("b",null,"Ödüller ve Kimlik"),h("small",null,"Rozetlerin ve paylaşılabilir Akademi Kimliğin")),h("span",{class:"pill"},R.cur.n)))}
+        return h("div",{class:"msec"},out)})));
 }
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&S.more){S.more=false;draw()}});
 /* kimlik kartı */
@@ -6086,28 +6134,48 @@ function evPanel(R){
 /* ===== rota haritası, durak XP, kapılar, tema ===== */
 var RT_BONUS=20;
 (function(){var st=document.createElement("style");st.textContent=".jmap{display:grid;gap:0;margin:10px 0 4px}.jst{display:grid;grid-template-columns:34px 1fr auto;gap:12px;align-items:start;position:relative;padding:8px 0}.jst:not(:last-child)::after{content:\"\";position:absolute;left:16px;top:42px;bottom:-8px;width:2px;background:var(--line)}.jst.done:not(:last-child)::after{background:var(--ok,#2d7d74)}.jn{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:700 13px var(--f-mono);border:2px solid var(--line);background:var(--panel);color:var(--mute);z-index:1}.jst.done .jn{background:var(--ok,#2d7d74);border-color:var(--ok,#2d7d74);color:#fff}.jst.cur .jn{border-color:var(--net);color:var(--net);box-shadow:0 0 0 4px color-mix(in srgb,var(--net) 22%,transparent)}.jb{min-width:0;display:grid;gap:3px}.jb .t{font-weight:600;overflow-wrap:anywhere}.jst.done .jb .t{color:var(--mute);text-decoration:line-through}.jx{font:700 12px var(--f-mono);color:var(--gold,#b8892b);white-space:nowrap}.jst.done .jx{color:var(--ok,#2d7d74)}.jtag{font:600 10px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--net)}.rt-toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font:600 14px var(--f-body);z-index:50;box-shadow:0 6px 24px rgba(0,0,0,.25);animation:rtup .35s ease-out;max-width:90vw;text-align:center}@keyframes rtup{from{opacity:0;transform:translate(-50%,16px)}to{opacity:1;transform:translate(-50%,0)}}button.orb{border:0;padding:0;cursor:pointer;display:block}.hero .orb{z-index:3}";document.head.appendChild(st)})();
+(function(){var st=document.createElement("style");st.textContent="\n.tmap{position:relative;margin:12px 0;border-radius:16px;overflow:hidden;color:#3b2713;font-family:Georgia,\"Times New Roman\",serif;border:2px solid #7a5a2c;\n background:radial-gradient(ellipse at 18% 10%,rgba(255,244,212,.95),transparent 55%),radial-gradient(ellipse at 88% 92%,rgba(150,100,40,.38),transparent 55%),linear-gradient(135deg,#ecd9a8,#d9bb82);\n box-shadow:inset 0 0 46px rgba(110,70,20,.5),inset 0 0 0 5px rgba(236,217,168,.6),inset 0 0 0 6px rgba(107,74,34,.55),0 8px 22px rgba(0,0,0,.28)}\n.tmap::before{content:\"\";position:absolute;inset:0;pointer-events:none;opacity:.35;mix-blend-mode:multiply;background-image:url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix values='0 0 0 0 .35 0 0 0 0 .22 0 0 0 0 .08 0 0 0 .6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")}\n.tm-path{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}\n.tp-ahead{fill:none;stroke:#a8321f;stroke-width:3;stroke-dasharray:3 8;stroke-linecap:round;opacity:.9}\n.tp-walk{fill:none;stroke:#3f6b3a;stroke-width:4;stroke-linecap:round;opacity:.95}\n.tm-title{position:absolute;top:12px;left:0;right:0;display:flex;justify-content:center;pointer-events:none}\n.tm-title span{font:700 12px Georgia,serif;letter-spacing:.22em;color:#f6e8c4;background:#8c2a1b;padding:5px 18px;border-radius:3px;box-shadow:0 2px 0 rgba(0,0,0,.3),0 0 0 2px #f6e8c4 inset;clip-path:polygon(0 0,100% 0,96% 50%,100% 100%,0 100%,4% 50%)}\n.tm-compass{position:absolute;right:10px;top:8px;width:46px;height:46px;opacity:.7;pointer-events:none}\n.tm-isle{position:absolute;width:84px;height:52px;opacity:.55;pointer-events:none}.tm-isle path{fill:rgba(160,120,60,.22);stroke:#7a5a2c;stroke-width:1.4;stroke-dasharray:3 3}\n.tm-isle.i1{left:44%;top:30%}.tm-isle.i2{left:6%;top:62%}\n.tm-sea{position:absolute;font:italic 12px Georgia,serif;color:rgba(80,55,25,.45);letter-spacing:.3em;pointer-events:none}.tm-sea.s1{right:10%;top:44%}.tm-sea.s2{left:8%;top:22%}\n.tn{position:absolute;width:46px;height:46px;border-radius:50%;transform:translate(-50%,-50%);display:grid;place-items:center;background:#f6e8c4;border:3px solid #6b4a22;color:#6b4a22;box-shadow:0 3px 0 rgba(60,35,10,.35);z-index:2}\n.tn svg{width:22px;height:22px}\n.tn.done{background:#4f7a3b;border-color:#2f4d22;color:#fff}\n.tn.cur{border-color:#a8321f;color:#a8321f;background:#fff4d6;box-shadow:0 0 0 5px rgba(168,50,31,.22),0 3px 0 rgba(60,35,10,.35)}\n.tn.lock{background:#cdbb94;border-color:#8b7650;color:#7d6c49;opacity:.8}\n.tn.tre{width:54px;height:54px;border-color:#8c2a1b;color:#a8321f;background:#f6e8c4}.tn.tre svg{width:30px;height:30px}.tn.tre.done{background:#c9a227;border-color:#7a5a12;color:#fff}\n.tl{position:absolute;transform:translateY(-50%);width:max-content;display:grid;gap:2px;text-align:left;font:inherit;color:#3b2713;background:rgba(251,243,220,.88);border:1px solid #9a7a45;border-radius:9px;padding:7px 10px;box-shadow:0 2px 0 rgba(60,35,10,.2);z-index:2;cursor:pointer;appearance:none}\n.tl.r{text-align:right}\n.tl .tt{font:700 13.5px/1.25 Georgia,serif;overflow-wrap:anywhere}.tl .tx{font:700 11px ui-monospace,monospace;color:#8c2a1b}.tl .tx2{font:italic 12px/1.3 Georgia,serif;color:#5a4222}\n.tl .tg{font:700 10px ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:#a8321f}\n.tl.done{background:rgba(222,236,205,.9);border-color:#4f7a3b}.tl.done .tt{text-decoration:line-through;color:#4b5a38}.tl.done .tx{color:#2f4d22}\n.tl.lock{opacity:.75;cursor:not-allowed}\n.tl.cur{border-color:#a8321f;background:#fff7e0;box-shadow:0 0 0 2px rgba(168,50,31,.25),0 2px 0 rgba(60,35,10,.2)}\n.tl.tre{cursor:default}\n.tl:not(:disabled):not(.tre):active{transform:translateY(-50%) scale(.97)}\n@media (prefers-reduced-motion:no-preference){.tn.cur{animation:tmpulse 1.8s ease-in-out infinite}@keyframes tmpulse{0%,100%{box-shadow:0 0 0 4px rgba(168,50,31,.2),0 3px 0 rgba(60,35,10,.35)}50%{box-shadow:0 0 0 10px rgba(168,50,31,.08),0 3px 0 rgba(60,35,10,.35)}}}\n/* Daha sheet */\n.msheet.v2{max-height:88vh;overflow:auto;gap:12px}\n.mhd{display:flex;align-items:center;justify-content:space-between;gap:10px}\n.mhd h2{margin:0;font-size:20px}\n.mrk{display:flex;align-items:center;gap:8px;font:600 12px var(--f-mono);color:var(--mute)}\n.mx{appearance:none;border:1px solid var(--line);background:var(--panel2);color:var(--ink);border-radius:50%;width:34px;height:34px;display:grid;place-items:center;cursor:pointer;font:700 16px var(--f-body)}\n.msec{display:grid;gap:8px}\n.msec>.label{margin:2px 2px 0}\n.mgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}\n.mgrid.g3{grid-template-columns:repeat(3,minmax(0,1fr))}\n.mt2{appearance:none;position:relative;display:grid;gap:8px;align-content:start;text-align:left;min-width:0;border:1px solid color-mix(in srgb,var(--c) 28%,var(--line));border-radius:18px;padding:12px;cursor:pointer;color:var(--ink);font:inherit;\n background:linear-gradient(150deg,color-mix(in srgb,var(--c) 14%,var(--panel2)),var(--panel2) 65%)}\n.mt2:hover{transform:translateY(-2px);border-color:var(--c)}.mt2:active{transform:scale(.97)}\n.mt2 .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--c) 22%,transparent);color:var(--c)}.mt2 .ic svg{width:22px;height:22px}\n.mt2 b{font-size:15px;line-height:1.2}.mt2 small{color:var(--mute);font-size:12px;line-height:1.3;overflow-wrap:anywhere}\n.mt2.wide{grid-column:1/-1;grid-template-columns:auto 1fr auto;align-items:center;gap:12px}\n.mt2.sm{padding:10px;justify-items:start;gap:6px}.mt2.sm .ic{width:34px;height:34px;border-radius:10px}.mt2.sm .ic svg{width:19px;height:19px}.mt2.sm b{font-size:13.5px}\n.mt2 .pill{position:absolute;top:10px;right:10px;font-size:10px;padding:2px 8px}\n@media (max-width:360px){.mgrid.g3{grid-template-columns:repeat(2,minmax(0,1fr))}}\n";document.head.appendChild(st)})();
 function rtToast(msg){var d=document.createElement("div");d.className="rt-toast";d.setAttribute("role","status");d.textContent=msg;document.body.appendChild(d);setTimeout(function(){d.remove()},2800)}
+var RT_KEY="ya_rt",RT_ALL=["ccna","eng","sec","bk"],RT_TN={ccna:"CCNA",eng:"İngilizce",sec:"Siber",bk:"Backend"};
 function rtTracks(){
+  try{var a=JSON.parse(localStorage.getItem(RT_KEY)||"null");if(Array.isArray(a)){a=a.filter(function(x){return RT_ALL.indexOf(x)>=0});if(a.length)return a}}catch(e){}
   var m={ccna:["ccna","eng"],qa:["bk","eng"],bk:["bk","eng"],sec:["sec","eng"],eng:["eng"]},g=S.onb&&S.onb.goal;
-  return (S.nonOwner&&m[g])?m[g]:["ccna","eng"];
+  return (S.nonOwner&&m[g])?m[g]:RT_ALL.slice();
+}
+function rtTrackSet(T,on){
+  var a=rtTracks().filter(function(x){return x!==T});if(on)a.push(T);if(!a.length)return;
+  a=RT_ALL.filter(function(x){return a.indexOf(x)>=0});
+  try{localStorage.setItem(RT_KEY,JSON.stringify(a))}catch(e){}draw();
 }
 function rtXpOf(x){return x.xp||0}
 function routeSteps(){
-  var td=today(),P=prog(),steps=[],tn={ccna:"CCNA",eng:"İngilizce",sec:"Siber",bk:"Backend"},tks=rtTracks().slice();
-  if(!S.nonOwner)["sec","bk"].forEach(function(T){if(lessonsOf(T).some(function(l){return l.date===td}))tks.push(T)});
-  tks.forEach(function(T){
-    var has=lessonsOf(T).some(function(l){return l.date===td});
-    steps.push({id:"ders-"+T,xp:20,tr:T,t:tn[T]+": dersi oku",d:!!P["read_"+T],go:function(){S.les.track=T;S.les.id=null;S.les.view="ders";goTab("ders")},b:"Dersi aç",note:has?null:(S.nonOwner?"Ders yoksa Ders ekranından üret; seviyene göre hazırlanır.":"Bugünün dersi akşam hazırlanır. Beklemek istemezsen Ders ekranından hemen üretebilirsin.")});
-    if(T==="ccna"||T==="eng"){var n=S.attempts.filter(function(a){return a.date===td&&a.track===T}).length;
-      steps.push({id:"sinif-"+T,xp:20,tr:T,t:tn[T]+": 5 canlı soru",d:n>=5,prog:Math.min(n,5)+"/5",go:function(){S.cls.track=T;S.cls.topicId=null;S.cls.phase="idle";goTab("sinif")},b:"Soruları çöz"})}
+  var td=today(),P=prog(),steps=[],sel=rtTracks().slice(),act=activeLesson(),order=sel.slice();
+  if(act&&order.indexOf(act.track)<0)order.push(act.track);
+  order.sort(function(a,b){
+    if(act){if(a===act.track&&b!==act.track)return -1;if(b===act.track&&a!==act.track)return 1}
+    var la=lastStudy(a),lb=lastStudy(b);return la<lb?-1:la>lb?1:order.indexOf(a)-order.indexOf(b)});
+  var blocks=order.slice(0,2),hasBk=false;
+  blocks.forEach(function(T){
+    var l=lessonListFor(T).list[0];if(!l)return;
+    var k=lessonKey(l),lockd=!!(act&&act.track!==T&&!lcDone(k)),cls=(T==="ccna"||T==="eng"),pre=RT_TN[T]+": ";
+    lcSync(l);
+    var go=function(){S.les.track=T;S.les.id=l.id;S.les.view="ders";goTab("ders")},nt=lockd?"Önce "+act.l.title+" dersini bitir":null;
+    steps.push({id:"isi-"+T,xp:5,tr:T,t:pre+"ısınma",d:lcGrand(l)||lcHas(k,"w"),locked:lockd,go:go,b:"Isınmaya git",note:nt||l.title});
+    steps.push({id:"ders-"+T,xp:10,tr:T,t:pre+"dersi oku",d:lcGrand(l)?!!P["read_"+T]:lcHas(k,"r"),locked:lockd,go:go,b:"Dersi aç",note:nt});
+    if(Array.isArray(l.quiz)&&l.quiz.length)steps.push({id:"quiz-"+T,xp:5,tr:T,t:pre+"mini sınav",d:lcHas(k,"q"),locked:lockd,go:go,b:"Sınava git",note:nt});
+    if(cls){var n=S.attempts.filter(function(a){return a.date===td&&a.track===T}).length;
+      steps.push({id:"sinif-"+T,xp:15,tr:T,t:pre+"5 canlı soru",d:lcHas(k,"p")||prNow(T,lcCut(T)),prog:Math.min(n,5)+"/5",locked:lockd,go:function(){S.cls.track=T;S.cls.topicId=null;S.cls.phase="idle";goTab("sinif")},b:"Soruları çöz",note:nt})}
+    else{hasBk=true;steps.push({id:"alis-"+T,xp:15,tr:T,t:pre+"5 karışık alıştırma",d:lcHas(k,"p")||prNow(T,lcCut(T)),locked:lockd,go:function(){S.at2.sec="alistirma";S.pr.track="mix";S.pr.qs=[];S.pr.res=null;goTab("atolye")},b:"Turu aç",note:nt})}
   });
-  steps.push({id:"prac",xp:15,tr:"",t:"Alıştırma: karışık 5 soru",d:num(P.prac_n)>=5,go:function(){S.at2.sec="alistirma";S.pr.track="mix";S.pr.qs=[];S.pr.res=null;goTab("atolye")},b:"Turu aç",note:"Alanlar iç içe gelir; yanlışlar sonra tekrar çıkar."});
-  if(tks.indexOf("eng")>=0){
+  var eng=sel.indexOf("eng")>=0||blocks.indexOf("eng")>=0;
+  if(!hasBk)steps.push({id:"prac",xp:10,tr:"",t:"Atölye: karışık 5 soru",d:num(P.prac_n)>=5,go:function(){S.at2.sec="alistirma";S.pr.track="mix";S.pr.qs=[];S.pr.res=null;goTab("atolye")},b:"Turu aç",note:"Alanlar iç içe gelir; yanlışlar sonra tekrar çıkar."});
+  if(eng){
     steps.push({id:"masa",xp:15,tr:"eng",t:"İngilizce: 1 destek talebi yanıtla",d:num(P.ticket_n)>=1,go:function(){goTab("masa")},b:"Talebi aç"});
+    steps.push({id:"oku",xp:5,tr:"eng",t:"Okuma: bir hikâyeyi oku, 1 soruyu aç",d:num(P.oku_n)>=1||S.reading.some(function(r){return String(r.ts||"").slice(0,10)===td}),go:function(){goTab("oku")},b:"Okumaya git"});
     steps.push({id:"ses",xp:5,tr:"eng",t:"İngilizce: 3 cümleyi sesli tekrar et",d:!!P.voice,toggle:function(){setProg({voice:!P.voice})},b:P.voice?"Geri al":"Yaptım, işaretle",note:"telefona kaydet, dinle"});
   }
   steps.push({id:"oyun",xp:10,tr:"",t:"Oyun: günün koşusu",d:num(gmDay(td).g_runs)>0,go:function(){goTab("oyun")},b:"Oyna"});
-  steps.push({id:"mul",xp:10,tr:"",t:"Mülakat: 1 soru prova et",d:num(P.mul_n)>=1,go:function(){goTab("mul")},b:"Soruya git"});
+  steps.push({id:"mul",xp:10,tr:"",t:"Mülakat: 1 soru prova et",d:num(P.mul_n)>=1||(S.mock||[]).some(function(x){return x&&x.d===td}),go:function(){goTab("mul")},b:"Soruya git"});
   steps.push({id:"gz",xp:5,tr:"",t:"Gazete: 1 haber ya da etkinlik oku",d:num(P.gz_n)>=1,go:function(){S.lg=S.lg||{};goTab("gazete")},b:"Gazeteye git"});
   steps.push({id:"proj",xp:20,tr:"",t:"Proje: 1 adım ilerle",d:num(P.proj_n)>=1,go:function(){goTab("proje")},b:"Projeye git"});
   var rep=S.reports.filter(function(r){return r.date===td})[0];
@@ -6126,24 +6194,64 @@ function rtAward(){
 }
 function rtXp(){var t=0;S.progress.forEach(function(p){t+=Math.min(300,num(p.rtxp))});return t}
 function rtPossible(steps){var t=RT_BONUS;steps.forEach(function(x){t+=x.xp});return t}
+var RT_ICO={isi:"rehber",ders:"ders",quiz:"sinif",sinif:"sinif",alis:"atolye",prac:"atolye",masa:"masa",oku:"oku",ses:"mul",oyun:"oyun",mul:"mul",gz:"gazete",proj:"proje",rapor:"ofis"};
+function rtIconOf(x){var k=String(x.id).split("-")[0];return (NAV[RT_ICO[k]||"bugun"]||NAV.bugun)[1]}
+var RT_LOCK="M7 11V8a5 5 0 0 1 10 0v3 M5 11h14v10H5z",RT_CHECK="M5 12.5l4.5 4.5L19 7.5";
+function rtMap(vis,nxt,steps,tail){
+  var STEP=100,TOP=58,XS=[22,72,30,76,26,68,36],m=vis.length+(tail?1:0),H=TOP+m*STEP+8;
+  function px(j){return XS[j%XS.length]}
+  function py(j){return TOP+j*STEP+34}
+  function pathTo(k){var d="M"+px(0)+" "+py(0);for(var j=1;j<=k;j++){var y1=py(j-1),y2=py(j);d+=" C"+px(j-1)+" "+(y1+STEP/2)+" "+px(j)+" "+(y2-STEP/2)+" "+px(j)+" "+y2}return d}
+  var ci=-1;vis.forEach(function(o,j){if(o.x===nxt)ci=j});if(ci<0)ci=vis.every(function(o){return o.x.d})?vis.length-1:0;
+  var svg=sv("svg",{class:"tm-path",viewBox:"0 0 100 "+H,preserveAspectRatio:"none","aria-hidden":"true"},
+    sv("path",{d:pathTo(m-1),class:"tp-ahead","vector-effect":"non-scaling-stroke"}),
+    ci>0?sv("path",{d:pathTo(ci),class:"tp-walk","vector-effect":"non-scaling-stroke"}):null);
+  var kids=[svg,
+    h("div",{class:"tm-title","aria-hidden":"true"},h("span",null,"GÜNÜN ROTASI")),
+    sv("svg",{class:"tm-compass",viewBox:"0 0 60 60","aria-hidden":"true"},sv("circle",{cx:30,cy:30,r:25,fill:"none",stroke:"#6b4a22","stroke-width":1.2}),sv("circle",{cx:30,cy:30,r:19,fill:"none",stroke:"#6b4a22","stroke-width":.8,"stroke-dasharray":"2 2"}),
+      sv("path",{d:"M30 3 L34 30 L30 57 L26 30 Z",fill:"#a8321f",opacity:.85}),sv("path",{d:"M3 30 L30 26 L57 30 L30 34 Z",fill:"#6b4a22",opacity:.75}),sv("text",{x:30,y:10,"text-anchor":"middle","font-size":8,"font-weight":700,fill:"#3b2713"},"K")),
+    sv("svg",{class:"tm-isle i1",viewBox:"0 0 80 50","aria-hidden":"true"},sv("path",{d:"M6 30 C8 12 30 4 46 10 C62 14 74 24 70 36 C64 46 40 48 24 44 C12 42 4 40 6 30Z"})),
+    sv("svg",{class:"tm-isle i2",viewBox:"0 0 80 50","aria-hidden":"true"},sv("path",{d:"M8 24 C12 8 34 6 52 12 C70 18 76 30 62 40 C48 48 22 46 12 38 C6 34 6 30 8 24Z"})),
+    h("div",{class:"tm-sea s1","aria-hidden":"true"},"~ ~ ~"),h("div",{class:"tm-sea s2","aria-hidden":"true"},"~ ~ ~ ~")];
+  vis.forEach(function(o,j){
+    var x=o.x,X=px(j),Y=py(j),left=X<50;
+    var st=x.d?" done":x.locked?" lock":x===nxt?" cur":"";
+    kids.push(h("div",{class:"tn"+st,style:"left:"+X+"%;top:"+Y+"px","aria-hidden":"true"},mi(x.d?RT_CHECK:x.locked?RT_LOCK:rtIconOf(x))));
+    var sty="top:"+Y+"px;"+(left?"left:calc("+X+"% + 32px);max-width:calc(100% - "+X+"% - 42px)":"right:calc("+(100-X)+"% + 32px);max-width:calc("+X+"% - 42px)");
+    kids.push(h("button",{type:"button",class:"tl"+st+(left?"":" r"),style:sty,disabled:!!x.locked,"aria-label":x.t+(x.d?", tamam":x.locked?", kilitli":"")+", "+x.xp+" XP",onclick:function(){(x.go||x.toggle)()}},
+      x===nxt?h("span",{class:"tg"},"buradasın"):null,
+      h("span",{class:"tt"},x.t+(x.prog&&!x.d?" ("+x.prog+")":"")),
+      x.note&&(x===nxt||x.locked)&&!x.d?h("span",{class:"tx2"},x.note):null,
+      h("span",{class:"tx"},(x.d?"✓ ":x.locked?"🔒 ":"+")+x.xp+" XP")));
+  });
+  if(tail){var j=vis.length,X=px(j),Y=py(j),all=steps.every(function(q){return q.d});
+    kids.push(h("div",{class:"tn tre"+(all?" done":""),style:"left:"+X+"%;top:"+Y+"px","aria-hidden":"true"},sv("svg",{viewBox:"0 0 24 24",fill:"none",stroke:"currentColor","stroke-width":4,"stroke-linecap":"round"},sv("path",{d:"M5 5l14 14 M19 5L5 19"}))));
+    var left=X<50;kids.push(h("div",{class:"tl tre"+(left?"":" r"),style:"top:"+Y+"px;"+(left?"left:calc("+X+"% + 34px)":"right:calc("+(100-X)+"% + 34px)")},h("span",{class:"tt"},all?"Hazine bulundu!":"Hazine: rota bonusu"),h("span",{class:"tx"},(all?"✓ ":"+")+RT_BONUS+" XP")));}
+  return h("div",{class:"tmap",style:"height:"+H+"px"},kids);
+}
 function renderRoute(){
-  var steps=routeSteps(),done=steps.filter(function(x){return x.d}).length,nxt=steps.filter(function(x){return !x.d})[0],P=prog();
-  var earned=Math.max(num(P.rtxp),num(S._rtAcc[today()])),poss=rtPossible(steps);
+  var steps=routeSteps(),done=steps.filter(function(x){return x.d}).length,nxt=steps.filter(function(x){return !x.d&&!x.locked})[0]||steps.filter(function(x){return !x.d})[0],P=prog();
+  var earned=Math.max(num(P.rtxp),num(S._rtAcc[today()])),poss=rtPossible(steps),act=activeLesson(),sel=rtTracks();
   var R=rankInfo(),gate=R.nxt&&R.nxt.gate?gateReq(R.nxt.gate):"";
+  var ni=steps.indexOf(nxt),from=0,to=steps.length-1;
+  if(!S._rtAll&&nxt&&steps.length>8){from=Math.max(0,ni-1);to=Math.min(steps.length-1,from+6)}
+  var vis=[];for(var i=from;i<=to;i++)vis.push({x:steps[i],i:i});
+  var tail=to===steps.length-1;
   return h("div",{class:"panel route"},
     h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"},h("h2",null,"Bugünün rotası"),h("span",{class:"pill"+(done===steps.length?" ok":"")},done+" / "+steps.length+" durak")),
-    h("div",{class:"small mute"},"Duraktan duraka ilerle. Her durak XP verir, hepsini bitirirsen +"+RT_BONUS+" bonus. Sıra önerilendir; istediğin duraktan başlayabilirsin."),
+    h("div",{class:"small mute"},"Haritadaki duraktan duraka ilerle, her durak XP verir; hazineye ulaşırsan +"+RT_BONUS+" bonus. Rota, seçtiğin derslere ve başladığın derse göre kurulur."),
+    act?h("div",{class:"lbox"},h("div",{class:"label"},"Şu an"),h("p",null,RT_TN[act.track]+": "+(act.l.title||"ders")+". Bu dersin adımları bitmeden başka derse geçilmez; adımları bitirince sıradaki ders açılır.")):null,
     h("div",{class:"xpbar"},h("i",{style:"width:"+Math.min(100,earned/poss*100)+"%"})),
     h("div",{class:"small mono",style:"display:flex;justify-content:space-between"},h("span",null,"bugün "+earned+" XP"),h("span",{class:"mute"},"en çok "+poss)),
-    nxt?null:h("div",{class:"lbox"},h("p",null,"Bütün duraklar tamam. Seri korundu, yarın yeni rota seni bekliyor.")),
-    h("div",{class:"jmap"},steps.map(function(x,i){return {x:x,i:i}}).filter(function(o){if(S._rtAll||!nxt)return true;var ni=steps.indexOf(nxt);return o.i>=ni-1&&o.i<=ni+3}).map(function(o){var x=o.x,i=o.i;return h("div",{class:"jst"+(x.d?" done":"")+(x===nxt?" cur":""),"data-track":x.tr||""},
-      h("div",{class:"jn"},x.d?"✓":String(i+1)),
-      h("div",{class:"jb"},x===nxt?h("span",{class:"jtag"},"buradasın"):null,h("div",{class:"t"},x.t+(x.prog?" ("+x.prog+")":"")),x.note&&!x.d?h("div",{class:"small mute"},x.note):null,
-        h("button",{class:"btn ghost",type:"button",style:"justify-self:start;margin-top:4px",onclick:function(){(x.go||x.toggle)()}},x.b)),
-      h("div",{class:"jx"},(x.d?"✓ ":"+")+x.xp+" XP"))})),
-    steps.length>5?h("div",{class:"row"},h("button",{class:"btn ghost",type:"button",onclick:function(){S._rtAll=!S._rtAll;draw()}},S._rtAll?"Daralt":"Bütün durakları göster ("+steps.length+")")):null,
+    from>0?h("div",{class:"small mute"},"Geçilen "+from+" durak gizlendi."):null,
+    rtMap(vis,nxt,steps,tail),
+    to<steps.length-1?h("div",{class:"small mute"},"Önde "+(steps.length-1-to)+" durak daha var."):null,
+    steps.length>8?h("div",{class:"row"},h("button",{class:"btn ghost",type:"button",onclick:function(){S._rtAll=!S._rtAll;draw()}},S._rtAll?"Daralt":"Bütün haritayı göster ("+steps.length+")")):null,
+    h("details",null,h("summary",{class:"small"},"Rotada hangi dersler olsun?"),
+      h("div",{class:"small mute",style:"margin:6px 0"},"Seçtiklerin sırayla rotaya girer. Her gün en çok iki ders gelir; en az çalıştığın alan önce çıkar."),
+      h("div",{class:"chips"},RT_ALL.map(function(T){var on=sel.indexOf(T)>=0;return h("button",{type:"button",class:"chip","aria-pressed":on?"true":"false",style:on?"border-color:var(--net);color:var(--net);font-weight:700":"",onclick:function(){rtTrackSet(T,!on)}},(on?"✓ ":"")+RT_TN[T])}))),
     h("details",null,h("summary",{class:"small"},"XP nasıl kazanılır, adil mi?"),
-      h("div",{class:"small mute"},"Herkes için aynı kurallar: rota durakları yukarıdaki değerlerde (günde en çok "+poss+"). Sınıfta cevap başına 5-15 XP, günlük en çok 100. Oyun günlük en çok "+GM_CAP+" (haftalık bonuslar ayrı). Proje adımı 10 XP × seviye, proje bitince +60 × seviye. Her XP bir iş yapınca gelir; bekleyerek ya da aynı şeyi tekrarlayarak artmaz."),
+      h("div",{class:"small mute"},"Herkes için aynı kurallar: rota durakları yukarıdaki değerlerde (günde en çok "+poss+"). Her ders dört adımdır: ısınma 5, okuma 10, mini sınav 5, alıştırma 15. Sınıfta cevap başına 5-15 XP, günlük en çok 100. Oyun günlük en çok "+GM_CAP+" (haftalık bonuslar ayrı). Proje adımı 10 XP × seviye, proje bitince +60 × seviye. Her XP bir iş yapınca gelir; bekleyerek ya da aynı şeyi tekrarlayarak artmaz."),
       gate?h("div",{class:"small mute",style:"margin-top:6px"},"Sonraki rütbe için kapı: "+gate):null,
       h("div",{class:"small mute",style:"margin-top:6px"},"Not: kurucunun hesabında günlük koç görevleri ek XP yazar; bu uygulama içi XP ile ayrı sayılır ve rütbe kapıları iki yoldan da açılabilir.")));
 }
