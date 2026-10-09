@@ -1,0 +1,2953 @@
+[
+ {
+  "v": 2,
+  "id": "http",
+  "tr": "bk",
+  "trs": [
+   "bk",
+   "net"
+  ],
+  "theme": "bk",
+  "t": "HTTP isteği",
+  "title": "Adres yazınca arkada ne olur?",
+  "one": "Tarayıcı (istemci) adresi çözer, sunucuya istek gönderir, sunucu durum kodlu yanıt döner.",
+  "rx": "istemci|client[- ]server|http|https|tarayıcı",
+  "icon": "globe",
+  "nodes": [
+   {
+    "id": "br",
+    "k": "laptop",
+    "x": 55,
+    "y": 205,
+    "l": "Tarayıcı",
+    "s2": "İstemci"
+   },
+   {
+    "id": "dns",
+    "k": "dns",
+    "x": 180,
+    "y": 115,
+    "l": "DNS sunucusu"
+   },
+   {
+    "id": "sv",
+    "k": "server",
+    "x": 305,
+    "y": 205,
+    "l": "Web sunucusu",
+    "s2": "203.0.113.10"
+   },
+   {
+    "id": "db",
+    "k": "db",
+    "x": 305,
+    "y": 300,
+    "l": "Veritabanı"
+   }
+  ],
+  "links": [
+   {
+    "a": "br",
+    "b": "dns",
+    "k": "eth",
+    "cv": -12
+   },
+   {
+    "a": "br",
+    "b": "sv",
+    "k": "cat7",
+    "cv": 0
+   },
+   {
+    "a": "sv",
+    "b": "db",
+    "k": "cat7"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Ayşe tarayıcıya shop.example.com yazıyor. Tarayıcı istemci (client), soruyu yanıtlayan makine sunucudur (server).",
+    "cam": 0,
+    "tag": [
+     [
+      "br",
+      "shop.example.com",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Önce adın IP karşılığı gerekir. Tarayıcı DNS sunucusuna sorar, cevap olarak sunucunun IP adresini alır.",
+    "p": [
+     [
+      "br",
+      "dns",
+      "env",
+      "IP nedir?"
+     ],
+     [
+      "dns",
+      "br",
+      "ok",
+      "203.0.113.10"
+     ]
+    ],
+    "tag": [
+     [
+      "dns",
+      "shop.example.com = 203.0.113.10",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Tarayıcı sunucuya bağlanır. HTTPS, HTTP'nin TLS ile şifrelenmiş hâlidir ve varsayılan olarak 443 numaralı porttan konuşur.",
+    "p": [
+     [
+      "br",
+      "sv",
+      "key",
+      "TLS el sıkışma"
+     ],
+     [
+      "sv",
+      "br",
+      "ok",
+      "Güvenli hat"
+     ]
+    ],
+    "tag": [
+     [
+      "sv",
+      "HTTPS: PORT 443",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Şimdi asıl istek gider: GET yöntemiyle /urunler yolu istenir. Her istek bir yöntem (method) ve bir yol (path) taşır.",
+    "p": [
+     [
+      "br",
+      "sv",
+      "req",
+      "GET /urunler"
+     ]
+    ],
+    "tag": [
+     [
+      "br",
+      "GET /urunler",
+      "blue"
+     ]
+    ],
+    "hi": [
+     "sv"
+    ]
+   },
+   {
+    "c": "Sunucu ürün listesini veritabanından okur. Tarayıcı veritabanını hiç görmez, yalnız sunucuyla konuşur.",
+    "p": [
+     [
+      "sv",
+      "db",
+      "data",
+      "SELECT"
+     ],
+     [
+      "db",
+      "sv",
+      "data",
+      "ürünler"
+     ]
+    ],
+    "tag": [
+     [
+      "db",
+      "Ürünler tablosu",
+      "light"
+     ]
+    ]
+   },
+   {
+    "c": "Sunucu durum koduyla yanıt verir: 200 OK, gövdede HTML ya da JSON vardır. Tarayıcı sayfayı çizer.",
+    "p": [
+     [
+      "sv",
+      "br",
+      "res",
+      "200 OK"
+     ]
+    ],
+    "tag": [
+     [
+      "sv",
+      "200 OK",
+      "green"
+     ]
+    ],
+    "mark": [
+     [
+      "br",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Olmayan bir adres istenirse sunucu 404 Not Found döner. 4xx hata istekte, 5xx hata sunucudadır.",
+    "p": [
+     [
+      "br",
+      "sv",
+      "req",
+      "GET /yok"
+     ],
+     [
+      "sv",
+      "br",
+      "bad",
+      "404"
+     ]
+    ],
+    "tag": [
+     [
+      "sv",
+      "404 Not Found",
+      "red"
+     ]
+    ],
+    "mark": [
+     [
+      "br",
+      "x"
+     ]
+    ]
+   }
+  ],
+  "result": "İstemci ister, sunucu yanıtlar: yöntem + yol + durum kodu",
+  "notes": [
+   "HTTP istemci-sunucu modelidir: istek gider, yanıt gelir.",
+   "Adı IP'ye DNS çevirir, HTTPS 443 portunda TLS ile şifreler.",
+   "200 başarı, 4xx istemci hatası, 5xx sunucu hatası demektir."
+  ],
+  "q": [
+   {
+    "q": "Tarayıcı adresi yazdıktan sonra sunucuya bağlanmadan önce hangi adım gerekir?",
+    "o": [
+     "Veritabanı yedeği almak",
+     "Alan adını DNS ile IP adresine çevirmek",
+     "Sunucuya 404 göndermek",
+     "Sayfayı önbelleğe yazmak"
+    ],
+    "a": 1,
+    "w": "Bağlanmak için hedef IP gerekir; alan adını DNS çözer."
+   },
+   {
+    "q": "Sunucu 503 döndü. Sorun nerede aranmalı?",
+    "o": [
+     "İstemcinin yazdığı adreste",
+     "Tarayıcının DNS ayarında",
+     "Sunucu tarafında",
+     "Kullanıcının parolasında"
+    ],
+    "a": 2,
+    "w": "5xx kodları isteğin geçerli olduğunu ama sunucunun işleyemediğini gösterir."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "lb",
+  "tr": "bk",
+  "trs": [
+   "bk",
+   "net"
+  ],
+  "theme": "bk",
+  "t": "Yük dengeleyici",
+  "title": "Yük dengeleyici trafiği nasıl dağıtır?",
+  "one": "Tek giriş adresi, arkada birden çok sunucu: sağlıksız olanı devre dışı bırakır, yükü paylaştırır.",
+  "rx": "yük dengeleyici|load balanc|auto scaling|health check|ec2",
+  "icon": "lb",
+  "nodes": [
+   {
+    "id": "ppl",
+    "k": "people",
+    "x": 45,
+    "y": 205,
+    "l": "Ziyaretçiler"
+   },
+   {
+    "id": "lb",
+    "k": "lb",
+    "x": 165,
+    "y": 200,
+    "l": "Yük dengeleyici"
+   },
+   {
+    "id": "s1",
+    "k": "server",
+    "x": 305,
+    "y": 115,
+    "l": "Sunucu 1"
+   },
+   {
+    "id": "s2",
+    "k": "server",
+    "x": 305,
+    "y": 205,
+    "l": "Sunucu 2"
+   },
+   {
+    "id": "s3",
+    "k": "server",
+    "x": 305,
+    "y": 295,
+    "l": "Sunucu 3"
+   },
+   {
+    "id": "s4",
+    "k": "server",
+    "x": 165,
+    "y": 305,
+    "l": "Sunucu 4",
+    "s2": "yeni",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "ppl",
+    "b": "lb",
+    "k": "cat7"
+   },
+   {
+    "a": "lb",
+    "b": "s1",
+    "k": "eth",
+    "cv": -8
+   },
+   {
+    "a": "lb",
+    "b": "s2",
+    "k": "eth"
+   },
+   {
+    "a": "lb",
+    "b": "s3",
+    "k": "eth",
+    "cv": 8
+   },
+   {
+    "a": "lb",
+    "b": "s4",
+    "k": "eth"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Ziyaretçiler tek adrese gelir. Arkada üç sunucu (EC2) var; yük dengeleyici (load balancer) istekleri aralarında paylaştırır.",
+    "cam": 0,
+    "tag": [
+     [
+      "lb",
+      "Tek giriş adresi",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "İstekler sırayla dağılır: 1. istek sunucu 1'e, 2. istek sunucu 2'ye, 3. istek sunucu 3'e. Buna round robin denir.",
+    "p": [
+     [
+      "ppl",
+      "s1",
+      "req",
+      "istek 1",
+      [
+       "lb"
+      ]
+     ],
+     [
+      "ppl",
+      "s2",
+      "req",
+      "istek 2",
+      [
+       "lb"
+      ]
+     ],
+     [
+      "ppl",
+      "s3",
+      "req",
+      "istek 3",
+      [
+       "lb"
+      ]
+     ]
+    ],
+    "tag": [
+     [
+      "lb",
+      "Round robin: sırayla dağıt",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Sunucu 2 çöktü. Yük dengeleyici düzenli sağlık kontrolü (health check) yapar ve bu sunucudan yanıt alamaz.",
+    "p": [
+     [
+      "lb",
+      "s2",
+      "data",
+      "health check"
+     ]
+    ],
+    "mark": [
+     [
+      "s2",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "lb",
+      "Health check: yanıt yok",
+      "amber"
+     ]
+    ],
+    "dim": [
+     "s2"
+    ]
+   },
+   {
+    "c": "Sağlıksız sunucu devreden çıkar. Yeni istekler yalnız 1 ve 3'e gider; ziyaretçi hata görmez.",
+    "p": [
+     [
+      "ppl",
+      "s1",
+      "req",
+      "istek 4",
+      [
+       "lb"
+      ]
+     ],
+     [
+      "ppl",
+      "s3",
+      "req",
+      "istek 5",
+      [
+       "lb"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "ppl",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "s2",
+      "Trafik almıyor",
+      "red"
+     ]
+    ]
+   },
+   {
+    "c": "Kampanya başladı, trafik bir gecede dört katına çıktı. İki sunucu yetmiyor ve yük artıyor.",
+    "say": [
+     [
+      "ppl",
+      "Sayfa çok yavaş açılıyor!"
+     ]
+    ],
+    "mark": [
+     [
+      "s1",
+      "!"
+     ],
+     [
+      "s3",
+      "!"
+     ]
+    ],
+    "tag": [
+     [
+      "s1",
+      "CPU yüksek",
+      "red"
+     ],
+     [
+      "s3",
+      "CPU yüksek",
+      "red"
+     ]
+    ],
+    "hi": [
+     "s1",
+     "s3"
+    ]
+   },
+   {
+    "c": "Auto Scaling yeni bir sunucu ekler. Yük dengeleyici onu da havuza alır, yük yeniden paylaşılır.",
+    "show": [
+     "s4"
+    ],
+    "p": [
+     [
+      "ppl",
+      "s4",
+      "req",
+      "istek 6",
+      [
+       "lb"
+      ]
+     ]
+    ],
+    "tag": [
+     [
+      "s4",
+      "Auto Scaling ekledi",
+      "green"
+     ]
+    ],
+    "mark": [
+     [
+      "s4",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Sunucu 2 onarılınca health check başarılı olur ve havuza geri döner. Yük dengeleyici hem dağıtır hem ayıklar.",
+    "p": [
+     [
+      "lb",
+      "s2",
+      "data",
+      "health check"
+     ],
+     [
+      "s2",
+      "lb",
+      "ok",
+      "sağlam"
+     ]
+    ],
+    "mark": [
+     [
+      "s2",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "lb",
+      "Havuz: 1, 2, 3, 4",
+      "green"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "Yük dengeleyici = tek kapı, sağlam sunucuya dağıtım",
+  "notes": [
+   "Yük dengeleyici tek giriş adresi sunar, istekleri sunuculara dağıtır.",
+   "Health check sağlıksız sunucuyu havuzdan çıkarır.",
+   "Auto Scaling sunucu sayısını yüke göre artırır ya da azaltır."
+  ],
+  "q": [
+   {
+    "q": "Havuzdaki bir sunucu health check'e yanıt vermiyor. Yük dengeleyici ne yapar?",
+    "o": [
+     "Tüm trafiği o sunucuya yollar",
+     "Tüm siteyi kapatır",
+     "Sunucuyu devre dışı bırakıp diğerlerine yönlendirir",
+     "Ziyaretçiye 404 gösterir"
+    ],
+    "a": 2,
+    "w": "Sağlıksız hedefe istek gönderilmez, sağlam olanlara dağıtılır."
+   },
+   {
+    "q": "Auto Scaling bu sahnede hangi sorunu çözdü?",
+    "o": [
+     "Alan adının IP'ye çevrilmesini",
+     "Trafik artışında kapasiteyi artırmayı",
+     "Veritabanı şifrelemesini",
+     "İstek sırasının bozulmasını"
+    ],
+    "a": 1,
+    "w": "Yük arttığında sunucu eklenir, azalınca çıkarılır."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "bk-rest",
+  "tr": "bk",
+  "trs": [
+   "bk",
+   "net"
+  ],
+  "theme": "bk",
+  "t": "REST CRUD",
+  "title": "REST API: CRUD istekleri ve durum kodları",
+  "one": "Aynı API'yi mobil ve web kullanır; yöntem işi, durum kodu sonucu anlatır.",
+  "rx": "rest|api tasarım|json|crud|durum kod",
+  "icon": "api",
+  "nodes": [
+   {
+    "id": "ph",
+    "k": "phone",
+    "x": 50,
+    "y": 160,
+    "l": "Mobil uygulama"
+   },
+   {
+    "id": "lp",
+    "k": "laptop",
+    "x": 50,
+    "y": 285,
+    "l": "Web sitesi"
+   },
+   {
+    "id": "api",
+    "k": "server",
+    "x": 185,
+    "y": 215,
+    "l": "Ürün API",
+    "s2": "/urunler"
+   },
+   {
+    "id": "db",
+    "k": "db",
+    "x": 305,
+    "y": 215,
+    "l": "Veritabanı"
+   }
+  ],
+  "links": [
+   {
+    "a": "ph",
+    "b": "api",
+    "k": "wifi",
+    "cv": 0
+   },
+   {
+    "a": "lp",
+    "b": "api",
+    "k": "eth",
+    "cv": 0
+   },
+   {
+    "a": "api",
+    "b": "db",
+    "k": "cat7"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Mobil uygulama ve web sitesi aynı API'ye bağlanır (REST). Ürün verisi tek yerde durur, her istemci aynı kuralla konuşur.",
+    "cam": 0,
+    "tag": [
+     [
+      "api",
+      "/urunler",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "GET kaydı okur. 7 numaralı ürün isteniyor; sunucu veritabanından alır, JSON olarak 200 OK ile döner.",
+    "p": [
+     [
+      "ph",
+      "api",
+      "req",
+      "GET /urunler/7"
+     ],
+     [
+      "api",
+      "db",
+      "data",
+      "SELECT"
+     ],
+     [
+      "db",
+      "api",
+      "data",
+      "ürün 7"
+     ],
+     [
+      "api",
+      "ph",
+      "res",
+      "200 OK"
+     ]
+    ],
+    "tag": [
+     [
+      "api",
+      "GET = oku: 200 OK",
+      "blue"
+     ]
+    ],
+    "mark": [
+     [
+      "ph",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "POST yeni kayıt oluşturur. Gövdede ürün bilgisi gider; başarıda 201 Created döner.",
+    "p": [
+     [
+      "lp",
+      "api",
+      "req",
+      "POST /urunler"
+     ],
+     [
+      "api",
+      "db",
+      "data",
+      "INSERT"
+     ],
+     [
+      "api",
+      "lp",
+      "res",
+      "201 Created"
+     ]
+    ],
+    "tag": [
+     [
+      "api",
+      "POST = oluştur: 201 Created",
+      "green"
+     ]
+    ],
+    "mark": [
+     [
+      "lp",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "PUT ya da PATCH var olan kaydı günceller. Güncellenen kayıt 200 OK ile döner.",
+    "p": [
+     [
+      "lp",
+      "api",
+      "req",
+      "PATCH /urunler/7"
+     ],
+     [
+      "api",
+      "db",
+      "data",
+      "UPDATE"
+     ],
+     [
+      "api",
+      "lp",
+      "res",
+      "200 OK"
+     ]
+    ],
+    "tag": [
+     [
+      "api",
+      "PUT / PATCH = güncelle",
+      "amber"
+     ]
+    ]
+   },
+   {
+    "c": "DELETE kaydı siler. Geri verilecek içerik yoksa 204 No Content döner.",
+    "p": [
+     [
+      "ph",
+      "api",
+      "req",
+      "DELETE /urunler/7"
+     ],
+     [
+      "api",
+      "db",
+      "data",
+      "DELETE"
+     ],
+     [
+      "api",
+      "ph",
+      "res",
+      "204"
+     ]
+    ],
+    "tag": [
+     [
+      "api",
+      "DELETE = sil: 204 No Content",
+      "red"
+     ]
+    ]
+   },
+   {
+    "c": "Silinmiş ürün tekrar istenirse 404 Not Found döner. Hata istemcinin isteğindedir (4xx).",
+    "p": [
+     [
+      "ph",
+      "api",
+      "req",
+      "GET /urunler/7"
+     ],
+     [
+      "api",
+      "ph",
+      "bad",
+      "404"
+     ]
+    ],
+    "mark": [
+     [
+      "ph",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "api",
+      "4xx = hata istekte",
+      "red"
+     ]
+    ]
+   },
+   {
+    "c": "Veritabanı bağlantısı koparsa istek doğru olsa da 500 döner. 5xx hatası sunucu tarafındadır.",
+    "p": [
+     [
+      "lp",
+      "api",
+      "req",
+      "GET /urunler/3"
+     ],
+     [
+      "api",
+      "db",
+      "bad",
+      "bağlantı yok"
+     ],
+     [
+      "api",
+      "lp",
+      "bad",
+      "500"
+     ]
+    ],
+    "mark": [
+     [
+      "db",
+      "x"
+     ],
+     [
+      "lp",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "api",
+      "5xx = hata sunucuda",
+      "amber"
+     ]
+    ]
+   }
+  ],
+  "result": "Yöntem ne yapılacağını, durum kodu ne olduğunu söyler",
+  "notes": [
+   "GET oku, POST oluştur, PUT/PATCH güncelle, DELETE sil.",
+   "Yol (URL) kaynağı adlandırır: /urunler/7 gibi.",
+   "2xx başarı, 4xx istemci hatası, 5xx sunucu hatası demektir."
+  ],
+  "q": [
+   {
+    "q": "Yeni sipariş kaydı oluşturan istek hangisidir?",
+    "o": [
+     "GET /siparisler",
+     "POST /siparisler",
+     "DELETE /siparisler/5",
+     "PATCH /siparisler/5"
+    ],
+    "a": 1,
+    "w": "Yeni kaynak oluşturmak için POST kullanılır, başarıda 201 Created döner."
+   },
+   {
+    "q": "İstemci olmayan bir kaydı istedi. Doğru yanıt hangisi?",
+    "o": [
+     "200 OK",
+     "500 Internal Server Error",
+     "201 Created",
+     "404 Not Found"
+    ],
+    "a": 3,
+    "w": "Kaynak yoksa 404 döner; bu istemci tarafı (4xx) bir durumdur."
+   },
+   {
+    "q": "API 500 döndü. İlk bakılacak yer neresi?",
+    "o": [
+     "Sunucu logları",
+     "İstemcinin URL yazımı",
+     "Tarayıcı önbelleği",
+     "Kullanıcının parolası"
+    ],
+    "a": 0,
+    "w": "5xx sunucuda bir sorun olduğunu gösterir; kaynak çoğunlukla loglarda görülür."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "bk-jwt",
+  "tr": "bk",
+  "trs": [
+   "bk",
+   "sec"
+  ],
+  "theme": "bk",
+  "t": "JWT ile giriş",
+  "title": "JWT ile giriş: parola bir kez, bilet hep",
+  "one": "Giriş bir kez yapılır, sunucu imzalı JWT verir; sonraki isteklerde bilet gösterilir.",
+  "rx": "jwt|oauth|kimlik doğrulama|authentication|token|cognito",
+  "icon": "key",
+  "nodes": [
+   {
+    "id": "ph",
+    "k": "phone",
+    "x": 50,
+    "y": 205,
+    "l": "Ayşe'nin uygulaması"
+   },
+   {
+    "id": "api",
+    "k": "server",
+    "x": 190,
+    "y": 205,
+    "l": "API"
+   },
+   {
+    "id": "db",
+    "k": "db",
+    "x": 190,
+    "y": 305,
+    "l": "Kullanıcı DB"
+   },
+   {
+    "id": "key",
+    "k": "key",
+    "x": 300,
+    "y": 125,
+    "l": "İmza anahtarı",
+    "hide": true
+   },
+   {
+    "id": "atk",
+    "k": "user",
+    "x": 55,
+    "y": 310,
+    "l": "Saldırgan",
+    "c": "#d64545"
+   }
+  ],
+  "links": [
+   {
+    "a": "ph",
+    "b": "api",
+    "k": "cat7"
+   },
+   {
+    "a": "api",
+    "b": "db",
+    "k": "eth"
+   },
+   {
+    "a": "api",
+    "b": "key",
+    "k": "thin"
+   },
+   {
+    "a": "atk",
+    "b": "api",
+    "k": "wifi",
+    "cv": 14
+   }
+  ],
+  "steps": [
+   {
+    "c": "Ayşe uygulamaya giriş yapacak. Her istekte parola göndermek güvensiz; sunucu ona bir kez bilet (token) verecek.",
+    "cam": 0,
+    "hi": [
+     "ph",
+     "api"
+    ]
+   },
+   {
+    "c": "Önce e-posta ve parola bir kez gönderilir (POST /giris).",
+    "p": [
+     [
+      "ph",
+      "api",
+      "req",
+      "POST /giris"
+     ]
+    ],
+    "tag": [
+     [
+      "ph",
+      "e-posta + parola",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Sunucu kullanıcıyı veritabanında arar ve parola özetini (hash) kontrol eder. Düz parola saklanmaz.",
+    "p": [
+     [
+      "api",
+      "db",
+      "data",
+      "kullanıcı?"
+     ],
+     [
+      "db",
+      "api",
+      "ok",
+      "parola doğru"
+     ]
+    ],
+    "tag": [
+     [
+      "db",
+      "Parola özeti (hash) eşleşti",
+      "green"
+     ]
+    ]
+   },
+   {
+    "c": "Sunucu, kendi gizli anahtarıyla imzalı bir JWT üretir ve uygulamaya verir. JWT üç parçadır: başlık, yük, imza.",
+    "show": [
+     "key"
+    ],
+    "p": [
+     [
+      "api",
+      "ph",
+      "key",
+      "JWT"
+     ]
+    ],
+    "tag": [
+     [
+      "api",
+      "JWT = başlık.yük.imza",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "key"
+    ]
+   },
+   {
+    "c": "Sonraki her istekte uygulama JWT'yi başlıkta gösterir. Sunucu imzayı anahtarla doğrular; veritabanına sormaz.",
+    "p": [
+     [
+      "ph",
+      "api",
+      "req",
+      "GET /siparisler"
+     ],
+     [
+      "api",
+      "ph",
+      "res",
+      "200 OK"
+     ]
+    ],
+    "tag": [
+     [
+      "ph",
+      "Authorization: Bearer <JWT>",
+      "blue"
+     ],
+     [
+      "api",
+      "İmza geçerli, süre dolmadı",
+      "green"
+     ]
+    ],
+    "mark": [
+     [
+      "ph",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Saldırgan JWT içeriğini değiştirip yetki yükseltmeye çalışır. İmza uymaz, sunucu isteği reddeder.",
+    "p": [
+     [
+      "atk",
+      "api",
+      "bad",
+      "değişmiş JWT"
+     ],
+     [
+      "api",
+      "atk",
+      "bad",
+      "401"
+     ]
+    ],
+    "tag": [
+     [
+      "api",
+      "İmza tutmuyor: 401 Unauthorized",
+      "red"
+     ]
+    ],
+    "mark": [
+     [
+      "atk",
+      "x"
+     ]
+    ]
+   },
+   {
+    "c": "JWT'nin yükü şifreli değil, yalnız imzalıdır; herkes okuyabilir. İçine parola gibi gizli bilgi konmaz. Süresi dolunca yeniden giriş gerekir.",
+    "tag": [
+     [
+      "api",
+      "Yük okunur: parola koyma",
+      "amber"
+     ],
+     [
+      "ph",
+      "Süre dolunca yeniden giriş",
+      "light"
+     ]
+    ],
+    "mark": [
+     [
+      "api",
+      "!"
+     ]
+    ],
+    "hi": [
+     "api"
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "JWT = imzalı bilet: parola bir kez, kimlik her istekte",
+  "notes": [
+   "Parola yalnız girişte gönderilir, sonra imzalı JWT kullanılır.",
+   "Sunucu JWT'yi imza ve süreyle doğrular, çoğu zaman veritabanına sormaz.",
+   "JWT şifreli değildir: içine gizli bilgi koyma.",
+   "OAuth, parolanı vermeden başka uygulamaya izin vermenin standardıdır."
+  ],
+  "q": [
+   {
+    "q": "JWT'nin imzası neyi sağlar?",
+    "o": [
+     "İçeriğin şifrelenmesini",
+     "Veritabanı yedeğini",
+     "İçeriğin değiştirilmediğinin doğrulanmasını",
+     "Parolanın hızlıca saklanmasını"
+    ],
+    "a": 2,
+    "w": "İmza, yükün sonradan değiştirilip değiştirilmediğini anlamaya yarar; içeriği gizlemez."
+   },
+   {
+    "q": "JWT'nin yük kısmına neden parola konmamalı?",
+    "o": [
+     "Çok yer kaplar",
+     "Yük şifreli değil, base64 ile kodlanmış okunabilir",
+     "Sunucu okuyamaz",
+     "İmzayı bozar"
+    ],
+    "a": 1,
+    "w": "JWT yükü şifrelenmez; kodlanmış hâlde herkes çözüp okuyabilir."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "bk-index",
+  "tr": "bk",
+  "trs": [
+   "bk"
+  ],
+  "theme": "bk",
+  "t": "SQL indeksi",
+  "title": "SQL indeksi: tam tablo taraması mı, dizin mi?",
+  "one": "İndeks yoksa veritabanı tüm satırlara bakar; indeks varsa aranan satıra birkaç adımda gider.",
+  "rx": "(?<!no)sql|indeks|index|rds",
+  "icon": "db",
+  "nodes": [
+   {
+    "id": "app",
+    "k": "server",
+    "x": 50,
+    "y": 200,
+    "l": "Uygulama"
+   },
+   {
+    "id": "r1",
+    "k": "doc",
+    "x": 305,
+    "y": 100,
+    "l": "Satır 1"
+   },
+   {
+    "id": "r2",
+    "k": "doc",
+    "x": 305,
+    "y": 165,
+    "l": "Satır 2"
+   },
+   {
+    "id": "r3",
+    "k": "doc",
+    "x": 305,
+    "y": 230,
+    "l": "ali@ornek.com",
+    "s2": "Satır 734.512"
+   },
+   {
+    "id": "r4",
+    "k": "doc",
+    "x": 305,
+    "y": 295,
+    "l": "Son satır",
+    "s2": "Satır 1.000.000"
+   },
+   {
+    "id": "idx",
+    "k": "branch",
+    "x": 180,
+    "y": 205,
+    "l": "İndeks (B-tree)",
+    "hide": true
+   },
+   {
+    "id": "clk",
+    "k": "clock",
+    "x": 50,
+    "y": 300,
+    "l": "Süre"
+   }
+  ],
+  "links": [
+   {
+    "a": "app",
+    "b": "r1",
+    "k": "eth",
+    "cv": -12
+   },
+   {
+    "a": "r1",
+    "b": "r2",
+    "k": "thin"
+   },
+   {
+    "a": "r2",
+    "b": "r3",
+    "k": "thin"
+   },
+   {
+    "a": "r3",
+    "b": "r4",
+    "k": "thin"
+   },
+   {
+    "a": "app",
+    "b": "idx",
+    "k": "cat7"
+   },
+   {
+    "a": "idx",
+    "b": "r3",
+    "k": "cat7"
+   },
+   {
+    "a": "idx",
+    "b": "r4",
+    "k": "thin",
+    "cv": -10
+   }
+  ],
+  "steps": [
+   {
+    "c": "musteriler tablosunda 1.000.000 satır var. Uygulama e-postası ali@ornek.com olan müşteriyi arıyor.",
+    "cam": 0,
+    "tag": [
+     [
+      "app",
+      "WHERE email = 'ali@ornek.com'",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Tabloda indeks yok. Veritabanı satırları tek tek açıp bakmak zorunda: satır 1 değil, satır 2 değil...",
+    "p": [
+     [
+      "app",
+      "r1",
+      "req",
+      "email?"
+     ],
+     [
+      "r1",
+      "r2",
+      "data",
+      "değil"
+     ]
+    ],
+    "mark": [
+     [
+      "r1",
+      "x"
+     ],
+     [
+      "r2",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "app",
+      "İndeks yok, hepsine bakacağım"
+     ]
+    ]
+   },
+   {
+    "c": "Aranan satır ortalarda bulunsa bile veritabanı bitirmek için tabloyu sonuna kadar tarar. Buna tam tablo taraması (full table scan) denir.",
+    "p": [
+     [
+      "r2",
+      "r3",
+      "ok",
+      "bulundu"
+     ],
+     [
+      "r3",
+      "r4",
+      "data",
+      "devam"
+     ]
+    ],
+    "mark": [
+     [
+      "r3",
+      "ok"
+     ],
+     [
+      "r4",
+      "?"
+     ]
+    ],
+    "tag": [
+     [
+      "clk",
+      "YAVAŞ",
+      "red"
+     ],
+     [
+      "r4",
+      "Tüm tablo taranıyor",
+      "amber"
+     ]
+    ]
+   },
+   {
+    "c": "Çözüm: e-posta sütununa indeks (index) açmak. İndeks, kitabın sonundaki dizin gibi sıralı bir ağaçtır.",
+    "show": [
+     "idx"
+    ],
+    "tag": [
+     [
+      "idx",
+      "CREATE INDEX ON musteriler(email)",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "idx"
+    ],
+    "cam": 0
+   },
+   {
+    "c": "Aynı sorgu artık önce indekse bakar; sıralı ağaçta birkaç adımda doğru satırın yerini bulur ve doğrudan oraya gider.",
+    "p": [
+     [
+      "app",
+      "idx",
+      "req",
+      "email?"
+     ],
+     [
+      "idx",
+      "r3",
+      "ok",
+      "bulundu"
+     ]
+    ],
+    "mark": [
+     [
+      "r3",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "clk",
+      "HIZLI",
+      "green"
+     ]
+    ],
+    "dim": [
+     "r1",
+     "r2",
+     "r4"
+    ]
+   },
+   {
+    "c": "İndeksin bedeli var: her INSERT ve UPDATE indeksi de güncellemek zorundadır, ayrıca disk yer kaplar.",
+    "p": [
+     [
+      "app",
+      "idx",
+      "data",
+      "INSERT"
+     ],
+     [
+      "idx",
+      "r4",
+      "data",
+      "indeks güncel"
+     ]
+    ],
+    "tag": [
+     [
+      "idx",
+      "Yazma biraz yavaşlar",
+      "amber"
+     ]
+    ],
+    "hi": [
+     "idx"
+    ]
+   },
+   {
+    "c": "Her sütuna indeks açılmaz; sık aranan ve ayırt edici sütunlara açılır. EXPLAIN ile sorgu planına bakıp taramayı görebilirsin.",
+    "tag": [
+     [
+      "app",
+      "EXPLAIN SELECT ... WHERE email = ...",
+      "blue"
+     ],
+     [
+      "idx",
+      "Sık aranan + ayırt edici sütun",
+      "green"
+     ]
+    ],
+    "hi": [
+     "idx",
+     "app"
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "İndeks = aramayı hızlandırır, yazmayı biraz yavaşlatır",
+  "notes": [
+   "İndeks yoksa veritabanı tüm tabloyu tarayabilir.",
+   "İndeks sıralı bir ağaçtır; aranan satıra birkaç adımda gider.",
+   "Her indeks yazmayı yavaşlatır ve yer kaplar.",
+   "EXPLAIN, sorgunun indeks kullanıp kullanmadığını gösterir."
+  ],
+  "q": [
+   {
+    "q": "Milyon satırlık tabloda e-postaya göre sık arama yapılıyor ve yavaş. İlk ne yapılmalı?",
+    "o": [
+     "Tabloyu silip yeniden oluşturmak",
+     "E-posta sütununa indeks açmak",
+     "Sunucuya RAM eklemek",
+     "Sorguyu SELECT * yapmak"
+    ],
+    "a": 1,
+    "w": "Sık aranan sütuna indeks, taramayı birkaç adımlık aramaya çevirir."
+   },
+   {
+    "q": "İndeksin dezavantajı hangisidir?",
+    "o": [
+     "Okuma hatalarına yol açar",
+     "Satırları siler",
+     "Sorguyu SQL dışına çıkarır",
+     "Yazma işlemlerini yavaşlatır ve disk kullanır"
+    ],
+    "a": 3,
+    "w": "INSERT/UPDATE sırasında indeks de güncellenir ve yer tutar."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "bk-queue",
+  "tr": "bk",
+  "trs": [
+   "bk"
+  ],
+  "theme": "bk",
+  "t": "Kuyruk, yeniden deneme, DLQ",
+  "title": "Kuyruk, yeniden deneme ve ölü mektup kuyruğu",
+  "one": "Ödeme servisi çökse bile sipariş kuyrukta bekler; defalarca başarısız olursa DLQ'ya düşer.",
+  "rx": "sqs|dlq|kuyruk|queue|sns|ölü mektup|dead[- ]letter",
+  "icon": "queue",
+  "nodes": [
+   {
+    "id": "ord",
+    "k": "server",
+    "x": 50,
+    "y": 170,
+    "l": "Sipariş servisi"
+   },
+   {
+    "id": "q",
+    "k": "queue",
+    "x": 165,
+    "y": 170,
+    "l": "Kuyruk",
+    "s2": "SQS"
+   },
+   {
+    "id": "wk",
+    "k": "gear",
+    "x": 285,
+    "y": 170,
+    "l": "İşçi"
+   },
+   {
+    "id": "pay",
+    "k": "server",
+    "x": 285,
+    "y": 295,
+    "l": "Ödeme servisi"
+   },
+   {
+    "id": "dlq",
+    "k": "queue",
+    "x": 165,
+    "y": 300,
+    "l": "DLQ",
+    "s2": "ölü mektup",
+    "hide": true,
+    "c": "#d64545"
+   }
+  ],
+  "links": [
+   {
+    "a": "ord",
+    "b": "q",
+    "k": "flow"
+   },
+   {
+    "a": "q",
+    "b": "wk",
+    "k": "flow",
+    "cv": -14
+   },
+   {
+    "a": "wk",
+    "b": "q",
+    "k": "flow",
+    "cv": 14
+   },
+   {
+    "a": "wk",
+    "b": "pay",
+    "k": "eth"
+   },
+   {
+    "a": "q",
+    "b": "dlq",
+    "k": "flow"
+   },
+   {
+    "a": "dlq",
+    "b": "q",
+    "k": "flow",
+    "cv": -30
+   }
+  ],
+  "steps": [
+   {
+    "c": "Sipariş servisi, ödeme servisine doğrudan bağlanırsa ödeme çöktüğünde siparişler kaybolur. Araya bir kuyruk (queue) konur.",
+    "cam": 0,
+    "tag": [
+     [
+      "q",
+      "Mesajlar sırayla bekler",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Sipariş kuyruğa bırakılır ve servis ödemenin bitmesini beklemeden devam eder. Buna asenkron çalışma denir.",
+    "p": [
+     [
+      "ord",
+      "q",
+      "env",
+      "Sipariş #42"
+     ]
+    ],
+    "say": [
+     [
+      "ord",
+      "Bıraktım, devam ediyorum"
+     ]
+    ]
+   },
+   {
+    "c": "Sağlıklı günde işçi mesajı alır, ödemeyi yapar ve başarıyla bitince mesajı kuyruktan siler.",
+    "p": [
+     [
+      "q",
+      "wk",
+      "env",
+      "#42"
+     ],
+     [
+      "wk",
+      "pay",
+      "req",
+      "ödeme"
+     ],
+     [
+      "pay",
+      "wk",
+      "ok",
+      "tamam"
+     ]
+    ],
+    "tag": [
+     [
+      "wk",
+      "Başarılı: mesaj silinir",
+      "green"
+     ]
+    ],
+    "mark": [
+     [
+      "pay",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Şimdi ödeme servisi çöktü. İşçi hata alır ve mesajı silmez; mesaj kaybolmaz.",
+    "p": [
+     [
+      "wk",
+      "pay",
+      "req",
+      "ödeme"
+     ],
+     [
+      "pay",
+      "wk",
+      "bad",
+      "hata"
+     ]
+    ],
+    "mark": [
+     [
+      "pay",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "wk",
+      "Hata: mesaj silinmez",
+      "red"
+     ]
+    ]
+   },
+   {
+    "c": "Görünürlük süresi (visibility timeout) dolunca mesaj kuyrukta yeniden görünür ve işçi tekrar dener (retry).",
+    "p": [
+     [
+      "wk",
+      "q",
+      "bad",
+      "geri döner"
+     ],
+     [
+      "q",
+      "wk",
+      "env",
+      "#42 (2.)"
+     ],
+     [
+      "wk",
+      "pay",
+      "req",
+      "ödeme"
+     ],
+     [
+      "pay",
+      "wk",
+      "bad",
+      "hata"
+     ]
+    ],
+    "tag": [
+     [
+      "q",
+      "Yeniden deneme 2/3",
+      "amber"
+     ]
+    ]
+   },
+   {
+    "c": "Üç denemeden sonra mesaj sonsuza dek dönmez. Ölü mektup kuyruğuna (DLQ) alınır, normal akış tıkanmaz.",
+    "show": [
+     "dlq"
+    ],
+    "p": [
+     [
+      "q",
+      "dlq",
+      "bad",
+      "#42"
+     ]
+    ],
+    "mark": [
+     [
+      "dlq",
+      "!"
+     ]
+    ],
+    "tag": [
+     [
+      "dlq",
+      "3 başarısız deneme sonrası",
+      "red"
+     ]
+    ]
+   },
+   {
+    "c": "Ödeme servisi düzelince DLQ'daki mesajlar incelenir ve yeniden sürülür (redrive); sipariş kaybolmamış olur.",
+    "p": [
+     [
+      "dlq",
+      "q",
+      "ok",
+      "redrive"
+     ],
+     [
+      "q",
+      "wk",
+      "env",
+      "#42"
+     ],
+     [
+      "wk",
+      "pay",
+      "req",
+      "ödeme"
+     ],
+     [
+      "pay",
+      "wk",
+      "ok",
+      "tamam"
+     ]
+    ],
+    "mark": [
+     [
+      "pay",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "dlq",
+      "Hatayı düzelt, geri gönder",
+      "green"
+     ]
+    ]
+   }
+  ],
+  "result": "Kuyruk mesajı korur, DLQ sorunlu mesajı ayırır",
+  "notes": [
+   "Kuyruk üretici ile tüketiciyi birbirinden ayırır.",
+   "Başarısız işlemde mesaj silinmez, yeniden denenir.",
+   "Belirli denemeden sonra mesaj DLQ'ya gider ve ayrıca incelenir.",
+   "DLQ'yu izlemeyen sistem, sorunları fark etmez."
+  ],
+  "q": [
+   {
+    "q": "İşçi mesajı işlerken çöktü. Mesajı kuyruktan ne zaman silmeliyiz?",
+    "o": [
+     "İşçi mesajı alır almaz",
+     "İşlem başarıyla bittikten sonra",
+     "Her 10 saniyede bir",
+     "Hiçbir zaman, kuyruk kendiliğinden siler"
+    ],
+    "a": 1,
+    "w": "İşlem başarılı bitmeden silinirse çökme anında mesaj kaybolur."
+   },
+   {
+    "q": "DLQ'nun asıl amacı nedir?",
+    "o": [
+     "Mesajları hızlandırmak",
+     "Kuyruğu şifrelemek",
+     "Tekrar tekrar başarısız olan mesajı ayırıp akışı tıkamamak",
+     "Mesajları sıraya sokmak"
+    ],
+    "a": 2,
+    "w": "Zehirli mesaj sürekli dönüp kuyruğu meşgul etmesin diye ayrı bir yere alınır."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "bk-cache",
+  "tr": "bk",
+  "trs": [
+   "bk"
+  ],
+  "theme": "bk",
+  "t": "Önbellek",
+  "title": "Önbellek: cache hit ve cache miss",
+  "one": "Sık istenen veriyi hızlı bir bellekte tutarak veritabanını rahatlatır.",
+  "rx": "elasticache|önbellek|cache|redis",
+  "icon": "bolt",
+  "nodes": [
+   {
+    "id": "ppl",
+    "k": "people",
+    "x": 50,
+    "y": 215,
+    "l": "Ziyaretçiler"
+   },
+   {
+    "id": "app",
+    "k": "server",
+    "x": 170,
+    "y": 215,
+    "l": "Uygulama"
+   },
+   {
+    "id": "cache",
+    "k": "emoji",
+    "x": 295,
+    "y": 125,
+    "l": "Önbellek",
+    "s2": "ElastiCache",
+    "e": "⚡"
+   },
+   {
+    "id": "db",
+    "k": "db",
+    "x": 295,
+    "y": 300,
+    "l": "Veritabanı"
+   }
+  ],
+  "links": [
+   {
+    "a": "ppl",
+    "b": "app",
+    "k": "cat7"
+   },
+   {
+    "a": "app",
+    "b": "cache",
+    "k": "eth",
+    "cv": -10
+   },
+   {
+    "a": "app",
+    "b": "db",
+    "k": "cat7",
+    "cv": 10
+   }
+  ],
+  "steps": [
+   {
+    "c": "Ürün sayfası saniyede binlerce kez isteniyor. Her seferinde veritabanına gitmek yavaş ve pahalıdır; araya önbellek (cache) konur.",
+    "cam": 0,
+    "tag": [
+     [
+      "cache",
+      "Hızlı bellek",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "İlk istek geldiğinde önbellekte ürün yok. Buna cache miss denir.",
+    "p": [
+     [
+      "ppl",
+      "app",
+      "req",
+      "GET /urun/7"
+     ],
+     [
+      "app",
+      "cache",
+      "req",
+      "urun:7 var mı?"
+     ],
+     [
+      "cache",
+      "app",
+      "bad",
+      "yok"
+     ]
+    ],
+    "tag": [
+     [
+      "cache",
+      "CACHE MISS",
+      "red"
+     ]
+    ],
+    "mark": [
+     [
+      "cache",
+      "?"
+     ]
+    ]
+   },
+   {
+    "c": "Uygulama ürünü veritabanından okur ve cevabı önbelleğe, bir yaşam süresiyle (TTL) yazar.",
+    "p": [
+     [
+      "app",
+      "db",
+      "data",
+      "SELECT"
+     ],
+     [
+      "db",
+      "app",
+      "data",
+      "ürün 7"
+     ],
+     [
+      "app",
+      "cache",
+      "data",
+      "SET + TTL"
+     ]
+    ],
+    "tag": [
+     [
+      "cache",
+      "urun:7, TTL = 60 sn",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Ziyaretçiye yanıt gider. Bu yavaş yoldu; ama sonraki istekler bunu yaşamayacak.",
+    "p": [
+     [
+      "app",
+      "ppl",
+      "res",
+      "200 OK"
+     ]
+    ],
+    "mark": [
+     [
+      "ppl",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "db",
+      "1 sorgu çalıştı",
+      "light"
+     ]
+    ]
+   },
+   {
+    "c": "Aynı ürün tekrar istenince önbellekte bulunur: cache hit. Veritabanına hiç gidilmez.",
+    "p": [
+     [
+      "ppl",
+      "app",
+      "req",
+      "GET /urun/7"
+     ],
+     [
+      "app",
+      "cache",
+      "req",
+      "urun:7?"
+     ],
+     [
+      "cache",
+      "app",
+      "ok",
+      "bulundu"
+     ],
+     [
+      "app",
+      "ppl",
+      "res",
+      "200 OK"
+     ]
+    ],
+    "tag": [
+     [
+      "cache",
+      "CACHE HIT",
+      "green"
+     ]
+    ],
+    "dim": [
+     "db"
+    ],
+    "say": [
+     [
+      "app",
+      "Veritabanına gitmeme gerek yok"
+     ]
+    ]
+   },
+   {
+    "c": "Fiyat değişirse önbellekteki eski veri yanıltır. Güncellemede anahtar silinir (invalidate); TTL dolunca da kendiliğinden düşer.",
+    "p": [
+     [
+      "app",
+      "db",
+      "data",
+      "UPDATE fiyat"
+     ],
+     [
+      "app",
+      "cache",
+      "bad",
+      "DEL urun:7"
+     ]
+    ],
+    "tag": [
+     [
+      "cache",
+      "Eski veri geçersiz kılındı",
+      "amber"
+     ]
+    ],
+    "mark": [
+     [
+      "cache",
+      "!"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "Önbellek = sık okunan veri hızlı bellekte, DB rahatta",
+  "notes": [
+   "Hit önbellekten, miss veritabanından yanıt demektir.",
+   "TTL, verinin önbellekte ne kadar kalacağını belirler.",
+   "Veri değişince önbelleği geçersiz kılmak gerekir.",
+   "Önbellek hız kazandırır ama eski veri riski getirir."
+  ],
+  "q": [
+   {
+    "q": "Önbellekte aranan anahtar bulunamadı. Buna ne denir?",
+    "o": [
+     "Cache hit",
+     "Cache miss",
+     "TTL dolması",
+     "Redrive"
+    ],
+    "a": 1,
+    "w": "Anahtar yoksa miss olur ve veri asıl kaynaktan okunur."
+   },
+   {
+    "q": "Ürün fiyatı güncellendi ama sayfada eski fiyat görünüyor. Muhtemel neden?",
+    "o": [
+     "Önbellekteki eski kayıt geçersiz kılınmadı",
+     "Veritabanı çöktü",
+     "İstek POST yapıldı",
+     "Sunucunun saati kaydı"
+    ],
+    "a": 0,
+    "w": "Önbellek eski kopyayı TTL dolana ya da silinene kadar sunar."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "bk-idem",
+  "tr": "bk",
+  "trs": [
+   "bk"
+  ],
+  "theme": "bk",
+  "t": "Idempotency anahtarı",
+  "title": "Çifte ödemeyi idempotency anahtarı önler",
+  "one": "Aynı isteği iki kez göndermek aynı sonucu doğurur; zaman aşımında tekrar deneme güvenli olur.",
+  "rx": "idempotency|yeniden deneme|retry|geri çekilme|backoff|zaman aşımı",
+  "icon": "shield",
+  "nodes": [
+   {
+    "id": "ph",
+    "k": "phone",
+    "x": 50,
+    "y": 215,
+    "l": "Müşteri"
+   },
+   {
+    "id": "api",
+    "k": "server",
+    "x": 175,
+    "y": 215,
+    "l": "Ödeme API"
+   },
+   {
+    "id": "bank",
+    "k": "server",
+    "x": 300,
+    "y": 300,
+    "l": "Banka"
+   },
+   {
+    "id": "idk",
+    "k": "db",
+    "x": 300,
+    "y": 130,
+    "l": "Anahtarlar",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "ph",
+    "b": "api",
+    "k": "cat7"
+   },
+   {
+    "a": "api",
+    "b": "bank",
+    "k": "eth"
+   },
+   {
+    "a": "api",
+    "b": "idk",
+    "k": "eth"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Müşteri 100 TL ödeme yapıyor. Ağ yavaş olursa cevap gelmeyebilir; uygulama tekrar denemeli mi, yoksa para iki kez çekilir mi?",
+    "cam": 0,
+    "tag": [
+     [
+      "ph",
+      "Öde: 100 TL",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "İstek bankaya ulaşır, para çekilir, ama yanıt yolda kaybolur. Müşteri uygulaması zaman aşımı (timeout) alır ve sonucu bilmez.",
+    "p": [
+     [
+      "ph",
+      "api",
+      "req",
+      "POST /odeme"
+     ],
+     [
+      "api",
+      "bank",
+      "req",
+      "100 TL çek"
+     ],
+     [
+      "bank",
+      "api",
+      "ok",
+      "tamam"
+     ],
+     [
+      "api",
+      "ph",
+      "bad",
+      "yanıt kayıp"
+     ]
+    ],
+    "tag": [
+     [
+      "bank",
+      "-100 TL",
+      "amber"
+     ]
+    ],
+    "mark": [
+     [
+      "ph",
+      "?"
+     ]
+    ]
+   },
+   {
+    "c": "Uygulama aynı isteği tekrar gönderir. Sunucu bunun tekrar olduğunu bilmediği için parayı ikinci kez çeker.",
+    "p": [
+     [
+      "ph",
+      "api",
+      "req",
+      "POST /odeme"
+     ],
+     [
+      "api",
+      "bank",
+      "req",
+      "100 TL çek"
+     ]
+    ],
+    "tag": [
+     [
+      "bank",
+      "-100 TL (ikinci kez!)",
+      "red"
+     ]
+    ],
+    "mark": [
+     [
+      "bank",
+      "!"
+     ]
+    ],
+    "say": [
+     [
+      "ph",
+      "Neden iki kez çekildi?"
+     ]
+    ]
+   },
+   {
+    "c": "Çözüm: istemci her ödemeye benzersiz bir idempotency anahtarı koyar. Sunucu anahtarı yoksa işler, sonucu kaydeder.",
+    "show": [
+     "idk"
+    ],
+    "p": [
+     [
+      "ph",
+      "api",
+      "req",
+      "POST + anahtar"
+     ],
+     [
+      "api",
+      "idk",
+      "data",
+      "anahtar var mı?"
+     ],
+     [
+      "api",
+      "bank",
+      "req",
+      "100 TL çek"
+     ],
+     [
+      "api",
+      "idk",
+      "data",
+      "sonucu kaydet"
+     ]
+    ],
+    "tag": [
+     [
+      "ph",
+      "Idempotency-Key: a1b2c3",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Yanıt yine kaybolur ve istemci aynı anahtarla tekrar dener. Sunucu anahtarı bulur, bankaya gitmez, kayıtlı sonucu döner.",
+    "p": [
+     [
+      "ph",
+      "api",
+      "req",
+      "aynı anahtar"
+     ],
+     [
+      "api",
+      "idk",
+      "data",
+      "anahtar?"
+     ],
+     [
+      "idk",
+      "api",
+      "ok",
+      "kayıtlı sonuç"
+     ],
+     [
+      "api",
+      "ph",
+      "res",
+      "200 (eski sonuç)"
+     ]
+    ],
+    "tag": [
+     [
+      "bank",
+      "Çekim tek: -100 TL",
+      "green"
+     ]
+    ],
+    "mark": [
+     [
+      "bank",
+      "ok"
+     ],
+     [
+      "ph",
+      "ok"
+     ]
+    ],
+    "dim": [
+     "bank"
+    ]
+   },
+   {
+    "c": "Tekrar denemeler aralıklı yapılır: üstel geri çekilme (exponential backoff) her denemede bekleme süresini katlar, jitter rastgelelik ekler.",
+    "tag": [
+     [
+      "ph",
+      "Bekleme: 1 sn, 2 sn, 4 sn + jitter",
+      "dark"
+     ],
+     [
+      "api",
+      "Aynı anahtar = aynı sonuç",
+      "green"
+     ]
+    ],
+    "hi": [
+     "ph",
+     "api"
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "İdempotent istek = tekrar denense de etkisi tek",
+  "notes": [
+   "Zaman aşımı, işlemin başarısız olduğunu göstermez.",
+   "Idempotency anahtarı aynı isteği tekrar işlemeyi engeller.",
+   "GET, PUT, DELETE doğası gereği idempotenttir; POST değildir.",
+   "Tekrar denemelerde üstel geri çekilme ve jitter kullan."
+  ],
+  "q": [
+   {
+    "q": "Ödeme isteği zaman aşımına uğradı. İstemci güvenle tekrar denemek için ne gönderir?",
+    "o": [
+     "Aynı idempotency anahtarı",
+     "Her seferinde yeni anahtar",
+     "Hiçbir anahtar",
+     "Daha büyük bir tutar"
+    ],
+    "a": 0,
+    "w": "Aynı anahtar sunucuya bunun tekrar olduğunu söyler ve kayıtlı sonuç döner."
+   },
+   {
+    "q": "Üstel geri çekilme (exponential backoff) ne yapar?",
+    "o": [
+     "İstekleri paralel gönderir",
+     "Mesajları şifreler",
+     "Başarısız denemeler arasındaki beklemeyi giderek artırır",
+     "Yanıt süresini sıfırlar"
+    ],
+    "a": 2,
+    "w": "Bekleme süresi katlanarak artar ve servisin toparlanmasına fırsat verir."
+   },
+   {
+    "q": "Aşağıdakilerden hangisi doğası gereği idempotent değildir?",
+    "o": [
+     "PUT /urun/7",
+     "DELETE /urun/7",
+     "GET /urun/7",
+     "POST /odeme"
+    ],
+    "a": 3,
+    "w": "POST her çağrıda yeni kayıt oluşturabilir; anahtar yoksa tekrar çift işlem yapar."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "bk-lambda",
+  "tr": "bk",
+  "trs": [
+   "bk"
+  ],
+  "theme": "bk",
+  "t": "API Gateway, Lambda, DynamoDB",
+  "title": "API Gateway + Lambda + DynamoDB akışı",
+  "one": "Sunucu yönetmeden küçük bir API: istek geldiğinde fonksiyon çalışır, veriyi DynamoDB'den okur.",
+  "rx": "lambda|api gateway|serverless|dynamodb|sunucusuz",
+  "icon": "lambda",
+  "nodes": [
+   {
+    "id": "ph",
+    "k": "phone",
+    "x": 50,
+    "y": 215,
+    "l": "Mobil uygulama"
+   },
+   {
+    "id": "gw",
+    "k": "api",
+    "x": 135,
+    "y": 130,
+    "l": "API Gateway"
+   },
+   {
+    "id": "fn",
+    "k": "lambda",
+    "x": 230,
+    "y": 215,
+    "l": "Lambda"
+   },
+   {
+    "id": "ddb",
+    "k": "db",
+    "x": 310,
+    "y": 130,
+    "l": "DynamoDB",
+    "s2": "users"
+   },
+   {
+    "id": "cw",
+    "k": "log",
+    "x": 230,
+    "y": 300,
+    "l": "CloudWatch Logs",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "ph",
+    "b": "gw",
+    "k": "cat7"
+   },
+   {
+    "a": "gw",
+    "b": "fn",
+    "k": "cat7"
+   },
+   {
+    "a": "fn",
+    "b": "ddb",
+    "k": "eth"
+   },
+   {
+    "a": "fn",
+    "b": "cw",
+    "k": "thin"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Günde 10 kez çalışan küçük bir API için sunucu 7/24 açık tutulmaz. Fonksiyon yalnız istek gelince çalışır.",
+    "cam": 0,
+    "dim": [
+     "fn"
+    ],
+    "tag": [
+     [
+      "ph",
+      "Günde yalnız 10 istek",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Mobil uygulama isteği API Gateway'e gönderir. Gateway ön kapıdır: adresi, yetkiyi ve yönlendirmeyi yönetir.",
+    "p": [
+     [
+      "ph",
+      "gw",
+      "req",
+      "GET /kullanici/42"
+     ]
+    ],
+    "tag": [
+     [
+      "gw",
+      "Kapı: yol + yetki",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Gateway isteği olay (event) olarak Lambda fonksiyonuna iletir. Fonksiyon başlar; ilk çağrıda soğuk başlangıç (cold start) gecikmesi olabilir.",
+    "p": [
+     [
+      "gw",
+      "fn",
+      "env",
+      "olay (event)"
+     ]
+    ],
+    "tag": [
+     [
+      "fn",
+      "Lambda başladı",
+      "green"
+     ]
+    ],
+    "hi": [
+     "fn"
+    ]
+   },
+   {
+    "c": "Fonksiyon DynamoDB'den anahtarla kaydı okur. Anahtar tasarımı hızı belirler: burada kullanici_id = 42.",
+    "p": [
+     [
+      "fn",
+      "ddb",
+      "data",
+      "GetItem id=42"
+     ],
+     [
+      "ddb",
+      "fn",
+      "data",
+      "kayıt"
+     ]
+    ],
+    "tag": [
+     [
+      "ddb",
+      "Anahtar: kullanici_id = 42",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Fonksiyon JSON yanıtı üretir, gateway uygulamaya 200 OK ile iletir. İş bitince Lambda kapanır, ücret yalnız çalıştığı süre içindir.",
+    "p": [
+     [
+      "fn",
+      "gw",
+      "res",
+      "JSON"
+     ],
+     [
+      "gw",
+      "ph",
+      "res",
+      "200 OK"
+     ]
+    ],
+    "mark": [
+     [
+      "ph",
+      "ok"
+     ]
+    ],
+    "hi": [
+     "fn"
+    ]
+   },
+   {
+    "c": "Lambda'nın çıktıları ve hataları otomatik olarak CloudWatch Logs'a yazılır. Canlıda hata olunca bakılacak ilk yer burasıdır.",
+    "show": [
+     "cw"
+    ],
+    "p": [
+     [
+      "fn",
+      "cw",
+      "data",
+      "log satırı"
+     ]
+    ],
+    "tag": [
+     [
+      "cw",
+      "Hata ve çıktı kayıtları",
+      "blue"
+     ]
+    ],
+    "hi": [
+     "cw"
+    ]
+   },
+   {
+    "c": "Fonksiyonun IAM rolü yalnız gerekli izni verir. Burada yalnız GetItem var; silme denenirse erişim reddedilir.",
+    "p": [
+     [
+      "fn",
+      "ddb",
+      "bad",
+      "DeleteItem"
+     ]
+    ],
+    "mark": [
+     [
+      "ddb",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "fn",
+      "IAM rolü: yalnız GetItem izni",
+      "amber"
+     ],
+     [
+      "ddb",
+      "AccessDenied",
+      "red"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "İstek gelince fonksiyon çalışır, sunucu yönetmezsin",
+  "notes": [
+   "API Gateway kapıdır, Lambda iş yapan fonksiyondur, DynamoDB veriyi tutar.",
+   "Lambda yalnız çalıştığı süre için ücretlendirilir.",
+   "Loglar CloudWatch'a düşer; hata ayıklamanın ilk adımı.",
+   "IAM rolü ile fonksiyona yalnız gereken izin verilir."
+  ],
+  "q": [
+   {
+    "q": "Günde birkaç kez çağrılan küçük bir API için neden Lambda mantıklıdır?",
+    "o": [
+     "Her zaman daha hızlıdır",
+     "Yalnız çalıştığı süre için ödenir, sunucu yönetilmez",
+     "Veritabanı gerektirmez",
+     "Gateway olmadan çalışır"
+    ],
+    "a": 1,
+    "w": "Boşta bekleyen sunucu maliyeti ortadan kalkar."
+   },
+   {
+    "q": "Canlıdaki Lambda hata veriyor. İlk bakılacak yer neresidir?",
+    "o": [
+     "Mobil uygulamanın ekranı",
+     "Alan adı kaydı",
+     "DynamoDB tablosunun anahtarı",
+     "CloudWatch Logs"
+    ],
+    "a": 3,
+    "w": "Lambda çıktısı ve hata izleri CloudWatch Logs'a yazılır."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "bk-s3",
+  "tr": "bk",
+  "trs": [
+   "bk"
+  ],
+  "theme": "bk",
+  "t": "S3 presigned URL",
+  "title": "S3 presigned URL: kovayı açmadan yükleme",
+  "one": "Kova özel kalır; uygulama süreli, imzalı bir adres verir, dosya doğrudan S3'e yüklenir.",
+  "rx": "s3|presigned|bucket|kova|anahtar tasarım",
+  "icon": "bucket",
+  "nodes": [
+   {
+    "id": "ph",
+    "k": "phone",
+    "x": 50,
+    "y": 215,
+    "l": "Mobil uygulama"
+   },
+   {
+    "id": "api",
+    "k": "server",
+    "x": 180,
+    "y": 125,
+    "l": "Uygulama API"
+   },
+   {
+    "id": "db",
+    "k": "db",
+    "x": 310,
+    "y": 125,
+    "l": "DynamoDB",
+    "s2": "kullanıcı bilgisi"
+   },
+   {
+    "id": "s3",
+    "k": "bucket",
+    "x": 305,
+    "y": 300,
+    "l": "S3 kovası",
+    "s2": "özel"
+   },
+   {
+    "id": "atk",
+    "k": "user",
+    "x": 170,
+    "y": 300,
+    "l": "Yabancı",
+    "c": "#d64545"
+   }
+  ],
+  "links": [
+   {
+    "a": "ph",
+    "b": "api",
+    "k": "cat7"
+   },
+   {
+    "a": "api",
+    "b": "db",
+    "k": "eth"
+   },
+   {
+    "a": "ph",
+    "b": "s3",
+    "k": "fiber",
+    "cv": -22
+   },
+   {
+    "a": "atk",
+    "b": "s3",
+    "k": "wifi"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Kullanıcı profil fotoğrafı yükleyecek. Fotoğraf dosyası S3'te, kullanıcı bilgisi DynamoDB'de saklanır.",
+    "cam": 0,
+    "tag": [
+     [
+      "s3",
+      "Dosya depolama",
+      "dark"
+     ],
+     [
+      "db",
+      "Kayıt depolama",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "S3 kovası (bucket) özeldir. Dışarıdan biri dosyaya ulaşmaya çalışırsa 403 Forbidden alır.",
+    "p": [
+     [
+      "atk",
+      "s3",
+      "bad",
+      "GET foto.jpg"
+     ],
+     [
+      "s3",
+      "atk",
+      "bad",
+      "403"
+     ]
+    ],
+    "mark": [
+     [
+      "atk",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "s3",
+      "Herkese açık değil",
+      "red"
+     ]
+    ]
+   },
+   {
+    "c": "Kovayı herkese açmak yerine uygulama API'den yükleme izni ister. API kullanıcının kimliğini doğrular.",
+    "p": [
+     [
+      "ph",
+      "api",
+      "req",
+      "yükleme izni?"
+     ]
+    ],
+    "tag": [
+     [
+      "api",
+      "Kimlik doğrulandı (JWT)",
+      "green"
+     ]
+    ]
+   },
+   {
+    "c": "API kendi yetkisiyle süreli, imzalı bir adres (presigned URL) üretir ve uygulamaya verir.",
+    "p": [
+     [
+      "api",
+      "ph",
+      "key",
+      "Presigned URL"
+     ]
+    ],
+    "tag": [
+     [
+      "api",
+      "İmzalı + süreli adres (örn. 5 dk)",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "api"
+    ]
+   },
+   {
+    "c": "Uygulama dosyayı bu adrese doğrudan PUT ile gönderir. Dosya API'den geçmez, S3 imzayı doğrulayıp kabul eder.",
+    "p": [
+     [
+      "ph",
+      "s3",
+      "data",
+      "PUT foto.jpg"
+     ]
+    ],
+    "mark": [
+     [
+      "s3",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "s3",
+      "Doğrudan yükleme",
+      "green"
+     ]
+    ],
+    "hi": [
+     "s3"
+    ]
+   },
+   {
+    "c": "Yükleme bitince uygulama API'ye haber verir; API yalnız dosya yolunu kullanıcı kaydına yazar.",
+    "p": [
+     [
+      "ph",
+      "api",
+      "env",
+      "yüklendi"
+     ],
+     [
+      "api",
+      "db",
+      "data",
+      "foto_yolu"
+     ]
+    ],
+    "tag": [
+     [
+      "db",
+      "foto_yolu = users/42/foto.jpg",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Adresin süresi dolduktan sonra aynı URL işe yaramaz. S3 isteği 403 ile reddeder; yeni adres gerekir.",
+    "p": [
+     [
+      "ph",
+      "s3",
+      "bad",
+      "aynı URL"
+     ],
+     [
+      "s3",
+      "ph",
+      "bad",
+      "403 süresi doldu"
+     ]
+    ],
+    "mark": [
+     [
+      "ph",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "s3",
+      "Süresi dolmuş adres geçersiz",
+      "amber"
+     ]
+    ]
+   }
+  ],
+  "result": "Presigned URL = süreli, imzalı kapı anahtarı",
+  "notes": [
+   "Dosya S3'te, kullanıcı kaydı DynamoDB'de tutulur.",
+   "Kova özel kalır; erişim presigned URL ile geçici açılır.",
+   "Dosya doğrudan S3'e gider, API trafiği yükünü taşımaz.",
+   "URL süresi dolunca ya da imza bozulunca istek reddedilir."
+  ],
+  "q": [
+   {
+    "q": "Presigned URL'in asıl faydası nedir?",
+    "o": [
+     "Kovayı herkese açık yapmak",
+     "Kova özel kalırken geçici erişim vermek",
+     "Dosyayı otomatik şifrelemek",
+     "DynamoDB'yi hızlandırmak"
+    ],
+    "a": 1,
+    "w": "Kova özel kalır; adres imzalıdır ve süre dolunca geçersizdir."
+   },
+   {
+    "q": "Presigned URL'in süresi doldu. Aynı adresle PUT denenirse sonuç ne olur?",
+    "o": [
+     "Dosya yüklenir",
+     "Dosya silinir",
+     "İstek 403 ile reddedilir",
+     "S3 yeni adres üretir"
+    ],
+    "a": 2,
+    "w": "Süre sonrası imza geçersiz sayılır, istek reddedilir."
+   }
+  ]
+ }
+]

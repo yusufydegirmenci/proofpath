@@ -1,0 +1,2560 @@
+[
+ {
+  "v": 2,
+  "id": "sc-hash",
+  "t": "Parola özeti (hash)",
+  "title": "Parola nasıl saklanır?",
+  "one": "Parola düz yazı değil, geri çevrilemeyen bir özet olarak saklanır; giriş özetler karşılaştırılarak yapılır.",
+  "trs": [
+   "sec",
+   "net"
+  ],
+  "rx": "hash|parola saklama|tuzlama|salt|özet işlev",
+  "icon": "key",
+  "nodes": [
+   {
+    "id": "u",
+    "k": "user",
+    "x": 55,
+    "y": 190,
+    "l": "Ayşe"
+   },
+   {
+    "id": "sv",
+    "k": "server",
+    "x": 165,
+    "y": 150,
+    "l": "Giriş sunucusu"
+   },
+   {
+    "id": "h",
+    "k": "gear",
+    "x": 165,
+    "y": 285,
+    "l": "Hash işlevi",
+    "s2": "SHA-256"
+   },
+   {
+    "id": "db",
+    "k": "db",
+    "x": 295,
+    "y": 205,
+    "l": "Veritabanı"
+   },
+   {
+    "id": "lk",
+    "k": "doc",
+    "x": 295,
+    "y": 300,
+    "l": "Sızan kopya",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "u",
+    "b": "sv",
+    "k": "eth",
+    "l": "HTTPS",
+    "lt": 0.45,
+    "cv": -8
+   },
+   {
+    "a": "sv",
+    "b": "h",
+    "k": "thin"
+   },
+   {
+    "a": "sv",
+    "b": "db",
+    "k": "cat7",
+    "l": "kayıt",
+    "lt": 0.5
+   },
+   {
+    "a": "db",
+    "b": "lk",
+    "k": "warn"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Ayşe siteye kayıt oluyor. Sunucu parolasını veritabanına düz yazı olarak değil, özet (hash) olarak saklamalı.",
+    "cam": 0
+   },
+   {
+    "c": "Ayşe parolasını gönderiyor. Sunucu bunu bir hash işlevine (hashing) veriyor.",
+    "p": [
+     [
+      "u",
+      "sv",
+      "env",
+      "kedi123"
+     ],
+     [
+      "sv",
+      "h",
+      "data",
+      "kedi123"
+     ]
+    ],
+    "hi": [
+     "h"
+    ]
+   },
+   {
+    "c": "Hash işlevi tek yönlüdür: her girdiden sabit uzunlukta bir özet üretir, özetten parola geri çıkarılamaz.",
+    "p": [
+     [
+      "h",
+      "sv",
+      "key",
+      "özet 9c1f…"
+     ]
+    ],
+    "tag": [
+     [
+      "h",
+      "TEK YÖNLÜ: özetten parola çıkmaz",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Veritabanında yalnızca özet duruyor. Parolanın kendisi hiçbir yerde saklanmıyor.",
+    "p": [
+     [
+      "sv",
+      "db",
+      "key",
+      "özet 9c1f…"
+     ]
+    ],
+    "tag": [
+     [
+      "db",
+      "Saklanan: yalnız özet",
+      "green"
+     ]
+    ]
+   },
+   {
+    "c": "Veritabanı kopyası sızsa bile içinde parola yok, özetler var. Kötü niyetli kişi parolaları doğrudan okuyamaz.",
+    "show": [
+     "lk"
+    ],
+    "p": [
+     [
+      "db",
+      "lk",
+      "bad",
+      "sızıntı"
+     ]
+    ],
+    "mark": [
+     [
+      "lk",
+      "!"
+     ]
+    ],
+    "say": [
+     [
+      "lk",
+      "Sadece özetler... parola yok"
+     ]
+    ]
+   },
+   {
+    "c": "Yine de zayıf parolalar tahmin edilebilir. Bu yüzden her kullanıcıya rastgele tuz (salt) eklenir ve yavaş bir işlev (bcrypt, Argon2) kullanılır.",
+    "tag": [
+     [
+      "db",
+      "TUZ + YAVAŞ HASH: bcrypt / Argon2",
+      "amber"
+     ]
+    ],
+    "hi": [
+     "h",
+     "db"
+    ],
+    "cam": [
+     230,
+     230,
+     1.3
+    ]
+   },
+   {
+    "c": "Ayşe sonra giriş yapıyor. Sunucu girilen parolayı aynı yöntemle özetliyor ve kayıtlı özetle karşılaştırıyor.",
+    "p": [
+     [
+      "u",
+      "sv",
+      "env",
+      "kedi123"
+     ],
+     [
+      "sv",
+      "h",
+      "data",
+      "hesapla"
+     ],
+     [
+      "db",
+      "sv",
+      "key",
+      "kayıtlı özet"
+     ]
+    ],
+    "mark": [
+     [
+      "sv",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "sv",
+      "Özetler eşit: giriş başarılı",
+      "green"
+     ]
+    ]
+   }
+  ],
+  "result": "Parola saklanmaz; özeti saklanır ve karşılaştırılır",
+  "notes": [
+   "Hash tek yönlüdür; şifreleme gibi geri açılmaz.",
+   "Aynı parola, farklı tuzla farklı özet üretir.",
+   "Parolalar için hızlı SHA-256 değil, yavaş bcrypt veya Argon2 tercih edilir."
+  ],
+  "q": [
+   {
+    "q": "Sunucu kullanıcı girişini doğrularken ne yapar?",
+    "o": [
+     "Girilen parolayı özetleyip kayıtlı özetle karşılaştırır",
+     "Kayıtlı özeti çözüp parolayı okur",
+     "Parolayı veritabanından düz yazı olarak çeker",
+     "Parolayı e-posta ile kullanıcıya geri gönderir"
+    ],
+    "a": 0,
+    "w": "Özet geri çevrilemediği için doğrulama özetlerin karşılaştırılmasıyla yapılır."
+   },
+   {
+    "q": "Parolaya kullanıcıya özel rastgele tuz (salt) eklemenin amacı nedir?",
+    "o": [
+     "Parolayı kısaltmak",
+     "Aynı parolaların aynı özeti üretmesini ve hazır tabloların işe yaramasını engellemek",
+     "Özeti geri çevrilebilir yapmak",
+     "Parolayı ağda şifrelemek"
+    ],
+    "a": 1,
+    "w": "Tuz, aynı parolalı kullanıcıların özetlerini farklı kılar ve önceden hesaplanmış tabloları geçersiz bırakır."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "sc-tls",
+  "t": "TLS el sıkışma",
+  "title": "Kilit simgesi neyi garanti eder?",
+  "one": "TLS, sunucunun kimliğini sertifikayla doğrular ve ortak bir oturum anahtarıyla trafiği şifreler.",
+  "trs": [
+   "sec",
+   "net"
+  ],
+  "rx": "tls|ssl|sertifika|pki|https",
+  "icon": "tls",
+  "nodes": [
+   {
+    "id": "b",
+    "k": "laptop",
+    "x": 55,
+    "y": 235,
+    "l": "Tarayıcı"
+   },
+   {
+    "id": "sv",
+    "k": "server",
+    "x": 300,
+    "y": 235,
+    "l": "banka.example",
+    "s2": "443"
+   },
+   {
+    "id": "ca",
+    "k": "cert",
+    "x": 178,
+    "y": 135,
+    "l": "Sertifika otoritesi",
+    "s2": "CA"
+   },
+   {
+    "id": "lk",
+    "k": "lock",
+    "x": 178,
+    "y": 280,
+    "l": "Şifreli tünel",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "b",
+    "b": "sv",
+    "k": "fiber",
+    "l": "Port 443",
+    "lt": 0.5,
+    "cv": 14
+   },
+   {
+    "a": "ca",
+    "b": "sv",
+    "k": "thin",
+    "l": "imzaladı",
+    "lt": 0.5
+   },
+   {
+    "a": "ca",
+    "b": "b",
+    "k": "thin",
+    "l": "güven listesi",
+    "lt": 0.5
+   }
+  ],
+  "steps": [
+   {
+    "c": "Ayşe tarayıcıdan bankasının sitesine https:// ile bağlanıyor. Trafiğin gizli ve karşı tarafın gerçek banka olması gerekiyor.",
+    "cam": 0
+   },
+   {
+    "c": "Tarayıcı el sıkışmayı (handshake) başlatıyor: desteklediği TLS sürümlerini ve şifre paketlerini bildiriyor.",
+    "p": [
+     [
+      "b",
+      "sv",
+      "req",
+      "ClientHello"
+     ]
+    ],
+    "tag": [
+     [
+      "sv",
+      "PORT 443",
+      "dark"
+     ]
+    ],
+    "say": [
+     [
+      "b",
+      "Güvenli konuşalım"
+     ]
+    ]
+   },
+   {
+    "c": "Sunucu kimliğini kanıtlamak için sertifikasını yolluyor: alan adı, açık anahtar ve geçerlilik süresi içerir.",
+    "p": [
+     [
+      "sv",
+      "b",
+      "res",
+      "Sertifika"
+     ]
+    ],
+    "tag": [
+     [
+      "sv",
+      "Sertifika: banka.example",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Tarayıcı sertifikadaki imzayı, güvendiği CA'ların listesiyle doğruluyor; alan adı ve süreyi de kontrol ediyor.",
+    "p": [
+     [
+      "ca",
+      "b",
+      "key",
+      "CA imzası"
+     ]
+    ],
+    "hi": [
+     "ca",
+     "b"
+    ],
+    "mark": [
+     [
+      "sv",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "ca",
+      "İMZA · ALAN ADI · SÜRE",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "İki taraf anahtar paylaşımı (key share) değiş tokuş ederek aynı gizli oturum anahtarını kendi başlarına hesaplıyor. Anahtarın kendisi ağdan geçmiyor.",
+    "show": [
+     "lk"
+    ],
+    "p": [
+     [
+      "b",
+      "sv",
+      "key",
+      "Anahtar payı"
+     ],
+     [
+      "sv",
+      "b",
+      "key",
+      "Anahtar payı"
+     ]
+    ],
+    "tag": [
+     [
+      "lk",
+      "Ortak oturum anahtarı",
+      "green"
+     ]
+    ]
+   },
+   {
+    "c": "Artık veri, oturum anahtarıyla şifreleniyor. Ağdan geçenler yalnızca anlamsız bayt görür.",
+    "p": [
+     [
+      "b",
+      "sv",
+      "data",
+      "şifreli veri"
+     ],
+     [
+      "sv",
+      "b",
+      "data",
+      "şifreli veri"
+     ]
+    ],
+    "hi": [
+     "lk"
+    ],
+    "cam": [
+     178,
+     240,
+     1.2
+    ]
+   },
+   {
+    "c": "Sertifika süresi dolmuş ya da alan adı uyuşmuyorsa tarayıcı uyarı verir. Bu uyarıda devam etmemek gerekir.",
+    "p": [
+     [
+      "sv",
+      "b",
+      "bad",
+      "Süresi dolmuş"
+     ]
+    ],
+    "mark": [
+     [
+      "sv",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "b",
+      "Bağlantı güvenli değil!"
+     ]
+    ],
+    "dim": [
+     "lk"
+    ]
+   }
+  ],
+  "result": "TLS = kimlik doğrulama + şifreli oturum",
+  "notes": [
+   "Kilit simgesi bağlantının şifreli olduğunu söyler, sitenin iyi niyetli olduğunu değil.",
+   "Sertifikayı CA imzalar; tarayıcı CA'ya güvenir.",
+   "Veri asimetrik anahtar değişiminden sonra hızlı simetrik anahtarla şifrelenir."
+  ],
+  "q": [
+   {
+    "q": "Tarayıcı sunucunun sahte olmadığını nasıl anlar?",
+    "o": [
+     "Sertifikanın güvenilen bir CA tarafından imzalandığını doğrular",
+     "Sitenin adresinde www olup olmadığına bakar",
+     "Sunucunun IP adresinin ülkesine bakar",
+     "Sunucudan parolasını ister"
+    ],
+    "a": 0,
+    "w": "Kimlik doğrulaması sertifika imzası, alan adı ve geçerlilik süresi kontrolüyle yapılır."
+   },
+   {
+    "q": "El sıkışmadan sonra asıl veri neyle şifrelenir?",
+    "o": [
+     "CA'nın özel anahtarıyla",
+     "Hash işleviyle",
+     "Ortak oturum anahtarıyla (simetrik)",
+     "Sertifikadaki açık anahtarla her pakette"
+    ],
+    "a": 2,
+    "w": "Anahtar değişimi bittikten sonra hız için simetrik oturum anahtarı kullanılır."
+   },
+   {
+    "q": "Süresi dolmuş sertifika uyarısı çıkınca ne yapılmalı?",
+    "o": [
+     "Her zaman devam edilir",
+     "Bağlantı durdurulur, sorun site sahibine bildirilir",
+     "Tarayıcı kapatılıp VPN açılır, aynı siteye girilir",
+     "Parola daha uzun yazılır"
+    ],
+    "a": 1,
+    "w": "Doğrulanamayan kimlikle hassas veri paylaşılmamalıdır."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "sc-firewall",
+  "t": "Güvenlik duvarı",
+  "title": "Güvenlik duvarı kapıda ne yapar?",
+  "one": "Güvenlik duvarı kurallara göre trafiğe izin verir ya da engeller; DMZ ve iç ağ ayrımı zararı sınırlar.",
+  "trs": [
+   "sec",
+   "net"
+  ],
+  "rx": "güvenlik duvarı|firewall|segmentasyon|dmz",
+  "icon": "firewall",
+  "nodes": [
+   {
+    "id": "i",
+    "k": "internet",
+    "x": 50,
+    "y": 215,
+    "l": "İnternet"
+   },
+   {
+    "id": "fw",
+    "k": "firewall",
+    "x": 150,
+    "y": 215,
+    "l": "Güvenlik duvarı"
+   },
+   {
+    "id": "web",
+    "k": "server",
+    "x": 290,
+    "y": 135,
+    "l": "Web sunucusu",
+    "s2": "DMZ"
+   },
+   {
+    "id": "pc",
+    "k": "pc",
+    "x": 290,
+    "y": 215,
+    "l": "Muhasebe PC",
+    "s2": "10.0.10.5"
+   },
+   {
+    "id": "db",
+    "k": "db",
+    "x": 290,
+    "y": 290,
+    "l": "Dosya sunucusu",
+    "s2": "10.0.10.9"
+   }
+  ],
+  "links": [
+   {
+    "a": "i",
+    "b": "fw",
+    "k": "fiber"
+   },
+   {
+    "a": "fw",
+    "b": "web",
+    "k": "eth",
+    "l": "DMZ",
+    "lt": 0.55,
+    "cv": -10
+   },
+   {
+    "a": "fw",
+    "b": "pc",
+    "k": "cat7",
+    "l": "İç ağ",
+    "lt": 0.5
+   },
+   {
+    "a": "pc",
+    "b": "db",
+    "k": "cat7"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Şirketin interneti tek bir güvenlik duvarından (firewall) geçiyor. Üç bölge var: internet, DMZ ve iç ağ.",
+    "cam": 0
+   },
+   {
+    "c": "Dışarıdan web sitesine gelen istek 443 numaralı porta yönelik. Kural buna izin veriyor.",
+    "p": [
+     [
+      "i",
+      "web",
+      "req",
+      "HTTPS 443",
+      [
+       "fw"
+      ]
+     ]
+    ],
+    "tag": [
+     [
+      "fw",
+      "İZİN: TCP 443 → Web sunucusu",
+      "green"
+     ]
+    ],
+    "mark": [
+     [
+      "web",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Aynı yerden iç ağdaki dosya sunucusuna doğrudan bağlanma denemesi geliyor. Böyle bir kural yok.",
+    "p": [
+     [
+      "i",
+      "fw",
+      "bad",
+      "Doğrudan erişim"
+     ]
+    ],
+    "mark": [
+     [
+      "fw",
+      "x"
+     ]
+    ],
+    "hi": [
+     "fw"
+    ]
+   },
+   {
+    "c": "Varsayılan ilke: açıkça izin verilmeyen her şey engellenir (default deny).",
+    "tag": [
+     [
+      "fw",
+      "VARSAYILAN: HEPSİNİ ENGELLE",
+      "red"
+     ]
+    ],
+    "cam": [
+     150,
+     215,
+     1.4
+    ]
+   },
+   {
+    "c": "İç ağdaki çalışan internete çıkıyor. Durum izlemeli (stateful) güvenlik duvarı cevabı otomatik geri alır.",
+    "p": [
+     [
+      "pc",
+      "i",
+      "data",
+      "istek",
+      [
+       "fw"
+      ]
+     ],
+     [
+      "i",
+      "pc",
+      "res",
+      "cevap",
+      [
+       "fw"
+      ]
+     ]
+    ],
+    "tag": [
+     [
+      "fw",
+      "Bağlantı tablosu: cevaba izin",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Web sunucusu ele geçirilse bile DMZ ayrı bir bölge. İç ağa geçiş kuralı olmadığı için zarar orada kalıyor.",
+    "p": [
+     [
+      "web",
+      "pc",
+      "bad",
+      "İç ağa geçiş",
+      [
+       "fw"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "pc",
+      "x"
+     ]
+    ],
+    "hi": [
+     "web",
+     "fw"
+    ],
+    "dim": [
+     "db"
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "Kural + varsayılan engel + bölgeleme = az zarar",
+  "notes": [
+   "Kurallar yukarıdan aşağıya okunur; eşleşen ilk kural uygulanır.",
+   "İzin verilmeyen trafik engellenmelidir (default deny).",
+   "Ağ bölümleme (segmentasyon) bir sunucu ele geçse de yayılmayı sınırlar."
+  ],
+  "q": [
+   {
+    "q": "Internetten gelen istek hiçbir izin kuralına uymuyorsa ne olur?",
+    "o": [
+     "Kural olmadığı için geçer",
+     "Varsayılan ilkeyle engellenir",
+     "Önce yöneticiye sorulur",
+     "İç ağa yönlendirilir"
+    ],
+    "a": 1,
+    "w": "Default deny ilkesinde açıkça izin verilmeyen trafik düşürülür."
+   },
+   {
+    "q": "Web sunucusunu iç ağdan ayrı bir DMZ'ye koymanın faydası nedir?",
+    "o": [
+     "Sunucu daha hızlı çalışır",
+     "Sunucu ele geçse bile iç ağa geçiş kuralla engellenir",
+     "Sertifika gerekmez",
+     "Parola gerekmez"
+    ],
+    "a": 1,
+    "w": "Bölgeleme, bir sistemin ele geçirilmesinin etkisini sınırlar."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "sc-vpn",
+  "t": "VPN tüneli",
+  "title": "Kafede güvenli çalışmak: VPN",
+  "one": "VPN, cihaz ile şirket ağı arasında şifreli bir tünel kurar; açık Wi-Fi üzerinde bile trafik okunmaz.",
+  "trs": [
+   "sec",
+   "net"
+  ],
+  "rx": "vpn|sanal özel ağ|uzaktan erişim",
+  "icon": "lock",
+  "nodes": [
+   {
+    "id": "u",
+    "k": "laptop",
+    "x": 50,
+    "y": 235,
+    "l": "Ayşe",
+    "s2": "Kafe"
+   },
+   {
+    "id": "ap",
+    "k": "ap",
+    "x": 125,
+    "y": 150,
+    "l": "Kafe Wi-Fi"
+   },
+   {
+    "id": "i",
+    "k": "cloud",
+    "x": 215,
+    "y": 200,
+    "l": "İnternet"
+   },
+   {
+    "id": "gw",
+    "k": "firewall",
+    "x": 300,
+    "y": 140,
+    "l": "VPN geçidi"
+   },
+   {
+    "id": "srv",
+    "k": "server",
+    "x": 300,
+    "y": 265,
+    "l": "İç sunucu",
+    "s2": "10.0.0.20"
+   },
+   {
+    "id": "sn",
+    "k": "bug",
+    "x": 130,
+    "y": 290,
+    "l": "Dinleyen",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "u",
+    "b": "ap",
+    "k": "wifi"
+   },
+   {
+    "a": "ap",
+    "b": "i",
+    "k": "eth"
+   },
+   {
+    "a": "i",
+    "b": "gw",
+    "k": "fiber"
+   },
+   {
+    "a": "gw",
+    "b": "srv",
+    "k": "cat7"
+   },
+   {
+    "a": "u",
+    "b": "gw",
+    "k": "vpn",
+    "l": "Şifreli tünel",
+    "lt": 0.28,
+    "cv": 30
+   },
+   {
+    "a": "ap",
+    "b": "sn",
+    "k": "warn"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Ayşe kafede açık bir Wi-Fi ağından şirket sunucusuna ulaşmak istiyor. Şirkette bir VPN geçidi var.",
+    "cam": 0
+   },
+   {
+    "c": "VPN yokken şifresiz trafik kafenin ağında herkese açık yolculuk yapar. Ağdaki bir dinleyici onu okuyabilir.",
+    "show": [
+     "sn"
+    ],
+    "p": [
+     [
+      "u",
+      "srv",
+      "bad",
+      "açık veri",
+      [
+       "ap",
+       "i",
+       "gw"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "sn",
+      "!"
+     ]
+    ],
+    "say": [
+     [
+      "u",
+      "Şifresiz gidiyor, riskli"
+     ]
+    ]
+   },
+   {
+    "c": "Ayşe VPN istemcisini açıyor ve geçide kimliğini doğruluyor (parola + ikinci faktör).",
+    "p": [
+     [
+      "u",
+      "gw",
+      "key",
+      "Kimlik doğrula"
+     ]
+    ],
+    "tag": [
+     [
+      "u",
+      "VPN istemcisi: bağlanıyor",
+      "amber"
+     ]
+    ],
+    "hi": [
+     "u",
+     "gw"
+    ]
+   },
+   {
+    "c": "Tünel kuruldu. Cihaz ile geçit arasındaki tüm trafik şifreleniyor.",
+    "mark": [
+     [
+      "gw",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "u",
+      "Tünel açık",
+      "green"
+     ]
+    ],
+    "cam": 0
+   },
+   {
+    "c": "Artık trafik şifreli paketlere sarılarak gidiyor. Kafedeki dinleyici yalnızca anlamsız bayt görüyor.",
+    "p": [
+     [
+      "u",
+      "gw",
+      "key",
+      "şifreli"
+     ]
+    ],
+    "say": [
+     [
+      "sn",
+      "Okuyamıyorum"
+     ]
+    ],
+    "mark": [
+     [
+      "sn",
+      "x"
+     ]
+    ]
+   },
+   {
+    "c": "VPN geçidi tüneli açıyor ve isteği iç sunucuya iletiyor. Ayşe sanki ofisteymiş gibi çalışıyor.",
+    "p": [
+     [
+      "gw",
+      "srv",
+      "req",
+      "Dosya isteği"
+     ],
+     [
+      "srv",
+      "gw",
+      "res",
+      "Dosya"
+     ]
+    ],
+    "tag": [
+     [
+      "gw",
+      "Tünel burada sonlanır",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "gw",
+     "srv"
+    ]
+   },
+   {
+    "c": "Yaygın VPN çözümleri IPsec, WireGuard ve OpenVPN'dir. Hepsi aynı fikre dayanır: şifreli tünel.",
+    "tag": [
+     [
+      "gw",
+      "IPsec · WireGuard · OpenVPN",
+      "blue"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "VPN = güvenilmez ağda şifreli tünel",
+  "notes": [
+   "VPN, açık Wi-Fi'da trafiği dinleyenlerden korur.",
+   "Tünel cihaz ile VPN geçidi arasındadır; geçidin ötesi şirket ağının korumasına bağlıdır.",
+   "VPN girişinde mutlaka çok faktörlü doğrulama kullanılmalı."
+  ],
+  "q": [
+   {
+    "q": "VPN kafedeki ağ dinleyicisine karşı neyi sağlar?",
+    "o": [
+     "Trafiği şifreli tünelle taşır, dinleyici içeriği okuyamaz",
+     "Kafenin internet hızını artırır",
+     "Cihazı virüslerden temizler",
+     "Tüm sitelerin sertifikasını yeniler"
+    ],
+    "a": 0,
+    "w": "VPN tüneli trafiği cihaz ile geçit arasında şifreler."
+   },
+   {
+    "q": "Bir şirket VPN geçidinin kimlik doğrulamada neye ihtiyacı vardır?",
+    "o": [
+     "Yalnızca cihazın IP adresi",
+     "Güçlü kimlik doğrulama, örneğin parola ve ikinci faktör",
+     "Kafenin Wi-Fi parolası",
+     "Tarayıcı geçmişi"
+    ],
+    "a": 1,
+    "w": "VPN uzaktan erişim kapısı olduğu için güçlü ve çok faktörlü doğrulama gerekir."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "sc-proxy",
+  "t": "Proxy sunucu",
+  "title": "Proxy araya girince ne olur?",
+  "one": "Proxy, istemci adına internete çıkar: filtreler, kayıt tutar, önbelleğe alır ve istemciyi gizler.",
+  "trs": [
+   "sec",
+   "net"
+  ],
+  "rx": "proxy|vekil|içerik filtre",
+  "icon": "server",
+  "nodes": [
+   {
+    "id": "a",
+    "k": "laptop",
+    "x": 50,
+    "y": 145,
+    "l": "Çalışan 1"
+   },
+   {
+    "id": "b",
+    "k": "laptop",
+    "x": 50,
+    "y": 275,
+    "l": "Çalışan 2"
+   },
+   {
+    "id": "px",
+    "k": "server",
+    "x": 165,
+    "y": 210,
+    "l": "Proxy",
+    "s2": "10.0.0.3"
+   },
+   {
+    "id": "w",
+    "k": "globe",
+    "x": 300,
+    "y": 145,
+    "l": "haber.example"
+   },
+   {
+    "id": "m",
+    "k": "globe",
+    "x": 300,
+    "y": 275,
+    "l": "zararlı.example"
+   }
+  ],
+  "links": [
+   {
+    "a": "a",
+    "b": "px",
+    "k": "eth",
+    "l": "istek",
+    "lt": 0.4
+   },
+   {
+    "a": "b",
+    "b": "px",
+    "k": "eth"
+   },
+   {
+    "a": "px",
+    "b": "w",
+    "k": "fiber"
+   },
+   {
+    "a": "px",
+    "b": "m",
+    "k": "fiber"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Şirkette çalışanlar internete doğrudan değil, bir proxy sunucu üzerinden çıkıyor.",
+    "cam": 0
+   },
+   {
+    "c": "Çalışan 1 haber sitesini açmak istiyor. İsteği proxy'ye gönderiyor.",
+    "p": [
+     [
+      "a",
+      "px",
+      "req",
+      "GET haber"
+     ]
+    ],
+    "say": [
+     [
+      "a",
+      "haber.example açılsın"
+     ]
+    ]
+   },
+   {
+    "c": "Proxy politikaya bakıyor: kategori izinli. İsteği kendi adresiyle siteye iletiyor, site çalışanı değil proxy'yi görüyor.",
+    "p": [
+     [
+      "px",
+      "w",
+      "req",
+      "GET haber"
+     ]
+    ],
+    "tag": [
+     [
+      "px",
+      "Politika: haber = İZİN",
+      "green"
+     ]
+    ],
+    "mark": [
+     [
+      "w",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Cevap proxy'ye geliyor; proxy hem çalışana iletiyor hem de bir kopyasını önbelleğe (cache) alıyor.",
+    "p": [
+     [
+      "w",
+      "px",
+      "res",
+      "Sayfa"
+     ],
+     [
+      "px",
+      "a",
+      "res",
+      "Sayfa"
+     ]
+    ],
+    "tag": [
+     [
+      "px",
+      "Önbellek: kayıtlı",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Çalışan 2 aynı sayfayı istiyor. Proxy cevabı önbellekten veriyor, siteye gitmesine gerek kalmıyor.",
+    "p": [
+     [
+      "b",
+      "px",
+      "req",
+      "GET haber"
+     ],
+     [
+      "px",
+      "b",
+      "res",
+      "Önbellekten"
+     ]
+    ],
+    "hi": [
+     "px"
+    ]
+   },
+   {
+    "c": "Çalışan 2 sonra zararlı bilinen bir siteye gitmek istiyor. Proxy kara listede görüyor ve engelliyor.",
+    "p": [
+     [
+      "b",
+      "px",
+      "req",
+      "GET zararlı"
+     ],
+     [
+      "px",
+      "b",
+      "bad",
+      "Engellendi"
+     ]
+    ],
+    "mark": [
+     [
+      "m",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "px",
+      "Politika: KARA LİSTE",
+      "red"
+     ]
+    ],
+    "dim": [
+     "w"
+    ]
+   },
+   {
+    "c": "Her istek proxy kayıtlarına düşüyor; kim, ne zaman, hangi siteye girdi sonradan incelenebilir.",
+    "tag": [
+     [
+      "px",
+      "Kayıt: kullanıcı + site + zaman",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "px"
+    ]
+   }
+  ],
+  "result": "Proxy = filtre + kayıt + önbellek + aracı",
+  "notes": [
+   "İleri proxy istemciler adına dışarı çıkar; ters proxy ise sunucuların önünde durur.",
+   "Proxy politikası site kategorisine göre izin ya da engel verebilir.",
+   "Proxy kayıtları olay incelemesi için değerlidir."
+  ],
+  "q": [
+   {
+    "q": "Çalışanlar internete bir proxy üzerinden çıkarken web sitesi kimi görür?",
+    "o": [
+     "Çalışanın özel IP adresini",
+     "Proxy'nin adresini",
+     "Güvenlik duvarının MAC adresini",
+     "Hiçbir adres görmez"
+    ],
+    "a": 1,
+    "w": "İstek proxy adına iletildiği için site proxy'nin adresini görür."
+   },
+   {
+    "q": "Aşağıdakilerden hangisi proxy'nin güvenlik faydası değildir?",
+    "o": [
+     "Zararlı sitelere erişimi engellemek",
+     "Erişim kaydı tutmak",
+     "Parola özetini geri çevirmek",
+     "İçerik filtrelemek"
+    ],
+    "a": 2,
+    "w": "Parola özeti geri çevrilemez; bu proxy'nin işi de değildir."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "sc-mfa",
+  "t": "Çok faktörlü doğrulama",
+  "title": "Parola çalınsa bile ikinci kapı",
+  "one": "MFA, parolaya ek olarak sahip olduğun ya da olduğun bir faktörü ister; çalınan parola tek başına yetmez.",
+  "trs": [
+   "sec",
+   "net"
+  ],
+  "rx": "mfa|çok faktör|iki faktör|2fa|kimlik ve erişim",
+  "icon": "key",
+  "nodes": [
+   {
+    "id": "u",
+    "k": "user",
+    "x": 55,
+    "y": 180,
+    "l": "Ayşe"
+   },
+   {
+    "id": "ph",
+    "k": "phone",
+    "x": 55,
+    "y": 295,
+    "l": "Telefon",
+    "s2": "Doğrulama uygulaması"
+   },
+   {
+    "id": "sv",
+    "k": "server",
+    "x": 290,
+    "y": 205,
+    "l": "Uygulama",
+    "s2": "hesap.example"
+   },
+   {
+    "id": "th",
+    "k": "bug",
+    "x": 175,
+    "y": 295,
+    "l": "Parolayı bulan",
+    "hide": true
+   },
+   {
+    "id": "fk",
+    "k": "key",
+    "x": 175,
+    "y": 150,
+    "l": "Güvenlik anahtarı",
+    "s2": "FIDO2",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "u",
+    "b": "sv",
+    "k": "eth",
+    "l": "parola",
+    "lt": 0.5,
+    "cv": -10
+   },
+   {
+    "a": "ph",
+    "b": "u",
+    "k": "thin"
+   },
+   {
+    "a": "sv",
+    "b": "ph",
+    "k": "wifi",
+    "l": "kod iste",
+    "lt": 0.5
+   },
+   {
+    "a": "th",
+    "b": "sv",
+    "k": "eth"
+   },
+   {
+    "a": "fk",
+    "b": "u",
+    "k": "thin"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Ayşe hesabına giriyor. Hesapta çok faktörlü doğrulama (MFA) açık: parola ve ikinci bir kanıt gerekiyor.",
+    "cam": 0
+   },
+   {
+    "c": "Birinci faktör bildiğin şey: parola. Sunucu parolayı doğruluyor ama oturumu henüz açmıyor.",
+    "p": [
+     [
+      "u",
+      "sv",
+      "env",
+      "Parola"
+     ]
+    ],
+    "tag": [
+     [
+      "u",
+      "FAKTÖR 1: BİLDİĞİN ŞEY",
+      "blue"
+     ]
+    ],
+    "mark": [
+     [
+      "sv",
+      "?"
+     ]
+    ]
+   },
+   {
+    "c": "Sunucu ikinci faktörü istiyor: Ayşe'nin sahip olduğu telefondaki doğrulama uygulaması bir kod üretiyor.",
+    "p": [
+     [
+      "sv",
+      "ph",
+      "req",
+      "Kod iste"
+     ]
+    ],
+    "tag": [
+     [
+      "ph",
+      "KOD: 482 913 (30 sn)",
+      "amber"
+     ],
+     [
+      "u",
+      "FAKTÖR 2: SAHİP OLDUĞUN ŞEY",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Ayşe kodu giriyor. Kod tek kullanımlık ve kısa süreli. Doğrulanınca oturum açılıyor.",
+    "p": [
+     [
+      "ph",
+      "u",
+      "key",
+      "482 913"
+     ],
+     [
+      "u",
+      "sv",
+      "ok",
+      "Kod"
+     ]
+    ],
+    "mark": [
+     [
+      "sv",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Şimdi parolası bir veri sızıntısında ele geçirilmiş olsun. Parolayı bulan kişi giriş deniyor.",
+    "show": [
+     "th"
+    ],
+    "p": [
+     [
+      "th",
+      "sv",
+      "bad",
+      "Çalıntı parola"
+     ]
+    ],
+    "mark": [
+     [
+      "th",
+      "!"
+     ]
+    ],
+    "hi": [
+     "th"
+    ]
+   },
+   {
+    "c": "Sunucu ikinci faktörü istiyor ama kişide Ayşe'nin telefonu yok. Giriş reddediliyor.",
+    "tag": [
+     [
+      "sv",
+      "İKİNCİ FAKTÖR YOK: RED",
+      "red"
+     ]
+    ],
+    "mark": [
+     [
+      "th",
+      "x"
+     ],
+     [
+      "sv",
+      "x"
+     ]
+    ],
+    "dim": [
+     "th"
+    ]
+   },
+   {
+    "c": "Her yöntem eşit güçte değil. Güvenlik anahtarı (FIDO2) ve passkey, sahte siteye karşı da dirençlidir; SMS kodu daha zayıftır.",
+    "show": [
+     "fk"
+    ],
+    "tag": [
+     [
+      "fk",
+      "FIDO2 / passkey: oltalamaya dirençli",
+      "green"
+     ]
+    ],
+    "hi": [
+     "fk"
+    ]
+   }
+  ],
+  "result": "MFA = parola + ikinci bir faktör",
+  "notes": [
+   "Üç faktör türü: bildiğin, sahip olduğun, olduğun (biyometrik).",
+   "Çalınan parola MFA'lı hesapta tek başına yetmez.",
+   "FIDO2 anahtarı ve passkey, SMS koduna göre oltalamaya daha dirençlidir."
+  ],
+  "q": [
+   {
+    "q": "Parola ve telefondaki uygulama kodu birlikte hangi faktör türlerini kullanır?",
+    "o": [
+     "İki kez bildiğin şey",
+     "Bildiğin şey ve sahip olduğun şey",
+     "Olduğun şey ve konum",
+     "Yalnızca sahip olduğun şey"
+    ],
+    "a": 1,
+    "w": "Parola bilinen, telefon sahip olunan bir faktördür."
+   },
+   {
+    "q": "Parolası sızan kullanıcının hesabında MFA açıksa saldırgan neden giremez?",
+    "o": [
+     "Parola otomatik değişir",
+     "İkinci faktörü sağlayamaz",
+     "Hesap silinir",
+     "Sunucu kapanır"
+    ],
+    "a": 1,
+    "w": "İkinci faktör kullanıcıdadır; parola tek başına yetmez."
+   },
+   {
+    "q": "Aşağıdakilerden hangisi oltalamaya karşı en dirençli yöntemdir?",
+    "o": [
+     "SMS kodu",
+     "E-posta ile gelen kod",
+     "FIDO2 güvenlik anahtarı",
+     "Güvenlik sorusu"
+    ],
+    "a": 2,
+    "w": "FIDO2 anahtarı yalnızca gerçek alan adı için yanıt verdiği için sahte sitede işe yaramaz."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "sc-phish",
+  "t": "Kimlik avı e-postası",
+  "title": "Şüpheli e-posta: dur, bak, bildir",
+  "one": "Kimlik avı e-postası acele ettirir; filtre, dikkatli kontrol ve bildirim zinciri zararı önler.",
+  "trs": [
+   "sec",
+   "net"
+  ],
+  "rx": "oltalama|phishing|kimlik avı|sosyal mühendislik|farkındalık",
+  "icon": "mail",
+  "nodes": [
+   {
+    "id": "sn",
+    "k": "bug",
+    "x": 50,
+    "y": 150,
+    "l": "Sahte gönderen",
+    "s2": "maas-guncelle.example"
+   },
+   {
+    "id": "ft",
+    "k": "email",
+    "x": 165,
+    "y": 150,
+    "l": "Posta filtresi"
+   },
+   {
+    "id": "u",
+    "k": "user",
+    "x": 290,
+    "y": 150,
+    "l": "Ayşe"
+   },
+   {
+    "id": "site",
+    "k": "globe",
+    "x": 290,
+    "y": 275,
+    "l": "Sahte giriş sayfası",
+    "hide": true
+   },
+   {
+    "id": "sec",
+    "k": "bell",
+    "x": 165,
+    "y": 275,
+    "l": "Güvenlik ekibi"
+   }
+  ],
+  "links": [
+   {
+    "a": "sn",
+    "b": "ft",
+    "k": "eth"
+   },
+   {
+    "a": "ft",
+    "b": "u",
+    "k": "eth"
+   },
+   {
+    "a": "u",
+    "b": "sec",
+    "k": "cat7",
+    "l": "Raporla",
+    "lt": 0.5
+   },
+   {
+    "a": "u",
+    "b": "site",
+    "k": "warn"
+   },
+   {
+    "a": "sec",
+    "b": "ft",
+    "k": "thin"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Ayşe'ye 'maaş bilgileriniz güncellenmeli, hemen tıklayın' diyen bir e-posta geliyor. Gönderen şirket gibi görünüyor.",
+    "cam": 0
+   },
+   {
+    "c": "E-posta önce filtreden geçiyor. SPF, DKIM ve DMARC kontrolleri gönderenin gerçekten o alan adına ait olup olmadığına bakar.",
+    "p": [
+     [
+      "sn",
+      "ft",
+      "env",
+      "Maaş güncelle"
+     ]
+    ],
+    "tag": [
+     [
+      "ft",
+      "SPF · DKIM · DMARC kontrolü",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "ft"
+    ]
+   },
+   {
+    "c": "Filtre bu e-postayı yakalayamadı ve Ayşe'nin gelen kutusuna ulaştı. Son savunma çizgisi Ayşe.",
+    "p": [
+     [
+      "ft",
+      "u",
+      "bad",
+      "Maaş güncelle"
+     ]
+    ],
+    "mark": [
+     [
+      "ft",
+      "!"
+     ]
+    ],
+    "cam": [
+     230,
+     150,
+     1.3
+    ]
+   },
+   {
+    "c": "Ayşe e-postadaki alarm işaretlerine bakıyor: acele ettirme, uyuşmayan gönderen adresi, beklenmedik bağlantı.",
+    "tag": [
+     [
+      "u",
+      "ACELE · ŞÜPHELİ ADRES · BEKLENMEDİK İSTEK",
+      "amber"
+     ]
+    ],
+    "say": [
+     [
+      "u",
+      "Bağlantıya tıklamıyorum"
+     ]
+    ],
+    "hi": [
+     "u"
+    ]
+   },
+   {
+    "c": "Bağlantı sahte bir giriş sayfasına götürürdü. Ayşe tıklamıyor; sayfa hiç açılmıyor.",
+    "show": [
+     "site"
+    ],
+    "mark": [
+     [
+      "site",
+      "x"
+     ]
+    ],
+    "dim": [
+     "site"
+    ]
+   },
+   {
+    "c": "Ayşe e-postayı rapor düğmesiyle güvenlik ekibine bildiriyor.",
+    "p": [
+     [
+      "u",
+      "sec",
+      "ok",
+      "Rapor"
+     ]
+    ],
+    "hi": [
+     "sec"
+    ],
+    "cam": 0
+   },
+   {
+    "c": "Güvenlik ekibi göndericiyi ve bağlantıyı engelliyor, aynı e-postayı diğer çalışanların kutusundan da siliyor.",
+    "p": [
+     [
+      "sec",
+      "ft",
+      "ok",
+      "Engelle + sil"
+     ]
+    ],
+    "mark": [
+     [
+      "sn",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "ft",
+      "Gönderen ve adres engellendi",
+      "green"
+     ]
+    ]
+   }
+  ],
+  "result": "Dur, incele, tıklama, bildir",
+  "notes": [
+   "Kimlik avı acele ve korku üzerine kurulur; yavaşlamak en iyi savunmadır.",
+   "Bağlantıya tıklamak yerine siteyi kendiniz açın ya da resmi uygulamayı kullanın.",
+   "Rapor, bütün şirketi korur."
+  ],
+  "q": [
+   {
+    "q": "Şüpheli e-posta alan çalışan ilk olarak ne yapmalıdır?",
+    "o": [
+     "Bağlantıya tıklayıp sayfayı inceler",
+     "Tıklamadan güvenlik ekibine bildirir",
+     "Bütün iş arkadaşlarına iletir",
+     "Yanıt yazıp doğrulama ister"
+    ],
+    "a": 1,
+    "w": "Bildirim ekibin e-postayı kaldırmasını sağlar; tıklamak ya da iletmek riski büyütür."
+   },
+   {
+    "q": "SPF, DKIM ve DMARC ne işe yarar?",
+    "o": [
+     "E-postaları şifreler",
+     "Gönderenin alan adı adına gönderme yetkisini doğrulamaya yardım eder",
+     "Ekleri virüslerden temizler",
+     "Parolaları özetler"
+    ],
+    "a": 1,
+    "w": "Bu kontroller gönderen alan adının sahteciliğini zorlaştırır."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "sc-siem",
+  "t": "Log toplama ve SIEM",
+  "title": "Log'lar tek yerde buluşunca",
+  "one": "SIEM, farklı sistemlerin kayıtlarını toplar, ilişkilendirir ve şüpheli örüntüde uyarı üretir.",
+  "trs": [
+   "sec",
+   "net"
+  ],
+  "rx": "siem|log|günlük kayıt|izleme|olay müdahale",
+  "icon": "log",
+  "nodes": [
+   {
+    "id": "web",
+    "k": "server",
+    "x": 50,
+    "y": 140,
+    "l": "Web sunucusu"
+   },
+   {
+    "id": "fw",
+    "k": "firewall",
+    "x": 50,
+    "y": 225,
+    "l": "Güvenlik duvarı"
+   },
+   {
+    "id": "ad",
+    "k": "server",
+    "x": 50,
+    "y": 305,
+    "l": "Kimlik sunucusu"
+   },
+   {
+    "id": "siem",
+    "k": "monitoring",
+    "x": 180,
+    "y": 225,
+    "l": "SIEM"
+   },
+   {
+    "id": "an",
+    "k": "user",
+    "x": 305,
+    "y": 150,
+    "l": "Analist"
+   },
+   {
+    "id": "al",
+    "k": "bell",
+    "x": 305,
+    "y": 290,
+    "l": "Uyarı",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "web",
+    "b": "siem",
+    "k": "eth",
+    "l": "log",
+    "lt": 0.5
+   },
+   {
+    "a": "fw",
+    "b": "siem",
+    "k": "eth",
+    "l": "log",
+    "lt": 0.5
+   },
+   {
+    "a": "ad",
+    "b": "siem",
+    "k": "eth",
+    "l": "log",
+    "lt": 0.5
+   },
+   {
+    "a": "siem",
+    "b": "an",
+    "k": "cat7"
+   },
+   {
+    "a": "siem",
+    "b": "al",
+    "k": "thin"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Üç sistem sürekli kayıt (log) üretiyor. Tek tek bakmak imkansız; hepsi merkezi bir SIEM'e akıyor.",
+    "cam": 0
+   },
+   {
+    "c": "Log'lar zaman damgasıyla geliyor. Saatler senkron değilse olaylar sıraya dizilemez, bu yüzden NTP ile saat eşitlenir.",
+    "p": [
+     [
+      "web",
+      "siem",
+      "data",
+      "erişim"
+     ],
+     [
+      "fw",
+      "siem",
+      "data",
+      "bağlantı"
+     ],
+     [
+      "ad",
+      "siem",
+      "data",
+      "giriş"
+     ]
+    ],
+    "tag": [
+     [
+      "siem",
+      "Normalleştirme + zaman damgası",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Gece 03.00'te kimlik sunucusundan çok sayıda başarısız giriş kaydı akıyor.",
+    "p": [
+     [
+      "ad",
+      "siem",
+      "bad",
+      "Başarısız giriş"
+     ],
+     [
+      "ad",
+      "siem",
+      "bad",
+      "Başarısız giriş"
+     ],
+     [
+      "ad",
+      "siem",
+      "bad",
+      "Başarısız giriş"
+     ]
+    ],
+    "mark": [
+     [
+      "ad",
+      "!"
+     ]
+    ],
+    "cam": [
+     110,
+     260,
+     1.3
+    ]
+   },
+   {
+    "c": "SIEM'in korelasyon kuralı tetikleniyor: aynı IP'den 5 dakikada 20'den fazla başarısız giriş.",
+    "tag": [
+     [
+      "siem",
+      "KURAL: 5 dk'da 20+ başarısız giriş",
+      "amber"
+     ]
+    ],
+    "hi": [
+     "siem"
+    ]
+   },
+   {
+    "c": "SIEM uyarı üretiyor ve analiste bildiriyor. Kimsenin gece log taramasına gerek kalmadı.",
+    "show": [
+     "al"
+    ],
+    "p": [
+     [
+      "siem",
+      "an",
+      "bad",
+      "UYARI"
+     ]
+    ],
+    "mark": [
+     [
+      "al",
+      "!"
+     ]
+    ],
+    "say": [
+     [
+      "an",
+      "Bakıyorum"
+     ]
+    ]
+   },
+   {
+    "c": "Analist kayıtlara bakıyor: tek hesaba yoğun deneme var ve başarılı giriş yok. Önlem olarak kaynak IP'yi engelletiyor.",
+    "p": [
+     [
+      "an",
+      "fw",
+      "ok",
+      "IP engelle",
+      [
+       "siem"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "fw",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "fw",
+      "Kaynak IP engellendi",
+      "green"
+     ]
+    ]
+   },
+   {
+    "c": "Olay, ileride inceleme ve kanıt için SIEM'de saklanıyor. Önce görünürlük, sonra müdahale.",
+    "mark": [
+     [
+      "siem",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "siem",
+      "Olay kaydı saklandı",
+      "blue"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "Log + korelasyon = erken uyarı",
+  "notes": [
+   "Merkezi log toplama, dağınık kayıtları tek bakışta toplar.",
+   "Korelasyon kuralı birden çok olayı birleştirip anlamlı uyarı üretir.",
+   "Saat eşitleme (NTP) olmadan olay sırası güvenilmez."
+  ],
+  "q": [
+   {
+    "q": "SIEM'in temel görevi nedir?",
+    "o": [
+     "Parolaları özetlemek",
+     "Farklı kaynaklardan log toplayıp ilişkilendirerek uyarı üretmek",
+     "Ağ kablosunu test etmek",
+     "Sertifika imzalamak"
+    ],
+    "a": 1,
+    "w": "SIEM log toplama, korelasyon ve uyarıyı birleştirir."
+   },
+   {
+    "q": "Olayların doğru sıralanması için log'larda neye ihtiyaç vardır?",
+    "o": [
+     "Eşitlenmiş saatler",
+     "Daha büyük disk",
+     "Daha uzun parola",
+     "Ek VPN"
+    ],
+    "a": 0,
+    "w": "Zaman damgaları senkron olmazsa kayıtlar karşılaştırılamaz."
+   },
+   {
+    "q": "Başarısız girişlerin tek başına tek kaydı yerine eşik kuralı kullanılmasının nedeni nedir?",
+    "o": [
+     "Tek hata normaldir, yoğun örüntü şüphelidir",
+     "Tek hata hiç loglanmaz",
+     "Eşik disk alanı açar",
+     "Kural IP'yi gizler"
+    ],
+    "a": 0,
+    "w": "Korelasyon eşiği gürültüyü azaltır, anlamlı örüntüyü yakalar."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "sc-rbac",
+  "t": "En az yetki ve roller",
+  "title": "Herkese yalnız işi kadar yetki",
+  "one": "Rol tabanlı erişimde yetkiler role bağlanır; kullanıcıya yalnızca işi için gereken en az yetki verilir.",
+  "trs": [
+   "sec",
+   "net"
+  ],
+  "rx": "rbac|rol tabanlı|en az yetki|least privilege|kimlik ve erişim|zero trust",
+  "icon": "key",
+  "nodes": [
+   {
+    "id": "ay",
+    "k": "user",
+    "x": 50,
+    "y": 145,
+    "l": "Ayşe",
+    "s2": "Rol: Muhasebe"
+   },
+   {
+    "id": "al",
+    "k": "user",
+    "x": 50,
+    "y": 285,
+    "l": "Ali",
+    "s2": "Rol: Stajyer"
+   },
+   {
+    "id": "ac",
+    "k": "key",
+    "x": 170,
+    "y": 215,
+    "l": "Erişim denetimi"
+   },
+   {
+    "id": "pay",
+    "k": "db",
+    "x": 295,
+    "y": 140,
+    "l": "Maaş kaydı"
+   },
+   {
+    "id": "wiki",
+    "k": "doc",
+    "x": 295,
+    "y": 215,
+    "l": "Şirket wikisi"
+   },
+   {
+    "id": "cfg",
+    "k": "server",
+    "x": 295,
+    "y": 290,
+    "l": "Sunucu ayarları"
+   }
+  ],
+  "links": [
+   {
+    "a": "ay",
+    "b": "ac",
+    "k": "eth"
+   },
+   {
+    "a": "al",
+    "b": "ac",
+    "k": "eth"
+   },
+   {
+    "a": "ac",
+    "b": "pay",
+    "k": "cat7"
+   },
+   {
+    "a": "ac",
+    "b": "wiki",
+    "k": "cat7"
+   },
+   {
+    "a": "ac",
+    "b": "cfg",
+    "k": "cat7"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Üç kaynak var: maaş kaydı, şirket wikisi ve sunucu ayarları. Kullanıcıların rolleri farklı.",
+    "cam": 0
+   },
+   {
+    "c": "Yetkiler kişiye değil role bağlı. Erişim denetimi her isteği rolün izin tablosuna göre değerlendiriyor.",
+    "tag": [
+     [
+      "ac",
+      "Muhasebe: maaş okur · Stajyer: wiki okur",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "ac"
+    ],
+    "cam": [
+     170,
+     215,
+     1.3
+    ]
+   },
+   {
+    "c": "Ayşe maaş kaydını açıyor. Muhasebe rolü bunu içeriyor, erişim veriliyor.",
+    "p": [
+     [
+      "ay",
+      "pay",
+      "ok",
+      "Maaş isteği",
+      [
+       "ac"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "pay",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Ali de maaş kaydını açmak istiyor. Stajyer rolünde bu yetki yok, erişim reddediliyor.",
+    "p": [
+     [
+      "al",
+      "ac",
+      "bad",
+      "Maaş isteği"
+     ]
+    ],
+    "mark": [
+     [
+      "pay",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "al",
+      "Erişimim yok"
+     ]
+    ]
+   },
+   {
+    "c": "Ali işi için gereken wikiyi okuyor. Yetkisi yeterli: en az yetki ilkesi (least privilege) işi engellemez.",
+    "p": [
+     [
+      "al",
+      "wiki",
+      "ok",
+      "Wiki oku",
+      [
+       "ac"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "wiki",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Ali sunucu ayarlarını değiştirmeye çalışıyor. Yönetici rolü olmadığı için engelleniyor.",
+    "p": [
+     [
+      "al",
+      "ac",
+      "bad",
+      "Ayar değiştir"
+     ]
+    ],
+    "mark": [
+     [
+      "cfg",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "cfg",
+      "Yalnız Yönetici rolü",
+      "red"
+     ]
+    ]
+   },
+   {
+    "c": "Ali ekip değiştirirse eski rol kaldırılır, yeni rol atanır. Yetkiler düzenli gözden geçirilir ki birikmesin.",
+    "tag": [
+     [
+      "al",
+      "Rol değişti: eski yetkiler silinir",
+      "amber"
+     ]
+    ],
+    "hi": [
+     "al"
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "Rol + en az yetki = kontrollü erişim",
+  "notes": [
+   "Yetki kişiye değil role verilir; kişi rol değiştirince yetkiler de değişir.",
+   "En az yetki: yalnızca işin gerektirdiği izin verilir.",
+   "Düzenli erişim gözden geçirmesi, birikmiş yetkileri temizler."
+  ],
+  "q": [
+   {
+    "q": "Stajyer Ali maaş kaydına erişemiyor. Bu hangi ilkenin sonucudur?",
+    "o": [
+     "Kimlik avı",
+     "En az yetki",
+     "Şifre özeti",
+     "İzleme"
+    ],
+    "a": 1,
+    "w": "Ali'nin rolü maaş kaydı yetkisi içermiyor; yalnızca işi kadar yetki verilmiştir."
+   },
+   {
+    "q": "Rol tabanlı erişim denetiminde yetki kime bağlanır?",
+    "o": [
+     "Her kullanıcıya tek tek",
+     "Role; kullanıcılar role atanır",
+     "IP adresine",
+     "Cihazın MAC adresine"
+    ],
+    "a": 1,
+    "w": "RBAC'de yetkiler rollere tanımlanır, kullanıcılar rollere atanır."
+   },
+   {
+    "q": "Bir çalışan başka ekibe geçince eski yetkileri kalırsa hangi sorun doğar?",
+    "o": [
+     "Yetki birikmesi: gereğinden fazla erişim",
+     "Sertifika süresi dolar",
+     "Log'lar silinir",
+     "Parola kısalır"
+    ],
+    "a": 0,
+    "w": "Eski yetkilerin temizlenmemesi en az yetki ilkesini bozar."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "sc-crypto",
+  "t": "Simetrik ve asimetrik şifreleme",
+  "title": "Anahtarı güvenle paylaşmak",
+  "one": "Asimetrik şifreleme anahtar dağıtımını, simetrik şifreleme ise hızı sağlar; birlikte kullanılırlar.",
+  "trs": [
+   "sec",
+   "net"
+  ],
+  "rx": "simetrik|asimetrik|şifreleme|kriptografi|anahtar değişimi",
+  "icon": "key",
+  "nodes": [
+   {
+    "id": "ay",
+    "k": "user",
+    "x": 50,
+    "y": 150,
+    "l": "Ayşe"
+   },
+   {
+    "id": "net",
+    "k": "cloud",
+    "x": 180,
+    "y": 150,
+    "l": "Açık ağ",
+    "s2": "herkes izleyebilir"
+   },
+   {
+    "id": "al",
+    "k": "user",
+    "x": 310,
+    "y": 150,
+    "l": "Ali"
+   },
+   {
+    "id": "k1",
+    "k": "key",
+    "x": 50,
+    "y": 285,
+    "l": "Oturum anahtarı",
+    "s2": "simetrik",
+    "hide": true
+   },
+   {
+    "id": "k2",
+    "k": "lock",
+    "x": 310,
+    "y": 285,
+    "l": "Özel anahtar",
+    "s2": "yalnız Ali'de",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "ay",
+    "b": "net",
+    "k": "eth"
+   },
+   {
+    "a": "net",
+    "b": "al",
+    "k": "eth"
+   },
+   {
+    "a": "ay",
+    "b": "k1",
+    "k": "thin"
+   },
+   {
+    "a": "al",
+    "b": "k2",
+    "k": "thin"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Ayşe ve Ali gizli yazışmak istiyor ama aralarındaki ağı herkes izleyebilir.",
+    "cam": 0
+   },
+   {
+    "c": "Simetrik şifrelemede iki taraf aynı anahtarı kullanır. Hızlıdır ama anahtarı açık ağdan yollarsan herkes kopyalar.",
+    "show": [
+     "k1"
+    ],
+    "p": [
+     [
+      "ay",
+      "al",
+      "bad",
+      "anahtar?",
+      [
+       "net"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "net",
+      "!"
+     ]
+    ],
+    "tag": [
+     [
+      "k1",
+      "AYNI ANAHTAR: şifreler ve çözer",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Çözüm asimetrik şifreleme: Ali bir anahtar çifti üretiyor. Açık anahtarı herkese verilebilir, özel anahtarı yalnız onda kalır.",
+    "show": [
+     "k2"
+    ],
+    "p": [
+     [
+      "al",
+      "ay",
+      "key",
+      "Açık anahtar",
+      [
+       "net"
+      ]
+     ]
+    ],
+    "tag": [
+     [
+      "k2",
+      "Özel anahtar paylaşılmaz",
+      "green"
+     ]
+    ],
+    "hi": [
+     "al"
+    ]
+   },
+   {
+    "c": "Ayşe rastgele bir oturum anahtarı üretiyor ve onu Ali'nin açık anahtarıyla şifreleyip yolluyor.",
+    "p": [
+     [
+      "ay",
+      "al",
+      "key",
+      "Şifreli anahtar",
+      [
+       "net"
+      ]
+     ]
+    ],
+    "tag": [
+     [
+      "ay",
+      "Ali'nin açık anahtarıyla şifrele",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "ay"
+    ]
+   },
+   {
+    "c": "Ağı izleyen biri bu paketi çözemez; çözmek için Ali'nin özel anahtarı gerekir.",
+    "mark": [
+     [
+      "net",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "net",
+      "Çözemiyorum"
+     ]
+    ]
+   },
+   {
+    "c": "Ali özel anahtarıyla paketi açıyor. Artık ikisinde de aynı oturum anahtarı var, ağdan açık geçmedi.",
+    "mark": [
+     [
+      "al",
+      "ok"
+     ],
+     [
+      "ay",
+      "ok"
+     ]
+    ],
+    "hi": [
+     "k2",
+     "k1"
+    ],
+    "tag": [
+     [
+      "al",
+      "Özel anahtarla açıldı",
+      "green"
+     ]
+    ],
+    "cam": 0
+   },
+   {
+    "c": "Asıl mesajlar hızlı simetrik şifrelemeyle (AES) korunuyor. TLS de bu mantıkla çalışır: önce anahtar değişimi, sonra simetrik şifreleme.",
+    "p": [
+     [
+      "ay",
+      "al",
+      "data",
+      "AES şifreli",
+      [
+       "net"
+      ]
+     ],
+     [
+      "al",
+      "ay",
+      "data",
+      "AES şifreli",
+      [
+       "net"
+      ]
+     ]
+    ],
+    "tag": [
+     [
+      "net",
+      "Hızlı AES ile veri",
+      "blue"
+     ]
+    ]
+   }
+  ],
+  "result": "Asimetrik: anahtarı güvenle taşır; simetrik: veriyi hızla şifreler",
+  "notes": [
+   "Simetrik: tek anahtar, hızlı; sorun anahtarı güvenle iletmek.",
+   "Asimetrik: açık anahtar paylaşılır, özel anahtar gizli kalır.",
+   "Pratikte ikisi birlikte kullanılır (hibrit): asimetrik anahtar değişimi, simetrik veri şifreleme."
+  ],
+  "q": [
+   {
+    "q": "Ayşe oturum anahtarını Ali'ye yollarken hangi anahtarla şifreler?",
+    "o": [
+     "Kendi özel anahtarıyla",
+     "Ali'nin açık anahtarıyla",
+     "Ali'nin özel anahtarıyla",
+     "Hiçbiriyle"
+    ],
+    "a": 1,
+    "w": "Yalnız Ali'nin özel anahtarı açabilsin diye Ali'nin açık anahtarı kullanılır."
+   },
+   {
+    "q": "Asıl veri için neden simetrik şifreleme tercih edilir?",
+    "o": [
+     "Anahtarı herkese açık olduğu için",
+     "Asimetrik yöntemlerden çok daha hızlı olduğu için",
+     "Hiç anahtar gerektirmediği için",
+     "Hash olduğu için"
+    ],
+    "a": 1,
+    "w": "Simetrik algoritmalar büyük veride çok daha hızlıdır."
+   }
+  ]
+ }
+]

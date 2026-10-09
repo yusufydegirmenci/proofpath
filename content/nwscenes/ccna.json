@@ -1,0 +1,2894 @@
+[
+ {
+  "v": 2,
+  "id": "router",
+  "tr": "ccna",
+  "trs": [
+   "ccna",
+   "net"
+  ],
+  "theme": "ccna",
+  "t": "Router",
+  "title": "Router paketi nasıl yönlendirir?",
+  "one": "Router hedef IP'ye bakar, yönlendirme tablosundan çıkış arayüzünü seçer.",
+  "rx": "router|yönlendirici|yönlendirme|routing",
+  "icon": "router",
+  "nodes": [
+   {
+    "id": "pc",
+    "k": "laptop",
+    "x": 55,
+    "y": 285,
+    "l": "Ayşe'nin PC'si",
+    "s2": "192.168.1.10"
+   },
+   {
+    "id": "rt",
+    "k": "router",
+    "x": 175,
+    "y": 200,
+    "l": "R1",
+    "s2": "3 arayüz"
+   },
+   {
+    "id": "srv",
+    "k": "server",
+    "x": 295,
+    "y": 290,
+    "l": "Dosya sunucusu",
+    "s2": "10.0.0.50"
+   },
+   {
+    "id": "net",
+    "k": "cloud",
+    "x": 295,
+    "y": 130,
+    "l": "İnternet",
+    "s2": "203.0.113.1"
+   }
+  ],
+  "links": [
+   {
+    "a": "pc",
+    "b": "rt",
+    "k": "eth",
+    "l": "Gi0/0",
+    "lt": 0.5
+   },
+   {
+    "a": "rt",
+    "b": "srv",
+    "k": "cat7",
+    "l": "Gi0/1",
+    "lt": 0.5
+   },
+   {
+    "a": "rt",
+    "b": "net",
+    "k": "fiber",
+    "l": "Gi0/2",
+    "lt": 0.5
+   }
+  ],
+  "steps": [
+   {
+    "c": "R1'in üç kapısı (arayüzü) var: Ayşe'nin ağı, sunucu ağı ve internet. Her arayüz ayrı bir ağa bakar.",
+    "cam": 0,
+    "hi": [
+     "rt"
+    ]
+   },
+   {
+    "c": "Ayşe, sunucuya (10.0.0.50) bir dosya göndermek istiyor. Paket önce router'a gelir.",
+    "p": [
+     [
+      "pc",
+      "rt",
+      "env",
+      "Dosya → 10.0.0.50"
+     ]
+    ],
+    "tag": [
+     [
+      "pc",
+      "HEDEF IP: 10.0.0.50",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Router hedef IP'ye bakar ve yönlendirme tablosunda (routing table) eşleşen ağı arar.",
+    "tag": [
+     [
+      "rt",
+      "10.0.0.0/24 → Gi0/1",
+      "blue"
+     ]
+    ],
+    "say": [
+     [
+      "rt",
+      "Bu ağ Gi0/1 kapısında."
+     ]
+    ],
+    "hi": [
+     "rt"
+    ]
+   },
+   {
+    "c": "Eşleşme bulundu: router paketi Gi0/1 arayüzünden çıkarır, TTL değerini bir azaltır.",
+    "p": [
+     [
+      "rt",
+      "srv",
+      "ok",
+      "TTL 63"
+     ]
+    ],
+    "mark": [
+     [
+      "srv",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "rt",
+      "TTL: 64 → 63",
+      "amber"
+     ]
+    ]
+   },
+   {
+    "c": "Ayşe şimdi tabloda olmayan bir ağa (172.16.9.9) yazıyor. Router'da bu hedef için kayıt yok.",
+    "p": [
+     [
+      "pc",
+      "rt",
+      "bad",
+      "→ 172.16.9.9"
+     ]
+    ],
+    "mark": [
+     [
+      "rt",
+      "?"
+     ]
+    ],
+    "say": [
+     [
+      "rt",
+      "Bu ağı tanımıyorum."
+     ]
+    ]
+   },
+   {
+    "c": "Eşleşme ve varsayılan rota yoksa paket atılır; gönderene 'ulaşılamıyor' (ICMP unreachable) bildirilir.",
+    "p": [
+     [
+      "rt",
+      "pc",
+      "bad",
+      "Ulaşılamıyor"
+     ]
+    ],
+    "mark": [
+     [
+      "rt",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "rt",
+      "Rota yok: paket atıldı",
+      "red"
+     ]
+    ]
+   },
+   {
+    "c": "Varsayılan rota (0.0.0.0/0) eklenirse bilinmeyen her hedef internet çıkışından yollanır.",
+    "p": [
+     [
+      "pc",
+      "rt",
+      "data",
+      "→ 172.16.9.9"
+     ],
+     [
+      "rt",
+      "net",
+      "ok",
+      "Varsayılan rota"
+     ]
+    ],
+    "mark": [
+     [
+      "net",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "rt",
+      "0.0.0.0/0 → Gi0/2",
+      "green"
+     ]
+    ]
+   }
+  ],
+  "result": "Router = IP'ye bakar, tabloyla çıkış kapısını seçer",
+  "notes": [
+   "Router, paketin hedef IP adresine bakarak karar verir.",
+   "Yönlendirme tablosunda eşleşen ağ yoksa ve varsayılan rota da yoksa paket atılır.",
+   "Her arayüz ayrı bir ağa bağlıdır; router ağları birbirine bağlar."
+  ],
+  "q": [
+   {
+    "q": "Router'a gelen paketin hedef ağı tabloda yok ve varsayılan rota tanımlı değil. Ne olur?",
+    "o": [
+     "Paket tüm arayüzlerden yayınlanır",
+     "Paket atılır",
+     "Paket en yakın switch'e verilir",
+     "Paket bekletilip sonra gönderilir"
+    ],
+    "a": 1,
+    "w": "Router bilmediği hedefi yayınlamaz; eşleşme yoksa paketi atar."
+   },
+   {
+    "q": "Router paketi ileri alırken TTL değerine ne yapar?",
+    "o": [
+     "Sıfırlar",
+     "Bir artırır",
+     "Bir azaltır",
+     "Hiç dokunmaz"
+    ],
+    "a": 2,
+    "w": "Her router TTL'yi 1 azaltır; 0 olursa paket atılır. Böylece sonsuz döngü önlenir."
+   },
+   {
+    "q": "Yönlendirme tablosundaki 0.0.0.0/0 kaydı neyi ifade eder?",
+    "o": [
+     "Yalnız yerel ağı",
+     "Varsayılan rotayı",
+     "Yayın adresini",
+     "Kapalı bir arayüzü"
+    ],
+    "a": 1,
+    "w": "0.0.0.0/0 tüm adreslerle eşleşir; başka kayıt yoksa kullanılır."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "switch",
+  "tr": "ccna",
+  "trs": [
+   "ccna",
+   "net"
+  ],
+  "theme": "ccna",
+  "t": "Switch",
+  "title": "Switch MAC adresini nasıl öğrenir?",
+  "one": "Switch gelen çerçevenin kaynak MAC adresini portla eşleştirir, sonra yalnız doğru porta yollar.",
+  "rx": "switch|mac adres|mac table|cam table",
+  "icon": "switch",
+  "nodes": [
+   {
+    "id": "sw",
+    "k": "switch",
+    "x": 180,
+    "y": 205,
+    "l": "Switch",
+    "s2": "MAC tablosu"
+   },
+   {
+    "id": "a",
+    "k": "pc",
+    "x": 55,
+    "y": 135,
+    "l": "PC-A",
+    "s2": "MAC …:0A"
+   },
+   {
+    "id": "b",
+    "k": "pc",
+    "x": 305,
+    "y": 135,
+    "l": "PC-B",
+    "s2": "MAC …:0B"
+   },
+   {
+    "id": "c",
+    "k": "pc",
+    "x": 55,
+    "y": 300,
+    "l": "PC-C",
+    "s2": "MAC …:0C"
+   },
+   {
+    "id": "d",
+    "k": "pc",
+    "x": 305,
+    "y": 300,
+    "l": "PC-D",
+    "s2": "MAC …:0D"
+   }
+  ],
+  "links": [
+   {
+    "a": "sw",
+    "b": "a",
+    "k": "eth",
+    "l": "Fa0/1",
+    "lt": 0.45
+   },
+   {
+    "a": "sw",
+    "b": "b",
+    "k": "eth",
+    "l": "Fa0/2",
+    "lt": 0.45
+   },
+   {
+    "a": "sw",
+    "b": "c",
+    "k": "eth",
+    "l": "Fa0/3",
+    "lt": 0.45
+   },
+   {
+    "a": "sw",
+    "b": "d",
+    "k": "eth",
+    "l": "Fa0/4",
+    "lt": 0.45
+   }
+  ],
+  "steps": [
+   {
+    "c": "Bir switch ve dört bilgisayar var. Switch'in MAC adres tablosu şimdilik boş.",
+    "cam": 0,
+    "hi": [
+     "sw"
+    ]
+   },
+   {
+    "c": "PC-A, PC-C'ye çerçeve (frame) yolluyor. Switch kaynak MAC'i görüp Fa0/1 portuyla eşleştirir.",
+    "p": [
+     [
+      "a",
+      "sw",
+      "env",
+      "A → C"
+     ]
+    ],
+    "tag": [
+     [
+      "sw",
+      "Öğrendi: …:0A = Fa0/1",
+      "green"
+     ]
+    ],
+    "hi": [
+     "sw"
+    ]
+   },
+   {
+    "c": "PC-C'nin MAC adresi tabloda yok. Switch çerçeveyi gelen port hariç tüm portlara yayar (flooding).",
+    "p": [
+     [
+      "sw",
+      "b",
+      "data",
+      "Flood"
+     ],
+     [
+      "sw",
+      "c",
+      "data",
+      "Flood"
+     ],
+     [
+      "sw",
+      "d",
+      "data",
+      "Flood"
+     ]
+    ],
+    "say": [
+     [
+      "sw",
+      "C nerede bilmiyorum, herkese soruyorum."
+     ]
+    ]
+   },
+   {
+    "c": "PC-B ve PC-D çerçevenin kendilerine ait olmadığını görüp yok sayar. Yalnız PC-C kabul eder.",
+    "mark": [
+     [
+      "b",
+      "x"
+     ],
+     [
+      "d",
+      "x"
+     ],
+     [
+      "c",
+      "ok"
+     ]
+    ],
+    "dim": [
+     "b",
+     "d"
+    ]
+   },
+   {
+    "c": "PC-C cevap verir. Switch bu kez kaynağı (…:0C) görür ve Fa0/3 ile eşleştirir.",
+    "p": [
+     [
+      "c",
+      "sw",
+      "res",
+      "C → A"
+     ],
+     [
+      "sw",
+      "a",
+      "res",
+      "C → A"
+     ]
+    ],
+    "tag": [
+     [
+      "sw",
+      "Öğrendi: …:0C = Fa0/3",
+      "green"
+     ]
+    ],
+    "mark": [
+     [
+      "a",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Artık A'dan C'ye giden çerçeve yalnız Fa0/3 portundan çıkar. B ve D hiçbir şey görmez.",
+    "p": [
+     [
+      "a",
+      "sw",
+      "env",
+      "A → C"
+     ],
+     [
+      "sw",
+      "c",
+      "env",
+      "A → C"
+     ]
+    ],
+    "dim": [
+     "b",
+     "d"
+    ],
+    "tag": [
+     [
+      "sw",
+      "Bilinen MAC: yalnız tek porta",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Switch tabloyu trafikten kendi öğrenir; elle ayar gerekmez. Öğrenme için yalnız kaynak MAC yeterlidir.",
+    "cam": 0,
+    "hi": [
+     "sw"
+    ],
+    "tag": [
+     [
+      "sw",
+      "Tablo: …:0A=Fa0/1  …:0C=Fa0/3",
+      "dark"
+     ]
+    ]
+   }
+  ],
+  "result": "Switch = kaynağı öğrenir, hedefe yalnız tek porttan yollar",
+  "notes": [
+   "Switch, gelen çerçevenin kaynak MAC adresini portla birlikte tabloya yazar.",
+   "Hedef MAC tabloda yoksa çerçeve gelen port hariç her porta yayılır (flooding).",
+   "Hedef biliniyorsa çerçeve yalnız o porttan çıkar."
+  ],
+  "q": [
+   {
+    "q": "Switch hedef MAC adresini tablosunda bulamazsa ne yapar?",
+    "o": [
+     "Çerçeveyi atar",
+     "Gelen port hariç tüm portlara yayar",
+     "Yalnız router'a yollar",
+     "Gönderene hata yollar"
+    ],
+    "a": 1,
+    "w": "Bilinmeyen unicast için flooding yapılır; cevap gelince MAC öğrenilir."
+   },
+   {
+    "q": "Switch MAC tablosunu hangi bilgiden oluşturur?",
+    "o": [
+     "Hedef IP adresinden",
+     "Çerçevenin kaynak MAC adresinden",
+     "DNS kayıtlarından",
+     "Yönetici girişlerinden"
+    ],
+    "a": 1,
+    "w": "Gelen çerçevenin kaynak MAC adresi ve geldiği port tabloya yazılır."
+   },
+   {
+    "q": "Tablo oluştuktan sonra A'dan C'ye giden çerçeveyi B görür mü?",
+    "o": [
+     "Evet, switch hepsine yollar",
+     "Evet ama yok sayar",
+     "Hayır, yalnız C'nin portundan çıkar",
+     "Yalnız B'nin portu boşsa görür"
+    ],
+    "a": 2,
+    "w": "Bilinen unicast hedefe yalnız ilgili porttan iletilir."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "subnet",
+  "tr": "ccna",
+  "trs": [
+   "ccna",
+   "net"
+  ],
+  "theme": "ccna",
+  "t": "Alt ağ",
+  "title": "Alt ağlara bölme (subnetting)",
+  "one": "Büyük bir adres bloğu ihtiyaca göre eşit parçalara bölünür; her parça ayrı bir ağdır.",
+  "rx": "subnet|alt ağ|maske|cidr",
+  "icon": "home",
+  "nodes": [
+   {
+    "id": "rt",
+    "k": "router",
+    "x": 180,
+    "y": 125,
+    "l": "R1",
+    "s2": "192.168.1.0/24"
+   },
+   {
+    "id": "s1",
+    "k": "switch",
+    "x": 65,
+    "y": 200,
+    "l": "Satış"
+   },
+   {
+    "id": "s2",
+    "k": "switch",
+    "x": 180,
+    "y": 220,
+    "l": "Muhasebe"
+   },
+   {
+    "id": "s3",
+    "k": "switch",
+    "x": 295,
+    "y": 200,
+    "l": "Depo"
+   },
+   {
+    "id": "p1",
+    "k": "pc",
+    "x": 65,
+    "y": 285,
+    "l": "PC-1",
+    "s2": "192.168.1.10"
+   },
+   {
+    "id": "p2",
+    "k": "pc",
+    "x": 180,
+    "y": 295,
+    "l": "PC-2",
+    "s2": "192.168.1.40"
+   },
+   {
+    "id": "p3",
+    "k": "pc",
+    "x": 295,
+    "y": 285,
+    "l": "PC-3",
+    "s2": "192.168.1.70"
+   }
+  ],
+  "links": [
+   {
+    "a": "rt",
+    "b": "s1",
+    "k": "cat7",
+    "cv": -14
+   },
+   {
+    "a": "rt",
+    "b": "s2",
+    "k": "cat7"
+   },
+   {
+    "a": "rt",
+    "b": "s3",
+    "k": "cat7",
+    "cv": 14
+   },
+   {
+    "a": "s1",
+    "b": "p1"
+   },
+   {
+    "a": "s2",
+    "b": "p2"
+   },
+   {
+    "a": "s3",
+    "b": "p3"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Elimizde tek blok var: 192.168.1.0/24, yani 254 kullanılabilir adres. Üç departman var.",
+    "cam": 0,
+    "tag": [
+     [
+      "rt",
+      "192.168.1.0/24 = 254 adres",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Hepsini tek ağa koyarsak yayınlar (broadcast) herkese ulaşır ve kural koymak zorlaşır. Her departman 30 cihaz kadar.",
+    "mark": [
+     [
+      "s1",
+      "?"
+     ],
+     [
+      "s2",
+      "?"
+     ],
+     [
+      "s3",
+      "?"
+     ]
+    ],
+    "say": [
+     [
+      "rt",
+      "Üç departman, tek geniş ağ mı olsun?"
+     ]
+    ]
+   },
+   {
+    "c": "/27 maske: 27 bit ağ, 5 bit host. 2^5 = 32 adres; ağ ve yayın adresi çıkınca 30 kullanılabilir adres kalır.",
+    "tag": [
+     [
+      "rt",
+      "/27 = 255.255.255.224",
+      "blue"
+     ],
+     [
+      "rt",
+      "32 adres → 30 kullanılabilir",
+      "light"
+     ]
+    ],
+    "hi": [
+     "rt"
+    ]
+   },
+   {
+    "c": "Satış: 192.168.1.0/27. Ağ adresi .0, kullanılabilir .1–.30, yayın adresi .31.",
+    "tag": [
+     [
+      "s1",
+      "192.168.1.0/27: .1–.30",
+      "green"
+     ]
+    ],
+    "hi": [
+     "s1",
+     "p1"
+    ],
+    "dim": [
+     "s2",
+     "s3",
+     "p2",
+     "p3"
+    ]
+   },
+   {
+    "c": "Muhasebe: 192.168.1.32/27. Kullanılabilir adresler .33–.62, yayın adresi .63.",
+    "tag": [
+     [
+      "s2",
+      "192.168.1.32/27: .33–.62",
+      "amber"
+     ]
+    ],
+    "hi": [
+     "s2",
+     "p2"
+    ],
+    "dim": [
+     "s1",
+     "s3",
+     "p1",
+     "p3"
+    ]
+   },
+   {
+    "c": "Depo: 192.168.1.64/27. Kullanılabilir adresler .65–.94, yayın adresi .95. Bloklar 32'şer atlayarak ilerler.",
+    "tag": [
+     [
+      "s3",
+      "192.168.1.64/27: .65–.94",
+      "blue"
+     ]
+    ],
+    "hi": [
+     "s3",
+     "p3"
+    ],
+    "dim": [
+     "s1",
+     "s2",
+     "p1",
+     "p2"
+    ]
+   },
+   {
+    "c": "Artık her departman ayrı ağdır. Satıştan depoya giden paket router üzerinden geçer; yayınlar da ayrı kalır.",
+    "p": [
+     [
+      "p1",
+      "p3",
+      "data",
+      "Satış → Depo",
+      [
+       "s1",
+       "rt",
+       "s3"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "p3",
+      "ok"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "Alt ağ = büyük bloğu ihtiyaca göre parçalamak",
+  "notes": [
+   "/27 maskesinde 32 adres vardır; kullanılabilir olan 30'dur.",
+   "Ağ adresi ve yayın adresi cihaza verilmez.",
+   "Farklı alt ağlar arasında trafik yalnız router üzerinden geçer."
+  ],
+  "q": [
+   {
+    "q": "/27 alt ağda kaç kullanılabilir host adresi vardır?",
+    "o": [
+     "32",
+     "30",
+     "27",
+     "62"
+    ],
+    "a": 1,
+    "w": "2^5 = 32 adres; ağ ve yayın adresi çıkarılınca 30 kalır."
+   },
+   {
+    "q": "192.168.1.32/27 ağındaki yayın (broadcast) adresi hangisidir?",
+    "o": [
+     "192.168.1.47",
+     "192.168.1.62",
+     "192.168.1.63",
+     "192.168.1.64"
+    ],
+    "a": 2,
+    "w": "Blok 32 adrestir: .32–.63. Son adres yayın adresidir."
+   },
+   {
+    "q": "Aynı router'a bağlı iki farklı /27 alt ağdaki cihazlar nasıl konuşur?",
+    "o": [
+     "Switch üzerinden doğrudan",
+     "Router üzerinden",
+     "Yalnız VPN ile",
+     "Hiç konuşamaz"
+    ],
+    "a": 1,
+    "w": "Farklı alt ağlar arasındaki trafik router tarafından yönlendirilir."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "nat",
+  "tr": "ccna",
+  "trs": [
+   "ccna",
+   "net"
+  ],
+  "theme": "ccna",
+  "t": "NAT",
+  "title": "NAT: tek genel IP ile internete çıkış",
+  "one": "Router, özel adresleri ve portları tek genel IP'ye çevirir ve eşleşmeyi tabloda tutar.",
+  "rx": "\\bnat\\b|pat\\b|adres çevirme",
+  "icon": "router",
+  "nodes": [
+   {
+    "id": "lap",
+    "k": "laptop",
+    "x": 55,
+    "y": 140,
+    "l": "Laptop",
+    "s2": "192.168.1.10"
+   },
+   {
+    "id": "ph",
+    "k": "phone",
+    "x": 55,
+    "y": 300,
+    "l": "Telefon",
+    "s2": "192.168.1.20"
+   },
+   {
+    "id": "rt",
+    "k": "router",
+    "x": 175,
+    "y": 220,
+    "l": "NAT Router",
+    "s2": "203.0.113.5"
+   },
+   {
+    "id": "srv",
+    "k": "server",
+    "x": 295,
+    "y": 140,
+    "l": "Web sunucusu",
+    "s2": "198.51.100.20"
+   },
+   {
+    "id": "bad",
+    "k": "bug",
+    "x": 295,
+    "y": 300,
+    "l": "Dışarıdan biri",
+    "s2": "192.0.2.77",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "lap",
+    "b": "rt",
+    "k": "eth",
+    "l": "Özel ağ",
+    "lt": 0.4
+   },
+   {
+    "a": "ph",
+    "b": "rt",
+    "k": "wifi"
+   },
+   {
+    "a": "rt",
+    "b": "srv",
+    "k": "fiber",
+    "l": "Genel IP",
+    "lt": 0.55
+   },
+   {
+    "a": "rt",
+    "b": "bad",
+    "k": "fiber"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Evdeki cihazlar özel (private) adres kullanır. Router'ın internete bakan tek genel (public) adresi var.",
+    "cam": 0,
+    "hi": [
+     "rt"
+    ]
+   },
+   {
+    "c": "Laptop web sunucusuna bağlanıyor. Çıkış kaynağı: 192.168.1.10, port 50001.",
+    "p": [
+     [
+      "lap",
+      "rt",
+      "req",
+      "Kaynak :50001"
+     ]
+    ],
+    "tag": [
+     [
+      "lap",
+      "192.168.1.10:50001",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Router kaynağı kendi genel adresine çevirir ve eşleşmeyi NAT tablosuna yazar.",
+    "tag": [
+     [
+      "rt",
+      "192.168.1.10:50001 → :40001",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "rt"
+    ],
+    "p": [
+     [
+      "rt",
+      "srv",
+      "req",
+      "Kaynak :40001"
+     ]
+    ]
+   },
+   {
+    "c": "Telefon da aynı sunucuya bağlanıyor. Router onu farklı bir portla (40002) eşler; böylece cevaplar karışmaz.",
+    "p": [
+     [
+      "ph",
+      "rt",
+      "req",
+      "Kaynak :50001"
+     ],
+     [
+      "rt",
+      "srv",
+      "req",
+      "Kaynak :40002"
+     ]
+    ],
+    "tag": [
+     [
+      "ph",
+      "192.168.1.20:50001 → :40002",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Sunucu yalnız 203.0.113.5 adresini görür. Cevap 40001 numaralı porta döner.",
+    "p": [
+     [
+      "srv",
+      "rt",
+      "res",
+      "→ :40001"
+     ]
+    ],
+    "say": [
+     [
+      "srv",
+      "Beni arayan 203.0.113.5."
+     ]
+    ],
+    "hi": [
+     "srv"
+    ]
+   },
+   {
+    "c": "Router tabloya bakar: 40001 laptoba aittir. Adresi geri çevirir ve cevabı laptop'a iletir.",
+    "p": [
+     [
+      "rt",
+      "lap",
+      "res",
+      "→ 192.168.1.10"
+     ]
+    ],
+    "mark": [
+     [
+      "lap",
+      "ok"
+     ]
+    ],
+    "dim": [
+     "ph"
+    ]
+   },
+   {
+    "c": "Dışarıdan kimse içeri bağlantı başlatmaya çalışırsa tabloda karşılığı olmadığı için paket atılır.",
+    "show": [
+     "bad"
+    ],
+    "p": [
+     [
+      "bad",
+      "rt",
+      "bad",
+      "→ :40009"
+     ]
+    ],
+    "mark": [
+     [
+      "rt",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "rt",
+      "NAT tablosunda kayıt yok",
+      "red"
+     ]
+    ]
+   }
+  ],
+  "result": "NAT = çok özel adres, tek genel IP; tablo eşleştirir",
+  "notes": [
+   "Özel adresler (192.168.x.x, 10.x.x.x) internette yönlendirilmez; NAT bunları genel adrese çevirir.",
+   "Çok cihaz tek IP'yi paylaşınca ayırt etmek için port numaraları çevrilir (PAT).",
+   "İçeriden başlamayan bağlantının NAT tablosunda karşılığı olmaz, paket atılır."
+  ],
+  "q": [
+   {
+    "q": "Birçok cihaz tek genel IP'yi paylaşırken cevapları ayıran şey nedir?",
+    "o": [
+     "MAC adresleri",
+     "Çevrilen port numaraları",
+     "Cihaz isimleri",
+     "TTL değerleri"
+    ],
+    "a": 1,
+    "w": "PAT, her bağlantıya farklı bir port atar ve tabloda tutar."
+   },
+   {
+    "q": "Sunucu hangi kaynak adresi görür?",
+    "o": [
+     "192.168.1.10",
+     "Router'ın genel adresi",
+     "Switch'in MAC adresi",
+     "Hiçbir adres"
+    ],
+    "a": 1,
+    "w": "Özel adres router tarafından genel adrese çevrilir."
+   },
+   {
+    "q": "Dışarıdan gelen ve NAT tablosunda karşılığı olmayan paket ne olur?",
+    "o": [
+     "Rastgele cihaza gider",
+     "Tüm cihazlara yayılır",
+     "Atılır",
+     "Laptop'a gider"
+    ],
+    "a": 2,
+    "w": "İçeriden başlatılmamış bağlantı için eşleşme olmadığından paket iletilmez."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "dhcp",
+  "tr": "ccna",
+  "trs": [
+   "ccna",
+   "net"
+  ],
+  "theme": "ccna",
+  "t": "DHCP",
+  "title": "DHCP: IP adresi otomatik nasıl alınır?",
+  "one": "Yeni cihaz DHCP sunucusundan DORA adımlarıyla IP, ağ geçidi ve DNS bilgisini alır.",
+  "rx": "dhcp|dns|otomatik ip",
+  "icon": "router",
+  "nodes": [
+   {
+    "id": "ph",
+    "k": "phone",
+    "x": 55,
+    "y": 285,
+    "l": "Yeni telefon"
+   },
+   {
+    "id": "ap",
+    "k": "ap",
+    "x": 170,
+    "y": 205,
+    "l": "Erişim noktası"
+   },
+   {
+    "id": "lap",
+    "k": "laptop",
+    "x": 55,
+    "y": 135,
+    "l": "Laptop",
+    "s2": "192.168.1.20"
+   },
+   {
+    "id": "srv",
+    "k": "router",
+    "x": 295,
+    "y": 205,
+    "l": "Router",
+    "s2": "DHCP sunucusu"
+   }
+  ],
+  "links": [
+   {
+    "a": "ph",
+    "b": "ap",
+    "k": "wifi"
+   },
+   {
+    "a": "lap",
+    "b": "ap",
+    "k": "wifi"
+   },
+   {
+    "a": "ap",
+    "b": "srv",
+    "k": "cat7",
+    "l": "Kablo",
+    "lt": 0.5
+   }
+  ],
+  "steps": [
+   {
+    "c": "Ayşe'nin yeni telefonu Wi-Fi'a bağlandı ama henüz IP adresi yok. Ağda DHCP sunucusu olarak çalışan router var.",
+    "cam": 0,
+    "mark": [
+     [
+      "ph",
+      "?"
+     ]
+    ]
+   },
+   {
+    "c": "1. Discover: Telefon 'IP verecek biri var mı?' diye herkese (broadcast) seslenir.",
+    "p": [
+     [
+      "ph",
+      "ap",
+      "env",
+      "DISCOVER"
+     ],
+     [
+      "ap",
+      "srv",
+      "env",
+      "DISCOVER"
+     ],
+     [
+      "ap",
+      "lap",
+      "env",
+      "DISCOVER"
+     ]
+    ],
+    "tag": [
+     [
+      "ph",
+      "0.0.0.0 → 255.255.255.255",
+      "dark"
+     ]
+    ],
+    "say": [
+     [
+      "ph",
+      "IP verecek biri var mı?"
+     ]
+    ]
+   },
+   {
+    "c": "Laptop yayını duyar ama DHCP sunucusu değildir, yok sayar.",
+    "cam": [
+     110,
+     170,
+     1.2
+    ],
+    "mark": [
+     [
+      "lap",
+      "x"
+     ]
+    ],
+    "dim": [
+     "lap"
+    ]
+   },
+   {
+    "c": "2. Offer: Sunucu havuzdan boş bir adres önerir.",
+    "p": [
+     [
+      "srv",
+      "ap",
+      "res",
+      "OFFER"
+     ],
+     [
+      "ap",
+      "ph",
+      "res",
+      "OFFER"
+     ]
+    ],
+    "tag": [
+     [
+      "srv",
+      "Teklif: 192.168.1.50",
+      "green"
+     ]
+    ]
+   },
+   {
+    "c": "3. Request: Telefon 'Bu adresi istiyorum' diye yanıtlar. Birden fazla sunucu varsa seçtiğini duyurur.",
+    "p": [
+     [
+      "ph",
+      "ap",
+      "req",
+      "REQUEST"
+     ],
+     [
+      "ap",
+      "srv",
+      "req",
+      "REQUEST"
+     ]
+    ],
+    "say": [
+     [
+      "ph",
+      "192.168.1.50'yi kullanacağım."
+     ]
+    ]
+   },
+   {
+    "c": "4. Acknowledge: Sunucu onaylar ve kira süresiyle birlikte ağ geçidi ile DNS bilgisini verir.",
+    "p": [
+     [
+      "srv",
+      "ap",
+      "ok",
+      "ACK"
+     ],
+     [
+      "ap",
+      "ph",
+      "ok",
+      "ACK"
+     ]
+    ],
+    "tag": [
+     [
+      "ph",
+      "IP 192.168.1.50  GW 192.168.1.1",
+      "dark"
+     ],
+     [
+      "srv",
+      "Kira: 24 saat",
+      "amber"
+     ]
+    ],
+    "mark": [
+     [
+      "ph",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Kira (lease) süresinin yarısında telefon adresi yenilemek için sunucuya tekrar sorar. Yanıt gelmezse adres süre sonunda bırakılır.",
+    "p": [
+     [
+      "ph",
+      "ap",
+      "req",
+      "Yenile"
+     ],
+     [
+      "ap",
+      "srv",
+      "req",
+      "Yenile"
+     ]
+    ],
+    "tag": [
+     [
+      "srv",
+      "Kira yenilendi",
+      "green"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "DHCP = Discover, Offer, Request, Ack ile otomatik IP",
+  "notes": [
+   "DHCP adımları DORA: Discover, Offer, Request, Acknowledge.",
+   "İlk istek broadcast olarak gider, çünkü cihazın henüz IP adresi yoktur.",
+   "IP kiralanır; süre dolmadan yenilenir."
+  ],
+  "q": [
+   {
+    "q": "Discover paketi neden broadcast olarak gönderilir?",
+    "o": [
+     "Sunucuyu herkese tanıtmak için",
+     "Cihazın henüz IP adresi ve sunucunun adresi yoktur",
+     "Daha hızlı olduğu için",
+     "Güvenlik için"
+    ],
+    "a": 1,
+    "w": "İstemci sunucuyu bilmez ve 0.0.0.0 ile konuşur; bu yüzden yayın yapar."
+   },
+   {
+    "q": "DORA sırası hangisidir?",
+    "o": [
+     "Offer, Discover, Request, Ack",
+     "Discover, Request, Offer, Ack",
+     "Discover, Offer, Request, Ack",
+     "Request, Offer, Discover, Ack"
+    ],
+    "a": 2,
+    "w": "Discover, Offer, Request, Acknowledge sırasıyla ilerler."
+   },
+   {
+    "q": "DHCP kira süresi dolmadan ne olur?",
+    "o": [
+     "Cihaz internetten çıkarılır",
+     "Cihaz adresi yenilemek için sunucuya sorar",
+     "Router yeniden başlar",
+     "Adres kalıcı olur"
+    ],
+    "a": 1,
+    "w": "Kira süresinin yarısında istemci yenileme isteği gönderir."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "vlan",
+  "tr": "ccna",
+  "trs": [
+   "ccna",
+   "net"
+  ],
+  "theme": "ccna",
+  "t": "VLAN",
+  "title": "VLAN: bir switch, ayrı mantıksal ağlar",
+  "one": "VLAN ile aynı fiziksel switch'teki cihazlar ayrı yayın alanlarına bölünür.",
+  "rx": "vlan|trunk|802\\.1q",
+  "icon": "switch",
+  "nodes": [
+   {
+    "id": "s1",
+    "k": "switch",
+    "x": 95,
+    "y": 195,
+    "l": "Switch 1"
+   },
+   {
+    "id": "s2",
+    "k": "switch",
+    "x": 265,
+    "y": 195,
+    "l": "Switch 2"
+   },
+   {
+    "id": "m1",
+    "k": "pc",
+    "x": 50,
+    "y": 285,
+    "l": "Muh-1",
+    "s2": "VLAN 10"
+   },
+   {
+    "id": "g1",
+    "k": "laptop",
+    "x": 140,
+    "y": 285,
+    "l": "Misafir-1",
+    "s2": "VLAN 20"
+   },
+   {
+    "id": "m2",
+    "k": "pc",
+    "x": 225,
+    "y": 285,
+    "l": "Muh-2",
+    "s2": "VLAN 10"
+   },
+   {
+    "id": "g2",
+    "k": "laptop",
+    "x": 315,
+    "y": 285,
+    "l": "Misafir-2",
+    "s2": "VLAN 20"
+   },
+   {
+    "id": "rt",
+    "k": "router",
+    "x": 180,
+    "y": 125,
+    "l": "Router",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "s1",
+    "b": "s2",
+    "k": "cat7",
+    "l": "Trunk",
+    "lt": 0.5
+   },
+   {
+    "a": "s1",
+    "b": "m1"
+   },
+   {
+    "a": "s1",
+    "b": "g1"
+   },
+   {
+    "a": "s2",
+    "b": "m2"
+   },
+   {
+    "a": "s2",
+    "b": "g2"
+   },
+   {
+    "a": "rt",
+    "b": "s1",
+    "k": "cat7",
+    "cv": -14,
+    "l": "Trunk",
+    "lt": 0.5
+   }
+  ],
+  "steps": [
+   {
+    "c": "İki switch'e bağlı muhasebe ve misafir cihazları var. Fiziksel olarak hepsi aynı ağda.",
+    "cam": 0
+   },
+   {
+    "c": "VLAN yokken misafir cihazın yayını (broadcast) muhasebe bilgisayarlarına da ulaşır.",
+    "p": [
+     [
+      "g1",
+      "s1",
+      "bad",
+      "Yayın"
+     ],
+     [
+      "s1",
+      "m1",
+      "bad",
+      "Yayın"
+     ]
+    ],
+    "mark": [
+     [
+      "m1",
+      "!"
+     ]
+    ],
+    "say": [
+     [
+      "g1",
+      "Herkese seslendim."
+     ]
+    ]
+   },
+   {
+    "c": "VLAN tanımlanır: muhasebe portları VLAN 10, misafir portları VLAN 20. Aynı switch'te iki ayrı mantıksal ağ olur.",
+    "tag": [
+     [
+      "m1",
+      "VLAN 10: Muhasebe",
+      "blue"
+     ],
+     [
+      "g2",
+      "VLAN 20: Misafir",
+      "amber"
+     ]
+    ],
+    "hi": [
+     "m1",
+     "m2",
+     "g1",
+     "g2"
+    ],
+    "cam": 0
+   },
+   {
+    "c": "Muh-1, Muh-2'ye yazıyor. İki switch arasındaki trunk bağlantısı çerçeveye VLAN 10 etiketi (802.1Q) ekler.",
+    "p": [
+     [
+      "m1",
+      "m2",
+      "env",
+      "VLAN 10",
+      [
+       "s1",
+       "s2"
+      ]
+     ]
+    ],
+    "tag": [
+     [
+      "s1",
+      "Trunk: 802.1Q etiketi",
+      "dark"
+     ]
+    ],
+    "mark": [
+     [
+      "m2",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Misafir yayını artık yalnız VLAN 20 içinde kalır; Misafir-2 duyar, muhasebe cihazları duymaz.",
+    "p": [
+     [
+      "g1",
+      "s1",
+      "data",
+      "Yayın"
+     ],
+     [
+      "s1",
+      "s2",
+      "data",
+      "VLAN 20"
+     ],
+     [
+      "s2",
+      "g2",
+      "data",
+      "Yayın"
+     ]
+    ],
+    "mark": [
+     [
+      "g2",
+      "ok"
+     ]
+    ],
+    "dim": [
+     "m1",
+     "m2"
+    ]
+   },
+   {
+    "c": "Misafir cihaz muhasebeye doğrudan ulaşmaya çalışırsa switch bunu engeller: farklı VLAN farklı ağdır.",
+    "p": [
+     [
+      "g1",
+      "s1",
+      "bad",
+      "→ Muh-1"
+     ]
+    ],
+    "mark": [
+     [
+      "m1",
+      "x"
+     ]
+    ],
+    "hi": [
+     "g1"
+    ]
+   },
+   {
+    "c": "VLAN'lar arası iletişim gerekirse router (inter-VLAN routing) araya girer ve burada kural konabilir.",
+    "show": [
+     "rt"
+    ],
+    "p": [
+     [
+      "g1",
+      "rt",
+      "res",
+      "Router üzerinden",
+      [
+       "s1"
+      ]
+     ]
+    ],
+    "tag": [
+     [
+      "rt",
+      "VLAN'lar arası yönlendirme",
+      "green"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "VLAN = tek switch, ayrı yayın alanları",
+  "notes": [
+   "VLAN, switch portlarını mantıksal ağlara böler.",
+   "Trunk bağlantısı birden çok VLAN'ı 802.1Q etiketiyle taşır.",
+   "VLAN'lar arası trafik için router (veya katman 3 switch) gerekir."
+  ],
+  "q": [
+   {
+    "q": "Aynı switch'e bağlı farklı VLAN'daki iki cihaz neden doğrudan konuşamaz?",
+    "o": [
+     "Kabloları farklıdır",
+     "Ayrı yayın alanı yani ayrı ağdadırlar",
+     "Switch bozuktur",
+     "MAC adresleri aynıdır"
+    ],
+    "a": 1,
+    "w": "Her VLAN ayrı bir yayın alanıdır; aralarında yönlendirme gerekir."
+   },
+   {
+    "q": "İki switch arasında birden fazla VLAN'ı taşıyan bağlantı nedir?",
+    "o": [
+     "Access portu",
+     "Trunk",
+     "Loopback",
+     "Console"
+    ],
+    "a": 1,
+    "w": "Trunk, 802.1Q etiketiyle çoklu VLAN taşır."
+   },
+   {
+    "q": "Misafir ve muhasebe VLAN'ı arasında kontrollü iletişim için ne gerekir?",
+    "o": [
+     "Aynı portu paylaşmaları",
+     "Router veya katman 3 switch",
+     "Daha uzun kablo",
+     "Hub"
+    ],
+    "a": 1,
+    "w": "VLAN'lar arası yönlendirme router veya L3 switch ile yapılır."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "cc-route",
+  "tr": "ccna",
+  "trs": [
+   "ccna",
+   "net"
+  ],
+  "theme": "ccna",
+  "t": "Statik rota",
+  "title": "Statik rota ve yönlendirme tablosu",
+  "one": "Router, bilmediği uzak ağa yolu elle girilen statik rota ile öğrenir.",
+  "rx": "static route|statik rota|yönlendirme tablosu|routing table|rota",
+  "icon": "router",
+  "nodes": [
+   {
+    "id": "a",
+    "k": "pc",
+    "x": 50,
+    "y": 290,
+    "l": "PC-A",
+    "s2": "192.168.1.10"
+   },
+   {
+    "id": "r1",
+    "k": "router",
+    "x": 105,
+    "y": 200,
+    "l": "R1",
+    "s2": "10.0.0.1"
+   },
+   {
+    "id": "r2",
+    "k": "router",
+    "x": 255,
+    "y": 200,
+    "l": "R2",
+    "s2": "10.0.0.2"
+   },
+   {
+    "id": "b",
+    "k": "pc",
+    "x": 310,
+    "y": 290,
+    "l": "PC-B",
+    "s2": "192.168.2.10"
+   }
+  ],
+  "links": [
+   {
+    "a": "a",
+    "b": "r1",
+    "k": "eth"
+   },
+   {
+    "a": "r1",
+    "b": "r2",
+    "k": "fiber",
+    "l": "10.0.0.0/30",
+    "lt": 0.5
+   },
+   {
+    "a": "r2",
+    "b": "b",
+    "k": "eth"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Merkez ofis (192.168.1.0/24) ve şube (192.168.2.0/24) iki router ile bağlı. R1 şimdilik yalnız doğrudan bağlı ağları bilir.",
+    "cam": 0,
+    "tag": [
+     [
+      "r1",
+      "Bildiği: 192.168.1.0/24, 10.0.0.0/30",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "PC-A, şubedeki PC-B'ye ping atıyor. R1 tabloya bakar ama 192.168.2.0/24 için kayıt bulamaz.",
+    "p": [
+     [
+      "a",
+      "r1",
+      "bad",
+      "→ 192.168.2.10"
+     ]
+    ],
+    "mark": [
+     [
+      "r1",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "r1",
+      "Bu ağa yolum yok."
+     ]
+    ]
+   },
+   {
+    "c": "Yönetici R1'e statik rota yazar: 192.168.2.0/24 ağına R2 (10.0.0.2) üzerinden gidilir.",
+    "tag": [
+     [
+      "r1",
+      "ip route 192.168.2.0 255.255.255.0 10.0.0.2",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "r1"
+    ],
+    "cam": [
+     105,
+     200,
+     1.5
+    ]
+   },
+   {
+    "c": "Tabloda S kodlu yeni satır oluştu. Paket artık R2'ye (next-hop) yollanır ve şubedeki PC-B'ye ulaşır.",
+    "tag": [
+     [
+      "r1",
+      "S 192.168.2.0/24 via 10.0.0.2",
+      "blue"
+     ]
+    ],
+    "p": [
+     [
+      "a",
+      "r1",
+      "data",
+      "→ 192.168.2.10"
+     ],
+     [
+      "r1",
+      "r2",
+      "data",
+      "Next-hop"
+     ],
+     [
+      "r2",
+      "b",
+      "ok",
+      "Ulaştı"
+     ]
+    ],
+    "mark": [
+     [
+      "b",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Ama cevap dönmüyor: R2, 192.168.1.0/24 ağını bilmiyor. Yönlendirme iki yönlüdür.",
+    "p": [
+     [
+      "b",
+      "r2",
+      "bad",
+      "Cevap"
+     ]
+    ],
+    "mark": [
+     [
+      "r2",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "r2",
+      "Geri dönüş rotası yok."
+     ]
+    ],
+    "cam": [
+     255,
+     200,
+     1.5
+    ]
+   },
+   {
+    "c": "R2'ye de dönüş rotası eklenir: 192.168.1.0/24 ağına R1 (10.0.0.1) üzerinden.",
+    "tag": [
+     [
+      "r2",
+      "ip route 192.168.1.0 255.255.255.0 10.0.0.1",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "r2"
+    ]
+   },
+   {
+    "c": "Artık istek gidiyor, cevap dönüyor. Statik rota basit ve öngörülebilirdir ama ağ büyüdükçe elle yönetmek zorlaşır.",
+    "p": [
+     [
+      "a",
+      "r1",
+      "data",
+      "İstek"
+     ],
+     [
+      "r1",
+      "r2",
+      "data",
+      "İstek"
+     ],
+     [
+      "r2",
+      "b",
+      "data",
+      "İstek"
+     ],
+     [
+      "b",
+      "r2",
+      "res",
+      "Cevap"
+     ],
+     [
+      "r2",
+      "r1",
+      "res",
+      "Cevap"
+     ],
+     [
+      "r1",
+      "a",
+      "res",
+      "Cevap"
+     ]
+    ],
+    "mark": [
+     [
+      "a",
+      "ok"
+     ],
+     [
+      "b",
+      "ok"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "Statik rota = ağ + next-hop, iki yönlü yazılır",
+  "notes": [
+   "Router yalnız bağlı olduğu ağları ve kendisine öğretilen rotaları bilir.",
+   "Statik rota: hedef ağ, maske ve next-hop adresiyle elle girilir.",
+   "Dönüş rotası yoksa istek gider ama cevap gelmez."
+  ],
+  "q": [
+   {
+    "q": "PC-A'dan PC-B'ye ping gidiyor ama cevap gelmiyor. En olası neden?",
+    "o": [
+     "Uzak router'da dönüş rotası yok",
+     "PC-A'nın klavyesi bozuk",
+     "Kablo renkli değil",
+     "Switch MAC tablosu dolu"
+    ],
+    "a": 0,
+    "w": "İstek ulaşır ama uzak tarafta kaynak ağa dönüş rotası yoksa cevap gönderilemez."
+   },
+   {
+    "q": "'ip route 192.168.2.0 255.255.255.0 10.0.0.2' komutunda 10.0.0.2 neyi gösterir?",
+    "o": [
+     "Hedef ağın maskesini",
+     "Next-hop adresini",
+     "Router adını",
+     "VLAN numarasını"
+    ],
+    "a": 1,
+    "w": "Son parametre paketin bir sonraki durağıdır."
+   },
+   {
+    "q": "Yönlendirme tablosunda 'S' koduyla başlayan satır neyi ifade eder?",
+    "o": [
+     "Switch kaydı",
+     "Statik rota",
+     "Güvenlik kuralı",
+     "Seri port"
+    ],
+    "a": 1,
+    "w": "S, elle girilen statik rotayı gösterir."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "cc-ospf",
+  "tr": "ccna",
+  "trs": [
+   "ccna",
+   "net"
+  ],
+  "theme": "ccna",
+  "t": "OSPF",
+  "title": "OSPF: router'lar komşu olup yolu öğrenir",
+  "one": "OSPF router'ları komşu yapar, bağlantı bilgisini paylaştırır ve en kısa yolu hesaplatır.",
+  "rx": "ospf|komşu|link[- ]state|dinamik yönlendirme",
+  "icon": "router",
+  "nodes": [
+   {
+    "id": "a",
+    "k": "pc",
+    "x": 55,
+    "y": 300,
+    "l": "PC-A"
+   },
+   {
+    "id": "r1",
+    "k": "router",
+    "x": 70,
+    "y": 200,
+    "l": "R1",
+    "s2": "Area 0"
+   },
+   {
+    "id": "r2",
+    "k": "router",
+    "x": 180,
+    "y": 120,
+    "l": "R2",
+    "s2": "Area 0"
+   },
+   {
+    "id": "r3",
+    "k": "router",
+    "x": 290,
+    "y": 200,
+    "l": "R3",
+    "s2": "Area 0"
+   },
+   {
+    "id": "b",
+    "k": "pc",
+    "x": 305,
+    "y": 300,
+    "l": "PC-B"
+   }
+  ],
+  "links": [
+   {
+    "a": "a",
+    "b": "r1",
+    "k": "eth"
+   },
+   {
+    "a": "b",
+    "b": "r3",
+    "k": "eth"
+   },
+   {
+    "a": "r1",
+    "b": "r2",
+    "k": "cat7",
+    "cv": -14
+   },
+   {
+    "a": "r2",
+    "b": "r3",
+    "k": "cat7",
+    "cv": -14
+   },
+   {
+    "a": "r1",
+    "b": "r3",
+    "k": "fiber",
+    "l": "Doğrudan",
+    "lt": 0.5
+   }
+  ],
+  "steps": [
+   {
+    "c": "Üç router üçgen kurmuş. Hiçbirine rota elle girilmedi; hepsi OSPF çalıştırıyor ve aynı alanda (Area 0).",
+    "cam": 0,
+    "hi": [
+     "r1",
+     "r2",
+     "r3"
+    ]
+   },
+   {
+    "c": "Router'lar bağlı arayüzlerden düzenli olarak Hello paketi yollar (224.0.0.5 çoklu yayın adresi).",
+    "p": [
+     [
+      "r1",
+      "r2",
+      "env",
+      "Hello"
+     ],
+     [
+      "r1",
+      "r3",
+      "env",
+      "Hello"
+     ],
+     [
+      "r2",
+      "r3",
+      "env",
+      "Hello"
+     ]
+    ],
+    "tag": [
+     [
+      "r1",
+      "Hello: 224.0.0.5",
+      "blue"
+     ]
+    ]
+   },
+   {
+    "c": "Hello'daki ayarlar uyuşursa (alan, zamanlayıcılar) router'lar komşu olur. Komşuluk son aşamada Full durumuna ulaşır.",
+    "tag": [
+     [
+      "r2",
+      "Komşu: R1 ve R3 (Full)",
+      "green"
+     ]
+    ],
+    "say": [
+     [
+      "r2",
+      "Ayarlarımız aynı, komşuyuz."
+     ]
+    ],
+    "mark": [
+     [
+      "r1",
+      "ok"
+     ],
+     [
+      "r2",
+      "ok"
+     ],
+     [
+      "r3",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Komşular bağlantı durumu bilgisini (LSA) paylaşır. Sonunda hepsi aynı ağ haritasına (LSDB) sahip olur.",
+    "p": [
+     [
+      "r1",
+      "r2",
+      "key",
+      "LSA"
+     ],
+     [
+      "r2",
+      "r3",
+      "key",
+      "LSA"
+     ],
+     [
+      "r3",
+      "r1",
+      "key",
+      "LSA"
+     ]
+    ],
+    "tag": [
+     [
+      "r3",
+      "Herkeste aynı harita (LSDB)",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Her router bu haritadan SPF algoritmasıyla en düşük maliyetli yolu hesaplar. PC-A'dan PC-B'ye en kısa yol R1-R3 arasındaki doğrudan hat.",
+    "p": [
+     [
+      "a",
+      "b",
+      "data",
+      "Paket",
+      [
+       "r1",
+       "r3"
+      ]
+     ]
+    ],
+    "tag": [
+     [
+      "r1",
+      "SPF: en düşük maliyet",
+      "blue"
+     ]
+    ],
+    "mark": [
+     [
+      "b",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "R1-R3 hattı koptu. R1, R3'ten Hello alamaz; ölü süre (dead interval, varsayılan 40 sn) dolunca komşuyu siler.",
+    "p": [
+     [
+      "r3",
+      "r1",
+      "bad",
+      "Hello yok"
+     ]
+    ],
+    "mark": [
+     [
+      "r1",
+      "!"
+     ],
+     [
+      "r3",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "r1",
+      "R3 artık cevap vermiyor."
+     ]
+    ],
+    "tag": [
+     [
+      "r1",
+      "Dead süresi doldu",
+      "red"
+     ]
+    ]
+   },
+   {
+    "c": "Router'lar değişikliği LSA ile duyurur, SPF yeniden çalışır ve trafik otomatik olarak R2 üzerinden akar.",
+    "p": [
+     [
+      "r1",
+      "r2",
+      "key",
+      "LSA"
+     ],
+     [
+      "a",
+      "b",
+      "ok",
+      "Yeni yol",
+      [
+       "r1",
+       "r2",
+       "r3"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "b",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "r2",
+      "Yeni yol: R1 → R2 → R3",
+      "green"
+     ]
+    ]
+   }
+  ],
+  "result": "OSPF = komşu ol, haritayı paylaş, en kısa yolu hesapla",
+  "notes": [
+   "OSPF, router'lar arasında komşuluk kurarak çalışan bir link-state protokolüdür.",
+   "Hello paketleri komşuluğu kurar ve canlı tutar; yanıt kesilince komşu silinir.",
+   "Hat koparsa rota elle değil otomatik yeniden hesaplanır."
+  ],
+  "q": [
+   {
+    "q": "OSPF komşuluğunu canlı tutan paket hangisidir?",
+    "o": [
+     "Hello",
+     "ARP isteği",
+     "DHCP Offer",
+     "ICMP echo"
+    ],
+    "a": 0,
+    "w": "Hello paketleri düzenli gönderilir; kesilirse ölü süre sonunda komşuluk düşer."
+   },
+   {
+    "q": "Router'lar LSA paylaşınca ne elde eder?",
+    "o": [
+     "Aynı ağ haritası (LSDB)",
+     "Aynı IP adresi",
+     "Aynı MAC adresi",
+     "Aynı parola"
+    ],
+    "a": 0,
+    "w": "LSA'lar bağlantı durumunu taşır; hepsi aynı LSDB'ye sahip olur."
+   },
+   {
+    "q": "Statik rotaya göre OSPF'nin avantajı nedir?",
+    "o": [
+     "Hiç trafik üretmez",
+     "Hat koparsa yolu otomatik yeniden hesaplar",
+     "Yalnız iki router'da çalışır",
+     "Maske gerektirmez"
+    ],
+    "a": 1,
+    "w": "Dinamik protokol topoloji değişikliklerine otomatik uyum sağlar."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "cc-acl",
+  "tr": "ccna",
+  "trs": [
+   "ccna",
+   "net"
+  ],
+  "theme": "ccna",
+  "t": "ACL",
+  "title": "ACL: erişim listesi paketi süzer",
+  "one": "ACL, router'a gelen paketleri satır satır kontrol eder ve izin verir ya da atar.",
+  "rx": "acl|erişim listesi|access[- ]list",
+  "icon": "firewall",
+  "nodes": [
+   {
+    "id": "g",
+    "k": "laptop",
+    "x": 55,
+    "y": 290,
+    "l": "Misafir",
+    "s2": "192.168.30.10"
+   },
+   {
+    "id": "rt",
+    "k": "router",
+    "x": 175,
+    "y": 205,
+    "l": "R1",
+    "s2": "ACL: GUEST-IN"
+   },
+   {
+    "id": "srv",
+    "k": "server",
+    "x": 295,
+    "y": 290,
+    "l": "Muhasebe sunucusu",
+    "s2": "10.10.10.5"
+   },
+   {
+    "id": "net",
+    "k": "cloud",
+    "x": 295,
+    "y": 130,
+    "l": "İnternet"
+   }
+  ],
+  "links": [
+   {
+    "a": "g",
+    "b": "rt",
+    "k": "eth",
+    "l": "Gi0/2",
+    "lt": 0.45
+   },
+   {
+    "a": "rt",
+    "b": "srv",
+    "k": "cat7",
+    "l": "Gi0/1",
+    "lt": 0.55
+   },
+   {
+    "a": "rt",
+    "b": "net",
+    "k": "fiber",
+    "l": "Gi0/0",
+    "lt": 0.55
+   }
+  ],
+  "steps": [
+   {
+    "c": "Misafir ağı internete çıkabilmeli ama muhasebe sunucusuna ulaşmamalı. R1 iki ağın arasında duruyor.",
+    "cam": 0
+   },
+   {
+    "c": "ACL yokken misafir bilgisayar muhasebe sunucusuna ulaşabilir. Bu istenmeyen bir durum.",
+    "p": [
+     [
+      "g",
+      "rt",
+      "bad",
+      "→ 10.10.10.5"
+     ],
+     [
+      "rt",
+      "srv",
+      "bad",
+      "Erişim"
+     ]
+    ],
+    "mark": [
+     [
+      "srv",
+      "!"
+     ]
+    ],
+    "say": [
+     [
+      "g",
+      "Sunucuya girebiliyorum."
+     ]
+    ]
+   },
+   {
+    "c": "1. satır eklenir: misafir ağından muhasebe ağına giden paketler reddedilir (deny).",
+    "tag": [
+     [
+      "rt",
+      "1: deny 192.168.30.0/24 → 10.10.10.0/24",
+      "red"
+     ]
+    ],
+    "hi": [
+     "rt"
+    ],
+    "cam": [
+     175,
+     205,
+     1.5
+    ]
+   },
+   {
+    "c": "Satır satır yukarıdan aşağı bakılır. Paket 1. satırla eşleşti, router paketi atar.",
+    "p": [
+     [
+      "g",
+      "rt",
+      "bad",
+      "→ 10.10.10.5"
+     ]
+    ],
+    "mark": [
+     [
+      "rt",
+      "x"
+     ],
+     [
+      "srv",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Sürpriz: misafir internete de çıkamıyor. Hiçbir satırla eşleşmeyen pakete listenin sonundaki gizli 'deny any' uygulanır.",
+    "p": [
+     [
+      "g",
+      "rt",
+      "bad",
+      "→ İnternet"
+     ]
+    ],
+    "mark": [
+     [
+      "net",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "rt",
+      "Gizli son satır: deny any",
+      "amber"
+     ]
+    ]
+   },
+   {
+    "c": "2. satır eklenir: geri kalan her şeye izin ver (permit any).",
+    "tag": [
+     [
+      "rt",
+      "2: permit ip any any",
+      "green"
+     ]
+    ],
+    "hi": [
+     "rt"
+    ]
+   },
+   {
+    "c": "Misafirin internet paketi 1. satırla eşleşmez, 2. satırla eşleşir ve geçer. Sunucu hâlâ kapalı.",
+    "p": [
+     [
+      "g",
+      "rt",
+      "data",
+      "→ İnternet"
+     ],
+     [
+      "rt",
+      "net",
+      "ok",
+      "İzin verildi"
+     ],
+     [
+      "g",
+      "rt",
+      "bad",
+      "→ 10.10.10.5"
+     ]
+    ],
+    "mark": [
+     [
+      "net",
+      "ok"
+     ],
+     [
+      "srv",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Sıra önemlidir: permit any önce yazılırsa deny satırına hiç gelinmez. ACL, misafir arayüzünde giriş yönüne (in) uygulanır.",
+    "tag": [
+     [
+      "rt",
+      "ip access-group GUEST-IN in",
+      "dark"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "ACL = ilk eşleşen satır karar verir, sonda gizli deny",
+  "notes": [
+   "ACL satırları yukarıdan aşağı okunur; ilk eşleşen satır uygulanır.",
+   "Hiçbir satır eşleşmezse gizli son satır paketi reddeder.",
+   "Sıra önemlidir; geniş izin satırı dar yasağın üstüne yazılmamalıdır."
+  ],
+  "q": [
+   {
+    "q": "ACL'de hiçbir satır pakete uymazsa ne olur?",
+    "o": [
+     "Paket geçer",
+     "Gizli deny ile paket atılır",
+     "Paket yavaşlar",
+     "Router yeniden başlar"
+    ],
+    "a": 1,
+    "w": "Her ACL'nin sonunda görünmeyen bir 'deny any' vardır."
+   },
+   {
+    "q": "permit ip any any satırı deny satırının üstüne yazılırsa ne olur?",
+    "o": [
+     "Deny satırı çalışmaya devam eder",
+     "Deny satırına hiç gelinmez, her şey geçer",
+     "Router hata verir ve kapanır",
+     "Yalnız misafirler engellenir"
+    ],
+    "a": 1,
+    "w": "İlk eşleşen satır uygulandığı için üstteki geniş izin her paketi karşılar."
+   },
+   {
+    "q": "Misafir ağını muhasebeden ayırıp internete izin vermek için doğru kurgu hangisidir?",
+    "o": [
+     "permit any any, ardından deny",
+     "deny misafir→muhasebe, ardından permit any any",
+     "Yalnız deny misafir→muhasebe",
+     "Yalnız permit any any"
+    ],
+    "a": 1,
+    "w": "Önce özel yasak, sonra genel izin gerekir; yoksa gizli deny interneti de keser."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "cc-stp",
+  "tr": "ccna",
+  "trs": [
+   "ccna",
+   "net"
+  ],
+  "theme": "ccna",
+  "t": "STP",
+  "title": "STP: yedek kablo döngü yaratmasın",
+  "one": "Spanning Tree, yedek bağlantılardan birini kapatarak döngüyü önler; yol koparsa açar.",
+  "rx": "stp|spanning|döngü|etherchannel",
+  "icon": "switch",
+  "nodes": [
+   {
+    "id": "s1",
+    "k": "switch",
+    "x": 180,
+    "y": 125,
+    "l": "SW1",
+    "s2": "Öncelik 4096"
+   },
+   {
+    "id": "s2",
+    "k": "switch",
+    "x": 65,
+    "y": 225,
+    "l": "SW2"
+   },
+   {
+    "id": "s3",
+    "k": "switch",
+    "x": 295,
+    "y": 225,
+    "l": "SW3"
+   },
+   {
+    "id": "a",
+    "k": "pc",
+    "x": 55,
+    "y": 305,
+    "l": "PC-A"
+   },
+   {
+    "id": "b",
+    "k": "pc",
+    "x": 305,
+    "y": 305,
+    "l": "PC-B"
+   }
+  ],
+  "links": [
+   {
+    "a": "s1",
+    "b": "s2",
+    "k": "cat7"
+   },
+   {
+    "a": "s1",
+    "b": "s3",
+    "k": "cat7"
+   },
+   {
+    "a": "s2",
+    "b": "s3",
+    "k": "eth",
+    "l": "Yedek",
+    "lt": 0.5
+   },
+   {
+    "a": "a",
+    "b": "s2",
+    "k": "eth"
+   },
+   {
+    "a": "b",
+    "b": "s3",
+    "k": "eth"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Üç switch üçgen şeklinde bağlı. Yedek olsun diye fazladan kablo çekildi; ama bu bir döngü (loop) oluşturur.",
+    "cam": 0
+   },
+   {
+    "c": "PC-A bir yayın (broadcast) yollar. Çerçevelerin TTL'si yoktur; switch'ler yayını birbirine döndürür.",
+    "p": [
+     [
+      "a",
+      "s2",
+      "bad",
+      "Yayın"
+     ],
+     [
+      "s2",
+      "s1",
+      "bad",
+      "Yayın"
+     ],
+     [
+      "s1",
+      "s3",
+      "bad",
+      "Yayın"
+     ],
+     [
+      "s3",
+      "s2",
+      "bad",
+      "Yayın"
+     ]
+    ],
+    "mark": [
+     [
+      "s1",
+      "!"
+     ],
+     [
+      "s2",
+      "!"
+     ],
+     [
+      "s3",
+      "!"
+     ]
+    ],
+    "tag": [
+     [
+      "s2",
+      "Yayın fırtınası",
+      "red"
+     ]
+    ]
+   },
+   {
+    "c": "STP açıkken switch'ler BPDU adlı mesajlarla birbirine kendini tanıtır (varsayılan her 2 saniyede bir).",
+    "p": [
+     [
+      "s1",
+      "s2",
+      "env",
+      "BPDU"
+     ],
+     [
+      "s1",
+      "s3",
+      "env",
+      "BPDU"
+     ],
+     [
+      "s2",
+      "s3",
+      "env",
+      "BPDU"
+     ]
+    ],
+    "tag": [
+     [
+      "s1",
+      "BPDU: Bridge ID",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "En düşük Bridge ID'ye (öncelik + MAC) sahip switch kök (root bridge) seçilir. Burada SW1'in önceliği düşük ayarlı.",
+    "tag": [
+     [
+      "s1",
+      "ROOT BRIDGE",
+      "green"
+     ],
+     [
+      "s2",
+      "Öncelik 32768",
+      "light"
+     ],
+     [
+      "s3",
+      "Öncelik 32768",
+      "light"
+     ]
+    ],
+    "mark": [
+     [
+      "s1",
+      "ok"
+     ]
+    ],
+    "hi": [
+     "s1"
+    ]
+   },
+   {
+    "c": "Kökten uzak yedek hat SW2-SW3, bir uçtan engellenir (blocking). Döngü kırıldı; yedek hat bekliyor.",
+    "p": [
+     [
+      "s2",
+      "s3",
+      "bad",
+      "Engelli"
+     ]
+    ],
+    "mark": [
+     [
+      "s3",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "s3",
+      "Port: blocking",
+      "amber"
+     ]
+    ]
+   },
+   {
+    "c": "Normal trafik ağaç boyunca akar: PC-A, SW2, SW1 ve SW3 üzerinden PC-B'ye ulaşır.",
+    "p": [
+     [
+      "a",
+      "b",
+      "ok",
+      "Paket",
+      [
+       "s2",
+       "s1",
+       "s3"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "b",
+      "ok"
+     ]
+    ],
+    "hi": [
+     "s1"
+    ]
+   },
+   {
+    "c": "SW1-SW3 hattı koptu. BPDU'lar kesilince STP eski engeli kaldırmaya karar verir.",
+    "p": [
+     [
+      "s1",
+      "s3",
+      "bad",
+      "BPDU yok"
+     ]
+    ],
+    "mark": [
+     [
+      "s3",
+      "!"
+     ]
+    ],
+    "say": [
+     [
+      "s3",
+      "Kök ile bağım koptu."
+     ]
+    ]
+   },
+   {
+    "c": "Engelli port birkaç aşamadan sonra iletime geçer; trafik yedek hattan akar. Klasik STP'de bu en çok ~50 sn, RSTP'de saniyeler sürer.",
+    "p": [
+     [
+      "a",
+      "b",
+      "ok",
+      "Paket",
+      [
+       "s2",
+       "s3"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "b",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "s3",
+      "Port: forwarding",
+      "green"
+     ]
+    ]
+   }
+  ],
+  "result": "STP = bir yol açık, yedekler beklemede",
+  "notes": [
+   "Switch ağında döngü varsa yayınlar sonsuza dek döner; çerçevede TTL yoktur.",
+   "STP bir kök seçer ve fazla yolları engeller (blocking).",
+   "Aktif yol koparsa engelli port otomatik açılır; RSTP bunu çok daha hızlı yapar."
+  ],
+  "q": [
+   {
+    "q": "Ethernet döngüsünde yayın neden sonsuza dek döner?",
+    "o": [
+     "Router yoktur",
+     "Çerçevede TTL bulunmaz",
+     "Kablolar uzundur",
+     "MAC adresi eksiktir"
+    ],
+    "a": 1,
+    "w": "IP paketindeki TTL çerçeveyi korumaz; katman 2'de döngü kırılmazsa yayın durmaz."
+   },
+   {
+    "q": "STP'de kök köprüsünü (root bridge) hangi switch olur?",
+    "o": [
+     "En yeni switch",
+     "En düşük Bridge ID'ye sahip switch",
+     "En çok porta sahip switch",
+     "En hızlı switch"
+    ],
+    "a": 1,
+    "w": "Bridge ID düşük olan kök seçilir; öncelik değeri bunu belirler."
+   },
+   {
+    "q": "Engelli (blocking) port ne zaman iletime geçer?",
+    "o": [
+     "Her 2 saniyede bir",
+     "Aktif yol koparsa",
+     "Kablo takılınca hemen",
+     "Hiçbir zaman"
+    ],
+    "a": 1,
+    "w": "BPDU'lar kesilince STP topolojiyi yeniden hesaplar ve yedek portu açar."
+   }
+  ]
+ }
+]
