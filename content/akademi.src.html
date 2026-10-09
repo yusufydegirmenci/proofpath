@@ -1,4 +1,3 @@
-<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Proofpath</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -858,7 +857,7 @@ var TRK_LIST=[["ccna","CCNA"],["net","Network"],["eng","İngilizce"],["sec","Sib
 var TRK={ccna:{n:"CCNA",cert:"CCNA 200-301"},eng:{n:"İngilizce",cert:"İngilizce"},sec:{n:"Siber",cert:"CompTIA Security+ SY0-801"},bk:{n:"Backend",cert:"AWS Certified Developer – Associate"},net:{n:"Network",cert:"CompTIA Network+ N10-009"},dev:{n:"DevOps",cert:"Linux Foundation KCNA"},qa:{n:"Test Uzmanı",cert:"ISTQB CTFL v4.0"}};
 function trName(t){return (TRK[t]||TRK.ccna).n}
 function certName(t){return (TRK[t]||TRK.ccna).cert}
-var ARTIFACT_URL="";
+var ARTIFACT_URL="https://claude.ai/artifact/327BAoRkq1GKZbKo2148rn";
 var RANKS=[
  {n:"Stajyer",xp:0,days:0,gate:null,req:"Deneme süresi: düzenli gel, işini bırakma"},
  {n:"Uzman Yardımcısı",xp:900,days:14,gate:"g1",req:"14 aktif gün, 40 soruda %80, 3 ders"},
@@ -2911,7 +2910,7 @@ function ticketsOpen(){
   return S.tickets.slice().sort(function(a,b){return (b.date||"").localeCompare(a.date||"")||a.level-b.level});
 }
 function deskPrompt(level,hint){
-  return "Sen "+UN()+"'ın İngilizce koçusun. "+(S.nonOwner?"Kullanıcı bilişim alanında çalışan veya çalışmak isteyen biri; İngilizcesi A1-A2, kelime bilgisi zayıf. ":"Yusuf Ankara'da bir uluslararası şirketin (bir uluslararası şirket) IT yöneticisi; İngilizcesi A1-A2, kelime bilgisi zayıf. ")+"Ona gerçekçi bir destek talebi (ticket) yaz. Seviye "+level+"/5 ("+LV[level-1][1]+": "+LV[level-1][2]+").\n"+
+  return "Sen "+UN()+"'ın İngilizce koçusun. "+(S.nonOwner?"Kullanıcı bilişim alanında çalışan veya çalışmak isteyen biri; İngilizcesi A1-A2, kelime bilgisi zayıf. ":"Yusuf Ankara'da bir uluslararası şirketin (Doctorem Global) IT yöneticisi; İngilizcesi A1-A2, kelime bilgisi zayıf. ")+"Ona gerçekçi bir destek talebi (ticket) yaz. Seviye "+level+"/5 ("+LV[level-1][1]+": "+LV[level-1][2]+").\n"+
    "Yalnız JSON nesnesi ver: {\"subject\":\"kısa konu (EN)\",\"from\":{\"name\":\"...\",\"role\":\"...\",\"country\":\"...\"},\"body\":\"talep metni (EN, seviyeye uygun basit)\",\"goal\":\"Türkçe: cevap neyi başarmalı\",\"keywords\":[{\"w\":\"kelime\",\"tr\":\"anlam\"} 4-6 adet],\"skeleton\":\"I'm sorry for ___. We will ___ by ___.\",\"model\":\"örnek iyi cevap (EN)\",\"category\":\"printer|vpn|account|network|email|onboarding\"}. Seviye 1 gövde en çok 12 kelime, seviye 5 en çok 90 kelime."+(hint?" Konu ipucu: "+hint:"");
 }
 function genTicket(){
@@ -3903,7 +3902,7 @@ function renderExamMap(){
     h("div",{class:"small mute"},"Bu bir tahmin: ustalık değerlerinin sınav ağırlığıyla toplamı. Konuların bitmesi sınava hazır olmak demek değildir; lablar ve deneme sınavında üst üste %85+ ile ölçülür."));
 }
 var IVB=[
-{id:"t1",cat:"tanis",q:"Tell me about yourself.",a:"Hello, my name is Yusuf. I am an IT administrator at an international company in Ankara. I support users, systems and internal tools. I am learning networking and I want to grow in IT.",tr:"Kendini kısaca tanıt: ad, iş, güçlü yan, hedef."},
+{id:"t1",cat:"tanis",q:"Tell me about yourself.",a:"Hello, my name is Yusuf. I am an IT administrator at Doctorem Global in Ankara. I support users, systems and internal tools. I am learning networking and I want to grow in IT.",tr:"Kendini kısaca tanıt: ad, iş, güçlü yan, hedef."},
 {id:"t2",cat:"tanis",q:"Why do you want this job?",a:"I like solving problems and helping people. This job fits my experience and my goals. I want to learn more and bring value to the team.",tr:"Neden bu iş? İlgi + katkı + öğrenme."},
 {id:"t3",cat:"tanis",q:"What are your strengths?",a:"I learn fast and I stay calm with problems. I also explain technical things in a simple way. For example, I help non-technical users every day.",tr:"2 güçlü yan + 1 örnek."},
 {id:"t4",cat:"tanis",q:"What is your biggest weakness?",a:"My English speaking is not perfect yet. I study every day and I practice with real work tickets. I improve a little every week.",tr:"Gerçek ama çözümü olan bir zayıflık seç ve gelişimini söyle."},
@@ -8835,5 +8834,3 @@ if(window.claude&&window.claude.use){
 }
 })();
 </script>
-
-</body></html>

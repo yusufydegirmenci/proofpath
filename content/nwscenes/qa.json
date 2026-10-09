@@ -1,0 +1,2947 @@
+[
+ {
+  "v": 2,
+  "id": "qa-pyramid",
+  "tr": "qa",
+  "trs": [
+   "qa"
+  ],
+  "theme": "qa",
+  "t": "Test piramidi",
+  "title": "Test piramidi ve test seviyeleri",
+  "one": "Altta çok sayıda hızlı bileşen testi, üstte az sayıda yavaş uçtan uca test olur.",
+  "rx": "piramit|test seviye|seviyeleri|test türleri|bileşen test|entegrasyon test|sistem test|kabul test|component|integration|system test|acceptance",
+  "nodes": [
+   {
+    "id": "u1",
+    "k": "gear",
+    "x": 75,
+    "y": 290,
+    "l": "Bileşen",
+    "s2": "indirim hesabı"
+   },
+   {
+    "id": "u2",
+    "k": "gear",
+    "x": 180,
+    "y": 290,
+    "l": "Bileşen",
+    "s2": "adet kontrolü"
+   },
+   {
+    "id": "u3",
+    "k": "gear",
+    "x": 285,
+    "y": 290,
+    "l": "Bileşen",
+    "s2": "toplam tutar"
+   },
+   {
+    "id": "i1",
+    "k": "cube",
+    "x": 125,
+    "y": 205,
+    "l": "Entegrasyon",
+    "s2": "sepet + ödeme"
+   },
+   {
+    "id": "i2",
+    "k": "cube",
+    "x": 235,
+    "y": 205,
+    "l": "Entegrasyon",
+    "s2": "sepet + stok"
+   },
+   {
+    "id": "e1",
+    "k": "web",
+    "x": 180,
+    "y": 125,
+    "l": "Sistem testi",
+    "s2": "tarayıcıda tüm akış",
+    "sc": 1.1
+   },
+   {
+    "id": "ac",
+    "k": "user",
+    "x": 300,
+    "y": 125,
+    "l": "Kabul",
+    "s2": "müşteri onayı",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "u1",
+    "b": "i1",
+    "k": "flow"
+   },
+   {
+    "a": "u2",
+    "b": "i1",
+    "k": "flow"
+   },
+   {
+    "a": "u2",
+    "b": "i2",
+    "k": "flow"
+   },
+   {
+    "a": "u3",
+    "b": "i2",
+    "k": "flow"
+   },
+   {
+    "a": "i1",
+    "b": "e1",
+    "k": "flow"
+   },
+   {
+    "a": "i2",
+    "b": "e1",
+    "k": "flow"
+   },
+   {
+    "a": "e1",
+    "b": "ac",
+    "k": "flow"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Bir alışveriş sepeti uygulamasını üç katmanda sınıyoruz. Alt katman geniş, üst katman dar: piramit.",
+    "cam": 0
+   },
+   {
+    "c": "Bileşen testi (component test) tek bir parçayı ayrı sınar: indirim hesabı doğru mu? Çok sayıda, saniyeler içinde biter.",
+    "p": [
+     [
+      "u1",
+      "i1",
+      "ok",
+      "indirim ok"
+     ],
+     [
+      "u2",
+      "i1",
+      "ok",
+      "adet ok"
+     ]
+    ],
+    "tag": [
+     [
+      "u2",
+      "YÜZLERCE TEST, SANİYELER",
+      "green"
+     ]
+    ],
+    "hi": [
+     "u1",
+     "u2",
+     "u3"
+    ],
+    "cam": [
+     180,
+     250,
+     1.15
+    ]
+   },
+   {
+    "c": "Entegrasyon testi parçaların birlikte çalışmasına bakar: sepet toplamı ödeme servisine doğru gidiyor mu? Daha az ve daha yavaştır.",
+    "p": [
+     [
+      "i1",
+      "e1",
+      "data",
+      "tutar 450 TL"
+     ]
+    ],
+    "tag": [
+     [
+      "i2",
+      "BİRKAÇ DÜZİNE TEST",
+      "blue"
+     ]
+    ],
+    "hi": [
+     "i1",
+     "i2"
+    ],
+    "cam": [
+     180,
+     210,
+     1.05
+    ]
+   },
+   {
+    "c": "Sistem testi (system test) uygulamayı baştan sona kullanır: ürün ekle, öde, sipariş onayını gör. Az sayıda ve yavaştır.",
+    "p": [
+     [
+      "i2",
+      "e1",
+      "data",
+      ""
+     ]
+    ],
+    "tag": [
+     [
+      "e1",
+      "BİRKAÇ TEST, DAKİKALAR",
+      "amber"
+     ]
+    ],
+    "hi": [
+     "e1"
+    ],
+    "cam": [
+     180,
+     190,
+     1.15
+    ]
+   },
+   {
+    "c": "Hata en alt katmanda yakalanırsa neresi bozuk diye aramak gerekmez. Burada indirim formülü yanlış.",
+    "p": [
+     [
+      "u1",
+      "i1",
+      "bad",
+      "indirim yanlış"
+     ]
+    ],
+    "mark": [
+     [
+      "u1",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "u1",
+      "%2 uygulanıyor, %20 olmalı"
+     ]
+    ],
+    "cam": [
+     130,
+     250,
+     1.1
+    ]
+   },
+   {
+    "c": "Aynı hata yalnız en üstte bulunsaydı, nedenini aramak uzun sürerdi. Bu yüzden testlerin çoğu aşağıda toplanır.",
+    "mark": [
+     [
+      "e1",
+      "?"
+     ]
+    ],
+    "say": [
+     [
+      "e1",
+      "Toplam yanlış ama neden?"
+     ]
+    ],
+    "dim": [
+     "u2",
+     "u3"
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Son olarak kabul testi (acceptance test): müşteri ya da kullanıcı temsilcisi sistemin ihtiyacını karşıladığını onaylar.",
+    "show": [
+     "ac"
+    ],
+    "p": [
+     [
+      "e1",
+      "ac",
+      "ok",
+      "onay için"
+     ]
+    ],
+    "mark": [
+     [
+      "ac",
+      "ok"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "Altta çok ve hızlı, üstte az ve yavaş test",
+  "notes": [
+   "Alt katman hızlı, ucuz ve hatanın yerini gösterir.",
+   "Üst katman gerçek kullanıma yakındır ama yavaş ve kırılgandır.",
+   "Hata ne kadar erken katmanda bulunursa düzeltmesi o kadar kolay olur."
+  ],
+  "q": [
+   {
+    "q": "Sepette yanlış hesaplanan indirimi en hızlı ve en net hangi seviyede bulursunuz?",
+    "o": [
+     "Yalnız kabul testinde",
+     "Yalnız sistem testinde",
+     "Üretimde müşteri şikâyetiyle",
+     "Bileşen testinde"
+    ],
+    "a": 3,
+    "w": "Bileşen testi tek parçayı ayrı sınadığı için hatanın yeri hemen belli olur."
+   },
+   {
+    "q": "Aşağıdakilerden hangisi entegrasyon testine örnektir?",
+    "o": [
+     "Sayfa rengine bakılması",
+     "Sepet toplamının ödeme servisine doğru iletilmesi",
+     "Bir fonksiyonun tek başına sınanması",
+     "Müşterinin sistemi onaylaması"
+    ],
+    "a": 1,
+    "w": "Entegrasyon testi parçaların birlikte çalışmasını sınar."
+   },
+   {
+    "q": "Piramit ters çevrilip testlerin çoğu tarayıcıdan yapılırsa en olası sonuç nedir?",
+    "o": [
+     "Testler daha hızlı biter",
+     "Hata sayısı kendiliğinden azalır",
+     "Bileşen testine gerek kalmaz",
+     "Testler yavaşlar ve hata yerini bulmak zorlaşır"
+    ],
+    "a": 3,
+    "w": "Uçtan uca testler yavaş ve kırılgandır, hatanın kaynağını da göstermez."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "qa-bva",
+  "tr": "qa",
+  "trs": [
+   "qa"
+  ],
+  "theme": "qa",
+  "t": "Sınır değer analizi",
+  "title": "Sınır değer analizi: 18-65 yaş alanı",
+  "one": "Hatalar çoğunlukla sınırlarda saklanır; geçerli ve geçersiz alanın birleştiği değerleri denemek yeter.",
+  "rx": "sınır değer|sınır değ|boundary|bva|>= yerine|yaş alanı",
+  "nodes": [
+   {
+    "id": "a17",
+    "k": "user",
+    "x": 55,
+    "y": 125,
+    "l": "17 yaş"
+   },
+   {
+    "id": "a18",
+    "k": "user",
+    "x": 55,
+    "y": 190,
+    "l": "18 yaş"
+   },
+   {
+    "id": "a65",
+    "k": "user",
+    "x": 55,
+    "y": 255,
+    "l": "65 yaş"
+   },
+   {
+    "id": "a66",
+    "k": "user",
+    "x": 55,
+    "y": 315,
+    "l": "66 yaş"
+   },
+   {
+    "id": "fm",
+    "k": "web",
+    "x": 205,
+    "y": 215,
+    "l": "Üyelik formu",
+    "s2": "geçerli: 18-65",
+    "sc": 1.15
+   },
+   {
+    "id": "a40",
+    "k": "user",
+    "x": 305,
+    "y": 120,
+    "l": "40 yaş",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "a17",
+    "b": "fm",
+    "k": "eth",
+    "cv": -10
+   },
+   {
+    "a": "a18",
+    "b": "fm",
+    "k": "eth"
+   },
+   {
+    "a": "a65",
+    "b": "fm",
+    "k": "eth"
+   },
+   {
+    "a": "a66",
+    "b": "fm",
+    "k": "eth",
+    "cv": 10
+   },
+   {
+    "a": "a40",
+    "b": "fm",
+    "k": "eth"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Üyelik formu yalnızca 18 ile 65 yaş arasını kabul ediyor. Aralığın iki sınırı var: 18 ve 65.",
+    "cam": 0,
+    "tag": [
+     [
+      "fm",
+      "KABUL EDİLEN: 18-65",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "Her sınırda iki değer denenir: sınırın hemen dışı ve kendisi. Önce alt sınırın dışı: 17.",
+    "p": [
+     [
+      "a17",
+      "fm",
+      "bad",
+      "17"
+     ]
+    ],
+    "mark": [
+     [
+      "a17",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "fm",
+      "17 geçersiz, reddettim"
+     ]
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Alt sınırın kendisi: 18 kabul edilmeli.",
+    "p": [
+     [
+      "a18",
+      "fm",
+      "ok",
+      "18"
+     ]
+    ],
+    "mark": [
+     [
+      "a18",
+      "ok"
+     ]
+    ],
+    "hi": [
+     "a18"
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Üst sınırın kendisi: 65 kabul edilmeli.",
+    "p": [
+     [
+      "a65",
+      "fm",
+      "ok",
+      "65"
+     ]
+    ],
+    "mark": [
+     [
+      "a65",
+      "ok"
+     ]
+    ],
+    "hi": [
+     "a65"
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Üst sınırın hemen dışı: 66 reddedilmeli. Dört test iki sınırı da kapattı.",
+    "p": [
+     [
+      "a66",
+      "fm",
+      "bad",
+      "66"
+     ]
+    ],
+    "mark": [
+     [
+      "a66",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "fm",
+      "66 geçersiz, reddettim"
+     ]
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Geliştirici koşulu yanlışlıkla yaş > 18 yazmış olsun. Bu kez 18 yaşındaki kullanıcı reddediliyor.",
+    "p": [
+     [
+      "a18",
+      "fm",
+      "bad",
+      "18"
+     ]
+    ],
+    "mark": [
+     [
+      "a18",
+      "x"
+     ]
+    ],
+    "tag": [
+     [
+      "fm",
+      "KOD: yaş > 18  (olması gereken >=)",
+      "red"
+     ]
+    ],
+    "say": [
+     [
+      "a18",
+      "18 yaşındayım, neden olmuyor?"
+     ]
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Aralığın ortasından 40 denenseydi form kabul edecek ve hata görünmeyecekti. Sınır değer testi hatayı bu yüzden yakalar.",
+    "show": [
+     "a40"
+    ],
+    "p": [
+     [
+      "a40",
+      "fm",
+      "ok",
+      "40"
+     ]
+    ],
+    "mark": [
+     [
+      "a40",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "a40",
+      "40 hatayı göstermezdi",
+      "amber"
+     ]
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   }
+  ],
+  "result": "Sınırı ve hemen dışını dene: 17, 18, 65, 66",
+  "notes": [
+   "Sıralı bir aralığın uç değerleri hataya en yatkın yerlerdir.",
+   "18-65 için dört test değeri: 17, 18, 65, 66.",
+   "Fazla ya da eksik eşitlik işareti (> yerine >=) ancak sınırda yakalanır."
+  ],
+  "q": [
+   {
+    "q": "Yaş alanı 18-65 arasını kabul ediyor. Sınır değer analizi için hangi değerler seçilir?",
+    "o": [
+     "17, 18, 65, 66",
+     "1, 40, 100",
+     "18, 40, 65",
+     "19, 64"
+    ],
+    "a": 0,
+    "w": "Her sınır için sınırın kendisi ve ona komşu geçersiz değer alınır."
+   },
+   {
+    "q": "Kodda yaş >= 18 yerine yaş > 18 yazılmış. Hangi test değeri bunu yakalar?",
+    "o": [
+     "30",
+     "50",
+     "18",
+     "40"
+    ],
+    "a": 2,
+    "w": "Yalnız sınır değeri olan 18 iki koşulu birbirinden ayırır."
+   },
+   {
+    "q": "Sınır değer analizi en çok hangi tür alanda yararlıdır?",
+    "o": [
+     "Sıralı sayı veya tarih aralığı olan alanlarda",
+     "Serbest metin yorum alanında",
+     "Renk seçiminde",
+     "Dosya adı yazımında"
+    ],
+    "a": 0,
+    "w": "Sınırlar yalnız sıralı değer aralıklarında anlamlıdır."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "qa-ep",
+  "tr": "qa",
+  "trs": [
+   "qa"
+  ],
+  "theme": "qa",
+  "t": "Denklik sınıfları",
+  "title": "Denklik sınıfları: her gruptan bir örnek",
+  "one": "Aynı davranan değerler bir sınıf oluşturur; her sınıftan bir temsilci denemek yeterlidir.",
+  "rx": "denklik|eşdeğerlik|eşdeğer|equivalence|sınıf(lar)?ı|test senaryosu",
+  "nodes": [
+   {
+    "id": "c1",
+    "k": "people",
+    "x": 55,
+    "y": 130,
+    "l": "0 ve altı",
+    "s2": "temsilci: -3"
+   },
+   {
+    "id": "c2",
+    "k": "people",
+    "x": 55,
+    "y": 205,
+    "l": "1 - 10",
+    "s2": "temsilci: 5"
+   },
+   {
+    "id": "c3",
+    "k": "people",
+    "x": 55,
+    "y": 280,
+    "l": "11 ve üstü",
+    "s2": "temsilci: 25"
+   },
+   {
+    "id": "c4",
+    "k": "people",
+    "x": 150,
+    "y": 290,
+    "l": "harf",
+    "s2": "temsilci: abc",
+    "hide": true
+   },
+   {
+    "id": "ct",
+    "k": "cart",
+    "x": 245,
+    "y": 205,
+    "l": "Sepet adedi",
+    "s2": "izin: 1-10",
+    "sc": 1.2
+   }
+  ],
+  "links": [
+   {
+    "a": "c1",
+    "b": "ct",
+    "k": "eth",
+    "cv": -12
+   },
+   {
+    "a": "c2",
+    "b": "ct"
+   },
+   {
+    "a": "c3",
+    "b": "ct",
+    "k": "eth",
+    "cv": 12
+   },
+   {
+    "a": "c4",
+    "b": "ct",
+    "k": "eth",
+    "cv": 15
+   }
+  ],
+  "steps": [
+   {
+    "c": "Sepetteki ürün adedi alanına 1 ile 10 arası yazılabiliyor. Girilebilecek sayılar çok, ama davranış üç gruba ayrılıyor.",
+    "cam": 0,
+    "tag": [
+     [
+      "ct",
+      "ADET: 1 - 10 ARASI",
+      "dark"
+     ]
+    ]
+   },
+   {
+    "c": "1 ile 10 arasındaki her sayı aynı davranır. Bu gruba denklik sınıfı (equivalence partition) denir; 3 de 7 de aynı sonucu verir.",
+    "p": [
+     [
+      "c2",
+      "ct",
+      "ok",
+      "5"
+     ]
+    ],
+    "mark": [
+     [
+      "ct",
+      "ok"
+     ]
+    ],
+    "hi": [
+     "c2"
+    ],
+    "tag": [
+     [
+      "c2",
+      "Geçerli sınıf",
+      "green"
+     ]
+    ]
+   },
+   {
+    "c": "Bu sınıfa 10 ayrı sayı denemek bilgi katmaz. Bir temsilci yeter: 5.",
+    "dim": [
+     "c1",
+     "c3"
+    ],
+    "say": [
+     [
+      "c2",
+      "Biri yeterli: 5"
+     ]
+    ],
+    "cam": [
+     130,
+     205,
+     1.1
+    ]
+   },
+   {
+    "c": "Sıfır ve altı geçersiz bir sınıf. Temsilci olarak -3 deniyor ve reddedilmeli.",
+    "p": [
+     [
+      "c1",
+      "ct",
+      "bad",
+      "-3"
+     ]
+    ],
+    "mark": [
+     [
+      "c1",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "ct",
+      "Adet en az 1 olmalı"
+     ]
+    ]
+   },
+   {
+    "c": "11 ve üstü ikinci geçersiz sınıf. Temsilci: 25. Reddedilmeli.",
+    "p": [
+     [
+      "c3",
+      "ct",
+      "bad",
+      "25"
+     ]
+    ],
+    "mark": [
+     [
+      "c3",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "ct",
+      "Adet en çok 10 olabilir"
+     ]
+    ]
+   },
+   {
+    "c": "Harf girilmesi de ayrı bir geçersiz sınıf. Temsilci: abc.",
+    "show": [
+     "c4"
+    ],
+    "p": [
+     [
+      "c4",
+      "ct",
+      "bad",
+      "abc"
+     ]
+    ],
+    "mark": [
+     [
+      "c4",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "ct",
+      "Lütfen sayı girin"
+     ]
+    ],
+    "cam": 0
+   },
+   {
+    "c": "Dört test, yüzlerce olası girişi kapsadı. Sınırlar da ayrıca sınır değer analiziyle denenir.",
+    "cam": 0,
+    "tag": [
+     [
+      "ct",
+      "4 SINIF = 4 TEST",
+      "green"
+     ]
+    ]
+   }
+  ],
+  "result": "Her sınıftan bir temsilci: az test, geniş kapsam",
+  "notes": [
+   "Aynı davranan girişler bir denklik sınıfıdır.",
+   "Hem geçerli hem geçersiz sınıflar test edilir.",
+   "Sınıf içinde sınıfın sınırı ayrıca sınır değer analiziyle denenir."
+  ],
+  "q": [
+   {
+    "q": "Adet alanı 1-10 kabul ediyor. Aşağıdakilerden hangisi geçerli sınıfın temsilcisi olabilir?",
+    "o": [
+     "abc",
+     "7",
+     "0",
+     "11"
+    ],
+    "a": 1,
+    "w": "1-10 arası her sayı geçerli sınıftandır; 0, 11 ve abc geçersiz sınıflardır."
+   },
+   {
+    "q": "Aynı sınıftan 3, 4, 5, 6 değerlerini ayrı ayrı denemek neden gereksizdir?",
+    "o": [
+     "Hata sınırda olur",
+     "Daha çok test daha az güvenli olur",
+     "Sistem bunları saklar",
+     "Hepsi aynı davranışı gösterecektir"
+    ],
+    "a": 3,
+    "w": "Denklik sınıfındaki değerlerin aynı davranması beklenir."
+   },
+   {
+    "q": "1-10 aralığı için en az kaç denklik sınıfı vardır (harf girişi dahil değil)?",
+    "o": [
+     "Bir",
+     "Üç",
+     "İki",
+     "On"
+    ],
+    "a": 1,
+    "w": "0 ve altı, 1-10 ve 11 ve üstü olmak üzere üç sınıf vardır."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "qa-bug",
+  "tr": "qa",
+  "trs": [
+   "qa"
+  ],
+  "theme": "qa",
+  "t": "Hata yaşam döngüsü",
+  "title": "Hata yaşam döngüsü",
+  "one": "Bir hata bulunduktan kapanana kadar durumlar arasında yol alır: yeni, atandı, düzeltildi, doğrulandı, kapandı.",
+  "rx": "hata yaşam|hata yönetimi|defect life|bug life|jira|hata durumu|defect management",
+  "nodes": [
+   {
+    "id": "qa",
+    "k": "user",
+    "x": 55,
+    "y": 270,
+    "l": "Test uzmanı"
+   },
+   {
+    "id": "b1",
+    "k": "bug",
+    "x": 60,
+    "y": 135,
+    "l": "Yeni"
+   },
+   {
+    "id": "b2",
+    "k": "user",
+    "x": 180,
+    "y": 135,
+    "l": "Atandı",
+    "s2": "geliştirici"
+   },
+   {
+    "id": "b3",
+    "k": "code",
+    "x": 300,
+    "y": 135,
+    "l": "Düzeltildi"
+   },
+   {
+    "id": "b4",
+    "k": "check",
+    "x": 300,
+    "y": 255,
+    "l": "Doğrulandı"
+   },
+   {
+    "id": "b5",
+    "k": "flag",
+    "x": 180,
+    "y": 255,
+    "l": "Kapandı",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "qa",
+    "b": "b1",
+    "k": "flow"
+   },
+   {
+    "a": "b1",
+    "b": "b2",
+    "k": "flow"
+   },
+   {
+    "a": "b2",
+    "b": "b3",
+    "k": "flow"
+   },
+   {
+    "a": "b3",
+    "b": "b4",
+    "k": "flow"
+   },
+   {
+    "a": "b4",
+    "b": "b5",
+    "k": "flow"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Giriş formunda yanlış şifrede hata mesajı çıkmıyor. Bu hata bir takip aracında (ör. Jira) durumlardan geçerek ilerleyecek.",
+    "cam": 0
+   },
+   {
+    "c": "Test uzmanı hatayı kaydeder. Durum: Yeni (New).",
+    "p": [
+     [
+      "qa",
+      "b1",
+      "bad",
+      "hata kaydı"
+     ]
+    ],
+    "tag": [
+     [
+      "b1",
+      "DURUM: YENİ",
+      "blue"
+     ]
+    ],
+    "hi": [
+     "b1"
+    ],
+    "cam": [
+     200,
+     195,
+     1.0
+    ]
+   },
+   {
+    "c": "Hata değerlendirilir ve bir geliştiriciye verilir. Durum: Atandı (Assigned).",
+    "p": [
+     [
+      "b1",
+      "b2",
+      "req",
+      "atama"
+     ]
+    ],
+    "tag": [
+     [
+      "b2",
+      "DURUM: ATANDI",
+      "amber"
+     ]
+    ],
+    "hi": [
+     "b2"
+    ],
+    "cam": [
+     200,
+     195,
+     1.0
+    ]
+   },
+   {
+    "c": "Geliştirici kodu düzeltir ve hatayı düzeltildi (Fixed) olarak işaretler. Bu henüz hatanın gittiği anlamına gelmez.",
+    "p": [
+     [
+      "b2",
+      "b3",
+      "data",
+      "düzeltme"
+     ]
+    ],
+    "tag": [
+     [
+      "b3",
+      "DURUM: DÜZELTİLDİ",
+      "amber"
+     ]
+    ],
+    "hi": [
+     "b3"
+    ],
+    "cam": [
+     200,
+     195,
+     1.0
+    ]
+   },
+   {
+    "c": "Test uzmanı aynı adımları tekrar dener. Hata sürüyor: hata yeniden açılır ve geliştiriciye döner.",
+    "p": [
+     [
+      "b3",
+      "b2",
+      "bad",
+      "yeniden açıldı"
+     ]
+    ],
+    "mark": [
+     [
+      "b3",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "qa",
+      "Yine mesaj çıkmıyor"
+     ]
+    ],
+    "tag": [
+     [
+      "b2",
+      "DURUM: YENİDEN AÇILDI",
+      "red"
+     ]
+    ],
+    "cam": [
+     200,
+     195,
+     1.0
+    ]
+   },
+   {
+    "c": "Geliştirici asıl nedeni bulur ve yeniden düzeltir.",
+    "p": [
+     [
+      "b2",
+      "b3",
+      "ok",
+      "yeni düzeltme"
+     ]
+    ],
+    "hi": [
+     "b2",
+     "b3"
+    ],
+    "tag": [
+     [
+      "b3",
+      "DÜZELTİLDİ (2. DENEME)",
+      "amber"
+     ]
+    ],
+    "cam": [
+     200,
+     195,
+     1.0
+    ]
+   },
+   {
+    "c": "Bu sefer hata mesajı çıkıyor. Test uzmanı doğrulama testini geçer. Durum: Doğrulandı (Verified).",
+    "p": [
+     [
+      "b3",
+      "b4",
+      "ok",
+      "doğrulama"
+     ]
+    ],
+    "mark": [
+     [
+      "b4",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "b4",
+      "DURUM: DOĞRULANDI",
+      "green"
+     ]
+    ],
+    "cam": [
+     200,
+     195,
+     1.0
+    ]
+   },
+   {
+    "c": "Hata kapatılır. Durum: Kapandı (Closed). Kayıt, geçmişiyle birlikte saklanır.",
+    "show": [
+     "b5"
+    ],
+    "p": [
+     [
+      "b4",
+      "b5",
+      "ok",
+      "kapat"
+     ]
+    ],
+    "mark": [
+     [
+      "b5",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "b5",
+      "DURUM: KAPANDI",
+      "dark"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "Yeni, atandı, düzeltildi, doğrulandı, kapandı",
+  "notes": [
+   "Düzeltildi demek kapandı demek değildir; test uzmanı doğrular.",
+   "Doğrulama başarısızsa hata yeniden açılır.",
+   "Her durum değişikliği kaydedilir; kimde olduğu ve ne olduğu bellidir."
+  ],
+  "q": [
+   {
+    "q": "Geliştirici düzeltmeyi yapıp 'Düzeltildi' dedi. Sıradaki adım nedir?",
+    "o": [
+     "Hata silinir",
+     "Yeni sürüm yayımlanır",
+     "Test uzmanı düzeltmeyi doğrular",
+     "Hata hemen kapatılır"
+    ],
+    "a": 2,
+    "w": "Hatayı kapatmadan önce test uzmanı düzeltmenin işe yaradığını doğrular."
+   },
+   {
+    "q": "Düzeltme sonrası aynı hata hâlâ görülüyorsa ne yapılır?",
+    "o": [
+     "Hata yeniden açılır ve geliştiriciye döner",
+     "Kapatılıp yeni hata açılır",
+     "Test atlanır",
+     "Hata yok sayılır"
+    ],
+    "a": 0,
+    "w": "Doğrulama başarısızsa hata yeniden açılır."
+   },
+   {
+    "q": "Hata atanmadan önce hangi durumdadır?",
+    "o": [
+     "Kapandı",
+     "Düzeltildi",
+     "Yeni",
+     "Doğrulandı"
+    ],
+    "a": 2,
+    "w": "Kaydedilen hata Yeni durumundadır; sonra bir kişiye atanır."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "qa-regress",
+  "tr": "qa",
+  "trs": [
+   "qa"
+  ],
+  "theme": "qa",
+  "t": "Regresyon testi",
+  "title": "Regresyon testi: düzeltme başka yeri bozdu mu?",
+  "one": "Bir değişiklikten sonra eskiden çalışan yerlerin hâlâ çalıştığını yeniden sınamak.",
+  "rx": "regresyon|regression|doğrulama testi|confirmation|değişiklik sonrası|test türleri|yeniden test",
+  "nodes": [
+   {
+    "id": "dv",
+    "k": "user",
+    "x": 55,
+    "y": 130,
+    "l": "Geliştirici"
+   },
+   {
+    "id": "fx",
+    "k": "code",
+    "x": 165,
+    "y": 130,
+    "l": "Sürüm 2.1",
+    "s2": "kupon düzeltmesi"
+   },
+   {
+    "id": "su",
+    "k": "test",
+    "x": 295,
+    "y": 130,
+    "l": "Regresyon seti",
+    "hide": true
+   },
+   {
+    "id": "ap",
+    "k": "cube",
+    "x": 175,
+    "y": 210,
+    "l": "Uygulama"
+   },
+   {
+    "id": "lg",
+    "k": "lock",
+    "x": 45,
+    "y": 300,
+    "l": "Giriş"
+   },
+   {
+    "id": "ct",
+    "k": "cart",
+    "x": 135,
+    "y": 300,
+    "l": "Sepet"
+   },
+   {
+    "id": "cp",
+    "k": "emoji",
+    "x": 225,
+    "y": 300,
+    "l": "Kupon",
+    "e": "🎟"
+   },
+   {
+    "id": "py",
+    "k": "emoji",
+    "x": 315,
+    "y": 300,
+    "l": "Ödeme",
+    "e": "💳"
+   }
+  ],
+  "links": [
+   {
+    "a": "dv",
+    "b": "fx",
+    "k": "flow"
+   },
+   {
+    "a": "fx",
+    "b": "ap",
+    "k": "flow"
+   },
+   {
+    "a": "su",
+    "b": "ap",
+    "k": "thin"
+   },
+   {
+    "a": "ap",
+    "b": "lg"
+   },
+   {
+    "a": "ap",
+    "b": "ct"
+   },
+   {
+    "a": "ap",
+    "b": "cp"
+   },
+   {
+    "a": "ap",
+    "b": "py"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Kupon kodu hatası düzeltildi ve yeni sürüm hazır. Uygulamanın giriş, sepet, kupon ve ödeme bölümleri aynı kodu paylaşıyor.",
+    "cam": 0
+   },
+   {
+    "c": "Geliştirici düzeltmeyi uygulamaya ekler.",
+    "p": [
+     [
+      "dv",
+      "ap",
+      "data",
+      "düzeltme",
+      [
+       "fx"
+      ]
+     ]
+    ],
+    "hi": [
+     "fx",
+     "ap"
+    ]
+   },
+   {
+    "c": "Önce hatanın gerçekten düzeldiğine bakılır: doğrulama testi (confirmation testing). Kupon artık çalışıyor.",
+    "p": [
+     [
+      "ap",
+      "cp",
+      "ok",
+      "kupon testi"
+     ]
+    ],
+    "mark": [
+     [
+      "cp",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "cp",
+      "Düzeltme doğrulandı",
+      "green"
+     ]
+    ],
+    "cam": [
+     180,
+     250,
+     1.1
+    ]
+   },
+   {
+    "c": "Ama değişiklik başka yerleri bozmuş olabilir. Regresyon testi (regression testing) eskiden çalışan yerleri yeniden dener.",
+    "show": [
+     "su"
+    ],
+    "p": [
+     [
+      "su",
+      "lg",
+      "ok",
+      "",
+      [
+       "ap"
+      ]
+     ],
+     [
+      "su",
+      "ct",
+      "ok",
+      "",
+      [
+       "ap"
+      ]
+     ],
+     [
+      "su",
+      "py",
+      "bad",
+      "",
+      [
+       "ap"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "lg",
+      "ok"
+     ],
+     [
+      "ct",
+      "ok"
+     ]
+    ],
+    "cam": 0
+   },
+   {
+    "c": "Ödeme bozulmuş: kupon kodu toplam tutar hesabını da etkiledi. Kullanıcı hiç değişmeyen bir yerde hata görecekti.",
+    "mark": [
+     [
+      "py",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "py",
+      "Toplam tutar yanlış çıkıyor"
+     ]
+    ],
+    "hi": [
+     "py"
+    ],
+    "cam": [
+     240,
+     260,
+     1.25
+    ]
+   },
+   {
+    "c": "Hata düzeltilir ve regresyon seti yeniden çalıştırılır. Bu kez her bölüm geçer.",
+    "p": [
+     [
+      "su",
+      "py",
+      "ok",
+      "",
+      [
+       "ap"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "py",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "su",
+      "Her değişiklikte tekrar",
+      "green"
+     ]
+    ],
+    "cam": 0
+   },
+   {
+    "c": "Regresyon testi sık tekrarlandığı için otomatik çalışmaya çok uygundur. Elle yapılırsa her sürümde saatler alır.",
+    "tag": [
+     [
+      "su",
+      "TEKRAR EDEN TEST = OTOMASYON ADAYI",
+      "blue"
+     ]
+    ],
+    "hi": [
+     "su"
+    ],
+    "cam": [
+     200,
+     175,
+     1.1
+    ]
+   }
+  ],
+  "result": "Düzeltmeyi doğrula, sonra başka yerin bozulmadığını doğrula",
+  "notes": [
+   "Doğrulama testi: düzeltilen hata gerçekten gitti mi?",
+   "Regresyon testi: değişiklik başka yeri bozdu mu?",
+   "Sık tekrarlandığı için regresyon testleri otomasyona uygundur."
+  ],
+  "q": [
+   {
+    "q": "Kupon hatası düzeltildikten sonra kuponu yeniden denemek hangi test türüdür?",
+    "o": [
+     "Regresyon testi",
+     "Keşif testi",
+     "Statik test",
+     "Doğrulama testi"
+    ],
+    "a": 3,
+    "w": "Düzeltilen hatanın gittiğini kontrol etmek doğrulama (confirmation) testidir."
+   },
+   {
+    "q": "Regresyon testi neyi araştırır?",
+    "o": [
+     "Kullanıcı sayısını",
+     "Değişiklik, eskiden çalışan bir yeri bozdu mu",
+     "Yeni özelliğin görünümünü",
+     "Kodun yazım hatalarını"
+    ],
+    "a": 1,
+    "w": "Regresyon testi, değişikliğin istenmeyen yan etkisini arar."
+   },
+   {
+    "q": "Regresyon testi için neden otomasyon önerilir?",
+    "o": [
+     "Hiç hata bulmaz",
+     "Elle yapılamaz",
+     "Sadece bir kez çalışır",
+     "Her sürümde tekrarlanır"
+    ],
+    "a": 3,
+    "w": "Sık tekrarlanan testler otomatik çalıştırılınca zaman kazandırır."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "qa-review",
+  "tr": "qa",
+  "trs": [
+   "qa"
+  ],
+  "theme": "qa",
+  "t": "Statik test",
+  "title": "Statik test: kodu çalıştırmadan hata bulmak",
+  "one": "Belge ve kod, program çalıştırılmadan gözden geçirilerek ya da araçla taranarak sınanır.",
+  "rx": "statik|static|gözden geçirme|review|inceleme|kod analizi",
+  "nodes": [
+   {
+    "id": "au",
+    "k": "user",
+    "x": 50,
+    "y": 205,
+    "l": "Yazar",
+    "s2": "analist"
+   },
+   {
+    "id": "dc",
+    "k": "doc",
+    "x": 165,
+    "y": 205,
+    "l": "Gereksinim belgesi",
+    "sc": 1.1
+   },
+   {
+    "id": "r1",
+    "k": "user",
+    "x": 295,
+    "y": 135,
+    "l": "İnceleyen 1"
+   },
+   {
+    "id": "r2",
+    "k": "user",
+    "x": 295,
+    "y": 285,
+    "l": "İnceleyen 2"
+   },
+   {
+    "id": "cd",
+    "k": "code",
+    "x": 165,
+    "y": 295,
+    "l": "Kod",
+    "hide": true
+   },
+   {
+    "id": "tl",
+    "k": "gear",
+    "x": 50,
+    "y": 295,
+    "l": "Analiz aracı",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "au",
+    "b": "dc",
+    "k": "flow"
+   },
+   {
+    "a": "dc",
+    "b": "r1",
+    "k": "flow",
+    "cv": -12
+   },
+   {
+    "a": "dc",
+    "b": "r2",
+    "k": "flow",
+    "cv": 12
+   },
+   {
+    "a": "dc",
+    "b": "cd",
+    "k": "thin"
+   },
+   {
+    "a": "tl",
+    "b": "cd",
+    "k": "flow"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Yeni giriş ekranı için gereksinim belgesi hazır. Henüz tek satır kod ve çalışan program yok.",
+    "cam": 0
+   },
+   {
+    "c": "Gözden geçirme (review): belge iki kişiye okutulur. Program çalıştırılmaz; sadece okunur.",
+    "p": [
+     [
+      "au",
+      "r1",
+      "env",
+      "",
+      [
+       "dc"
+      ]
+     ],
+     [
+      "au",
+      "r2",
+      "env",
+      "",
+      [
+       "dc"
+      ]
+     ]
+    ],
+    "tag": [
+     [
+      "dc",
+      "STATİK TEST: ÇALIŞTIRMA YOK",
+      "blue"
+     ]
+    ],
+    "cam": 0
+   },
+   {
+    "c": "Birinci inceleyen sayfa 2'de okur: şifre en az 8 karakter olmalı.",
+    "say": [
+     [
+      "r1",
+      "Sayfa 2: en az 8 karakter"
+     ]
+    ],
+    "tag": [
+     [
+      "dc",
+      "SAYFA 2: ŞİFRE >= 8",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "r1"
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "İkinci inceleyen sayfa 5'te farklı bir şey okur: şifre en az 6 karakter. Belge kendiyle çelişiyor.",
+    "say": [
+     [
+      "r2",
+      "Sayfa 5: en az 6 karakter?"
+     ]
+    ],
+    "tag": [
+     [
+      "dc",
+      "SAYFA 5: ŞİFRE >= 6",
+      "red"
+     ]
+    ],
+    "mark": [
+     [
+      "dc",
+      "!"
+     ]
+    ],
+    "hi": [
+     "r2"
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Çelişki yazarla konuşulur ve belge düzeltilir. Hata kodlanmadan, çok ucuza bulundu.",
+    "p": [
+     [
+      "r2",
+      "au",
+      "req",
+      "çelişki var",
+      [
+       "dc"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "dc",
+      "ok"
+     ]
+    ],
+    "tag": [
+     [
+      "dc",
+      "ERKEN BULUNDU",
+      "green"
+     ]
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Kod yazılınca da çalıştırmadan bakılabilir: statik analiz aracı kodu tarar.",
+    "show": [
+     "cd",
+     "tl"
+    ],
+    "hi": [
+     "tl",
+     "cd"
+    ],
+    "cam": [
+     170,
+     230,
+     1.0
+    ]
+   },
+   {
+    "c": "Araç, hiç kullanılmayan bir değişkeni ve eksik bir kontrolü işaretler. Program bir kez bile çalıştırılmadı.",
+    "p": [
+     [
+      "tl",
+      "cd",
+      "bad",
+      "2 uyarı"
+     ]
+    ],
+    "mark": [
+     [
+      "cd",
+      "!"
+     ]
+    ],
+    "tag": [
+     [
+      "tl",
+      "STATİK ANALİZ",
+      "amber"
+     ]
+    ],
+    "cam": [
+     170,
+     230,
+     1.0
+    ]
+   }
+  ],
+  "result": "Çalıştırmadan bul: belge ve kodu oku, araçla tara",
+  "notes": [
+   "Statik test programı çalıştırmadan belge ve kodu inceler.",
+   "Gereksinimdeki çelişkiyi kodlanmadan bulmak çok ucuzdur.",
+   "İnceleme insanla, analiz araçla yapılabilir; ikisi birbirini tamamlar."
+  ],
+  "q": [
+   {
+    "q": "Aşağıdakilerden hangisi statik testtir?",
+    "o": [
+     "Gereksinim belgesinin iki kişiye okutulması",
+     "Giriş formuna yanlış şifre yazmak",
+     "Sepete ürün eklemek",
+     "API'ye istek göndermek"
+    ],
+    "a": 0,
+    "w": "Statik test, yazılımı çalıştırmadan belge veya kodu inceler."
+   },
+   {
+    "q": "Gereksinim belgesindeki çelişkiyi gözden geçirmede bulmanın en büyük yararı nedir?",
+    "o": [
+     "Kod daha hızlı çalışır",
+     "Hata sayısı artar",
+     "Hata koda dökülmeden önce ucuza düzelir",
+     "Testler hiç gerekmez"
+    ],
+    "a": 2,
+    "w": "Hata ne kadar erken bulunursa düzeltme maliyeti o kadar düşer."
+   },
+   {
+    "q": "Statik analiz aracı neyi yapar?",
+    "o": [
+     "Kodu çalıştırmadan kural dışı yerleri bulur",
+     "Uygulamayı kullanıcı gibi gezer",
+     "Sunucu hızını ölçer",
+     "Veritabanını yedekler"
+    ],
+    "a": 0,
+    "w": "Statik analiz kodu çalıştırmadan tarar."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "qa-explore",
+  "tr": "qa",
+  "trs": [
+   "qa"
+  ],
+  "theme": "qa",
+  "t": "Keşif testi",
+  "title": "Keşif testi: öğrenirken sınamak",
+  "one": "Önceden yazılmış adım yerine kısa bir görev tanımıyla, bulduklarına göre yeni testler tasarlamak.",
+  "rx": "keşif|exploratory|deneyim tabanlı|experience|hata tahmini|oturum",
+  "nodes": [
+   {
+    "id": "ch",
+    "k": "clip",
+    "x": 55,
+    "y": 125,
+    "l": "Görev tanımı",
+    "s2": "30 dk"
+   },
+   {
+    "id": "ts",
+    "k": "user",
+    "x": 55,
+    "y": 230,
+    "l": "Test uzmanı"
+   },
+   {
+    "id": "ct",
+    "k": "cart",
+    "x": 190,
+    "y": 185,
+    "l": "Yeni sepet",
+    "sc": 1.2
+   },
+   {
+    "id": "nt",
+    "k": "doc",
+    "x": 190,
+    "y": 315,
+    "l": "Oturum notları"
+   },
+   {
+    "id": "b1",
+    "k": "bug",
+    "x": 305,
+    "y": 115,
+    "l": "Hata 1",
+    "hide": true
+   },
+   {
+    "id": "b2",
+    "k": "bug",
+    "x": 305,
+    "y": 255,
+    "l": "Hata 2",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "ch",
+    "b": "ts",
+    "k": "thin"
+   },
+   {
+    "a": "ts",
+    "b": "ct",
+    "k": "eth",
+    "cv": -10
+   },
+   {
+    "a": "ts",
+    "b": "nt",
+    "k": "thin"
+   },
+   {
+    "a": "ct",
+    "b": "b1",
+    "k": "warn"
+   },
+   {
+    "a": "ct",
+    "b": "b2",
+    "k": "warn"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Yeni sepet sayfası yarın çıkacak, ayrıntılı gereksinim belgesi yok ve süre kısa. Keşif testi (exploratory testing) tam böyle durumda işe yarar.",
+    "cam": 0
+   },
+   {
+    "c": "Test uzmanı kısa bir görev tanımı (test charter) alır: 30 dakikada kupon ve adet alanlarını keşfet.",
+    "tag": [
+     [
+      "ch",
+      "SÜRE: 30 DK, ODAK: KUPON + ADET",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "ch"
+    ],
+    "cam": [
+     70,
+     200,
+     1.25
+    ]
+   },
+   {
+    "c": "Önce normal akışı dener: ürün ekler, kuponu girer. Her şey çalışıyor.",
+    "p": [
+     [
+      "ts",
+      "ct",
+      "ok",
+      "normal akış"
+     ]
+    ],
+    "mark": [
+     [
+      "ct",
+      "ok"
+     ]
+    ]
+   },
+   {
+    "c": "Şimdi bulduğuna göre yeni fikir üretir: adet kutusuna -1 yazsam? Sepet kabul eder, toplam eksiye düşer.",
+    "p": [
+     [
+      "ts",
+      "ct",
+      "bad",
+      "adet = -1"
+     ]
+    ],
+    "show": [
+     "b1"
+    ],
+    "mark": [
+     [
+      "b1",
+      "!"
+     ]
+    ],
+    "say": [
+     [
+      "ts",
+      "Adete -1 yazarsam?"
+     ]
+    ]
+   },
+   {
+    "c": "Bu bulgu yeni bir fikir verir: aynı kuponu iki kez girsem? İndirim iki kez uygulanıyor.",
+    "p": [
+     [
+      "ts",
+      "ct",
+      "bad",
+      "kupon x2"
+     ]
+    ],
+    "show": [
+     "b2"
+    ],
+    "mark": [
+     [
+      "b2",
+      "!"
+     ]
+    ],
+    "say": [
+     [
+      "ts",
+      "Aynı kuponu tekrar girsem?"
+     ]
+    ]
+   },
+   {
+    "c": "Neleri denediğini ve ne bulduğunu oturum notlarına yazar; ekip bunları hata kaydına çevirir.",
+    "p": [
+     [
+      "ts",
+      "nt",
+      "data",
+      "notlar"
+     ]
+    ],
+    "tag": [
+     [
+      "nt",
+      "DENENEN + BULUNAN",
+      "blue"
+     ]
+    ],
+    "hi": [
+     "nt"
+    ],
+    "cam": 0
+   },
+   {
+    "c": "Keşif testi, öğrenme ve test tasarımı ile çalıştırmayı birlikte yürütür. Gereksinim azken ya da süre kısayken en değerlidir.",
+    "cam": 0,
+    "mark": [
+     [
+      "ct",
+      "?"
+     ]
+    ]
+   }
+  ],
+  "result": "Görev tanımı + merak + notlar = keşif testi",
+  "notes": [
+   "Keşif testinde test tasarımı ve çalıştırma aynı anda ilerler.",
+   "Görev tanımı ve süre, keşfi dağılmaktan korur.",
+   "Notlar tutulmazsa bulgular tekrar edilemez."
+  ],
+  "q": [
+   {
+    "q": "Keşif testi ne zaman özellikle işe yarar?",
+    "o": [
+     "Yalnız kod incelemesinde",
+     "Gereksinim az, süre kısa olduğunda",
+     "Yazılı senaryo çok ayrıntılıyken",
+     "Hiç hata beklenmediğinde"
+    ],
+    "a": 1,
+    "w": "Önceden yazılı adım yokken ya da zaman azken keşif testi hızlı bilgi sağlar."
+   },
+   {
+    "q": "Görev tanımı (charter) ne işe yarar?",
+    "o": [
+     "Hataları kapatır",
+     "Kodu düzeltir",
+     "Test sonucunu otomatik yazar",
+     "Oturumun amacını ve süresini belirler"
+    ],
+    "a": 3,
+    "w": "Charter keşfi bir amaç ve süreyle sınırlar."
+   },
+   {
+    "q": "Keşif testinde oturum sonunda neden not tutulur?",
+    "o": [
+     "Sadece geçmiş olsun diye",
+     "Bulguların tekrar edilebilmesi için",
+     "Test türü değiştirmek için",
+     "Kodun hızlanması için"
+    ],
+    "a": 1,
+    "w": "Notlar hangi yolun denendiğini ve hataların nasıl bulunduğunu gösterir."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "qa-risk",
+  "tr": "qa",
+  "trs": [
+   "qa"
+  ],
+  "theme": "qa",
+  "t": "Risk bazlı test",
+  "title": "Risk bazlı test: önce en riskliyi sına",
+  "one": "Zaman azken test sırası, hatanın olasılığı ve etkisinin çarpımıyla belirlenir.",
+  "rx": "risk|öncelik|test planlama|risk bazlı|risk-based",
+  "nodes": [
+   {
+    "id": "tm",
+    "k": "clock",
+    "x": 50,
+    "y": 215,
+    "l": "Kalan süre",
+    "s2": "2 gün"
+   },
+   {
+    "id": "qa",
+    "k": "user",
+    "x": 210,
+    "y": 215,
+    "l": "Test uzmanı"
+   },
+   {
+    "id": "py",
+    "k": "emoji",
+    "x": 300,
+    "y": 130,
+    "l": "Ödeme",
+    "e": "💳"
+   },
+   {
+    "id": "lg",
+    "k": "lock",
+    "x": 120,
+    "y": 130,
+    "l": "Giriş"
+   },
+   {
+    "id": "bn",
+    "k": "flag",
+    "x": 300,
+    "y": 300,
+    "l": "Kampanya bandı"
+   },
+   {
+    "id": "pf",
+    "k": "emoji",
+    "x": 120,
+    "y": 300,
+    "l": "Profil rengi",
+    "e": "🎨"
+   }
+  ],
+  "links": [
+   {
+    "a": "tm",
+    "b": "qa",
+    "k": "thin"
+   },
+   {
+    "a": "qa",
+    "b": "py"
+   },
+   {
+    "a": "qa",
+    "b": "lg"
+   },
+   {
+    "a": "qa",
+    "b": "bn"
+   },
+   {
+    "a": "qa",
+    "b": "pf"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Cuma sürüm çıkacak ve 2 gün kaldı. Dört bölümün hepsini ayrıntılı sınamaya zaman yok.",
+    "cam": 0,
+    "mark": [
+     [
+      "tm",
+      "!"
+     ]
+    ]
+   },
+   {
+    "c": "Risk, iki şeyin birleşimidir: hatanın olma olasılığı ve olursa vereceği zarar (etki). Bölümleri bu ikisine göre sıralarız.",
+    "tag": [
+     [
+      "qa",
+      "RİSK = OLASILIK x ETKİ",
+      "dark"
+     ]
+    ],
+    "hi": [
+     "qa"
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Ödeme: kodu bu hafta çok değişti ve hata olursa para kaybı olur. Olasılık yüksek, etki yüksek.",
+    "tag": [
+     [
+      "py",
+      "OLASILIK, ETKİ: YÜKSEK",
+      "red"
+     ]
+    ],
+    "mark": [
+     [
+      "py",
+      "!"
+     ]
+    ],
+    "hi": [
+     "py"
+    ],
+    "cam": [
+     200,
+     200,
+     1.0
+    ]
+   },
+   {
+    "c": "Giriş: kod az değişti ama çalışmazsa kimse uygulamayı kullanamaz. Olasılık düşük, etki yüksek.",
+    "tag": [
+     [
+      "lg",
+      "OLASILIK DÜŞÜK, ETKİ YÜKSEK",
+      "amber"
+     ]
+    ],
+    "hi": [
+     "lg"
+    ],
+    "cam": [
+     200,
+     200,
+     1.0
+    ]
+   },
+   {
+    "c": "Kampanya bandı ve profil rengi: hata olsa bile iş kaybı yok. Etki düşük.",
+    "tag": [
+     [
+      "bn",
+      "ETKİ: DÜŞÜK",
+      "green"
+     ],
+     [
+      "pf",
+      "ETKİ: DÜŞÜK",
+      "green"
+     ]
+    ],
+    "hi": [
+     "bn",
+     "pf"
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Test sırası: önce ödeme, sonra giriş. Kalan zamanda hafif kontrol yapılır; düşük riskli yerler kısa tutulur.",
+    "p": [
+     [
+      "qa",
+      "py",
+      "ok",
+      "1. ödeme"
+     ],
+     [
+      "qa",
+      "lg",
+      "ok",
+      "2. giriş"
+     ]
+    ],
+    "mark": [
+     [
+      "py",
+      "ok"
+     ],
+     [
+      "lg",
+      "ok"
+     ]
+    ],
+    "dim": [
+     "bn",
+     "pf"
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Risk sabit değildir: giriş kodunda son dakika değişiklik gelirse risk yeniden değerlendirilir ve sıra değişebilir.",
+    "say": [
+     [
+      "lg",
+      "Kod değişti!"
+     ]
+    ],
+    "mark": [
+     [
+      "lg",
+      "!"
+     ]
+    ],
+    "hi": [
+     "lg"
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "Önce en riskli yeri sına: olasılık x etki",
+  "notes": [
+   "Her şeyi test etmek mümkün değildir; öncelik şarttır.",
+   "Risk, olasılık ile etkinin birleşimidir.",
+   "Risk değişince test planı da güncellenir."
+  ],
+  "q": [
+   {
+    "q": "Süre azken hangi bölüm önce test edilmelidir?",
+    "o": [
+     "En az kodlanan bölüm",
+     "Alfabetik olarak ilk bölüm",
+     "Olasılığı ve etkisi yüksek bölüm",
+     "En kolay bölüm"
+    ],
+    "a": 2,
+    "w": "Risk bazlı testte önce hata olasılığı ve etkisi yüksek yerler sınanır."
+   },
+   {
+    "q": "Ödeme sayfasında hata olursa para kaybedilir. Bu hangi riski artırır?",
+    "o": [
+     "Etki",
+     "Olasılık",
+     "Kapsam",
+     "Hız"
+    ],
+    "a": 0,
+    "w": "Hatanın doğuracağı zarar etkiyi artırır."
+   },
+   {
+    "q": "Sürüm gününden önce giriş modülünün kodu büyük ölçüde değişti. Ne yapılmalı?",
+    "o": [
+     "Giriş testini hiç yapmamak",
+     "Ödemeyi test dışı bırakmak",
+     "Riski yeniden değerlendirip testi öne almak",
+     "Eski plana aynen uymak"
+    ],
+    "a": 2,
+    "w": "Risk değişince test öncelikleri de güncellenir."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "qa-auto",
+  "tr": "qa",
+  "trs": [
+   "qa"
+  ],
+  "theme": "qa",
+  "t": "Otomasyon ve CI",
+  "title": "Test otomasyonu CI'da nasıl çalışır?",
+  "one": "Kod her gönderildiğinde testler kendiliğinden çalışır; kırılırsa ekip hemen haberdar olur.",
+  "rx": "otomasyon|automation|ci\\b|sürekli entegrasyon|continuous integration|pipeline|ci/cd",
+  "nodes": [
+   {
+    "id": "dv",
+    "k": "user",
+    "x": 55,
+    "y": 150,
+    "l": "Geliştirici"
+   },
+   {
+    "id": "gt",
+    "k": "git",
+    "x": 175,
+    "y": 150,
+    "l": "Kod deposu"
+   },
+   {
+    "id": "ci",
+    "k": "ci",
+    "x": 295,
+    "y": 150,
+    "l": "CI sunucusu"
+   },
+   {
+    "id": "ts",
+    "k": "test",
+    "x": 295,
+    "y": 290,
+    "l": "Otomatik testler",
+    "s2": "giriş + sepet"
+   },
+   {
+    "id": "dp",
+    "k": "rocket",
+    "x": 175,
+    "y": 290,
+    "l": "Yayın",
+    "hide": true
+   }
+  ],
+  "links": [
+   {
+    "a": "dv",
+    "b": "gt",
+    "k": "flow"
+   },
+   {
+    "a": "gt",
+    "b": "ci",
+    "k": "flow"
+   },
+   {
+    "a": "ci",
+    "b": "ts",
+    "k": "flow"
+   },
+   {
+    "a": "ci",
+    "b": "dp",
+    "k": "flow",
+    "cv": 12
+   }
+  ],
+  "steps": [
+   {
+    "c": "Ekip her gün onlarca kez kod gönderiyor. Her seferinde giriş ve sepet testlerini elle yapmak mümkün değil.",
+    "cam": 0
+   },
+   {
+    "c": "Geliştirici kodu depoya gönderir (push).",
+    "p": [
+     [
+      "dv",
+      "gt",
+      "data",
+      "push"
+     ]
+    ],
+    "hi": [
+     "dv",
+     "gt"
+    ],
+    "cam": [
+     190,
+     215,
+     1.0
+    ]
+   },
+   {
+    "c": "Depo, sürekli entegrasyon (CI) sunucusunu tetikler. CI, kodu her değişiklikte kendiliğinden derler ve test eder.",
+    "p": [
+     [
+      "gt",
+      "ci",
+      "req",
+      "yeni kod"
+     ]
+    ],
+    "tag": [
+     [
+      "ci",
+      "HER PUSH'TA OTOMATİK",
+      "blue"
+     ]
+    ],
+    "hi": [
+     "ci"
+    ],
+    "cam": [
+     190,
+     215,
+     1.0
+    ]
+   },
+   {
+    "c": "CI otomatik testleri başlatır: giriş formu ve sepet senaryoları dakikalar içinde çalışır.",
+    "p": [
+     [
+      "ci",
+      "ts",
+      "data",
+      "testleri çalıştır"
+     ]
+    ],
+    "hi": [
+     "ts"
+    ],
+    "tag": [
+     [
+      "ts",
+      "GİRİŞ + SEPET: 2 DK",
+      "dark"
+     ]
+    ],
+    "cam": [
+     190,
+     215,
+     1.0
+    ]
+   },
+   {
+    "c": "Sepet testi kırılır. CI haberi geliştiriciye iletir; hatalı kod yayına çıkamaz.",
+    "p": [
+     [
+      "ts",
+      "ci",
+      "bad",
+      "sepet kırıldı"
+     ],
+     [
+      "ci",
+      "dv",
+      "bad",
+      "başarısız",
+      [
+       "gt"
+      ]
+     ]
+    ],
+    "mark": [
+     [
+      "ts",
+      "x"
+     ]
+    ],
+    "say": [
+     [
+      "dv",
+      "Sepet testi kırıldı, bakıyorum"
+     ]
+    ],
+    "cam": [
+     190,
+     215,
+     1.0
+    ]
+   },
+   {
+    "c": "Geliştirici düzeltip tekrar gönderir. Testler bu kez geçer.",
+    "p": [
+     [
+      "dv",
+      "gt",
+      "data",
+      "düzeltme"
+     ],
+     [
+      "gt",
+      "ci",
+      "req",
+      "yeni kod"
+     ],
+     [
+      "ci",
+      "ts",
+      "data",
+      "testler"
+     ]
+    ],
+    "mark": [
+     [
+      "ts",
+      "ok"
+     ]
+    ],
+    "cam": [
+     190,
+     215,
+     1.0
+    ]
+   },
+   {
+    "c": "Testler geçince CI yayın adımına ilerleyebilir. Tekrar eden regresyon testleri otomasyona uygundur; keşif testi gibi işler elle kalır.",
+    "show": [
+     "dp"
+    ],
+    "p": [
+     [
+      "ci",
+      "dp",
+      "ok",
+      "yayına hazır"
+     ]
+    ],
+    "tag": [
+     [
+      "ts",
+      "OTOMASYON ADAYI",
+      "green"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "Her kod değişikliğinde testler otomatik çalışır",
+  "notes": [
+   "CI, kodu her değişiklikte otomatik derler ve test eder.",
+   "Kırılan test, hatayı yayına çıkmadan haber verir.",
+   "Tekrar eden testleri otomatikleştir, keşif ve yeni fikir gerektiren işleri elle yap."
+  ],
+  "q": [
+   {
+    "q": "CI sunucusunda otomatik test ne zaman çalışır?",
+    "o": [
+     "Yalnız ay sonunda",
+     "Müşteri şikâyet edince",
+     "Sadece elle başlatılınca",
+     "Kod depoya her gönderildiğinde"
+    ],
+    "a": 3,
+    "w": "Sürekli entegrasyonda testler her değişiklikte tetiklenir."
+   },
+   {
+    "q": "CI'daki testler kırıldığında ne olması beklenir?",
+    "o": [
+     "Hiçbir şey olmaz",
+     "Ekip haberdar olur ve hatalı kod yayına çıkmaz",
+     "Test silinir",
+     "Kod otomatik yayına çıkar"
+    ],
+    "a": 1,
+    "w": "Başarısız test, hatayı erken gösterir ve yayını engeller."
+   },
+   {
+    "q": "Hangi test otomasyona en uygundur?",
+    "o": [
+     "Bir kez yapılacak yeni özellik keşfi",
+     "Görsel beğeni değerlendirmesi",
+     "Müşteriyle yapılan görüşme",
+     "Her sürümde tekrarlanan giriş regresyon testi"
+    ],
+    "a": 3,
+    "w": "Sık tekrar edilen ve sonucu belli testler otomasyona uygundur."
+   }
+  ]
+ },
+ {
+  "v": 2,
+  "id": "qa-report",
+  "tr": "qa",
+  "trs": [
+   "qa"
+  ],
+  "theme": "qa",
+  "t": "Hata raporu",
+  "title": "İyi ve kötü hata raporu",
+  "one": "İyi rapor, geliştiricinin hatayı ilk denemede yeniden üretmesini sağlar.",
+  "rx": "hata raporu|bug report|defect report|yeniden üret|reproduc|jira",
+  "nodes": [
+   {
+    "id": "ts",
+    "k": "user",
+    "x": 55,
+    "y": 215,
+    "l": "Test uzmanı"
+   },
+   {
+    "id": "bd",
+    "k": "doc",
+    "x": 180,
+    "y": 140,
+    "l": "Kötü rapor",
+    "s2": "\"Giriş çalışmıyor\""
+   },
+   {
+    "id": "gd",
+    "k": "doc",
+    "x": 180,
+    "y": 290,
+    "l": "İyi rapor",
+    "hide": true
+   },
+   {
+    "id": "dv",
+    "k": "user",
+    "x": 305,
+    "y": 215,
+    "l": "Geliştirici"
+   }
+  ],
+  "links": [
+   {
+    "a": "ts",
+    "b": "bd",
+    "k": "eth",
+    "cv": -10
+   },
+   {
+    "a": "ts",
+    "b": "gd",
+    "k": "eth",
+    "cv": 10
+   },
+   {
+    "a": "bd",
+    "b": "dv",
+    "k": "eth",
+    "cv": 10
+   },
+   {
+    "a": "gd",
+    "b": "dv",
+    "k": "eth",
+    "cv": -10
+   },
+   {
+    "a": "dv",
+    "b": "ts",
+    "k": "thin"
+   }
+  ],
+  "steps": [
+   {
+    "c": "Test uzmanı giriş formunda bir hata buldu. Geliştirici bu hatayı raporuna bakarak düzeltecek.",
+    "cam": 0
+   },
+   {
+    "c": "Önce kötü rapor: başlık 'Giriş çalışmıyor', başka bilgi yok.",
+    "p": [
+     [
+      "ts",
+      "bd",
+      "env",
+      "rapor"
+     ]
+    ],
+    "tag": [
+     [
+      "bd",
+      "BAŞLIK: GİRİŞ ÇALIŞMIYOR",
+      "red"
+     ]
+    ],
+    "hi": [
+     "bd"
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Geliştirici kendi bilgisayarında dener, giriş çalışıyor. Hangi şifre, hangi tarayıcı, ne bekleniyordu? Bilmiyor.",
+    "p": [
+     [
+      "bd",
+      "dv",
+      "env",
+      "rapor"
+     ]
+    ],
+    "mark": [
+     [
+      "dv",
+      "?"
+     ]
+    ],
+    "say": [
+     [
+      "dv",
+      "Bende çalışıyor. Ne yapmalıyım?"
+     ]
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Soru sorulur, cevap beklenir: zaman kaybı ve hata hâlâ düzelmemiş.",
+    "p": [
+     [
+      "dv",
+      "ts",
+      "req",
+      "detay verir misin?"
+     ]
+    ],
+    "dim": [
+     "bd"
+    ],
+    "mark": [
+     [
+      "bd",
+      "x"
+     ]
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Şimdi iyi rapor. Başlık hatayı bir cümlede anlatır: 'Yanlış şifrede hata mesajı görünmüyor'.",
+    "show": [
+     "gd"
+    ],
+    "p": [
+     [
+      "ts",
+      "gd",
+      "env",
+      "rapor"
+     ]
+    ],
+    "tag": [
+     [
+      "gd",
+      "BAŞLIK: YANLIŞ ŞİFREDE MESAJ YOK",
+      "green"
+     ]
+    ],
+    "hi": [
+     "gd"
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Rapor yeniden üretme adımlarını ve ortamı içerir: giriş sayfasını aç, yanlış şifre yaz, Giriş'e bas. Chrome, Windows 11.",
+    "tag": [
+     [
+      "gd",
+      "ADIMLAR: 1) /giris 2) YANLIŞ ŞİFRE 3) GİRİŞ",
+      "dark"
+     ]
+    ],
+    "cam": [
+     180,
+     250,
+     1.1
+    ]
+   },
+   {
+    "c": "Beklenen sonuç: 'Şifre hatalı' uyarısı. Gerçekleşen: sayfa yenileniyor, mesaj yok. İkisini yan yana yazmak farkı net gösterir.",
+    "tag": [
+     [
+      "gd",
+      "BEKLENEN: UYARI / OLAN: MESAJ YOK",
+      "amber"
+     ]
+    ],
+    "cam": [
+     180,
+     205,
+     1.08
+    ]
+   },
+   {
+    "c": "Geliştirici raporu okuyup hatayı ilk denemede yeniden üretir. Soru yok, düzeltme başlar.",
+    "p": [
+     [
+      "gd",
+      "dv",
+      "ok",
+      "yeniden üretildi"
+     ]
+    ],
+    "mark": [
+     [
+      "dv",
+      "ok"
+     ]
+    ],
+    "say": [
+     [
+      "dv",
+      "İlk denemede gördüm"
+     ]
+    ],
+    "cam": 0
+   }
+  ],
+  "result": "Kısa başlık, adımlar, beklenen ve gerçekleşen sonuç",
+  "notes": [
+   "Başlık hatayı tek cümlede anlatır.",
+   "Yeniden üretme adımları, ortam ve beklenen/gerçekleşen sonuç yazılır.",
+   "İyi rapor geliştiriciyi soru sormaktan kurtarır."
+  ],
+  "q": [
+   {
+    "q": "Hata raporunda en önemli unsur aşağıdakilerden hangisidir?",
+    "o": [
+     "Adım adım yeniden üretme bilgisi",
+     "Uzun bir şikâyet",
+     "Geliştiricinin adı",
+     "Yalnız ekran rengi"
+    ],
+    "a": 0,
+    "w": "Geliştirici adımları izleyerek hatayı yeniden üretebilmelidir."
+   },
+   {
+    "q": "'Sepet bozuk' başlığı neden kötü bir başlıktır?",
+    "o": [
+     "İngilizce değildir",
+     "Bir hata kodu içerir",
+     "Neyin, nasıl bozulduğunu söylemez",
+     "Çok kısadır diye yasaktır"
+    ],
+    "a": 2,
+    "w": "İyi başlık hatayı somut anlatır."
+   },
+   {
+    "q": "Raporda beklenen ve gerçekleşen sonuç neden ayrı yazılır?",
+    "o": [
+     "Farkın hata olduğunu net göstermek için",
+     "Rapor uzasın diye",
+     "Hatayı gizlemek için",
+     "Testi atlamak için"
+    ],
+    "a": 0,
+    "w": "Beklenen ile gerçekleşen arasındaki fark hatanın tanımıdır."
+   }
+  ]
+ }
+]
