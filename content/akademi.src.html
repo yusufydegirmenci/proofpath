@@ -6922,8 +6922,10 @@ function syncApply(r){
 /* yeni kullanıcı karşılama akışı */
 S.onb=null;S.onbLoaded=false;S.ob={step:0,goal:"",hrs:5,lvl:false};
 var OB_GOALS=[["ccna","CCNA ve ağ","Switch, IP, VLAN: ağ yöneticisi ve destek rolleri","ccna","sup"],
- ["qa","Yazılım testi (QA)","Test senaryosu, hata raporu, otomasyon temeli","bk","qa"],
+ ["net","Network","OSI, IP, alt ağlar, kablolar, ağ cihazları: Network+ temeli","net","sup"],
+ ["qa","Test Uzmanı (QA)","Test tasarımı, hata raporu, otomasyon: ISTQB CTFL temeli","qa","qa"],
  ["bk","Backend ve .NET","API, veritabanı, Git: yazılım geliştirme temeli","bk","bk"],
+ ["dev","DevOps","Linux, Git, CI/CD, Docker, Kubernetes: KCNA temeli","dev","bk"],
  ["sec","Siber güvenlik","Güvenlik kavramları, Security+ temeli","sec","sec"],
  ["eng","İş İngilizcesi","Destek talepleri, e-posta ve mülakat İngilizcesi","eng","sup"]];
 function onbNeeded(){return !!(S.nonOwner&&!S.guest&&S.onbLoaded&&!(S.onb&&(S.onb.done||S.onb.skip)))}
