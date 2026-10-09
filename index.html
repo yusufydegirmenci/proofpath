@@ -944,7 +944,7 @@ function streakInfo(){
 function activeDaySet(){
   var o={};
   S.attempts.forEach(function(x){if(x.date)o[x.date]=1});
-  S.progress.forEach(function(p){var d=p.date||p.id;if(!d)return;if(num(p.rtxp)>0||num(p.g_runs)>0||num(p.mini5)>0||num(p.prac_n)>0||num(p.mul_n)>0||num(p.proj_n)>0||num(p.ticket_n)>0||num(p.vd_n)>0)o[d]=1});
+  S.progress.forEach(function(p){var d=p.date||p.id;if(!d)return;if(num(p.rtxp)>0||num(p.g_runs)>0||num(p.mini5)>0||num(p.prac_n)>0||num(p.mul_n)>0||num(p.proj_n)>0||num(p.ticket_n)>0||num(p.vd_n)>0||num(p.fk_n)>0)o[d]=1});
   S.days.forEach(function(d){if(d.date&&(num(d.minutes)>0||num(d.xp)>0))o[d.date]=1});
   S.reports.forEach(function(r){if(r.date)o[r.date]=1});
   try{var lc=lcLoad();Object.keys(lc).forEach(function(k){if(k.charAt(0)!=="_"&&lc[k]&&lc[k].d)o[lc[k].d]=1})}catch(e){}
@@ -6053,7 +6053,7 @@ function renderGame(){
 
 
 /* ---- v50 oyun merkezi ---- */
-var GH_TABS=[["arena","Arena"],["arcade","Arcade"],["gorev","Görevler"],["kart","Kartlar"]];
+var GH_TABS=[["arena","Arena"],["arcade","Arcade"],["fetih","Fetih"],["gorev","Görevler"],["kart","Kartlar"]];
 function ghCell(v,k){return h("div",{class:"gh-c"},h("b",null,String(v)),h("small",null,k))}
 function gameHub(old,modes,mq){
   var D=dzGet(),dn=gmDay(today()),wk=gmWeek(),ms=gmMissions(dn),okN=ms.filter(function(m){return m.have>=m.need}).length,R=rankInfo();
@@ -6086,6 +6086,7 @@ function gameHub(old,modes,mq){
     body.push(gmSeasonEl());body.push(old[5]);body.push(old[2]);
   }
   else if(t==="kart")body=gmCardsTab();
+  else if(t==="fetih")body=S.fk?fkScreen():fkHub();
   return out.concat(body);
 }
 
@@ -6763,7 +6764,7 @@ function gateBox(G){
 
 /* cihazlar arası eşitleme: oyun/soru ilerlemesi, Atlas, seviye testi */
 S._syncReady=false;S._syncLast="";S._syncT=null;
-function syncOut(){return {gs:{sk:GS.sk,bx:GS.bx,st:GS.st,ts:GS.ts||""},atlas:atlasKnown(),pl:plLoad(),lc:lcLoad(),cd:gmCards(),gq:gqLoad(),gseen:gmSeen()?1:0,gk:{sk:S.gm.sk,ps:gmPS()},nt:ntSyncPack(),vd:vdPack()}}
+function syncOut(){return {gs:{sk:GS.sk,bx:GS.bx,st:GS.st,ts:GS.ts||""},atlas:atlasKnown(),pl:plLoad(),lc:lcLoad(),cd:gmCards(),gq:gqLoad(),gseen:gmSeen()?1:0,gk:{sk:S.gm.sk,ps:gmPS()},nt:ntSyncPack(),vd:vdPack(),fk:fkLoad()}}
 function syncPush(){
   if(!S._syncReady||!S.db||!S.canWrite||S.guest)return;
   clearTimeout(S._syncT);
@@ -6813,6 +6814,10 @@ function syncApply(r){
         if(gqc){try{localStorage.setItem(GQ_KEY,JSON.stringify(gqo))}catch(e){}ch=true}
       }
       if(r.gseen&&!gmSeen())gmSeen(1);
+      if(r.fk&&typeof r.fk==="object"){
+        var fo=fkLoad(),fc=false;Object.keys(r.fk).slice(0,20).forEach(function(k){if(!/^[a-z]+[A-Za-z]{0,12}$/.test(k))return;var v=Math.min(99999,r.fk[k]|0);if(v>num(fo[k])){fo[k]=v;fc=true}});
+        if(fc){try{localStorage.setItem(FK_KEY,JSON.stringify(fo))}catch(e){}ch=true}
+      }
       if(Array.isArray(r.vd)){
         var vo=vdLoad(),vk={},vc=false;vo.h.forEach(function(e){vk[e.k+"|"+e.t]=1});
         r.vd.slice(0,40).forEach(function(e){if(!e||!VD_SC.some(function(z){return z.id===e.k}))return;var t=+e.t||0;if(!t||vk[e.k+"|"+t])return;vo.h.push({k:e.k,d:String(e.d||"").slice(0,10),m:Math.max(0,Math.min(100,e.m|0)),r:Math.max(0,Math.min(4,e.r|0)),ok:e.ok?1:0,t:t});vc=true});
@@ -7272,6 +7277,234 @@ function renderDesk(){
   return [deskSwitch()].concat(renderDeskEn());
 }
 (function(){var st=document.createElement("style");st.textContent="\n.vd-face{display:block;flex:none;width:64px;height:64px}\n.vd-top{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:center}\n.vd-who{display:grid;min-width:0}.vd-who small{opacity:.7}.vd-bn{font-weight:800;font-size:13px}\n.vd-bar{grid-column:1/-1;height:10px;border-radius:99px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)}\n.vd-bar i{display:block;height:100%;border-radius:99px;transition:width .5s,background .5s}\n.vd-chat{display:grid;gap:8px}\n.vd-b{max-width:88%;padding:8px 12px;border-radius:16px;line-height:1.4;overflow-wrap:anywhere;font-size:14.5px}\n.vd-b small{display:block;font-size:11px;font-weight:700;opacity:.65;margin-bottom:2px}\n.vd-b.c{justify-self:start;background:var(--panel2);border:1px solid var(--line);border-bottom-left-radius:4px}\n.vd-b.u{justify-self:end;background:linear-gradient(150deg,#1e88e5,#1565c0);color:#fff;border-bottom-right-radius:4px}\n.vd-m{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;align-items:center;font-size:11.5px}\n.vd-d{font-weight:800;padding:2px 8px;border-radius:99px;background:var(--panel2);border:1px solid var(--line)}\n.vd-d.up{color:var(--ok)}.vd-d.dn{color:var(--bad)}\n.vd-ev{width:100%;text-align:center;opacity:.8}\n.vd-tg{padding:2px 8px;border-radius:99px;border:1px solid var(--line);background:var(--panel)}\n.vd-tg.ps{color:var(--ok)}.vd-tg.ng{color:var(--bad)}.vd-tg.ms{color:var(--mute);border-style:dashed}\n.vd-opts{display:grid;gap:8px}\n.vd-o{appearance:none;text-align:left;width:100%;padding:11px 14px;border-radius:14px;border:2px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;font-size:14.5px;line-height:1.4;cursor:pointer;overflow-wrap:anywhere}\n.vd-o:hover,.vd-o:focus-visible{border-color:var(--net)}\n.vd-free{display:grid;gap:6px}.vd-free textarea{width:100%;box-sizing:border-box}\n.vd-list{display:grid;gap:8px}\n.vd-c{appearance:none;display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;text-align:left;width:100%;padding:8px 12px;border-radius:16px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);font:inherit;cursor:pointer;min-width:0}\n.vd-c .vd-face{width:44px;height:44px}\n.vd-ci{display:grid;min-width:0}.vd-ci b{font-size:15px}.vd-ci small{opacity:.7}.vd-ci em{font-style:normal;font-size:12px;opacity:.6}\n.vd-exp{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}\n.vd-star{font-size:26px;color:var(--gold);letter-spacing:4px}\n";document.head.appendChild(st)})();
+/* ---- v57: FETİH, tarihî toprak fethi stratejisi ---- */
+var FK_KEY="ya_fk",FK_W=36,FK_H=26;
+var FK_SC=[
+{id:"malazgirt",n:"Malazgirt 1071",sub:"Anadolu'nun kapıları",yr:[1071,1090],pl:{n:"Büyük Selçuklu",c:"#1d8a99",l:"Alparslan"},ai:[{n:"Bizans",c:"#6b3fa0"},{n:"Ermeni Beylikleri",c:"#c9892a"},{n:"Gürcü Krallığı",c:"#3c8f48"},{n:"Haçlı Şövalyeleri",c:"#9a9aa6"}],
+ brief:"Ağustos 1071. Sultan Alparslan, Bizans İmparatoru IV. Romanos Diogenes'i Malazgirt'te yendi. Sen şimdi Türkmen akıncılarını sevk edip Anadolu'nun kapılarını aç. Toprağın %55'ini ele geçirirsen Anadolu bir Türk yurdu olur.",
+ notes:[[0,"Ağustos 1071: Malazgirt Meydan Muharebesi. Alparslan, Bizans ordusunu yenip imparatoru esir aldı."],[20,"Türkmen boyları Anadolu'ya yayılırken Danişmendliler, Saltuklular ve Mengücekler gibi beylikler kuruldu."],[40,"Kutalmışoğlu Süleymanşah, 1070'lerde İznik'i alıp Anadolu Selçuklu Devleti'nin temelini attı."],[55,"Anadolu artık bir Türk yurdu. Sonraki yüzyıllarda burada Anadolu Selçuklu ve sonra Osmanlı kurulacak."]]},
+{id:"istanbul",n:"İstanbul 1453",sub:"Çağ açıp çağ kapatan fetih",yr:[1451,1453],pl:{n:"Osmanlı",c:"#c0392b",l:"Fatih Sultan Mehmed"},ai:[{n:"Bizans",c:"#6b3fa0"},{n:"Venedik",c:"#2a6fb0"},{n:"Karamanoğulları",c:"#d98a1e"},{n:"Cenova",c:"#2e8b57"}],
+ brief:"1451. Genç Sultan II. Mehmed tahta çıktı ve gözünü İstanbul'a dikti. Rumeli Hisarı'nı kurdurdu, dev toplar döktürdü. Rakip güçleri sıkıştırıp topraklarını genişlet. %55'e ulaşırsan fetih tamamdır.",
+ notes:[[0,"1451-52: Mehmed, Boğaz'ı kontrol etmek için Rumeli Hisarı'nı kısa sürede inşa ettirdi."],[20,"Macar topçu ustası Urban'ın döktüğü toplar surlara karşı kullanıldı."],[40,"Gemiler, Haliç'teki zinciri aşmak için kızaklarla karadan yürütüldü."],[55,"29 Mayıs 1453: İstanbul fethedildi. Bu olay Orta Çağ'ın sonu sayılır."]]}
+];
+var FK_DF={k:{n:"Kolay",ai:7,tr:1.15,m:.8},n:{n:"Normal",ai:4.5,tr:1,m:1},z:{n:"Zor",ai:2.8,tr:.9,m:1.25}};
+function fkLoad(){try{var o=JSON.parse(localStorage.getItem(FK_KEY)||"null");return o&&typeof o==="object"?o:{}}catch(e){return {}}}
+function fkSaveBest(k,v){var o=fkLoad();if(num(o[k])>=v)return;o[k]=v;try{localStorage.setItem(FK_KEY,JSON.stringify(o))}catch(e){}try{syncPush()}catch(e){}}
+function fkNoise(x,y,s){var n=Math.sin(x*12.9898+y*78.233+s*37.719)*43758.5453;return n-Math.floor(n)}
+function fkMap(r,seed){
+  var W=FK_W,H=FK_H,g=[],i,x,y;
+  for(i=0;i<W*H;i++)g.push(-1);
+  var nc=11+Math.floor(r()*4),cs=[];
+  for(i=0;i<nc;i++)cs.push([W*(.12+.76*r()),H*(.18+.64*r()),3+r()*4.5]);
+  for(y=0;y<H;y++)for(x=0;x<W;x++){for(i=0;i<nc;i++){var c=cs[i],d=Math.sqrt((x-c[0])*(x-c[0])+(y-c[1])*(y-c[1])*1.15);if(d<c[2]*(.78+.5*fkNoise(x,y,seed%97))){g[y*W+x]=0;break}}}
+  /* en büyük kara parçası */
+  var comp=[],best=[],seen={};
+  for(i=0;i<W*H;i++){if(g[i]!==0||seen[i])continue;var q=[i],cur=[];seen[i]=1;while(q.length){var p=q.pop();cur.push(p);var px=p%W,py=(p-px)/W;[[1,0],[-1,0],[0,1],[0,-1]].forEach(function(dd){var nx=px+dd[0],ny=py+dd[1];if(nx<0||ny<0||nx>=W||ny>=H)return;var ni=ny*W+nx;if(g[ni]===0&&!seen[ni]){seen[ni]=1;q.push(ni)}})}if(cur.length>best.length)best=cur}
+  for(i=0;i<W*H;i++)g[i]=-1;best.forEach(function(p){g[p]=0});
+  return {g:g,land:best};
+}
+function fkNb(p){var W=FK_W,H=FK_H,x=p%W,y=(p-x)/W,o=[];if(x>0)o.push(p-1);if(x<W-1)o.push(p+1);if(y>0)o.push(p-W);if(y<H-1)o.push(p+W);return o}
+function fkBuild(sc,dfk){
+  var seed=(Date.now()%1e6)+7,tries=0,G,i;
+  while(tries++<40){
+    var r=rngf(seed+tries*131),m=fkMap(r,seed+tries);
+    if(m.land.length<FK_W*FK_H*.34||m.land.length>FK_W*FK_H*.62)continue;
+    var nat=[sc.pl].concat(sc.ai),caps=[],L=m.land;
+    caps.push(L[Math.floor(r()*L.length)]);
+    while(caps.length<nat.length){var bp=-1,bd=-1;L.forEach(function(p){var mn=1e9;caps.forEach(function(c){var dx=p%FK_W-c%FK_W,dy=Math.floor(p/FK_W)-Math.floor(c/FK_W);mn=Math.min(mn,dx*dx+dy*dy)});if(mn>bd){bd=mn;bp=p}});caps.push(bp)}
+    var own=m.g.slice(),ok=true,cnt=[];
+    nat.forEach(function(n,i){var q=[caps[i]],got=0;own[caps[i]]=i+1;got=1;var h0=0;while(h0<q.length&&got<16){var p=q[h0++];fkNb(p).forEach(function(nb){if(own[nb]===0&&got<16){own[nb]=i+1;got++;q.push(nb)}})}cnt.push(got);if(got<10)ok=false});
+    if(!ok)continue;
+    var N=nat.map(function(n,i){return {id:i+1,n:n.n,c:n.c,l:n.l||"",cap:caps[i],troops:70*(i===0?dfk.tr:1),cells:cnt[i],ai:i>0,alive:true,nx:r()*dfk.ai,att:[],max:0}});
+    G={own:own,N:N,t:0,r:r,at:[],chg:[],msg:[],land:L.length,sc:sc,df:dfk,pct:50,speed:1,state:"play",ni:0,qi:0,qcd:12,pq:null,paused:false,over:null,stats:{att:0,lost:0,took:0},peak:0,pw:0};
+    for(i=0;i<own.length;i++)G.chg.push(-9);
+    return G;
+  }
+  return null;
+}
+function fkCount(G){G.N.forEach(function(n){n.cells=0});for(var i=0;i<G.own.length;i++){var o=G.own[i];if(o>0)G.N[o-1].cells++}}
+function fkNeighbors(G,id){var res={},W=FK_W,own=G.own;for(var p=0;p<own.length;p++){if(own[p]!==id)continue;var nb=fkNb(p);for(var k=0;k<nb.length;k++){var o=own[nb[k]];if(o>=0&&o!==id)res[o]=1}}return Object.keys(res).map(Number)}
+function fkLog(G,t,k){G.msg.unshift({t:t,k:k||""});if(G.msg.length>4)G.msg.pop()}
+function fkLaunch(G,by,tgt,pct){
+  var N=G.N[by-1];if(!N.alive)return false;
+  var ex=null;G.at.forEach(function(a){if(a.by===by&&a.tgt===tgt)ex=a});
+  if(!ex&&G.at.filter(function(a){return a.by===by}).length>=(by===1?3:2))return false;
+  if(fkNeighbors(G,by).indexOf(tgt)<0)return false;
+  var amt=N.troops*pct/100;if(amt<8)return false;
+  N.troops-=amt;if(by===1)G.stats.att++;
+  if(ex)ex.left+=amt;else G.at.push({by:by,tgt:tgt,left:amt,acc:0,fresh:0});
+  return true;
+}
+function fkStepAttack(G,a,dt){
+  var by=G.N[a.by-1],df=a.tgt>0?G.N[a.tgt-1]:null;
+  if(!by.alive||(df&&!df.alive)){by.troops+=a.left;a.left=0;return}
+  var rate=(1.4+Math.sqrt(a.left)/4.5)*(a.by===1?1:G.df.m*.8);a.acc+=rate*dt;
+  while(a.acc>=1&&a.left>0){
+    a.acc-=1;
+    var best=-1,bs=-1,W=FK_W,own=G.own;
+    for(var p=0;p<own.length;p++){if(own[p]!==a.tgt)continue;var nb=fkNb(p),c=0;for(var k=0;k<nb.length;k++)if(own[nb[k]]===a.by)c++;if(!c)continue;var sc=c+G.r()*1.4;if(sc>bs){bs=sc;best=p}}
+    if(best<0){by.troops+=a.left;a.left=0;break}
+    var dd=df?df.troops/Math.max(1,df.cells):0,cost=df?2.2+dd*.9:1.3;
+    if(a.left<cost){by.troops+=a.left;a.left=0;break}
+    a.left-=cost;own[best]=a.by;G.chg[best]=G.t;by.cells++;
+    if(df){df.cells--;df.troops=Math.max(1,df.troops-dd*.55);
+      if(a.by===1)G.stats.took++;if(a.tgt===1)G.stats.lost++;
+      if(df.cells<=0){df.alive=false;df.troops=0;fkLog(G,df.n+" yıkıldı.","dead");break}}
+  }
+  if(a.left<1)a.left=0;
+}
+function fkAI(G,n,dt){
+  n.nx-=dt;if(n.nx>0||!n.alive)return;
+  n.nx=G.df.ai*(.7+G.r()*.7);
+  var mine=G.at.filter(function(a){return a.by===n.id}).length;if(mine>=2)return;
+  var nbs=fkNeighbors(G,n.id);if(!nbs.length)return;
+  var dens=n.troops/Math.max(1,n.cells);if(dens<2.4)return;
+  var pick=null,neu=nbs.indexOf(0)>=0;
+  if(neu&&G.r()<.62)pick=0;
+  else{var ws=nbs.filter(function(o){return o>0});if(ws.length){ws.sort(function(a,b){var da=G.N[a-1].troops/G.N[a-1].cells+(a===1?-.6:0),db=G.N[b-1].troops/G.N[b-1].cells+(b===1?-.6:0);return da-db});pick=ws[0];if(G.r()<.3)pick=ws[Math.floor(G.r()*ws.length)]}else if(neu)pick=0}
+  if(pick==null)return;
+  fkLaunch(G,n.id,pick,35+Math.floor(G.r()*30));
+  if(pick===1)fkLog(G,n.n+" sana saldırıyor!","war");
+}
+function fkTick(G,dt){
+  if(G.state!=="play"||G.paused||G.pq)return;
+  dt*=G.speed;G.t+=dt;
+  G.N.forEach(function(n){if(!n.alive)return;var cap=n.cells*20,gr=(n.cells*.06+.4)*(1-n.troops/Math.max(1,cap));if(gr>0)n.troops+=gr*dt*(n.id===1?G.df.tr:1);if(n.ai)fkAI(G,n,dt)});
+  G.at.forEach(function(a){fkStepAttack(G,a,dt)});G.at=G.at.filter(function(a){return a.left>0});
+  G.qcd=Math.max(0,G.qcd-dt);
+  var pl=G.N[0],pc=Math.round(pl.cells/G.land*100);G.peak=Math.max(G.peak,pc);
+  while(G.ni<G.sc.notes.length&&pc>=G.sc.notes[G.ni][0]){fkLog(G,G.sc.notes[G.ni][1],"note");G.note=G.sc.notes[G.ni][1];G.ni++}
+  if(!pl.alive||pl.cells<=0){fkEnd(G,"lose")}
+  else if(pc>=55||G.N.slice(1).every(function(n){return !n.alive}))fkEnd(G,"win");
+}
+function fkEnd(G,res){
+  if(G.over)return;G.over=res;G.state="over";
+  var pc=Math.round(G.N[0].cells/G.land*100),sc=Math.round(pc*10+(res==="win"?Math.max(0,600-G.t*2):0));
+  G.score=sc;if(res==="win")fkSaveBest(G.sc.id+G.df.n,sc);
+  try{var o=gmDay(today());setProg({fk_n:num(o.fk_n)+1})}catch(e){}
+}
+function fkYear(G){var y=G.sc.yr,t=Math.min(1,G.t/420),yy=y[0]+(y[1]-y[0])*t,mo=["Oca","Şub","Mar","Nis","May","Haz","Tem","Ağu","Eyl","Eki","Kas","Ara"];return mo[Math.floor((yy%1)*12)%12]+" "+Math.floor(yy)}
+function fkPaper(cv){
+  var c=document.createElement("canvas");c.width=cv.width;c.height=cv.height;var x=c.getContext("2d"),g=x.createRadialGradient(c.width/2,c.height/2,c.width*.1,c.width/2,c.height/2,c.width*.75);g.addColorStop(0,"#efe0b8");g.addColorStop(1,"#d9c08a");x.fillStyle=g;x.fillRect(0,0,c.width,c.height);
+  for(var i=0;i<900;i++){x.fillStyle="rgba(120,80,30,"+(Math.random()*.06)+")";x.fillRect(Math.random()*c.width,Math.random()*c.height,1+Math.random()*2,1+Math.random()*2)}return c;
+}
+function fkEdge(x,dpr,a,b,x1,y1,x2,y2){var w=a<0||b<0;x.strokeStyle=w?"#5a3a14":"rgba(60,35,10,.55)";x.lineWidth=w?Math.max(1.6,dpr*1.4):Math.max(1,dpr*.9);x.beginPath();x.moveTo(x1,y1);x.lineTo(x2,y2);x.stroke()}
+function fkDraw(G){
+  var cv=G.cv,cs=cv.clientWidth||340,dpr=Math.min(2,window.devicePixelRatio||1),W=Math.round(cs*dpr),H=Math.round(cs*FK_H/FK_W*dpr);
+  if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H;G.paper=null}
+  var x=cv.getContext("2d"),c=W/FK_W;if(!G.paper)G.paper=fkPaper(cv);
+  x.drawImage(G.paper,0,0);
+  var own=G.own,Wc=FK_W,i,xx,yy;
+  /* deniz */
+  x.fillStyle="rgba(70,120,140,.34)";
+  for(i=0;i<own.length;i++)if(own[i]<0){xx=i%Wc;yy=(i-xx)/Wc;x.fillRect(xx*c,yy*c,c+.6,c+.6)}
+  x.strokeStyle="rgba(255,255,255,.3)";x.lineWidth=Math.max(1,dpr*.8);
+  for(i=0;i<own.length;i+=3){if(own[i]<0){xx=i%Wc;yy=(i-xx)/Wc;var ph=G.t*1.5+xx*.7+yy;x.beginPath();x.arc(xx*c+c/2,yy*c+c/2,c*.22,Math.PI,Math.PI*2);x.stroke()}}
+  /* kara */
+  for(i=0;i<own.length;i++){var o=own[i];if(o<0)continue;xx=i%Wc;yy=(i-xx)/Wc;
+    x.fillStyle=o===0?"#e5d3a2":G.N[o-1].c;x.globalAlpha=o===0?1:.86;x.fillRect(xx*c,yy*c,c+.6,c+.6);x.globalAlpha=1;
+    var age=G.t-G.chg[i];if(age<.5){x.fillStyle="rgba(255,255,255,"+(.5-age)+")";x.fillRect(xx*c,yy*c,c+.6,c+.6)}}
+  /* sınırlar */
+  x.lineCap="round";
+  for(i=0;i<own.length;i++){var o2=own[i];if(o2<0)continue;xx=i%Wc;yy=(i-xx)/Wc;
+    var rt=xx<Wc-1?own[i+1]:-1,dn=yy<FK_H-1?own[i+Wc]:-1,lf=xx>0?own[i-1]:-1,up=yy>0?own[i-Wc]:-1;
+    if(rt!==o2)fkEdge(x,dpr,o2,rt,(xx+1)*c,yy*c,(xx+1)*c,(yy+1)*c);
+    if(dn!==o2)fkEdge(x,dpr,o2,dn,xx*c,(yy+1)*c,(xx+1)*c,(yy+1)*c);
+    if(lf<0)fkEdge(x,dpr,o2,lf,xx*c,yy*c,xx*c,(yy+1)*c);
+    if(up<0)fkEdge(x,dpr,o2,up,xx*c,yy*c,(xx+1)*c,yy*c)}
+  /* başkentler ve isimler */
+  G.N.forEach(function(n){if(!n.alive)return;var cx=n.cap%Wc,cy=Math.floor(n.cap/Wc);
+    x.fillStyle="#fff3c8";x.strokeStyle="#5a3a14";x.lineWidth=Math.max(1,dpr);var s=c*.9;x.fillRect(cx*c+c/2-s/2,cy*c+c*.15,s,s*.8);x.strokeRect(cx*c+c/2-s/2,cy*c+c*.15,s,s*.8);x.fillStyle="#5a3a14";for(var k=0;k<3;k++)x.fillRect(cx*c+c/2-s/2+k*s*.36,cy*c+c*.15-s*.2,s*.26,s*.22);
+    if(n.cells>=26){var sx=0,sy=0,cn=0;for(var p=0;p<own.length;p+=2){if(own[p]===n.id){sx+=p%Wc;sy+=Math.floor(p/Wc);cn++}}if(cn){var lx=sx/cn*c+c/2,ly=sy/cn*c+c/2+c*.3;x.font="italic 800 "+Math.max(9*dpr,c*.95)+"px Georgia,'Times New Roman',serif";x.textAlign="center";x.textBaseline="middle";x.lineWidth=Math.max(2,dpr*2.2);x.strokeStyle="rgba(255,244,214,.85)";x.strokeText(n.n,lx,ly);x.fillStyle="#2a1707";x.fillText(n.n,lx,ly)}}});
+  /* saldırı okları */
+  x.setLineDash([c*.5,c*.4]);x.lineWidth=Math.max(1.5,dpr*1.6);
+  G.at.forEach(function(a){x.strokeStyle=a.by===1?"#8a1d0f":"rgba(60,35,10,.7)";var from=G.N[a.by-1].cap,to=a.tgt>0?G.N[a.tgt-1].cap:null;if(to==null)return;x.globalAlpha=.55;x.beginPath();x.moveTo(from%Wc*c+c/2,Math.floor(from/Wc)*c+c/2);x.lineTo(to%Wc*c+c/2,Math.floor(to/Wc)*c+c/2);x.stroke();x.globalAlpha=1});x.setLineDash([]);
+  /* kenar */
+  x.strokeStyle="#b8892b";x.lineWidth=dpr*3;x.strokeRect(dpr*1.5,dpr*1.5,W-dpr*3,H-dpr*3);
+}
+function fkStatus(G){
+  if(!G.ui)return;var pl=G.N[0],pc=Math.round(pl.cells/G.land*100),u=G.ui;
+  u.top.replaceChildren(h("span",{class:"fk-yr"},fkYear(G)),h("span",null,"Ordu ",h("b",{class:"mono"},String(Math.round(pl.troops*10)))),h("span",null,"Toprak ",h("b",{class:"mono"},"%"+pc)),h("span",{class:"fk-goal"},"hedef %55"));
+  u.bar.style.width=Math.min(100,pc/55*100)+"%";
+  u.rank.replaceChildren.apply(u.rank,G.N.slice().filter(function(n){return n.alive}).sort(function(a,b){return b.cells-a.cells}).map(function(n){return h("span",{class:"fk-n"+(n.id===1?" me":"")},h("i",{style:"background:"+n.c}),n.n+" %"+Math.round(n.cells/G.land*100))}));
+  u.log.replaceChildren.apply(u.log,G.msg.slice(0,3).map(function(m){return h("div",{class:"fk-m "+m.k},m.t)}));
+  u.q.disabled=G.qcd>0||!!G.pq||G.state!=="play";u.q.textContent=G.qcd>0?"Divan sorusu · "+Math.ceil(G.qcd)+" sn":"Divan sorusu";
+}
+function fkAsk(G){
+  if(G.qcd>0||G.pq||G.state!=="play")return;
+  if(!G.qs||!G.qs.length){try{G.qs=gmBuild("free")}catch(e){G.qs=[]}}
+  var q=G.qs[G.qi++%Math.max(1,G.qs.length)];if(!q||q.o.length<2)return;G.pq=q;fkAskShow(G)
+}
+function fkAskShow(G){
+  var q=G.pq,box=G.ui.askbox;
+  box.replaceChildren(h("div",{class:"label"},"Divan sorusu · doğru bilirsen ordu takviyesi"),h("div",{class:"gm-aq"},q.q),h("div",{class:"gm-abs"},q.o.map(function(t,i){return t?h("button",{type:"button",class:"gm-ab c"+i,onclick:function(){fkAnswer(G,i)}},h("b",null,q.tf?(i===0?"D":"Y"):"ABC".charAt(i)),h("span",null,t)):null}).filter(Boolean)));
+  box.hidden=false;
+}
+function fkAnswer(G,i){
+  var q=G.pq;if(!q)return;var ok=i===q.a,pl=G.N[0];
+  try{gsAnswer(q.k,ok)}catch(e){}
+  if(ok){var add=Math.max(25,pl.troops*.3);pl.troops+=add;fkLog(G,"Divan haklı çıktı: +"+Math.round(add*10)+" asker.","ok");G.qcd=25}
+  else{pl.troops=Math.max(10,pl.troops*.9);fkLog(G,"Yanlış plan: ordu yıprandı. Doğrusu: "+q.o[q.a],"war");G.qcd=25}
+  G.pq=null;G.ui.askbox.hidden=true;fkStatus(G);
+}
+function fkTap(G,e){
+  if(G.state!=="play"||G.pq)return;
+  var r=G.cv.getBoundingClientRect(),px=(e.clientX-r.left)/r.width*FK_W,py=(e.clientY-r.top)/r.height*FK_H,xx=Math.floor(px),yy=Math.floor(py);
+  if(xx<0||yy<0||xx>=FK_W||yy>=FK_H)return;
+  var o=G.own[yy*FK_W+xx];if(o<0||o===1)return;
+  if(!fkLaunch(G,1,o,G.pct)){G.hint=o===undefined?"":"Oraya saldırmak için sınırın o bölgeye değmeli ve yeterli ordun olmalı.";G.ui.hint.textContent=G.hint;setTimeout(function(){if(G.ui)G.ui.hint.textContent="Bir bölgeye dokun: ordunun yüzdesiyle saldırırsın."},2200)}
+  else{G.ui.hint.textContent="Saldırı başladı";}
+}
+function fkLoop(G){
+  if(G.loop)return;G.loop=true;var last=0;
+  function f(ts){
+    if(S.fk!==G||!G.cv.isConnected){G.loop=false;return}
+    var dt=Math.min(.1,last?(ts-last)/1000:.016);last=ts;
+    fkTick(G,dt);fkDraw(G);G.sa=(G.sa||0)+dt;if(G.sa>.25){G.sa=0;fkStatus(G)}
+    if(G.state==="over"){G.loop=false;fkStatus(G);draw();return}
+    requestAnimationFrame(f)}
+  requestAnimationFrame(f);
+}
+S.fk=null;S.fkSel={sc:"malazgirt",df:"n"};
+function fkStart(sc,dk){
+  var G=fkBuild(sc,FK_DF[dk]);if(!G)return;
+  G.cv=h("canvas",{class:"fk-cv",width:360,height:260,"aria-label":"Fetih haritası. Bir bölgeye dokunarak saldır."});
+  G.cv.addEventListener("click",function(e){fkTap(G,e)});
+  G.ui={top:h("div",{class:"fk-top"}),bar:h("i"),rank:h("div",{class:"fk-rank"}),log:h("div",{class:"fk-log","aria-live":"polite"}),hint:h("div",{class:"small mute fk-hint"},"Bir bölgeye dokun: ordunun yüzdesiyle saldırırsın."),askbox:h("div",{class:"panel fk-ask",hidden:true}),
+    q:h("button",{type:"button",class:"btn ghost",onclick:function(){fkAsk(G)}},"Divan sorusu")};
+  fkLog(G,sc.notes[0][1],"note");G.ni=1;G.note=sc.notes[0][1];
+  S.fk=G;draw();window.scrollTo(0,0);
+}
+function fkScreen(){
+  var G=S.fk,sc=G.sc,out=[];
+  if(G.state==="over"){
+    var win=G.over==="win",pc=Math.round(G.N[0].cells/G.land*100);
+    return [h("div",{class:"fk-res"},h("div",{class:"fk-ban"},win?"ZAFER":"YENİLGİ"),h("h2",null,win?sc.n+": hedefe ulaştın":sc.n+": toprakların elden gitti"),
+      h("div",{class:"gm-grid"},[["Toprak","%"+pc],["Skor",G.score],["Süre",Math.round(G.t)+" sn"],["Fethedilen",G.stats.took+" bölge"]].map(function(a){return h("div",{class:"kcell"},h("small",{class:"mute"},a[0]),h("b",{class:"mono"},String(a[1])))})),
+      h("div",{class:"fk-note"},h("b",null,"Tarih notu: "),G.note||sc.notes[0][1]),
+      h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:function(){fkStart(sc,Object.keys(FK_DF).filter(function(k){return FK_DF[k]===G.df})[0])}},"Tekrar oyna"),h("button",{class:"btn ghost",type:"button",onclick:function(){S.fk=null;draw()}},"Haritalara dön")))]}
+  var sp=h("div",{class:"seg",role:"group","aria-label":"Oyun hızı"},[1,2,3].map(function(v){return h("button",{type:"button","aria-pressed":G.speed===v?"true":"false",onclick:function(){G.speed=v;draw()}},v+"×")}));
+  var pcs=h("div",{class:"seg",role:"group","aria-label":"Saldırıya ayrılan ordu yüzdesi"},[25,50,75,100].map(function(v){return h("button",{type:"button","aria-pressed":G.pct===v?"true":"false",onclick:function(){G.pct=v;draw()}},"%"+v)}));
+  setTimeout(function(){fkStatus(G);fkDraw(G);fkLoop(G)},0);
+  return [h("div",{class:"fk-wrap"},h("div",{class:"fk-title"},h("b",null,sc.n),h("small",null,G.N[0].n+" · "+G.N[0].l)),G.ui.top,h("div",{class:"fk-prog"},G.ui.bar),G.cv,G.ui.hint,
+    h("div",{class:"fk-ctl"},h("span",{class:"small"},"Saldırı gücü"),pcs),
+    h("div",{class:"fk-ctl"},h("span",{class:"small"},"Hız"),sp,h("button",{type:"button",class:"btn ghost",onclick:function(){G.paused=!G.paused;draw()}},G.paused?"Devam":"Duraklat")),
+    G.ui.q,G.ui.askbox,G.ui.rank,G.ui.log,
+    h("div",{class:"fk-leg small mute"},"Kendi renginle komşu bölgeye dokun, ordunun seçtiğin yüzdesi saldırır. Yeni topraklar ordunu büyütür. Tarihî olaylar ve kıyaslar sadeleştirilmiş, harita hayalîdir."),
+    h("button",{class:"btn ghost",type:"button",onclick:function(){S.fk=null;draw()}},"Seferi bırak"))];
+}
+function fkHub(){
+  var best=fkLoad(),sel=S.fkSel,out=[h("div",{class:"fk-hero"},h("span",{class:"gh-k"},"STRATEJİ"),h("h2",null,"Fetih"),h("div",{class:"small"},"Tarihî bir seferde ordunu yönet, komşu bölgeleri ele geçir. Yapay zekâ devletlerine karşı tek kişilik; arkadaşınla yarışmak için en iyi skorunu karşılaştırabilirsin."))];
+  var df=h("div",{class:"seg",role:"group","aria-label":"Zorluk"},Object.keys(FK_DF).map(function(k){return h("button",{type:"button","aria-pressed":sel.df===k?"true":"false",onclick:function(){sel.df=k;draw()}},FK_DF[k].n)}));
+  out.push(h("div",{class:"gm-opt"},h("b",null,"Zorluk"),df));
+  FK_SC.forEach(function(sc){var b=best[sc.id+FK_DF[sel.df].n];
+    out.push(h("div",{class:"fk-card"},h("div",{class:"fk-cb"},sc.yr[0]),h("div",{class:"fk-ci"},h("h3",null,sc.n),h("small",null,sc.sub+" · "+sc.pl.n+" olarak oyna"),h("p",{class:"small"},sc.brief),
+      h("div",{class:"fk-ch"},sc.ai.map(function(a){return h("span",{class:"fk-n"},h("i",{style:"background:"+a.c}),a.n)})),
+      h("button",{class:"btn big",type:"button",onclick:function(){fkStart(sc,sel.df)}},"Sefere çık"),b?h("div",{class:"small mute"},"En iyi skorun: "+b):null)))});
+  return out;
+}
+(function(){var st=document.createElement("style");st.textContent="\n.fk-hero{border-radius:20px;padding:16px;color:#f6e7bd;background:radial-gradient(circle at 90% 0,rgba(255,200,90,.28),transparent 45%),linear-gradient(160deg,#4a2c12,#1d1108);border:2px solid #b8892b;box-shadow:inset 0 0 0 3px rgba(0,0,0,.35);display:grid;gap:6px;margin-bottom:10px}\n.fk-hero h2{font-family:Georgia,'Times New Roman',serif;font-size:30px;letter-spacing:.06em;margin:0;color:#ffd978}\n.fk-card{display:grid;grid-template-columns:auto 1fr;gap:12px;padding:14px;border-radius:18px;margin:10px 0;color:#f6e7bd;background:linear-gradient(160deg,#3b2410,#1f1208);border:2px solid #b8892b;box-shadow:inset 0 0 0 3px rgba(0,0,0,.35)}\n.fk-card .small{color:#e7d3a0}.fk-card h3{font-family:Georgia,serif;color:#ffd978;margin:0}\n.fk-cb{align-self:start;font:900 20px Georgia,serif;color:#241608;background:linear-gradient(160deg,#ffe08a,#c89322);padding:10px 8px;border-radius:50% 50% 12px 12px;min-width:56px;text-align:center}\n.fk-ci{display:grid;gap:6px;min-width:0}\n.fk-ch,.fk-rank{display:flex;flex-wrap:wrap;gap:6px}\n.fk-n{display:inline-flex;gap:5px;align-items:center;font-size:12px;padding:2px 8px;border-radius:99px;background:rgba(0,0,0,.28);color:#f6e7bd;border:1px solid rgba(255,217,120,.35)}\n.fk-n i{width:10px;height:10px;border-radius:50%;display:inline-block}.fk-n.me{border-color:#ffd978;font-weight:800}\n.fk-wrap{display:grid;gap:8px;padding:12px;border-radius:20px;color:#f6e7bd;background:linear-gradient(160deg,#4a2c12,#1d1108);border:2px solid #b8892b;box-shadow:inset 0 0 0 3px rgba(0,0,0,.35)}\n.fk-wrap .small,.fk-wrap .mute{color:#e7d3a0}\n.fk-title{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}\n.fk-title b{font:800 20px Georgia,serif;color:#ffd978}.fk-title small{color:#e7d3a0}\n.fk-top{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13px}\n.fk-yr{font-family:Georgia,serif;font-style:italic;color:#ffd978;font-weight:800}.fk-goal{opacity:.7}\n.fk-prog{height:8px;border-radius:99px;background:rgba(0,0,0,.4);overflow:hidden}.fk-prog i{display:block;height:100%;background:linear-gradient(90deg,#c89322,#ffe08a);transition:width .4s}\n.fk-cv{display:block;width:100%;max-width:100%;border-radius:10px;border:3px double #b8892b;touch-action:manipulation;cursor:crosshair;background:#d9c08a}\n.fk-ctl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.fk-ctl .seg{flex:1 1 auto;min-width:0}\n.fk-log{display:grid;gap:4px}.fk-m{font-size:12.5px;padding:5px 9px;border-radius:10px;background:rgba(0,0,0,.28)}\n.fk-m.war{border-left:3px solid #ff6a5a}.fk-m.note{border-left:3px solid #ffd978}.fk-m.ok{border-left:3px solid #6fd08c}\n.fk-ask{color:var(--ink)}\n.fk-leg{line-height:1.4}\n.fk-res{display:grid;gap:10px;padding:16px;border-radius:20px;color:#f6e7bd;background:linear-gradient(160deg,#4a2c12,#1d1108);border:2px solid #b8892b}\n.fk-res h2{margin:0;font-family:Georgia,serif;color:#ffd978}.fk-ban{font:900 30px Georgia,serif;letter-spacing:.2em;color:#ffd978;text-align:center}\n.fk-res .kcell small{color:#e7d3a0}\n.fk-note{padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.3);border-left:4px solid #ffd978;line-height:1.45}\n";document.head.appendChild(st)})();
+(function(){var st=document.createElement("style");st.textContent="\n.fk-wrap .seg{background:rgba(0,0,0,.35);border:1px solid rgba(255,217,120,.3)}\n.fk-wrap .seg button{background:transparent;color:#f6e7bd}\n.fk-wrap .seg button[aria-pressed=true]{background:linear-gradient(160deg,#ffe08a,#c89322);color:#241608}\n.fk-wrap .btn.ghost{color:#ffd978;border-color:rgba(255,217,120,.5);background:rgba(0,0,0,.25)}\n@media(max-width:360px){.gh-nav{gap:4px}.gh-nav button{font-size:11.5px;padding:9px 2px}}\n";document.head.appendChild(st)})();
 function rtToast(msg){var d=document.createElement("div");d.className="rt-toast";d.setAttribute("role","status");d.textContent=msg;document.body.appendChild(d);setTimeout(function(){d.remove()},2800)}
 var RT_KEY="ya_rt",RT_ALL=["ccna","eng","sec","bk"],RT_TN={ccna:"CCNA",eng:"İngilizce",sec:"Siber",bk:"Backend"};
 function rtTracks(){

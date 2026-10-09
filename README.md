@@ -41,3 +41,13 @@ Mobil taraması: `node tests/mobil.js` (3 telefon boyutu × yazı/sade/kontrast 
 
 - 172 soru, 3 bağımsız yapay zekâ incelemesinden geçti (yanlış cevap bulunmadı, 8 ifade düzeltildi); yine de insan uzman gözden geçirmedi, resmî CCNA kaynaklarıyla karşılaştır.
 - Testler sahte `window.claude` ve emüle edilmiş telefonla yapıldı, gerçek cihaz testi yok.
+
+## Evdeki bilgisayarda çalışırken (kesintisiz senkron)
+
+Ana dal `main`. Her özellik ayrı commit olarak buraya gelir.
+
+- Çalışmaya başlamadan önce: `git pull origin main`
+- İş bitince: `git add -A && git commit -m "kısa not" && git push origin main`
+- Çakışma olursa önce `git pull --rebase origin main`; tek dosya (`index.html`) olduğu için çakışmayı satır bazında çöz.
+- Sıfırdan kurulum: `git clone <repo-adresi>` sonra `index.html` dosyasını tarayıcıda aç.
+- Testler `tests/` altında (Playwright); `stub.js` sahte veri katmanıdır.
