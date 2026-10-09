@@ -2081,12 +2081,49 @@ function lcSync(l){
   if(pr&&lcSet(k,"p",tr))c=true;
   return c;
 }
+var BQ_IX={};
+function bqAsk(t){
+  t=String(t).trim();var b=t.replace(/[.?!]+$/,"");
+  if(/\b(nedir|hangisi|hangisidir|hangileridir|kullanılır|ne yapar|ne demektir|ne demek|nasıl|neyi|ne ad|ne der|nerede|nereden|neden|ne ifade|ne işe|belirler|sağlar|tutulur|hesaplanır|nelerdir)\b/i.test(b))return b+"?";
+  if(b.split(/\s+/).length<=5)return "\u201c"+b+"\u201d için doğru cevap hangisi?";
+  return "Durum: "+b+". En olası cevap hangisi?";
+}
+function bqSame(a,b){var x=tmStems(a),y=tmStems(b),kx=Object.keys(x),ky=Object.keys(y),n=0;kx.forEach(function(k){if(y[k])n++});return Math.min(kx.length,ky.length)>0&&n/Math.min(kx.length,ky.length)>=.6}
+function bqEntryStems(e){
+  var t=[e.k,e.h,e.w,e.x,e.o,(e.p||[]).join(" "),(e.n||[]).join(" "),e.m.map(function(x){return x[0]+" "+x[1]}).join(" "),(e.f||[]).map(function(x){return x.join(" ")}).join(" "),
+    (e.u||[]).map(function(x){return x.join(" ")}).join(" "),e.c?(e.c.a+" "+e.c.b+" "+(e.c.r||[]).map(function(x){return x.join(" ")}).join(" ")):""].join(" ");
+  return tmStems(t);
+}
+function bqOwner(tr,x){
+  var ix=BQ_IX[tr]||(BQ_IX[tr]=TMAP[tr].map(bqEntryStems)),q=tmStems(x.q+" "+x.o[x.a]+" "+(x.w||"")),ks=Object.keys(q),best=-1,bs=0,sec=0;
+  if(ks.length<3)return {i:-1,s:0};
+  ix.forEach(function(st,i){var n=0;ks.forEach(function(k){if(st[k])n++});if(n>bs){sec=bs;bs=n;best=i}else if(n>sec)sec=n});
+  return {i:(bs>=4&&bs/ks.length>=.45&&bs>sec)?best:-1,s:bs};
+}
 function baseQuiz(tr,t){
+  var tm=TMAP[tr]?tmFor({track:tr,topicId:t.id,title:t.name}):null,out=[];
+  function add(q,o,c,why){out.push({q:q,options:o,answer:o[c],why:why||""})}
+  if(tm){
+    var e=tm.m,why0="Dersin '"+e.k+"' bölümünde geçiyor: "+e.w;
+    (e.u||[]).slice(0,3).forEach(function(u,k){var o=tmOpts(t.id+":u"+k,u);add(bqAsk(u[0]),o.o,o.c,"Doğrusu: "+u[1]+". "+why0)});
+    TMAP[tr].forEach(function(en,i){if(en!==e)return;var nq=0;QB.forEach(function(x){if(x.t!==tr||out.length>=5||nq>=2)return;var ow=bqOwner(tr,x);if(ow.i===i&&!out.some(function(y){return bqSame(y.q,x.q)})){nq++;add(x.q,x.o.slice(),x.a,x.w||"")}})});
+    var M=e.m;
+    if(out.length<5&&M.length>=3){
+      [0,Math.floor(M.length/2)].forEach(function(k){
+        if(out.length>=5)return;var m=M[k],oth=M.filter(function(y,j){return j!==k}).slice(0,2),opts=[m[1]].concat(oth.map(function(y){return y[1]})),r=ntHash(t.id+":m"+k)%3,o=[],c=(3-r)%3;
+        for(var p=0;p<3;p++)o.push(opts[(p+r)%3]);
+        add("Bu derste öğrendiğin \""+m[0]+"\" için hangisi doğrudur?",o,c,"Dersteki büyük haritada: "+m[0]+" = "+m[1]+".")})
+    }
+    if(out.length<5&&e.c&&e.c.r&&e.c.r.length){
+      var r0=e.c.r[0],ra=ntHash(t.id+":c")%2,o2=ra?[r0[2],r0[1]]:[r0[1],r0[2]];
+      add(e.c.a+" ile "+e.c.b+" karşılaştırmasında \""+r0[0]+"\" satırı "+e.c.a+" için hangisidir?",o2,ra?1:0,"Dersteki karşılaştırma tablosunda: "+e.c.a+" → "+r0[1]+"; "+e.c.b+" → "+r0[2]+".")
+    }
+    if(out.length)return out.slice(0,5);
+  }
   var tok=(t.name+" "+(t.area||"")).toLowerCase().split(/[^a-zçğıöşü0-9]+/).filter(function(w){return w.length>3});
   var cand=QB.filter(function(x){return x.t===tr}).map(function(x){var tx=(x.q+" "+(x.w||"")).toLowerCase(),sc=0;tok.forEach(function(w){if(tx.indexOf(w)>=0)sc++});return {x:x,sc:sc}});
   cand.sort(function(a,b){return b.sc-a.sc||a.x.d-b.x.d});
-  var pick=cand.slice(0,4).map(function(c){return c.x});
-  return pick.map(function(x){return {q:x.q,options:x.o.slice(),answer:x.o[x.a],why:x.w||""}});
+  return cand.slice(0,4).map(function(c){var x=c.x;return {q:x.q,options:x.o.slice(),answer:x.o[x.a],why:x.w||""}});
 }
 function localWarm(l){
   var t=l.topicId?topicById(l.topicId):null,nm=(t&&t.name)||l.title||"Bu konu",an=(t&&t.analogy)||l.hook||"";
