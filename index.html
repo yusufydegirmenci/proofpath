@@ -5019,7 +5019,7 @@ function gmBuild(mode){
     if(a<qbs.length&&(out.length%2===0||b>=ats.length)){var qi=qbs[a++];add(gmQB(qi,r,r()<.25))}
     else if(b<ats.length)add(gmAtlas(ats[b][0],ats[b][1],r)),b++;
   }
-  out=shuf(out.slice(0,N),r);
+  out=gmArrange(shuf(out.slice(0,N),r),mode);
   if(mode==="boss")[4,9,14,19].forEach(function(i){if(out[i])out[i].boss=true});
   return out;
 }
@@ -5034,7 +5034,37 @@ var GM_STORY={
  boss:{tag:"HAFTALIK PATRON",n:"Firewall Muhafızı",brief:"Muhafız hattı kapattı. Altın çerçeveli 4 patron kapısını doğru geçersen duvarı yıkar, paketi hedefe ulaştırırsın."},
  free:{tag:"ANTRENMAN HATTI",n:"Serbest sürüş",brief:"Baskı yok, XP yok. Zayıf olduğun konular sık gelir; rahatça dene, hata yapınca açıklamayı oku."}};
 var GM_NODES=["Switch","Router","DNS Kulesi","Güvenlik Duvarı","Proxy","Gateway","VPN Tüneli","Bulut Geçidi","Yük Dengeleyici","Sunucu Odası"];
-function gmNode(R,gi){var n=R.qs.length;if(gi<=0)return "Ev Ağı";if(gi>=n-1)return "Hedef Sunucu";if(R.qs[gi]&&R.qs[gi].boss)return "Muhafız Kapısı";return GM_NODES[(gi-1)%GM_NODES.length]}
+function gmNodeName(gi,n,boss){if(gi<=0)return "Ev Ağı";if(gi>=n-1)return "Hedef Sunucu";if(boss)return "Muhafız Kapısı";return GM_NODES[(gi-1)%GM_NODES.length]}
+function gmNode(R,gi){return gmNodeName(gi,R.qs.length,!!(R.qs[gi]&&R.qs[gi].boss))}
+var GM_KW={"Ev Ağı":/wi-?fi|kablosuz|mac adres|dhcp|ip adres|ağ\b/i,"Switch":/switch|mac\b|vlan|çerçeve|stp|trunk/i,"Router":/router|yönlendir|ospf|rota|routing|statik/i,"DNS Kulesi":/dns|alan adı|domain/i,"Güvenlik Duvarı":/firewall|güvenlik duvarı|acl|filtre|saldırı|injection|xss/i,"Proxy":/proxy|vekil|https|tls|sertifika|http/i,"Gateway":/gateway|nat\b|ağ geçidi|dhcp/i,"VPN Tüneli":/vpn|tünel|ipsec|şifrel|hash|encrypt/i,"Bulut Geçidi":/bulut|cloud|aws|azure|saas|iaas/i,"Yük Dengeleyici":/yük|load|ölçek|api|performans|önbellek|cache/i,"Sunucu Odası":/sunucu|server|yedek|backup|raid|disk|sql|veritabanı/i,"Hedef Sunucu":/sunucu|server|web|sql|api|http/i};
+function gmArrange(out,mode){
+  var n=out.length,pool=out.slice(),res=[];
+  for(var i=0;i<n;i++){
+    var boss=mode==="boss"&&(i===4||i===9||i===14||i===19),nm=gmNodeName(i,n,boss),re=GM_KW[nm],k=-1;
+    if(re&&!boss)for(var j=0;j<pool.length;j++){var q=pool[j];if(re.test(q.q+" "+(q.o[q.a]||""))){k=j;break}}
+    if(k<0)k=0;
+    res.push(pool.splice(k,1)[0]);
+  }
+  return res;
+}
+function gmIcon(x,nm,cx,cy,s,fill,ink,gold,bad){
+  x.save();x.lineJoin="round";x.lineCap="round";x.lineWidth=Math.max(1,s*.08);x.strokeStyle=ink;x.fillStyle=fill;
+  function box(a,b,w,h2){x.fillRect(cx+a*s,cy+b*s,w*s,h2*s);x.strokeRect(cx+a*s,cy+b*s,w*s,h2*s)}
+  function ln(a,b,c,d){x.beginPath();x.moveTo(cx+a*s,cy+b*s);x.lineTo(cx+c*s,cy+d*s);x.stroke()}
+  function ci(a,b,r,f){x.beginPath();x.arc(cx+a*s,cy+b*s,r*s,0,7);if(f)x.fill();x.stroke()}
+  if(nm==="Ev Ağı"){box(-.5,-.2,1,.7);x.beginPath();x.moveTo(cx-.65*s,cy-.2*s);x.lineTo(cx,cy-.8*s);x.lineTo(cx+.65*s,cy-.2*s);x.closePath();x.fillStyle=gold;x.fill();x.stroke();x.fillStyle=ink;x.fillRect(cx-.1*s,cy+.1*s,.2*s,.4*s)}
+  else if(nm==="Switch"){box(-.8,-.2,1.6,.5);x.fillStyle=gold;for(var i=0;i<4;i++)x.fillRect(cx+(-.65+i*.35)*s,cy-.05*s,.22*s,.2*s)}
+  else if(nm==="Router"){box(-.7,0,1.4,.45);ln(-.45,0,-.6,-.6);ln(.45,0,.6,-.6);x.fillStyle=gold;ci(-.45,.22,.07,1);ci(-.2,.22,.07,1)}
+  else if(nm==="DNS Kulesi"){x.beginPath();x.moveTo(cx-.3*s,cy+.5*s);x.lineTo(cx-.1*s,cy-.5*s);x.lineTo(cx+.1*s,cy-.5*s);x.lineTo(cx+.3*s,cy+.5*s);x.closePath();x.fill();x.stroke();ci(0,-.6,.1,1);x.beginPath();x.arc(cx,cy-.6*s,.3*s,-2.4,-.74);x.stroke();x.beginPath();x.arc(cx,cy-.6*s,.5*s,-2.4,-.74);x.stroke()}
+  else if(nm==="Güvenlik Duvarı"){for(var r=0;r<3;r++)for(var c=0;c<3;c++){x.fillStyle=(r+c)%2?fill:gold;box(-.75+c*.5+(r%2?.25:0),-.3+r*.28,.48,.26)}x.fillStyle=bad;x.beginPath();x.moveTo(cx-.15*s,cy-.3*s);x.lineTo(cx,cy-.85*s);x.lineTo(cx+.15*s,cy-.3*s);x.closePath();x.fill()}
+  else if(nm==="Proxy"||nm==="Muhafız Kapısı"){x.fillStyle=nm==="Proxy"?fill:bad;x.beginPath();x.moveTo(cx-.55*s,cy-.55*s);x.lineTo(cx+.55*s,cy-.55*s);x.lineTo(cx+.5*s,cy+.1*s);x.quadraticCurveTo(cx,cy+.8*s,cx-.5*s,cy+.1*s);x.closePath();x.fill();x.stroke();x.fillStyle=gold;ci(0,-.1,.18,1)}
+  else if(nm==="Gateway"){box(-.7,-.5,.3,1);box(.4,-.5,.3,1);x.fillStyle=gold;box(-.8,-.65,1.6,.2)}
+  else if(nm==="VPN Tüneli"){for(var k=3;k>=1;k--){x.fillStyle=k%2?fill:gold;x.beginPath();x.arc(cx,cy+.45*s,k*.25*s,Math.PI,0);x.lineTo(cx+k*.25*s,cy+.5*s);x.lineTo(cx-k*.25*s,cy+.5*s);x.closePath();x.fill();x.stroke()}}
+  else if(nm==="Bulut Geçidi"){ci(-.35,.05,.28,1);ci(.05,-.2,.38,1);ci(.45,.05,.28,1);box(-.35,.05,.8,.28);x.fillStyle=fill;x.fillRect(cx-.33*s,cy+.04*s,.76*s,.27*s)}
+  else if(nm==="Yük Dengeleyici"){ln(0,-.6,0,.5);ln(-.5,.5,.5,.5);ln(-.65,-.3,.65,-.3);x.fillStyle=gold;box(-.8,-.25,.35,.18);box(.45,-.25,.35,.18)}
+  else if(nm==="Sunucu Odası"||nm==="Hedef Sunucu"){for(var u=0;u<3;u++){x.fillStyle=fill;box(-.5,-.55+u*.4,1,.34);x.fillStyle=gold;ci(.3,-.38+u*.4,.06,1)}if(nm==="Hedef Sunucu"){ln(.55,-.55,.55,-1);x.fillStyle=bad;x.beginPath();x.moveTo(cx+.55*s,cy-1*s);x.lineTo(cx+1*s,cy-.85*s);x.lineTo(cx+.55*s,cy-.7*s);x.closePath();x.fill()}}
+  x.restore();
+}
 function gmSeen(set){try{if(set)localStorage.setItem("ya_gm_seen","1");return localStorage.getItem("ya_gm_seen")==="1"}catch(e){return false}}
 function gmRank(R){var n=Math.max(1,Math.min(R.gi,R.qs.length)),p=R.correct/n;return R.lives<=0||R.gi<R.qs.length?(p>=.7?"B":"C"):(p>=.97?"S":p>=.85?"A":p>=.7?"B":"C")}
 function gmTrack(R){
@@ -5101,7 +5131,7 @@ function gmOverlay(R){
   ov.classList.add("on");
   if(R.state==="ready"){var ST=GM_STORY[R.mode]||GM_STORY.free;
     ov.append(h("div",{class:"gm-card gm-ready"},h("span",{class:"gm-tag"},ST.tag),
-      h("h2",null,ST.n),h("div",{class:"small mute"},(R.skin==="run"?"Ağ Koşusu":"Ağ Sürüşü")+" · "+R.qs.length+" ağ noktası · Ev Ağı → Hedef Sunucu"),
+      h("h2",null,ST.n),h("div",{class:"small mute"},(R.skin==="run"?"Ağ Koşusu":"Ağ Sürüşü")+" · "+R.qs.length+" ağ noktası · Ev Ağı → Hedef Sunucu · şafaktan geceye"),
       h("p",{class:"small"},ST.brief),
       h("details",{class:"gm-hw",open:!gmSeen()},h("summary",null,"Nasıl oynanır?"),
       h("ol",{class:"gm-how"},h("li",null,h("b",null,"1"),"Kaydır ya da Sol/Sağ ile şerit değiştir. Engellerden kaç, altın topla."+(R.skin==="run"?" Alçak engelden zıplayabilirsin.":"")),
@@ -5213,7 +5243,15 @@ function gmDraw(R){
   function S_(z){return 1/(1+z*k)}
   function Y(s){return hor+(yb-hor)*s}
   var g=x.createLinearGradient(0,0,0,hor);g.addColorStop(0,C.sky1);g.addColorStop(1,C.sky2);x.fillStyle=g;x.fillRect(-20,0,W+40,hor+1);
-  x.fillStyle=C.gold;x.globalAlpha=.28;x.beginPath();x.arc(W*.82,hor*.5,hor*.2,0,7);x.fill();x.globalAlpha=1;
+  var pr=Math.min(1,R.d/Math.max(1,R.qs.length*2)),KF=[[0,255,170,100,.34],[.35,255,235,160,.10],[.7,255,100,90,.36],[1,15,25,90,.46]],ka=KF[0],kb=KF[1];
+  for(var ki=0;ki<KF.length-1;ki++)if(pr>=KF[ki][0]){ka=KF[ki];kb=KF[ki+1]}
+  var kt=Math.max(0,Math.min(1,(pr-ka[0])/Math.max(.001,kb[0]-ka[0])));
+  x.fillStyle="rgba("+Math.round(ka[1]+(kb[1]-ka[1])*kt)+","+Math.round(ka[2]+(kb[2]-ka[2])*kt)+","+Math.round(ka[3]+(kb[3]-ka[3])*kt)+","+(ka[4]+(kb[4]-ka[4])*kt)+")";x.fillRect(-20,0,W+40,hor+1);
+  var night=Math.max(0,Math.min(1,(pr-.62)/.3));
+  if(night>0){x.fillStyle="#fff";for(var sn=0;sn<30;sn++){var snx=((sn*61)%100)/100*W,sny=((sn*29)%100)/100*hor*.75;x.globalAlpha=night*(.3+.4*Math.sin(R.t*2+sn));x.fillRect(snx,sny,dpr*1.6,dpr*1.6)}x.globalAlpha=1}
+  var sx0=W*(.12+.76*pr),sy0=hor*(.66-.46*Math.sin(pr*Math.PI));
+  if(pr<.82){x.fillStyle=C.gold;x.globalAlpha=.5;x.beginPath();x.arc(sx0,sy0,hor*.17,0,7);x.fill();x.globalAlpha=1}
+  else{x.fillStyle="#e9edff";x.globalAlpha=.75;x.beginPath();x.arc(W*.8,hor*.3,hor*.12,0,7);x.fill();x.fillStyle="rgba(15,25,90,.9)";x.beginPath();x.arc(W*.8+hor*.05,hor*.3-hor*.02,hor*.1,0,7);x.fill();x.globalAlpha=1}
   if(C.star){x.fillStyle=C.ink;for(var st=0;st<26;st++){var sx=((st*97)%100)/100*W,sy=((st*53)%100)/100*hor*.8,tw=.35+.35*Math.sin(R.t*2+st);x.globalAlpha=tw;x.fillRect(sx,sy,dpr*1.5,dpr*1.5)}x.globalAlpha=1}
   if(C.acc){var ag=x.createLinearGradient(0,hor*.55,0,hor);ag.addColorStop(0,"transparent");ag.addColorStop(1,C.acc);x.globalAlpha=.22;x.fillStyle=ag;x.fillRect(0,hor*.55,W,hor*.45);x.globalAlpha=1}
   x.fillStyle=C.bld;x.fillRect(-20,hor,W+40,H-hor);
@@ -5246,6 +5284,7 @@ function gmDraw(R){
     else if(o.t==="gate"){
       var q=R.qs[o.gi];if(!q)return;var gh=u1*1.05;
       x.fillStyle=C.ink;x.globalAlpha=.8;x.fillRect(cx-1.5*u1-u1*.04,y-gh-u1*.08,3*u1+u1*.08,u1*.08);x.globalAlpha=1;
+      if(u1>16*dpr)gmIcon(x,gmNode(R,o.gi),cx,y-gh-u1*.62,u1*.32,q.boss?C.bad:C.net,C.ink,C.gold,C.bad);
       if(u1>26*dpr){x.fillStyle=q.boss?C.gold:C.ink;x.font="800 "+Math.max(9*dpr,u1*.2)+"px system-ui,sans-serif";x.textAlign="center";x.textBaseline="alphabetic";x.fillText((q.boss?"★ ":"")+gmNode(R,o.gi),cx,y-gh-u1*.16)}
       if(q.boss){x.strokeStyle=C.gold;x.lineWidth=Math.max(2,u1*.05);x.strokeRect(cx-1.5*u1,y-gh-u1*.03,3*u1,gh+u1*.03)}
       for(var l=0;l<3;l++){var gx=cx+(l-1)*u1,col2=C[GM_LC[l]];
