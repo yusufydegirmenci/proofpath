@@ -1,12 +1,16 @@
 # Proofpath
 
-CCNA ve İngilizceyi sıfırdan öğreten, oyunlaştırılmış kişisel öğrenme uygulaması. Tek dosyalık bir Claude Artifact'tır (`index.html`); günlük dersleri zamanlanmış "koç" görevleri üretir, veriler artifact veritabanında tutulur.
+Yedi derslik, oyunlaştırılmış kişisel öğrenme uygulaması: **CCNA, Network, İngilizce, Siber güvenlik, Backend, DevOps, Test Uzmanı**. Tek dosyalık bir Claude Artifact'tır (`index.html`); günlük dersleri zamanlanmış "koç" görevleri üretir, veriler artifact veritabanında tutulur.
 
 ![Bugün ekranı](docs/ekran/bugun-masaustu.png)
 
 ## Neler var
 
-- **Bugün**: günün dersi (CCNA + İngilizce), kısa kontrol soruları, seri ve XP.
+- **Bugün**: günün dersi, kısa kontrol soruları, seri ve XP.
+- **Dersler**: her ders için ısınma, anlatım ve dersin kendi içeriğinden kurulan mini sınav.
+- **Animasyon Atölyesi**: 70 kurgulu sahneyle ağ, güvenlik, DevOps, test ve backend kavramlarının adım adım hareketli anlatımı.
+- **Kavram Atlası, Ders Notları ve Seviye sınavı**: yedi dersin hepsi için.
+- **Oyunlar**: Ağ Koşusu, Fetih ve günlük "Günün meydanı".
 - **Lig**: her gün 8 soru (+ yanlış yapılanlardan en fazla 2 tekrar). Yanlışta kartın arkası doğru cevabı ve nedenini gösterir.
 - **Proje Atölyesi**: kendi projelerin ve 9 hazır *Yetkinlik Yolu* (siber güvenlik, test/QA, backend; her biri başlangıç, orta, zor). Her adımda Öğren, Yap, Kanıt, İngilizce terimler ve arama sorgusu bulunur.
 - **Sınav Haritası** ve **Mülakat Antrenmanı**.
@@ -21,7 +25,7 @@ CCNA ve İngilizceyi sıfırdan öğreten, oyunlaştırılmış kişisel öğren
 
 - Ön yüz: tek dosya, bağımlılıksız HTML/CSS/JS (`index.html`). Açık ve koyu tema, telefon genişliği desteklenir.
 - Veri: Claude Artifact `db` yeteneği. Koleksiyonlar için [docs/VERI_SEMASI.md](docs/VERI_SEMASI.md).
-- Üretim: iki günlük koç (CCNA, İngilizce) ve haftalık Müdür görevi dersleri, biletleri ve raporları veritabanına yazar. Öğretim kuralları için [docs/OGRETIM_ILKELERI.md](docs/OGRETIM_ILKELERI.md).
+- Üretim: derslere göre günlük koç görevleri ve haftalık Müdür görevi dersleri, biletleri ve raporları veritabanına yazar. Koç komutları `content/coach/`, animasyon sahneleri `content/nwscenes/` altında. Öğretim kuralları için [docs/OGRETIM_ILKELERI.md](docs/OGRETIM_ILKELERI.md).
 - Tasarım kararları: [docs/UX_ANALIZ.md](docs/UX_ANALIZ.md).
 
 > `index.html` içindeki `window.claude` çağrıları Claude Artifact ortamında çalışır. Normal bir tarayıcıda açarsan veri kaydı çalışmaz; arayüzü görmek için `tests/stub.js` içindeki sahte ortam kullanılır.
