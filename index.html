@@ -843,6 +843,12 @@ body{background:var(--bg)}
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-shim.js"></script>
+<!-- Sabit ders kütüphanesi: her dosya window.PP_LESSONS.<iz>[konu no] içine ders ekler -->
+<script src="content/lessons/ccna-1.js"></script>
+<script src="content/lessons/ccna-2.js"></script>
+<script src="content/lessons/ccna-3.js"></script>
+<script src="content/lessons/eng-1.js"></script>
+<script src="content/lessons/eng-2.js"></script>
 
 <script>
 (function(){
@@ -2153,6 +2159,15 @@ function baseLesson(tr){
       {t:"steps",h:"Bu konuyu şöyle çalış",items:st},
       {t:"warn",h:"Hazır temel ders",text:"Bu ders her an hazır bekleyen temel çerçevedir. Daha zengin anlatım, örnek ve mülakat soruları için aşağıdan 'Ders üret' ile derinleştirebilirsin."}],
     quiz:baseQuiz(tr,t),interview:[],vocab:[],resources:[],sources:[],warmup:localWarm({track:tr,topicId:t.id,title:t.name}),homework:(tr==="ccna"||tr==="eng")?"Sınıfta 5 soru çöz.":"Alıştırmada 5 karışık soru çöz.",coachNote:"",story:null};
+  /* Sabit ders kütüphanesi (content/lessons/*.js): varsa genel çerçeve yerine yazılmış tam ders gelir. */
+  var SLm=/^s-[a-z]+-(\d+)$/.exec(t.id||""),SL=SLm&&window.PP_LESSONS&&window.PP_LESSONS[tr]?window.PP_LESSONS[tr][SLm[1]]:null;
+  if(SL&&Array.isArray(SL.blocks)&&SL.blocks.length){
+    l.kind="hazır ders";l.hook=SL.hook||l.hook;l.blocks=SL.blocks.slice();l.homework=SL.homework||l.homework;
+    if(Array.isArray(SL.quiz)&&SL.quiz.length)l.quiz=SL.quiz;
+    l.interview=SL.interview||[];l.vocab=SL.vocab||[];l.resources=SL.resources||[];l.sources=SL.sources||[];
+    l.warmup=cleanWarm(SL.warmup)||l.warmup;l.story=SL.story||null;l.staticLesson=true;
+    return cleanLesson(l);
+  }
   var TM=tmFor(l);
   if(TM){var E=TM.m,add=[{t:"h",text:"Neden var?"},{t:"p",text:E.w},{t:"h",text:"Büyük harita"},{t:"steps",h:"Parçalar",items:E.m.map(function(x){return x[0]+": "+x[1]})},{t:"h",text:"Örnek"},{t:"cmd",text:E.x}];
     E.f.forEach(function(f){add.push({t:"box",h:f[0],text:f[1]})});
