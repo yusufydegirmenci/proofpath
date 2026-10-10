@@ -908,6 +908,7 @@ function iso(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate
 function parse(s){var p=String(s||"").split("-");return new Date(+p[0],+p[1]-1,+p[2])}
 function today(){return iso(new Date())}
 function daysAgo(s){if(!s)return null;return Math.round((parse(today())-parse(s))/864e5)}
+var WEB=!!(window.PP_CONFIG&&window.PP_CONFIG.url);
 function num(x){return typeof x==="number"&&isFinite(x)?x:0}
 function mondayOf(d){var x=new Date(d.getFullYear(),d.getMonth(),d.getDate());var w=(x.getDay()+6)%7;x.setDate(x.getDate()-w);return x}
 function short(s){var d=parse(s);return pad(d.getDate())+"."+pad(d.getMonth()+1)}
@@ -1251,11 +1252,11 @@ function renderToday(){
       h("h3",null,(t.eng&&t.eng.title)||"İlk çalışmada belirlenecek"),
       h("div",{class:"small mute"},(t.eng&&t.eng.detail)||"Koç akşam çalışınca burası bugünün kalıbı ve ofis hikâyesi bölümüyle dolar."),
       t.eng&&t.eng.url?h("a",{href:t.eng.url,target:"_blank",rel:"noopener"},"Sunumu aç"):null)));
-  out.push(h("details",{class:"more",open:!!((t.ccna&&t.ccna.title)||(t.eng&&t.eng.title)||nt.ccna||nt.eng)},h("summary",null,"Koç notları ve günün görevleri"),h("div",{class:"morebox"},coachBox)));
+  if(!WEB||nt.ccna||nt.eng)out.push(h("details",{class:"more",open:!!((t.ccna&&t.ccna.title)||(t.eng&&t.eng.title)||nt.ccna||nt.eng)},h("summary",null,"Koç notları ve günün görevleri"),h("div",{class:"morebox"},coachBox)));
   /* haftalık taahhüt */
   var tp=wk.tDays?Math.min(100,wk.days/wk.tDays*100):0;
   var more=[];
-  more.push(h("div",{class:"panel"},h("div",{class:"label"},"Haftalık taahhüt"),
+  if(!WEB)more.push(h("div",{class:"panel"},h("div",{class:"label"},"Haftalık taahhüt"),
     wk.tDays?h("div",null,h("div",{class:"xpbar"},h("i",{style:"width:"+tp+"%"})),
       h("div",{class:"small mute",style:"margin-top:6px"},wk.days+" / "+wk.tDays+" gün · "+wk.min+(wk.tMin?" / "+wk.tMin:"")+" dk. Pazar günü koç yeni hafta için sana bir hedef önerir, sen onaylarsın. Tutarsa ödül kilidi açılır.")):
       h("div",{class:"empty"},"Taahhüt henüz yok. İlk Pazar koç haftalık hedef önerecek; sen kabul edince burada ilerlemen görünür.")));
@@ -1293,11 +1294,11 @@ function reportForm(){
         h("input",{id:"r-lv",type:"number",min:0,max:3,inputmode:"numeric",value:ex.lives!=null?ex.lives:""}))),
     h("div",{class:"field"},h("label",{for:"r-stuck",class:"label"},"Takıldığım yer"),
       h("input",{id:"r-stuck",type:"text",maxlength:300,value:ex.stuck||""})),
-    h("div",{class:"field"},h("label",{for:"r-sent",class:"label"},"Kendi İngilizce cümlelerim (koç düzeltir)"),
+    h("div",{class:"field"},h("label",{for:"r-sent",class:"label"},(WEB?"Kendi İngilizce cümlelerim (kendin için not)":"Kendi İngilizce cümlelerim (koç düzeltir)")),
       h("textarea",{id:"r-sent",maxlength:1500},ex.sentences||"")),
     h("div",{class:"row",style:"align-items:center"},
       h("button",{class:"btn",type:"submit",disabled:!S.canWrite},"Raporu kaydet"),
-      h("span",{id:"r-msg",class:"small mute"},ex.ts?"Bugün kaydedildi.":"Yarınki koç dersini buna göre ayarlar.")));
+      h("span",{id:"r-msg",class:"small mute"},ex.ts?"Bugün kaydedildi.":(WEB?"Kayıt Defterim'de kalır.":"Yarınki koç dersini buna göre ayarlar."))));
   f.addEventListener("submit",function(ev){
     ev.preventDefault();
     var msg=f.querySelector("#r-msg");
@@ -1315,7 +1316,7 @@ function reportForm(){
       msg.textContent=(e&&e.code==="invalid_argument")?"Bu görünümde yazma izni yok.":"Kaydedilemedi, tekrar dene."});
   });
   return h("div",{class:"panel"},h("h2",null,"Bugünün 3 satırı"),
-    h("div",{class:"small mute"},"Süre, takıldığın yer, zorluk. Mini sınav ve sınav skorunu koçun verdiği cevap anahtarına bakıp kendin gir. Koçlar ertesi günü buna göre kurar."),f);
+    h("div",{class:"small mute"},"Süre, takıldığın yer, zorluk. Mini sınav ve sınav skorunu kendin gir."+(WEB?" Plan bölümü bu kayıtları da kullanır.":" Koçlar ertesi günü buna göre kurar.")),f);
 }
 
 /* ---- Ağ Şehri ---- */
@@ -1982,7 +1983,7 @@ function routeStepsOld(){
   var td=today(),P=prog(),steps=[],rep=S.reports.filter(function(r){return r.date===td})[0];
   [["ccna","CCNA"],["eng","İngilizce"]].forEach(function(tr){
     var T=tr[0],has=lessonsOf(T).some(function(l){return l.date===td}),n=S.attempts.filter(function(a){return a.date===td&&a.track===T}).length;
-    steps.push({tr:T,t:tr[1]+": dersi oku",d:!!P["read_"+T],go:function(){S.les.track=T;S.les.id=null;goTab("ders")},b:"Dersi aç",note:has?null:"Bugünün dersi akşam hazırlanır. Beklemek istemezsen Ders ekranından hemen üretebilirsin."});
+    steps.push({tr:T,t:tr[1]+": dersi oku",d:!!P["read_"+T],go:function(){S.les.track=T;S.les.id=null;goTab("ders")},b:"Dersi aç",note:(has||WEB)?null:"Bugünün dersi akşam hazırlanır. Beklemek istemezsen Ders ekranından hemen üretebilirsin."});
     steps.push({tr:T,t:tr[1]+": 5 canlı soru",d:n>=5,prog:Math.min(n,5)+"/5",go:function(){S.cls.track=T;S.cls.topicId=null;S.cls.phase="idle";goTab("sinif")},b:"Soruları çöz"});
   });
   TRK_LIST.filter(function(o){return o[0]!=="ccna"&&o[0]!=="eng"}).forEach(function(tr){var T=tr[0];if(lessonsOf(T).some(function(l){return l.date===td}))steps.push({tr:T,t:tr[1]+": dersi oku",d:!!P["read_"+T],go:function(){S.les.track=T;S.les.id=null;S.les.view="ders";goTab("ders")},b:"Dersi aç"})});
@@ -4839,7 +4840,7 @@ function timesPanel(){
   var rows=[["Her gün 20:47","CCNA koçu yeni dersi yazar (Ders sekmesi)"],["Her gün 21:12","İngilizce koçu yeni dersi ve hikâye bölümünü yazar"],["Her sabah 11:48","İş ilanı özeti hazırlanır"],["Pazar 22:31","Müdür haftalık denetim raporu yazar (Ofis sekmesi)"],["Gece yarısı","Gün biter; ertesi gün yeni Lig soruları gelir"]];
   return h("div",{class:"panel"},h("h2",null,"Ne zaman ne olur?"),h("div",{class:"small mute"},"Koçlar kendi kendine çalışır; senin bir şey yapman gerekmez. Saatler Türkiye saatidir."),
     h("div",{class:"tm-list"},rows.map(function(r){return h("div",{class:"tm-r"},h("b",null,r[0]),h("span",null,r[1]))})),
-    h("div",{class:"small mute"},"Ders sabahtan hazır görünüyorsa o gün için hazırlanmış demektir; akşam koç aynı dersi daha iyi hâliyle yazarsa güncellenir."));
+    h("div",{class:"small mute"},(WEB?"Dersler hazırdır; sıradaki ders önceki ders bitince açılır.":"Ders sabahtan hazır görünüyorsa o gün için hazırlanmış demektir; akşam koç aynı dersi daha iyi hâliyle yazarsa güncellenir.")));
 }
 function faqPanel(){
   var q=[["Dersi bulamıyorum.","Alttaki menüden Ders sekmesine gir. Üstte CCNA / İngilizce seçimi var; bugünün dersi en başta olur. Hâlâ yoksa Bugün ekranındaki 'Dersi aç' düğmesi seni götürür."],
@@ -6306,7 +6307,7 @@ function atProgram(){
   var sl=atSlots(),done=sl.filter(function(s){return s.d}).length,out=[];
   var nx=sl.filter(function(s){return !s.d})[0];
   out.push(h("div",{class:"panel"},h("div",{class:"label"},"Bugünün programı"),h("h2",null,nx?"Sıradaki: "+nx.t:"Bugünkü programın tamam"),
-    h("div",{class:"small mute"},"Ders akşam gelene kadar boş kalmazsın: sabah kelime, öğle kavram, öğleden sonra alıştırma, sonra oyun. Hepsi küçük parçalar."),
+    h("div",{class:"small mute"},(WEB?"Ders aralarında boş kalmazsın: sabah kelime, öğle kavram, öğleden sonra alıştırma, sonra oyun. Hepsi küçük parçalar.":"Ders akşam gelene kadar boş kalmazsın: sabah kelime, öğle kavram, öğleden sonra alıştırma, sonra oyun. Hepsi küçük parçalar.")),
     h("div",{class:"xpbar"},h("i",{style:"width:"+Math.round(done/sl.length*100)+"%"})),
     nx?h("div",{class:"row"},h("button",{class:"btn big",type:"button",onclick:function(){atGo(nx.go)}},"Şimdi yap")):null,
     h("div",{class:"sim-l"},sl.map(function(s){return h("div",{class:"sim-i"+(s.d?" d":"")},h("span",{class:"sim-c"},s.d?"✓":""),h("span",null,h("b",{class:"mono"},s.time+" "),s.t,h("span",{class:"small mute"}," · "+s.min)),s.d?null:h("button",{class:"btn "+(s.cur?"":"ghost"),type:"button",onclick:function(){atGo(s.go)}},s.cur?"Şimdi":"Aç"))}))));
