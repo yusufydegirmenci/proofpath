@@ -175,7 +175,7 @@ function kapiOrnek() {
   eq(K.degerlendir(G, 'jk', du(hepsi, kan)).acik, true, 'Joker: tüm gereksinim kanıtları varsa açık');
   eq(K.degerlendir(G, 'jk', du(hepsi, kan.map(k => Object.assign({}, k, { kapi: 'baska' })))).acik, false, 'Joker: başka kapıya ait kanıt sayılmaz');
   const dongu = G_.yeni('1'); G_.kapiEkle(dongu, { id: 'a', ad: 'a', onkosulKapilar: ['b'] }); G_.kapiEkle(dongu, { id: 'b', ad: 'b', onkosulKapilar: ['a'] });
-  ok(kodlar(K.degerlendir(dongu, 'a', { denemeler: [], projeler: {} })).length > 0, 'kapı: döngüsel önkoşul sonsuz döngüye girmez, kilitli kalır');
+  ok(kodlar(K.degerlendir(dongu, 'a', { denemeler: [], projeler: {} })).join() === 'onkosul-kapi' && K.degerlendir(dongu, 'b', { denemeler: [], projeler: {} }).acik === false, 'kapı: döngüsel önkoşul sonsuz döngüye girmez, kilitli kalır');
 }
 
 // ---- 9. Önkoşul grafiği incelenebilir ----
@@ -187,7 +187,7 @@ function kapiOrnek() {
   G.yetkinlikler.y1.onkosullar = ['y3'];
   const v = G_.dogrula(G);
   ok(!v.ok && v.hata.some(h => /döngü/.test(h)), 'önkoşul: döngü hata olarak yakalanır');
-  eq(G_.onkosulKapanisi(G, 'y3').length >= 2, true, 'önkoşul: döngülü grafikte kapanış sonlanır');
+  eq(G_.onkosulKapanisi(G, 'y3').slice().sort(), ['y1', 'y2', 'y3'].filter(x => x !== 'y3' || G.yetkinlikler.y1.onkosullar.includes('y3')).sort(),  'önkoşul: döngülü grafikte kapanış sonlanır');
   const G2 = G_.yeni('1'); G_.yetkinlikEkle(G2, { id: 'a', onkosullar: ['yok'] }); G_.hedefEkle(G2, { id: 'h', yetkinlik: 'yok2' });
   eq(G_.dogrula(G2).hata.length, 2, 'önkoşul: bilinmeyen önkoşul ve yetkinlik hata');
   let yinelen = null; try { G_.yetkinlikEkle(G2, { id: 'a' }); } catch (e) { yinelen = e.message; }
@@ -250,7 +250,8 @@ function kapiOrnek() {
   eq(taze.denemeler[0].id, 'x1', 'depo: yenileme/yeniden girişte kayıt durur');
   eq([O.depo.denemeEkle({ hedef: 'h', puan: 6, maks: 5 }, S1).neden, O.depo.denemeEkle({ hedef: 'h', puan: 1, maks: 0 }, S1).neden, O.depo.denemeEkle({ puan: 1, maks: 2 }, S1).neden, O.depo.denemeEkle(null, S1).neden],
     ['puan-gecersiz', 'maks-gecersiz', 'hedef-yok', 'bos'], 'depo: geçersiz denemeler reddedilir');
-  eq(O.depo.denemeEkle({ hedef: 'h', puan: 1, maks: 2, dogrulama: 'sunucu', yardim: { tur: 'yok', guvenilir: true } }, S1).deneme.dogrulama, 'sunucu', 'depo: sunucu doğrulaması alanı taşınır (yazan taraf sunucu olmalı; istemci iddiası güvenilmez)');
+  { const f = O.depo.denemeEkle({ id: 'sahte', hedef: 'h', puan: 1, maks: 2, dogrulama: 'sunucu', yardim: { tur: 'yok', guvenilir: true } }, S1).deneme;
+    eq([f.dogrulama, f.yardim.guvenilir], ['istemci', false], 'depo: istemci "sunucu" doğrulaması ve "güvenilir yardım" iddiasını yazamaz (sahteleme engeli)'); }
   const S2 = mem(); S2.m.ya_pp_ogr = '{bozuk';
   eq([O.depo.oku(S2).denemeler.length, S2.m.ya_pp_ogr_bozuk], [0, '{bozuk'], 'depo: bozuk içerik hata vermez ve yedeklenir');
   O.depo.projeIsaretle('p', { tarih: 'T' }, S2); O.depo.projeIsaretle('p', { tarih: 'U' }, S2);
@@ -298,6 +299,30 @@ function kapiOrnek() {
   const d2 = O.program.durumKur(O.depo.oku(mem()), O.eski.cevir(buyuk, () => 'ccna'), [], null);
   const sb = D.hedefDurumu(P, 'soru-bankasi:ccna', d2.denemeler);
   eq([sb.durum, sb.oran, sb.guven], ['gecti', 0.9, 'istemci'], 'eski+yeni: 30 soruda %90 eski kanıt geçer ama güven "istemci"');
+}
+
+// ---- 13b. Düzeltme regresyonları (inceleme bulguları) ----
+{
+  // %80 ortalama ondalık hatası: (1+1+0.4)/3 = 0.7999… kapıyı kilitlememeli
+  const G = G_.yeni('1'); G_.yetkinlikEkle(G, { id: 'y' });
+  ['a', 'b', 'c'].forEach(x => G_.hedefEkle(G, { id: x, yetkinlik: 'y', esik: 0.1 }));
+  G_.kapiEkle(G, { id: 'k', ad: 'k', hedefler: ['a', 'b', 'c'] });
+  const r = K.degerlendir(G, 'k', { denemeler: [dn('a', 1, 1), dn('b', 1, 1), dn('c', 2, 5)], projeler: {}, kanitlar: [] });
+  eq([r.acik, kodlar(r)], [true, []], 'kapı: kritik olmayan ortalama tam %80 iken ondalık hatası kapıyı kilitlemez');
+  // Kapı eşiği kritik hedefi de yükseltir
+  const G2 = G_.yeni('1'); G_.yetkinlikEkle(G2, { id: 'y' }); G_.hedefEkle(G2, { id: 'c', yetkinlik: 'y', kritik: true });
+  G_.kapiEkle(G2, { id: 'k', ad: 'k', hedefler: ['c'], esik: 0.9 });
+  eq(kodlar(K.degerlendir(G2, 'k', { denemeler: [dn('c', 17, 20)], projeler: {}, kanitlar: [] })), ['kritik-basarisiz'], 'kapı: kapı eşiği %90 iken %85 kritik hedef geçmez');
+  // Tüm varyantlarda kalınca kalıcı kilit olmamalı
+  const G3 = ornek();
+  const de = D.hedefDurumu(G3, 'h-maske', [dn('h-maske', 1, 5, { varyant: 'A' }), dn('h-maske', 1, 5, { varyant: 'B' }), dn('h-maske', 1, 5, { varyant: 'C' }), dn('h-maske', 5, 5, { varyant: 'A' })]);
+  eq(de.durum, 'gecti', 'varyant: tüm varyantlarda kalındıktan sonra yeni tur sayılır (kalıcı kilit yok)');
+  // Aynı gün aynı puanlı ikinci deneme ayrı kayıt olur, son deneme belirler
+  const M = mem();
+  O.depo.denemeEkle({ id: 'dq-1', hedef: 'h', puan: 4, maks: 5, tarih: '2026-10-11T10:00:00Z' }, M);
+  O.depo.denemeEkle({ id: 'dq-2', hedef: 'h', puan: 2, maks: 5, tarih: '2026-10-11T11:00:00Z' }, M);
+  O.depo.denemeEkle({ id: 'dq-3', hedef: 'h', puan: 4, maks: 5, tarih: '2026-10-11T12:00:00Z' }, M);
+  eq(O.depo.oku(M).denemeler.map(d => d.puan), [4, 2, 4], 'depo: aynı gün aynı puanlı tekrar ayrı deneme olarak kaydedilir (benzersiz kimlikle)');
 }
 
 // ---- 14. Program kurucu: proje yolları, kademe kapıları, içerik açığı ----

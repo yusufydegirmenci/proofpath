@@ -31,7 +31,7 @@
     hs.forEach(function (x) {
       if (x.kritik) {
         if (x.durum === "denenmedi") nedenler.push(neden("kritik-denenmedi", "Kritik hedef henüz denenmedi: " + x.ad, x.hedef));
-        else if (x.durum === "kaldi") nedenler.push(neden("kritik-basarisiz", "Kritik hedef geçilmedi: " + x.ad + " %" + yz(x.oran) + " (en az %" + yz(x.esik) + "). Ortalama bunu telafi etmez.", x.hedef));
+        else if (x.durum === "kaldi" || x.oran + 1e-9 < Math.max(x.esik, K.esik != null ? K.esik : 0)) nedenler.push(neden("kritik-basarisiz", "Kritik hedef geçilmedi: " + x.ad + " %" + yz(x.oran) + " (en az %" + yz(x.esik) + "). Ortalama bunu telafi etmez.", x.hedef));
       } else if (x.durum === "denenmedi") nedenler.push(neden("hedef-denenmedi", "Hedef henüz denenmedi: " + x.ad, x.hedef));
       if (x.gecmis.length && x.durum === "denenmedi") {
         x.gecmis.forEach(function (gm) {
@@ -46,7 +46,7 @@
     var krit = hs.filter(function (x) { return !x.kritik && x.oran != null; });
     if (krit.length) {
       var ort = krit.reduce(function (a, x) { return a + x.oran; }, 0) / krit.length, e = K.esik != null ? K.esik : O.ESIK;
-      if (ort < e) nedenler.push(neden("esik-altinda", "Kritik olmayan hedeflerin ortalaması %" + yz(ort) + " (en az %" + yz(e) + ").", kapiId));
+      if (ort + 1e-9 < e) nedenler.push(neden("esik-altinda", "Kritik olmayan hedeflerin ortalaması %" + yz(ort) + " (en az %" + yz(e) + ").", kapiId));
     }
 
     var cp = K.cekirdekProjeler || [];

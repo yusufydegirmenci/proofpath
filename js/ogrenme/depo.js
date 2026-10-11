@@ -45,8 +45,8 @@
       id: typeof d.id === "string" && d.id ? d.id : "d-" + tarih + "-" + d.hedef,
       hedef: d.hedef, varyant: d.varyant == null ? null : String(d.varyant), puan: d.puan, maks: d.maks, tarih: tarih,
       surum: d.surum == null ? null : String(d.surum),
-      yardim: { tur: YARDIM[y.tur] ? y.tur : "bilinmiyor", guvenilir: y.guvenilir === true },   /* yardım yalnız güvenilir kanıt varsa "yok" sayılır */
-      dogrulama: DOGRULAMA[d.dogrulama] ? d.dogrulama : "istemci",
+      yardim: { tur: YARDIM[y.tur] ? y.tur : "bilinmiyor", guvenilir: false },   /* istemci yardım beyanı güvenilir sayılmaz */
+      dogrulama: d.dogrulama === "beyan" ? "beyan" : "istemci",   /* "sunucu" istemci yazımında KABUL EDİLMEZ: yalnız sunucudan okunan kayıt güvenilir olabilir */
       kaynak: typeof d.kaynak === "string" ? d.kaynak.slice(0, 40) : "uygulama"
     } };
   }
@@ -64,16 +64,16 @@
     if (typeof projeId !== "string" || !projeId) return { ok: false, neden: "proje-yok" };
     var d = oku(depo), eski = d.projeler[projeId];
     if (eski && eski.bitti) return { ok: true, tekrar: true };
-    d.projeler[projeId] = { bitti: true, tarih: (bilgi && bilgi.tarih) || new Date().toISOString(), dogrulama: bilgi && DOGRULAMA[bilgi.dogrulama] ? bilgi.dogrulama : "istemci" };
+    d.projeler[projeId] = { bitti: true, tarih: (bilgi && bilgi.tarih) || new Date().toISOString(), dogrulama: "istemci" };
     return yaz(depo, d) ? { ok: true } : { ok: false, neden: "yazilamadi" };
   }
   function kanitEkle(k, depo) {
     if (!k || typeof k.tur !== "string" || !k.tur) return { ok: false, neden: "tur-yok" };
     var d = oku(depo), id = typeof k.id === "string" && k.id ? k.id : "k-" + k.tur + "-" + (k.kapi || "") + "-" + d.kanitlar.length;
     if (d.kanitlar.some(function (x) { return x.id === id; })) return { ok: true, tekrar: true };
-    d.kanitlar.push({ id: id, tur: k.tur, kapi: k.kapi || null, hedef: k.hedef || null, tarih: k.tarih || new Date().toISOString(), dogrulama: DOGRULAMA[k.dogrulama] ? k.dogrulama : "istemci" });
+    d.kanitlar.push({ id: id, tur: k.tur, kapi: k.kapi || null, hedef: k.hedef || null, tarih: k.tarih || new Date().toISOString(), dogrulama: k.dogrulama === "beyan" ? "beyan" : "istemci" });
     return yaz(depo, d) ? { ok: true } : { ok: false, neden: "yazilamadi" };
   }
 
-  O.depo = { KEY: KEY, oku: oku, normalle: normalle, denemeEkle: denemeEkle, projeIsaretle: projeIsaretle, kanitEkle: kanitEkle };
+  O.depo = { varsayilan: varsayilanDepo, KEY: KEY, oku: oku, normalle: normalle, denemeEkle: denemeEkle, projeIsaretle: projeIsaretle, kanitEkle: kanitEkle };
 })(typeof window !== "undefined" ? window : globalThis);

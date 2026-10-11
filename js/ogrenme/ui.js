@@ -13,9 +13,11 @@
   ui.hata = function () { return hata; };
 
   ui.durum = function () {
-    var depo = g.localStorage;
+    var depo = O.depo.varsayilan();
     var yeni = O.depo.oku(depo);
     var eski = O.eski.oku(depo, function (i) { var q = typeof QB !== "undefined" ? QB[i] : null; return q ? q.t : null; });
+    /* Yerleştirme ofseti / "built" konular İLERLEME sayılır (ustalık değil): mevcut sıralı kilitle uyum */
+    try { TRKS.forEach(function (tr) { starterTopics(tr).forEach(function (t) { if (t.status === "built" && /^s-[a-z]+-\d+$/.test(t.id)) eski.dersTamam[O.eski.dersId(t.id)] = true; }); }); } catch (e) { /* eski küresel yok */ }
     return O.program.durumKur(yeni, eski, typeof S !== "undefined" ? S.projects : [], function (pid) { var pa = typeof pathOf === "function" ? pathOf(pid) : null; return pa ? "proje:" + pa.id + ":" + pid : null; });
   };
 
@@ -43,8 +45,7 @@
   ui.dersSinavi = function (l, ok, toplam, oto) {
     var Gr = ui.graf(), did = ui.dersKimligi(l);
     if (!Gr || !did || !Gr.hedefler[did + ":sinav"] || !(toplam > 0)) return null;
-    var gun = new Date().toISOString().slice(0, 10);
-    return O.depo.denemeEkle({ id: "dq-" + did + "-" + gun + "-" + ok + "-" + toplam, hedef: did + ":sinav", varyant: "v1", puan: ok, maks: toplam, tarih: new Date().toISOString(), surum: Gr.surum,
+    return O.depo.denemeEkle({ id: "dq-" + did + "-" + new Date().toISOString() + "-" + ok + "-" + toplam, hedef: did + ":sinav", varyant: "v1", puan: ok, maks: toplam, tarih: new Date().toISOString(), surum: Gr.surum,
       yardim: { tur: "bilinmiyor", guvenilir: false }, dogrulama: oto ? "istemci" : "beyan", kaynak: "mini-sinav" });
   };
 
@@ -70,7 +71,9 @@
     }
     if (kok.length) { kutu.push(h("div", { class: "small", style: "margin-top:6px" }, h("b", null, "Önkoşullar"))); kok.slice(-4).forEach(function (y) { kutu.push(satir(y)); }); }
     var altin = Object.keys(Gr.kapilar).filter(function (k) { return k.indexOf("altin:" + tr + ":") === 0; });
+    var siradaki = altin.filter(function (k) { return !O.kapi.degerlendir(Gr, k, du).acik; });
     if (altin.length) {
+      if (siradaki.length) altin = siradaki;
       var ra = O.kapi.degerlendir(Gr, altin[0], du);
       kutu.push(h("div", { class: "small", style: "margin-top:6px" }, h("b", null, "Sıradaki kapı: "), Gr.kapilar[altin[0]].ad + (ra.acik ? " (açık)" : " (kilitli)")));
       ra.nedenler.slice(0, 3).forEach(function (n) { kutu.push(h("div", { class: "small mute" }, "🔒 " + n.mesaj)); });
