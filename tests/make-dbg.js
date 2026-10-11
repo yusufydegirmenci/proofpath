@@ -6,14 +6,18 @@ const path = require('path');
 
 const src = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
 const NAMES = [
-  'draw', 'ST', 'cl', 'tf', 'QBX', 'QBALL', 'TMAP',
+  'draw', 'cleanLesson', 'TMAP', 'QB', 'STARTER', 'tmFor', 'NW_RX', 'baseQuiz', 'nwFor', 'nwFuzzy',
   'FK_SC', 'FK_DF', 'FK_KD', 'FK_DK', 'FK_CM', 'FK_BL',
   'fkBuild', 'fkBuy', 'fkLaunch', 'fkMod', 'fkNeighbors', 'fkRel', 'fkTick',
   'streakInfo', 'today', 'VD_CU', 'vdScore', 'vdOpts', 'vdCloseOpts',
 ];
+// Eski test adları (Faz 1B'de koddan kalkmış/yeniden adlandırılmış) yeni sembollere bağlanır; testler değişmez.
+const ALIAS = { ST: 'STARTER', tf: 'tmFor', QBX: 'QB', cl: 'cleanLesson' };
 const hook =
   'window.__S=S;window.__X={' +
   NAMES.map(n => `${n}:typeof ${n}!=="undefined"?${n}:undefined`).join(',') +
+  ',' + Object.keys(ALIAS).map(a => `${a}:typeof ${ALIAS[a]}!=="undefined"?${a === 'ST' ? 'function(){return STARTER}' : ALIAS[a]}:undefined`).join(',') +
+  ',QBALL:typeof QB!=="undefined"?function(){return QB}:undefined' +
   '};';
 // window.__store tests/stub.js tarafından tanımlanır (sahte db deposu); burada ezilmez.
 

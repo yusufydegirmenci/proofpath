@@ -8,7 +8,7 @@ await p.evaluate(()=>{[...document.querySelectorAll('button')].find(x=>/Fetih/.t
 await p.waitForTimeout(300);
 console.log(w,'cards',await p.$$eval('.fk-card',a=>a.length),'locked',await p.$$eval('.fk-card.lock',a=>a.length),'bd',await p.$$eval('.fk-bd',a=>a.length),'ovf',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth));
 if(w===390)await p.screenshot({path:'s58-fkhub.png',fullPage:true});
-await p.evaluate(()=>{[...document.querySelectorAll('.fk-card .btn')][0].click()});await p.waitForTimeout(1200);
+await p.evaluate(()=>{[...document.querySelectorAll('.fk-card .btn')][0].click()});await p.waitForTimeout(300);await p.evaluate(()=>{const a=[...document.querySelectorAll('button')].find(b=>b.textContent==='Anladım');if(a)a.click()});await p.waitForTimeout(200);await p.evaluate(()=>{[...document.querySelectorAll('button')].find(b=>/Seferi başlat/.test(b.textContent)).click()});await p.waitForTimeout(1200);
 console.log(' game: cv',await p.$$eval('.fk-cv',a=>a.length),'chips',await p.$$eval('.fk-chip',a=>a.length),'ovf',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth));
 // attack via chip
 await p.evaluate(()=>{document.querySelector('.fk-chip').click()});await p.waitForTimeout(300);

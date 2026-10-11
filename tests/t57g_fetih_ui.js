@@ -7,7 +7,7 @@ await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","t
 await p.evaluate(()=>[...document.querySelectorAll('.gh-nav button')].find(b=>b.textContent.startsWith('Fetih')).click());await p.waitForTimeout(300);
 console.log(w,'hub ovf',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),'nav',await p.evaluate(()=>{const n=document.querySelector('.gh-nav');return n.scrollWidth>n.clientWidth}));
 if(w===390)await p.screenshot({path:'s57-fk-hub.png',fullPage:true});
-await p.evaluate(()=>document.querySelector('.fk-card .btn.big').click());await p.waitForTimeout(500);
+await p.evaluate(()=>document.querySelector('.fk-card .btn.big').click());await p.waitForTimeout(300);await p.evaluate(()=>{const a=[...document.querySelectorAll('button')].find(b=>b.textContent==='Anladım');if(a)a.click()});await p.waitForTimeout(200);await p.evaluate(()=>{[...document.querySelectorAll('button')].find(b=>/Seferi başlat/.test(b.textContent)).click()});await p.waitForTimeout(500);
 // tap on a neutral/neighbour region: find cell via state
 for(let i=0;i<6;i++){await p.evaluate(()=>{const G=__S.fk;const nb=__X.fkNeighbors(G,1);const t=nb.includes(0)?0:nb[0];let cell=-1;for(let p=0;p<G.own.length;p++){if(G.own[p]!==t)continue;const x=p%36,y=(p-x)/36;const ns=[[1,0],[-1,0],[0,1],[0,-1]].some(d=>{const nx=x+d[0],ny=y+d[1];return nx>=0&&ny>=0&&nx<36&&ny<26&&G.own[ny*36+nx]===1});if(ns){cell=p;break}}
  const r=G.cv.getBoundingClientRect();const x=cell%36,y=Math.floor(cell/36);G.cv.dispatchEvent(new MouseEvent('click',{clientX:r.left+(x+.5)/36*r.width,clientY:r.top+(y+.5)/26*r.height,bubbles:true}))});await p.waitForTimeout(700)}
