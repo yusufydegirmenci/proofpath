@@ -4,7 +4,9 @@
   "description": "Proofpath test altyapısı (uygulama bağımlılıksız tek dosyadır)",
   "scripts": {
     "test": "node tests/run-all.js",
-    "test:smoke": "node tests/smoke.js"
+    "test:smoke": "node tests/smoke.js",
+    "test:sira": "node tests/sira.js",
+    "test:ogrenme": "node tests/ogrenme.js && node tests/hesaplar.js && node tests/ogrenme_tarayici.js"
   },
   "devDependencies": {
     "acorn": "^8.19.0",
