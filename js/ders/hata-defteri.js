@@ -1,6 +1,6 @@
 "use strict";
 /* ---- hata defteri (Leitner), tekrar kuyruğu, anlat-öğren, odak ---- */
-var LEIT=[1,3,7,14,30];
+var LEIT=PP.ogr.tekrar.ARALIK;   /* tek aralık tanımı: 1, 3, 7, 14, 30 gün */
 function addDays(s,n){var d=parse(s);d.setDate(d.getDate()+n);return iso(d)}
 function mistakeId(l,i){return String(l.id+"-"+i).replace(/[^A-Za-z0-9_-]/g,"_").slice(0,80)}
 function mistakeOf(id){return S.mistakes.filter(function(m){return m.id===id})[0]}
@@ -28,9 +28,22 @@ function recallOf(t){
 function riskTopics(){
   return S.topics.map(function(t){return {t:t,r:recallOf(t)}}).filter(function(x){return x.r!=null&&x.r<.85}).sort(function(a,b){return a.r-b.r}).slice(0,3);
 }
+/* Faz 4: PP.ogr telafi + aralıklı tekrar planı (ya_pp_ogr denemelerinden; kalıcı, cezasız) */
+function ogrPlanItems(){
+  var P;try{P=PP.ogr.ui.tekrarPlani()}catch(e){return []}
+  return P.bugun.slice(0,3).map(function(x){
+    var yer=PP.ogr.ui.hedefYeri(x.hedef);
+    function git(){if(!yer)return;if(yer.atolye){goTab("atolye");return}var l=lessonForTopic(yer.yol,yer.konu);if(l){goTab("ders");lrOpen(l,"sinav")}}
+    return h("div",{class:"rq pp-tk"+(x.durum==="kaldi"?" risk":""),"data-hedef":x.hedef},h("div",{style:"min-width:0"},
+      h("div",{class:"small mute"},(x.durum==="kaldi"?"telafi":"aralıklı tekrar")+(x.kritik?" · kritik":"")+" · neden bugün?"),
+      h("div",null,x.ad),h("div",{class:"small"},x.neden),
+      x.telafi&&x.telafi.length?h("details",{class:"small"},h("summary",null,"Telafi adımları"),h("ol",null,x.telafi.slice(1).map(function(a){return h("li",null,a.metin)}))):null),
+      yer?h("button",{class:"btn ghost",type:"button",onclick:git},x.durum==="kaldi"?"Telafi et":"Tekrarla"):null);
+  });
+}
 function renderReviewQueue(){
-  var due=mistakesDue(),risk=riskTopics(),total=due.length+risk.length;
-  var items=[];
+  var due=mistakesDue(),risk=riskTopics(),pl=ogrPlanItems(),total=due.length+risk.length+pl.length;
+  var items=pl.slice();
   due.slice(0,3).forEach(function(m){
     var on=S.mrev[m.id];
     items.push(h("div",{class:"rq "+(m.track==="eng"?"eng":"")},
@@ -50,7 +63,7 @@ function renderReviewQueue(){
   return h("div",{class:"panel"},
     h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"},h("h2",null,"Tekrar kuyruğu"),h("span",{class:"pill"+(total?" eng":" ok")},total?total+" bekliyor":"temiz")),
     items.length?items:h("div",{class:"empty"},"Şimdilik temiz. Mini sınavda kaçırdığın sorular burada, unutmanın tam başladığı günde geri gelir."),
-    h("div",{class:"small mute"},"Yanlışlar 1, 3, 7, 14 ve 30. günde sorulur; hatırlarsan bir kutu ilerler, unutursan başa döner. Konu önerisi bir tahmindir (ustalık ve son tekrar günü), ölçüm değil."));
+    h("div",{class:"small mute"},"Yanlışlar 1, 3, 7, 14 ve 30. günde sorulur; hatırlarsan bir kutu ilerler, unutursan başa döner. Konu önerisi bir tahmindir (ustalık ve son tekrar günü), ölçüm değil. Telafi ve tekrar öğeleri mini sınav denemelerinden hesaplanır; kaçırmak ceza getirmez."));
 }
 function teachBack(l,text){
   var T=S.les.tb[l.id]=S.les.tb[l.id]||{busy:false,ans:null,err:null},eng=l.track==="eng";

@@ -41,7 +41,21 @@ function lessonQuiz(l){
       h("span",{class:"pill"+(done?(ok===qs.length?" ok":""):"")},done?(ok+"/"+qs.length+" doğru"):qs.length+" soru")),
     h("div",{class:"small mute"},"Şıklara dokun: doğruysa yeşil, yanlışsa kırmızı yanar ve nedenini görürsün. Yanlışların ertesi gün tekrar karşına gelir."),
     h("div",{class:"qz-list"},items),
-    done===qs.length?h("div",{class:"qz-sum "+(ok===qs.length?"all":ok>=qs.length/2?"mid":"low")},h("b",null,ok+" / "+qs.length),h("span",null,ok===qs.length?"Mükemmel, hepsi doğru.":ok>=qs.length/2?"İyi gidiyorsun. Yanlışlar tekrar listene eklendi.":"Konuyu bir daha oku; yanlışlar tekrar listende.")):null);
+    done===qs.length?qzResult(l,ok,qs.length):null);
+}
+/* Faz 4: mini sınav %80 kapısı (PP.ogr.kapi.miniSinav), başarısızlıkta telafi önerisi ve yeniden deneme */
+function qzRetry(l){var L=S.les;L.pick=L.pick||{};(Array.isArray(l.quiz)?l.quiz:[]).forEach(function(q,i){var k=l.id+":"+i;delete L.pick[k];delete L.mark[k];delete L.rev[k+":a"]});draw()}
+function qzResult(l,ok,tot){
+  var r=null;try{r=PP.ogr.ui.sinavSonucu(l,ok,tot,tot)}catch(e){r=null}
+  var pct=Math.round(ok/tot*100);
+  if(!r)return h("div",{class:"qz-sum "+(ok===tot?"all":"low")},h("b",null,ok+" / "+tot),h("span",null,"Sonuç kaydedildi."));
+  var es="%"+Math.round(r.esik*100);
+  if(r.gecti)return h("div",{class:"qz-sum "+(ok===tot?"all":"mid"),"data-kapi":"gecti"},h("b",null,ok+" / "+tot),h("span",null,(ok===tot?"Mükemmel, hepsi doğru. ":"")+"Geçme eşiği "+es+" geçildi (%"+pct+"); mini sınav adımı tamam."+(ok<tot?" Yanlışlar tekrar listene eklendi.":"")));
+  return h("div",{class:"qz-res","data-kapi":"kaldi"},
+    h("div",{class:"qz-sum low"},h("b",null,ok+" / "+tot),h("span",null,"%"+pct+": geçme eşiği "+es+" altında. Mini sınav adımı açılmadı; sıradaki ders bu kapıyı bekliyor.")),
+    h("div",{class:"small",style:"margin-top:8px"},h("b",null,"Telafi önerisi: "),r.telafi.slice(1,5).map(function(a){return a.metin}).join(" → ")),
+    h("div",{class:"small mute",style:"margin-top:4px"},r.varyantNotu+" Yanlışların tekrar listende."),
+    h("button",{class:"btn",type:"button",style:"margin-top:8px",onclick:function(){qzRetry(l)}},"Yeniden dene"));
 }
 /* adım adım animasyon */
 function renderAnim(E,opt){
@@ -73,6 +87,14 @@ function lrClose(){S.les.room=null;draw();window.scrollTo(0,0)}
 function lrAuto(l){var k=lessonKey(l);if(!lcGrand(l)&&!lcHas(k,"w"))return "isinma";if(!lcGrand(l)&&!lcHas(k,"r"))return "anlat";if(!lcHas(k,"q"))return "sinav";if(!lcHas(k,"p"))return "alis";return "notlar"}
 function lrDone(l,s){var k=lessonKey(l);return s==="isinma"?lcHas(k,"w"):s==="anlat"?lcHas(k,"r"):s==="sinav"?lcHas(k,"q"):s==="alis"?lcHas(k,"p"):lcDone(k)}
 function lrSet(l,s){S.les.rs=s;draw();window.scrollTo(0,0)}
+/* Faz 4: açıklama modları (PP.ogr.aciklama); tercih kalıcı, içerik dersin aynı konu haritasından */
+function lrModes(l){
+  var U,md,ic;try{U=PP.ogr.ui;md=U.aciklamaModu();ic=PP.ogr.aciklama.icerik(md,U.aciklamaKaynagi(l))}catch(e){return null}
+  return h("div",{class:"panel pp-mod","data-mod":md},h("div",{class:"label"},"Açıklama modu"),
+    h("div",{class:"seg",role:"group","aria-label":"Açıklama modu"},PP.ogr.aciklama.MODLAR.map(function(x){return h("button",{type:"button",class:"opt"+(x[0]===md?" on":""),"aria-pressed":x[0]===md?"true":"false",onclick:function(){U.aciklamaModu(x[0]);draw()}},x[1])})),
+    ic.bos?h("div",{class:"small mute"},"Bu ders için "+ic.ad.toLowerCase()+" içeriği yok; aşağıdaki tam anlatımı kullan."):
+      ic.kod?h("pre",{class:"pp-mod-b"},ic.maddeler.join(String.fromCharCode(10))):h("ul",{class:"lr-ul pp-mod-b"},ic.maddeler.map(function(x){return h("li",null,x)})));
+}
 function renderLessonRoom(){
   var L=S.les,l=lrFind();if(!l){L.room=null;return null}
   var tr=l.track,k=lessonKey(l),grand=lcGrand(l);lcSync(l);
@@ -101,6 +123,7 @@ function renderLessonRoom(){
     if(!grand&&!lcHas(k,"w")){body.push(h("div",{class:"panel"},h("div",{class:"label"},"Kilitli"),h("h3",null,"Önce ısınma"),h("div",{class:"small mute"},"Anlatım, ısınmayı bitirince açılır."),nextBtn("Isınmaya git","isinma")))}
     else{
       body.push(h("div",{class:"lr-sec"},h("div",{class:"label"},"2 · Anlatım"),h("h3",null,l.title||"Ders")));
+      var am=lrModes(l);if(am)body.push(am);
       if(T)body.push(h("div",{class:"panel"},renderAnim(T.m)));
       var nsc=l&&/^(eng|ing)/i.test(String(l.track||l.tr||""))?null:nwFor(l);if(nsc)body.push(h("div",{class:"panel"},h("div",{class:"label"},"Hareketli anlatım"),h("h3",null,nsc.t),nwPlayer(nsc)));
       var blocks=(Array.isArray(l.blocks)?l.blocks:[]).map(lblock).filter(Boolean);
