@@ -29,7 +29,8 @@ Uygulama artık tek bir sarmalayıcı işlev değil, küresel kapsamda sırayla 
 | Birim çıkarımı ortası (varsayılan 420 sn) | `5d52ce0` | 56 | 1 (`t58a`) | 0 | 0 |
 | Birim çıkarımı ortası | `3087c1f` | 57 | 0 | 0 | 0 |
 | Birim çıkarımı ortası | `7b54e97` | 57 | 0 | 0 | 0 |
-| **Son durum** | `d4a1bae` | **57** | **0** | **0** | **0** |
+| Birim çıkarımı bitti | `d4a1bae` | 57 | 0 | 0 | 0 |
+| **Son durum** (yorum satırları geri konduktan sonra) | `97351ae` | **57** | **0** | **0** | **0** |
 
 Emekli (`tests/emekli/h73.js`) sayıma dahil değil. `t58a_ders_odasi` iki koşuda ekran görüntüsü alırken öğe yeniden çizildiği için düştü (yalnız `screenshot`, assert değil); ekran görüntüsü hata vermez hâle getirildi, sonraki koşularda geçti.
 
