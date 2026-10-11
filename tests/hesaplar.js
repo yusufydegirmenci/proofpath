@@ -149,6 +149,8 @@ const run = (p, body) => p.evaluate(new Function(SIFIR + body));
     [2.3, 1, 3, 1], 'plLevel: 1 + 2*kazanılan/maks, 0.1 hassasiyet; boş = 1');
   eq(await run(p, `return [plBand(1.4)[0],plBand(1.5)[0],plBand(2.2)[0],plBand(2.3)[0]]`),
     ['Sıfırdan başla', 'Temel var, boşlukları kapat', 'Temel var, boşlukları kapat', 'İleri başlangıç'], 'plBand: sınırlar 1.5 ve 2.3');
+  eq(await run(p, `var o=plLoad(),r=[];[[1.4,false],[1.5,false],[2.29,false],[2.3,false],[3,true]].forEach(function(x){o.ccna={lv:x[0],n:5,ok:3,d:'x',skip:x[1]};plSave(o);r.push(plOffset('ccna',17))});o.ccna={lv:1,n:0,ok:0,d:'2026-10-08',skip:true};plSave(o);return r`),
+    [0, 4, 4, 9, 0], 'plOffset (Faz 4, bant tek tanımdan): <1.5 → 0, <2.3 → N·0.25, diğer → N·0.5 (17 ders: 4, 9); atlanmış yerleştirme 0');
   for (const [sc, beklenen, sk] of [[62, 3, 2.5], [61, 2, 1.8], [32, 2, 1.8], [31, 1, 1.0], [0, 1, 1.0], [100, 3, 2.5]]) {
     const r = await run(p, `S.pe={tr:'ccna',qs:[{},{}],i:1,pk:0,sc:${sc},mx:100,ok:0,done:false};peNext();return [S.pe.l,lvOf('ccna').l,lvOf('ccna').s,lvOf('ccna').m,GS.sk.ccna]`);
     eq(r, [beklenen, beklenen, sc, 100, sk], `seviye sınavı: ${sc}/100 → düzey ${beklenen} (${['', 'Çırak', 'Kalfa', 'Usta'][beklenen]}), beceri tahmini ${sk}`);

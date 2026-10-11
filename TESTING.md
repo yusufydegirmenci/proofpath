@@ -1,6 +1,6 @@
 # TESTING.md
 
-Son çalıştırma: 2026-10-11 (Faz 3), Windows 11, Node 22.14, Playwright 1.64 (Chromium), `file://` + sahte `window.claude` (`tests/stub.js`).
+Son çalıştırma: 2026-10-11 (Faz 4), Windows 11, Node 22.14, Playwright 1.64 (Chromium), `file://` + sahte `window.claude` (`tests/stub.js`).
 
 ## Komutlar
 
@@ -18,6 +18,18 @@ npm test -- --timeout=90 smoke      # zaman aşımını değiştir / dosya adın
 ## Hata ayıklama sayfası (`tests/make-dbg.js`)
 
 Uygulama artık tek bir sarmalayıcı işlev değil, küresel kapsamda sırayla yüklenen betiklerden oluşur (`index.html` → `js/`). `make-dbg.js`, `index.html`'den `tests/page_dbg.html` üretir (git'e girmez): `<script src>` ve `<link href>` yollarını `../` ile düzeltir ve `</body>` öncesine ayrı bir betik ekler. Bu betik `window.__S` (durum) ve `window.__X` (iç yardımcılar) tanımlar. Eski test adları (`ST`, `QBX`, `tf`, `cl`) yeni sembollere bağlanır (`STARTER`, `QB`, `tmFor`, `cleanLesson`); `NW_RX`, `baseQuiz`, `nwFor`, `nwFuzzy` eklendi. Yapı değişse de hook uygulama betiklerine dokunmaz.
+
+## Faz 4 testleri
+
+| Dosya | İçerik | Kontrol |
+|---|---|---|
+| `tests/hesaplar.js` | Faz 3 sabitleri + tek tanıma taşıma; davranışı değişen 3 beklenen değer gerekçesiyle güncellendi (tamamlanan ders sayısı birleşim; mini sınav %80 kapısı), yeni: aynı kimlik bir kez sayılır, 3/5 açmaz 4/5 açar, eski "q" geçerli, `plOffset` bantları | 75 |
+| `tests/ogrenme.js` | + §15–20: ilerleme/ustalık/seri tek tanımları, mini sınav kapısı, telafi metni, aralıklı tekrar planı (başarısızlık → telafi; tamamlanan tekrar planı değiştirir; başarısız öğe geri gelir; kalıcı), açıklama modları ve kalıcı tercih, `depo.sifirla` | 156 |
+| `tests/ogrenme_tarayici.js` | "q yanlışla da açılır" kontrolü kapı davranışına göre sıkılaştırıldı | 34 |
+| `tests/faz4_entegrasyon.js` (yeni) | gerçek uygulamada: başarısız mini sınav → kapı kapalı + telafi + "Yeniden dene" → geçiş, sıradaki ders kilidi kapıya bağlı, Bugün tekrar kuyruğu, açıklama modu tercihi yenilemede kalıcı, "Tümünü sıfırla" `ya_pp_ogr`, proje/mülakat/akran/olay simülasyonu denetim testleri | 26 |
+| `tests/t57b_mynotes.js` | ekran görüntüsünden önce elemanın kararlı olması beklenir (aynı DOM düğümü 400 ms); yalnız "not attached" hatasında yeniden dener; assert değişmedi | — |
+
+Sonuç (`npm test`, 420 sn zaman aşımı, `79598cd` + `plOffset` değişikliği koşu sırasında çalışma kopyasında): **GEÇTİ 62 · KALDI 0 · ZAMAN AŞIMI 0 · ÇÖKTÜ 0** (toplam 62; testlerin süre toplamı 1882 sn). `t57b` ve `h72` bu koşuda geçti.
 
 ## Faz 3 testleri
 

@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## Faz 4 (dal: faz-4)
+- Tek tanım: ders tamamlama, ustalık ve seri hesapları `PP.ogr` altında toplandı (`PP.ogr.ilerleme`, `PP.ogr.ustalik`, `PP.ogr.seri`, `PP.ogr.kapi.miniSinav`, `PP.ogr.kapi.rutbeKosullari`, `PP.ogr.tekrar.ARALIK`). Eski işlev adları (`lcDone`, `lessonsDone`, `starterTopics`, `stageOf`, `mastLevels`, `plLevel`, `plBand`, `gsAnswer`, `streakInfo`, `gmStreak`, `deskState`, `gateList` …) korunur ve bu tanımlara devreder. `js/ogrenme/` betikleri çekirdek koddan önce yüklenir.
+- Davranış değişiklikleri: (1) tamamlanan ders sayısı artık iki kaynağın birleşimi (ders kayıtları ∪ tamamlanmış konular, aynı kimlik bir kez), eskiden büyük olanı alınıyordu; (2) mini sınav adımı yalnız en az %80 doğru ile tamamlanır (eskiden tüm soruları cevaplamak yetiyordu); daha önce tamamlanmış mini sınav kayıtları geçerli kalır; sıradaki ders bu kapıyı bekler.
+- Mini sınav: sonuçta geçme eşiği, başarısızlıkta hedefli telafi önerisi ve "Yeniden dene" (farklı soru seti yoksa bu açıkça yazılır). Her deneme ayrı kayıt olarak eklenir.
+- Açıklama modları: ders anlatımında 8 mod (Tam anlatım, Kısa özet, Benzetmeyle, Adım adım, Örnekle, Bozulursa ne olur, Gerçek durumlar, Mülakat dili); hepsi dersin aynı konu haritasından, tercih kalıcı.
+- Tekrar kuyruğu (Bugün): kalınan mini sınavlar telafi öğesi, geçilenler 1/3/7/14/30 gün aralıkla tekrar öğesi olarak "neden bugün" açıklamasıyla görünür; deneme kayıtlarından hesaplanır (kalıcı, cezasız).
+- "Tümünü sıfırla" öğrenme modeli kaydını (`ya_pp_ogr`) da kaldırır; sıfırlama yedeğine eklenir. Başka bir yerde silme yok.
+- Testler: `tests/faz4_entegrasyon.js` (yeni), `tests/ogrenme.js` ve `tests/hesaplar.js` genişletildi (değişen beklenen değerler gerekçeli), `tests/t57b_mynotes.js` ekran görüntüsünden önce elemanın kararlı olmasını bekler.
+
 ## Faz 3 (dal: faz-3)
 - Öğrenme modeli (`js/ogrenme/`, tek ad alanı `window.PP.ogr`): yetkinlik grafiği ve önkoşullar, değerlendirme hedefleri, deneme/kanıt kaydı, kapılar (varsayılan %80 eşik, kritik hedefler tek tek, her kilidin nedeni), Altın Vuruş / Bütünleşik / Joker üreticileri, hedefli telafi ve varyant seçimi, içerik sürümü, yollar arası aktarım kuralı.
 - Mevcut ders içeriğinden (`STARTER`, `PATHS`) kurulan tek grafik; eski kayıtlar (`ya_lc`, `ya_gs`, `ya_lv`, `ya_pl`) yalnız okunur, biçimleri ve anahtarları değişmedi. Yeni depolama anahtarı: `ya_pp_ogr`.
