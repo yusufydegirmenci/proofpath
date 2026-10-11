@@ -110,7 +110,8 @@ async function dersOdasi(p) {
     ok(d1 && d1.denemeler.length === 1, 'mini sınav: tek deneme kaydı oluştu (ya_pp_ogr)');
     const a = d1.denemeler[0];
     eq([a.hedef, a.puan, a.maks, a.dogrulama, a.yardim.guvenilir], ['ders:ccna:1:sinav', dogru ? toplam : 0, toplam, 'istemci', false], 'mini sınav: puan/maks, doğrulama "istemci", yardım güvenilmez');
-    ok((await p.evaluate(() => JSON.parse(localStorage.ya_lc)['s-ccna-1'].q)) === 1, 'eski akış değişmedi: "q" bayrağı yine tüm sorular cevaplanınca açıldı (yanlış olsa da; ilerleme ≠ ustalık)');
+    // Faz 4 kararı (%80 kapısı): eskiden "q" yanlış cevaplarla da açılıyordu; artık yalnız kapı geçilince açılır.
+    eq(await p.evaluate(() => (JSON.parse(localStorage.ya_lc)['s-ccna-1'] || {}).q || null), dogru ? 1 : null, 'mini sınav kapısı (%80): "q" bayrağı ' + (dogru ? 'geçince açıldı' : 'hepsi yanlışta AÇILMADI'));
     await p.reload(); await p.waitForTimeout(1500);   // yenileme
     const h2 = await p.evaluate(() => { const d = PP.ogr.ui.durum(); const x = PP.ogr.deg.hedefDurumu(PP.ogr.ui.graf(), 'ders:ccna:1:sinav', d.denemeler); return [x.durum, x.guven]; });
     eq(h2, [dogru ? 'gecti' : 'kaldi', 'istemci'], 'yenileme: ilerleme kalır; hedef ' + (dogru ? 'geçti' : 'kaldı') + ', güven "istemci"');

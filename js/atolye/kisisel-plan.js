@@ -17,7 +17,7 @@ function ppTracks(){return Object.keys(window.PP_LESSONS||{}).filter(function(t)
 function ppTitle(tr,n){var T=starterTopics(tr)[n-1];return T?T.name:""}
 function personalInput(){
   var tracks=ppTracks().map(function(tr){var T=starterTopics(tr),nx=T.filter(function(t){return t.status==="next"})[0],idx=nx?T.indexOf(nx)+1:0;
-    return {track:tr,name:trName(tr),nextN:idx,nextTitle:nx?nx.name:"",done:T.filter(function(t){return t.status==="built"}).length,total:T.length,last:lastStudy(tr)}});
+    return {track:tr,name:trName(tr),nextN:idx,nextTitle:nx?nx.name:"",done:T.filter(PP.ogr.ilerleme.konuTamam).length,total:T.length,last:lastStudy(tr)}});
   var cache={};
   function match(tr,text){
     var L=window.PP_LESSONS&&window.PP_LESSONS[tr];if(!L||!window.PPLocal)return null;
@@ -69,8 +69,7 @@ function mastLevels(){
   var tr=trkMap(function(){return [0,0,0,0,0]});
   Object.keys(GS.st).forEach(function(k){
     var q=QB[+k],s=GS.st[k];if(!q||!tr[q.t]||!s||!s[1])return;
-    var acc=s[0]/s[1],bx=GS.bx[k]||0,lv;
-    if(bx>=3&&acc>=.85&&s[1]>=3)lv=3;else if(acc===1&&s[1]>=2)lv=2;else if(acc>=.7)lv=1;else lv=0;
+    var lv=PP.ogr.ustalik.soruDuzeyi(s,GS.bx[k]);
     tr[q.t][lv]++;tr[q.t][4]++;
   });
   return tr;

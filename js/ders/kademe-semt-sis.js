@@ -1,13 +1,13 @@
 "use strict";
 /* ---- kademe, semt ve sis sistemi ---- */
 var HS=[46,50,62,84,108];
-function stageOf(t){var m=num(t.mastery);return t.status==="built"?4:t.status==="building"?(m>=40?3:2):t.status==="next"?1:0}
+function stageOf(t){return PP.ogr.ilerleme.asama(t)}
 function districtsOf(track){
   var T=cityTopics(track),by={},order=[];
   T.forEach(function(t){var a=t.area||"Genel";if(!by[a]){by[a]={name:a,topics:[]};order.push(a)}by[a].topics.push(t)});
   var ds=order.map(function(a){var d=by[a];
     d.avg=Math.round(d.topics.reduce(function(s,t){return s+num(t.mastery)},0)/d.topics.length);
-    d.built=d.topics.filter(function(t){return t.status==="built"}).length;
+    d.built=d.topics.filter(PP.ogr.ilerleme.konuTamam).length;
     d.done=d.built===d.topics.length;return d});
   var cur=-1;for(var i=0;i<ds.length;i++){if(!ds[i].done){cur=i;break}}
   ds.forEach(function(d,i){d.state=cur===-1||i<cur?"done":i===cur?"active":i===cur+1?"next":"far"});
@@ -165,7 +165,7 @@ function checkMilestones(){
   if(S.ms.queue.length&&!S.ms.open)setTimeout(openMilestone,350);
 }
 function quizMilestone(l,ok,tot){
-  if(!tot||ok/tot<.8)return;
+  if(!tot||!PP.ogr.kapi.miniSinav(ok,tot).gecti)return;
   var base=seenLoad()||{s:{},d:{},q:{}};base.q=base.q||{};
   if(base.q[l.id])return;base.q[l.id]=true;seenSave(base);
   var tp=topicsOf(l.track).filter(function(t){return t.status==="building"||t.status==="next"})[0]||null;

@@ -25,7 +25,7 @@
       if (k.charAt(0) === "_") return;            /* _cut vb. iç kayıtlar */
       var v = lc[k];
       if (!v || typeof v !== "object") { out.atlanan++; return; }
-      var id = dersId(k), tamam = !!(v.w && v.r && v.q && v.p);
+      var id = dersId(k), tamam = O.ilerleme.dersTamam(v);   /* tek ders-tamam tanımı */
       out.ilerleme[id] = { w: !!v.w, r: !!v.r, q: !!v.q, p: !!v.p, tarih: s(v.d) || null, tamam: tamam, kaynak: "ya_lc" };
       if (tamam) out.dersTamam[id] = true;
     });

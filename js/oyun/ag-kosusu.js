@@ -10,7 +10,7 @@ var GM_CAP=40;
 function gmWeekDates(){var w=weekStart(today()),o=[];for(var i=0;i<7;i++)o.push(addDays(w,i));return o}
 function gmDay(d){return S.progress.filter(function(p){return p.id===d})[0]||{}}
 function gameXp(){var t=0;S.progress.forEach(function(p){t+=Math.min(GM_CAP,num(p.g_xp))});return t}
-function gmStreak(){var n=0,d=today();if(!(num(gmDay(d).g_runs)>0))d=addDays(d,-1);while(num(gmDay(d).g_runs)>0&&n<400){n++;d=addDays(d,-1)}return n}
+function gmStreak(){return PP.ogr.seri.oyun(function(d){return num(gmDay(d).g_runs)>0},today())}
 function gmWeek(){
   var ds=gmWeekDates(),runs=0,days=0,boss=false,best=0,ok=0,tot=0,coins=0;
   ds.forEach(function(d){var p=gmDay(d);if(num(p.g_runs)>0){days++;runs+=num(p.g_runs)}if(p.g_boss)boss=true;best=Math.max(best,num(p.g_best));ok+=num(p.g_ok);tot+=num(p.g_tot);coins+=num(p.g_coins)});
@@ -21,8 +21,8 @@ try{var _gs=JSON.parse(localStorage.getItem("ya_gs")||"null");if(_gs&&typeof _gs
 function gsSave(){GS.ts=new Date().toISOString();try{localStorage.setItem("ya_gs",JSON.stringify(GS))}catch(e){}syncPush()}
 function gsAnswer(k,ok){
   var m=/^qb(\d+)$/.exec(k||"");if(!m)return;var i=+m[1],it=QB[i];if(!it)return;
-  GS.bx[i]=ok?Math.min(4,(GS.bx[i]||0)+1):0;var st_=GS.st[i]||(GS.st[i]=[0,0]);st_[1]++;if(ok)st_[0]++;
-  var th=GS.sk[it.t];if(typeof th==="number"){th+=ok?(it.d>=th?.09:.04):-(it.d<=th?.14:.07);GS.sk[it.t]=Math.max(1,Math.min(3,th))}
+  GS.bx[i]=PP.ogr.ustalik.kutuAdim(GS.bx[i],ok);var st_=GS.st[i]||(GS.st[i]=[0,0]);st_[1]++;if(ok)st_[0]++;
+  var th=GS.sk[it.t];if(typeof th==="number")GS.sk[it.t]=PP.ogr.ustalik.beceriAdim(th,it.d,ok);
   gsSave();
 }
 var GM_TN={ccna:"CCNA",net:"Network",eng:"İngilizce",sec:"Siber",bk:"Backend",dev:"DevOps",qa:"Test Uzmanı",sw:"Yazılım",en:"İngilizce",v:"Kelime"};

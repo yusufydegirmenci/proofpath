@@ -61,7 +61,7 @@
     var durum = !son ? "denenmedi" : son.oran >= esik ? "gecti" : "kaldi";
     var guven = !son ? "yok" : son.d.dogrulama === "sunucu" ? "sunucu" : "istemci";
     return { hedef: hedefId, ad: h.ad || hedefId, yetkinlik: h.yetkinlik, kritik: h.kritik, esik: esik, durum: durum, oran: son ? son.oran : null,
-      sayilan: sayilan.length, gecmis: gecmis, son: son ? son.d.id : null, guven: guven, bagimsiz: son ? bagimsizMi(son.d) : false };
+      sayilan: sayilan.length, sayilanlar: sayilan.map(function (x) { return { id: x.d.id, tarih: x.d.tarih || null, oran: x.oran, varyant: x.d.varyant }; }), gecmis: gecmis, son: son ? son.d.id : null, guven: guven, bagimsiz: son ? bagimsizMi(son.d) : false };
   }
 
   /* Yetkinlik: tüm hedefleri geçilmiş olmalı; kritik hedefler TEK TEK geçmeli. Ortalama bilgi içindir, geçişi belirlemez. */
@@ -96,20 +96,28 @@
   function telafi(G, hedefId, denemeler, sec) {
     var d = hedefDurumu(G, hedefId, denemeler, sec), h = G.hedefler[hedefId];
     if (d.durum !== "kaldi") return { hedef: hedefId, gerekli: false, neden: d.durum === "gecti" ? "hedef-gecildi" : "hedef-denenmedi", adimlar: [] };
-    var v = varyantSec(G, hedefId, denemeler), ad = h.ad || hedefId;
+    var v = varyantSec(G, hedefId, denemeler);
     return { hedef: hedefId, gerekli: true, oran: d.oran, esik: d.esik, kritik: d.kritik, sonDeneme: d.son, sonrakiVaryant: v.varyant, uyari: v.uyari,
-      adimlar: [
-        { no: 1, tur: "yanlis-anlama", metin: "Başarısız hedef: " + ad + " (%" + Math.round(d.oran * 100) + ", gereken %" + Math.round(d.esik * 100) + ")." },
-        { no: 2, tur: "yeniden-anlat", metin: ad + " kavramını yeniden oku; terimleri kendi cümlenle anlat." },
-        { no: 3, tur: "ornek", metin: "Çalışılmış bir örneği adım adım izle." },
-        { no: 4, tur: "rehberli-gorev", metin: "İpuçlu, rehberli bir görevi tamamla." },
-        { no: 5, tur: "bagimsiz-gorev", metin: "Yardımsız yeni bir görev çöz." },
-        { no: 6, tur: "yeniden-sinav", metin: "Aynı hedefi " + (v.varyant != null ? "farklı bir varyantla (" + v.varyant + ")" : "yeniden") + " sına.", varyant: v.varyant }
-      ] };
+      adimlar: telafiAdimlari(h.ad || hedefId, d.oran, d.esik, v) };
+  }
+  /* Telafi adımları (tek metin kaynağı; grafikte hedefi olmayan dersler de kullanır). v: varyantSec çıktısı.
+     Tek varyant varsa yeniden sınav AYNI sorularla yapılır ve bu açıkça söylenir. */
+  function telafiAdimlari(ad, oranx, esik, v) {
+    v = v || { varyant: null, uyari: "varyant-yok" };
+    var son = v.uyari === "tek-varyant" || v.uyari === "varyant-yok" ? "Aynı hedefi yeniden sına (bu hedefin tek soru seti var; farklı varyant yok, aynı sorular gelir)."
+      : "Aynı hedefi farklı bir varyantla (" + v.varyant + ") sına.";
+    return [
+      { no: 1, tur: "yanlis-anlama", metin: "Başarısız hedef: " + ad + " (%" + Math.round(oranx * 100) + ", gereken %" + Math.round(esik * 100) + ")." },
+      { no: 2, tur: "yeniden-anlat", metin: ad + " kavramını yeniden oku; terimleri kendi cümlenle anlat." },
+      { no: 3, tur: "ornek", metin: "Çalışılmış bir örneği adım adım izle." },
+      { no: 4, tur: "rehberli-gorev", metin: "İpuçlu, rehberli bir görevi tamamla." },
+      { no: 5, tur: "bagimsiz-gorev", metin: "Yardımsız yeni bir görev çöz." },
+      { no: 6, tur: "yeniden-sinav", metin: son, varyant: v.varyant }
+    ];
   }
   function telafiGerekenler(G, denemeler, sec) {
     return Object.keys(G.hedefler).map(function (k) { return telafi(G, k, denemeler, sec); }).filter(function (t) { return t.gerekli; });
   }
 
-  O.deg = { oran: oran, esikOf: esikOf, bagimsizMi: bagimsizMi, hedefDurumu: hedefDurumu, yetkinlikDurumu: yetkinlikDurumu, varyantSec: varyantSec, telafi: telafi, telafiGerekenler: telafiGerekenler };
+  O.deg = { oran: oran, esikOf: esikOf, bagimsizMi: bagimsizMi, hedefDurumu: hedefDurumu, yetkinlikDurumu: yetkinlikDurumu, varyantSec: varyantSec, telafi: telafi, telafiAdimlari: telafiAdimlari, telafiGerekenler: telafiGerekenler };
 })(typeof window !== "undefined" ? window : globalThis);

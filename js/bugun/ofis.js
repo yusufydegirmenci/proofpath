@@ -10,7 +10,7 @@ function renderOffice(){
     sy&&sy.cliffhanger?h("div",{class:"cliff"},sy.cliffhanger):null,
     sy&&sy.newWords&&sy.newWords.length?h("div",{class:"words"},sy.newWords.map(function(w){return h("span",{class:"pill eng"},w)})):null));
   if(!T.length){out.push(h("div",{class:"empty"},"Kalıp merdiveni henüz yok."));return out}
-  var done=T.filter(function(t){return t.status==="built"}).length;
+  var done=T.filter(PP.ogr.ilerleme.konuTamam).length;
   out.push(h("div",{class:"panel"},h("h2",null,"Kalıp merdiveni"),
     h("div",{class:"small mute"},done+" / "+T.length+" kalıp oturdu. Her basamak yeni bir ek ya da yardımcı fiil. Yeni basamak, önceki yaklaşık %80 oturunca açılır."),
     T.map(function(t){

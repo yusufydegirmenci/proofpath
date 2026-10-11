@@ -75,5 +75,19 @@
     return yaz(depo, d) ? { ok: true } : { ok: false, neden: "yazilamadi" };
   }
 
-  O.depo = { varsayilan: varsayilanDepo, KEY: KEY, oku: oku, normalle: normalle, denemeEkle: denemeEkle, projeIsaretle: projeIsaretle, kanitEkle: kanitEkle };
+  /* Tercihler (örn. açıklama modu): ya_pp_ogr.tercih altında; bilinmeyen alanlar korunur. */
+  function tercih(ad, deger, depo) {
+    var d = oku(depo), t = d.tercih && typeof d.tercih === "object" ? d.tercih : {};
+    if (deger === undefined) return Object.prototype.hasOwnProperty.call(t, ad) ? t[ad] : null;
+    t[ad] = deger; d.tercih = t;
+    return yaz(depo, d);
+  }
+  /* Yalnız kullanıcının "Tümünü sıfırla" eylemi çağırır: ya_pp_ogr anahtarını kaldırır (bozuk yedeğe dokunmaz). */
+  function sifirla(depo) {
+    depo = depo || varsayilanDepo();
+    if (!depo) return false;
+    try { depo.removeItem(KEY); return true; } catch (e) { return false; }
+  }
+
+  O.depo = { varsayilan: varsayilanDepo, KEY: KEY, oku: oku, normalle: normalle, denemeEkle: denemeEkle, projeIsaretle: projeIsaretle, kanitEkle: kanitEkle, tercih: tercih, sifirla: sifirla };
 })(typeof window !== "undefined" ? window : globalThis);

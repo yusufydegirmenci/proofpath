@@ -76,15 +76,25 @@ const run = (p, body) => p.evaluate(new Function(SIFIR + body));
       return [lcDone('s-ccna-1'),lcDone('s-ccna-2'),lcDone('yok'),lessonsDone()]`),
     [true, false, false, 1], 'lcDone: w,r,q,p dördü gerekir; "_" anahtarları sayılmaz; lessonsDone = 1');
   eq(await run(p, `localStorage.ya_lc=JSON.stringify({'s-ccna-1':{w:1,r:1,q:1,p:1}});S.topics=[1,2,3].map(function(i){return {id:'t'+i,status:'built'}}).concat([{id:'t4',status:'building'}]);return lessonsDone()`),
-    3, 'lessonsDone: max(tamamlanan ders, "built" konu) = max(1, 3)');
+    4, 'lessonsDone (Faz 4, tek tanım PP.ogr.ilerleme.tamamSayisi): ya_lc tamamı ∪ "built" konu, aynı kimlik bir kez = 1 + 3 (eski: max = 3; iki ayrı kaynaktaki tamamlamalar artık kaybolmaz)');
+  eq(await run(p, `localStorage.ya_lc=JSON.stringify({'t1':{w:1,r:1,q:1,p:1}});S.topics=[{id:'t1',status:'built'},{id:'t2',status:'built'}];return lessonsDone()`),
+    2, 'lessonsDone (Faz 4): aynı ders hem ya_lc hem "built" konu ise bir kez sayılır (1 ∪ 2 = 2)');
   eq(await run(p, `localStorage.ya_lc=JSON.stringify({'s-ccna-1':{w:1,r:1,q:1,p:1,d:T(0)},'s-ccna-2':{w:1,r:1,q:1,p:1,d:T(2)}});S.topics=[{id:'t',status:'built'}];return lessonsDone()`),
-    2, 'lessonsDone: tamamlanan ders sayısı built konudan büyükse o');
+    3, 'lessonsDone (Faz 4): 2 tamamlanan ders ∪ 1 built konu = 3 (eski: max = 2)');
   eq(await run(p, `var a=lcSet('k1','w'),b=lcSet('k1','w'),c=lcSet('','w');var o=lcLoad();var u=lcHas('k1','w');lcUnset('k1','w');return [a,b,c,o.k1.w,o.k1.d===today(),u,lcHas('k1','w')]`),
     [true, false, false, 1, true, true, false], 'lcSet: ilk yazım true, tekrar false, boş anahtar false, tarih damgası; lcUnset siler');
   eq(await run(p, `var l={id:'L1',track:'ccna',topicId:'s-ccna-9',quiz:[{},{},{}]};S.les.mark={};lcSync(l);var a=lcHas('s-ccna-9','q');
       S.les.mark={'L1:0':'no','L1:1':'ok'};lcSync(l);var b=lcHas('s-ccna-9','q');
       S.les.mark={'L1:0':'no','L1:1':'no','L1:2':'no'};lcSync(l);var c=lcHas('s-ccna-9','q');return [a,b,c]`),
-    [false, false, true], 'lcSync: mini sınav kapısı = tüm soruların İŞARETLENMESİ; doğruluk oranına bakmaz (üç yanlış da "q" açar)');
+    [false, false, false], 'lcSync (Faz 4 kararı, %80 kapısı): cevaplanmamış soru ve üç yanlış "q" AÇMAZ (eski: tüm sorular işaretlenince doğruluğa bakmadan açıyordu)');
+  eq(await run(p, `var l={id:'L4',track:'ccna',topicId:'s-ccna-6',quiz:[{},{},{},{},{}]};
+      S.les.mark={'L4:0':'ok','L4:1':'ok','L4:2':'ok','L4:3':'no','L4:4':'no'};lcSync(l);var a=lcHas('s-ccna-6','q');
+      S.les.mark={'L4:0':'ok','L4:1':'ok','L4:2':'ok','L4:3':'ok','L4:4':'no'};lcSync(l);var b=lcHas('s-ccna-6','q');
+      S.les.mark={'L4:0':'no','L4:1':'no','L4:2':'no','L4:3':'no','L4:4':'no'};lcSync(l);return [a,b,lcHas('s-ccna-6','q')]`),
+    [false, true, true], 'lcSync (Faz 4): 3/5 (%60) açmaz, 4/5 (%80) açar; açılmış "q" sonraki başarısız denemede geri alınmaz');
+  eq(await run(p, `localStorage.ya_lc=JSON.stringify({'s-ccna-5':{w:1,r:1,q:1,p:1}});var l={id:'L5',track:'ccna',topicId:'s-ccna-5',quiz:[{},{}]};
+      S.les.mark={'L5:0':'no','L5:1':'no'};lcSync(l);return [lcHas('s-ccna-5','q'),lcDone('s-ccna-5')]`),
+    [true, true], 'lcSync (Faz 4, geriye uyum): eski ya_lc "q" kaydı geçerli kalır, ders tamam kalır');
   eq(await run(p, `var l={id:'L2',track:'ccna',topicId:'s-ccna-8',quiz:[]};S.les.mark={};lcSync(l);var a=lcHas('s-ccna-8','q');
       S.progress=[{id:T(0),prac_n:5}];lcSync(l);return [a,lcHas('s-ccna-8','p')]`),
     [true, true], 'lcSync: sorusuz ders "q" açar; bugünkü 5 alıştırma "p" açar');

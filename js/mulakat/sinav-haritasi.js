@@ -4,11 +4,11 @@ var DOMW=[["Network Fundamentals","Ağ Temelleri",20],["Network Access","Ağ Eri
 function examMap(){
   var T=topicsOf("ccna"),rows=DOMW.map(function(d){
     var ts=T.filter(function(t){return t.domain===d[0]}),sum=0,built=0;
-    ts.forEach(function(t){sum+=num(t.mastery);if(t.status==="built")built++});
+    ts.forEach(function(t){sum+=num(t.mastery);if(PP.ogr.ilerleme.konuTamam(t))built++});
     return {en:d[0],tr:d[1],w:d[2],n:ts.length,built:built,avg:ts.length?Math.round(sum/ts.length):0};
   });
   var ready=Math.round(rows.reduce(function(a,r){return a+r.w*r.avg/100},0));
-  var built=T.filter(function(t){return t.status==="built"}).length,dates=[];
+  var built=T.filter(PP.ogr.ilerleme.konuTamam).length,dates=[];
   S.days.forEach(function(d){if(d.date)dates.push(d.date)});T.forEach(function(t){if(t.lastReview)dates.push(t.lastReview)});
   dates.sort();var first=dates[0]||null,weeks=first?Math.max(0,(parse(today())-parse(first))/864e5/7):0;
   return {rows:rows,ready:ready,total:T.length,built:built,weeks:weeks,first:first};

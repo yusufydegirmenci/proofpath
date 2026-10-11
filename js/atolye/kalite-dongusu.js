@@ -90,8 +90,7 @@ function plPick(c){
   P.ans=c;P.ok.push(c===q.a?1:0);gsAnswer(q.k,c===q.a);draw();
 }
 function plLevel(P){
-  var pts=0,max=0;P.qs.forEach(function(q,i){max+=q.d;if(P.ok[i])pts+=q.d});
-  return max?Math.round((1+2*pts/max)*10)/10:1;
+  return PP.ogr.ustalik.yerlestirmeDuzeyi(P.qs,P.ok);
 }
 function plNext(){
   var P=S.pl;
@@ -101,8 +100,9 @@ function plNext(){
   P.fin=true;P.step=99;draw();
 }
 function plBand(lv){
-  return lv<1.5?["Sıfırdan başla","Önce Atölye > Atlas > Başlangıç kartlarını oku, sonra Başlangıç yolunun ilk projesini yap. Her gün 5 dakika yeter."]
-    :lv<2.3?["Temel var, boşlukları kapat","Akıllı turda oyna; yanlış yaptıkların otomatik tekrar gelir. Yol projesinde 2. aşamaya geç."]
+  var b=PP.ogr.ustalik.yerlestirmeBandi(lv);
+  return b===0?["Sıfırdan başla","Önce Atölye > Atlas > Başlangıç kartlarını oku, sonra Başlangıç yolunun ilk projesini yap. Her gün 5 dakika yeter."]
+    :b===1?["Temel var, boşlukları kapat","Akıllı turda oyna; yanlış yaptıkların otomatik tekrar gelir. Yol projesinde 2. aşamaya geç."]
     :["İleri başlangıç","Zor sorulara ağırlık ver, yol projesini GitHub'a yükle ve İşe hazırlık sekmesinden CV'ni çıkar."];
 }
 function plShare(track,lv){

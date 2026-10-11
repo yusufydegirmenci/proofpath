@@ -31,8 +31,7 @@ function deskState(){
   var sc=S.treplies.map(function(r){return {d:String(r.ts||""),s:tScore(r.id)}}).filter(function(x){return x.s!=null}).sort(function(a,b){return b.d.localeCompare(a.d)}).slice(0,10);
   var csat=sc.length?Math.round(sc.reduce(function(a,x){return a+x.s},0)/sc.length):null;
   var days={};S.treplies.forEach(function(r){if(r.date)days[r.date]=1});
-  var st=0,d=new Date();if(!days[iso(d)])d.setDate(d.getDate()-1);
-  while(days[iso(d)]){st++;d.setDate(d.getDate()-1)}
+  var st=PP.ogr.seri.masa(days,today());
   return {level:lvl,good:(hist[lvl]||{good:0}).good,need:need,csat:csat,streak:st,n:S.treplies.length};
 }
 function syncDesk(){

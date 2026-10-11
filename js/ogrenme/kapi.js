@@ -110,5 +110,29 @@
     return O.graf.kapiEkle(G, { id: o.id, ad: o.ad, seviye: "L7", hedefler: o.hedefler || [], onkosulKapilar: o.onkosulKapilar || [], gereksinimler: (o.gereksinimler || O.JOKER_GEREKLER).slice(), sunucuDogrulamasi: !!o.sunucuDogrulamasi, bagimsizGerek: true });
   }
 
-  O.kapi = { degerlendir: degerlendir, dersAcik: dersAcik, ustalik: ustalik, kademeAltin: kademeAltin, butunlesik: butunlesik, joker: joker };
+  /* Mini sınav kapısı (Faz 4 kararı): tüm sorular cevaplanmış VE doğru oranı ≥ eşik (varsayılan %80).
+     Bu kapı İLERLEME bayrağını ("q") açar; ustalık ayrıca kanıtla (deneme kaydı) değerlendirilir.
+     Sorusuz derste kapı açıktır (eski davranış). Dönüş {gecti, oran, esik, eksik, neden}. */
+  function miniSinav(dogru, toplam, cevaplanan, esik) {
+    esik = esik != null ? esik : O.ESIK;
+    if (!(toplam > 0)) return { gecti: true, oran: null, esik: esik, eksik: 0, neden: "soru-yok" };
+    var cev = cevaplanan != null ? cevaplanan : toplam, eksik = Math.max(0, toplam - cev), r = dogru / toplam;
+    if (eksik) return { gecti: false, oran: r, esik: esik, eksik: eksik, neden: "cevaplanmadi" };
+    return { gecti: r + 1e-9 >= esik, oran: r, esik: esik, eksik: 0, neden: r + 1e-9 >= esik ? null : "esik-altinda" };
+  }
+
+  /* Rütbe kapısı koşulları (g1–g4). tanim: {q, acc, les, proj, lv, mock, mn}; olcum: {soru:{n,acc}, ders, proje, seviyeTesti:bool, prova:{n,avg}}.
+     Dönüş [{t, have, ok}] (metin ve sıra eski gateList ile aynı). */
+  function rutbeKosullari(tanim, olcum) {
+    var Gt = tanim, m = olcum, L = [];
+    if (!Gt) return L;
+    L.push({ t: Gt.q + " soruda en az %" + Math.round(Gt.acc * 100) + " doğruluk", have: m.soru.n + " soru, %" + Math.round(m.soru.acc * 100), ok: m.soru.n >= Gt.q && m.soru.acc >= Gt.acc });
+    L.push({ t: Gt.les + " ders tamamla", have: m.ders + " ders", ok: m.ders >= Gt.les });
+    if (Gt.proj) L.push({ t: Gt.proj + " proje bitir", have: m.proje + " proje", ok: m.proje >= Gt.proj });
+    if (Gt.lv) L.push({ t: "Bir seviye testinde 2/3", have: m.seviyeTesti ? "tamam" : "henüz yok", ok: !!m.seviyeTesti });
+    if (Gt.mn) L.push({ t: Gt.mn + " mülakat provasında ortalama " + Gt.mock, have: m.prova.n + " prova, ort. " + (Math.round(m.prova.avg * 10) / 10), ok: m.prova.n >= Gt.mn && m.prova.avg >= Gt.mock });
+    return L;
+  }
+
+  O.kapi = { degerlendir: degerlendir, dersAcik: dersAcik, ustalik: ustalik, kademeAltin: kademeAltin, butunlesik: butunlesik, joker: joker, miniSinav: miniSinav, rutbeKosullari: rutbeKosullari };
 })(typeof window !== "undefined" ? window : globalThis);
