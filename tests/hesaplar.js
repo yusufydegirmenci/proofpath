@@ -176,6 +176,17 @@ const run = (p, body) => p.evaluate(new Function(SIFIR + body));
   eq(await run(p, `S.days=[{date:T(0),minutes:5,xp:0}];S.attempts=[{date:T(1)}];S.progress=[{id:T(2),mini5:1},{id:T(3),g_runs:0}];S.reports=[{date:T(4)}];return Object.keys(activeDaySet()).length`),
     4, 'activeDaySet: gün kaydı, deneme, ilerleme alanları ve rapor günleri; boş ilerleme sayılmaz');
 
+
+  // ---- işe hazırlık puanı ----
+  {
+    const i = await p.evaluate(() => QB.findIndex(q => q.t === 'sec'));
+    const r = await run(p, `var R=JR.filter(function(x){return x.id==='sec'})[0];GS.sk.sec=3;GS.sk.ccna=1;GS.st[${i}]=[20,20];
+      S.projects=[{pid:'sec1',kind:'path',steps:[{t:'a',done:true,note:'https://github.com/ali/proje'}],notes:[]}];
+      S.interview=[2,2,3,2,1,1].map(function(b){return {box:b}});var j=jrScore(R);return [j.score,j.n,j.parts.map(function(x){return Math.round(x[2]*1000)/1000})]`);
+    eq(r, [59, 20, [0.5, 1, 0.25, 0.5, 1]], 'jrScore: 0.35*bilgi + 0.2*doğruluk + 0.25*proje (1 proje / yolda 4 proje) + 0.1*mülakat + 0.1*GitHub = %59');
+    eq(await run(p, `var R=JR.filter(function(x){return x.id==='sec'})[0];S.interview=[];S.projects=[];var j=jrScore(R);return [j.score,j.n]`), [9, 0], 'jrScore: veri yokken yalnız başlangıç beceri tahmini (1.5 → 0.25*0.35) = %9');
+  }
+
   // ---- hafta özeti ----
   eq(await run(p, `S.days=[{date:T(0),minutes:20},{date:T(0),minutes:10}];var w=weekInfo();return [w.days,w.min]`), [1, 30], 'weekInfo: aynı gün dakikaları toplanır, gün 1');
 
