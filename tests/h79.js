@@ -4,7 +4,7 @@ const U=require('url').pathToFileURL(require('path').join(__dirname,'..','index.
 const ctx=await b.newContext({viewport:{width:390,height:844}});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript('window.__guest=true');await p.addInitScript(INIT);
 await p.addInitScript(`try{var q=['ccna','eng','sec','bk'],o={};q.forEach(function(t){o[t]={lv:1,n:0,ok:0,d:'2026-10-08',skip:true}});localStorage.ya_pl=JSON.stringify(o)}catch(e){}`);
-const today=new Date().toISOString().slice(0,10);
+const _d=new Date(),today=_d.getFullYear()+'-'+String(_d.getMonth()+1).padStart(2,'0')+'-'+String(_d.getDate()).padStart(2,'0');
 await p.addInitScript(`(function(){var t=setInterval(function(){if(window.__store){clearInterval(t);var a={};for(var i=0;i<5;i++)a['a'+i]={date:'${today}',track:'ccna',q:'x'+i,ok:true,topicId:'s-ccna-1',ts:'${today}T10:0'+i+':00Z'};window.__store['data/users/uGuest/pp/attempts']=a}},5)})()`);
 await p.goto(U+'#ders');await p.waitForTimeout(1500);
 for(const n=await p.locator('button:text-is("Tamam, anladım")').count();;){break}
