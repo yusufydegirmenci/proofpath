@@ -32,7 +32,7 @@ function pjToggle(p,i){
   var s=p.steps[i];if(!s)return;
   var _d=pathProj(p.pid),_g=_d&&_d.steps[i]&&_d.steps[i].g;if(_g&&!s.done&&!gateEval(_g).ok){draw();return}s.done=!s.done;s.ts=s.done?new Date().toISOString():"";
   var all=p.steps.length&&pjDone(p)===p.steps.length;
-  if(all&&p.status!=="bitti"){p.status="bitti";p.finished=today();burst()}else if(!all&&p.status==="bitti"){p.status="yapılıyor";p.finished=""}
+  if(all&&p.status!=="bitti"){p.status="bitti";p.finished=today();burst();try{PP.ogr.depo.kanitEkle({id:"proje-kaydi-"+(p.pid||p.id),tur:"proje-kaydi",hedef:"proje:"+(p.pid||p.id),dogrulama:"beyan"})}catch(e){}}else if(!all&&p.status==="bitti"){p.status="yapılıyor";p.finished=""}
   if(s.done){var n=0;S.projects.forEach(function(q){q.steps.forEach(function(x){if(x.done&&String(x.ts).slice(0,10)===today())n++})});setProg({proj_n:n})}
   pjSave(p);draw();
 }
@@ -150,6 +150,7 @@ function renderPjDetail(p){
     h("div",{class:"row road-add"},si,h("button",{class:"btn ghost",type:"button",disabled:!S.canWrite,onclick:addStep},"Adım ekle"))));
   if(def&&def.maps)out.push(certPanel(p,def));
   if(def)out.push(exportPanel(p,def));
+  var rpP=typeof renderRaporPaneli==="function"?renderRaporPaneli(p,def):null;if(rpP)out.push(rpP);
   out.push(h("div",{class:"panel"},h("h3",null,"Günlük"),ni,
     h("button",{class:"btn ghost",type:"button",disabled:!S.canWrite,onclick:function(){var t=str(P.nnote).trim();if(!t)return;p.notes.push({text:t.slice(0,600),ts:new Date().toISOString(),by:"ben"});P.nnote="";pjSave(p);draw()}},"Nota ekle"),
     p.notes.slice().reverse().map(function(x){return h("div",{class:"pjn"},h("small",{class:"mute"},String(x.ts).slice(0,10)),h("div",null,x.text))})));

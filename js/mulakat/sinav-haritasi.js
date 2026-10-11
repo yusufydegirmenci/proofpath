@@ -109,5 +109,6 @@ function renderInterview(){
         en?h("button",{class:"btn ghost",type:"button",onclick:function(){speak(q.a)}},"Dinle"):null,
         h("div",{class:"row"},h("button",{class:"btn",type:"button",disabled:!S.canWrite,onclick:function(){ivRate(q,true)}},"İyiydi"),h("button",{class:"btn ghost",type:"button",disabled:!S.canWrite,onclick:function(){ivRate(q,false)}},"Zorlandım")))));
   out.push(h("div",{class:"small mute"},"Model cevaplar benim yazdığım örneklerdir; kendi sözlerinle ve kendi deneyiminle uyarla. Kalıpları ezberlemek yerine yapısını (durum, ne yaptım, sonuç) öğren."));
+  var rbP=typeof renderRubrikPaneli==="function"?renderRubrikPaneli():null;if(rbP)out.push(rbP);
   return out;
 }
