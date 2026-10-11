@@ -1,6 +1,6 @@
 # TESTING.md
 
-Son çalıştırma: 2026-10-11 (Faz 2B), Windows 11, Node 22.14, Playwright 1.64 (Chromium), `file://` + sahte `window.claude` (`tests/stub.js`). Hiçbir dış servise (Supabase dahil) veri bağlantısı kurulmaz; `supabase-shim.js` sahte katman varken kendini kapatır.
+Son çalıştırma: 2026-10-11 (Faz 3), Windows 11, Node 22.14, Playwright 1.64 (Chromium), `file://` + sahte `window.claude` (`tests/stub.js`).
 
 ## Komutlar
 
@@ -18,6 +18,17 @@ npm test -- --timeout=90 smoke      # zaman aşımını değiştir / dosya adın
 ## Hata ayıklama sayfası (`tests/make-dbg.js`)
 
 Uygulama artık tek bir sarmalayıcı işlev değil, küresel kapsamda sırayla yüklenen betiklerden oluşur (`index.html` → `js/`). `make-dbg.js`, `index.html`'den `tests/page_dbg.html` üretir (git'e girmez): `<script src>` ve `<link href>` yollarını `../` ile düzeltir ve `</body>` öncesine ayrı bir betik ekler. Bu betik `window.__S` (durum) ve `window.__X` (iç yardımcılar) tanımlar. Eski test adları (`ST`, `QBX`, `tf`, `cl`) yeni sembollere bağlanır (`STARTER`, `QB`, `tmFor`, `cleanLesson`); `NW_RX`, `baseQuiz`, `nwFor`, `nwFuzzy` eklendi. Yapı değişse de hook uygulama betiklerine dokunmaz.
+
+## Faz 3 testleri
+
+| Dosya | İçerik | Kontrol |
+|---|---|---|
+| `tests/sira.js` | acorn ile yükleme sırası: yükleme anında çalışan kod sonraki betikte bildirilen ada başvurursa KALDI; kendi öz-sınaması var | 88 betik, sorun 0 |
+| `tests/hesaplar.js` | mevcut XP / seri / rütbe / seviye / mini sınav / soru bankası / işe hazırlık hesaplarını sabitler (beklenen değerler elle hesaplı) | 71 |
+| `tests/ogrenme.js` | model birimi (Node, tarayıcısız): puan, %80 eşik, kritik hedef, kapı nedenleri, telafi, varyant, aktarım, depo, eski veri dönüştürücü | 121 |
+| `tests/ogrenme_tarayici.js` | gerçek uygulamada bağlama: grafik, eski kayıtların değişmemesi, deneme kaydı + yenileme, panel | 34 |
+
+Sonuç (`npm test`, 420 sn, `b6d0ed2`): **GEÇTİ 60 · KALDI 1 · ZAMAN AŞIMI 0 · ÇÖKTÜ 0** (toplam 61; 57 eski + 4 yeni). KALDI: `t57b_mynotes` — `locator.screenshot: Element is not attached to the DOM` (ekran görüntüsü yarışı, assert değil); tek başına 3/3 geçti, Faz 2B tabanında (`741c32c`) da 3 koşuda 1 kez aynı şekilde düştü, yani Faz 3 kaynaklı değil. `h72` bu koşuda KALDI vermedi.
 
 ## Faz 2B sonuçları
 
