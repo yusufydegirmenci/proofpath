@@ -29,7 +29,8 @@ for (let i = lines.length - 1; i >= 0; i--) {
 if (idx < 0) { console.error('Ana IIFE kapanışı bulunamadı'); process.exit(1); }
 lines.splice(idx, 0, hook);
 let out = lines.join('\n');
-// page_dbg.html tests/ altında durur: göreli betik yollarını kökten çöz.
+// page_dbg.html tests/ altında durur: göreli betik/stil yollarını kökten çöz.
 out = out.replace(/(<script[^>]*\ssrc=")(?!https?:|data:|\/|#|\.\.\/)/g, '$1../');
+out = out.replace(/(<link[^>]*\shref=")(?!https?:|data:|\/|#|\.\.\/)/g, '$1../');
 fs.writeFileSync(path.join(__dirname, 'page_dbg.html'), out);
 console.log('tests/page_dbg.html üretildi (', NAMES.length, 'ad)');
