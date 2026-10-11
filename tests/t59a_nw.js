@@ -3,7 +3,7 @@ const {INIT,chromium}=require('./stub.js');
 for(const [w,m] of [[320,true],[390,true],[1100,false]]){
 const ctx=await b.newContext({viewport:{width:w,height:844},isMobile:m,hasTouch:m,colorScheme:'dark'});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript(INIT);await p.addInitScript("localStorage.ya_gm_seen='1'");
-await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","index.html")).href+'#ders');await p.waitForTimeout(900);
+await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","tests/page_dbg.html")).href+'#ders');await p.waitForTimeout(900);
 await p.evaluate(()=>{__S.les.view='nw';__X.draw()});await p.waitForTimeout(300);
 console.log(w,'tiles',await p.$$eval('.nw-tile',a=>a.length),'ovf',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth));
 if(w===390)await p.screenshot({path:'s59-nwhub.png'});

@@ -3,7 +3,7 @@ const SEC=+process.argv[2]||90;
 (async()=>{const b=await chromium.launch({args:['--enable-precise-memory-info']});
 const ctx=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript(INIT);await p.addInitScript("localStorage.ya_gm_seen='1'");
-await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","index.html")).href+'#oyun');await p.waitForTimeout(900);
+await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","tests/page_dbg.html")).href+'#oyun');await p.waitForTimeout(900);
 await p.evaluate(()=>{__S.gtab='dino';__X.draw()});await p.waitForTimeout(300);
 await p.evaluate(()=>{window.__bot=setInterval(()=>{const D=__S.dn;if(!D)return;
  if(D.state==='ready'||D.state==='over'){const bt=[...document.querySelectorAll('button')].find(x=>/Başla|Yeniden|Tekrar/.test(x.textContent));if(D.state==='over'){window.__runs=(window.__runs||0)+1}if(bt)bt.click();else D.jump&&D.jump();return}

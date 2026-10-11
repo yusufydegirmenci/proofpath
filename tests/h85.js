@@ -5,7 +5,7 @@ for(const [w,hh,m] of [[320,700,true],[390,844,true],[768,900,false],[1100,800,f
 const ctx=await b.newContext({viewport:{width:w,height:hh},isMobile:m,hasTouch:m});const p=await ctx.newPage();
 const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript(INIT);await p.addInitScript("localStorage.ya_gm_seen='1'");
-await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","index.html")).href+'#ders');await p.waitForTimeout(1000);
+await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","tests/page_dbg.html")).href+'#ders');await p.waitForTimeout(1000);
 await p.click('.seg button:text-is("Notlar")');await p.waitForTimeout(300);
 for(const t of ['CCNA','İngilizce','Siber','Backend']){
  await p.click('.seg button:text-is("'+t+'")');await p.waitForTimeout(200);

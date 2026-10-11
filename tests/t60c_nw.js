@@ -3,7 +3,7 @@ const {INIT,chromium}=require('./stub.js');
 for(const [w,m] of [[320,true],[390,true],[1100,false]]){
 const ctx=await b.newContext({viewport:{width:w,height:844},isMobile:m,hasTouch:m,colorScheme:m?'dark':'light'});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript(INIT);await p.addInitScript("localStorage.ya_gm_seen='1'");
-await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","index.html")).href+'#ders');await p.waitForTimeout(900);
+await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","tests/page_dbg.html")).href+'#ders');await p.waitForTimeout(900);
 await p.evaluate(()=>{__S.les.view='nw';__X.draw()});await p.waitForTimeout(250);
 const hub=await p.evaluate(()=>({tiles:document.querySelectorAll('.nw-tile').length,chips:[...document.querySelectorAll('.nw-chip2')].map(x=>x.textContent.trim()),ovf:document.documentElement.scrollWidth>innerWidth}));
 console.log(w,'hub',JSON.stringify(hub));if(hub.ovf)fail++;
