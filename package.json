@@ -6,7 +6,7 @@
     "test": "node tests/run-all.js",
     "test:smoke": "node tests/smoke.js",
     "test:sira": "node tests/sira.js",
-    "test:ogrenme": "node tests/ogrenme.js && node tests/hesaplar.js && node tests/ogrenme_tarayici.js"
+    "test:ogrenme": "node tests/ogrenme.js && node tests/hesaplar.js && node tests/ogrenme_tarayici.js && node tests/faz4_entegrasyon.js"
   },
   "devDependencies": {
     "acorn": "^8.19.0",

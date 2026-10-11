@@ -338,5 +338,90 @@ function kapiOrnek() {
   eq(Object.keys(dk.projeler), ['proje:sec:sec1'], 'program: biten projeler graf anahtarıyla eşlenir');
 }
 
+// ======== Faz 4: tek tanımlar (ilerleme/ustalık/seri), mini sınav kapısı, telafi, aralıklı tekrar, açıklama modları ========
+// ---- 15. İlerleme (ders tamam) tek tanımı ----
+{
+  const I = O.ilerleme;
+  eq([I.dersTamam({ w: 1, r: 1, q: 1, p: 1 }), I.dersTamam({ w: 1, r: 1, q: 1 }), I.dersTamam(null), I.dersTamam('x')], [true, false, false, false], 'ilerleme: ders tamam = w+r+q+p dördü');
+  eq(I.tamamSayisi({ a: { w: 1, r: 1, q: 1, p: 1 }, b: { w: 1 }, _cut: { w: 1, r: 1, q: 1, p: 1 } }, [{ id: 'a', status: 'built' }, { id: 'k', status: 'built' }, { id: 'm', status: 'building' }]), 2,
+    'ilerleme: tamamlanan ders = ya_lc tamamı ∪ built konu; aynı kimlik (a) bir kez; "_" iç kayıt ve building sayılmaz');
+  eq([{ status: 'built' }, { status: 'building', mastery: 40 }, { status: 'building', mastery: 39.9 }, { status: 'next' }, { status: 'locked' }, null].map(I.asama), [4, 3, 2, 1, 0, 0], 'ilerleme: konu aşaması tek formül (stageOf)');
+  const sd = I.sabitDurumlar(5, i => i === 2, 2);
+  eq(sd.map(x => [x.durum, x.kaynak, x.ustalik]), [['built', 'yerlestirme', 60], ['built', 'yerlestirme', 60], ['built', 'ders', 60], ['next', null, 0], ['open', null, 0]],
+    'ilerleme: yerleştirmeyle atlanan dersler "built" görünür ama kaynak "yerlestirme" (tamamlama değil); ilk açık ders "next"');
+}
+// ---- 16. Ustalık tanılama ölçüleri (tek yer) ----
+{
+  const U = O.ustalik;
+  eq([U.soruDuzeyi([3, 3], 3), U.soruDuzeyi([2, 2], 0), U.soruDuzeyi([7, 10], 0), U.soruDuzeyi([69, 100], 4), U.soruDuzeyi([0, 0], 0)], [3, 2, 1, 0, null], 'ustalık: soru düzeyi (Usta/Yeterli/Aşina/Denendi; denenmemiş null)');
+  eq([U.beceriAdim(1.5, 2, true), U.beceriAdim(1.5, 1, true), U.beceriAdim(1.5, 1, false), U.beceriAdim(1.5, 2, false), U.beceriAdim(2.98, 3, true), U.beceriAdim(1.02, 1, false)].map(x => Math.round(x * 100) / 100),
+    [1.59, 1.54, 1.36, 1.43, 3, 1], 'ustalık: beceri tahmini adımı ±(0.09/0.04 | 0.14/0.07), [1,3] sınırı');
+  eq([U.kutuAdim(3, true), U.kutuAdim(4, true), U.kutuAdim(2, false), U.kutuAdim(undefined, true)], [4, 4, 0, 1], 'ustalık: tekrar kutusu 0–4');
+  eq([U.yerlestirmeDuzeyi([{ d: 1 }, { d: 2 }, { d: 3 }], [1, 0, 1]), U.yerlestirmeDuzeyi([], []), U.yerlestirmeBandi(1.49), U.yerlestirmeBandi(1.5), U.yerlestirmeBandi(2.3)], [2.3, 1, 0, 1, 2], 'ustalık: yerleştirme düzeyi ve bandı');
+  eq([U.seviyeSinavDuzeyi(0.62), U.seviyeSinavDuzeyi(0.61), U.seviyeSinavDuzeyi(0.32), U.seviyeSinavDuzeyi(0.31), U.SEVIYE_BECERI[3]], [3, 2, 2, 1, 2.5], 'ustalık: seviye sınavı düzeyi');
+  const G = ornek();
+  eq(U.hedef(G, 'h-sozluk', [dn('h-sozluk', 4, 5)]).durum, 'gecti', 'ustalık: kanıta dayalı geçti/kaldı tek kaynaktan (PP.ogr.deg)');
+}
+// ---- 17. Seri: tek sayaç, adlandırılmış türler ----
+{
+  const S = O.seri, B = '2026-10-11', g = n => O.gun.ekle(B, -n), set = a => { const o = {}; a.forEach(n => { o[g(n)] = 1; }); return o; };
+  eq([S.calisma(set([0, 1, 2]), {}, B), S.calisma(set([1, 2]), {}, B), S.calisma(set([0, 2]), set([1]), B), S.calisma(set([0, 3]), {}, B), S.calisma({}, {}, B)], [3, 2, 2, 1, 0],
+    'seri (çalışma): bugün dahil; bugün yoksa dünden; joker köprüler ama sayılmaz; boşluk keser');
+  eq([S.oyun(d => set([0, 1])[d] === 1, B), S.masa(set([1, 2, 3]), B), S.lig({ [g(0)]: { tot: 3 }, [g(1)]: { tot: 0 } }, B)], [2, 3, 1], 'seri: oyun/masa/lig türleri aynı sayaçla');
+  eq(S.oyun(() => true, B), 400, 'seri (oyun): eski üst sınır 400 gün korunur');
+  eq([O.gun.ekle('2026-03-01', -1), O.gun.ekle('2024-12-31', 1), O.gun.fark('2026-10-11', '2026-10-01')], ['2026-02-28', '2025-01-01', 10], 'gün yardımcıları: ay/yıl geçişi, fark');
+}
+// ---- 18. Mini sınav kapısı (%80) ve telafi metni ----
+{
+  const ms = K.miniSinav;
+  eq([ms(4, 5).gecti, ms(3, 5).gecti, ms(3, 5).neden, ms(5, 5, 4).neden, ms(0, 0).gecti, ms(9, 10, 10, 0.95).gecti], [true, false, 'esik-altinda', 'cevaplanmadi', true, false],
+    'mini sınav kapısı: %80 sınırda geçer, %60 kalır, eksik cevap kalır, sorusuz açık, hedef eşiği yükseltebilir');
+  const t1 = D.telafiAdimlari('X', 0.4, 0.8, { varyant: 'v1', uyari: 'tek-varyant' }), t2 = D.telafiAdimlari('X', 0.4, 0.8, { varyant: 'B', uyari: null });
+  ok(/farklı varyant yok/.test(t1[5].metin) && /farklı bir varyantla \(B\)/.test(t2[5].metin), 'telafi: tek varyantta "aynı sorular" dürüstçe söylenir; çok varyantta farklı varyant');
+  eq(t1.length, 6, 'telafi: 6 adım');
+  eq(K.rutbeKosullari({ q: 40, acc: 0.8, les: 3 }, { soru: { n: 40, acc: 0.8 }, ders: 3, proje: 0, seviyeTesti: false, prova: { n: 0, avg: 0 } }).map(x => x.ok), [true, true], 'rütbe kapısı koşulları PP.ogr.kapi altında');
+}
+// ---- 19. Aralıklı tekrar planı (Fail-Forward telafisine bağlı) ----
+{
+  const G = ornek(), B = '2026-10-20';
+  const d = (h, p, m, t, v) => dn(h, p, m, { tarih: t, varyant: v || null });
+  let ds = [d('h-maske', 2, 5, '2026-10-18T10:00:00Z', 'A')];
+  let pl = O.tekrar.plan(G, ds, B);
+  eq([pl.bugun.length, pl.bugun[0].hedef, pl.bugun[0].durum, pl.bugun[0].varyant], [1, 'h-maske', 'kaldi', 'B'], 'tekrar: başarısız hedef bugün vadeli, telafi sonrası FARKLI varyant (B)');
+  ok(/gereken %80/.test(pl.bugun[0].neden) && pl.bugun[0].telafi.length === 6, 'tekrar: "neden bugün" metni ve telafi adımları');
+  ds = ds.concat([d('h-maske', 5, 5, '2026-10-20T10:00:00Z', 'B')]);
+  pl = O.tekrar.plan(G, ds, B);
+  eq([pl.bugun.length, pl.sonra[0].vade, pl.sonra[0].aralik], [0, '2026-10-21', 1], 'tekrar: tamamlanan tekrar planı değiştirir (geçince 1 gün sonraya)');
+  ds = ds.concat([d('h-maske', 5, 5, '2026-10-21T10:00:00Z', 'C')]);
+  pl = O.tekrar.plan(G, ds, '2026-10-21');
+  eq([pl.sonra[0].vade, pl.sonra[0].aralik], ['2026-10-24', 3], 'tekrar: art arda ikinci geçiş aralığı 3 gün');
+  eq(O.tekrar.plan(G, ds, '2026-10-24').bugun.map(x => [x.hedef, x.durum]), [['h-maske', 'gecti']], 'tekrar: vadesi gelen geçmiş hedef yeniden kuyruğa girer');
+  ds = ds.concat([d('h-maske', 1, 5, '2026-10-24T10:00:00Z', 'B')]);
+  eq(O.tekrar.plan(G, ds, '2026-10-24').bugun.map(x => x.durum), ['kaldi'], 'tekrar: başarısız öğe geri gelir (yeniden telafi)');
+  const pr = O.tekrar.plan(G, [d('h-sozluk', 1, 5, '2026-10-19T10:00:00Z'), d('h-maske', 3, 5, '2026-10-19T10:00:00Z', 'A')], B);
+  eq(pr.bugun.map(x => x.hedef), ['h-maske', 'h-sozluk'], 'tekrar: kritik hedef önce (aynı durumda, oran daha yüksek olsa da)');
+  const M = mem();
+  ds.forEach(x => O.depo.denemeEkle(x, M));
+  eq(JSON.stringify(O.tekrar.plan(G, O.depo.oku(M).denemeler, '2026-10-24')), JSON.stringify(O.tekrar.plan(G, ds.map(x => O.depo.normalle(x).deneme), '2026-10-24')), 'tekrar: kuyruk kalıcı depodan aynen yeniden kurulur');
+  eq(O.tekrar.plan(G, [], B), { bugun: [], sonra: [] }, 'tekrar: deneme yoksa kuyruk boş (cezasız, uydurma öğe yok)');
+}
+// ---- 20. Açıklama modları ve kalıcı tercih ----
+{
+  const A = O.aciklama, k = { baslik: 'Ağ', neden: 'Cihazlar konuşur. İkinci cümle.', cikti: 'Ofis ağını çizersin', adimlar: [['Switch', 'aynı ağ'], ['Router', 'farklı ağlar']], ornek: 'PC → Switch', arizalar: [['Router bozulursa', 'internet yok']], durumlar: [['İki şube', 'Router', 'Switch']], benzetme: 'Posta gibi', mulakat: [{ q: 'Switch nedir?', a: 'Aynı ağı bağlar' }] };
+  eq(A.MODLAR.length, 8, 'açıklama: 8 mod');
+  const ciktilar = A.MODLAR.map(m => JSON.stringify(A.icerik(m[0], k).maddeler));
+  eq(new Set(ciktilar).size, 8, 'açıklama: aynı kaynaktan 8 mod 8 farklı açıklama üretir (mod değişimi anlamlı)');
+  eq(A.icerik('kisa', k).maddeler, ['Ofis ağını çizersin', 'Cihazlar konuşur.'], 'açıklama: kısa özet = çıktı + ilk cümle (kaynaktan, uydurma yok)');
+  eq([A.icerik('yok', k).mod, A.icerik('ornek', {}).bos], ['standart', true], 'açıklama: bilinmeyen mod standart; içerik yoksa "boş" (uydurmaz)');
+  const M = mem();
+  O.depo.denemeEkle({ id: 'x1', hedef: 'h', puan: 1, maks: 1 }, M);
+  ok(O.depo.tercih('aciklama', 'adim', M), 'tercih: yazıldı');
+  eq([O.depo.tercih('aciklama', undefined, M), O.depo.oku(M).denemeler.length, JSON.parse(M.m.ya_pp_ogr).tercih.aciklama], ['adim', 1, 'adim'], 'tercih: kalıcı (ya_pp_ogr.tercih), denemeleri bozmaz');
+  O.depo.denemeEkle({ id: 'x2', hedef: 'h', puan: 1, maks: 1 }, M);
+  eq(O.depo.tercih('aciklama', undefined, M), 'adim', 'tercih: sonraki deneme yazımı tercihi korur');
+  const R = mem(); R.removeItem = k2 => { delete R.m[k2]; }; R.setItem('ya_pp_ogr', '{}'); R.setItem('ya_lc', '{"a":1}');
+  ok(O.depo.sifirla(R) && !('ya_pp_ogr' in R.m) && R.m.ya_lc === '{"a":1}', 'depo.sifirla: yalnız ya_pp_ogr kaldırılır, başka anahtar silinmez');
+}
+
 console.log(`\n${n} kontrol, ${fails} hata`);
 process.exit(fails ? 1 : 0);
