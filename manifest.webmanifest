@@ -1,0 +1,14 @@
+{
+  "name": "Proofpath",
+  "short_name": "Proofpath",
+  "description": "Kanıta dayalı öğrenme: CCNA, ağ, İngilizce, siber, backend, DevOps, test",
+  "lang": "tr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f1ede4",
+  "theme_color": "#2d7d74",
+  "icons": [
+    { "src": "ikon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

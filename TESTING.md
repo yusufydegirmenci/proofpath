@@ -89,3 +89,8 @@ Birimler çıkarılırken her birimden sonra: `smoke`, `kritik_akis` ve birimle 
 
 ## Faz 8
 - `node tests/faz8_kariyer.js`: tanım denetimi (gerçek veri), rapor durumları ve iddia kuralı, istemci/sunucu kanıt farkı, işveren görünümü sızdırmazlığı, CV/boşluk/İngilizce, mülakat rubriği ve tekrarlayan zayıflık, akran rubriği/görünürlük/AI-insan ayrımı, paylaşım oluştur/erişim/iptal/süre (sahte depo), SQL dosyası statik denetimi, arayüz. Sonuç: GEÇTİ. SQL dosyası Postgres'te ÇALIŞTIRILMADI (psql yok); gerçek RLS/çok kullanıcı testi yok.
+
+## Faz 9
+- `node tests/faz9_senkron.js` (sahte depo/arka uç): çevrimdışı kuyruk ve kalıcılık, yeniden bağlanınca tek gönderim, birleşme, kesilen istek, çakışma (sessiz üzerine yazma yok, iki sürüm, çözüm seçenekleri), sunucu reddi, kullanıcı yalıtımı, cihaz yalıtımı/paylaşılan cihaz çıkışı, güven merkezi mantığı ve arayüzü (silme onay kapıları).
+- `node tests/faz9_cevrimdisi.js` (yerel http sunucu `/proofpath/` alt yolu + sahte supabase istemcisi): bayrak kapalıyken eski yol; bayrak açıkken yazma/güncelleme, çevrimdışı yazma + yenileme + yeniden bağlanma, çakışma ve çözüm arayüzü, sunucu reddi, hesap değişimi yalıtımı, paylaşılan cihaz çıkışı, service worker (alt yol kapsamı, önbellek içeriği, çevrimdışı yenileme, güncelleme akışı, kapatma). Sonuç: GEÇTİ.
+- Test edilmedi: gerçek Supabase (RLS, gerçek ağ kesintisi), çoklu cihaz, gerçek telefon/iOS Safari service worker, Firefox, Lighthouse PWA kurulabilirlik ölçümü, uzun süreli önbellek sürümleme.
