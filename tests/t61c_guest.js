@@ -1,9 +1,9 @@
-const {INIT,chromium}=require(process.cwd()+'/repo/tests/stub.js');
-(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});const er=[];
+const {INIT,chromium}=require('./stub.js');
+(async()=>{const b=await chromium.launch();const er=[];
 for(const g of ['net','dev','qa']){
 const ctx=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const p=await ctx.newPage();p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript('window.__guest=true;window.__noOnb=true');await p.addInitScript(INIT);await p.addInitScript("localStorage.ya_gm_seen='1'");
-await p.goto('file://'+process.cwd()+'/page_dbg.html');await p.waitForTimeout(1300);
+await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","index.html")).href);await p.waitForTimeout(1300);
 const names={net:'Network',dev:'DevOps',qa:'Test Uzmanı'};
 await p.click('button:has-text("'+names[g]+'")');await p.waitForTimeout(200);await p.click('button:has-text("5 saat")');await p.waitForTimeout(200);
 await p.click('button:has-text("Sıfırdan başlıyorum")');await p.waitForTimeout(900);

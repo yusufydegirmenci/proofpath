@@ -1,9 +1,9 @@
-const {INIT,chromium}=require(process.cwd()+'/repo/tests/stub.js');
-(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const {INIT,chromium}=require('./stub.js');
+(async()=>{const b=await chromium.launch();
 const ctx=await b.newContext({viewport:{width:360,height:640},isMobile:true,hasTouch:true,deviceScaleFactor:3,userAgent:'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 Chrome/120 Mobile Safari/537.36'});
 const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));const cdp=await ctx.newCDPSession(p);
 await p.addInitScript(INIT);await p.addInitScript("localStorage.ya_gm_seen='1'");
-await p.goto('file://'+process.cwd()+'/page_dbg.html#oyun');await p.waitForTimeout(900);
+await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","index.html")).href+'#oyun');await p.waitForTimeout(900);
 async function swipe(x0,y0,x1,y1){await cdp.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:x0,y:y0}]});for(let i=1;i<=6;i++)await cdp.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x0+(x1-x0)*i/6,y:y0+(y1-y0)*i/6}]});await cdp.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await p.waitForTimeout(120)}
 // Arcade
 await p.evaluate(()=>{__S.gtab='arcade';__X.draw()});await p.waitForTimeout(300);

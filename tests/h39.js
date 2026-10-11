@@ -1,9 +1,9 @@
-const {INIT,chromium}=require('/tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/repo/tests/stub.js');
-(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const {INIT,chromium}=require('./stub.js');
+(async()=>{const b=await chromium.launch();
 for(const [w,m] of [[390,true],[1100,false]]){
 const ctx=await b.newContext({viewport:{width:w,height:844},isMobile:m,hasTouch:m,colorScheme:'dark'});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript('window.__guest=false');await p.addInitScript(INIT);
-await p.goto('file:///tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/page.html#oyun');await p.waitForTimeout(1300);
+await p.goto(require('url').pathToFileURL(require('path').join(__dirname,'..','index.html')).href+'#oyun');await p.waitForTimeout(1300);
 await p.screenshot({path:'v27-oyun-lobi-'+w+'.png',fullPage:true});
 for(const skin of ['Koşucu','Sürücü']){
  await p.click('.gh-nav button:text-is("Arcade")');await p.click('.seg button:text-is("'+skin+'")');await p.click('.gh-nav button:text-is("Arcade")');await p.click('.gt >> nth=0');await p.waitForTimeout(400);

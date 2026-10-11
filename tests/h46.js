@@ -1,9 +1,9 @@
-const {INIT,chromium}=require('/tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/repo/tests/stub.js');
-(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const {INIT,chromium}=require('./stub.js');
+(async()=>{const b=await chromium.launch();
 for(const [w,m,cs] of [[390,true,'dark'],[1100,false,'light']]){
 const ctx=await b.newContext({viewport:{width:w,height:844},isMobile:m,hasTouch:m,colorScheme:cs});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript('window.__guest=false');await p.addInitScript(INIT);
-await p.goto('file:///tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/page.html#oyun');await p.waitForTimeout(1200);
+await p.goto(require('url').pathToFileURL(require('path').join(__dirname,'..','index.html')).href+'#oyun');await p.waitForTimeout(1200);
 await p.screenshot({path:'v29-home-'+w+'.png',fullPage:true});
 console.log(w,'home ovf',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth));
 await p.click('.gh-nav button:text-is("Arcade")');await p.click('.seg button:text-is("Backend")');await p.click('.gh-nav button:text-is("Arcade")');await p.click('.seg button:text-is("Hızlı")');

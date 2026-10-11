@@ -1,8 +1,8 @@
-const {INIT,chromium}=require('/tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/repo/tests/stub.js');
-(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const {INIT,chromium}=require('./stub.js');
+(async()=>{const b=await chromium.launch();
 const ctx=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const p=await ctx.newPage();p.on('pageerror',e=>console.log('ERR',e.message));
 await p.addInitScript('window.__guest=false');await p.addInitScript(INIT);
-await p.goto('file:///tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/page.html#oyun');await p.waitForTimeout(1200);
+await p.goto(require('url').pathToFileURL(require('path').join(__dirname,'..','index.html')).href+'#oyun');await p.waitForTimeout(1200);
 await p.screenshot({path:'v28-gm-home.png',fullPage:true});
 for(const t of ['Siber','Backend','CCNA','İngilizce','Karışık']){
  await p.click('.gh-nav button:text-is("Arcade")');await p.click('.seg button:text-is("'+t+'")');await p.waitForTimeout(150);

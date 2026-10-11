@@ -1,5 +1,5 @@
-const {INIT,chromium}=require('/tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/repo/tests/stub.js');
-const U='file:///tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/page.html';
+const {INIT,chromium}=require('./stub.js');
+const U=require('url').pathToFileURL(require('path').join(__dirname,'..','index.html')).href;
 const dateJS=n=>`(function(){var off=${n}*864e5,R=Date;function D(){var a=arguments;if(!a.length)return new R(R.now()+off);return new (Function.prototype.bind.apply(R,[null].concat([].slice.call(a))))}D.prototype=R.prototype;D.now=function(){return R.now()+off};D.UTC=R.UTC;D.parse=R.parse;window.Date=D})();`;
 async function session(b,ctx,dump,day,actions){
   const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
@@ -18,7 +18,7 @@ async function playRound(p){
   await p.click('.gm-card button:text-is("Başla")');
   for(let i=0;i<400;i++){if(i%4==0)await p.keyboard.press(['ArrowLeft','ArrowRight'][Math.floor(Math.random()*2)]);await p.waitForTimeout(200);if(await p.$('.gm-res'))break}
 }
-(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+(async()=>{const b=await chromium.launch();
 const pc=await b.newContext({viewport:{width:1100,height:800}});
 let dump=null;const base=new Date().toISOString().slice(0,10);
 for(let day=0;day<4;day++){
