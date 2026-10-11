@@ -5,3 +5,4 @@ node_modules/
 tests/page_dbg.html
 tests/*.png
 tests/**/*.png
+/*.png
