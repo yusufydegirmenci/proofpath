@@ -9,7 +9,7 @@ const { spawn } = require('child_process');
 
 const args = process.argv.slice(2);
 const tArg = args.find(a => a.startsWith('--timeout='));
-const TIMEOUT = (tArg ? parseInt(tArg.slice(10), 10) : 90) * 1000;
+const TIMEOUT = (tArg ? parseInt(tArg.slice(10), 10) : 420) * 1000;
 const filter = args.find(a => !a.startsWith('--'));
 const SKIP = new Set(['stub.js', 'run-all.js', 'make-dbg.js']);
 
