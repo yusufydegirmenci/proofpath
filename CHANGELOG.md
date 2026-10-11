@@ -1,5 +1,32 @@
 # CHANGELOG
 
+## Faz 9 (dal: faz-9)
+- Çevrimdışı/PWA (varsayılan KAPALI; Ayarlar > Güven merkezi ya da `?pwa=1`): `manifest.webmanifest`, `ikon.svg`, `sw.js` (ağ önce, önbellek yedek; yalnız uygulama kabuğu ve statik içerik; Supabase API ve kullanıcı verisi önbelleğe alınmaz; göreli adres, GitHub Pages alt yolu korunur), `js/ogrenme/cevrimdisi.js`. Yeni sürüm kendiliğinden devralmaz, "Şimdi yenile" ile uygulanır; kapatınca SW ve önbellek kaldırılır.
+- Senkron (varsayılan KAPALI; `localStorage.pp_senkron=1`): `PP.sync` motoru (`js/ogrenme/senkron.js`) kalıcı yazma kuyruğu (kullanıcıya göre ayrı), durumlar bekliyor/çakışma/hata/başarılı, kesilen istekte yeniden deneme. `supabase-shim.js` bayrak açıkken yazmaları taban sürümlü (`updated_at`) gönderir; sunucu satırı değişmişse YAZMAZ, iki sürümü saklar ve kullanıcıya sorar. Çevrimdışıyken son bilinen sunucu görüntüsü okunur. Bayrak kapalıyken yazma yolu eskisiyle aynıdır. Sağ altta durum rozeti.
+- Paylaşılan cihaz yalıtımı (`PP.cihaz`, shim'de her zaman etkin): hesap değişince önceki kullanıcının yerel verisi (`ya_*`) ayrı saklaya (`pp_stash:<uid>`) alınır, o hesap dönünce geri gelir; sahipsiz ilk veri ilk giren hesaba atanır. "Paylaşılan cihaz modu" açıkken çıkışta bu hesabın yerel verisi ve kuyruğu silinir; çıkış uyarısı bekleyen değişiklik sayısını söyler.
+- Güven merkezi (`PP.guven`, `js/atolye/guven-ui.js`; Ayarlar): saklanan veri ve nedeni, ölçülen/çıkarım/doğrulanmamış ayrımı, AI sağlayıcıya giden veri, portfolyo görünürlüğü, dışa aktarma (JSON), yerel veriyi silme (açık onay + dışa aktarma önerisi görüldü işareti şart; sunucu/hesap silme yok ve öyle yazılı), sınırlar.
+- Düzeltme (Faz 4 hatası): aralıklı tekrar günü artık yerel güne çevrilir; gece 00:00-03:00 (TR) kayıtları UTC tarihi yüzünden bir önceki güne yazılıyordu.
+- Test: `tests/faz9_senkron.js`, `tests/faz9_cevrimdisi.js` (yeni; yerel http sunucu + sahte supabase).
+
+## Faz 8 (dal: faz-8)
+- Kanıt raporu `PP.rapor` (`js/ogrenme/rapor.js`): her iddia kanıta bağlı ya da "doğrulanmamış"; adım işaretleme öz-beyan etiketli; 8 kademeli durum yalnız sunucu doğrulamalı kanıt türleriyle yükselir; işveren görünümü özel not/gerekçe/kanıtsız iddia taşımaz; proje tamamlanınca öz-beyan etiketli `proje-kaydi` kanıtı yazılır; proje tanımında 10 alandan kaçının dolu olduğu görünür. CV (yalnız kanıtlı satırlar), rol boşluğu (iş vaadi yok), teknik İngilizce.
+- Mülakat rubriği `PP.mulakat`: 6 ölçüt 0-4, kaynak etiketi (öz/insan/AI), tekrarlayan zayıflık ve telafi eylemi; Mülakat sekmesinde panel.
+- Akran incelemesi `PP.akran` ve paylaşım `PP.paylasim` (istemci modeli, sahte depo): AI/insan ayrımı zorunlu, görünürlük yalnız sahip/yazar, inceleme güvenilir durumu değiştirmez; belirteç yalnız SHA-256 özeti olarak saklanır, iptal/süre dolumu erişimi keser.
+- Sunucu politikası taslağı `supabase/migrations/20261013_paylasim_politikasi.sql` (uygulanmadı). Arayüzde paylaşım bağlantısı oluşturma kapalı.
+- Test: `tests/faz8_kariyer.js`.
+
+## Faz 7 (dal: faz-7)
+- Uyarlanabilir plan `PP.plan`: tekrar/telafi kuyruğu + yoldaki kalan konular + öğrenci müsaitliği → günlük küçük adımlar, ayrı tampon, görünür varsayımlar. Tahmin hafta ARALIĞI ve ölçülenden ayrı; kesin tarih/olasılık yok. Kaçırılan gün cezasız, plan bugünden yeniden kurulur; alternatif takvimler.
+- Öğrenme ikizi `PP.ikiz`: kayıtlardan güçlü/zayıf/belirsiz/darboğaz, her biri kanıtıyla; kaydı olmayan yol için durum söylenmez.
+- Bugün sekmesinde "Plan ve öğrenme ikizi" paneli; tercihler `ya_pp_ogr.tercih.plan`. Test: `tests/faz7_plan.js`.
+
+## Faz 6 (dal: faz-6)
+- Koç modülü `PP.koc` ve Bugün'de Koç paneli: öneriler yalnız kayıtlardan ve "Dayanak" ile; kayıt yoksa "veri yok"; gezinme yalnız geçerli hedeflere. Tercihler (ton, proaktif öneri, harici sağlayıcı) incelenir/değiştirilir/onayla sıfırlanır. Harici sağlayıcı varsayılan kapalı, gerçek AI bağlantısı yok.
+- Koç ilerleme/ustalık/kanıt yazamaz; açık sınav sırasında cevap/ipucu verilmez ve sağlayıcıya hiçbir şey gitmez; sağlayıcıya giden bağlamdan cevap alanları çıkarılır; hata/zaman aşımında yerel yanıt. Test: `tests/faz6_koc.js`.
+
+## Faz 5 tur 1 (dal: faz-5, Network yolu)
+- Ders eki: Network yolunun ilk 4 konusu için benzetme + sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar, geçme ölçütü, telafi, kaynaklar (yalnız HTTP 200 doğrulananlar). Alt ağ laboratuvarı (yerel simülasyon): doğrula, ipucu, sıfırla, `lab` türünde kanıt. Test: `tests/faz5_net.js`.
+
 ## Faz 4 (dal: faz-4)
 - Tek tanım: ders tamamlama, ustalık ve seri hesapları `PP.ogr` altında toplandı (`PP.ogr.ilerleme`, `PP.ogr.ustalik`, `PP.ogr.seri`, `PP.ogr.kapi.miniSinav`, `PP.ogr.kapi.rutbeKosullari`, `PP.ogr.tekrar.ARALIK`). Eski işlev adları (`lcDone`, `lessonsDone`, `starterTopics`, `stageOf`, `mastLevels`, `plLevel`, `plBand`, `gsAnswer`, `streakInfo`, `gmStreak`, `deskState`, `gateList` …) korunur ve bu tanımlara devreder. `js/ogrenme/` betikleri çekirdek koddan önce yüklenir.
 - Davranış değişiklikleri: (1) tamamlanan ders sayısı artık iki kaynağın birleşimi (ders kayıtları ∪ tamamlanmış konular, aynı kimlik bir kez), eskiden büyük olanı alınıyordu; (2) mini sınav adımı yalnız en az %80 doğru ile tamamlanır (eskiden tüm soruları cevaplamak yetiyordu); daha önce tamamlanmış mini sınav kayıtları geçerli kalır; sıradaki ders bu kapıyı bekler.
