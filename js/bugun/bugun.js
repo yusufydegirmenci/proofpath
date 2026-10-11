@@ -37,6 +37,7 @@ function renderToday(){
   var wc=welcomeCard();if(wc)out.push(wc);
   if(!wc&&!S.guest)out.push(h("div",{class:"row",style:"justify-content:flex-end"},h("button",{class:"btn ghost",type:"button",onclick:function(){goTab("rehber")}},"Nasıl kullanırım? Adım adım tur")));
   var ppn=renderPersonal();if(ppn)out.push(ppn);
+  var kocP=typeof renderKoc==="function"?renderKoc():null;if(kocP)out.push(kocP);
   out.push(renderRoute());
   out.push(bgGrid());
   var tools=[plPanel(),syncLine()];if(!S.guest)tools.push(m5Panel());
