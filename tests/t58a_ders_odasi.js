@@ -12,7 +12,7 @@ await fake('anlat',true);
 console.log('anim',await p.$$eval('.an',a=>a.length));
 await p.evaluate(()=>[...document.querySelectorAll('.an .btn')].find(b=>/Başlat/.test(b.textContent)).click());await p.waitForTimeout(500);
 console.log('active',await p.$$eval('.an-r.on',a=>a.length));
-if(w===390)await p.locator('.an').screenshot({path:'s58-anim.png'});
+if(w===390)await p.locator('.an').screenshot({path:'s58-anim.png'}).catch(()=>{});
 await p.evaluate(()=>{for(let i=0;i<3;i++)[...document.querySelectorAll('.an .btn')].find(b=>/Devam|▶/.test(b.textContent)||b.getAttribute('aria-label')==='Sonraki adım').click()});
 await fake('sinav',true);
 console.log('quiz cards',await p.$$eval('.qz',a=>a.length),'opts',await p.$$eval('.qz-o',a=>a.length));
