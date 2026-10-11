@@ -1,5 +1,5 @@
 // Kullanım: node tests/make-dbg.js
-// index.html'i okur, ana IIFE'nin son "})();" satırından önce hata ayıklama kancalarını ekler
+// index.html'i okur, uygulama betiklerinden sonra hata ayıklama kancalarını ekler
 // ve tests/page_dbg.html üretir (git'e girmez). index.html değiştirilmez.
 const fs = require('fs');
 const path = require('path');
@@ -21,14 +21,9 @@ const hook =
   '};';
 // window.__store tests/stub.js tarafından tanımlanır (sahte db deposu); burada ezilmez.
 
-const lines = src.split('\n');
-let idx = -1;
-for (let i = lines.length - 1; i >= 0; i--) {
-  if (lines[i].replace(/\r$/, '') === '})();') { idx = i; break; }
-}
-if (idx < 0) { console.error('Ana IIFE kapanışı bulunamadı'); process.exit(1); }
-lines.splice(idx, 0, hook);
-let out = lines.join('\n');
+// Kanca, tüm uygulama betiklerinden sonra ayrı bir betik olarak </body> öncesine eklenir (uygulama kodu küresel kapsamdadır).
+let out = src.replace(/\n<\/body>/, '\n<script>\n"use strict";\n' + hook + '\n</script>\n</body>');
+if (out === src) { console.error('</body> bulunamadı'); process.exit(1); }
 // page_dbg.html tests/ altında durur: göreli betik/stil yollarını kökten çöz.
 out = out.replace(/(<script[^>]*\ssrc=")(?!https?:|data:|\/|#|\.\.\/)/g, '$1../');
 out = out.replace(/(<link[^>]*\shref=")(?!https?:|data:|\/|#|\.\.\/)/g, '$1../');
