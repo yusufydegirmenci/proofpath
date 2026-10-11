@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Faz 10 tur 1 (dal: faz-10, Veri Analitiği — yalnız Seviye 0)
+- Müfredat ve önkoşul grafiği (`content/veri-analitigi/mufredat.js`): Seviye 0–8, SQL'in 13 alt konusu M§15.2 sırasıyla; yalnız Seviye 0 "hazır", 1–8 dürüstçe "yok". PL-300 eşlemesi "doğrulanmadı".
+- Seviye 0 (`content/veri-analitigi/seviye0.js`): 3 tam ders (15 öğe), sentetik 12 siparişlik veri seti, 1 lab (3 görev, yerel simülasyon etiketi, doğrulama/ipucu/sıfırla/kanıt), 5 soruluk değerlendirme (%80) ve derse bağlı telafi.
+- `PP.va` (`js/ogrenme/veri-analitigi.js`) ve Atölye > "Veri Analitiği" arayüzü (`js/atolye/va-ui.js`). Seviye 0 tamam = 3 ders okundu + 3 lab görevi + değerlendirme geçildi; Seviye 1 kilitli. Kayıtlar istemci doğrulamalı, ustalık/sertifika kanıtı değildir.
+- Test: `tests/faz10_va.js` (yeni).
+
 ## Faz 9 (dal: faz-9)
 - Çevrimdışı/PWA (varsayılan KAPALI; Ayarlar > Güven merkezi ya da `?pwa=1`): `manifest.webmanifest`, `ikon.svg`, `sw.js` (ağ önce, önbellek yedek; yalnız uygulama kabuğu ve statik içerik; Supabase API ve kullanıcı verisi önbelleğe alınmaz; göreli adres, GitHub Pages alt yolu korunur), `js/ogrenme/cevrimdisi.js`. Yeni sürüm kendiliğinden devralmaz, "Şimdi yenile" ile uygulanır; kapatınca SW ve önbellek kaldırılır.
 - Senkron (varsayılan KAPALI; `localStorage.pp_senkron=1`): `PP.sync` motoru (`js/ogrenme/senkron.js`) kalıcı yazma kuyruğu (kullanıcıya göre ayrı), durumlar bekliyor/çakışma/hata/başarılı, kesilen istekte yeniden deneme. `supabase-shim.js` bayrak açıkken yazmaları taban sürümlü (`updated_at`) gönderir; sunucu satırı değişmişse YAZMAZ, iki sürümü saklar ve kullanıcıya sorar. Çevrimdışıyken son bilinen sunucu görüntüsü okunur. Bayrak kapalıyken yazma yolu eskisiyle aynıdır. Sağ altta durum rozeti.
