@@ -14,10 +14,12 @@ for(const tr of ['CCNA','İngilizce','Siber','Backend']){
 }
 const lessons=await p.evaluate(()=>Object.values(window.__store['data/users/uGuest/pp/lessons']||{}).map(l=>l.track+':'+l.topicId));console.log(w,'saved',lessons.join(','));
 const pr=await p.evaluate(()=>window.__prompts.map(x=>(x.match(/KONU: ([^(\n]{0,50})/)||[])[1]));console.log(w,'topics',pr.join(' | '));
-// 2. ders CCNA farklı konu
+// 2. ders CCNA farklı konu: sıralı kilit (v58) gereği önce ilk ders tamamlanır (ya_lc: w,r,q,p tohumu)
+await p.evaluate(()=>{var o=JSON.parse(localStorage.ya_lc||'{}');o['s-ccna-1']={w:1,r:1,q:1,p:1,d:new Date().toISOString().slice(0,10)};localStorage.ya_lc=JSON.stringify(o)});
+await p.locator('.seg button:text-is("İngilizce")').first().click();await p.waitForTimeout(200);
 await p.locator('.seg button:text-is("CCNA")').first().click();await p.waitForTimeout(200);
 await p.locator("button:text-is(\"Şimdi ders üret\")").click();await p.waitForTimeout(700);console.log(w,"ikinci ders konusu",await p.evaluate(()=>window.__prompts.slice(-1)[0].match(/KONU: ([^(\n]{0,50})/)[1]),await p.evaluate(()=>Object.keys(window.__store["data/users/uGuest/pp/lessons"]).filter(k=>k.indexOf("ccna")>0).length));
-await p.goto(U+'?m'+w+'#masa');await p.waitForTimeout(900);console.log(w,'masa txt',(await p.innerText('#view')).includes('Henüz ticket yok. Aşağıdan'));
+await p.goto(U+'?m'+w+'#masa');await p.waitForTimeout(900);console.log(w,'masa txt',(await p.innerText('#view')).includes('Henüz ticket yok.'));
 await p.goto(U+'?o'+w+'#ofis');await p.waitForTimeout(900);console.log(w,'ofis txt',(await p.innerText('#view')).includes('Hikâye ve Müdür raporu'),'ovf',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),er);
 await ctx.close()}
 await b.close()})();

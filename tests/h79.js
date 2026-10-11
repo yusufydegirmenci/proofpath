@@ -11,11 +11,16 @@ for(const n=await p.locator('button:text-is("Tamam, anladım")').count();;){brea
 const n=await p.locator('button:text-is("Tamam, anladım")').count();for(let i=0;i<n;i++){await p.locator('button:text-is("Tamam, anladım")').first().click();await p.waitForTimeout(100)}
 await p.locator('button:has-text("Isınmayı bitirdim")').click();await p.waitForTimeout(400);
 // quiz: reveal & mark all
-let k=await p.locator('button:text-is("Cevabı göster")').count();console.log('quiz q',k);
-for(let i=0;i<k;i++){await p.locator('button:text-is("Cevabı göster")').first().click();await p.waitForTimeout(80);await p.locator('button:text-is("Bildim")').last().click();await p.waitForTimeout(80)}
-await p.locator('button:text-is("Dersi okudum")').click();await p.waitForTimeout(600);
+// v58 Ders Odası: ısınma -> "Okudum, mini sınava geç" -> mini sınavın tüm soruları (ya_lc: w,r,q; p = bugün 5 deneme tohumdan)
+await p.locator('button:text-is("Okudum, mini sınava geç")').click();await p.waitForTimeout(400);
+const ans=await p.evaluate(()=>window.PP_LESSONS.ccna[1].quiz.map(q=>q.answer));console.log('quiz q',ans.length);
+for(const [i,a] of ans.entries()){await p.evaluate(([m,i])=>{const kart=document.querySelectorAll('#view .qz')[i];const b=kart&&[...kart.querySelectorAll('button')].find(x=>x.textContent.replace(/^[A-D]s*/,'').trim()===m);b.click()},[a,i]);await p.waitForTimeout(150)}
+await p.waitForTimeout(400);
 await p.goto(U+'?z#ders');await p.waitForTimeout(1500);
 const t=await p.textContent('#view');
 console.log('lc',await p.evaluate(()=>localStorage.ya_lc));
+console.log('lc done keys',JSON.stringify(await p.evaluate(()=>JSON.parse(localStorage.ya_lc||'{}')['s-ccna-1'])));
 console.log('now topic2 gate',t.includes('Kilitli: önce'),'t2',t.includes('IP adresi'),'er',er);
+const lcs=await p.evaluate(()=>JSON.parse(localStorage.ya_lc||'{}')['s-ccna-1']||{});
+if(!(lcs.w&&lcs.r&&lcs.q&&lcs.p&&t.includes('IP adresi'))||er.length){console.log('HATA: ders tamamlanmadı ya da ikinci ders açılmadı');process.exitCode=1}
 await b.close()})();

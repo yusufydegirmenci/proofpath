@@ -7,7 +7,7 @@ await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","t
 await p.evaluate(()=>{__S.les.view='nw';__X.draw()});await p.waitForTimeout(300);
 console.log(w,'tiles',await p.$$eval('.nw-tile',a=>a.length),'ovf',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth));
 if(w===390)await p.screenshot({path:'s59-nwhub.png'});
-for(const id of ['hash','ipclass','tcp']){
+for(const id of ['sc-hash','ipclass','tcp']){
  await p.evaluate((id)=>{__S.nw.open=id;__X.draw()},id);await p.waitForTimeout(200);
  await p.evaluate(()=>{[...document.querySelectorAll('.nw .btn')].find(b=>/Oynat/.test(b.textContent)).click()});await p.waitForTimeout(1500);
  if(w===390&&id!=='tcp')await p.locator('.nw').screenshot({path:'s59-nw-'+id+'.png'});
