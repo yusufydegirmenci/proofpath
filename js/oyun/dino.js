@@ -318,13 +318,8 @@ function gsTotals(){var n=0,ok=0;Object.keys(GS.st).forEach(function(k){n+=GS.st
 var GATES={g1:{q:40,acc:.8,les:3,proj:0,mock:0,mn:0},g2:{q:150,acc:.82,les:15,proj:1,mock:0,mn:0,lv:2},g3:{q:350,acc:.85,les:40,proj:2,mock:7.5,mn:2},g4:{q:700,acc:.88,les:80,proj:3,mock:8,mn:3}};
 function gateList(g){
   var G=GATES[g];if(!G)return [];
-  var t=gsTotals(),PL=plLoad(),lvok=Object.keys(PL).some(function(k){return PL[k]&&PL[k].lv>=2&&PL[k].n>=3}),mi_=mockInfo(),L=[];
-  L.push({t:G.q+" soruda en az %"+Math.round(G.acc*100)+" doğruluk",have:t.n+" soru, %"+Math.round(t.acc*100),ok:t.n>=G.q&&t.acc>=G.acc});
-  L.push({t:G.les+" ders tamamla",have:lessonsDone()+" ders",ok:lessonsDone()>=G.les});
-  if(G.proj)L.push({t:G.proj+" proje bitir",have:projDoneN()+" proje",ok:projDoneN()>=G.proj});
-  if(G.lv)L.push({t:"Bir seviye testinde 2/3",have:lvok?"tamam":"henüz yok",ok:lvok});
-  if(G.mn)L.push({t:G.mn+" mülakat provasında ortalama "+G.mock,have:mi_.n+" prova, ort. "+(Math.round(mi_.avg*10)/10),ok:mi_.n>=G.mn&&mi_.avg>=G.mock});
-  return L;
+  var PL=plLoad(),lvok=Object.keys(PL).some(function(k){return PL[k]&&PL[k].lv>=2&&PL[k].n>=3});
+  return PP.ogr.kapi.rutbeKosullari(G,{soru:gsTotals(),ders:lessonsDone(),proje:projDoneN(),seviyeTesti:lvok,prova:mockInfo()});
 }
 function gateAuto(g){var L=gateList(g);return L.length>0&&L.every(function(x){return x.ok})}
 function gateOk(g){return (S.profile&&S.profile.gates||{})[g]===true||gateAuto(g)}

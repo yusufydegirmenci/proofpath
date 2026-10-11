@@ -94,9 +94,7 @@ function todayAttempts(){return S.attempts.filter(function(a){return a.date===to
 function streakInfo(){
   var L=loggedDates(),J={};
   (S.profile.jokerDates||[]).forEach(function(d){J[d]=1});
-  var d=parse(today()),n=0;
-  if(!L[iso(d)]&&!J[iso(d)])d.setDate(d.getDate()-1);
-  while(L[iso(d)]||J[iso(d)]){if(L[iso(d)])n++;d.setDate(d.getDate()-1)}
+  var n=PP.ogr.seri.calisma(L,J,today());
   var mon=mondayOf(new Date()),used=(S.profile.jokerDates||[]).filter(function(x){return parse(x)>=mon}).length;
   return {n:n,jokersLeft:Math.max(0,1-used),loggedToday:!!L[today()]};
 }
@@ -110,9 +108,8 @@ function activeDaySet(){
   return o;
 }
 function lessonsDone(){
-  var n=0;try{var lc=lcLoad();Object.keys(lc).forEach(function(k){if(k.charAt(0)!=="_"&&lcDone(k))n++})}catch(e){}
-  var built=S.topics.filter(function(t){return t.status==="built"}).length;
-  return Math.max(n,built);
+  var lc={};try{lc=lcLoad()}catch(e){}
+  return PP.ogr.ilerleme.tamamSayisi(lc,S.topics);
 }
 function projDoneN(){return S.projects.filter(function(p){return p.status==="bitti"}).length}
 function mockInfo(){var m=(S.mock||[]).slice(-3),a=0;m.forEach(function(x){a+=num(x.avg)});return {n:(S.mock||[]).length,avg:m.length?a/m.length:0}}

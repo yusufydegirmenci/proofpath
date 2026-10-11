@@ -10,6 +10,7 @@ function rsWipe(scope){
   try{
     if(scope==="all"){
       RS_LS.forEach(function(k){try{localStorage.removeItem(k)}catch(e){}});
+      try{PP.ogr.depo.sifirla()}catch(e){}   /* Faz 4: öğrenme modeli kayıtları (ya_pp_ogr) yalnız bu "Tümünü sıfırla" eyleminde silinir */
       GS.sk=trkMap(1.5);GS.bx={};GS.st={};GS.ts="";
       S.gm.sk={run:"stj",drive:"std"};S.gm.ps={};S.fk=null;S.les.mark={};S.les.pick={};S.les.rev={};S.les.room=null;S.nw.open=null;S.nw.pick={};
     }else{
@@ -27,7 +28,7 @@ function rsApplyRemote(r){
 }
 function rsRun(scope){
   var R=S.rs;R.busy=true;R.msg="Yedek hazırlanıyor…";draw();
-  var now=new Date().toISOString(),bk={at:now,scope:scope,progress:S.progress,days:S.days,attempts:S.attempts.slice(0,400),mistakes:S.mistakes,badges:S.badges,lc:lcLoad(),gs:GS,lv:lvLoad(),fk:fkLoad(),nw:nwLoad()};
+  var now=new Date().toISOString(),bk={at:now,scope:scope,progress:S.progress,days:S.days,attempts:S.attempts.slice(0,400),mistakes:S.mistakes,badges:S.badges,lc:lcLoad(),gs:GS,lv:lvLoad(),fk:fkLoad(),nw:nwLoad(),ogr:(function(){try{return PP.ogr.depo.oku()}catch(e){return null}})()};
   try{if(S.dl)S.dl.save({filename:"proofpath-yedek-"+today()+".json",data:new Blob([JSON.stringify(bk)],{type:"application/json"})}).catch(function(){})}catch(e){}
   var jobs=[];
   if(S.db&&S.canWrite){
@@ -86,9 +87,9 @@ function peAnswer(j){
 function peNext(){
   var P=S.pe;P.pk=null;P.i++;
   if(P.i>=P.qs.length){
-    P.done=true;var f=P.sc/P.mx,l=f>=.62?3:f>=.32?2:1;P.l=l;
+    P.done=true;var l=PP.ogr.ustalik.seviyeSinavDuzeyi(P.sc/P.mx);P.l=l;
     var lv=lvLoad();lv[P.tr]={l:l,s:P.sc,m:P.mx,d:today()};lvSave(lv);
-    try{GS.sk[P.tr]=[0,1.0,1.8,2.5][l];gsSave()}catch(e){}
+    try{GS.sk[P.tr]=PP.ogr.ustalik.SEVIYE_BECERI[l];gsSave()}catch(e){}
   }
   draw();window.scrollTo(0,0);
 }

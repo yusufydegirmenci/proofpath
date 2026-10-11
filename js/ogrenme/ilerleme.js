@@ -1,0 +1,42 @@
+"use strict";
+/* ---- İlerleme (ders tamam) için TEK tanım (Faz 4) ----
+   İlerleme = sayfa/ders açma ve sıra kilidi. Ustalık DEĞİLDİR (ustalık: PP.ogr.kapi.ustalik, kanıt + %80).
+   - Ders tamam (ya_lc kaydı): ısınma (w) + okuma (r) + mini sınav kapısı (q) + alıştırma (p).
+     Faz 4'ten itibaren "q" yalnız mini sınav %80 kapısı geçilince yazılır (PP.ogr.kapi.miniSinav); eski "q" kayıtları geçerli kalır.
+   - Konu tamam (db konusu): durum "built".
+   - Tamamlanan ders sayısı: iki kaynağın BİRLEŞİMİ (aynı kimlik bir kez sayılır).
+   - Yerleştirme ofseti dersleri "atlandı" sayılır: sıradakini açar ama tamamlanan ders sayısına girmez. */
+(function (g) {
+  var O = g.PP.ogr;
+  var ADIMLAR = ["w", "r", "q", "p"];
+
+  function dersTamam(kayit) { return !!(kayit && typeof kayit === "object" && ADIMLAR.every(function (f) { return !!kayit[f]; })); }
+  function konuTamam(t) { return !!t && t.status === "built"; }
+
+  /* lc: ya_lc nesnesi; konular: S.topics. Dönüş: tamamlanan ders sayısı. */
+  function tamamSayisi(lc, konular) {
+    var gor = {}, kimliksiz = 0;
+    Object.keys(lc && typeof lc === "object" ? lc : {}).forEach(function (k) { if (k.charAt(0) !== "_" && dersTamam(lc[k])) gor[k] = 1; });
+    (Array.isArray(konular) ? konular : []).forEach(function (t) { if (konuTamam(t)) { if (t.id == null) kimliksiz++; else gor[String(t.id)] = 1; } });
+    return Object.keys(gor).length + kimliksiz;
+  }
+
+  /* Konu aşaması (şehir/semt görünümü): built 4; building → konu ustalığı ≥40 ise 3 değilse 2; next 1; diğer 0. */
+  var ASAMA_USTALIK = 40;
+  function asama(t) { var m = O.sayi(t && t.mastery); return konuTamam(t) ? 4 : t && t.status === "building" ? (m >= ASAMA_USTALIK ? 3 : 2) : t && t.status === "next" ? 1 : 0; }
+
+  /* Sabit ders listesinin durumları: tamamMi(i) → bool, ofset: yerleştirmeyle atlanan ilk ders sayısı.
+     Dönüş [{durum:"built"|"next"|"open", kaynak:"ders"|"yerlestirme"|null, ustalik}] — ilk tamamlanmamış/atlanmamış ders "next". */
+  var BASLANGIC_USTALIGI = 60;   /* tamam/atlanmış başlangıç konusu için gösterim değeri (konu ustalığı ölçeği 0–100) */
+  function sabitDurumlar(n, tamamMi, ofset) {
+    var out = [], nx = false;
+    for (var i = 0; i < n; i++) {
+      var t = !!tamamMi(i), atla = !t && i < ofset, st = t || atla ? "built" : !nx ? "next" : "open";
+      if (st === "next") nx = true;
+      out.push({ durum: st, kaynak: t ? "ders" : atla ? "yerlestirme" : null, ustalik: t || atla ? BASLANGIC_USTALIGI : 0 });
+    }
+    return out;
+  }
+
+  O.ilerleme = { ADIMLAR: ADIMLAR, dersTamam: dersTamam, konuTamam: konuTamam, tamamSayisi: tamamSayisi, asama: asama, ASAMA_USTALIK: ASAMA_USTALIK, sabitDurumlar: sabitDurumlar };
+})(typeof window !== "undefined" ? window : globalThis);

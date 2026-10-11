@@ -49,6 +49,45 @@
       yardim: { tur: "bilinmiyor", guvenilir: false }, dogrulama: oto ? "istemci" : "beyan", kaynak: "mini-sinav" });
   };
 
+  /* Mini sınav sonucu (Faz 4): %80 kapısı + telafi + yeniden deneme varyantı. l: ders, ok/toplam/cevaplanan: sayılar.
+     Grafikte hedefi olan derslerde hedefin eşiği ve varyant seçimi; diğerlerinde varsayılan eşik ve tek soru seti. */
+  ui.sinavSonucu = function (l, ok, toplam, cevaplanan) {
+    var Gr = ui.graf(), did = ui.dersKimligi(l), hid = did ? did + ":sinav" : null, H = Gr && hid ? Gr.hedefler[hid] : null;
+    var k = O.kapi.miniSinav(ok, toplam, cevaplanan, H ? O.deg.esikOf(H) : O.ESIK);
+    var v = H ? O.deg.varyantSec(Gr, hid, ui.durum().denemeler) : { varyant: null, uyari: "varyant-yok" };
+    var ad = (H && H.ad) || ((l && l.title) || "Ders") + " mini sınavı";
+    return { gecti: k.gecti, oran: k.oran, esik: k.esik, eksik: k.eksik, hedef: hid, varyant: v.varyant, uyari: v.uyari,
+      varyantNotu: v.uyari ? "Bu dersin tek soru seti var; farklı varyant olmadığı için yeniden denemede aynı sorular gelir." : "Yeniden denemede farklı varyant: " + v.varyant + ".",
+      telafi: k.gecti || k.eksik ? [] : O.deg.telafiAdimlari(ad, k.oran, k.esik, v) };
+  };
+
+  /* Aralıklı tekrar + Fail-Forward telafi kuyruğu: ya_pp_ogr denemelerinden (kalıcı) */
+  ui.tekrarPlani = function (bugun) {
+    var Gr = ui.graf();
+    if (!Gr) return { bugun: [], sonra: [] };
+    return O.tekrar.plan(Gr, ui.durum().denemeler, bugun);
+  };
+  /* Plan öğesinin gideceği yer: ders hedefi → {yol, konu}; soru bankası → {yol, atolye:true} */
+  ui.hedefYeri = function (hid) {
+    var m = /^ders:([a-z]+):(\d+):sinav$/.exec(hid || ""), s = /^soru-bankasi:([a-z]+)$/.exec(hid || "");
+    return m ? { yol: m[1], konu: "s-" + m[1] + "-" + m[2] } : s ? { yol: s[1], atolye: true } : null;
+  };
+
+  /* Açıklama modu tercihi (kalıcı: ya_pp_ogr.tercih.aciklama) */
+  ui.aciklamaModu = function (yeni) {
+    if (yeni !== undefined) { if (!O.aciklama.gecerli(yeni)) return false; return O.depo.tercih("aciklama", yeni); }
+    var m = O.depo.tercih("aciklama");
+    return O.aciklama.gecerli(m) ? m : O.aciklama.VARSAYILAN;
+  };
+  /* Dersin açıklama kaynağı: konu haritası (TMAP) + başlangıç benzetmesi + mülakat soruları — tek teknik kaynak */
+  ui.aciklamaKaynagi = function (l) {
+    var T = null, an = "";
+    try { T = typeof tmFor === "function" ? tmFor(l) : null; } catch (e) { T = null; }
+    try { var t = l && l.topicId && typeof topicById === "function" ? topicById(l.topicId) : null; an = t && t.analogy ? t.analogy : ""; } catch (e) { an = ""; }
+    var m = T && T.m ? T.m : {};
+    return { baslik: (l && l.title) || "", neden: m.w || "", cikti: m.o || "", adimlar: m.m || [], ornek: m.x || "", arizalar: m.f || [], durumlar: m.u || [], benzetme: an, mulakat: (l && l.interview) || [] };
+  };
+
   var ETIKET = { gecti: "geçti", kismi: "kısmi", "kritik-basarisiz": "kritik başarısız", "kanit-yok": "kanıt yok", "olcut-yok": "ölçüt yok" };
   ui.panel = function (tr, l) {
     var Gr = ui.graf(), did = ui.dersKimligi(l);

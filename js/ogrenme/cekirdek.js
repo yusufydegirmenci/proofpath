@@ -18,4 +18,14 @@
   O.sayi = function (x) { return typeof x === "number" && isFinite(x) ? x : 0; };
   O.yuzde = function (x) { return Math.round(x * 100) + "%"; };
   O.kopya = function (x) { return x == null ? x : JSON.parse(JSON.stringify(x)); };
+  /* Yerel takvim günü "YYYY-AA-GG" (uygulamanın today/iso/parse/addDays işlevleriyle aynı kural). */
+  function iki(n) { return (n < 10 ? "0" : "") + n; }
+  function gunIso(d) { return d.getFullYear() + "-" + iki(d.getMonth() + 1) + "-" + iki(d.getDate()); }
+  function gunAyir(s) { var p = String(s || "").split("-"); return new Date(+p[0], +p[1] - 1, +p[2]); }
+  O.gun = {
+    iso: gunIso, ayir: gunAyir,
+    bugun: function () { return gunIso(new Date()); },
+    ekle: function (s, n) { var d = gunAyir(s); d.setDate(d.getDate() + n); return gunIso(d); },
+    fark: function (a, b) { return Math.round((gunAyir(a) - gunAyir(b)) / 864e5); }   /* a - b, gün */
+  };
 })(typeof window !== "undefined" ? window : globalThis);

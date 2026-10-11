@@ -47,7 +47,7 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"&&S.more){S.m
 /* kimlik kartı */
 function idStats(){
   var R=rankInfo(),st=streakInfo(),ds=deskState(),c=cityTopics("ccna"),e=topicsOf("eng");
-  function built(a){return a.filter(function(t){return t.status==="built"}).length}
+  function built(a){return a.filter(PP.ogr.ilerleme.konuTamam).length}
   return {rank:R.cur.n,xp:R.xp,streak:st.n,ccna:built(c),ccnaT:c.length,eng:built(e),engT:e.length,csat:ds.csat,tickets:ds.n,words:S.words.length,term:termWeek(),
     bars:c.slice().sort(function(a,b){return num(a.order)-num(b.order)}).map(function(t){return t.status==="built"?1:t.status==="building"?.55:t.status==="next"?.2:.08})};
 }

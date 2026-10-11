@@ -230,8 +230,7 @@ function lgStats(doc){
   var prev=Object.keys(W).filter(function(k){return k<mon&&W[k].w>=3}).sort().slice(-3),pAcc=prev.length?prev.reduce(function(a,k){return a+W[k].wok/W[k].w},0)/prev.length:null;
   var gel=(pAcc!=null&&accRaw!=null)?Math.max(0,Math.min(100,Math.round(50+(accRaw-pAcc)*200))):50;
   var fair=cur.days>0?Math.round(0.4*accAdj*100+0.35*consist+0.25*gel):null;
-  var st=0,x=new Date();if(!d[iso(x)]||!num(d[iso(x)].tot))x.setDate(x.getDate()-1);
-  while(d[iso(x)]&&num(d[iso(x)].tot)>0){st++;x.setDate(x.getDate()-1)}
+  var st=PP.ogr.seri.lig(d,today());
   var t=d[today()]||{ok:0,tot:0,a:[]},last=keys.length?keys[keys.length-1]:null,ago=last?Math.round((parse(today())-parse(last))/864e5):null;
   var act=[];for(var i=13;i>=0;i--){var dd=new Date();dd.setDate(dd.getDate()-i);var e=d[iso(dd)];act.push(e&&num(e.tot)>0?(num(e.tot)>=num(e.n||5)&&num(e.ok)===num(e.tot)?2:1):0)}
   return {tot:tot,wk:cur.pts,days:days,streak:st,lv:lv,lvName:LL[lv][0],next:nx,toNext:nx?nx[1]-tot:0,today:t,fair:fair,acc:accRaw==null?null:Math.round(accRaw*100),accAdj:Math.round(accAdj*100),consist:consist,gel:gel,gelD:(pAcc!=null&&accRaw!=null)?Math.round((accRaw-pAcc)*100):null,expected:expected,played:cur.days,cfg:cfg,since:since,isNew:Math.round((parse(today())-parse(since))/864e5)<14,ago:ago,act:act,band:bandOf(lv)};

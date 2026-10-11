@@ -2,7 +2,7 @@
 // Tarayıcı gerekmez (saf mantık). Hata → çıkış 1. Beklenen değerler bağımsız ve elle yazılmıştır.
 const fs = require('fs');
 const path = require('path');
-for (const f of ['cekirdek', 'graf', 'degerlendirme', 'kapi', 'depo', 'eski', 'program'])
+for (const f of ['cekirdek', 'graf', 'degerlendirme', 'kapi', 'depo', 'ilerleme', 'eski', 'program', 'ustalik', 'seri', 'tekrar', 'aciklama'])
   new Function(fs.readFileSync(path.join(__dirname, '..', 'js', 'ogrenme', f + '.js'), 'utf8')).call(globalThis);
 const O = globalThis.PP.ogr, G_ = O.graf, D = O.deg, K = O.kapi;
 

@@ -13,7 +13,7 @@ function fogOf(d){return d.state==="far"?.96:d.state==="next"?Math.max(.4,.88-d.
 function renderCity(){
   var T=cityTopics("ccna"),out=[];
   if(!T.length)return [h("div",{class:"empty"},"Şehir henüz boş. Konu haritası ilk koç çalışmasında kurulur.")];
-  var done=T.filter(function(t){return t.status==="built"}).length;
+  var done=T.filter(PP.ogr.ilerleme.konuTamam).length;
   var ds=districtsOf("ccna");
   ds.forEach(function(d,i){d.prevAvg=i>0?ds[i-1].avg:0;if(d.state==="next"){var a=ds.filter(function(x){return x.state==="active"})[0];d.prevAvg=a?a.avg:0}});
   var path=h("ol",{class:"dpath","aria-label":"Semt yol haritası"},ds.map(function(d,i){

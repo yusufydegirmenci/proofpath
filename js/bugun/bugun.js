@@ -2,7 +2,7 @@
 /* ---- Bugün ---- */
 function cityCard(){
   var T=cityTopics("ccna");if(!T.length)return null;
-  var built=T.filter(function(t){return t.status==="built"}).length,nx=T.filter(function(t){return t.status==="next"||t.status==="building"})[0];
+  var built=T.filter(PP.ogr.ilerleme.konuTamam).length,nx=T.filter(function(t){return t.status==="next"||t.status==="building"})[0];
   var bars=T.slice().sort(function(a,b){return num(a.order)-num(b.order)}).map(function(t){var v=t.status==="built"?1:t.status==="building"?.55:t.status==="next"?.25:.1;return h("i",{style:"height:"+Math.round(8+v*34)+"px;opacity:"+(.3+v*.7)})});
   return h("div",{class:"panel"},h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"},h("div",null,h("div",{class:"label"},"Ağ Şehrin"),h("h2",{style:"margin:2px 0 0"},built+" / "+T.length+" bina ayakta")),
     h("button",{class:"btn ghost",type:"button",onclick:function(){goTab("sehir")}},"Şehre bak")),
@@ -12,7 +12,7 @@ function cityCard(){
 
 /* ---- v50 Bugün: üs kartları ---- */
 function bgGrid(){
-  var D=dzGet(),dn=gmDay(today()),gdn=num(dn.g_runs)>0,T=cityTopics("ccna"),built=T.filter(function(t){return t.status==="built"}).length;
+  var D=dzGet(),dn=gmDay(today()),gdn=num(dn.g_runs)>0,T=cityTopics("ccna"),built=T.filter(PP.ogr.ilerleme.konuTamam).length;
   var tiles=[];
   if(!S.guest)tiles.push({c:"bg-g",k:"OYUN",t:"Meydan oku",s:(gqDue().length?gqDue().length+" tekrar sorusu bekliyor · ":"")+(gdn?"Günün koşusu tamam · reyting "+D.r:"Günün koşusu seni bekliyor · reyting "+D.r),go:"oyun"});
   if(T.length)tiles.push({c:"bg-c",k:"AĞ ŞEHRİ",t:built+" / "+T.length+" bina",s:"Her ders bir bina yükseltir",go:"sehir"});

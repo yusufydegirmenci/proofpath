@@ -7,7 +7,7 @@ function lcSet(k,f,tr){if(!k||lcHas(k,f))return false;var o=lcLoad();o[k]=o[k]||
   if(tr&&lcDone(k)){lcCut(tr,{ts:new Date().toISOString(),pn:num(prog().prac_n),d:today()});setTimeout(function(){rtToast("Ders tamam. Sıradaki konu açıldı.");sched()},50)}return true}
 function lcUnset(k,f){var o=lcLoad();if(o[k]&&o[k][f]){delete o[k][f];try{localStorage.setItem(LC_KEY,JSON.stringify(o))}catch(e){}}}
 function lcCut(tr,v){var o=lcLoad();if(v){o._cut=o._cut||{};o._cut[tr]=v;try{localStorage.setItem(LC_KEY,JSON.stringify(o))}catch(e){}}return (o._cut&&o._cut[tr])||null}
-function lcDone(k){return lcHas(k,"w")&&lcHas(k,"r")&&lcHas(k,"q")&&lcHas(k,"p")}
+function lcDone(k){return PP.ogr.ilerleme.dersTamam(lcLoad()[k])}
 function lessonKey(l){return l.topicId||l.id}
 function lcGrand(l){return !l.virtual&&String(l.date||"")<LC_FROM}
 function lessonListFor(tr){
@@ -15,7 +15,7 @@ function lessonListFor(tr){
   if(bl&&!list.some(function(x){return x.topicId===bl.topicId})&&(S.nonOwner||!list.some(function(x){return x.date===today()})))list=[bl].concat(list);
   if(S.nonOwner&&window.PP_LESSONS&&window.PP_LESSONS[tr]){
     var have={};list.forEach(function(x){have[x.topicId]=1});
-    starterTopics(tr).filter(function(t){return t.status==="built"&&!have[t.id]&&/^s-[a-z]+-\d+$/.test(t.id)}).reverse().forEach(function(t){var q=lessonForTopic(tr,t.id);if(q){q.review=true;list=list.concat([q])}});
+    starterTopics(tr).filter(function(t){return PP.ogr.ilerleme.konuTamam(t)&&!have[t.id]&&/^s-[a-z]+-\d+$/.test(t.id)}).reverse().forEach(function(t){var q=lessonForTopic(tr,t.id);if(q){q.review=true;list=list.concat([q])}});
   }
   return {list:list,real:real,bl:bl};
 }
@@ -40,9 +40,10 @@ function prNow(tr,cut){
   return a||(num(P.prac_n)-(cut&&cut.d===today()?cut.pn:0))>=5;
 }
 function lcSync(l){
-  var tr=l.track,k=lessonKey(l),P=prog(),qs=Array.isArray(l.quiz)?l.quiz:[],mk=0,was=lcDone(k),c=false,cut=lcCut(tr);
-  qs.forEach(function(q,i){if(S.les.mark[l.id+":"+i])mk++});
-  if((!qs.length||mk>=qs.length)&&lcSet(k,"q",tr))c=true;
+  var tr=l.track,k=lessonKey(l),P=prog(),qs=Array.isArray(l.quiz)?l.quiz:[],mk=0,ok=0,was=lcDone(k),c=false,cut=lcCut(tr);
+  qs.forEach(function(q,i){var m=S.les.mark[l.id+":"+i];if(m){mk++;if(m==="ok")ok++}});
+  /* Faz 4: "q" yalnız mini sınav kapısı (%80) geçilince; eski "q" kayıtları geçerli kalır */
+  if(PP.ogr.kapi.miniSinav(ok,qs.length,mk).gecti&&lcSet(k,"q",tr))c=true;
   var pr=prNow(tr,cut);
   if(pr&&lcSet(k,"p",tr))c=true;
   return c;
@@ -141,7 +142,7 @@ function lessonPath(tr,cur){
   return h("details",{class:"panel",open:S._lpOpen!==false,ontoggle:function(e){S._lpOpen=e.target.open}},h("summary",null,h("b",null,"Ders yolu "),h("span",{class:"small mute"},"sıradakini açmak için bu dersi bitir")),
     h("div",{class:"small mute"},"Her konuda: Isınma, Oku, Mini sınav, Alıştırma. Dördü bitince sıradaki ders açılır. Ne zaman çalışacağın sana kalmış; kilit sadece sırayı korur."),
     h("div",{style:"display:grid;gap:6px;margin-top:8px"},rows.map(function(t,i){
-      var idx=from+i,cu=cur&&t.id===cur.topicId,done=t.status==="built"||(cu&&lcDone(k)),lock=!done&&!cu&&t.status!=="next";
+      var idx=from+i,cu=cur&&t.id===cur.topicId,done=PP.ogr.ilerleme.konuTamam(t)||(cu&&lcDone(k)),lock=!done&&!cu&&t.status!=="next";
       return h("div",{class:"jst"+(done?" done":"")+(cu?" cur":"")},h("div",{class:"jn"},done?"✓":lock?"🔒":String(idx+1)),
         h("div",{class:"jb"},h("div",{class:"t"},t.name),
           cu?h("div",{class:"small mute"},lab.map(function(x){return (lcHas(k,x[0])?"✓ ":"○ ")+x[1]}).join("  ")):lock?h("div",{class:"small mute"},(function(){try{return window.PP&&PP.ogr&&PP.ogr.ui&&PP.ogr.ui.kilitNedeni(t.id)}catch(e){return null}})()||"Önceki ders bitince açılır"):null),h("div",null))})));

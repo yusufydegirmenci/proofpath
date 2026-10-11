@@ -79,7 +79,7 @@ function academyBar(){
 }
 function karne(){
   var C=topicsOf("ccna"),E=topicsOf("eng"),wk=weekInfo();
-  var cb=C.filter(function(t){return t.status==="built"}).length,eb=E.filter(function(t){return t.status==="built"}).length;
+  var cb=C.filter(PP.ogr.ilerleme.konuTamam).length,eb=E.filter(PP.ogr.ilerleme.konuTamam).length;
   var cn=C.length||27,en=E.length||13,wp=wk.tDays?Math.min(100,wk.days/wk.tDays*100):0;
   var cells=[["CCNA",cb+"/"+cn,"bina tamam",cb/cn*100,"var(--net)"],["İngilizce",eb+"/"+en,"basamak oturdu",eb/en*100,"var(--eng)"],["Bu hafta",wk.days+(wk.tDays?"/"+wk.tDays:""),"çalışılan gün",wp,"var(--gold)"]];
   return h("div",{class:"karne",role:"group","aria-label":"Dönem karnesi"},cells.map(function(c){
