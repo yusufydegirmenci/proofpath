@@ -336,7 +336,7 @@ function themeCycle(){var o=["auto","light","dark"],t=themeGet();themeSet(o[(o.i
 function themeName(){return {auto:"otomatik",light:"açık",dark:"koyu"}[themeGet()]}
 themeApply();
 /* ders girişi: seviye testi ve yönlendirme */
-function plOffset(track,N){var v=plLoad()[track];if(!v||v.skip||typeof v.lv!=="number")return 0;return v.lv<1.5?0:v.lv<2.3?Math.round(N*.25):Math.round(N*.5)}
+function plOffset(track,N){var v=plLoad()[track];if(!v||v.skip||typeof v.lv!=="number")return 0;var b=PP.ogr.ustalik.yerlestirmeBandi(v.lv);return b===0?0:b===1?Math.round(N*.25):Math.round(N*.5)}
 function plHint(track){var v=plLoad()[track];if(!v||v.skip||typeof v.lv!=="number")return "";return " Seviye testi sonucu: "+v.lv.toFixed(1)+"/3 ("+plBand(v.lv)[0]+"); anlatımı buna göre ayarla."}
 function lessonPlacement(tr){
   var tn=TRN[tr]||tr;
