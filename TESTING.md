@@ -83,3 +83,6 @@ Birimler çıkarılırken her birimden sonra: `smoke`, `kritik_akis` ve birimle 
 
 ## Faz 6
 - `node tests/faz6_koc.js`: veri yokken öneri yok, kayıttan öneri + dayanak, gezinme doğrulaması, tercih kalıcılığı ve onaylı sıfırlama, ustalık/kanıt yazamama (kayıt değişmez), sahte sağlayıcı (hata, senkron hata, boş, zaman aşımı, kayıtsız), cevap alanlarının bağlamdan çıkarılması, korumalı değerlendirmede sağlayıcı çağrılmaması, arayüz soru-cevap, 390 px. Sonuç: GEÇTİ. Gerçek sağlayıcı ile test edilmedi.
+
+## Faz 7
+- `node tests/faz7_plan.js`: plan günleri/kapasite/tampon/sıra (elle hesaplı), değişime tepki (dakika, tamamlanan konu, tekrar), kaçırılan gün (3/1/0 kaçırma, yumuşak başlangıç, müsaitsiz gün), tercih doğrulama, boş durum, alternatif takvimler, ikiz (güçlü/zayıf/belirsiz/öz-beyan/veri yok), arayüz kalıcılığı, 390 px. Sonuç: GEÇTİ. Gerçek kullanıcı süre verisiyle doğrulanmadı (süreler varsayım).
