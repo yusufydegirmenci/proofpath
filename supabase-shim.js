@@ -258,6 +258,13 @@
       })
       .then(function (s) {
         uid = s.user.id;
+        if (window.PP && window.PP.cihaz) {
+          var gc = window.PP.cihaz.gec(uid);
+          if (gc.degisti) {
+            location.reload(); // önceki kullanıcının yerel verisi ayrıldı; temiz alanla yeniden yükle
+            return new Promise(function () {});
+          }
+        }
         var meta = (s.user.user_metadata && s.user.user_metadata.name) || (s.user.email || "").split("@")[0];
         myName = meta;
         addSignOut();
@@ -273,6 +280,7 @@
             function () {}
           )
           .then(function () {
+            motorHazirla();
             return s;
           });
       });
@@ -287,8 +295,13 @@
       type: "button",
       text: "Çıkış",
       onclick: function () {
-        if (!confirm("Çıkış yapılsın mı?")) return;
+        var bek = window.PP && window.PP.cihaz ? window.PP.cihaz.bekleyenSayisi(uid) : 0;
+        var pay = window.PP && window.PP.cihaz && window.PP.cihaz.paylasilan();
+        var uy = "Çıkış yapılsın mı?" + (bek ? "\n\nGönderilmemiş " + bek + " değişiklik var." + (pay ? " Paylaşılan cihaz modu açık: çıkınca bu cihazdaki verin silinir." : " Bu cihazda saklı kalır, aynı hesapla girince gönderilir.") : pay ? "\n\nPaylaşılan cihaz modu açık: çıkınca bu cihazdaki verin silinir." : "");
+        if (!confirm(uy)) return;
+        var cuid = uid;
         sb.auth.signOut().then(function () {
+          try { if (window.PP && window.PP.cihaz) window.PP.cihaz.cikis(cuid); } catch (e) {}
           location.reload();
         });
       }
@@ -303,6 +316,7 @@
   /* ---------------------------------------------------------------- belge deposu */
 
   var colls = {}; // koleksiyon yolu -> {map, loaded, loading, subs, dsubs, pending}
+  var vers = {}; // koleksiyon -> {doc_id: updated_at} (çakışma denetimi için taban sürümü)
 
   function getC(coll) {
     return (
@@ -316,7 +330,7 @@
     function page(from) {
       return sb
         .from("docs")
-        .select("doc_id,data")
+        .select("doc_id,data,updated_at")
         .eq("coll", coll)
         .order("doc_id")
         .range(from, from + 999)
@@ -325,8 +339,10 @@
           out = out.concat(r.data || []);
           if ((r.data || []).length === 1000 && out.length < 10000) return page(from + 1000);
           var m = {};
+          vers[coll] = {};
           out.forEach(function (row) {
             m[row.doc_id] = row.data || {};
+            if (row.updated_at) vers[coll][row.doc_id] = row.updated_at;
           });
           return m;
         });
@@ -342,9 +358,19 @@
         function (m) {
           if (!C.loaded) C.map = m;
           C.loaded = true;
+          snapKaydet(coll, m);
           return C;
         },
         function (e) {
+          var sn = snapOku(coll);
+          if (sn) {
+            // çevrimdışı: son bilinen sunucu görüntüsü; yazmalar kuyruğa girer, taban sürümüyle çakışma denetlenir
+            if (!C.loaded) C.map = sn.map;
+            vers[coll] = sn.ver || {};
+            C.loaded = true;
+            C.offline = true;
+            return C;
+          }
           C.loading = null;
           throw e;
         }
@@ -416,6 +442,106 @@
     });
   }
 
+  /* ---------------------------------------------------------------- senkron (bayrak: pp_senkron=1, varsayılan KAPALI) */
+
+  function syncOn() {
+    try { return !!(window.PP && window.PP.sync && window.PP.sync.acik() && motor); } catch (e) { return false; }
+  }
+  function syncMesgul(coll) {
+    if (!syncOn()) return false;
+    return motor.liste().some(function (x) { return x.coll === coll; });
+  }
+  function snapAnahtar(coll) { return "pp_onbellek:" + uid + ":" + coll; }
+  function snapKaydet(coll, m) {
+    try {
+      if (!(window.PP && window.PP.sync && window.PP.sync.acik()) || !uid) return;
+      var t = JSON.stringify({ map: m, ver: vers[coll] || {}, ts: new Date().toISOString() });
+      if (t.length < 1500000) localStorage.setItem(snapAnahtar(coll), t);
+    } catch (e) { /* kota dolu: çevrimdışı görüntü olmaz, veri kaybı değil */ }
+  }
+  function snapOku(coll) {
+    try {
+      if (!(window.PP && window.PP.sync && window.PP.sync.acik()) || !uid) return null;
+      var t = localStorage.getItem(snapAnahtar(coll));
+      return t ? JSON.parse(t) : null;
+    } catch (e) { return null; }
+  }
+  function agHatasiMi(err) {
+    var m = String((err && err.message) || err || "");
+    return /fetch|network|failed|load failed|ağ/i.test(m) || (typeof navigator !== "undefined" && navigator.onLine === false);
+  }
+  function sunucuSatiri(path) {
+    return Promise.resolve(sb.from("docs").select("data,updated_at").eq("path", path).maybeSingle()).then(function (r) {
+      if (r.error) throw r.error;
+      return r.data ? { data: r.data.data || {}, updated_at: r.data.updated_at } : null;
+    });
+  }
+  /* Arka uç adaptörü: taban sürümü (updated_at) eşleşmezse YAZMAZ, çakışma döner */
+  var arka = {
+    yaz: function (k) {
+      var now = new Date().toISOString();
+      var req = k.taban == null
+        ? sb.from("docs").insert({ path: k.path, coll: k.coll, doc_id: k.id, owner: uid, data: k.data, updated_at: now }).select("updated_at")
+        : sb.from("docs").update({ data: k.data, updated_at: now }).eq("path", k.path).eq("updated_at", k.taban).select("updated_at");
+      return Promise.resolve(req).then(function (r) {
+        if (r.error) {
+          if (k.taban == null && r.error.code === "23505") return sunucuSatiri(k.path).then(function (sv) { return { cakisma: true, sunucu: sv }; });
+          if (agHatasiMi(r.error)) { var e = new Error(r.error.message); e.ag = true; throw e; }
+          return { red: true, mesaj: r.error.message };
+        }
+        if (!r.data || !r.data.length) return sunucuSatiri(k.path).then(function (sv) { return { cakisma: true, sunucu: sv }; });
+        (vers[k.coll] = vers[k.coll] || {})[k.id] = now;
+        return { ok: true, updated_at: now };
+      }, function (e) { if (agHatasiMi(e)) e.ag = true; throw e; });
+    },
+    sil: function (k) {
+      var q = sb.from("docs").delete().eq("path", k.path);
+      if (k.taban != null) q = q.eq("updated_at", k.taban);
+      return Promise.resolve(q.select("path")).then(function (r) {
+        if (r.error) {
+          if (agHatasiMi(r.error)) { var e = new Error(r.error.message); e.ag = true; throw e; }
+          return { red: true, mesaj: r.error.message };
+        }
+        if (k.taban != null && (!r.data || !r.data.length)) return sunucuSatiri(k.path).then(function (sv) { return sv ? { cakisma: true, sunucu: sv } : { ok: true }; });
+        return { ok: true };
+      }, function (e) { if (agHatasiMi(e)) e.ag = true; throw e; });
+    }
+  };
+  var motor = null;
+  function motorHazirla() {
+    try {
+      if (motor || !uid || !(window.PP && window.PP.sync && window.PP.sync.acik())) return;
+      motor = window.PP.sync.Motor({ uid: uid, arka: arka, cevrimici: navigator.onLine !== false });
+      var tekrar = function () { if (motor) { motor.cevrimiciYap(navigator.onLine !== false); motor.isle().then(function () { refreshAll(); }); } };
+      window.addEventListener("online", tekrar);
+      window.addEventListener("offline", function () { if (motor) motor.cevrimiciYap(false); });
+      setInterval(function () { if (motor && motor.durum().bekleyen) tekrar(); }, 30000);
+      motor.isle(); // önceki oturumdan kalan kuyruğu gönder
+      window.dispatchEvent(new Event("pp-sync-hazir"));
+    } catch (e) { motor = null; }
+  }
+  /* Bir yazmayı kuyruğa alır ve göndermeyi dener. Ağ yoksa kuyrukta kalır (yerel değişiklik korunur);
+     sunucu reddederse çağırana hata döner (yerel değişiklik geri alınır); çakışmada iki sürüm de saklanır (sessiz üzerine yazma yok). */
+  function syncYaz(pp, kind, next, C) {
+    var taban = (vers[pp.coll] || {})[pp.id] || null;
+    motor.ekle({ path: pp.path, coll: pp.coll, id: pp.id, tur: kind, data: kind === "delete" ? null : next, taban: taban });
+    return motor.isle().then(function () {
+      snapKaydet(pp.coll, C.map); // çevrimdışı görüntü yerel/gönderilmiş son durumu içersin
+      var e = motor.liste().filter(function (x) { return x.path === pp.path; })[0];
+      if (e && e.durum === "hata") {
+        motor.hataIsle(e.n, "at");
+        throw mkErr("sync-hata", e.mesaj);
+      }
+    });
+  }
+  /* Çakışma çözümünde sunucu sürümünü yerel belleğe uygula */
+  function sunucuyuUygula(path, sv) {
+    var pp = parsePath(path), C = getC(pp.coll);
+    if (sv) { C.map[pp.id] = sv.data || {}; (vers[pp.coll] = vers[pp.coll] || {})[pp.id] = sv.updated_at; } else delete C.map[pp.id];
+    notify(C);
+  }
+  window.__ppShim = { motor: function () { return motor; }, sunucuyuUygula: sunucuyuUygula, onbellekTemizle: function () { try { Object.keys(localStorage).filter(function (k) { return k.indexOf("pp_onbellek:") === 0; }).forEach(function (k) { localStorage.removeItem(k); }); } catch (e) {} } };
+
   var queues = {}; // path -> yazma sırası
   function write(pp, kind, d) {
     return ensureLoaded(pp.coll).then(function (C) {
@@ -432,6 +558,7 @@
       notify(C);
 
       var run = function () {
+        if (syncOn()) return syncYaz(pp, kind, next, C);
         C.pending++;
         var req =
           kind === "delete"
@@ -564,12 +691,13 @@
     if (document.hidden || !uid) return;
     Object.keys(colls).forEach(function (k) {
       var C = colls[k];
-      if (!C.loaded || C.pending > 0 || (!C.subs.length && !C.dsubs.length)) return;
+      if (!C.loaded || C.pending > 0 || (!C.subs.length && !C.dsubs.length) || syncMesgul(k)) return;
       fetchColl(k).then(
         function (m) {
           if (C.pending > 0) return;
           if (JSON.stringify(m) === JSON.stringify(C.map)) return;
           C.map = m;
+          snapKaydet(k, m);
           notify(C);
         },
         function () {}

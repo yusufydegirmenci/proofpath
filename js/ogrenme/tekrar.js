@@ -9,7 +9,13 @@
   var O = g.PP.ogr;
   var ARALIK = [1, 3, 7, 14, 30];
 
-  function gunOf(t) { return typeof t === "string" && /^\d{4}-\d{2}-\d{2}/.test(t) ? t.slice(0, 10) : null; }
+  /* Zaman damgası (UTC, Z) YEREL güne çevrilir: gece 00:00-03:00 (TR) kayıtları bir önceki güne yazılıp aralığı kaydırmasın. Yalnız tarih verilmişse olduğu gibi. */
+  function gunOf(t) {
+    if (typeof t !== "string" || !/^\d{4}-\d{2}-\d{2}/.test(t)) return null;
+    if (t.length <= 10) return t;
+    var d = new Date(t);
+    return isNaN(d.getTime()) ? t.slice(0, 10) : O.gun.iso(d);
+  }
 
   function oge(G, hedefId, denemeler, bugun, sec) {
     var d = O.deg.hedefDurumu(G, hedefId, denemeler, sec), h = G.hedefler[hedefId];
