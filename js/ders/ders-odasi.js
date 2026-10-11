@@ -128,6 +128,7 @@ function renderLessonRoom(){
       var nsc=l&&/^(eng|ing)/i.test(String(l.track||l.tr||""))?null:nwFor(l);if(nsc)body.push(h("div",{class:"panel"},h("div",{class:"label"},"Hareketli anlatım"),h("h3",null,nsc.t),nwPlayer(nsc)));
       var blocks=(Array.isArray(l.blocks)?l.blocks:[]).map(lblock).filter(Boolean);
       body.push(h("div",{class:"panel lr-read"},h("div",{class:"lsn"},blocks),l.homework?h("div",{class:"lbox warn"},h("div",{class:"label"},"Bugünün görevi"),h("p",null,l.homework)):null));
+      var ekA=typeof lrEk==="function"?lrEk(l,"anlat"):null;if(ekA)ekA.forEach(function(x){body.push(x)});
       var lt=lessonTerms(l);if(lt)body.push(lt);
       var vc=Array.isArray(l.vocab)?l.vocab:[];
       if(vc.length)body.push(h("div",{class:"panel"},h("h2",null,"Kelimeler"),vc.map(function(v){return h("div",{style:"display:grid;gap:2px;border-top:1px solid var(--line);padding-top:8px"},h("div",null,h("b",null,v.term||""),v.tr?" · "+v.tr:""),v.ex?h("div",{class:"small mute"},v.ex):null)})));
@@ -143,6 +144,7 @@ function renderLessonRoom(){
     var pd=lcHas(k,"p");
     body.push(h("div",{class:"lr-sec"},h("div",{class:"label"},"4 · Alıştırma"),h("h3",null,pd?"Alıştırma tamam":"Şimdi pratik zamanı"),
       h("div",{class:"small mute"},"Öğrenme pratikle oturur. Atölye'de birkaç soru çöz, ders sayılır.")));
+    var ekB=typeof lrEk==="function"?lrEk(l,"alis"):null;if(ekB)ekB.forEach(function(x){body.push(x)});
     body.push(h("div",{class:"panel"},pd?h("div",{class:"qz-sum all"},h("b",null,"✓"),h("span",null,"Bu ders için alıştırmanı yaptın.")):null,
       h("button",{class:"btn big",type:"button",onclick:function(){goTab("atolye")}},pd?"Atölye'de daha çöz":"Atölye'ye git"),
       h("div",{style:"height:8px"}),nextBtn("Ders notlarına geç","notlar"," ghost")));

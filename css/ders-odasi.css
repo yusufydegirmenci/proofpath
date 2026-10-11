@@ -67,3 +67,13 @@
 @keyframes anpk{0%{top:0;opacity:0}15%{opacity:1}85%{opacity:1}100%{top:calc(100% - 11px);opacity:0}}
 @keyframes anfade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){.an-r.on .an-d,.an-pk,.an-ds,.an-end{animation:none}}
+
+/* Faz 5: ders eki ve lab */
+.lab-fs{display:grid;gap:8px;margin-top:8px}
+.lab-f{display:grid;gap:4px;font-size:13px}
+.lab-f input{font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card,#fff);color:inherit;min-height:44px;box-sizing:border-box;width:100%}
+.lab-f.ok input{border-color:var(--ok)}.lab-f.no input{border-color:var(--bad)}
+.lab-m{font-style:normal;font-weight:700}.lab-f.ok .lab-m{color:var(--ok)}.lab-f.no .lab-m{color:var(--bad)}
+.lab-sec{display:flex;gap:6px;margin:8px 0}.lab-ozet{margin:8px 0;font-weight:600}
+.lab{min-width:0;overflow-wrap:anywhere}.lab-sec{flex-wrap:wrap}.lab-et{display:inline-block;max-width:100%;padding:3px 10px;border-radius:99px;border:1px solid var(--line);font-size:12px}
+.lab-f input{max-width:100%}

@@ -77,3 +77,6 @@ Birimler çıkarılırken her birimden sonra: `smoke`, `kritik_akis` ve birimle 
 - Gerçek telefon, Firefox/Safari, ekran okuyucu: yok. Yalnız Chromium emülasyonu.
 - Erişilebilirlik ve performans (Lighthouse) ölçümü yok. İlk yükleme artık ~90 ayrı betik/stil isteği; ölçülmedi.
 - CI yok; testler yalnız elle çalışır.
+
+## Faz 5 tur 1
+- `node tests/faz5_net.js`: alt ağ hesabı (bağımsız sabit değerlerle), ders eki bloklarının görünmesi, kaynak bağlantıları, lab doğrula/yanlış/ipucu/sıfırla/kanıt, ek olmayan derste etki yok, 390 px taşma. Sonuç: GEÇTİ. smoke, sira, kritik_akis, hesaplar 75, ogrenme 156, ogrenme_tarayici 34, faz4_entegrasyon 26, mobil (135 bakış, 0 sorun) geçti.
