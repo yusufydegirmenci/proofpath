@@ -63,3 +63,11 @@ Varsayılan 60 sn ile (ilk koşu): GEÇTİ 23, KALDI 3, ZAMAN AŞIMI 5, ÇÖKTÜ
 - Erişilebilirlik ve performans (Lighthouse) ölçümü yok.
 - Assert'li test yalnız 3 dosya. Veri bütünlüğü, puan/XP hesabı, lig, sınav doğruluğu için doğrulayıcı test yok.
 - CI yok; testler yalnız elle çalışır.
+
+## Faz 1B güncellemesi
+
+- `npm test` önce `tests/make-dbg.js`'i çalıştırır: `index.html`'den `tests/page_dbg.html` üretir (`__S`, `__X` kancaları, git'e girmez). Hata ayıklama gerektiren 26 test buna yönlendirildi. Varsayılan zaman aşımı 90 sn.
+- `tests/kritik_akis.js`: ders açma, ilerleme kaydı, sınav puanı, seri, ayarların kalıcılığı için gerçek assert'ler (18 kontrol, başarısızlıkta çıkış kodu 1).
+- `tests/emekli/`: eski akışa ait testler (`h73`); ayrı sayılır, çıkış kodunu etkilemez.
+- Son tam koşu (`npm test -- --timeout=90`, 56 dosya, `kritik_akis` hariç): GEÇTİ 40 · KALDI 12 · ZAMAN AŞIMI 4 (`h67`, `mobil`, `soak`, `t57a`) · ÇÖKTÜ 0. `kritik_akis.js` ayrıca koşuldu: 18/18 GEÇTİ.
+- Kalan KALDI'lar: şu an kodda olmayan semboller (`ST`, `QBX`) veya kancalı kapsamın dışındaki sembol (`NW_RX`) bekleyen testler; `h69`, `h79` eski ders akışını bekliyor.
