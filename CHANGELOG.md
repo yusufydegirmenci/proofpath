@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Faz 2B (dal: faz-2b)
+- supabase-js betiği yayımlanmış dosyaya (`dist/umd/supabase.js`) çevrildi, SRI karması yeniden hesaplandı.
+- `index.html` davranışı korunarak birimlere ayrıldı (2,0 MB → ~81 KB): 7 stil dosyası (`css/`), 7 veri dosyası (`js/veri/`) ve 50 kod birimi (`js/`). Uygulama artık tek bir sarmalayıcı işlev değil, küresel kapsamda sırayla yüklenen klasik betiklerdir (`"use strict"` her dosyada korunur). Derleme adımı yok; rota, URL, depolama anahtarları ve veri biçimleri değişmedi.
+- Testler: bayat testler yeni akışa güncellendi (assert gevşetilmedi), `make-dbg` yeni yapıya dayanıklı, zaman aşımı varsayılanı 420 sn, `TESTING.md` yenilendi.
+
 ## Faz 1B (dal: faz-1b)
 - supabase-js betiği tam sürüme (`2.117.3`) sabitlendi, bütünlük (SRI) denetimi eklendi.
 - `supabase/migrations/` eklendi: `docs` politikaları için yeni migration dosyası (uygulanmadı).

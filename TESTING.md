@@ -1,73 +1,55 @@
 # TESTING.md
 
-Son çalıştırma: 2026-10-11, Windows 11, Node 22.14, Playwright 1.64 (Chromium 1248), `file://` + sahte `window.claude` (`tests/stub.js`). Hiçbir dış servise (Supabase dahil) veri bağlantısı kurulmaz; `supabase-shim.js` sahte katman varken kendini kapatır. (Sayfa yine de `jsdelivr`/Google Fonts'u yüklemeyi dener; bu salt-okunur CDN isteğidir.)
+Son çalıştırma: 2026-10-11 (Faz 2B), Windows 11, Node 22.14, Playwright 1.64 (Chromium), `file://` + sahte `window.claude` (`tests/stub.js`). Hiçbir dış servise (Supabase dahil) veri bağlantısı kurulmaz; `supabase-shim.js` sahte katman varken kendini kapatır.
 
 ## Komutlar
 
 ```bash
 npm install
-npx playwright install chromium     # Chromium ~437 MB + headless shell ~278 MB + ffmpeg ~4 MB (disk)
+npx playwright install chromium
 npm run test:smoke                  # tests/smoke.js — 15 sekme × 2 tema, ~1 dk
-npm test                            # tests/run-all.js — hepsi sırayla, dosya başına 60 sn zaman aşımı
+node tests/kritik_akis.js           # gerçek assert'li 5 kritik akış (18 kontrol), hata → çıkış 1
+npm test                            # tests/run-all.js — hepsi sırayla; önce tests/make-dbg.js; dosya başına 420 sn zaman aşımı
 npm test -- --timeout=90 smoke      # zaman aşımını değiştir / dosya adına göre süz
 ```
 
-`run-all.js` durumları: **GEÇTİ** (çıkış 0) · **KALDI** (çıkış ≠ 0) · **ZAMAN AŞIMI** · **ÇÖKTÜ** (test hiç başlayamadı: modül/tarayıcı yok). Her test geçici bir klasörde çalışır (ekran görüntüleri oraya yazılır), ayrıntılı loglar sonda yazdırılır. Çıkış kodu: hepsi GEÇTİ ise 0.
+`run-all.js` durumları: **GEÇTİ** (çıkış 0) · **KALDI** (çıkış ≠ 0) · **ZAMAN AŞIMI** · **ÇÖKTÜ** (test hiç başlayamadı). Her test geçici bir klasörde çalışır; ayrıntılı loglar koşu sonunda yazdırılan klasördedir. Tam koşu yaklaşık 35–45 dk sürer (en yavaş: `mobil` ~280 sn, `t57a` ~175 sn, `h85` ~110 sn).
 
-## Gerçek sonuçlar (`npm test -- --timeout=90`, 57 dosya)
+## Hata ayıklama sayfası (`tests/make-dbg.js`)
 
-| Durum | Adet |
-|---|---|
-| GEÇTİ | 27 |
-| KALDI | 29 |
-| ZAMAN AŞIMI | 1 (`mobil.js`) |
-| ÇÖKTÜ | 0 |
+Uygulama artık tek bir sarmalayıcı işlev değil, küresel kapsamda sırayla yüklenen betiklerden oluşur (`index.html` → `js/`). `make-dbg.js`, `index.html`'den `tests/page_dbg.html` üretir (git'e girmez): `<script src>` ve `<link href>` yollarını `../` ile düzeltir ve `</body>` öncesine ayrı bir betik ekler. Bu betik `window.__S` (durum) ve `window.__X` (iç yardımcılar) tanımlar. Eski test adları (`ST`, `QBX`, `tf`, `cl`) yeni sembollere bağlanır (`STARTER`, `QB`, `tmFor`, `cleanLesson`); `NW_RX`, `baseQuiz`, `nwFor`, `nwFuzzy` eklendi. Yapı değişse de hook uygulama betiklerine dokunmaz.
 
-Varsayılan 60 sn ile (ilk koşu): GEÇTİ 23, KALDI 3, ZAMAN AŞIMI 5, ÇÖKTÜ 26 (eski sınıflama). `h39`, `h46`, `h67`, `smoke` 60 sn'ye sığmıyor, 90 sn'de bitiyor.
+## Faz 2B sonuçları
 
-**Çok önemli sınırlama:** 57 dosyadan yalnızca 3'ü (`smoke.js`, `local_ai_free.js`, `personal_plan.js`) gerçekten doğrulama yapıp başarısızlıkta çıkış kodunu değiştiriyor. Diğer ~54 eski test sonuçları **ekrana yazdırır** ve çökmezse 0 döner. Onlar için GEÇTİ = "çökmeden bitti"; beklenen değer doğrulanmadı. Bu testlerin assert'lerle güçlendirilmesi ayrı bir iştir (bu turda yapılmadı).
+| Koşu | Commit | GEÇTİ | KALDI | ZAMAN AŞIMI | ÇÖKTÜ |
+|---|---|---|---|---|---|
+| Faz 1B (90 sn) | `236b38a` | 40 | 12 | 4 | 0 |
+| Faz 2B taban (bayat testler güncellendi, 90 sn) | `602d0a5` | 51 | 1 (`t58a`) | 5 | 0 |
+| Aynı taban, yavaş 5 test 400 sn ile | `602d0a5` | 5/5 GEÇTİ (`h46` 94 sn, `h85` 110 sn, `mobil` 283 sn, `soak` 95 sn, `t57a` 174 sn) | — | — | — |
+| Birim çıkarımı ortası (varsayılan 420 sn) | `5d52ce0` | 56 | 1 (`t58a`) | 0 | 0 |
+| Birim çıkarımı ortası | `3087c1f` | 57 | 0 | 0 | 0 |
+| Birim çıkarımı ortası | `7b54e97` | 57 | 0 | 0 | 0 |
+| **Son durum** | `d4a1bae` | **57** | **0** | **0** | **0** |
 
-## Düzeltilen ortam hataları (sınıf a)
+Emekli (`tests/emekli/h73.js`) sayıma dahil değil. `t58a_ders_odasi` iki koşuda ekran görüntüsü alırken öğe yeniden çizildiği için düştü (yalnız `screenshot`, assert değil); ekran görüntüsü hata vermez hâle getirildi, sonraki koşularda geçti.
 
-- 53 dosyada `/repo/tests/stub.js` ve `/tmp/claude-0/.../page.html` mutlak yolları → `require('./stub.js')` ve `index.html`'e `__dirname` tabanlı `file://` URL'si.
-- 53 dosyada `executablePath:'/opt/pw-browsers/chromium'` kaldırıldı (Playwright kendi tarayıcısını kullanır).
-- `process.cwd()+'/page_dbg.html'` (21 dosya) → `index.html`. `t57a` ekran görüntüleri `os.tmpdir()`'e.
-- Assert'ler, beklenen değerler ve bekleme süreleri değiştirilmedi.
+Birimler çıkarılırken her birimden sonra: `smoke`, `kritik_akis` ve birimle ilgili birkaç test; tam koşu yalnızca yukarıdaki noktalarda (bir önceki snapshot'a karşı) yapıldı.
 
-## Geçmeyen testler ve sınıfları
+## Bayat testler (Faz 2B'de güncellendi, assert gevşetilmedi)
 
-**(a) Ortam — hâlâ engelli (25 dosya): eksik hata ayıklama kancası.** Testler sayfada `__S` (durum nesnesi) ve `__X` (iç yardımcılar) ya da `window.__store` bekler. `index.html`'de bunlar yok (`__X`, `__S`, `__store` = 0 eşleşme). Eski testler, repoda olmayan `page_dbg.html` (index.html'den üretilmiş bir hata ayıklama kopyası) ile yazılmış; üretici betik git geçmişinde de yok. Hata: `ReferenceError: __S/__X is not defined`.
-`fb, h85, nwmap, q2, soak, t57a_joker_skin, t57d_vardiya, t57f_fetih_balance, t57g_fetih_ui, t58a_ders_odasi, t58f_balance, t58f_fetih_balance, t59a_nw, t59b_reset, t59c_games, t59d_fk3, t59g, t60a_tracks, t60b_cov, t60c_nw, t61b_quizalign, t61c_guest, tmcov, touch, touch2`
-→ Çözüm `index.html` içine (kapsam dışı) `?debug` ile açılan bir kanca eklemeyi veya testleri kamusal DOM'a taşımayı gerektirir. Önerilen: Faz 2B.
+- `h69`: ikinci CCNA dersi için ilk ders önce tamamlanmış sayılır (`ya_lc` tohumu); `Henüz ticket yok.` metni güncellendi.
+- `h79`: yeni Ders Odası akışı (Isınma → "Okudum, mini sınava geç" → mini sınavın tüm soruları); artık gerçek bir kontrol var (ders tamamlandı + ikinci ders görünür, değilse çıkış 1).
+- `t57g`, `t58g`: Fetih'te yardım katmanı kapatılır ve "Seferi başlat" basılır (kök neden: sefer öncesi hazırlık ekranı; **uygulama hatası değil**).
+- `t59a`: sahne kimliği `hash` → `sc-hash` (takma ad artık ekran akışında kullanılmıyor).
+- `h85`, `q2`, `t60b`, `t61b`, `tmcov`, `nwmap`: `make-dbg` yeni sembollere bağlandı, test kodu değişmedi.
 
-**(b) Gerçek/şüpheli başarısızlık — uygulama bulgusu (kök neden doğrulanmadı):**
-- `h69.js`: `button:text-is("Şimdi ders üret")` 30 sn bulunamadı (metin `index.html`'de 1 yerde var → koşula bağlı ya da akış değişmiş).
-- `h79.js`: `button:text-is("Dersi okudum")` bulunamadı (metin `index.html`'de 3 yerde var → akış/durum koşulu).
-- `t58g_fetih2.js`: `Cannot read properties of null (reading 'click')` (bir öğe yok; (a) ile bağlantılı olabilir).
-- Test mi uygulama mı eski, ayırt edilmedi. Uygulama kodu değiştirilmedi.
+## Hâlâ doğrulama yapmayan testler
 
-**(c) Zaman aşımı:** `mobil.js` (3 cihaz × 3 ayar × 15 sekme = 135 yükleme) 90 sn'de bitmiyor; hiç çıktı vermiyor. Daha uzun zaman aşımıyla denenmedi.
-
-**(d) Eski/ölü test (silinmedi):** `h73.js` — `button:text-is("Cevabımı değerlendir")` düğmesi `index.html`'de yok; `f9e0ca2` ("Yapay zekasız geri bildirim", 2026-10-10) ile kaldırılmış. Test eski akışı bekliyor; güncellenmeli ya da kaldırılmalı (karar sizde).
-
-## Uygulama bulguları (düzeltilmedi)
-
-1. Hata ayıklama kancaları (`__S`, `__X`, `__store`) üretim `index.html`'inde yok; 25 test bunsuz çalışamıyor.
-2. `h69`, `h79`: ders akışındaki düğmeler testin beklediği koşulda görünmüyor (kök neden bilinmiyor).
-3. `h73`: "Cevabımı değerlendir" kaldırıldı; test güncellenmemiş.
+`smoke`, `kritik_akis`, `personal_plan`, `local_ai_free` ile `h79` dışında çoğu test sonuçları yazdırır ve yalnız çökmezse GEÇTİ sayılır. Örnek: `t57g` içindeki `ask shown` ve `h69` içindeki `masa txt` / `ders empty text` yazdırır ama kontrol etmez (ikisi şu an `false` yazıyor; ilgili ekran metinleri/akış değişti, kontrol eklenmedi). `h72` bir kez birim kapısında KALDI verdi, 11 yeniden koşuda geçti (kök neden bilinmiyor; rastgele içerik ve yük şüphesi, varsayım).
 
 ## Kapsam boşlukları
 
 - Gerçek Supabase, RLS, kayıt/giriş, çok cihaz senkronu: **hiç test yok** (kural gereği bağlanılmadı).
 - Gerçek telefon, Firefox/Safari, ekran okuyucu: yok. Yalnız Chromium emülasyonu.
-- Erişilebilirlik ve performans (Lighthouse) ölçümü yok.
-- Assert'li test yalnız 3 dosya. Veri bütünlüğü, puan/XP hesabı, lig, sınav doğruluğu için doğrulayıcı test yok.
+- Erişilebilirlik ve performans (Lighthouse) ölçümü yok. İlk yükleme artık ~90 ayrı betik/stil isteği; ölçülmedi.
 - CI yok; testler yalnız elle çalışır.
-
-## Faz 1B güncellemesi
-
-- `npm test` önce `tests/make-dbg.js`'i çalıştırır: `index.html`'den `tests/page_dbg.html` üretir (`__S`, `__X` kancaları, git'e girmez). Hata ayıklama gerektiren 26 test buna yönlendirildi. Varsayılan zaman aşımı 90 sn.
-- `tests/kritik_akis.js`: ders açma, ilerleme kaydı, sınav puanı, seri, ayarların kalıcılığı için gerçek assert'ler (18 kontrol, başarısızlıkta çıkış kodu 1).
-- `tests/emekli/`: eski akışa ait testler (`h73`); ayrı sayılır, çıkış kodunu etkilemez.
-- Son tam koşu (`npm test -- --timeout=90`, 56 dosya, `kritik_akis` hariç): GEÇTİ 40 · KALDI 12 · ZAMAN AŞIMI 4 (`h67`, `mobil`, `soak`, `t57a`) · ÇÖKTÜ 0. `kritik_akis.js` ayrıca koşuldu: 18/18 GEÇTİ.
-- Kalan KALDI'lar: şu an kodda olmayan semboller (`ST`, `QBX`) veya kancalı kapsamın dışındaki sembol (`NW_RX`) bekleyen testler; `h69`, `h79` eski ders akışını bekliyor.
