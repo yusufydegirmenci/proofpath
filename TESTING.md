@@ -86,3 +86,6 @@ Birimler çıkarılırken her birimden sonra: `smoke`, `kritik_akis` ve birimle 
 
 ## Faz 7
 - `node tests/faz7_plan.js`: plan günleri/kapasite/tampon/sıra (elle hesaplı), değişime tepki (dakika, tamamlanan konu, tekrar), kaçırılan gün (3/1/0 kaçırma, yumuşak başlangıç, müsaitsiz gün), tercih doğrulama, boş durum, alternatif takvimler, ikiz (güçlü/zayıf/belirsiz/öz-beyan/veri yok), arayüz kalıcılığı, 390 px. Sonuç: GEÇTİ. Gerçek kullanıcı süre verisiyle doğrulanmadı (süreler varsayım).
+
+## Faz 8
+- `node tests/faz8_kariyer.js`: tanım denetimi (gerçek veri), rapor durumları ve iddia kuralı, istemci/sunucu kanıt farkı, işveren görünümü sızdırmazlığı, CV/boşluk/İngilizce, mülakat rubriği ve tekrarlayan zayıflık, akran rubriği/görünürlük/AI-insan ayrımı, paylaşım oluştur/erişim/iptal/süre (sahte depo), SQL dosyası statik denetimi, arayüz. Sonuç: GEÇTİ. SQL dosyası Postgres'te ÇALIŞTIRILMADI (psql yok); gerçek RLS/çok kullanıcı testi yok.
