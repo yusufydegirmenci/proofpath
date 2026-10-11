@@ -71,6 +71,8 @@ eq(O.JOKER_GEREKLER.length, 7, 'Joker 7 ayrı gereksinim türü ister');
   eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5, { surum: null })]).gecmis[0].neden, 'surum-yok', 'sürüm: sürümsüz kayıt sayılmaz');
   eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5)], { sunucuGerek: true }).gecmis[0].neden, 'sunucu-dogrulamasi-yok', 'doğrulama: sunucu istenince istemci kaydı sayılmaz');
   eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5, { dogrulama: 'sunucu' })], { sunucuGerek: true }).guven, 'sunucu', 'doğrulama: sunucu kaydı sayılır, güven "sunucu"');
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5, { dogrulama: 'beyan' })]).gecmis[0].neden, 'beyan-sayilmaz', 'doğrulama: öz-beyan ("Bildim") ustalık kanıtı sayılmaz');
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5, { dogrulama: 'beyan' })], { beyanKabul: true }).durum, 'gecti', 'doğrulama: öz-beyan yalnız açıkça kabul edilirse sayılır');
   eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5)], { bagimsizGerek: true }).gecmis[0].neden, 'bagimsizlik-kaniti-yok', 'bağımsızlık: tamamlama bağımsızlık kanıtı değildir');
   eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5, { yardim: { tur: 'yok', guvenilir: false } })], { bagimsizGerek: true }).durum, 'denenmedi', 'bağımsızlık: güvenilmeyen "yardım yok" beyanı sayılmaz');
   eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5, { yardim: { tur: 'yok', guvenilir: true } })], { bagimsizGerek: true }).bagimsiz, true, 'bağımsızlık: yalnız güvenilir "yardım yok" kaydı kabul');

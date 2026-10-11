@@ -44,6 +44,7 @@
         if (!surumOk) neden = d.surum == null ? "surum-yok" : "eski-surum";
       }
       if (!neden && h.minMaks && d.maks < h.minMaks) neden = "yetersiz-kanit";
+      if (!neden && d.dogrulama === "beyan" && !sec.beyanKabul) neden = "beyan-sayilmaz";   /* "Bildim" gibi öz-beyan ustalık kanıtı değildir */
       if (!neden && sec.sunucuGerek && d.dogrulama !== "sunucu") neden = "sunucu-dogrulamasi-yok";
       if (!neden && sec.bagimsizGerek && !bagimsizMi(d)) neden = "bagimsizlik-kaniti-yok";
       /* Başarısız olunan varyantın aynısıyla yeniden deneme sayılmaz (ezberlenmiş soru ustalık değildir), yeni varyant varsa. */

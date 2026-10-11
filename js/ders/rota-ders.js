@@ -101,7 +101,7 @@ function revBtn(key,label,content){
 function saveMarks(l){
   var qs=Array.isArray(l.quiz)?l.quiz:[],ok=0,L=S.les;
   qs.forEach(function(q,i){if(L.mark[l.id+":"+i]==="ok")ok++});
-  var o={};o["q_"+l.track+"_ok"]=ok;o["q_"+l.track+"_total"]=qs.length;setProg(o);var mk=0;qs.forEach(function(q,i){if(L.mark[l.id+":"+i])mk++});if(mk===qs.length)quizMilestone(l,ok,qs.length);
+  var o={};o["q_"+l.track+"_ok"]=ok;o["q_"+l.track+"_total"]=qs.length;setProg(o);var mk=0;qs.forEach(function(q,i){if(L.mark[l.id+":"+i])mk++});if(mk===qs.length)quizMilestone(l,ok,qs.length);if(mk===qs.length)try{PP.ogr.ui.dersSinavi(l,ok,qs.length,qs.every(function(q,i){return L.pick&&L.pick[l.id+":"+i]!=null}))}catch(e){}
 }
 function askCoach(l,text){
   var A=S.les.ask;if(!text.trim())return;
