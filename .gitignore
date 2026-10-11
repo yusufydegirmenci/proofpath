@@ -2,3 +2,6 @@ node_modules/
 *.log
 .DS_Store
 .omc/
+tests/page_dbg.html
+tests/*.png
+tests/**/*.png

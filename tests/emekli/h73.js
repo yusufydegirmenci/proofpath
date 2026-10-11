@@ -1,5 +1,5 @@
-const {INIT,chromium}=require('./stub.js');
-const U=require('url').pathToFileURL(require('path').join(__dirname,'..','index.html')).href;
+const {INIT,chromium}=require('../stub.js');
+const U=require('url').pathToFileURL(require('path').join(__dirname,'..','..','index.html')).href;
 const SAMPLE=`(function(){var t2=setInterval(function(){if(window.claude&&!window.__w){window.__w=1;var o=window.claude.use;window.claude.use=async function(n){var r=await o(n);if(n==='sample'&&r){var j=async function(pr){window.__prompts=(window.__prompts||[]).concat([pr]);if(/işe alım/.test(pr))return {qs:[1,2,3,4,5].map(function(i){return {q:'Soru '+i+' nedir?',look:'kavram',model:'Örnek cevap '+i}})};if(/Bir BT mülakatında/.test(pr))return {score:7,good:'Yapı iyi',fix:'Örnek ekle'};return {}};return Object.assign(async function(){return {text:'ok'}},{json:j})}return r};clearInterval(t2)}},0)})()`;
 (async()=>{const b=await chromium.launch();
 for(const [w,g] of [[390,false],[1100,true]]){

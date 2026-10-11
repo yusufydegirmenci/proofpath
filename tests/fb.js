@@ -2,7 +2,7 @@ const {INIT,chromium}=require('./stub.js');
 (async()=>{const b=await chromium.launch();
 const ctx=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript(INIT);await p.addInitScript("localStorage.ya_gm_seen='1'");
-await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","index.html")).href+'#oyun');await p.waitForTimeout(900);
+await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","tests/page_dbg.html")).href+'#oyun');await p.waitForTimeout(900);
 for(const t of ['arena','arcade','dino','fetih']){await p.evaluate(t=>{__S.gtab=t;__X.draw()},t);await p.waitForTimeout(250);
  const n=await p.$$eval('.fb',a=>a.length);
  await p.evaluate(()=>{const d=document.querySelector('.fb');d.open=true;[...d.querySelectorAll('button')][0].click();d.querySelector('textarea').value='Daha hızlı olsun';[...d.querySelectorAll('button')].find(b=>/Notu/.test(b.textContent)).click()});

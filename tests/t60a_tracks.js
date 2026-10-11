@@ -2,7 +2,7 @@ const {INIT,chromium}=require('./stub.js');
 (async()=>{const b=await chromium.launch();
 const ctx=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript(INIT);await p.addInitScript("localStorage.ya_gm_seen='1'");
-await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","index.html")).href+'#ders');await p.waitForTimeout(900);
+await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","tests/page_dbg.html")).href+'#ders');await p.waitForTimeout(900);
 for(const t of ['net','dev','qa','ccna','sec']){
  await p.evaluate((t)=>{__S.les.track=t;__S.les.id=null;__S.les.view='ders';__X.draw()},t);await p.waitForTimeout(250);
  const info=await p.evaluate((t)=>({txt:document.body.innerText.length,cert:!!document.querySelector('details.panel summary'),qb:__X.QBX.filter(q=>q.t===t).length,tm:(__X.TMAP[t]||[]).length,st:__X.ST()[t].length,ovf:document.documentElement.scrollWidth>innerWidth}),t);

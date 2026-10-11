@@ -3,7 +3,7 @@ const {INIT,chromium}=require('./stub.js');
 for(const [w,m] of [[320,true],[390,true],[1100,false]]){
 const ctx=await b.newContext({viewport:{width:w,height:844},isMobile:m,hasTouch:m,colorScheme:w===1100?'light':'dark'});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript(INIT);await p.addInitScript("localStorage.ya_gm_seen='1'");
-await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","index.html")).href+'#masa');await p.waitForTimeout(1000);
+await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","tests/page_dbg.html")).href+'#masa');await p.waitForTimeout(1000);
 console.log(w,'list',await p.$$eval('.vd-c',a=>a.length),'ovf',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth));
 if(w===390)await p.screenshot({path:'s57-vd-list.png',fullPage:true});
 for(const ix of [0,2,4]){
