@@ -48,7 +48,11 @@
       if (!neden && sec.sunucuGerek && d.dogrulama !== "sunucu") neden = "sunucu-dogrulamasi-yok";
       if (!neden && sec.bagimsizGerek && !bagimsizMi(d)) neden = "bagimsizlik-kaniti-yok";
       /* Başarısız olunan varyantın aynısıyla yeniden deneme sayılmaz (ezberlenmiş soru ustalık değildir), yeni varyant varsa. */
-      if (!neden && cokVaryant && d.varyant != null && basarisizVaryant[d.varyant]) neden = "ayni-varyant-tekrari";
+      if (!neden && cokVaryant && d.varyant != null && basarisizVaryant[d.varyant]) {
+        /* Tüm varyantlarda kalındıysa kalıcı kilit olmasın: tur yenilenir */
+        if (h.varyantlar.every(function (v) { return basarisizVaryant[v]; })) basarisizVaryant = {};
+        else neden = "ayni-varyant-tekrari";
+      }
       if (neden) { gecmis.push({ id: d.id, neden: neden }); return; }
       sayilan.push({ d: d, oran: r });
       if (r < esik && d.varyant != null) basarisizVaryant[d.varyant] = 1;
