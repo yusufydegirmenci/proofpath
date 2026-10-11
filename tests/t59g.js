@@ -1,9 +1,9 @@
-const {INIT,chromium}=require(process.cwd()+'/repo/tests/stub.js');
-(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const {INIT,chromium}=require('./stub.js');
+(async()=>{const b=await chromium.launch();
 for(const [w,m] of [[320,true],[390,true],[1100,false]]){
 const ctx=await b.newContext({viewport:{width:w,height:844},isMobile:m,hasTouch:m,colorScheme:'dark'});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript(INIT);await p.addInitScript("localStorage.ya_gm_seen='1'");
-await p.goto('file://'+process.cwd()+'/page_dbg.html#oyun');await p.waitForTimeout(900);
+await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","index.html")).href+'#oyun');await p.waitForTimeout(900);
 await p.evaluate(()=>{__S.gtab='fetih';__X.draw()});await p.waitForTimeout(300);
 console.log(w,'daily card',await p.$$eval('.fk-daily',a=>a.length),await p.$eval('.fk-daily h3',e=>e.textContent),'ovf',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth));
 if(w===390)await p.screenshot({path:'s59g-daily.png',fullPage:true});

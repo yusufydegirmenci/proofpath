@@ -1,6 +1,6 @@
-const {INIT,chromium}=require('/tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/repo/tests/stub.js');
-const U='file:///tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/page.html';
-(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const {INIT,chromium}=require('./stub.js');
+const U=require('url').pathToFileURL(require('path').join(__dirname,'..','index.html')).href;
+(async()=>{const b=await chromium.launch();
 const ctx=await b.newContext({viewport:{width:390,height:844}});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript('window.__guest=true');await p.addInitScript(INIT);
 await p.addInitScript(`try{var q=['ccna','eng','sec','bk'],o={};q.forEach(function(t){o[t]={lv:1,n:0,ok:0,d:'2026-10-08',skip:true}});localStorage.ya_pl=JSON.stringify(o)}catch(e){}`);

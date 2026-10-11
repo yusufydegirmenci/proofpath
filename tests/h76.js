@@ -1,7 +1,7 @@
-const {INIT,chromium}=require('/tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/repo/tests/stub.js');
-const U='file:///tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/page.html';
+const {INIT,chromium}=require('./stub.js');
+const U=require('url').pathToFileURL(require('path').join(__dirname,'..','index.html')).href;
 const SAMPLE=`window.__prompts=[];(function(){var t2=setInterval(function(){if(window.claude&&!window.__w){window.__w=1;var o=window.claude.use;window.claude.use=async function(n){var r=await o(n);if(n==='sample'&&r){var j=async function(pr,op){window.__prompts.push(pr);return {title:'Test dersi',hook:'özet',blocks:[{t:'h',text:'Baslik'},{t:'p',text:'metin'},{t:'p',text:'metin2'}],quiz:[{q:'s?',options:['a','b','c'],answer:'b',why:'w'}],interview:[],vocab:[],homework:'x',resources:[]}};return Object.assign(async function(pr){return {text:'ok'}},{json:j})}return r};clearInterval(t2)}},0)})()`;
-(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+(async()=>{const b=await chromium.launch();
 for(const w of [390,1100]){
 const ctx=await b.newContext({viewport:{width:w,height:844},isMobile:w<500,hasTouch:w<500});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript('window.__guest=true');await p.addInitScript(INIT);await p.addInitScript(SAMPLE);

@@ -1,9 +1,9 @@
-const {INIT,chromium}=require(process.cwd()+'/repo/tests/stub.js');
-(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const {INIT,chromium}=require('./stub.js');
+(async()=>{const b=await chromium.launch();
 for(const [w,m] of [[320,true],[390,true],[1100,false]]){
 const ctx=await b.newContext({viewport:{width:w,height:844},isMobile:m,hasTouch:m});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript(INIT);await p.addInitScript("localStorage.ya_gm_seen='1'");
-await p.goto('file://'+process.cwd()+'/page_dbg.html#oyun');await p.waitForTimeout(1000);
+await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","index.html")).href+'#oyun');await p.waitForTimeout(1000);
 await p.evaluate(()=>[...document.querySelectorAll('.gh-nav button')].find(b=>b.textContent.startsWith('Fetih')).click());await p.waitForTimeout(300);
 console.log(w,'hub ovf',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),'nav',await p.evaluate(()=>{const n=document.querySelector('.gh-nav');return n.scrollWidth>n.clientWidth}));
 if(w===390)await p.screenshot({path:'s57-fk-hub.png',fullPage:true});

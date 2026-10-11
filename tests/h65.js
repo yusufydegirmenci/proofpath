@@ -1,9 +1,9 @@
-const {INIT,chromium}=require('/tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/repo/tests/stub.js');
-(async()=>{const b=await chromium.launch({executablePath:'/opt/pw-browsers/chromium'});
+const {INIT,chromium}=require('./stub.js');
+(async()=>{const b=await chromium.launch();
 for(const [w,m] of [[390,true],[1100,false]]){
 const ctx=await b.newContext({viewport:{width:w,height:844},isMobile:m,hasTouch:m});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
 await p.addInitScript('window.__guest=true');await p.addInitScript(INIT);
-const U='file:///tmp/claude-0/-home-claude/2f9ec0d3-f68e-527e-8038-1b5be7abf989/scratchpad/page.html';
+const U=require('url').pathToFileURL(require('path').join(__dirname,'..','index.html')).href;
 await p.goto(U+'?a='+w+'#atolye');await p.waitForTimeout(1500);
 const nav=await p.locator('nav button, .tabs button, #tabs button').allInnerTexts();console.log(w,'nav',nav.join('|').slice(0,120));
 console.log(w,'atolye visible',(await p.locator('.lscroll button:text-is("CV")').count())>0);
