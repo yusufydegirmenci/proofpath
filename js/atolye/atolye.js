@@ -259,8 +259,8 @@ function atAnalysis(){
     h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:function(){S.pr.track=weak;S.pr.qs=[];S.pr.res=null;S.at2.sec="alistirma";draw()}},"Zayıf alanı alıştır")))];
 }
 function renderAtolye(){
-  var A=S.at2,secs=[["program","Program"],["alistirma","Alıştırma"],["kelimeler","Kelimeler"],["kutuphane","Kütüphane"],["defter","Defterim"],["analiz","Analiz"],["ise","İşe hazırlık"],["cv","CV"]];
+  var A=S.at2,secs=[["program","Program"],["alistirma","Alıştırma"],["kelimeler","Kelimeler"],["kutuphane","Kütüphane"],["defter","Defterim"],["analiz","Analiz"],["ise","İşe hazırlık"],["cv","CV"],["va","Veri Analitiği"]];
   var seg=h("div",{class:"panel",style:"padding:10px"},h("div",{class:"lscroll"},secs.map(function(s){return h("button",{type:"button",class:"opt","aria-pressed":A.sec===s[0]?"true":"false",onclick:function(){A.sec=s[0];draw()}},s[1])})));
-  var body={program:atProgram,alistirma:atPractice,kelimeler:atWords,kutuphane:atLib,defter:atNotes,analiz:atAnalysis,ise:atJobs,cv:atCv}[A.sec]();
+  var body={program:atProgram,alistirma:atPractice,kelimeler:atWords,kutuphane:atLib,defter:atNotes,analiz:atAnalysis,ise:atJobs,cv:atCv,va:renderVeriAnalitigi}[A.sec]();
   return [seg].concat(body).filter(Boolean);
 }
