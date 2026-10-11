@@ -1,0 +1,315 @@
+// Öğrenme modeli (js/ogrenme/) birim testleri: puan, eşik, kritik hedef, kapı, telafi, varyant, aktarım, depo, eski veri dönüştürücü.
+// Tarayıcı gerekmez (saf mantık). Hata → çıkış 1. Beklenen değerler bağımsız ve elle yazılmıştır.
+const fs = require('fs');
+const path = require('path');
+for (const f of ['cekirdek', 'graf', 'degerlendirme', 'kapi', 'depo', 'eski', 'program'])
+  new Function(fs.readFileSync(path.join(__dirname, '..', 'js', 'ogrenme', f + '.js'), 'utf8')).call(globalThis);
+const O = globalThis.PP.ogr, G_ = O.graf, D = O.deg, K = O.kapi;
+
+let n = 0, fails = 0;
+const ok = (c, m) => { n++; console.log((c ? 'OK    ' : 'HATA  ') + m); if (!c) fails++; };
+const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(s, m + (s ? '' : '  → beklenen ' + JSON.stringify(b) + ', gelen ' + JSON.stringify(a))); };
+const kodlar = r => r.nedenler.map(x => x.kod);
+const mem = () => { const m = {}; return { m, getItem: k => (k in m ? m[k] : null), setItem: (k, v) => { m[k] = String(v); } }; };
+let sayac = 0;
+const dn = (hedef, puan, maks, o) => Object.assign({ id: 'd' + (++sayac), hedef, varyant: null, puan, maks, tarih: '2026-10-' + String(10 + sayac).padStart(2, '0'), surum: '1', yardim: { tur: 'bilinmiyor', guvenilir: false }, dogrulama: 'istemci' }, o || {});
+
+// ---- Örnek müfredat: bir yol, iki yetkinlik, kritik + kritik olmayan hedef ----
+function ornek() {
+  const G = G_.yeni('1');
+  G_.yetkinlikEkle(G, { id: 'y1', ad: 'Adresleme' });
+  G_.yetkinlikEkle(G, { id: 'y2', ad: 'Yönlendirme', onkosullar: ['y1'] });
+  G_.hedefEkle(G, { id: 'h-maske', ad: 'Alt ağ maskesi', yetkinlik: 'y1', kritik: true, varyantlar: ['A', 'B', 'C'] });
+  G_.hedefEkle(G, { id: 'h-sozluk', ad: 'Terimler', yetkinlik: 'y1' });
+  G_.hedefEkle(G, { id: 'h-rota', ad: 'Rota tablosu', yetkinlik: 'y2', kritik: true });
+  return G;
+}
+
+// ---- 1. Varsayılanlar ----
+eq([O.ESIK, O.KRITIK_ESIK, O.CEKIRDEK_PROJE], [0.8, 0.8, 4], 'varsayılan eşik %80, kritik eşik %80, kademe başına 4 çekirdek proje');
+eq(Object.keys(O.SEVIYE), ['L0', 'L1', 'L2', 'L3', 'L4', 'L5', 'L6', 'L7', 'L8'], 'L0–L8 ilerleme seviyeleri tanımlı');
+eq(O.JOKER_GEREKLER.length, 7, 'Joker 7 ayrı gereksinim türü ister');
+
+// ---- 2. Puan ve eşik ----
+{
+  const G = ornek();
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 4, 5)]).durum, 'gecti', 'puan: 4/5 = %80 sınırda GEÇER');
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 79, 100)]).durum, 'kaldi', 'puan: %79 KALIR');
+  eq(D.hedefDurumu(G, 'h-sozluk', []).durum, 'denenmedi', 'puan: deneme yoksa "denenmedi" (ustalık değil)');
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 6, 5)]).gecmis[0].neden, 'gecersiz-puan', 'puan: puan > maks geçersiz, sayılmaz');
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 1, 0)]).durum, 'denenmedi', 'puan: maks 0 geçersiz');
+  const son = D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5), dn('h-sozluk', 2, 5)]);
+  eq([son.durum, son.oran], ['kaldi', 0.4], 'puan: son sayılan deneme belirler (gerileme ustalığı düşürür)');
+  G.hedefler['h-sozluk'].esik = 0.9;
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 4, 5)]).durum, 'kaldi', 'eşik: hedef kendi eşiğini yükseltebilir (%90)');
+  G.hedefler['h-sozluk'].esik = 0.5; G.hedefler['h-maske'].esik = 0.5;
+  eq([D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 3, 5)]).durum, D.hedefDurumu(G, 'h-maske', [dn('h-maske', 3, 5)]).durum], ['gecti', 'kaldi'], 'eşik: kritik hedefin eşiği %80\'in altına indirilemez');
+  G.hedefler['h-sozluk'].minMaks = 20;
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5)]).gecmis[0].neden, 'yetersiz-kanit', 'eşik: minimum kanıt miktarı (1/1 ustalık sayılmaz)');
+}
+
+// ---- 3. Kritik hedef ortalamaya gömülmez ----
+{
+  const G = ornek();
+  const d = [dn('h-maske', 2, 5), dn('h-sozluk', 5, 5)];       // kritik %40, diğer %100 → ortalama %70
+  const y = D.yetkinlikDurumu(G, 'y1', d);
+  eq([y.gecti, y.kritikBasarisiz, Math.round(y.ortalama * 100)], [false, ['h-maske'], 70], 'kritik: ortalama bilgi amaçlı; kritik başarısızlık yetkinliği geçirmez');
+  const y2 = D.yetkinlikDurumu(G, 'y1', [dn('h-maske', 5, 5), dn('h-sozluk', 5, 5)]);
+  eq([y2.gecti, y2.kritikBasarisiz], [true, []], 'kritik: hepsi geçince yetkinlik geçer');
+  eq(D.yetkinlikDurumu(G, 'y1', [dn('h-sozluk', 5, 5)]).kritikEksik, ['h-maske'], 'kritik: denenmemiş kritik hedef eksik sayılır');
+  const bos = G_.yeni('1'); G_.yetkinlikEkle(bos, { id: 'z' });
+  eq(D.yetkinlikDurumu(bos, 'z', []).gecti, false, 'yetkinlik: ölçüt (hedef) yoksa geçmiş sayılmaz');
+}
+
+// ---- 4. Sürüm, doğrulama, bağımsızlık ----
+{
+  const G = ornek();
+  const a = D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5, { surum: '0' })]);
+  eq([a.durum, a.gecmis[0].neden], ['denenmedi', 'eski-surum'], 'sürüm: eski müfredat sürümü kanıtı korunur ama sayılmaz');
+  G.hedefler['h-sozluk'].uyumluSurumler = ['0'];
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5, { surum: '0' })]).durum, 'gecti', 'sürüm: uyumlu ilan edilen eski sürüm sayılır');
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5, { surum: null })]).gecmis[0].neden, 'surum-yok', 'sürüm: sürümsüz kayıt sayılmaz');
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5)], { sunucuGerek: true }).gecmis[0].neden, 'sunucu-dogrulamasi-yok', 'doğrulama: sunucu istenince istemci kaydı sayılmaz');
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5, { dogrulama: 'sunucu' })], { sunucuGerek: true }).guven, 'sunucu', 'doğrulama: sunucu kaydı sayılır, güven "sunucu"');
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5)], { bagimsizGerek: true }).gecmis[0].neden, 'bagimsizlik-kaniti-yok', 'bağımsızlık: tamamlama bağımsızlık kanıtı değildir');
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5, { yardim: { tur: 'yok', guvenilir: false } })], { bagimsizGerek: true }).durum, 'denenmedi', 'bağımsızlık: güvenilmeyen "yardım yok" beyanı sayılmaz');
+  eq(D.hedefDurumu(G, 'h-sozluk', [dn('h-sozluk', 5, 5, { yardim: { tur: 'yok', guvenilir: true } })], { bagimsizGerek: true }).bagimsiz, true, 'bağımsızlık: yalnız güvenilir "yardım yok" kaydı kabul');
+}
+
+// ---- 5. Varyant ve telafi ----
+{
+  const G = ornek();
+  eq(D.varyantSec(G, 'h-maske', []).varyant, 'A', 'varyant: ilk seçim ilk varyant (belirleyici)');
+  eq(D.varyantSec(G, 'h-maske', [dn('h-maske', 1, 5, { varyant: 'A' })]).varyant, 'B', 'varyant: son kullanılan tekrarlanmaz');
+  eq(D.varyantSec(G, 'h-maske', [dn('h-maske', 1, 5, { varyant: 'A' }), dn('h-maske', 1, 5, { varyant: 'B' })]).varyant, 'C', 'varyant: en az kullanılan seçilir');
+  eq(D.varyantSec(G, 'h-sozluk', []).uyari, 'varyant-yok', 'varyant: tanımsızsa uyarı');
+  G.hedefler['h-sozluk'].varyantlar = ['X'];
+  eq(D.varyantSec(G, 'h-sozluk', [dn('h-sozluk', 1, 5, { varyant: 'X' })]).uyari, 'tek-varyant', 'varyant: tek varyantta uyarı (ezber riski)');
+  const kal = [dn('h-maske', 1, 5, { varyant: 'A' })];
+  const ayni = D.hedefDurumu(G, 'h-maske', kal.concat([dn('h-maske', 5, 5, { varyant: 'A' })]));
+  eq([ayni.durum, ayni.gecmis[0].neden], ['kaldi', 'ayni-varyant-tekrari'], 'varyant: kaldığın varyantı ezberleyip geçmek sayılmaz');
+  const farkli = D.hedefDurumu(G, 'h-maske', kal.concat([dn('h-maske', 5, 5, { varyant: 'B' })]));
+  eq(farkli.durum, 'gecti', 'varyant: farklı varyantla geçmek sayılır');
+  const t = D.telafi(G, 'h-maske', kal);
+  eq([t.gerekli, t.adimlar.map(a => a.tur), t.sonrakiVaryant], [true, ['yanlis-anlama', 'yeniden-anlat', 'ornek', 'rehberli-gorev', 'bagimsiz-gorev', 'yeniden-sinav'], 'B'], 'telafi: 6 adım (§11.1), yeniden sınav FARKLI varyantla');
+  eq(D.telafi(G, 'h-maske', kal.concat([dn('h-maske', 5, 5, { varyant: 'B' })])).gerekli, false, 'telafi: hedef geçilince telafi gerekmez (düzelen hata bloklamaz)');
+  eq(D.telafi(G, 'h-maske', []).neden, 'hedef-denenmedi', 'telafi: denenmemiş hedef için telafi yok');
+  eq(D.telafiGerekenler(G, kal.concat([dn('h-sozluk', 1, 5)])).map(x => x.hedef), ['h-maske', 'h-sozluk'], 'telafi: başarısız tüm hedefler listelenir');
+}
+
+// ---- 6. Kapılar: nedenler, açılma, bloklama ----
+function kapiOrnek() {
+  const G = ornek();
+  for (const p of ['p1', 'p2', 'p3', 'p4']) G_.projeEkle(G, { id: p, ad: 'Proje ' + p, hedefler: ['h-' + p], yetkinlikler: ['y1'] });
+  G_.kapiEkle(G, { id: 'temel', ad: 'Temel kapısı', seviye: 'L3', hedefler: ['h-maske', 'h-sozluk'] });
+  K.kademeAltin(G, { id: 'altin1', ad: 'Kademe 1 Altın Vuruş', kademe: 'k1', hedefler: ['h-maske', 'h-sozluk'], cekirdekProjeler: ['p1', 'p2', 'p3', 'p4'], onkosulKapilar: ['temel'] });
+  return G;
+}
+{
+  const G = kapiOrnek(), du = (d, pr) => ({ denemeler: d, projeler: pr || {}, kanitlar: [] });
+  const r0 = K.degerlendir(G, 'temel', du([]));
+  eq([r0.acik, kodlar(r0)], [false, ['kritik-denenmedi', 'hedef-denenmedi']], 'kapı: hiç kanıt yokken kilitli; her hedef için neden var');
+  ok(r0.nedenler.every(x => typeof x.mesaj === 'string' && x.mesaj.length > 10 && x.ref), 'kapı: her kilit okunur bir neden mesajı ve başvuru taşır');
+  const r1 = K.degerlendir(G, 'temel', du([dn('h-maske', 2, 5), dn('h-sozluk', 5, 5)]));
+  eq([r1.acik, kodlar(r1)], [false, ['kritik-basarisiz']], 'kapı: ortalama yüksek olsa da başarısız kritik hedef kapıyı bloklar');
+  ok(/%40/.test(r1.nedenler[0].mesaj) && /%80/.test(r1.nedenler[0].mesaj) && /Ortalama/.test(r1.nedenler[0].mesaj), 'kapı: mesaj puanı, gereken eşiği ve ortalamanın telafi etmediğini söyler');
+  const r2 = K.degerlendir(G, 'temel', du([dn('h-maske', 5, 5), dn('h-sozluk', 5, 5)]));
+  eq([r2.acik, kodlar(r2)], [true, []], 'kapı: geçerli tamamlama kapıyı açar');
+  const r3 = K.degerlendir(G, 'temel', du([dn('h-maske', 5, 5), dn('h-sozluk', 4, 5)]));
+  eq(r3.acik, true, 'kapı: kritik olmayan hedefte %80 yeterli');
+  G.hedefler['h-sozluk'].esik = 0.8;
+  const BAG = { yardim: { tur: 'yok', guvenilir: true } };
+  const hepsi = [dn('h-maske', 5, 5, BAG), dn('h-sozluk', 5, 5, BAG)];
+  eq(kodlar(K.degerlendir(G, 'altin1', du([dn('h-maske', 5, 5), dn('h-sozluk', 5, 5)]))).filter(k => k === 'bagimsizlik-kaniti-yok').length > 0, true, 'Altın Vuruş: yardımsız yapıldığına dair güvenilir kayıt olmadan açılmaz (tamamlama bağımsızlık değildir)');
+  const a0 = K.degerlendir(G, 'altin1', du(hepsi));
+  eq(kodlar(a0), ['proje-eksik'], 'Altın Vuruş: temel geçildi ama 4 çekirdek proje yok → neden proje-eksik');
+  ok(/0\/4/.test(a0.nedenler[0].mesaj), 'Altın Vuruş: mesaj "0/4" söyler');
+  const pr = { p1: { bitti: true }, p2: { bitti: true }, p3: { bitti: true } };
+  eq(K.degerlendir(G, 'altin1', du(hepsi, pr)).nedenler[0].mesaj.indexOf('3/4') >= 0, true, 'Altın Vuruş: 3/4 proje yetmez');
+  pr.p4 = { bitti: true };
+  const a1 = K.degerlendir(G, 'altin1', du(hepsi, pr));
+  eq([a1.acik, kodlar(a1)], [true, []], 'Altın Vuruş: temel + 4 ayrı proje + kritik değerlendirmeler (güvenilir bağımsızlık kaydıyla) → açık');
+  const a2 = K.degerlendir(G, 'altin1', du([dn('h-maske', 5, 5, BAG), dn('h-sozluk', 5, 5, BAG), dn('h-maske', 1, 5, BAG)], pr));
+  eq(kodlar(a2).sort(), ['kritik-basarisiz', 'onkosul-kapi'], 'Altın Vuruş: projeler tamam olsa bile sonradan kritik gerileme hem kapıyı hem önkoşulu bloklar');
+  const sunucu = K.degerlendir(G, 'altin1', du(hepsi, pr), { sunucuGerek: true });
+  ok(kodlar(sunucu).includes('sunucu-dogrulama-yok') || kodlar(sunucu).includes('onkosul-kapi'), 'kapı: sunucu doğrulaması istenince istemci kanıtı yetmez');
+  eq(K.degerlendir(G, 'temel', du(hepsi)).bilgi.map(b => b.kod), ['dogrulanmamis', 'dogrulanmamis'], 'kapı: istemci sonuçları "doğrulanmamış" etiketiyle gelir (güvenli yetkilendirme değil)');
+}
+
+// ---- 7. Çekirdek projeler gerçekten ayrı olmalı ----
+{
+  const G = G_.yeni('1');
+  G_.yetkinlikEkle(G, { id: 'y' });
+  G_.projeEkle(G, { id: 'a', ad: 'Ağ Lab', hedefler: ['x'], yetkinlikler: ['y'] });
+  G_.projeEkle(G, { id: 'b', ad: 'ağ  lab!', hedefler: ['z'], yetkinlikler: ['q'] });
+  G_.projeEkle(G, { id: 'c', ad: 'Başka ad', hedefler: ['x'], yetkinlikler: ['y'] });
+  G_.projeEkle(G, { id: 'd', ad: 'Dördüncü', hedefler: ['t'], yetkinlikler: ['u'] });
+  K.kademeAltin(G, { id: 'k', ad: 'k', cekirdekProjeler: ['a', 'b', 'c', 'd'] });
+  const v = G_.dogrula(G);
+  ok(!v.ok && v.hata.some(h => /aynı adı/.test(h)) && v.hata.some(h => /aynı hedef\/yetkinlik/.test(h)), 'proje: yeniden adlandırılmış kopya ve aynı hedef kümesi hata olarak yakalanır');
+  const G2 = G_.yeni('1'); G_.projeEkle(G2, { id: 'a', ad: 'A' }); K.kademeAltin(G2, { id: 'k', ad: 'k', cekirdekProjeler: ['a'] });
+  const v2 = G_.dogrula(G2);
+  eq([v2.ok, v2.uyari], [true, ['kapı k: 1/4 çekirdek proje tanımlı']], 'proje: eksik içerik hata değil UYARI (dürüst durum)');
+  eq(kodlar(K.degerlendir(G2, 'k', { denemeler: [], projeler: { a: { bitti: true } } })), ['proje-tanimi-eksik', 'proje-eksik'], 'proje: tanım eksikse kilit nedeni içeriğin eksik olduğunu söyler');
+}
+
+// ---- 8. Bütünleşik ve Joker ----
+{
+  const G = kapiOrnek();
+  G_.kapiEkle(G, { id: 'diger', ad: 'Diğer alan', seviye: 'L5', hedefler: ['h-rota'] });
+  let hata = null; try { K.butunlesik(G, { id: 'b0', ad: 'x', onkosulKapilar: ['temel'] }); } catch (e) { hata = e.message; }
+  ok(/en az iki/.test(hata || ''), 'bütünleşik: tek önkoşullu kapı reddedilir (anlamlı birleşim yok)');
+  K.butunlesik(G, { id: 'bn', ad: 'Bütünleşik', onkosulKapilar: ['temel', 'diger'] });
+  K.joker(G, { id: 'jk', ad: 'Joker', onkosulKapilar: ['bn'] });
+  const du = (d, k) => ({ denemeler: d, projeler: {}, kanitlar: k || [] });
+  const hepsi = [dn('h-maske', 5, 5), dn('h-sozluk', 5, 5), dn('h-rota', 5, 5)];
+  eq(kodlar(K.degerlendir(G, 'bn', du([dn('h-maske', 5, 5), dn('h-sozluk', 5, 5)]))), ['onkosul-kapi'], 'bütünleşik: bir önkoşul kapı eksikse kilitli');
+  eq(K.degerlendir(G, 'bn', du(hepsi)).acik, true, 'bütünleşik: tüm önkoşul kapılar geçilince açık');
+  const j0 = K.degerlendir(G, 'jk', du(hepsi));
+  eq(kodlar(j0), O.JOKER_GEREKLER.map(() => 'kanit-yok'), 'Joker: 7 gereksinimin her biri ayrı kanıt ister (şablonu tamamlamak yetmez)');
+  const kan = O.JOKER_GEREKLER.slice(0, 6).map(t => ({ tur: t, kapi: 'jk', dogrulama: 'istemci' }));
+  eq(K.degerlendir(G, 'jk', du(hepsi, kan)).nedenler.map(x => x.ref), ['savunma'], 'Joker: eksik tek gereksinim (savunma) açıkça söylenir');
+  kan.push({ tur: 'savunma', kapi: 'jk', dogrulama: 'istemci' });
+  eq(K.degerlendir(G, 'jk', du(hepsi, kan)).acik, true, 'Joker: tüm gereksinim kanıtları varsa açık');
+  eq(K.degerlendir(G, 'jk', du(hepsi, kan.map(k => Object.assign({}, k, { kapi: 'baska' })))).acik, false, 'Joker: başka kapıya ait kanıt sayılmaz');
+  const dongu = G_.yeni('1'); G_.kapiEkle(dongu, { id: 'a', ad: 'a', onkosulKapilar: ['b'] }); G_.kapiEkle(dongu, { id: 'b', ad: 'b', onkosulKapilar: ['a'] });
+  ok(kodlar(K.degerlendir(dongu, 'a', { denemeler: [], projeler: {} })).length > 0, 'kapı: döngüsel önkoşul sonsuz döngüye girmez, kilitli kalır');
+}
+
+// ---- 9. Önkoşul grafiği incelenebilir ----
+{
+  const G = ornek();
+  eq(G_.onkosulKapanisi(G, 'y2'), ['y1'], 'önkoşul: doğrudan ve dolaylı önkoşullar listelenir');
+  G_.yetkinlikEkle(G, { id: 'y3', ad: 'Y3', onkosullar: ['y2'] });
+  eq(G_.onkosulKapanisi(G, 'y3'), ['y1', 'y2'], 'önkoşul: kapanış sıralı (en temelden)');
+  G.yetkinlikler.y1.onkosullar = ['y3'];
+  const v = G_.dogrula(G);
+  ok(!v.ok && v.hata.some(h => /döngü/.test(h)), 'önkoşul: döngü hata olarak yakalanır');
+  eq(G_.onkosulKapanisi(G, 'y3').length >= 2, true, 'önkoşul: döngülü grafikte kapanış sonlanır');
+  const G2 = G_.yeni('1'); G_.yetkinlikEkle(G2, { id: 'a', onkosullar: ['yok'] }); G_.hedefEkle(G2, { id: 'h', yetkinlik: 'yok2' });
+  eq(G_.dogrula(G2).hata.length, 2, 'önkoşul: bilinmeyen önkoşul ve yetkinlik hata');
+  let yinelen = null; try { G_.yetkinlikEkle(G2, { id: 'a' }); } catch (e) { yinelen = e.message; }
+  ok(/yinelenen/.test(yinelen || ''), 'graf: yinelenen kimlik reddedilir');
+}
+
+// ---- 10. Yollar arası aktarım: yalnız gerçekten eşleşen kanıt ----
+{
+  const G = G_.yeni('1');
+  G_.yetkinlikEkle(G, { id: 'sec-y' }); G_.yetkinlikEkle(G, { id: 'qa-y' });
+  G_.hedefEkle(G, { id: 'sec:log', yetkinlik: 'sec-y', kritik: true, esdegerler: ['qa:log'] });
+  G_.hedefEkle(G, { id: 'qa:log', yetkinlik: 'qa-y', kritik: true, esdegerler: ['sec:log'] });
+  G_.hedefEkle(G, { id: 'qa:rapor', yetkinlik: 'qa-y' });
+  G_.hedefEkle(G, { id: 'sec:zayif', yetkinlik: 'sec-y', esik: 0.5, esdegerler: ['qa:strict'] });
+  G_.hedefEkle(G, { id: 'qa:strict', yetkinlik: 'qa-y', esik: 0.9, esdegerler: ['sec:zayif'] });
+  eq(G_.dogrula(G).ok, true, 'aktarım: karşılıklı ilan edilmiş eşdeğerlikler geçerli');
+  eq(D.hedefDurumu(G, 'qa:log', [dn('sec:log', 5, 5)]).durum, 'gecti', 'aktarım: açıkça eşdeğer hedefte geçiş diğer yolda sayılır');
+  eq(D.hedefDurumu(G, 'qa:rapor', [dn('sec:log', 5, 5)]).durum, 'denenmedi', 'aktarım: eşdeğer ilan edilmeyen hedefe otomatik geçiş YOK');
+  eq(D.hedefDurumu(G, 'qa:strict', [dn('sec:zayif', 3, 5)]).gecmis[0].neden, 'aktarim-esik-dusuk', 'aktarım: daha düşük eşikle geçilen kanıt daha sıkı hedefe aktarılmaz');
+  G.hedefler['qa:log'].kritik = true; G.hedefler['sec:log'].kritik = false;
+  eq(D.hedefDurumu(G, 'qa:log', [dn('sec:log', 5, 5)]).gecmis[0].neden, 'aktarim-kritik-degil', 'aktarım: kritik olmayan kanıt kritik hedefe aktarılmaz');
+  G.hedefler['qa:log'].esdegerler = [];
+  ok(G_.dogrula(G).hata.some(h => /karşılıklı/.test(h)), 'aktarım: tek yönlü eşdeğerlik hata');
+}
+
+// ---- 11. Ders sırası (ilerleme) ≠ ustalık ----
+{
+  const G = G_.yeni('1');
+    const T = { surum: 's', yollar: [{ id: 't', ad: 'T', dersler: [{ ad: 'Bir', modul: 'M1' }, { ad: 'İki', modul: 'M1' }, { ad: 'Üç', modul: 'M2' }] }], projeYollari: [] };
+  const P = O.program.kur(T);
+  eq([Object.keys(P.dersler), Object.keys(P.moduller)], [['ders:t:1', 'ders:t:2', 'ders:t:3'], ['modul:t:1', 'modul:t:2']], 'program: dersler ve modüller mevcut içerikten kurulur');
+  eq(P.yetkinlikler['yet:t:2'].onkosullar, ['yet:t:1'], 'program: ders yetkinliği önceki dersin yetkinliğini önkoşul alır');
+  eq(G_.dogrula(P).ok, true, 'program: kurulan grafik tutarlı');
+  const du = (dt, d) => ({ denemeler: d || [], dersTamam: dt || {}, projeler: {}, kanitlar: [] });
+  const a0 = K.dersAcik(P, 'ders:t:2', du());
+  eq([a0.acik, kodlar(a0)], [false, ['onceki-ders-bitmedi']], 'ders sırası: önceki ders bitmeden ikinci ders kilitli');
+  ok(/Bir/.test(a0.nedenler[0].mesaj), 'ders sırası: kilit nedeni önceki dersi adıyla söyler');
+  eq(K.dersAcik(P, 'ders:t:1', du()).acik, true, 'ders sırası: ilk ders her zaman açık');
+  const a1 = K.dersAcik(P, 'ders:t:2', du({ 'ders:t:1': true }));
+  eq([a1.acik, a1.ustalik.durum, a1.bilgi.map(b => b.kod)], [true, 'kanit-yok', ['eski-kayit']], 'ders sırası: eski tamamlama sonrakini açar ama ustalık "kanıt yok" (sayfa açmak ≠ ustalık)');
+  const kal = K.dersAcik(P, 'ders:t:2', du({ 'ders:t:1': true }, [dn('ders:t:1:sinav', 1, 5, { surum: 's' })]));
+  eq([kal.acik, K.ustalik(P, 'ders:t:1', du({ 'ders:t:1': true }, [dn('ders:t:1:sinav', 1, 5, { surum: 's' })])).durum], [true, 'kismi'], 'ders sırası: kritik olmayan düşük sınav sonraki dersi bloklamaz ama ustalık "kısmi" ve telafi önerilir');
+  P.hedefler['ders:t:1:sinav'].kritik = true;
+  const kr = K.dersAcik(P, 'ders:t:2', du({ 'ders:t:1': true }, [dn('ders:t:1:sinav', 1, 5, { surum: 's' })]));
+  eq([kr.acik, kodlar(kr)], [false, ['kritik-basarisiz']], 'ders sırası: kritik hedef başarısızsa sonraki ders bloklanır (telafi gerekir)');
+  const iyi = K.dersAcik(P, 'ders:t:2', du({ 'ders:t:1': true }, [dn('ders:t:1:sinav', 1, 5, { surum: 's' }), dn('ders:t:1:sinav', 5, 5, { surum: 's' })]));
+  eq([iyi.acik, K.ustalik(P, 'ders:t:1', du({ 'ders:t:1': true }, [dn('ders:t:1:sinav', 1, 5, { surum: 's' }), dn('ders:t:1:sinav', 5, 5, { surum: 's' })])).durum], [true, 'gecti'], 'ders sırası: telafiden sonra geçen yeni deneme engeli kaldırır');
+}
+
+// ---- 12. Depo: kalıcılık, değişmezlik, bozuk veri ----
+{
+  const S1 = mem();
+  const r = O.depo.denemeEkle({ id: 'x1', hedef: 'h', puan: 4, maks: 5, tarih: '2026-10-11T10:00:00Z', surum: '1' }, S1);
+  eq([r.ok, O.depo.oku(S1).denemeler.length], [true, 1], 'depo: deneme kaydedilir');
+  eq(O.depo.oku(S1).denemeler[0].dogrulama, 'istemci', 'depo: doğrulama varsayılanı "istemci"; yardım varsayılanı güvenilmez');
+  eq(O.depo.oku(S1).denemeler[0].yardim, { tur: 'bilinmiyor', guvenilir: false }, 'depo: yardım bilinmiyor/güvenilmez (bağımsızlık çıkarılmaz)');
+  const t = O.depo.denemeEkle({ id: 'x1', hedef: 'h', puan: 0, maks: 5 }, S1);
+  eq([t.tekrar, O.depo.oku(S1).denemeler.length, O.depo.oku(S1).denemeler[0].puan], [true, 1, 4], 'depo: aynı kimlikli kayıt eskisini ezmez (kanıt değişmez)');
+  const taze = O.depo.oku(S1);   // "yenileme": depodan yeniden okuma
+  eq(taze.denemeler[0].id, 'x1', 'depo: yenileme/yeniden girişte kayıt durur');
+  eq([O.depo.denemeEkle({ hedef: 'h', puan: 6, maks: 5 }, S1).neden, O.depo.denemeEkle({ hedef: 'h', puan: 1, maks: 0 }, S1).neden, O.depo.denemeEkle({ puan: 1, maks: 2 }, S1).neden, O.depo.denemeEkle(null, S1).neden],
+    ['puan-gecersiz', 'maks-gecersiz', 'hedef-yok', 'bos'], 'depo: geçersiz denemeler reddedilir');
+  eq(O.depo.denemeEkle({ hedef: 'h', puan: 1, maks: 2, dogrulama: 'sunucu', yardim: { tur: 'yok', guvenilir: true } }, S1).deneme.dogrulama, 'sunucu', 'depo: sunucu doğrulaması alanı taşınır (yazan taraf sunucu olmalı; istemci iddiası güvenilmez)');
+  const S2 = mem(); S2.m.ya_pp_ogr = '{bozuk';
+  eq([O.depo.oku(S2).denemeler.length, S2.m.ya_pp_ogr_bozuk], [0, '{bozuk'], 'depo: bozuk içerik hata vermez ve yedeklenir');
+  O.depo.projeIsaretle('p', { tarih: 'T' }, S2); O.depo.projeIsaretle('p', { tarih: 'U' }, S2);
+  eq(O.depo.oku(S2).projeler.p.tarih, 'T', 'depo: proje bitişi bir kez yazılır');
+  eq(O.depo.kanitEkle({ id: 'k1', tur: 'savunma', kapi: 'jk' }, S2).ok && O.depo.kanitEkle({ id: 'k1', tur: 'x' }, S2).tekrar, true, 'depo: kanıt kimliği tekrarlanmaz');
+  const yok = { getItem() { throw new Error('x'); }, setItem() { throw new Error('kota'); } };
+  eq([O.depo.oku(yok).denemeler.length, O.depo.denemeEkle({ hedef: 'h', puan: 1, maks: 2 }, yok).ok], [0, false], 'depo: erişilemeyen depo hata fırlatmaz');
+}
+
+// ---- 13. Eski veri dönüştürücü: gerçek eski biçimli örnek ----
+{
+  const eskiLc = { 's-ccna-1': { w: 1, r: 1, q: 1, p: 1, d: '2026-10-08' }, 's-ccna-2': { w: 1, r: 1, d: '2026-10-09' }, 'l-ozel': { w: 1, r: 1, q: 1, p: 1 }, _cut: { ccna: { d: '2026-10-08', pn: 0 } }, kotu: 5 };
+  const eskiGs = { sk: { ccna: 1.6 }, bx: { 3: 2 }, st: { 3: [3, 3], 4: [1, 4], 7: [2, 2], 9: [5, 2], x: [1, 1], 11: [1, 1] }, ts: '2026-10-09T12:00:00.000Z' };
+  const eskiLv = { ccna: { l: 2, s: 40, m: 100, d: '2026-10-08' }, sec: { l: 1 } };
+  const eskiPl = { ccna: { lv: 2.3, n: 3, ok: 2, d: '2026-10-08' }, eng: { lv: 1, n: 0, ok: 0, d: 'x', skip: true } };
+  const girdi = { lc: eskiLc, gs: eskiGs, lv: eskiLv, pl: eskiPl };
+  const ham = JSON.stringify(girdi);
+  const yol = i => ({ 3: 'ccna', 4: 'ccna', 7: 'sec', 9: 'sec', 11: null }[i] || null);
+  const c = O.eski.cevir(girdi, yol);
+  eq(JSON.stringify(girdi), ham, 'eski: dönüştürme girdiyi DEĞİŞTİRMEZ');
+  eq(Object.keys(c.ilerleme), ['ders:ccna:1', 'ders:ccna:2', 'ders:ozel:l-ozel'], 'eski: ders anahtarları (s-<yol>-<n> → ders:<yol>:<n>); "_" iç kayıtları ve bozuk giriş atlanır');
+  eq(c.dersTamam, { 'ders:ccna:1': true, 'ders:ozel:l-ozel': true }, 'eski: yalnız dört bayrağın hepsi tamam olan ders "tamam" (ya_lc kuralı)');
+  eq(c.ilerleme['ders:ccna:2'], { w: true, r: true, q: false, p: false, tarih: '2026-10-09', tamam: false, kaynak: 'ya_lc' }, 'eski: yarım ders bayrakları aynen taşınır');
+  const gs = c.denemeler.filter(d => d.kaynak === 'ya_gs');
+  eq(gs.map(d => [d.hedef, d.puan, d.maks]), [['soru-bankasi:ccna', 4, 7], ['soru-bankasi:sec', 2, 2]], 'eski: soru istatistikleri yol başına toplanır; bozuk ([5,2]) ve yolu bilinmeyen atlanır');
+  ok(gs.every(d => d.dogrulama === 'istemci' && d.surum === O.eski.SURUM && d.yardim.guvenilir === false), 'eski: toplu denemeler "istemci" güveniyle ve eski sürüm etiketiyle gelir');
+  eq(c.kanitlar.map(k => [k.id, k.tur, k.seviye, k.oran]), [['eski-lv-ccna', 'tanilama', 2, 0.4], ['eski-pl-ccna', 'yerlestirme', 2.3, 2 / 3]], 'eski: seviye testi ve yerleştirme tanılama kanıtı olur; atlanmış yerleştirme ve ölçümsüz seviye kaydı alınmaz');
+  eq(c.atlanan > 0, true, 'eski: atlanan bozuk kayıt sayısı bildirilir (sessiz kayıp yok)');
+  eq(JSON.stringify(O.eski.cevir(girdi, yol)), JSON.stringify(c), 'eski: dönüştürme belirleyici (aynı girdi aynı çıktı)');
+  eq(O.eski.cevir(null, null).denemeler, [], 'eski: boş/null girdi güvenli');
+  // Eski depodan canlı okuma: depoya hiçbir şey yazılmaz
+  const depo = { m: { ya_lc: JSON.stringify(eskiLc), ya_gs: JSON.stringify(eskiGs), ya_lv: JSON.stringify(eskiLv), ya_pl: JSON.stringify(eskiPl) }, getItem(k) { return k in this.m ? this.m[k] : null; }, setItem() { throw new Error('YAZMA YASAK'); }, removeItem() { throw new Error('SİLME YASAK'); } };
+  const once = JSON.stringify(depo.m);
+  const c2 = O.eski.oku(depo, yol);
+  eq([JSON.stringify(depo.m) === once, c2.denemeler.length, Object.keys(c2.dersTamam).length], [true, 2, 2], 'eski: canlı okuma eski anahtarlara yazmaz, silmez, biçimi değiştirmez');
+  eq(O.eski.oku({ getItem() { return '{bozuk'; } }, yol).denemeler, [], 'eski: bozuk JSON güvenli');
+  // Dönüştürülen eski kayıt yeni model üzerinde: ilerleme ≠ ustalık, soru bankası kanıtı yeterli miktarda ise sayılır
+  const P = O.program.kur({ surum: '1', yollar: [{ id: 'ccna', ad: 'CCNA', dersler: [{ ad: 'Ağ', modul: 'T' }, { ad: 'IP', modul: 'A' }, { ad: 'Switch', modul: 'A' }] }, { id: 'sec', ad: 'Siber', dersler: [] }], projeYollari: [] });
+  const du = O.program.durumKur(O.depo.oku(mem()), c, [], null);
+  eq(K.dersAcik(P, 'ders:ccna:2', du).acik, true, 'eski+yeni: eski tamamlanan ders sonrakini açar (geriye uyum)');
+  eq(K.dersAcik(P, 'ders:ccna:3', du).acik, false, 'eski+yeni: tamamlanmamış dersin sonrakisi kilitli kalır');
+  eq(K.dersAcik(P, 'ders:ccna:2', du).ustalik.durum, 'kanit-yok', 'eski+yeni: eski tamamlama ustalık sayılmaz');
+  eq(D.hedefDurumu(P, 'soru-bankasi:ccna', du.denemeler).gecmis.map(x => x.neden), ['yetersiz-kanit'], 'eski+yeni: 7 soruluk eski kanıt (<20) ustalık için yetersiz');
+  const buyuk = { lc: {}, gs: { st: { 1: [18, 20], 2: [9, 10] } } };
+  const d2 = O.program.durumKur(O.depo.oku(mem()), O.eski.cevir(buyuk, () => 'ccna'), [], null);
+  const sb = D.hedefDurumu(P, 'soru-bankasi:ccna', d2.denemeler);
+  eq([sb.durum, sb.oran, sb.guven], ['gecti', 0.9, 'istemci'], 'eski+yeni: 30 soruda %90 eski kanıt geçer ama güven "istemci"');
+}
+
+// ---- 14. Program kurucu: proje yolları, kademe kapıları, içerik açığı ----
+{
+  const T = { surum: 'v', yollar: [], projeYollari: [{ id: 'sec', ad: 'Siber', projeler: [{ id: 'sec1', ad: 'A', lv: 1 }, { id: 'sec2', ad: 'B', lv: 2 }, { id: 'sec3', ad: 'C', lv: 3 }, { id: 'sec4', ad: 'D', lv: 3, cap: true }] }] };
+  const G = O.program.kur(T);
+  eq(Object.keys(G.kapilar), ['altin:sec:1', 'altin:sec:2', 'altin:sec:3'], 'program: her kademe için bir Altın Vuruş kapısı');
+  eq(G.kapilar['altin:sec:2'].onkosulKapilar, ['altin:sec:1'], 'program: kademeler sıralı (2. kademe 1. kademeyi ister)');
+  eq(O.program.icerikAcigi(G).map(x => [x.kapi, x.tanimli, x.gerekli, x.eksik]), [['altin:sec:1', 1, 4, 3], ['altin:sec:2', 1, 4, 3], ['altin:sec:3', 2, 4, 2]], 'program: içerik açığı dürüstçe raporlanır (kademe başına 4 çekirdek proje yok)');
+  const r = K.degerlendir(G, 'altin:sec:2', { denemeler: [], projeler: {}, kanitlar: [] });
+  eq(kodlar(r).sort(), ['onkosul-kapi', 'proje-eksik', 'proje-tanimi-eksik'], 'program: 2. kademe kilidi: önkoşul kapı + çekirdek proje + eksik içerik');
+  const dk = O.program.durumKur({ denemeler: [], projeler: {} }, { denemeler: [], dersTamam: {} }, [{ pid: 'sec1', status: 'bitti' }, { pid: 'sec2', status: 'yapılıyor' }], pid => 'proje:sec:' + pid);
+  eq(Object.keys(dk.projeler), ['proje:sec:sec1'], 'program: biten projeler graf anahtarıyla eşlenir');
+}
+
+console.log(`\n${n} kontrol, ${fails} hata`);
+process.exit(fails ? 1 : 0);
