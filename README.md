@@ -1,6 +1,6 @@
 # Proofpath
 
-Yedi derslik, oyunlaştırılmış kişisel öğrenme uygulaması: **CCNA, Network, İngilizce, Siber güvenlik, Backend, DevOps, Test Uzmanı**. Tek dosyalık bir Claude Artifact'tır (`index.html`); günlük dersleri zamanlanmış "koç" görevleri üretir, veriler artifact veritabanında tutulur.
+Yedi derslik, oyunlaştırılmış kişisel öğrenme uygulaması: **CCNA, Network, İngilizce, Siber güvenlik, Backend, DevOps, Test Uzmanı**. Claude Artifact olarak çalışan, `index.html` + `css/` + `js/` yapısında bir uygulamadır; günlük dersleri zamanlanmış "koç" görevleri üretir, veriler artifact veritabanında tutulur.
 
 ![Bugün ekranı](docs/ekran/bugun-masaustu.png)
 
@@ -23,7 +23,8 @@ Yedi derslik, oyunlaştırılmış kişisel öğrenme uygulaması: **CCNA, Netwo
 
 ## Mimari
 
-- Ön yüz: tek dosya, bağımlılıksız HTML/CSS/JS (`index.html`). Açık ve koyu tema, telefon genişliği desteklenir.
+- Ön yüz: derleme adımı olmayan, bağımlılıksız HTML/CSS/JS. `index.html` yalnız iskelet ve yükleme sırasıdır; stiller `css/` (7 dosya), uygulama kodu `js/` altında alan klasörlerine bölünmüştür (`cekirdek`, `bugun`, `ders`, `oyun`, `atolye`, `lig`, `proje`, `atlas`, `ag-atolyesi`, `seviye`, `masa`, `mulakat`, `yardim`, `arayuz`, `baslat.js`), büyük veri sabitleri `js/veri/` içindedir. Açık ve koyu tema, telefon genişliği desteklenir.
+- Yükleme: betikler `index.html`'de sırayla (`defer`/`async` olmadan) yüklenir ve küresel kapsamda çalışır; yükleme anında çalışan kod yalnız önceki betiklerde bildirilen adlara başvurabilir. Bu kural `node tests/sira.js` ile denetlenir. Yeni kod tek ad alanı `window.PP` altına yazılır.
 - Veri: Claude Artifact `db` yeteneği. Koleksiyonlar için [docs/VERI_SEMASI.md](docs/VERI_SEMASI.md).
 - Üretim: derslere göre günlük koç görevleri ve haftalık Müdür görevi dersleri, biletleri ve raporları veritabanına yazar. Koç komutları `content/coach/`, animasyon sahneleri `content/nwscenes/` altında. Öğretim kuralları için [docs/OGRETIM_ILKELERI.md](docs/OGRETIM_ILKELERI.md).
 - Tasarım kararları: [docs/UX_ANALIZ.md](docs/UX_ANALIZ.md).
@@ -36,6 +37,8 @@ Yedi derslik, oyunlaştırılmış kişisel öğrenme uygulaması: **CCNA, Netwo
 npm install playwright
 node tests/smoke.js
 ```
+
+Yükleme sırası denetimi: `node tests/sira.js` (acorn gerekir, `npm install`).
 
 Duman testi 15 sekmeyi 400 px koyu ve 1100 px açık temada açar; sayfa hatası ve yatay taşma arar.
 
