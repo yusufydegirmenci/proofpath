@@ -1,4 +1,5 @@
 "use strict";
+/* ---- v21: Proje Atölyesi + Yetkinlik Yolları ---- */
 var PJK=[["ag","Ağ lab"],["ing","İngilizce"],["kariyer","Kariyer"],["kod","Kodlama"],["serbest","Serbest"]];
 var LVN=["","Başlangıç","Orta","Zor"];
 var PATHS_RAW=[

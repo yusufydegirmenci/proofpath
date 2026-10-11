@@ -258,3 +258,4 @@ function renderNw(){
   out.push(h("div",{class:"nw-grid"},LST.map(function(s,i){var v=num(prog[s.id]);return h("button",{type:"button",class:"nw-tile"+(v>=2?" done":v?" half":""),style:"--c:"+(NW_ACC[s.tr]||"#2563eb"),onclick:function(){o.open=s.id;draw();window.scrollTo(0,0)}},h("span",{class:"nw-e"},nwMiniIcon(s,38)),h("b",null,(i+1)+". "+s.t),h("small",null,s.one),h("em",null,v>=2?"✓ tamam":v?"yarım":"izle"))})));
   return out;
 }
+/*NWENGINE_END*/
