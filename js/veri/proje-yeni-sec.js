@@ -125,14 +125,21 @@
        "Tatbikatta çıkan 3 sorunu ve düzeltmelerini yaz, ardından 1 sayfalık 'Kurtarma Planı' belgesini (envanter, RPO/RTO, yöntem, geri yükleme adımları) tamamla.",
        "1 sayfalık kurtarma planı belgesi",
        "recovery plan = kurtarma planı, lessons learned = çıkarılan dersler, gap = boşluk, review cycle = gözden geçirme döngüsü",
-       "personal disaster recovery plan one page template"]
+       "personal disaster recovery plan one page template"],
+      ["3-2-1 denetimi ve gözden geçirme takvimi",
+       "Yedek planı bir kez yazılıp unutulursa eskir; diş kontrolü gibi periyodik yapılması gerekir. 3-2-1 kuralı: 3 kopya, 2 farklı ortam, 1 kopya başka bir yerde.",
+       "Planındaki yedeği 3-2-1 kuralına göre değerlendir ve eksik halkayı yaz. 3 ayda bir yapılacak mini geri yükleme denemesi için takvim tarihi ve 3 maddelik kontrol listesi ekle; planı sürüm tarihiyle kaydet.",
+       "3-2-1 değerlendirmesi, ilk gözden geçirme tarihi ve kontrol listesi eklenmiş plan",
+       "3-2-1 rule = 3-2-1 kuralı, review date = gözden geçirme tarihi, checklist = kontrol listesi, offsite copy = dışarıdaki kopya",
+       "3-2-1 backup rule review schedule restore test"]
     ],
-    onkosul: ["Önkoşul yok: dosya ve klasör işlemlerini, bir harici disk veya ikinci klasör kullanmayı bildiğini varsayar.", "Dijital Kale (sec1) projesindeki 3-2-1 yedekleme adımı bu projenin başlangıcıdır; burada onu ölçülebilir hedeflere ve zamanlı sınamaya taşırsın."],
+    onkosul: ["Önkoşul yok: dosya ve klasör işlemlerini, bir harici disk veya ikinci klasör kullanmayı bildiğini varsayar.", "Dijital Kale (sec1) projesindeki 3-2-1 yedekleme adımı önerilir; bu proje o adımı ölçülebilir hedeflere ve zamanlı sınamaya taşır. Yapmadıysan adım 3'te 3-2-1 kuralını kısaca kendin okuyabilirsin."],
     gereksinim: [
       "İşlevsel (zorunlu): En az 10 veri grubu önem etiketiyle envantere yazılır.",
       "İşlevsel (zorunlu): Felaket sınıfındaki her veri grubu için gerekçeli RPO ve RTO değeri yazılır.",
       "İşlevsel (zorunlu): Seçilen yöntemle ilk yedek alınır ve en az 10 dosyanın özetleri karşılaştırılır.",
       "İşlevsel (zorunlu): Geri yükleme tatbikatı süre ölçülerek yapılır ve sonuç RTO ile karşılaştırılır.",
+      "İşlevsel (zorunlu): Plan 3-2-1 değerlendirmesi ve gözden geçirme takvimi içerir.",
       "İşlevsel (isteğe bağlı): Yedek, zamanlanmış görevle otomatik çalışacak şekilde kurulur.",
       "İşlevsel olmayan: Kurtarma planı, bilgisayar başında olmayan biri de uygulayabilecek açıklıkta, tek sayfada yazılır."
     ],
@@ -142,7 +149,8 @@
       "K3: En az 10 dosyanın kaynak ve yedek SHA-256 değerleri aynı | Test: Özet tablosunda her satırın iki değerini gözle karşılaştır, farklı satırı işaretle.",
       "K4: Test dosyasında 1 karakter değişince özet değişiyor | Test: Değişiklik öncesi ve sonrası özetini çıkarıp farkı göster.",
       "K5: Tatbikat süresi kayıtlı ve RTO ile 'karşıladı/karşılamadı' diye karşılaştırılmış | Test: Tatbikat notunda ölçülen süre ve sonucu bul.",
-      "K6: Plan belgesi tek sayfa ve en az 3 geri yükleme adımı içeriyor | Test: Belgeyi yazdırma önizlemesinde aç, sayfa sayısını ve adımları say."
+      "K6: Plan belgesi tek sayfa ve en az 3 geri yükleme adımı içeriyor | Test: Belgeyi yazdırma önizlemesinde aç, sayfa sayısını ve adımları say.",
+      "K7: Planda 3-2-1 değerlendirmesi, ilk gözden geçirme tarihi ve 3 maddelik kontrol listesi var | Test: Belgede bu üç öğeyi tek tek bul; tarih boşsa işaretle."
     ],
     rubrik: [
       { olcut: "Önceliklendirme", guclu: "Etiketler gerekçeli ve sınıflar arasında bilinçli bir ayrım yapılmıştır.", zayif: "Her şey 'önemli' diye etiketlenmiştir." },
@@ -160,10 +168,11 @@
       { ad: "Risk önceliklendirme", kanit: "Adım 1'deki etiketli veri envanteri." },
       { ad: "Hedef belirleme", kanit: "Adım 2'deki RPO/RTO tablosu." },
       { ad: "Bütünlük doğrulama", kanit: "Adım 4'teki özet karşılaştırma tablosu ve bozulma notu." },
-      { ad: "Tatbikatla sınama", kanit: "Adım 5'teki süre ölçümlü tatbikat notu ve Adım 6'daki plan belgesi." }
+      { ad: "Tatbikatla sınama", kanit: "Adım 5'teki süre ölçümlü tatbikat notu ve Adım 6'daki plan belgesi." },
+      { ad: "Sürdürülebilir yedekleme", kanit: "Adım 7'deki 3-2-1 değerlendirmesi ve gözden geçirme takvimi." }
     ],
-    telafi: "K3 tutmazsa adım 3'te yedeği yeniden al ve adım 4'te özetleri yeniden çıkar; K2 veya K5 tutmazsa adım 2'deki hedefleri tatbikat süresine göre yeniden yaz; K6 tutmazsa adım 6'da belgeyi tek sayfaya sığdırıp yeniden düzenle.",
-    sonraki: "K1-K6'nın tümü tutar ve üç savunma sorusunu kendi ölçümünle yanıtlarsan Mobil Cihaz Gizlilik Denetimi (sec1d) ile Seviye 2'deki Linux Sertleştirme Kontrol Listesi (sec2c) projesinin kilidi açılır; tamamlama kanıt kaydı üretir."
+    telafi: "K3 tutmazsa adım 3'te yedeği yeniden al ve adım 4'te özetleri yeniden çıkar; K2 veya K5 tutmazsa adım 2'deki hedefleri tatbikat süresine göre yeniden yaz; K6 tutmazsa adım 6'da belgeyi tek sayfaya sığdırıp yeniden düzenle; K1 tutmazsa adım 1'e dön ve etiketleri gerekçeleriyle tamamla; K4 tutmazsa adım 4'te test dosyasında 1 karakteri değiştirip özetleri yeniden çıkar; K7 tutmazsa adım 7'de değerlendirmeyi, tarihi ve kontrol listesini ekle.",
+    sonraki: "K1-K7'nin tümü tutar ve üç savunma sorusunu kendi ölçümünle yanıtlarsan Mobil Cihaz Gizlilik Denetimi (sec1d) ile Seviye 2'deki Linux Sertleştirme Kontrol Listesi (sec2c) projesinin kilidi açılır; tamamlama kanıt kaydı üretir."
   });
 
   K.yeni.push({
@@ -546,7 +555,13 @@
        "Rol tablosu ve runbook'u bulgulara göre güncelle, değişiklikleri sürüm notuyla kaydet ve 'bir sonraki tatbikatta neyi sınayacağım' için 3 hedef yaz.",
        "Güncel plan (sürüm notlu) ve bir sonraki tatbikat için 3 hedef",
        "plan update = plan güncelleme, version note = sürüm notu, maturity = olgunluk, continuous improvement = sürekli iyileştirme",
-       "incident response plan maintenance review cycle improvement"]
+       "incident response plan maintenance review cycle improvement"],
+      ["Öğrenme hedeflerini tatbikat kanıtıyla değerlendir",
+       "Karne, sınavın sonunda neyi öğrendiğini gösterir. Adım 1'de yazdığın her hedefi tatbikat kayıtlarına bakarak 'yapıldı / kısmen / yapılmadı' diye işaretlemezsen tatbikatın işe yarayıp yaramadığını bilemezsin.",
+       "3 öğrenme hedefinin her biri için zaman çizelgesinden bir karar veya enjeksiyon örneği göster ve durumunu işaretle. Yapılmayan hedef varsa bunun bir bulguya mı, senaryo hatasına mı bağlı olduğunu bir cümleyle yaz.",
+       "Hedef karnesi (3 hedef, kanıt örneği ve durum)",
+       "learning objective = öğrenme hedefi, evidence = kanıt, observable = gözlenebilir, partially met = kısmen karşılandı",
+       "tabletop exercise objectives evaluation exercise evaluation guide"]
     ],
     onkosul: ["Log Analizi (sec2b) ve Zafiyet Yönetimi Tablosu (sec2d) projelerinden en az biri tamamlanmış olmalı: tespit ve önceliklendirme kavramlarını varsayar.", "Yedekleme ve Kurtarma Planı (sec1c) projesindeki RPO/RTO ve geri yükleme bilgisi, kurtarma aşaması için gerekir."],
     gereksinim: [
@@ -555,6 +570,7 @@
       "İşlevsel (zorunlu): Altı aşamalı runbook, aşama başına en fazla 3 adımla yazılır.",
       "İşlevsel (zorunlu): En az 6 enjeksiyonlu akışla tatbikat yürütülür ve kararlar zaman çizelgesine işlenir.",
       "İşlevsel (zorunlu): En az 5 bulgulu düzeltici eylem listesi ve güncel plan hazırlanır.",
+      "İşlevsel (zorunlu): Her öğrenme hedefi tatbikat kaydından bir kanıtla değerlendirilir.",
       "İşlevsel (isteğe bağlı): Tatbikat bir başka kişiyle yürütülür ve onun geri bildirimi rapora eklenir.",
       "İşlevsel olmayan: Senaryoda gerçek kurum, kişi veya canlı sistem adı geçmez ve hiçbir teknik saldırı adımı yazılmaz."
     ],
@@ -564,7 +580,8 @@
       "K3: Runbook'ta 6 aşama var ve her aşama en fazla 3 adım | Test: Aşama ve adım sayısını say.",
       "K4: Zaman çizelgesi en az 6 enjeksiyonu ve her biri için alınan kararı kaydediyor | Test: 6 satır ve 6 karar bul, boş karar hücresi olmadığını doğrula.",
       "K5: En az 5 bulgunun her birinde kök neden, eylem, sorumlu rol ve öncelik var | Test: Tablodaki 5x4 hücreyi doldurulmuş mu diye kontrol et.",
-      "K6: Güncel plan sürüm notu içeriyor ve notta en az 3 değişiklik bulgu numarasına bağlı | Test: Sürüm notundaki değişiklikleri K5'teki bulgularla eşleştir."
+      "K6: Güncel plan sürüm notu içeriyor ve notta en az 3 değişiklik bulgu numarasına bağlı | Test: Sürüm notundaki değişiklikleri K5'teki bulgularla eşleştir.",
+      "K7: Üç öğrenme hedefinin her biri için tatbikat kaydından bir kanıt örneği ve durum işareti var | Test: Karnedeki 3 satırı K1 hedefleri ve zaman çizelgesiyle eşleştir."
     ],
     rubrik: [
       { olcut: "Senaryo ve hedef tutarlılığı", guclu: "Senaryo hedefleri gerçekten sınayan kararlar üretir ve ofisin kısıtlarıyla uyumludur.", zayif: "Senaryo sinematiktir, hedeflerle ilişkisi yoktur." },
@@ -582,10 +599,11 @@
       { ad: "Olay yönetimi tasarlama", kanit: "Adım 2'deki rol tablosu ve Adım 3'teki runbook." },
       { ad: "Tatbikat yürütme", kanit: "Adım 4'teki enjeksiyon akışı ve zaman çizelgesi." },
       { ad: "Kök neden ve düzeltme", kanit: "Adım 5'teki 5 bulgulu düzeltici eylem listesi." },
-      { ad: "Süreç iyileştirme", kanit: "Adım 6'daki sürüm notlu güncel plan." }
+      { ad: "Süreç iyileştirme", kanit: "Adım 6'daki sürüm notlu güncel plan." },
+      { ad: "Hedef değerlendirme", kanit: "Adım 7'deki hedef karnesi." }
     ],
-    telafi: "K2 veya K3 tutmazsa adım 2 ve 3'e dönüp rol ve runbook'u yeniden yaz; K4 tutmazsa adım 4'te enjeksiyonları artırıp tatbikatı yeniden yürüt ve kararları kaydet; K5 veya K6 tutmazsa adım 5'te bulguları kök nedenle yeniden yaz ve adım 6'da planı bulgulara bağla.",
-    sonraki: "K1-K6'nın tümü tutar ve üç savunma sorusunu tatbikat kayıtlarınla yanıtlarsan Güvenlik Politikası Seti (sec3d) projesi ile Siber Güvenlik kapston projesinin (sec4) kilidi açılır; tamamlama kanıt kaydı üretir."
+    telafi: "K1 tutmazsa adım 1'e dön ve hedefleri gözlenebilir davranışlar olarak yeniden yaz; K2 veya K3 tutmazsa adım 2 ve 3'e dönüp rol ve runbook'u yeniden yaz; K4 tutmazsa adım 4'te enjeksiyonları artırıp tatbikatı yeniden yürüt ve kararları kaydet; K5 veya K6 tutmazsa adım 5'te bulguları kök nedenle yeniden yaz ve adım 6'da planı bulgulara bağla; K7 tutmazsa adım 7'de her hedef için zaman çizelgesinden kanıt bul.",
+    sonraki: "K1-K7'nin tümü tutar ve üç savunma sorusunu tatbikat kayıtlarınla yanıtlarsan Güvenlik Politikası Seti (sec3d) projesi ile Siber Güvenlik kapston projesinin (sec4) kilidi açılır; tamamlama kanıt kaydı üretir."
   });
 
   K.yeni.push({

@@ -58,12 +58,13 @@ function renderTrack(P){
   return h("div",{class:"panel trk "+P.col},
     h("div",{class:"trk-h"},h("span",{class:"trk-ic"},mi(TRI[P.col])),h("div",{class:"trk-t"},h("b",null,P.name),h("small",null,P.short)),h("span",{class:"pill"},done+"/"+P.projects.length+" tamam")),
     h("p",{class:"trk-b"},P.blurb),
-    h("div",{class:"trk-road"},P.projects.map(function(j,ix){var st=pathStats(j),pct=st.tot?Math.round(st.n/st.tot*100):0,state=st.done?"d":(st.p?"a":"");
-      return h("button",{class:"trk-stop "+state,type:"button",onclick:function(){pjStart(j.id)}},
+    h("div",{class:"trk-road"},P.projects.reduce(function(acc,j,ix){var st=pathStats(j),pct=st.tot?Math.round(st.n/st.tot*100):0,state=st.done?"d":(st.p?"a":"");
+      var prev=ix?P.projects[ix-1]:null;if(P.projects.length>6&&(!prev||prev.lv!==j.lv))acc.push(h("div",{class:"small mute",style:"margin:10px 2px 2px;font-weight:600"},LVN[j.lv]+" kademesi"));
+      acc.push(h("button",{class:"trk-stop "+state,type:"button",onclick:function(){pjStart(j.id)}},
         h("span",{class:"trk-n"},st.done?"✓":String(j.lv)),
         h("span",{class:"trk-m"},h("small",null,(j.cap?"Kapston · ":"")+LVN[j.lv]+" · ~"+j.weeks+" hafta · "+j.steps.length+" adım"),h("b",null,j.title),
           h("span",{class:"xb"},h("i",{style:"width:"+Math.max(st.p?3:0,pct)+"%"}))),
-        h("span",{class:"trk-go"},st.done?"Tamam":st.p?"Devam":"Başla"))}))
+        h("span",{class:"trk-go"},st.done?"Tamam":st.p?"Devam":"Başla")));return acc},[]))
   );
 }
 function renderProject(){
