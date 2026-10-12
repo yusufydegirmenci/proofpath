@@ -8,6 +8,8 @@
   /* ders kimliği → lab'lar (senaryo sayısı lab tanımıyla aynı olmalı; tests/faz5b_ccna.js denetler) */
   oneri.LAB = {
     "ders:net:4": [{ id: "net-altag", ad: "Alt ağ laboratuvarı", toplam: 4 }],
+    "ders:net:7": [{ id: "ccna-rota", ad: "Rota seçimi laboratuvarı", toplam: 4 }],
+    "ders:net:14": [{ id: "ccna-acl", ad: "ACL laboratuvarı", toplam: 6 }],
     "ders:ccna:3": [{ id: "net-altag", ad: "Alt ağ laboratuvarı", toplam: 4 }],
     "ders:ccna:6": [{ id: "ccna-rota", ad: "Rota seçimi laboratuvarı", toplam: 4 }],
     "ders:ccna:9": [{ id: "ccna-acl", ad: "ACL laboratuvarı", toplam: 6 }]
