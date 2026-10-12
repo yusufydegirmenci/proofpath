@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Faz 5 tur 4 (dal: faz-5d, siber ek + VLAN/STP ve NAT lab + kanıt kimliği ayrımı)
+- Siber güvenlik 31 konu için ders eki (`content/lessons/sec-ek.js`): benzetme + sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar, geçme ölçütü + kritik yanlış anlamalar, telafi, sonraki adım; 14 çekirdek öğe 31 konuda tam. Dış kaynak yalnız HTTP 200 dönen RFC/NIST/OWASP bağlantıları (23 konuda; 8 konuda yok), doğrulama tarihi 2026-10-12. Alıştırmalar kâğıt üstünde ya da kendi cihazında, savunma odaklı.
+- VLAN/STP (`ccna-vlan`, `net-vlan`) ve NAT/PAT (`ccna-nat`, `net-nat`) form tabanlı karar lab'ları (`js/ders/lab-vlan-nat.js`, yerel simülasyon etiketli; gerçek switch/router yok). Doğru cevaplar kök köprü/kök port/NAT tablosu hesabından çıkar. CCNA konu 4, 7, 13 ve Network konu 6, 7'ye bağlı. Kanıt kapı değildir.
+- Lab kanıt kimlikleri yola göre ayrıldı: Network rota/ACL lab'ı artık `lab-net-rota-*` / `lab-net-acl-*` yazar. Eski `lab-ccna-rota-*` ve `lab-ccna-acl-*` kayıtları silinmedi ve her iki yolda sayılır (kimin yazdığı bilinmediği için); yeni kayıtlar yola göre ayrıdır. Alt ağ lab'ı (`net-altag`) hâlâ ortak.
+- `PP.ogr.oneri.LAB`: ders:net:7/8/14 ve ders:ccna:5/8/14 güncellendi; `labDurum` eski kimliği (`eski`) tanır.
+- Test: `tests/faz5d_lab.js` (yeni); `faz5b_ccna.js`, `faz5c_net.js` yeni lab kimliklerine uyarlandı (assert zayıflatılmadı).
+
 ## Faz 5 tur 3 (dal: faz-5c, Network yolu 4–17)
 - Network konu 4–17 için ders eki (`content/lessons/net-ek.js`): benzetme + sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar, geçme ölçütü + kritik yanlış anlamalar, telafi, sonraki adım; 18 konunun 14 çekirdek öğesi tam. Dış kaynak yalnız HTTP 200 dönen RFC/NIST bağlantıları (7 konuda yok: IEEE/CompTIA doğrulanamadı), doğrulama tarihi 2026-10-12. Konu 1 ve 2'ye eksik üçüncü yaygın hata eklendi.
 - Rota (konu 6) ve ACL (konu 13) lab'ları Network yoluna da bağlandı (yerel simülasyon); `PP.ogr.oneri.LAB` ders:net:7 ve ders:net:14 eklendi (eksik lab önerilir, kapı değil).

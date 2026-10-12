@@ -43,7 +43,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(bad, [], 'kaynaklar yalnız doğrulanmış alanlar ve doğrulama tarihi (2026-10-11/12)');
   eq(await p.evaluate(() => Object.keys(PP_EK.net).filter(k => +k >= 4).every(k => !(PP_EK.net[k].kaynaklar || []).some(s => !s.neden || !s.t))), true, 'her kaynakta ad ve neden var');
   eq(await p.evaluate(() => [7, 8, 14, 16].map(k => (PP_EK.net[k].kaynaklar || []).length)), [0, 0, 0, 0], 'IEEE/CompTIA konularına kaynak eklenmedi (doğrulanamadı)');
-  eq(await p.evaluate(() => [6, 13].map(k => PP_EK.net[k].lab)), ['ccna-rota', 'ccna-acl'], 'net 6 ve 13 lab bağlı');
+  eq(await p.evaluate(() => [6, 7, 13].map(k => PP_EK.net[k].lab)), [['net-rota', 'net-nat'], 'net-vlan', 'net-acl'], 'net 6, 7 ve 13 lab bağlı (yola göre kimlik)');
 
   // 2) Ders odası: Anlatım + Alıştırma blokları (net 4, IPv6)
   const odaAc = (n, adim) => p.evaluate(([n, a]) => { const l = lessonsOf('net').filter(x => x.topicId === 's-net-' + n)[0]; S.les.track = 'net'; lcSet(lessonKey(l), 'w', 'net'); lrOpen(l, a); return l.id; }, [n, adim]);
@@ -56,26 +56,26 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   ok(await p.evaluate(() => ['rehberli', 'bagimsiz', 'telafi'].every(k => document.querySelector('#view [data-ek=' + k + ']'))), 'net 4 Alıştırma: rehberli, bağımsız, telafi görünür');
   eq(await p.evaluate(() => document.querySelectorAll('#view .lab').length), 0, 'lab olmayan derste lab paneli yok');
   await odaAc(8, 'alis'); await p.waitForTimeout(400);
-  eq(await p.evaluate(() => document.querySelectorAll('#view .lab').length), 0, 'net 7 (VLAN): lab yok, etiket yalan söylemez');
+  eq(await p.evaluate(() => [...document.querySelectorAll('#view .lab')].map(e => e.dataset.labId)), ['net-vlan'], 'net 7 (VLAN/STP): form tabanlı karar lab (tur 4)');
 
   // 3) net 6: rota lab'ı (ccna ile paylaşılır)
   const kanitlar = () => p.evaluate(() => (JSON.parse(localStorage.getItem('ya_pp_ogr') || '{}').kanitlar || []).filter(k => k.tur === 'lab').map(k => k.id));
-  const sonuc = async () => { await p.locator('#view .lab button:text-is("Kontrol et")').click(); await p.waitForTimeout(250); return p.evaluate(() => { const e = document.querySelector('#view .lab [data-lab]'); return e ? e.dataset.lab : null; }); };
+  const sonuc = async (lab) => { const q = '#view .lab' + (lab ? '[data-lab-id=' + lab + ']' : ''); await p.locator(q + ' button:text-is("Kontrol et")').click(); await p.waitForTimeout(250); return p.evaluate((q) => { const e = document.querySelector(q + ' [data-lab]'); return e ? e.dataset.lab : null; }, q); };
   await odaAc(7, 'alis'); await p.waitForTimeout(400);
-  eq(await p.evaluate(() => { const e = document.querySelector('#view .lab'); return [e.dataset.labId, e.textContent.includes('Yerel simülasyon'), e.textContent.includes('Sıfırla'), e.textContent.includes('İpucu')]; }), ['ccna-rota', true, true, true], 'net 6: rota lab\'ı, yerel simülasyon etiketi, sıfırla, ipucu');
-  await p.fill('#view .lab [data-alan=eslesen] input', '4'); await p.selectOption('#view .lab [data-alan=satir] select', '1');
-  eq(await sonuc(), 'yanlis', 'net 6 lab: yanlış satır → yanlış');
+  eq(await p.evaluate(() => { const e = document.querySelector('#view .lab[data-lab-id=net-rota]'); return [e.dataset.labId, e.textContent.includes('Yerel simülasyon'), e.textContent.includes('Sıfırla'), e.textContent.includes('İpucu')]; }), ['net-rota', true, true, true], 'net 6: rota lab\'ı, yerel simülasyon etiketi, sıfırla, ipucu');
+  await p.fill('#view .lab[data-lab-id=net-rota] [data-alan=eslesen] input', '4'); await p.selectOption('#view .lab[data-lab-id=net-rota] [data-alan=satir] select', '1');
+  eq(await sonuc('net-rota'), 'yanlis', 'net 6 lab: yanlış satır → yanlış');
   eq(await kanitlar(), [], 'net 6 lab: yanlışta kanıt yok');
-  await p.selectOption('#view .lab [data-alan=satir] select', '3');
-  eq(await sonuc(), 'dogru', 'net 6 lab: doğru satır');
-  eq(await kanitlar(), ['lab-ccna-rota-s1'], 'net 6 lab: kanıt kaydedildi');
+  await p.selectOption('#view .lab[data-lab-id=net-rota] [data-alan=satir] select', '3');
+  eq(await sonuc('net-rota'), 'dogru', 'net 6 lab: doğru satır');
+  eq(await kanitlar(), ['lab-net-rota-s1'], 'net 6 lab: kanıt yola göre ayrı kimlikle kaydedildi (lab-net-rota-*)');
 
   // 4) net 13: ACL lab'ı
   await odaAc(14, 'alis'); await p.waitForTimeout(400);
-  eq(await p.evaluate(() => document.querySelector('#view .lab').dataset.labId), 'ccna-acl', 'net 13: ACL lab\'ı bağlı');
+  eq(await p.evaluate(() => document.querySelector('#view .lab').dataset.labId), 'net-acl', 'net 13: ACL lab\'ı bağlı');
   await p.selectOption('#view .lab [data-alan=karar] select', 'deny'); await p.selectOption('#view .lab [data-alan=satir] select', '1');
   eq(await sonuc(), 'dogru', 'net 13 lab: telnet deny satır 1');
-  ok((await kanitlar()).includes('lab-ccna-acl-s1'), 'net 13 lab: kanıt kaydedildi');
+  ok((await kanitlar()).includes('lab-net-acl-s1'), 'net 13 lab: kanıt kaydedildi');
   ok(await p.evaluate(() => (JSON.parse(localStorage.getItem('ya_pp_ogr') || '{}').kanitlar || []).filter(k => k.tur === 'lab').every(k => k.kapi == null)), 'lab kanıtları kapı kanıtı değil');
   ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), '390 px: yatay taşma yok (ACL lab, net)');
 
@@ -83,9 +83,9 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   const du0 = { dersTamam: {}, denemeler: [], kanitlar: [], projeler: {} };
   const tam = (n) => { const o = {}; for (let i = 1; i <= n; i++) o['ders:net:' + i] = true; return o; };
   const lk = (id, n) => Array.from({ length: n }, (_, i) => ({ id: 'k' + id + i, tur: 'lab', hedef: 'lab:' + id + ':s' + (i + 1), kapi: null, dogrulama: 'istemci' }));
-  eq(await p.evaluate((du) => { const r = PP.ogr.oneri.sonrakiLab(PP.ogr.ui.graf(), 'net', du); return r && [r.tip, r.lab, r.ders]; }, { ...du0, dersTamam: tam(7) }), ['lab', 'ccna-rota', 'ders:net:7'], 'graf: net ders 7 tamam, rota lab eksik → lab önerisi');
-  eq(await p.evaluate((du) => PP.ogr.oneri.sonrakiLab(PP.ogr.ui.graf(), 'net', du), { ...du0, dersTamam: tam(7), kanitlar: lk('ccna-rota', 4) }), null, 'graf: rota lab kanıtı tamam → öneri kalkar');
-  eq(await p.evaluate((du) => { const r = PP.ogr.oneri.sonrakiLab(PP.ogr.ui.graf(), 'net', du); return r && r.lab; }, { ...du0, dersTamam: tam(14), kanitlar: lk('ccna-rota', 4) }), 'ccna-acl', 'graf: net ders 14 tamam → ACL lab önerisi');
+  eq(await p.evaluate((du) => { const r = PP.ogr.oneri.sonrakiLab(PP.ogr.ui.graf(), 'net', du); return r && [r.tip, r.lab, r.ders]; }, { ...du0, dersTamam: tam(7) }), ['lab', 'net-rota', 'ders:net:7'], 'graf: net ders 7 tamam, rota lab eksik → lab önerisi');
+  eq(await p.evaluate((du) => PP.ogr.oneri.sonrakiLab(PP.ogr.ui.graf(), 'net', du), { ...du0, dersTamam: tam(7), kanitlar: lk('net-rota', 4).concat(lk('net-nat', 4)) }), null, 'graf: rota ve NAT lab kanıtı tamam → öneri kalkar');
+  eq(await p.evaluate((du) => { const r = PP.ogr.oneri.sonrakiLab(PP.ogr.ui.graf(), 'net', du); return r && r.lab; }, { ...du0, dersTamam: tam(14), kanitlar: lk('net-rota', 4) }), 'net-acl', 'graf: net ders 14 tamam → ACL lab önerisi');
   eq(await p.evaluate(() => { const L = PP.ogr.oneri.LAB, T = PP.lab.tanimlar; return Object.keys(L).every(k => L[k].every(x => T[x.id] || x.id === 'net-altag')); }), true, 'oneri.LAB tüm lab\'lar tanımlı');
   eq(await p.evaluate(() => { const L = PP.ogr.oneri.LAB; return [L['ders:net:7'][0].toplam === PP.lab.karar.ROTA.length, L['ders:net:14'][0].toplam === PP.lab.karar.ACL_SEN.length]; }), [true, true], 'oneri.LAB senaryo sayıları lab tanımıyla aynı');
 
