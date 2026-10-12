@@ -2,6 +2,24 @@
 /* ---- Veri Analitiği yolu arayüzü (Faz 10 tur 1: Seviye 0) — Atölye > "Veri Analitiği" ---- */
 function vaLi(items) { return h("ul", { class: "lr-ul" }, items.map(function (x) { return h("li", null, x); })); }
 
+/* Uygulama alanları (PP.alan): ders başına 1 SQL + 1 Python; panel DOM'u önbelleklenir (yeniden çizimde yazılan kod kaybolmaz) */
+function vaAlanlar(d, st) {
+  if (!window.PP || !PP.alan) return h("div", { class: "lbox warn" }, "Uygulama alanı yüklenemedi; simülasyon laboratuvarı aşağıdadır.");
+  st.alanEl = st.alanEl || {};
+  var liste = PP_VA.alanlar.filter(function (a) { return a.ders === d.id; }), cozulen = PP.va.durum().alanlar;
+  var paneller = liste.map(function (a) {
+    if (!st.alanEl[a.id]) {
+      var t = PP.alan.tanimla({ id: a.id, ders: a.ders, tur: a.tur, baslik: a.baslik, gorev: a.gorev, baslangic: a.baslangic, kontrol: a.kontrol, varyant: a.varyant, ipucu: a.ipucu, veri: PP_VA.veri });
+      if (!t.ok) return h("div", { class: "lbox warn" }, "Alan tanımı geçersiz: " + t.neden);
+      st.alanEl[a.id] = PP.alan.kur(t.alan, { onDogru: function (ip) { PP.va.alanKaydet(a.id, ip); } });
+    }
+    return st.alanEl[a.id];
+  });
+  var tamam = cozulen.filter(function (x) { return x.ders === d.id && x.tamam; }).length;
+  return h("div", { class: "lbox", "data-va-alanlar": d.id }, h("div", { class: "label" }, "Kodla dene (" + tamam + "/" + liste.length + " çözüldü)"),
+    h("div", { class: "small mute" }, "SQL ve Python bu tarayıcıda gerçekten çalışır; çalışmazsa bunu açıkça söyler. Aynı 12 siparişlik sentetik veri kullanılır."), paneller);
+}
+
 function vaDers(d, st) {
   var acik = st.ders === d.id, okundu = PP.va.durum().dersler.filter(function (x) { return x.id === d.id; })[0].okundu;
   var baslik = h("button", { type: "button", class: "btn ghost", "data-va-ders": d.id, "aria-expanded": acik ? "true" : "false", onclick: function () { st.ders = acik ? null : d.id; draw(); } }, (okundu ? "✓ " : "") + d.ad);
@@ -25,6 +43,7 @@ function vaDers(d, st) {
     kp(["Benzetme ve sınırı", h("div", null, h("p", null, d.analoji.a), h("p", { class: "small mute" }, h("b", null, "Nerede yetersiz: "), d.analoji.sinir))]),
     kp(["Görsel", h("pre", { class: "mono small", style: "white-space:pre-wrap;overflow-wrap:anywhere;margin:0" }, d.gorsel)]),
     kp(["Rehberli alıştırma", vaLi(d.rehberli)]),
+    vaAlanlar(d, st),
     kp(["Bağımsız görev", h("p", null, d.bagimsiz)]),
     kp(["Yaygın hatalar ve düzeltme", vaLi(d.hatalar.map(function (x) { return x[0] + " → " + x[1]; }))]),
     h("div", { class: "label" }, "Bilgi kontrolü"), kontrol,

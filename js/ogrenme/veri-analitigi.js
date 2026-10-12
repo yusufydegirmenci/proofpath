@@ -62,6 +62,13 @@
     if (hepsi) O.depo.kanitEkle({ id: "lab-va0-tamam", tur: "lab", hedef: "lab:va0-lab", dogrulama: "istemci" });
     return yaz(t) ? { ok: true, tamam: hepsi } : { ok: false, neden: "yazilamadi" };
   }
+  /* Uygulama alanı (PP.alan) çözümü: tercih.va.alan[id] (kanıtı PP.alan kaydeder); seviye tamamlama koşulu DEĞİL */
+  function alanKaydet(id, ipucu) {
+    if (!V.alanlar.some(function (a) { return a.id === id; })) return { ok: false, neden: "bilinmeyen-alan" };
+    var t = kayit(); t.alan = t.alan && typeof t.alan === "object" ? t.alan : {};
+    t.alan[id] = { tarih: O.gun.bugun(), ipucu: !!ipucu };
+    return yaz(t) ? { ok: true } : { ok: false, neden: "yazilamadi" };
+  }
   function sinavKaydet(r) {
     if (!r || !r.ok) return { ok: false, neden: "gecersiz-sonuc" };
     var t = kayit(); t.sinav = dizi(t.sinav); t.sinav.push({ tarih: O.gun.bugun(), puan: r.puan, maks: r.maks, gecti: !!r.gecti }); t.sinav = t.sinav.slice(-20);
@@ -78,9 +85,10 @@
     if (!dersler.every(function (d) { return d.okundu; })) bekleyen.push("Üç dersi oku ve 'Okudum' işaretle");
     if (!lab.every(function (l) { return l.tamam; })) bekleyen.push("Laboratuvarın üç görevini doğru tamamla");
     if (!gecti) bekleyen.push("Değerlendirmede %80 ya da üstü al");
-    return { dersler: dersler, lab: lab, sinavDenemesi: den.length, sinavGecti: gecti, tamam: tamam, bekleyen: bekleyen,
+    var alanlar = V.alanlar.map(function (a) { return { id: a.id, ders: a.ders, tur: a.tur, tamam: !!(t.alan && t.alan[a.id]) }; });
+    return { dersler: dersler, lab: lab, alanlar: alanlar, sinavDenemesi: den.length, sinavGecti: gecti, tamam: tamam, bekleyen: bekleyen,
       sonrakiSeviye: tamam ? { id: 1, ad: "Elektronik tablolar", acik: false, neden: "Seviye 1 içeriği henüz hazırlanmadı (tur 2+)." } : { id: 1, ad: "Elektronik tablolar", acik: false, neden: "Önce Seviye 0'ı tamamla." } };
   }
 
-  PP.va = { gorev1: gorev1, gorev2: gorev2, gorev3: gorev3, sinav: sinav, dersOkundu: dersOkundu, labKaydet: labKaydet, sinavKaydet: sinavKaydet, durum: durum };
+  PP.va = { gorev1: gorev1, gorev2: gorev2, gorev3: gorev3, sinav: sinav, dersOkundu: dersOkundu, labKaydet: labKaydet, alanKaydet: alanKaydet, sinavKaydet: sinavKaydet, durum: durum };
 })(typeof window !== "undefined" ? window : globalThis);
