@@ -26,9 +26,11 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   const rapor = (kay, kan) => ev(([d, k, kn]) => PP.rapor.olustur({ def: d, kayit: k, kanitlar: kn, bugun: '2026-10-11', surum: '1' }), [DEF, kay, kan || []]);
 
   // 1) Tanım denetimi: gerçek yol verisi, bağımsız hesap
-  const td = await ev(() => { const d = pathProj('sec1'); const g = PP.rapor.tanimDenetimi(d); return { g: [g.tanimli, g.toplam], beklenen: (d.why ? 1 : 0) + (d.outcome && d.outcome.length ? 1 : 0) + (d.steps.every(s => s.proof) ? 1 : 0) }; });
-  eq(td.g, [td.beklenen, 10], 'gerçek proje tanımında 10 alandan yalnız veride olanlar sayılır (' + td.g[0] + '/10)');
-  ok(td.g[0] < 10, 'eksik tanım alanları dürüstçe görünür (proje tanımı 10/10 değil)');
+  const td = await ev(() => { const d = pathProj("sec1"); const g = PP.rapor.tanimDenetimi(d); const var_ = ["why","onkosul","outcome","gereksinim","kabul","rubrik","savunma","yetkinlikler"].filter(k => Array.isArray(d[k]) ? d[k].length > 0 : !!d[k]).length + (d.steps.every(s => s.proof) ? 1 : 0) + (d.telafi && d.sonraki ? 1 : 0); return { g: [g.tanimli, g.toplam], beklenen: var_ }; });
+  eq(td.g, [td.beklenen, 10], "gerçek proje tanımında 10 alanın veride olanları sayılır (" + td.g[0] + "/10, bağımsız hesapla)");
+  ok(td.g[0] === 10, "Faz 8 tur 2: mevcut proje tanımı 10/10 (eksik olsaydı panelde görünürdü; eksik tanım testi aşağıda sahte tanımla)");
+  const tdEksik = await ev(() => { const g = PP.rapor.tanimDenetimi({ why: "x", outcome: ["a"], steps: [{ proof: "p" }] }); return [g.tanimli, g.eksik.length]; });
+  eq(tdEksik, [3, 7], "eksik tanım alanları dürüstçe görünür (sahte tanım 3/10)");
 
   // 2) Rapor: durumlar kanıta bağlı
   const r0 = await rapor(kayit(0));

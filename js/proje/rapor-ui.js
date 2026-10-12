@@ -16,6 +16,30 @@ function renderRaporPaneli(p, def) {
     h("ul", { class: "lr-ul small mute" }, R.sinirlamalar.map(function (x) { return h("li", null, x); })),
     h("div", { class: "small mute" }, "Paylaşım: sunucu tarafı politikası hazır ama henüz uygulanmadı; bağlantı oluşturma kapalı."));
 }
+/* Faz 8 tur 2: proje tanımının 10 alanı (M§8.6). Tamamlama = öz-beyan kanıt kaydı; kabul ölçütlerini öğrenci kendi denetler (sunucu doğrulaması yok). */
+function renderTanimBlok(def) {
+  if (!def) return null;
+  var L = function (a) { return h("ul", { class: "lr-ul small" }, (a || []).map(function (x) { return h("li", null, x); })); };
+  var bos = function (a) { return !Array.isArray(a) || !a.length; };
+  var kesit = function (id, ad, ic) { return h("div", { "data-tanim": id }, h("b", { class: "small" }, ad), ic); };
+  var parcalar = [
+    kesit("problem", "Problem ve senaryo", h("div", { class: "small" }, def.why || "tanımlı değil")),
+    bos(def.onkosul) ? null : kesit("onkosul", "Önkoşullar", L(def.onkosul)),
+    kesit("ciktilar", "Öğrenme çıktıları", L(def.outcome)),
+    bos(def.gereksinim) ? null : kesit("gereksinim", "Gereksinimler (zorunlu / isteğe bağlı / işlevsel olmayan)", L(def.gereksinim)),
+    bos(def.kabul) ? null : kesit("kabul", "Kabul ölçütleri ve test durumları (kendin denetlersin)", L(def.kabul)),
+    bos(def.rubrik) ? null : kesit("rubrik", "Rubrik", h("ul", { class: "lr-ul small" }, def.rubrik.map(function (r) { return h("li", null, h("b", null, r.olcut + ": "), "iyi = " + r.guclu + " · zayıf = " + r.zayif); }))),
+    kesit("artifact", "Çıktılar (adım kanıtları)", L((def.steps || []).map(function (s) { return s.proof; }))),
+    bos(def.savunma) ? null : kesit("savunma", "Savunma soruları", L(def.savunma)),
+    bos(def.yetkinlikler) ? null : kesit("esleme", "Yetkinlik eşlemesi", h("ul", { class: "lr-ul small" }, def.yetkinlikler.map(function (y) { return h("li", null, h("b", null, y.ad + ": "), y.kanit); }))),
+    def.telafi ? kesit("telafi", "Telafi", h("div", { class: "small" }, def.telafi)) : null,
+    def.sonraki ? kesit("sonraki", "Sonraki aşama kilidi", h("div", { class: "small" }, def.sonraki)) : null,
+    def.alanNotu ? kesit("alan", "Uygulama alanı (SQL/Python) bağlantısı", h("div", { class: "small" }, def.alanNotu)) : null
+  ].filter(Boolean);
+  var td = window.PP && PP.rapor ? PP.rapor.tanimDenetimi(def) : null;
+  return h("details", { class: "more", "data-tanim": "panel" }, h("summary", null, "Proje tanımı (10 alan)" + (td ? ": " + td.tanimli + "/" + td.toplam : "")),
+    h("div", { class: "morebox", style: "display:grid;gap:8px" }, parcalar, h("div", { class: "small mute" }, "Tamamlamak rozet vermez: öz-beyan etiketli bir kanıt kaydı yazılır. Kabul ölçütlerini sunucu doğrulamaz; sonraki aşama kilidi bir yönergedir, uygulama bu turda kilidi zorlamaz.")));
+}
 function ivRubrikKaydet(P, S2) {
   var puanlar = {};
   PP.mulakat.KRITERLER.forEach(function (k) { if (S2.puan[k[0]] != null) puanlar[k[0]] = S2.puan[k[0]]; });

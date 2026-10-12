@@ -149,7 +149,8 @@ function jrScore(R){
   var ok=0,n=0;Object.keys(GS.st).forEach(function(k){var q=QB[+k];if(q&&T.indexOf(q.t)>=0){ok+=GS.st[k][0];n+=GS.st[k][1]}});
   var acc=n?(ok/n)*Math.min(1,n/20):0;
   var pjs=S.projects.filter(function(p){var pa=pathOf(p.pid);return R.path?(pa&&pa.id===R.path):p.kind==="path"});
-  var tot=R.path?(PATHS.filter(function(p){return p.id===R.path})[0]||{projects:[1,1,1,1]}).projects.length:2,pr=0;
+  /* Faz 8 tur 2: ek çekirdek projeler paydayı büyütmez (hazırlık puanı anlamı korunur); ilerleme yine toplanır, 1'de kırpılır */
+  var tot=R.path?(PATHS.filter(function(p){return p.id===R.path})[0]||{projects:[1,1,1,1]}).projects.filter(function(j){return !j.cekirdek}).length:2,pr=0;
   pjs.forEach(function(p){pr+=p.steps.length?Math.min(1,pjDone(p)/p.steps.length):0});pr=Math.min(1,pr/tot);
   var iv=Math.min(1,S.interview.filter(function(r){return num(r.box)>=2}).length/8);
   var gh=/github\.com\/[\w.-]+\/[\w.-]+/i,pf=0;
