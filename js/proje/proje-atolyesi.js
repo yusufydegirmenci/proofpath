@@ -56,7 +56,7 @@ function pathStats(def){var p=S.projects.filter(function(x){return x.id==="path-
 function renderTrack(P){
   var done=P.projects.filter(function(j){return pathStats(j).done}).length;
   return h("div",{class:"panel trk "+P.col},
-    h("div",{class:"trk-h"},h("span",{class:"trk-ic"},mi(TRI[P.col])),h("div",{class:"trk-t"},h("b",null,P.name),h("small",null,P.short)),h("span",{class:"pill"},done+"/"+P.projects.length+" usta")),
+    h("div",{class:"trk-h"},h("span",{class:"trk-ic"},mi(TRI[P.col])),h("div",{class:"trk-t"},h("b",null,P.name),h("small",null,P.short)),h("span",{class:"pill"},done+"/"+P.projects.length+" tamam")),
     h("p",{class:"trk-b"},P.blurb),
     h("div",{class:"trk-road"},P.projects.map(function(j,ix){var st=pathStats(j),pct=st.tot?Math.round(st.n/st.tot*100):0,state=st.done?"d":(st.p?"a":"");
       return h("button",{class:"trk-stop "+state,type:"button",onclick:function(){pjStart(j.id)}},
@@ -148,6 +148,7 @@ function renderPjDetail(p){
   if(def)out.push(h("div",{class:"label pjsec"},"Yol haritası"));
   out.push(h("div",{class:"road "+col},p.steps.map(function(s,i){return renderRoadStep(p,def,i)}),
     h("div",{class:"row road-add"},si,h("button",{class:"btn ghost",type:"button",disabled:!S.canWrite,onclick:addStep},"Adım ekle"))));
+  var tnB=def&&typeof renderTanimBlok==="function"?renderTanimBlok(def):null;if(tnB)out.push(h("div",{class:"panel"},tnB));
   if(def&&def.maps)out.push(certPanel(p,def));
   if(def)out.push(exportPanel(p,def));
   var rpP=typeof renderRaporPaneli==="function"?renderRaporPaneli(p,def):null;if(rpP)out.push(rpP);

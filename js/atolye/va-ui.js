@@ -111,6 +111,18 @@ function vaSinav(st) {
     r && r.ok ? sonuc : h("div", null, h("button", { class: "btn", type: "button", "data-va": "sinav-bitir", onclick: function () { var cev = S0.sorular.map(function (q, i) { return st.sc[i] == null ? -1 : st.sc[i]; }), x = PP.va.sinav(cev); st.sinavSonuc = x; if (x.ok) PP.va.sinavKaydet(x); draw(); } }, "Bitir ve değerlendir"), sonuc));
 }
 
+/* Faz 8 tur 2: Seviye 0 çekirdek projeleri (10 alanlı tanım); uygulama alanı yalnız gerçekten bağlı olanlar için */
+function vaProjeler() {
+  var L = (window.PP_PROJ && PP_PROJ.va) || [];
+  if (!L.length) return null;
+  return h("div", { class: "panel", "data-va": "projeler" }, h("div", { class: "label" }, "Seviye 0 çekirdek projeleri (" + L.length + ")"),
+    h("div", { class: "small mute" }, "Her proje 10 alanla tanımlı. SQL/Python alanıyla yalnız belirtilen kısım çalıştırılarak kontrol edilir; gerisini kendin yaparsın ve doğrulanmamış kalır."),
+    L.map(function (p) {
+      return h("details", { class: "more", "data-va-proje": p.id }, h("summary", null, p.title + " · ~" + p.weeks + " hafta · " + p.steps.length + " adım" + (p.alan && p.alan.length ? " · uygulama alanı: " + p.alan.join(", ") : "")),
+        h("div", { class: "morebox" }, typeof renderTanimBlok === "function" ? renderTanimBlok(p) : null));
+    }));
+}
+
 function renderVeriAnalitigi() {
   if (!window.PP || !PP.va || !window.PP_VA) return [h("div", { class: "panel" }, "Veri Analitiği yolu yüklenemedi.")];
   S.va = S.va || { ders: null, kp: {}, g1: {}, g2: {}, g3: {}, lab: {}, labIp: false, sc: [], sinavSonuc: null };
@@ -126,5 +138,5 @@ function renderVeriAnalitigi() {
       h("div", { class: "small mute", "data-va": "sonraki" }, "Sonraki: Seviye " + D.sonrakiSeviye.id + " (" + D.sonrakiSeviye.ad + ") kilitli — " + D.sonrakiSeviye.neden),
       h("div", { class: "small mute", "data-va": "sertifika" }, h("b", null, m.sertifika.ad + ": "), m.sertifika.durum + ". " + m.sertifika.not)),
     h("div", { class: "label" }, "Dersler")
-  ].concat(PP_VA.dersler.map(function (d) { return vaDers(d, st); })).concat([vaLab(st), vaSinav(st)]);
+  ].concat(PP_VA.dersler.map(function (d) { return vaDers(d, st); })).concat([vaLab(st), vaSinav(st), vaProjeler()].filter(Boolean));
 }
