@@ -7,11 +7,11 @@
   var O = g.PP.ogr, oneri = {};
   /* ders kimliği → lab'lar (senaryo sayısı lab tanımıyla aynı olmalı; tests/faz5b_ccna.js denetler) */
   oneri.LAB = {
-    "ders:net:4": [{ id: "net-altag", ad: "Alt ağ laboratuvarı", toplam: 4 }],
+    "ders:net:4": [{ id: "network-altag", eski: "net-altag", ad: "Alt ağ laboratuvarı", toplam: 4 }],
     "ders:net:7": [{ id: "net-rota", eski: "ccna-rota", ad: "Rota seçimi laboratuvarı", toplam: 4 }, { id: "net-nat", ad: "NAT/PAT karar laboratuvarı", toplam: 4 }],
     "ders:net:8": [{ id: "net-vlan", ad: "VLAN ve STP karar laboratuvarı", toplam: 4 }],
     "ders:net:14": [{ id: "net-acl", eski: "ccna-acl", ad: "ACL laboratuvarı", toplam: 6 }],
-    "ders:ccna:3": [{ id: "net-altag", ad: "Alt ağ laboratuvarı", toplam: 4 }],
+    "ders:ccna:3": [{ id: "ccna-altag", eski: "net-altag", ad: "Alt ağ laboratuvarı", toplam: 4 }],
     "ders:ccna:5": [{ id: "ccna-vlan", ad: "VLAN ve STP karar laboratuvarı", toplam: 4 }],
     "ders:ccna:8": [{ id: "ccna-nat", ad: "NAT/PAT karar laboratuvarı", toplam: 4 }],
     "ders:ccna:14": [{ id: "ccna-vlan", ad: "VLAN ve STP karar laboratuvarı", toplam: 4 }],
