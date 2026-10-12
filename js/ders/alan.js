@@ -91,6 +91,13 @@
         var st = db.prepare("INSERT INTO siparis VALUES (" + v.sutunlar.map(function () { return "?"; }).join(",") + ")");
         v.satirlar.forEach(function (r) { st.run(r); });
         st.free();
+        Object.keys(v.ek || {}).forEach(function (ad) {
+          var t = v.ek[ad];
+          db.run("CREATE TABLE " + ad + " (" + t.sutunlar.map(function (c, i) { return c + " " + sutunTipi(t.satirlar, i); }).join(", ") + ")");
+          var s2 = db.prepare("INSERT INTO " + ad + " VALUES (" + t.sutunlar.map(function () { return "?"; }).join(",") + ")");
+          t.satirlar.forEach(function (r) { s2.run(r); });
+          s2.free();
+        });
         var rs = db.exec(m.kod), son = rs.length ? rs[rs.length - 1] : null;
         if (!son) return { sutunlar: [], satirlar: [], kesildi: false, mesaj: "Sorgu çalıştı ama sonuç satırı döndürmedi." };
         return { sutunlar: son.columns, satirlar: son.values.slice(0, m.sinir.satir), kesildi: son.values.length > m.sinir.satir };
@@ -103,6 +110,9 @@
       try {
         var satirlar = v.satirlar.map(function (r) { var o = {}; v.sutunlar.forEach(function (c, i) { o[c] = r[i]; }); return o; });
         ns.set("siparisler", py.toPy(satirlar)); ns.set("sutunlar", py.toPy(v.sutunlar));
+        var tablolar = {};
+        Object.keys(v.ek || {}).forEach(function (ad) { var t = v.ek[ad]; tablolar[ad] = t.satirlar.map(function (r) { var o = {}; t.sutunlar.forEach(function (c, i) { o[c] = r[i]; }); return o; }); });
+        ns.set("tablolar", py.toPy(tablolar));
         try { py.runPython(m.kod, { globals: ns }); }
         catch (e) { var t = String(e && e.message || e).trim().split("\n"); throw hata("kod", t.slice(-4).join("\n")); }
         var deger = null, tanimli = false;
@@ -147,7 +157,9 @@
   function cevrimdisi() { return typeof g.navigator !== "undefined" && g.navigator.onLine === false; }
 
   function veriHazirla(v) {
-    return { sutunlar: v.sutunlar.slice(), satirlar: v.satirlar.map(function (r) { return r.map(function (x) { return x === "" ? null : x; }); }) };
+    var o = { sutunlar: v.sutunlar.slice(), satirlar: v.satirlar.map(function (r) { return r.map(function (x) { return x === "" ? null : x; }); }) };
+    if (v.ek && typeof v.ek === "object") { o.ek = {}; Object.keys(v.ek).forEach(function (ad) { var t = v.ek[ad]; if (/^[A-Za-z_][A-Za-z0-9_]*$/.test(ad)) o.ek[ad] = { sutunlar: t.sutunlar.slice(), satirlar: t.satirlar.map(function (r) { return r.map(function (x) { return x === "" ? null : x; }); }) }; }); }
+    return o;
   }
 
   /* Tek çalıştırma. Döner: Promise<{ok, calisti, ...}>; ok=false & calisti=false → çalıştırma ortamı yok/yüklenemedi (öğrenci hatası değil) */

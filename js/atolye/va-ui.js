@@ -9,7 +9,7 @@ function vaAlanlar(d, st) {
   var liste = PP_VA.alanlar.filter(function (a) { return a.ders === d.id; }), cozulen = PP.va.durum().alanlar;
   var paneller = liste.map(function (a) {
     if (!st.alanEl[a.id]) {
-      var t = PP.alan.tanimla({ id: a.id, ders: a.ders, tur: a.tur, baslik: a.baslik, gorev: a.gorev, baslangic: a.baslangic, kontrol: a.kontrol, varyant: a.varyant, ipucu: a.ipucu, veri: PP_VA.veri });
+      var t = PP.alan.tanimla({ id: a.id, ders: a.ders, tur: a.tur, baslik: a.baslik, gorev: a.gorev, baslangic: a.baslangic, kontrol: a.kontrol, varyant: a.varyant, ipucu: a.ipucu, veri: a.veri || PP_VA.veri });
       if (!t.ok) return h("div", { class: "lbox warn" }, "Alan tanımı geçersiz: " + t.neden);
       st.alanEl[a.id] = PP.alan.kur(t.alan, { onDogru: function (ip) { PP.va.alanKaydet(a.id, ip); } });
     }
@@ -17,11 +17,11 @@ function vaAlanlar(d, st) {
   });
   var tamam = cozulen.filter(function (x) { return x.ders === d.id && x.tamam; }).length;
   return h("div", { class: "lbox", "data-va-alanlar": d.id }, h("div", { class: "label" }, "Kodla dene (" + tamam + "/" + liste.length + " çözüldü)"),
-    h("div", { class: "small mute" }, "SQL ve Python bu tarayıcıda gerçekten çalışır; çalışmazsa bunu açıkça söyler. Aynı 12 siparişlik sentetik veri kullanılır."), paneller);
+    h("div", { class: "small mute" }, "SQL ve Python bu tarayıcıda gerçekten çalışır; çalışmazsa bunu açıkça söyler. " + (d.seviye === 1 ? "Elektronik tablo çalıştırılmaz: SQL/Python alanları aynı işin karşılığıdır, 'simülasyon' etiketliler yalnız kural tabanlı denetlenir. " : "") + "Veri sentetiktir (12 siparişlik tablo" + (d.seviye === 2 ? "; ek tablolar: musteri, urun, hedef" : "") + ")."), paneller);
 }
 
 function vaDers(d, st) {
-  var acik = st.ders === d.id, okundu = PP.va.durum().dersler.filter(function (x) { return x.id === d.id; })[0].okundu;
+  var acik = st.ders === d.id, okundu = !!PP.va.durum().okundu[d.id];
   var baslik = h("button", { type: "button", class: "btn ghost", "data-va-ders": d.id, "aria-expanded": acik ? "true" : "false", onclick: function () { st.ders = acik ? null : d.id; draw(); } }, (okundu ? "✓ " : "") + d.ad);
   if (!acik) return h("div", { class: "va-ders" }, baslik);
   var kp = function (a) { return h("div", { class: "lbox" }, h("div", { class: "label" }, a[0]), a[1]); };
@@ -96,26 +96,32 @@ function vaLab(st) {
     h("div", { class: "small mute" }, h("b", null, "Gözlem: "), L.gozlem, " ", h("b", null, "Kanıt: "), L.kanit));
 }
 
-function vaSinav(st) {
-  var S0 = PP_VA.sinav0, r = st.sinavSonuc;
+function vaSinav(st, L) {
+  L = L || 0;
+  var S0 = L === 1 ? PP_VA.sinav1 : L === 2 ? PP_VA.sinav2 : PP_VA.sinav0;
+  if (!S0) return null;
+  st.scL = st.scL || {}; st.sonL = st.sonL || {};
+  var sc = L ? (st.scL[L] = st.scL[L] || []) : st.sc, r = L ? st.sonL[L] : st.sinavSonuc;
+  var oz = function (i, j) { return L ? L + ":" + i + ":" + j : i + ":" + j; };
   var sorular = S0.sorular.map(function (q, i) {
-    return h("div", { class: "qz", "data-va-sq": String(i) }, h("div", { class: "qz-h" }, h("span", { class: "qz-n" }, String(i + 1)), h("span", { class: "qz-q" }, q.q)),
-      h("div", { class: "qz-os" }, q.o.map(function (o, j) { return h("button", { type: "button", class: "qz-o" + (st.sc[i] === j ? " ok" : ""), "aria-pressed": st.sc[i] === j ? "true" : "false", "data-va-sec": i + ":" + j, disabled: !!r, onclick: function () { st.sc[i] = j; draw(); } }, h("b", null, String.fromCharCode(65 + j)), h("span", null, o)); })));
+    return h("div", { class: "qz", "data-va-sq": L ? L + ":" + i : String(i) }, h("div", { class: "qz-h" }, h("span", { class: "qz-n" }, String(i + 1)), h("span", { class: "qz-q" }, q.q)),
+      h("div", { class: "qz-os" }, q.o.map(function (o, j) { return h("button", { type: "button", class: "qz-o" + (sc[i] === j ? " ok" : ""), "aria-pressed": sc[i] === j ? "true" : "false", "data-va-sec": oz(i, j), disabled: !!r, onclick: function () { sc[i] = j; draw(); } }, h("b", null, String.fromCharCode(65 + j)), h("span", null, o)); })));
   });
   var sonuc = r ? (r.ok ? h("div", { class: "qz-res", "data-va-sinav": r.gecti ? "gecti" : "kaldi" },
-    h("div", { class: "qz-sum " + (r.gecti ? "all" : "low") }, h("b", null, r.puan + " / " + r.maks), h("span", null, r.gecti ? "Geçildi (eşik %" + Math.round(r.esik * 100) + ")." : "Eşik %" + Math.round(r.esik * 100) + " altında: Seviye 0 tamamlanmadı.")),
+    h("div", { class: "qz-sum " + (r.gecti ? "all" : "low") }, h("b", null, r.puan + " / " + r.maks), h("span", null, r.gecti ? "Geçildi (eşik %" + Math.round(r.esik * 100) + ")." : "Eşik %" + Math.round(r.esik * 100) + " altında: Seviye " + L + " tamamlanmadı.")),
     r.yanlis.length ? h("div", { class: "small", style: "margin-top:6px" }, h("b", null, "Telafi: "), r.yanlis.map(function (y) { return "Soru " + y.soru + " → «" + y.ders + "» dersini tekrar et: " + y.telafi; }).join(" | ")) : null,
     h("div", { class: "small mute" }, r.varyantNotu),
-    h("button", { class: "btn", type: "button", "data-va": "yeniden", onclick: function () { st.sinavSonuc = null; st.sc = []; draw(); } }, "Yeniden dene")) : h("div", { class: "small", role: "status" }, "Tüm soruları cevapla.")) : null;
-  return h("div", { class: "panel", "data-va": "sinav" }, h("div", { class: "label" }, "Seviye 0 değerlendirmesi"), h("div", { class: "small mute" }, "Ders sorularından farklı durum soruları; geçme eşiği %" + Math.round(S0.esik * 100) + "."), sorular,
-    r && r.ok ? sonuc : h("div", null, h("button", { class: "btn", type: "button", "data-va": "sinav-bitir", onclick: function () { var cev = S0.sorular.map(function (q, i) { return st.sc[i] == null ? -1 : st.sc[i]; }), x = PP.va.sinav(cev); st.sinavSonuc = x; if (x.ok) PP.va.sinavKaydet(x); draw(); } }, "Bitir ve değerlendir"), sonuc));
+    h("button", { class: "btn", type: "button", "data-va": L ? "yeniden" + L : "yeniden", onclick: function () { if (L) { st.sonL[L] = null; st.scL[L] = []; } else { st.sinavSonuc = null; st.sc = []; } draw(); } }, "Yeniden dene")) : h("div", { class: "small", role: "status" }, "Tüm soruları cevapla.")) : null;
+  return h("div", { class: "panel", "data-va": L ? "sinav" + L : "sinav" }, h("div", { class: "label" }, "Seviye " + L + " değerlendirmesi"), h("div", { class: "small mute" }, "Ders sorularından farklı durum soruları; geçme eşiği %" + Math.round(S0.esik * 100) + "."), sorular,
+    r && r.ok ? sonuc : h("div", null, h("button", { class: "btn", type: "button", "data-va": L ? "sinav-bitir" + L : "sinav-bitir", onclick: function () { var cev = S0.sorular.map(function (q, i) { return sc[i] == null ? -1 : sc[i]; }), x = PP.va.sinav(cev, L); if (L) st.sonL[L] = x; else st.sinavSonuc = x; if (x.ok) PP.va.sinavKaydet(x); draw(); } }, "Bitir ve değerlendir"), sonuc));
 }
 
 /* Faz 8 tur 2: Seviye 0 çekirdek projeleri (10 alanlı tanım); uygulama alanı yalnız gerçekten bağlı olanlar için */
-function vaProjeler() {
-  var L = (window.PP_PROJ && PP_PROJ.va) || [];
+function vaProjeler(sev) {
+  sev = sev || 0;
+  var L = ((window.PP_PROJ && PP_PROJ.va) || []).filter(function (p) { return (p.seviye || 0) === sev; });
   if (!L.length) return null;
-  return h("div", { class: "panel", "data-va": "projeler" }, h("div", { class: "label" }, "Seviye 0 çekirdek projeleri (" + L.length + ")"),
+  return h("div", { class: "panel", "data-va": sev ? "projeler" + sev : "projeler" }, h("div", { class: "label" }, "Seviye " + sev + " çekirdek projeleri (" + L.length + ")"),
     h("div", { class: "small mute" }, "Her proje 10 alanla tanımlı. SQL/Python alanıyla yalnız belirtilen kısım çalıştırılarak kontrol edilir; gerisini kendin yaparsın ve doğrulanmamış kalır."),
     L.map(function (p) {
       return h("details", { class: "more", "data-va-proje": p.id }, h("summary", null, p.title + " · ~" + p.weeks + " hafta · " + p.steps.length + " adım" + (p.alan && p.alan.length ? " · uygulama alanı: " + p.alan.join(", ") : "")),
@@ -127,16 +133,25 @@ function renderVeriAnalitigi() {
   if (!window.PP || !PP.va || !window.PP_VA) return [h("div", { class: "panel" }, "Veri Analitiği yolu yüklenemedi.")];
   S.va = S.va || { ders: null, kp: {}, g1: {}, g2: {}, g3: {}, lab: {}, labIp: false, sc: [], sinavSonuc: null };
   var st = S.va, m = PP_VA.mufredat, D = PP.va.durum();
+  var dersSay = function (n) { return PP_VA.dersler.filter(function (d) { return (d.seviye || 0) === n; }).length; };
+  var alanSay = function (n) { return PP_VA.alanlar.filter(function (a) { return a.id.indexOf("va" + n + "-") === 0; }).length; };
   var seviyeler = m.seviyeler.map(function (s) {
-    return h("li", { "data-va-seviye": String(s.id) }, h("b", null, "Seviye " + s.id + " — " + s.ad + ": "), s.durum === "hazir" ? "hazır (3 ders, 1 lab, değerlendirme)" : "YOK (henüz hazırlanmadı)", s.onkosul.length ? " · önkoşul: Seviye " + s.onkosul.join(", ") : "");
+    var hazir = s.durum === "hazir", ek = s.id === 0 ? "3 ders, 1 lab, değerlendirme" : dersSay(s.id) + " ders, " + alanSay(s.id) + " uygulama alanı, değerlendirme, 4 proje";
+    return h("li", { "data-va-seviye": String(s.id) }, h("b", null, "Seviye " + s.id + " — " + s.ad + ": "), hazir ? "hazır (" + ek + ")" : "YOK (henüz hazırlanmadı)", s.onkosul.length ? " · önkoşul: Seviye " + s.onkosul.join(", ") : "");
   });
+  var seviyeDurum = [1, 2].map(function (n) { var x = D.seviyeler[n]; return "Seviye " + n + ": " + (x.tamam ? "tamam (istemci kaydı)" : "devam ediyor — kalan: " + x.bekleyen.join("; ")) + (x.alanToplam ? " · uygulama alanı " + x.alanCozulen + "/" + x.alanToplam + " çözüldü (tamamlama koşulu değil)" : ""); });
+  var baslik = function (n, t) { return h("div", { class: "label", "data-va-baslik": String(n) }, t); };
+  var dersler = function (n) { return PP_VA.dersler.filter(function (d) { return (d.seviye || 0) === n; }).map(function (d) { return vaDers(d, st); }); };
   return [
-    h("div", { class: "panel", "data-va": "ozet" }, h("div", { class: "label" }, "Veri Analitiği yolu"), h("h2", null, "Tur 1: yalnız Seviye 0 (Temeller) hazır"),
-      h("div", { class: "small mute" }, "Hiçbir ön bilgi gerekmez. Sıra: ders → lab → değerlendirme → telafi. Seviye 1–8 henüz yok; yol bitmiş değildir."),
+    h("div", { class: "panel", "data-va": "ozet" }, h("div", { class: "label" }, "Veri Analitiği yolu"), h("h2", null, "Seviye 0–2 hazır (Temeller, Elektronik tablolar, SQL); 3–8 henüz yok"),
+      h("div", { class: "small mute" }, "Hiçbir ön bilgi gerekmez. Sıra: ders → uygulama alanı/lab → değerlendirme → telafi → proje. Seviye 3–8 henüz yok; yol bitmiş değildir."),
       h("ul", { class: "lr-ul" }, seviyeler),
       h("div", { class: "small" }, h("b", null, "Seviye 0: "), D.tamam ? "tamam (istemci kaydı; ustalık/sertifika kanıtı değil)." : "devam ediyor — kalan: " + D.bekleyen.join("; ") + "."),
-      h("div", { class: "small mute", "data-va": "sonraki" }, "Sonraki: Seviye " + D.sonrakiSeviye.id + " (" + D.sonrakiSeviye.ad + ") kilitli — " + D.sonrakiSeviye.neden),
+      seviyeDurum.map(function (t) { return h("div", { class: "small", "data-va": "seviye-durum" }, t); }),
+      h("div", { class: "small mute", "data-va": "sonraki" }, "Sonraki: Seviye " + D.sonrakiSeviye.id + " (" + D.sonrakiSeviye.ad + ") — " + D.sonrakiSeviye.neden),
       h("div", { class: "small mute", "data-va": "sertifika" }, h("b", null, m.sertifika.ad + ": "), m.sertifika.durum + ". " + m.sertifika.not)),
-    h("div", { class: "label" }, "Dersler")
-  ].concat(PP_VA.dersler.map(function (d) { return vaDers(d, st); })).concat([vaLab(st), vaSinav(st), vaProjeler()].filter(Boolean));
+    baslik(0, "Seviye 0 · Temeller")
+  ].concat(dersler(0)).concat([vaLab(st), vaSinav(st, 0), vaProjeler(0)])
+    .concat([baslik(1, "Seviye 1 · Elektronik tablolar")]).concat(dersler(1)).concat([vaSinav(st, 1), vaProjeler(1)])
+    .concat([baslik(2, "Seviye 2 · SQL")]).concat(dersler(2)).concat([vaSinav(st, 2), vaProjeler(2)]).filter(Boolean);
 }

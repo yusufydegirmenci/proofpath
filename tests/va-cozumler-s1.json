@@ -1,0 +1,68 @@
+[
+  {
+    "id": "va1-1-py",
+    "tur": "python",
+    "cozum": "sonuc = sum(s['adet'] * s['birim_fiyat'] * (1 - (s['indirim_orani'] or 0)) for s in siparisler if s['sehir'] == 'Ankara')",
+    "yanlis": [
+      "sonuc = sum(s['adet'] * s['birim_fiyat'] for s in siparisler if s['sehir'] == 'Ankara')",
+      "sonuc = 3595.0"
+    ]
+  },
+  {
+    "id": "va1-1-sim",
+    "tur": "sim",
+    "cozum": "=SUMIF(E2:E13,\"Kulaklık\",F2:F13) → 9",
+    "yanlis": [
+      "=COUNTIF(E2:E13,\"Kulaklık\") → 4",
+      "=SUMIF(E2:E13,\"Kulaklık\",F2:F13) → 4",
+      "=SUMIF(E1:E13,\"Kulaklık\",F1:F13) → 9"
+    ]
+  },
+  {
+    "id": "va1-2-py",
+    "tur": "python",
+    "cozum": "seen = set()\ntoplam = 0\nfor s in siparisler:\n    if s['kayit_no'] in seen:\n        continue  # kopya satır atlandı: aynı kayit_no ikinci kez girilmiş\n    seen.add(s['kayit_no'])\n    a = s['adet']\n    if isinstance(a, str):\n        a = int(a.split()[0])  # '2 adet' metni sayıya çevrildi\n    toplam += a\nsonuc = toplam",
+    "yanlis": [
+      "sonuc = sum(int(str(s['adet']).split()[0]) for s in siparisler)",
+      "sonuc = 21"
+    ]
+  },
+  {
+    "id": "va1-2-sql",
+    "tur": "sql",
+    "cozum": "SELECT COUNT(*), COUNT(DISTINCT kayit_no), SUM(fiyat IS NULL) FROM siparis",
+    "yanlis": [
+      "SELECT COUNT(*), COUNT(DISTINCT kayit_no), COUNT(fiyat) FROM siparis",
+      "SELECT 13, 12, 1"
+    ]
+  },
+  {
+    "id": "va1-2-sim",
+    "tur": "sim",
+    "cozum": "=COUNTIF(A2:A14,\"K10\") → 2",
+    "yanlis": [
+      "=COUNTIF(A2:A14,\"K05\") → 1",
+      "=COUNTIF(A2:A13,\"K10\") → 2",
+      "=COUNTIF(A2:A14,\"K10\") → 1"
+    ]
+  },
+  {
+    "id": "va1-3-sql",
+    "tur": "sql",
+    "cozum": "SELECT sehir, ROUND(SUM(adet * birim_fiyat * (1 - COALESCE(indirim_orani, 0))), 2) AS net_ciro FROM siparis GROUP BY sehir",
+    "yanlis": [
+      "SELECT sehir, ROUND(SUM(adet * birim_fiyat * (1 - indirim_orani)), 2) AS net_ciro FROM siparis GROUP BY sehir",
+      "SELECT sehir, ROUND(SUM(adet * birim_fiyat), 2) AS net_ciro FROM siparis GROUP BY sehir"
+    ]
+  },
+  {
+    "id": "va1-3-sim",
+    "tur": "sim",
+    "cozum": "=SUMIFS(F2:F13,D2:D13,\"İstanbul\",I2:I13,\"kart\") → 7",
+    "yanlis": [
+      "=SUMIF(D2:D13,\"İstanbul\",F2:F13) → 7",
+      "=SUMIFS(F2:F13,D2:D13,\"İstanbul\",I2:I13,\"nakit\") → 0",
+      "=SUMIFS(F2:F13,D2:D13,\"İstanbul\",I2:I13,\"kart\") → 6"
+    ]
+  }
+]

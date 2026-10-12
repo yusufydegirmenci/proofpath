@@ -61,7 +61,7 @@
       { ad: "Birim test yazma", kanit: "Adım 6'daki 6 geçen test ve elle hesaplanmış beklenen değerler." },
       { ad: "Girdi ve dosya dayanıklılığı", kanit: "Adım 7'deki boş/eksik dosya, tarih doğrulama ve yuvarlama testleri." }
     ],
-    telafi: "K1 başarısızsa → adım 2'ye dön, Transaction constructor doğrulamasını yeniden yaz. K3 başarısızsa → adım 4'e dön, satır satır try/catch ve satır numarası mantığını yeniden kur. K4 başarısızsa → adım 1'e dön, alan tiplerini gözden geçir. K5 başarısızsa → adım 5'e dön, GroupBy sorgusunu kâğıttaki hesapla adım adım karşılaştır. K7 başarısızsa → adım 7'ye dön, dosya yok/boş durumunu, TryParseExact doğrulamasını ve yuvarlama kuralını yeniden kur.",
+    telafi: "K1 başarısızsa → adım 2'ye dön, Transaction constructor doğrulamasını yeniden yaz. K3 başarısızsa → adım 4'e dön, satır satır try/catch ve satır numarası mantığını yeniden kur. K2 başarısızsa → adım 4'e dön, yazma ve okuma biçimini (InvariantCulture, alan sırası) eşleştir. K4 başarısızsa → adım 1'e dön, alan tiplerini gözden geçir. K6 başarısızsa → adım 6'ya dön, eksik testleri yaz ve README'ye çalıştırma adımlarını ekle. K5 başarısızsa → adım 5'e dön, GroupBy sorgusunu kâğıttaki hesapla adım adım karşılaştır. K7 başarısızsa → adım 7'ye dön, dosya yok/boş durumunu, TryParseExact doğrulamasını ve yuvarlama kuralını yeniden kur.",
     sonraki: "K1-K7'nin tamamı tutar ve 4 savunma sorusunu kendi cümlelerinle yanıtlarsan bk1c Metin Ayrıştırıcı kilidi açılır; tamamlama bir kanıt kaydı üretir."
   });
 
@@ -486,7 +486,7 @@
       { ad: "Eşzamanlı işçi güvenliği", kanit: "Adım 7 sayaç tablosu: iki işçide her iş 1 kez işlendi." },
       { ad: "Zarif kapanış", kanit: "Adım 6'daki kapanış testi: İşleniyor işi kalmaz." }
     ],
-    telafi: "K2 başarısızsa → adım 3'e dön, durum geçişlerini ve açılışta 'İşleniyor' kalan işleri kurtarma mantığını yeniden yaz. K3 başarısızsa → adım 4'e dön, deneme sayacı ve SonrakiDeneme hesabını düzelt. K4 başarısızsa → adım 5'e dön, anahtar saklama ve benzersizlik kısıtını yeniden kur. K5 başarısızsa → adım 3'e dön, Beklemede iş sayısı sınırını ve 503 yolunu yeniden kur (Channel yalnız sinyal olsun). K7 başarısızsa → adım 6'ya dön, kapanışta İşleniyor işleri Başarılı veya Beklemede yapacak mantığı yaz. K8 başarısızsa → adım 7'ye dön, işi alma güncellemesini koşullu ve atomik yap.",
+    telafi: "K1 başarısızsa → adım 2'ye dön, uç noktayı işi kuyruğa yazıp hemen 202 ve iş Id'si dönecek biçimde yeniden kur. K2 başarısızsa → adım 3'e dön, durum geçişlerini ve açılışta 'İşleniyor' kalan işleri kurtarma mantığını yeniden yaz. K3 başarısızsa → adım 4'e dön, deneme sayacı ve SonrakiDeneme hesabını düzelt. K4 başarısızsa → adım 5'e dön, anahtar saklama ve benzersizlik kısıtını yeniden kur. K5 başarısızsa → adım 3'e dön, Beklemede iş sayısı sınırını ve 503 yolunu yeniden kur (Channel yalnız sinyal olsun). K7 başarısızsa → adım 6'ya dön, kapanışta İşleniyor işleri Başarılı veya Beklemede yapacak mantığı yaz. K6 başarısızsa → adım 6'ya dön, eksik testleri yaz ve işletim notuna iki izleme ölçüsünü ekle. K8 başarısızsa → adım 7'ye dön, işi alma güncellemesini koşullu ve atomik yap.",
     sonraki: "K1-K8'in tamamı tutar ve savunma sorularını gerekçeli yanıtlarsan bk3d Gözlemlenebilirlik kilidi açılır (kuyruğu izlenebilir kılmak için); bk4 bulut kapstonu için kuyruk tasarımını girdi olarak kullanabilirsin; tamamlama bir kanıt kaydı üretir."
   });
 

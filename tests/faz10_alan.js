@@ -28,7 +28,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   });
   eq(tanimlar.slice(0, 9), ['ok', 'id-yok', 'ders-yok', 'tur-gecersiz', 'baslangic-yok', 'kontrol-yok', 'veri-yok', 'varyant-gecersiz', 'tanim-yok'], 'tanımlama: geçersiz tanımlar nedenle reddedilir');
   ok(/^gerçek çalışır/.test(tanimlar[9].sql) && /^gerçek çalışır/.test(tanimlar[9].python) && /^simülasyon/.test(tanimlar[9].sim), 'etiketler dürüst: çalışan = "gerçek çalışır", sim = "simülasyon"');
-  eq(await ev(() => PP_VA.alanlar.map(a => a.id + ':' + a.tur)), ['va0-1-sql:sql', 'va0-1-py:python', 'va0-2-sql:sql', 'va0-2-py:python', 'va0-3-sql:sql', 'va0-3-py:python'], '3 ders × (SQL + Python) alan tanımı');
+  eq(await ev(() => PP_VA.alanlar.filter(a => a.id.startsWith('va0-')).map(a => a.id + ':' + a.tur)), ['va0-1-sql:sql', 'va0-1-py:python', 'va0-2-sql:sql', 'va0-2-py:python', 'va0-3-sql:sql', 'va0-3-py:python'], '3 ders × (SQL + Python) alan tanımı');
   ok(await ev(() => PP_VA.alanlar.every(a => !/cevap|anahtar|beklenen/i.test(Object.keys(a).join(',')) && a.kontrol.length === 2)), 'alan tanımlarında sabit cevap alanı yok; kontrol (sonuç, veri) alır');
   // Bağımsız beklenenler (elle sayım: iade evet = S003, S007; indirim boş = S007; 12 satır, 12 benzersiz id)
   const ham = await ev(() => PP_VA.veri.satirlar.map(r => r.join('|')).join('\n'));

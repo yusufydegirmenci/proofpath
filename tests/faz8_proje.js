@@ -51,8 +51,8 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(kop, [], 'aynı kademedeki projelerin kabul ölçütü/tanıtım cümlesi tekrar etmiyor');
 
   // VA Seviye 0
-  const va = await ev(() => { const L = PP_PROJ.va, ids = PP_VA.alanlar.map(a => a.id).concat([PP_VA.alanSim.id]);
-    return { n: L.length, td: L.map(j => PP.rapor.tanimDenetimi(j).tanimli), alanVar: L.every(j => (j.alan || []).every(a => ids.includes(a))), alanNotu: L.every(j => !!j.alanNotu && /doğrulanmam/.test(j.alanNotu)), sev0: L.every(j => j.seviye === 0), tek: new Set(L.map(j => j.title)).size === L.length }; });
+  const va = await ev(() => { const L = PP_PROJ.va.filter(j => j.seviye === 0), ids = PP_VA.alanlar.map(a => a.id).concat([PP_VA.alanSim.id]);
+    return { n: L.length, td: L.map(j => PP.rapor.tanimDenetimi(j).tanimli), alanVar: L.every(j => (j.alan || []).every(a => ids.includes(a))), alanNotu: L.every(j => !!j.alanNotu && /doğrulanmam/.test(j.alanNotu)), sev0: L.every(j => j.seviye === 0) && PP_PROJ.va.every(j => [0, 1, 2].includes(j.seviye)), tek: new Set(L.map(j => j.title)).size === L.length }; });
   eq([va.n, va.td], [4, [10, 10, 10, 10]], 'Veri Analitiği Seviye 0: 4 proje, 10/10 alan');
   ok(va.alanVar && va.alanNotu && va.sev0 && va.tek, 'VA projeleri yalnız var olan PP.alan kimliklerine bağlı; alan notu "doğrulanmamış" kısmı söylüyor');
 
@@ -66,7 +66,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   await ev(() => { S.va = null; S.at2.sec = 'va'; goTab('atolye'); });
   await p.waitForTimeout(500);
   const vp = await ev(() => ({ n: document.querySelectorAll('#view [data-va-proje]').length, alan: /uygulama alanı: va0/.test(document.querySelector('[data-va=projeler]').textContent), tanim: document.querySelectorAll('#view [data-va-proje] [data-tanim=panel]').length }));
-  eq([vp.n, vp.alan, vp.tanim], [4, true, 4], 'Veri Analitiği sekmesinde 4 proje, uygulama alanı bağlantısı görünür');
+  eq([vp.n, vp.alan, vp.tanim], [12, true, 12], 'Veri Analitiği sekmesinde 12 proje (Seviye 0–2, kademe başına 4), uygulama alanı bağlantısı görünür');
   // dar ekranda taşma
   const tas = await ev(() => document.documentElement.scrollWidth <= window.innerWidth + 1);
   ok(tas, '390 px genişlikte yatay taşma yok');

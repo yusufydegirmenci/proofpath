@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Faz 10 tur 3 (dal: faz-10c, Veri Analitiği Seviye 1–2 + Faz 8 küçük temizlik)
+- Veri Analitiği Seviye 1 (elektronik tablo, 3 ders) ve Seviye 2 (SQL, 13 ders, M§15.2 sırası): her ders 15 öğe tam (`content/veri-analitigi/seviye1.js`, `seviye2a.js`, `seviye2b.js`), her derste en az 1 SQL/Python `PP.alan` alanı (`alanlar1.js`, `alanlar2a.js`, `alanlar2b.js`; 22 çalışan alan + 3 `sim`), Seviye 1/2 değerlendirmesi (6 + 10 soru, telafi derse bağlı), kademe başına 4 proje (`js/veri/proje-yeni-va12.js`, 7 adım; README/veri sözlüğü/metodoloji/test/sınırlamalar adımlarıyla).
+- Elektronik tablo çalıştırılmaz: alanlar "simülasyon" (kural tabanlı) ya da "aynı işin SQL/Python karşılığı" etiketli; kontrol veriden sayar, her çalışan alanda varyant (sabit cevap reddedilir).
+- `PP.alan`: çok tablolu veri (`veri.ek`; SQL'de ek tablolar, Python'da `tablolar`). Ortak veri: `content/veri-analitigi/veri-ek.js` (kirli tablo, musteri/urun/hedef).
+- `PP.va`: seviye bazlı değerlendirme/durum (`sinav(cevap, seviye)`, `durum().seviyeler`); aşama kilidi zorlanmıyor (öneri). PL-300 eşlemesi hâlâ "doğrulanmadı"; sertifika vaadi yok.
+- Temizlik: sup1b/sup4c "açılır" dili kaldırıldı; telafi K eksikleri bk1b, bk3c, sup1b, ba1c, ba3d kapatıldı; `weeks` değişmedi (bariz uyumsuzluk yok).
+- Test: `tests/faz10_va12.js` (yeni; gerçek SQL/Python'da çözüm kabul, yanlış ve sabit cevap reddi; `tests/va-cozumler-*.json`).
+
 ## Faz 8 tur 4 (dal: faz-8b, kalan projelerin taraması ve son tam test; yeni özellik yok)
 - Kalite taraması: tur 3'te okunmayan 34 proje (bk 6, qa 7, sec 7, sup 7, ba 3, VA Seviye 0 için 4) bağımsız Sonnet'lerle salt okunur tarandı; bulgular başka Sonnet'lerce düzeltildi (`js/veri/proje-yeni-*.js`). Kimlikler ve kayıt anahtarları değişmedi.
 - Taranan 34 projenin hepsinde bulgu çıktı; hepsi 7 adıma çıkarıldı, gereken kabul ölçütleri eklendi; telafi/sonraki metinleri her K'yi sayıyor.

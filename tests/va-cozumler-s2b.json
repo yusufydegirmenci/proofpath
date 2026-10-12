@@ -1,0 +1,81 @@
+[
+ {
+  "id": "va2-8-sql",
+  "tur": "sql",
+  "cozum": "SELECT siparis_id, adet * birim_fiyat * (1 - COALESCE(indirim_orani, 0)) AS net_tutar\nFROM siparis\nWHERE adet * birim_fiyat * (1 - COALESCE(indirim_orani, 0)) < (SELECT AVG(adet * birim_fiyat * (1 - COALESCE(indirim_orani, 0))) FROM siparis)",
+  "yanlis": [
+   "SELECT siparis_id, adet * birim_fiyat * (1 - indirim_orani) AS net_tutar FROM siparis WHERE adet * birim_fiyat * (1 - indirim_orani) < (SELECT AVG(adet * birim_fiyat * (1 - indirim_orani)) FROM siparis)",
+   "SELECT siparis_id, adet * birim_fiyat AS net_tutar FROM siparis WHERE adet * birim_fiyat < (SELECT AVG(adet * birim_fiyat) FROM siparis)"
+  ]
+ },
+ {
+  "id": "va2-8-py",
+  "tur": "python",
+  "cozum": "def net(s):\n    return s['adet'] * s['birim_fiyat'] * (1 - (s['indirim_orani'] or 0))\nnetler = [net(s) for s in siparisler]\nort = sum(netler) / len(netler)\nsonuc = [round(ort, 2), len([n for n in netler if n > ort])]",
+  "yanlis": [
+   "netler = [s['adet']*s['birim_fiyat']*(1-s['indirim_orani']) for s in siparisler if s['indirim_orani'] is not None]\nort = sum(netler)/len(netler)\nsonuc = [round(ort, 2), len([n for n in netler if n > ort])]"
+  ]
+ },
+ {
+  "id": "va2-9-sql",
+  "tur": "sql",
+  "cozum": "SELECT strftime('%Y-%m', tarih) AS ay, COUNT(*) AS siparis_sayisi, SUM(adet * birim_fiyat * (1 - COALESCE(indirim_orani, 0))) AS net_ciro\nFROM siparis\nGROUP BY ay\nORDER BY ay",
+  "yanlis": [
+   "SELECT strftime('%Y-%m', tarih) AS ay, COUNT(*) AS siparis_sayisi, SUM(adet * birim_fiyat) AS net_ciro FROM siparis GROUP BY ay ORDER BY ay",
+   "SELECT strftime('%Y-%m', tarih) AS ay, COUNT(*) AS siparis_sayisi, SUM(adet * birim_fiyat * (1 - indirim_orani)) AS net_ciro FROM siparis GROUP BY ay ORDER BY ay"
+  ]
+ },
+ {
+  "id": "va2-10-sql",
+  "tur": "sql",
+  "cozum": "WITH aylik AS (\n  SELECT strftime('%Y-%m', tarih) AS ay, SUM(adet * birim_fiyat * (1 - COALESCE(indirim_orani, 0))) AS net_ciro\n  FROM siparis GROUP BY ay\n)\nSELECT ay, net_ciro, net_ciro - LAG(net_ciro) OVER (ORDER BY ay) AS onceki_aya_fark\nFROM aylik\nORDER BY ay",
+  "yanlis": [
+   "WITH aylik AS (SELECT strftime('%Y-%m', tarih) AS ay, SUM(adet * birim_fiyat * (1 - COALESCE(indirim_orani, 0))) AS net_ciro FROM siparis GROUP BY ay) SELECT ay, net_ciro, net_ciro - LAG(net_ciro) OVER (ORDER BY ay DESC) AS onceki_aya_fark FROM aylik ORDER BY ay",
+   "WITH aylik AS (SELECT strftime('%Y-%m', tarih) AS ay, SUM(adet * birim_fiyat * (1 - COALESCE(indirim_orani, 0))) AS net_ciro FROM siparis GROUP BY ay) SELECT ay, net_ciro, net_ciro - COALESCE(LAG(net_ciro) OVER (ORDER BY ay), 0) AS onceki_aya_fark FROM aylik ORDER BY ay"
+  ]
+ },
+ {
+  "id": "va2-10-py",
+  "tur": "python",
+  "cozum": "def net(s):\n    return s['adet'] * s['birim_fiyat'] * (1 - (s['indirim_orani'] or 0))\nen = {}\nfor s in siparisler:\n    n = net(s)\n    if s['sehir'] not in en or n > en[s['sehir']][0]:\n        en[s['sehir']] = (n, s['siparis_id'])\nsonuc = {sehir: t[1] for sehir, t in en.items()}",
+  "yanlis": [
+   "en = {}\nfor s in siparisler:\n    if s['sehir'] not in en or s['adet'] > en[s['sehir']][0]:\n        en[s['sehir']] = (s['adet'], s['siparis_id'])\nsonuc = {k: t[1] for k, t in en.items()}",
+   "en = {}\nfor s in siparisler:\n    b = s['adet'] * s['birim_fiyat']\n    if s['sehir'] not in en or b > en[s['sehir']][0]:\n        en[s['sehir']] = (b, s['siparis_id'])\nsonuc = {k: t[1] for k, t in en.items()}"
+  ]
+ },
+ {
+  "id": "va2-11-sql",
+  "tur": "sql",
+  "cozum": "SELECT odeme_turu,\n  COUNT(*) AS siparis_sayisi,\n  SUM(CASE WHEN iade = 'evet' THEN 1 ELSE 0 END) AS iade_sayisi,\n  1.0 * SUM(CASE WHEN iade = 'evet' THEN 1 ELSE 0 END) / COUNT(*) AS iade_orani\nFROM siparis\nGROUP BY odeme_turu",
+  "yanlis": [
+   "SELECT odeme_turu, COUNT(*) AS siparis_sayisi, COUNT(*) AS iade_sayisi, 1.0 AS iade_orani FROM siparis WHERE iade = 'evet' GROUP BY odeme_turu",
+   "SELECT odeme_turu, COUNT(*), SUM(CASE WHEN iade = 'evet' THEN 1 ELSE 0 END), SUM(CASE WHEN iade = 'evet' THEN 1 ELSE 0 END) / COUNT(*) FROM siparis GROUP BY odeme_turu"
+  ]
+ },
+ {
+  "id": "va2-11-py",
+  "tur": "python",
+  "cozum": "mus = {m['musteri_id'] for m in tablolar['musteri']}\nkatalog = [u['urun'] for u in tablolar['urun']]\nids = [s['siparis_id'] for s in siparisler]\nsip_mus = {s['musteri_id'] for s in siparisler}\nsatilan = {s['urun'] for s in siparisler}\nsonuc = {\n    'bos_indirim': len([s for s in siparisler if s['indirim_orani'] is None]),\n    'tekrar_id': len(ids) - len(set(ids)),\n    'yetim_musteri': len([s for s in siparisler if s['musteri_id'] not in mus]),\n    'siparissiz_musteri': len(mus - sip_mus),\n    'satilmayan_urun': sorted(set(katalog) - satilan)\n}",
+  "yanlis": [
+   "sonuc = {'bos_indirim': len([s for s in siparisler if not s['indirim_orani']]), 'tekrar_id': 0, 'yetim_musteri': 0, 'siparissiz_musteri': 0, 'satilmayan_urun': []}"
+  ]
+ },
+ {
+  "id": "va2-12-sql",
+  "tur": "sql",
+  "cozum": "CREATE INDEX IF NOT EXISTS idx_siparis_musteri ON siparis(musteri_id);\nEXPLAIN QUERY PLAN SELECT * FROM siparis WHERE musteri_id = 'M01'",
+  "yanlis": [
+   "EXPLAIN QUERY PLAN SELECT * FROM siparis WHERE musteri_id = 'M01'",
+   "SELECT 'SEARCH siparis USING INDEX idx_siparis_musteri (musteri_id=?)' AS detail"
+  ]
+ },
+ {
+  "id": "va2-13-sql",
+  "tur": "sql",
+  "cozum": "SELECT s.musteri_id, m.segment, SUM(s.adet * s.birim_fiyat * (1 - COALESCE(s.indirim_orani, 0))) AS net_ciro\nFROM siparis s\nJOIN musteri m ON m.musteri_id = s.musteri_id\nWHERE s.iade = 'hayır'\nGROUP BY s.musteri_id, m.segment\nORDER BY net_ciro DESC\nLIMIT 3",
+  "yanlis": [
+   "SELECT s.musteri_id, m.segment, SUM(s.adet * s.birim_fiyat * (1 - COALESCE(s.indirim_orani,0))) AS net_ciro FROM siparis s JOIN musteri m ON m.musteri_id = s.musteri_id GROUP BY s.musteri_id, m.segment ORDER BY net_ciro DESC LIMIT 3",
+   "SELECT s.musteri_id, m.segment, COUNT(*) AS net_ciro FROM siparis s JOIN musteri m ON m.musteri_id = s.musteri_id WHERE s.iade = 'hayır' GROUP BY s.musteri_id, m.segment ORDER BY net_ciro DESC LIMIT 3"
+  ]
+ }
+]
