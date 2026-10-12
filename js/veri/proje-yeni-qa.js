@@ -238,28 +238,31 @@
     pitch: "I audited a small web page for accessibility using keyboard testing, a screen reader and automated scans, then fixed the findings.",
     steps: [
       ["Erişilebilirlik neden test işidir?", "Erişilebilirlik rampa gibidir: tekerlekli sandalye için yapılır ama bebek arabası ve bavul için de işe yarar. Test eden kişi 'çalışıyor' ile 'herkes için çalışıyor' farkını görür.", "4 farklı kullanıcı türü seç (klavye, ekran okuyucu, görme zorluğu, renk körlüğü). Her biri için bir web sayfasında olası 1 engel yaz.", "4 kullanıcı ve 4 engel notu", "accessibility = erişilebilirlik, assistive technology = yardımcı teknoloji, WCAG = erişilebilirlik yönergesi, barrier = engel", "web accessibility basics for testers"],
-      ["Hedef sayfayı hazırla", "Test için bilerek bozuk bir sayfa lazım. Kendi bilgisayarında bir HTML sayfası: başlık, görsel, form, buton ve bir bağlantı. Hataları kendin eklersin: alt metinsiz görsel, etiketsiz alan, düşük kontrast.", "Kendi bilgisayarında test.html yaz. İçinde en az 5 bilerek erişilebilirlik hatası bulunsun (örn. alt metinsiz görsel, etiketsiz input, tıklanabilir div, düşük kontrast, başlık atlaması). Hataları gizli bir listeye yaz.", "test.html ve gizli hata listesi", "alt text = alternatif metin, label = etiket, contrast = kontrast, heading = başlık", "accessible html form label alt text example"],
+      ["Hedef sayfayı hazırla", "Test için bilerek bozuk bir sayfa lazım. Kendi bilgisayarında bir HTML sayfası: başlık, görsel, form, buton ve bir bağlantı. Hataları kendin eklersin: alt metinsiz görsel, etiketsiz alan, düşük kontrast.", "Kendi bilgisayarında test.html yaz. İçinde en az 5 bilerek erişilebilirlik hatası bulunsun. Başlangıç şablonu (gövde içeriği): <h1>Test Sayfası</h1> <img src='kedi.png'> <input type='text' placeholder='Ad'> <div onclick='alert(1)'>Gönder</div> <p style='color:#ccc;background:#fff'>Gri yazı</p> <h4>Alt başlık</h4> (alt metinsiz görsel, etiketsiz input, tıklanabilir div, düşük kontrast, başlık atlaması). Hataları gizli bir listeye yaz.", "test.html ve gizli hata listesi", "alt text = alternatif metin, label = etiket, contrast = kontrast, heading = başlık", "accessible html form label alt text example"],
       ["Klavye testi", "Fare yok: Tab ile ilerle, Shift+Tab ile geri dön, Enter/Space ile etkinleştir. Odak görünür mü, sıra mantıklı mı, takıldığın yer var mı? Analoji: gözü kapalı evde yürümek.", "Sayfayı yalnız klavyeyle kullan. Odak sırasını, odak göstergesini ve etkinleştirilemeyen öğeleri tablo olarak yaz. En az 3 sorun bulmuş ol.", "Klavye testi tablosu", "keyboard focus = klavye odağı, tab order = sekme sırası, focus indicator = odak göstergesi, keyboard trap = klavye tuzağı", "keyboard accessibility testing tab order focus"],
-      ["Otomatik tarama: axe ve Lighthouse", "Araçlar bazı hataları anında bulur ama her şeyi bulamaz: anlam ve sıra kararları insan ister. İki aracın çıkarını karşılaştırmak neyi kaçırdıklarını gösterir.", "test.html üzerinde axe ve Lighthouse erişilebilirlik taramasını çalıştır. Her aracın bulduklarını gizli listenle karşılaştır; hangi hataları bulamadı, yaz.", "Karşılaştırma tablosu", "automated scan = otomatik tarama, violation = ihlal, false negative = kaçırılan hata, audit = denetim", "axe devtools lighthouse accessibility audit comparison"],
-      ["Ekran okuyucu ile dinle", "Ekran okuyucu sayfayı sesle okur. Etiketsiz alan 'düzenleme kutusu' der ama ne istediğini söylemez. Analoji: kapıları numarasız dolaşan otel.", "NVDA (Windows) veya VoiceOver (Mac) ile sayfayı dinle. Başlık gezinmesini, form etiketlerini ve görsel okunuşunu dene. Okuyucunun yanlış veya eksik söylediği 3 yeri yaz.", "Ekran okuyucu dinleme notu", "screen reader = ekran okuyucu, landmark = sayfa bölgesi, announce = sesli okumak, aria-label = erişilebilir ad", "nvda screen reader basics testing a web page"],
-      ["Düzelt ve önce-sonra karşılaştır", "Düzeltme testi tamamlar: hatanın gerçekten gittiğini kanıtlarsın. Önce-sonra tablo, savunma için en güçlü kanıttır.", "En az 5 hatayı düzelt. Klavye, axe ve ekran okuyucuyla yeniden test et. Önce/sonra tablosuna ihlal sayısı, klavye engeli ve okuyucu sorunu sütunları koy.", "Önce-sonra tablosu", "remediation = düzeltme, regression = geri dönüş, before/after = önce/sonra, report = rapor", "accessibility remediation before after report"]
+      ["Otomatik tarama ve elle test karşılaştırması", "Araçlar bazı hataları anında bulur ama her şeyi bulamaz: anlam ve sıra kararları insan ister. Lighthouse'un erişilebilirlik denetimi axe-core üzerine kuruludur; yani ikisi çoğunlukla aynı motorun çıktısıdır ve karşılaştırılacak asıl şey araç ile elle (klavye, ekran okuyucu) testtir.", "test.html üzerinde axe taramasını çalıştır, Lighthouse erişilebilirlik denetimini de çalıştırıp axe'in tekrarı olup olmadığını not et. Sonra otomatik sonuçları adım 3'teki klavye bulgularıyla ve gizli listenle karşılaştır; araçların bulamadığı hataları ve elle bulunanları yaz.", "Araç ve elle test karşılaştırma tablosu", "automated scan = otomatik tarama, violation = ihlal, false negative = kaçırılan hata, audit = denetim", "axe devtools lighthouse accessibility audit comparison"],
+      ["Ekran okuyucu ile dinle", "Ekran okuyucu sayfayı sesle okur. Etiketsiz alan 'düzenleme kutusu' der ama ne istediğini söylemez. Analoji: kapıları numarasız dolaşan otel.", "NVDA (Windows) veya VoiceOver (Mac) ile sayfayı dinle. Başlık gezinmesini, form etiketlerini ve görsel okunuşunu dene. Okuyucunun yanlış veya eksik söylediği 3 yeri yaz; her biri için okuyucunun söylediği cümleyi aynen yaz.", "Ekran okuyucu dinleme notu", "screen reader = ekran okuyucu, landmark = sayfa bölgesi, announce = sesli okumak, aria-label = erişilebilir ad", "nvda screen reader basics testing a web page"],
+      ["Düzelt ve önce-sonra karşılaştır", "Düzeltme testi tamamlar: hatanın gerçekten gittiğini kanıtlarsın. Önce-sonra tablo, savunma için en güçlü kanıttır.", "En az 5 hatayı düzelt. Klavye, axe ve ekran okuyucuyla yeniden test et. Önce/sonra tablosuna ihlal sayısı, klavye engeli ve okuyucu sorunu sütunları koy.", "Önce-sonra tablosu", "remediation = düzeltme, regression = geri dönüş, before/after = önce/sonra, report = rapor", "accessibility remediation before after report"],
+      ["Bulguları etkiye göre sırala", "Her hata aynı ağırlıkta değildir: formu doldurmayı tamamen engelleyen hata ile küçük bir kontrast hatası aynı aciliyette değildir. Hastanede triyaj gibi, önce yaşamsal olanı ele alırsın.", "Klavye, araç ve ekran okuyucu bulgularını tek tabloda topla (en az 6 bulgu). Her biri için etkilenen kullanıcı grubu, etki (engelliyor / zorlaştırıyor / rahatsız ediyor) ve gerekçe yaz; etkiye göre sırala. Düzeltmediklerin için sıradaki ilk 2 hatayı seç.", "Etkiye göre sıralı bulgu tablosu", "severity = ciddiyet, impact = etki, prioritization = önceliklendirme, blocker = engelleyici hata", "accessibility issue severity prioritization blocker"]
     ],
     onkosul: ["qa1 (Manuel Test: İlk Test Planım) projesinden hata raporu ve test senaryosu yazma bilgisi.", "Temel HTML etiketlerini (başlık, form, img, button) tanımak gerekir; adım 2'de şablon verilir.", "Chrome DevTools'u açmayı bilmen beklenir."],
     gereksinim: [
       "İşlevsel (zorunlu): Kendi test sayfasında en az 5 bilinen erişilebilirlik hatası bulunur.",
       "İşlevsel (zorunlu): Klavye testi tablosu hazırlanır.",
-      "İşlevsel (zorunlu): axe ve Lighthouse sonuçları karşılaştırılır.",
+      "İşlevsel (zorunlu): axe ve Lighthouse taraması elle testle (klavye, ekran okuyucu, gizli liste) karşılaştırılır.",
       "İşlevsel (zorunlu): Ekran okuyucu ile en az 3 sorun belgelenir.",
       "İşlevsel (zorunlu): En az 5 hata düzeltilip önce-sonra tablosu çıkarılır.",
+      "İşlevsel (zorunlu): Bulgular etkiye göre sıralanır.",
       "İşlevsel (isteğe bağlı): Kontrast oranını bir araçla ölçersin.",
       "İşlevsel olmayan: Test yalnız kendi sayfanda ve herkese açık demo sayfalarda yapılır; kişisel veri girilmez."
     ],
     kabul: [
       "K1: Klavye tablosunda en az 3 sorun, odak sırası ve odak göstergesi bilgisi var | Test: Tabloyu kontrol et.",
-      "K2: axe ve Lighthouse'un kaçırdığı en az 1 hata gizli listeyle karşılaştırılarak yazılmış | Test: Karşılaştırma satırını göster.",
-      "K3: Ekran okuyucu notunda 3 sorun için okuyucunun söylediği cümle alıntılı | Test: Notu oku, alıntıları say.",
+      "K2: Otomatik taramanın (axe, Lighthouse) kaçırdığı ve elle bulunan en az 1 hata gizli listeyle karşılaştırılarak yazılmış; Lighthouse'un axe'in tekrarı olup olmadığı notlu | Test: Karşılaştırma satırını ve notu göster.",
+      "K3: Ekran okuyucu notunda 3 sorun için okuyucunun söylediği cümle aynen alıntılı | Test: Notu oku, alıntıları say.",
       "K4: En az 5 hata düzeltildi ve her biri yeniden test edildi | Test: Önce-sonra tablosunda her satırda 'sonra' sütunu dolu olmalı.",
-      "K5: Düzeltme sonrası axe ihlal sayısı öncekinden düşük | Test: İki taramanın ekran görüntüsünü yan yana koy."
+      "K5: Düzeltme sonrası axe ihlal sayısı öncekinden düşük | Test: İki taramanın ekran görüntüsünü yan yana koy.",
+      "K6: En az 6 bulgu etkiye göre sıralı; her satırda kullanıcı grubu, etki ve gerekçe var | Test: Tabloda 6 satırı ve boş hücre olmadığını kontrol et."
     ],
     rubrik: [
       { olcut: "Klavye testi", guclu: "Odak sırası, görünürlük ve tuzaklar ayrı ayrı belgelenmiş.", zayif: "Yalnız 'klavyeyle çalışıyor' denmiş." },
@@ -276,12 +279,13 @@
     ],
     yetkinlikler: [
       { ad: "Klavye erişilebilirliği testi", kanit: "Adım 3'teki klavye testi tablosu." },
-      { ad: "Araç destekli denetim", kanit: "Adım 4'teki axe ve Lighthouse karşılaştırması." },
+      { ad: "Araç destekli denetim", kanit: "Adım 4'teki araç ve elle test karşılaştırması." },
       { ad: "Yardımcı teknoloji gözlemi", kanit: "Adım 5'teki ekran okuyucu dinleme notu." },
-      { ad: "Düzeltme doğrulama", kanit: "Adım 6'daki önce-sonra tablosu." }
+      { ad: "Düzeltme doğrulama", kanit: "Adım 6'daki önce-sonra tablosu." },
+      { ad: "Etkiye göre önceliklendirme", kanit: "Adım 7'deki sıralı bulgu tablosu." }
     ],
-    telafi: "K1 tutmazsa adım 3'te klavye testini baştan yap; K2 tutmazsa adım 4'te iki aracı tekrar çalıştırıp gizli listeyle karşılaştır; K3 tutmazsa adım 5'te ekran okuyucu dinlemesini tekrar et; K4 veya K5 tutmazsa adım 6'ya dönüp düzeltmeleri yeniden yap.",
-    sonraki: "K2, K4 ve K5 tutarsa ve ilk iki savunma sorusunu cevaplarsan qa2d ve qa3b için kilit açılır; tamamlama kanıt kaydı olarak önce-sonra tablon saklanır."
+    telafi: "K1 tutmazsa adım 3'te klavye testini baştan yap; K2 tutmazsa adım 4'te axe ve Lighthouse'u tekrar çalıştırıp elle test bulgularıyla ve gizli listeyle karşılaştır; K3 tutmazsa adım 5'te ekran okuyucu dinlemesini tekrar et ve cümleleri aynen yaz; K4 veya K5 tutmazsa adım 6'ya dönüp düzeltmeleri yeniden yap; K6 tutmazsa adım 7'de bulguları etkiye göre yeniden sırala.",
+    sonraki: "K2, K4, K5 ve K6 tutarsa ve ilk iki savunma sorusunu cevaplarsan qa2d ve qa3b için kilit açılır; tamamlama kanıt kaydı olarak önce-sonra tablon saklanır."
   });
 
   K.yeni.push({
@@ -463,12 +467,13 @@
     outcome: ["Paketi süre, değer ve kararlılık açısından ölçüp sınıflandırırsın", "Seçili çalıştırma ve paralel koşum ile süreyi düşürürsün", "Hangi testi neden çıkardığını savunursun"],
     pitch: "I measured and optimised a 30-test regression suite using tagging, selective runs and parallel execution while documenting the risk trade-offs.",
     steps: [
-      ["Önce ölç: paket haritası", "Optimizasyon ölçmeden yapılmaz. Her testin süresi, kapsadığı özellik, kırılma geçmişi ve kararlılığı bir tabloya girer. Analoji: bavulu toplamadan önce eşyaları tartmak.", "qa2 projesindeki paketi veya kendi 30 testlik paketini (Sauce Demo ve kendi yerel sayfan) kullan. Her test için süre, özellik, öncelik ve son 10 koşudaki kalma sayısını tabloya yaz.", "30 satırlı paket haritası", "regression suite = regresyon paketi, duration = süre, coverage = kapsam, baseline = başlangıç ölçümü", "regression test suite optimization measure runtime"],
+      ["Önce ölç: paket haritası", "Optimizasyon ölçmeden yapılmaz. Her testin süresi, kapsadığı özellik, kırılma geçmişi ve kararlılığı bir tabloya girer. Analoji: bavulu toplamadan önce eşyaları tartmak.", "qa2 projesindeki paketi veya kendi 30 testlik paketini (Sauce Demo ve kendi yerel sayfan) kullan. Her test için süre, özellik, öncelik ve son 10 koşudaki başarısız (fail) sayısını tabloya yaz.", "30 satırlı paket haritası", "regression suite = regresyon paketi, duration = süre, coverage = kapsam, baseline = başlangıç ölçümü", "regression test suite optimization measure runtime"],
       ["Sınıflandır: etiketler", "Her test aynı değerde değildir: duman (çok hızlı, kritik yol), çekirdek (ana özellikler), tam (uç durum). pytest işaretleri (marker) ile etiketlenir, böylece seçili çalıştırılır.", "Her teste duman/çekirdek/tam etiketlerinden birini ver ve nedenini yaz. pytest işaretleri ile etiketleri koda ekle. Duman paketin 5 dakikayı geçmemesi hedeflensin.", "Etiketli paket ve gerekçe sütunu", "marker = işaret, smoke test = duman testi, critical path = kritik yol, tag = etiket", "pytest markers smoke regression selection"],
-      ["Paralel çalıştır", "Testler birbirinden bağımsızsa aynı anda koşabilir: mutfakta tek aşçı yerine dört aşçı. Ama ortak veri paylaşan testler birbirini bozar; bu sorunlar yalıtım gerektirir.", "pytest-xdist ile paketi 1, 2, 4 işçiyle çalıştır. Her koşuda toplam süreyi ve kalan test sayısını yaz. Paralel kalan testlerin nedenini bul ve yalıt.", "Süre karşılaştırma tablosu", "parallel = paralel, worker = işçi, speedup = hızlanma, isolation = yalıtım", "pytest xdist parallel run speedup isolation"],
-      ["Kararsız ve yinelenen testler", "Kararsız test paketi yavaşlatır ve güveni kırar; aynı şeyi sınayan iki test gereksiz sürer. Karantina kararsız testi paketin dışına alır ama silmez: onarım listesi tutulur.", "Kalan testlerden en kararsız 3'ünü karantinaya al ve nedenini yaz. Aynı şeyi sınayan 2 testi birleştir veya birini çıkar; kapsama etkisini yaz.", "Karantina listesi ve birleştirme notu", "quarantine = karantina, duplicate test = yinelenen test, redundancy = gereksiz tekrar, maintenance = bakım", "test suite pruning duplicate flaky quarantine"],
+      ["Paralel çalıştır", "Testler birbirinden bağımsızsa aynı anda koşabilir: mutfakta tek aşçı yerine dört aşçı. Ama ortak veri paylaşan testler birbirini bozar; bu sorunlar yalıtım gerektirir.", "pytest-xdist ile paketi 1, 2, 4 işçiyle çalıştır. Her koşuda toplam süreyi ve başarısız (fail) test sayısını yaz. Paralelde başarısız olan testlerin nedenini bul ve yalıt.", "Süre karşılaştırma tablosu", "parallel = paralel, worker = işçi, speedup = hızlanma, isolation = yalıtım", "pytest xdist parallel run speedup isolation"],
+      ["Kararsız ve yinelenen testler", "Kararsız test paketi yavaşlatır ve güveni kırar; aynı şeyi sınayan iki test gereksiz sürer. Karantina kararsız testi paketin dışına alır ama silmez: onarım listesi tutulur.", "Başarısız (fail) olan testler arasından en kararsız 3'ünü karantinaya al ve nedenini yaz. Aynı şeyi sınayan 2 testi birleştir veya birini çıkar; kapsama etkisini yaz.", "Karantina listesi ve birleştirme notu", "quarantine = karantina, duplicate test = yinelenen test, redundancy = gereksiz tekrar, maintenance = bakım", "test suite pruning duplicate flaky quarantine"],
       ["CI'da katmanlı çalıştırma", "Her değişiklikte hızlı duman, geceleri tam paket. Böylece geri bildirim hızlı kalır, derin kontrol kaybolmaz. Analoji: kapıda hızlı kontrol, gece derin temizlik.", "GitHub Actions workflow dosyasında iki iş tanımla: her commit'te duman, zamanlanmış tam paket. Çalışmaların süresini ekran görüntüsüyle kaydet.", "İki işli workflow ve süre kaydı", "pipeline = hat, scheduled run = zamanlanmış çalıştırma, fast feedback = hızlı geri bildirim, nightly = gece çalıştırma", "github actions smoke on push full nightly pytest"],
-      ["Risk ve kayıp raporu", "Optimizasyon bedava değildir: hızlandırırken kapsam ve güvenden ne kaybettin? Kaybı yazmak ekibin kararı bilinçli almasını sağlar.", "1 sayfalık rapor yaz: başlangıç süre, son süre, çıkarılan/karantinaya alınan testler, kaybedilen kapsam, kalan risk, öneri. En fazla bir tablo ve 1 İngilizce özet paragraf kullan.", "1 sayfalık optimizasyon raporu", "trade-off = ödünleşim, coverage loss = kapsam kaybı, residual risk = kalan risk, recommendation = öneri", "test suite optimization report trade-offs"]
+      ["Risk ve kayıp raporu", "Optimizasyon bedava değildir: hızlandırırken kapsam ve güvenden ne kaybettin? Kaybı yazmak ekibin kararı bilinçli almasını sağlar.", "1 sayfalık rapor yaz: başlangıç süre, son süre, çıkarılan/karantinaya alınan testler, kaybedilen kapsam, kalan risk, öneri. En fazla bir tablo ve 1 İngilizce özet paragraf kullan.", "1 sayfalık optimizasyon raporu", "trade-off = ödünleşim, coverage loss = kapsam kaybı, residual risk = kalan risk, recommendation = öneri", "test suite optimization report trade-offs"],
+      ["Kapanış özeti: sonuçları tek tabloda topla", "Raporu okuyan kişi 5 farklı tabloyu gezmez; tek bir bakışta sonucu görmek ister. Kapanış özeti, yolculuğun sonunda tüm sayıları aynı sayfaya koyan künye gibidir.", "Başlangıç ve son süreyi, 1/2/4 işçi sürelerini, toplam test sayısını, duman/çekirdek/tam dağılımını, karantinaya alınan ve birleştirilen test sayısını, başarısız (fail) sayısını ve geriye kalan test sayısını tek tabloda topla. Adım 6 raporundaki tabloyu bununla değiştir.", "Tek tablolu kapanış özeti", "summary = özet, before/after = önce/sonra, remaining = geriye kalan, fail count = başarısız sayısı", "test suite optimization summary table before after"]
     ],
     onkosul: ["qa2 (Otomasyon: Playwright ile E2E) projesindeki pytest ve Playwright paketi veya eşdeğer 30 testlik paket gerekir.", "qa2d (Kararsız Test Onarımı) projesindeki kararsızlık ölçümü ve kök neden bilgisi çok işe yarar.", "GitHub Actions workflow dosyası yazmayı temel düzeyde bilmek gerekir; qa2 adım 7'de yapılır."],
     gereksinim: [
@@ -477,15 +482,17 @@
       "İşlevsel (zorunlu): Paket 1, 2 ve 4 işçiyle ölçülür.",
       "İşlevsel (zorunlu): En az 3 kararsız test karantinaya alınır ve en az 1 yinelenen test birleştirilir.",
       "İşlevsel (zorunlu): CI'da duman ve tam çalıştırma ayrı işlerdir.",
+      "İşlevsel (zorunlu): Sonuçlar tek bir kapanış özet tablosunda toplanır.",
       "İşlevsel (isteğe bağlı): Süreyi grafiğe dökersin.",
       "İşlevsel olmayan: Duman paketi 5 dakikayı geçmez; ölçüm yerel veya CI'da yazılır."
     ],
     kabul: [
       "K1: Paket haritasında 30 satır ve 5 sütun dolu | Test: Tabloyu aç, boş hücre sayısı 0 olmalı.",
       "K2: Her teste bir etiket ve gerekçe verilmiş | Test: Kodda marker'ları listele, etiketsiz test kalmamalı.",
-      "K3: 1, 2, 4 işçi süreleri yazılı ve 4 işçide test sonuçları yalnız kasıtlı karantina farkıyla aynı | Test: İki koşunun kalan listesini karşılaştır.",
+      "K3: 1, 2, 4 işçi süreleri yazılı ve 4 işçide test sonuçları yalnız kasıtlı karantina farkıyla aynı | Test: İki koşunun başarısız (fail) test listesini karşılaştır.",
       "K4: Karantina listesinde neden ve onarım planı var; birleştirilen testin kapsam etkisi yazılı | Test: Notları aç, 3 satır ve 1 birleştirme bul.",
-      "K5: Rapor başlangıç ve son süreyi, kaybedilen kapsamı ve kalan riski içeriyor | Test: Rapor başlıklarını kontrol et."
+      "K5: Rapor başlangıç ve son süreyi, kaybedilen kapsamı ve kalan riski içeriyor | Test: Rapor başlıklarını kontrol et.",
+      "K6: Kapanış tablosunda süreler, testlerin toplam/karantina/birleştirilen sayıları ve başarısız (fail) sayısı tek tabloda | Test: Tabloyu K1, K3 ve K4 çıktılarıyla sayı sayı karşılaştır."
     ],
     rubrik: [
       { olcut: "Ölçüm temeli", guclu: "Her karar ölçülmüş verilere dayanıyor, önce-sonra karşılaştırılabilir.", zayif: "Hız 'daha hızlı gibi' diye iddia edilmiş." },
@@ -505,10 +512,11 @@
       { ad: "Paralel ve izole çalıştırma", kanit: "Adım 3'teki süre karşılaştırma tablosu." },
       { ad: "Paket bakımı", kanit: "Adım 4'teki karantina listesi ve birleştirme notu." },
       { ad: "CI tasarımı", kanit: "Adım 5'teki iki işli workflow." },
-      { ad: "Karar şeffaflığı", kanit: "Adım 6'daki optimizasyon raporu." }
+      { ad: "Karar şeffaflığı", kanit: "Adım 6'daki optimizasyon raporu." },
+      { ad: "Sonuç özetleme", kanit: "Adım 7'deki kapanış özet tablosu." }
     ],
-    telafi: "K1 veya K2 tutmazsa adım 1 ve 2'ye dön, haritayı ve etiketleri tamamla; K3 tutmazsa adım 3'te yalıtımı onar ve ölçümü tekrarla; K4 tutmazsa adım 4'te karantina ve birleştirme gerekçelerini yaz; K5 tutmazsa adım 6'da raporu ödünleşimle yeniden yaz.",
-    sonraki: "K3, K4 ve K5 tutarsa ve ilk üç savunma sorusunu cevaplarsan qa4 (kapston) için kilit açılır; tamamlama kanıt kaydı olarak harita, süre tablosu ve rapor saklanır."
+    telafi: "K1 veya K2 tutmazsa adım 1 ve 2'ye dön, haritayı ve etiketleri tamamla; K3 tutmazsa adım 3'te yalıtımı onar ve ölçümü tekrarla; K4 tutmazsa adım 4'te karantina ve birleştirme gerekçelerini yaz; K5 tutmazsa adım 6'da raporu ödünleşimle yeniden yaz; K6 tutmazsa adım 7'de özet tablosunu önceki tablolarla sayı sayı eşleştirip yeniden doldur.",
+    sonraki: "K3, K4, K5 ve K6 tutarsa ve ilk üç savunma sorusunu cevaplarsan qa4 (kapston) için kilit açılır; tamamlama kanıt kaydı olarak harita, süre tablosu ve rapor saklanır."
   });
 
 })(window);
