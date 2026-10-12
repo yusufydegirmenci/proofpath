@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Faz 5 tur 3 (dal: faz-5c, Network yolu 4–17)
+- Network konu 4–17 için ders eki (`content/lessons/net-ek.js`): benzetme + sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar, geçme ölçütü + kritik yanlış anlamalar, telafi, sonraki adım; 18 konunun 14 çekirdek öğesi tam. Dış kaynak yalnız HTTP 200 dönen RFC/NIST bağlantıları (7 konuda yok: IEEE/CompTIA doğrulanamadı), doğrulama tarihi 2026-10-12. Konu 1 ve 2'ye eksik üçüncü yaygın hata eklendi.
+- Rota (konu 6) ve ACL (konu 13) lab'ları Network yoluna da bağlandı (yerel simülasyon); `PP.ogr.oneri.LAB` ders:net:7 ve ders:net:14 eklendi (eksik lab önerilir, kapı değil).
+- dev/net/qa önkoşul sırası denetimi: STARTER = TMAP sırası, ders/yetkinlik zinciri doğrusal; sıra değiştirilmedi.
+- Test: `tests/faz5c_net.js` (yeni).
+
 ## Faz 5 tur 2 (dal: faz-5b, CCNA yolu)
 - CCNA 17 konusu için ders eki (`content/lessons/ccna-ek.js`): benzetme + sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar, geçme ölçütü + kritik yanlış anlamalar, telafi ve sonraki adım. Dış kaynak yalnız HTTP 200 dönen RFC bağlantıları (11 konu), doğrulama tarihi 2026-10-12; doğrulanamayan konularda kaynak eklenmedi.
 - Lab'lar (yerel simülasyon etiketli): rota seçimi (en uzun önek) ve ACL değerlendirme + wildcard (`js/ders/lab-karar.js`); alt ağ lab'ı CCNA Subnetting dersine de bağlandı. Hedef, başlangıç, görev, gözlem, doğrulama, sıfırla, ipucu, kanıt kaydı; kanıt kapı kanıtı değil.
