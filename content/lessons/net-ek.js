@@ -28,8 +28,8 @@
   };
 
   E[2] = {
-    analoji: { a: "Yollar: bakır kablo şehir içi asfalt, fiber otoyol, Wi-Fi ise havadan açık meydan.", sinir: "Yolda araçlar birbirine çarpmadan ilerler; ağ ortamında ise ortamın türü (bakır, fiber, radyo) menzili, hızı ve girişim riskini belirler, bu benzetmeyle tam anlatılamaz." },
-    rehberli: ["Bir tablo çiz: bakır (UTP), fiber, Wi-Fi sütunları; satırlar hız, menzil, girişim, maliyet.", "Düz ve çapraz kablo ayrımını anlat: modern cihazlar (Auto-MDIX) çoğu zaman kabloyu kendisi ayarlar.", "Yıldız, halka ve ağaç topolojilerinden birini seçip bir kablonun kopması halinde ne olacağını yaz."],
+    analoji: { a: "Yollar: bakır kablo şehir içi asfalt, fiber otoyol, Wi-Fi ise havadan açık meydan.", sinir: "Yolda araçlar birbirine çarpmadan ilerler; ağ ortamında ise ortamın türü (bakır, fiber, radyo) menzili, hızı ve girişim riskini belirler; ayrıca Wi-Fi'da aynı kanalda aynı anda yayın yapanlar birbirini bozar, yolda böyle bir çarpışma yoktur." },
+    rehberli: ["Bir tablo çiz: bakır (UTP), fiber, Wi-Fi sütunları; satırlar hız, menzil, girişim, maliyet.", "Düz ve çapraz kablo ayrımını anlat: modern cihazlar (Auto-MDIX) çoğu zaman kabloyu kendisi ayarlar.", "Yıldız, halka ve ağaç topolojilerinden birini seçip (dersteki üç katmanlı model ve omurga-yaprak ile de karşılaştır) bir kablonun kopması halinde ne olacağını yaz."],
     bagimsiz: "Evinde ya da okulunda gördüğün bir ağ prizinden modeme kadar olan yolu kâğıda çiz; hangi ortamlar kullanılıyor (kablo, Wi-Fi) ve en zayıf halka neresi? Tek cümleyle gerekçelendir.",
     hatalar: [["Kablo uzunluğunu aşmak (UTP için tipik sınır 100 m)", "Daha uzun mesafede switch/tekrarlayıcı ya da fiber kullan."], ["Konnektör sırasını (T568A/T568B) iki uçta farklı yapmak", "İki ucu aynı standartla yap; farklı sıra çapraz kablo olur."], ["Fiberi keskin bükmek", "Üreticinin izin verdiği kıvrım yarıçapını aşmak sinyal kaybettirir ya da lifi kırar; kabloyu yumuşak kıvır, uçlarını temiz tut."]],
     gecme: { olcut: "Mini sınavda %80 ve bir senaryo için doğru ortamı (bakır/fiber/Wi-Fi) gerekçesiyle seçebilmek.", kritik: ["Fiberin her zaman kablosuzdan yavaş olduğunu sanmak", "Yıldız topolojide merkez cihazın arızasının yalnız bir cihazı etkilediğini sanmak"] },
@@ -88,7 +88,7 @@
     kaynaklar: [R("3022", "Traditional IP Network Address Translator (Traditional NAT)", "NAT ve PAT'in (NAPT) tanımı."), R("2328", "OSPF Version 2", "Bağlantı-durumu yönlendirme protokolü."), R("4271", "A Border Gateway Protocol 4 (BGP-4)", "İnternetin ağlar arası yönlendirme protokolü."), R("5798", "Virtual Router Redundancy Protocol (VRRP) Version 3", "İki router'ın tek sanal IP paylaşması (FHRP örneği).")],
     telafi: "Tek bir hedef IP seç ve tablodaki her satırı sırayla 'uyuyor mu?' diye işaretle; uyanlar arasında en büyük önek uzunluğunu bul. Lab'daki ipucu cezasızdır.",
     sonraki: "Sıradaki konu: switching, VLAN ve STP.",
-    lab: ["net-rota", "net-nat"]
+    lab: ["net-rota", "net-nat", "net-ospf"]
   };
 
   E[7] = {
@@ -113,6 +113,7 @@
   };
 
   E[9] = {
+    lab: "net-dhcp",
     analoji: { a: "Otel resepsiyonu: DHCP oda anahtarı verir (geçici adres), DNS telefon rehberidir (isimden numara), NTP herkesin saatini aynı duvar saatine ayarlar.", sinir: "Anahtar teslimi tek seferliktir; DHCP kirası süresi dolunca yenilenir ya da geri alınır. DNS sorgusu önbelleğe alınır, bu yüzden değişiklik hemen görünmeyebilir." },
     rehberli: ["DHCP'nin 4 adımını sırala: Discover, Offer, Request, Acknowledge (DORA). İlk mesaj neden yayın (broadcast) olarak gider (cihazın henüz IP adresi yok)?", "DNS kayıt türleri için örnek yaz: A (isim → IPv4), AAAA (IPv6), CNAME (takma ad), MX (e-posta), PTR (IP → isim).", "'IP ile açılıyor, isimle açılmıyor' belirtisi için hangi servisin bozuk olduğunu ve neden yazdığını söyle."],
     bagimsiz: "Bilgisayarında 'ipconfig /all' (ya da 'ip a') çalıştır; DHCP sunucusunu, kira süresini ve DNS sunucularını yaz. 'nslookup' ile bir sitenin A kaydını sorgula ve çıktıyı yorumla.",

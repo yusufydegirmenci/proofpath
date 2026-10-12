@@ -28,7 +28,7 @@
     gecme: { olcut: "Mini sınavda %80 ve bir kaynak için yöntem/yol/kod tablosunu hatasız çıkarabilmek.", kritik: ["GET isteğinin veriyi değiştirebileceğini sanmak", "Durumsuz (stateless) kavramını 'sunucu hiçbir şey saklamaz' diye anlamak"] },
     kaynaklar: [K("MDN: REST sözlük maddesi", "https://developer.mozilla.org/en-US/docs/Glossary/REST", "REST'in temel fikrini kısa ve doğru özetler."), K("MDN: HTTP durum kodları", "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status", "Hangi durumda hangi kodun dönüleceğini ailelere göre listeler.")],
     telafi: "Takıldıysan tek bir kaynak adı seç ve beş işlemi (liste, oku, ekle, değiştir, sil) HTTP yöntemleriyle eşleştir.",
-    sonraki: "Sıradaki konu: JSON. Önce bu konunun geçme ölçütünü sağla, sonra devam et."
+    sonraki: "Sıradaki konu: JSON. Geçme ölçütünü sağladıktan sonra devam et."
   };
 
   E[2] = {
@@ -66,7 +66,7 @@
 
   E[5] = {
     analoji: { a: "Uçak kara kutusu: kaza anında ne olduğunu sonradan anlamak için yolculuk boyunca kayıt tutulur; yolcuya ise sakin ve kısa bir duyuru yapılır.", sinir: "Kara kutu yalnız kazadan sonra okunur; loglar canlı izlenip alarmla birleştirilir ve içlerine kişisel veri ya da parola yazılmamalıdır." },
-    rehberli: ["Küçük bir fonksiyon yaz ve içine kasten hata (sıfıra bölme) koy.", "Hatayı try/catch ile yakala, ayrıntıyı log'a (hata mesajı ve bağlam) yaz, kullanıcıya yalnız genel bir mesaj dön.", "Log seviyelerini (INFO, WARN, ERROR) hangi olay için kullanacağını kâğıda eşle."],
+    rehberli: ["Küçük bir fonksiyon yaz ve içine kasten bir hata (ör. throw new Error('deneme') ya da geçersiz girdi) koy.", "Hatayı try/catch ile yakala, ayrıntıyı log'a (hata mesajı ve bağlam) yaz, kullanıcıya yalnız genel bir mesaj dön.", "Log seviyelerini (INFO, WARN, ERROR) hangi olay için kullanacağını kâğıda eşle."],
     bagimsiz: "Yerel bir betikte üç farklı olay üret (bilgi, uyarı, hata). Her biri için uygun log seviyesini seç ve log satırında parola ya da kişisel veri bulunmadığını kontrol et.",
     hatalar: [["Hatayı boş catch ile yutmak", "En azından log'a yaz; sessiz hata sonradan bulunamaz."], ["Kullanıcıya yığın izi göstermek", "Ayrıntı log'da kalsın; kullanıcıya genel mesaj ve istenirse bir olay kodu ver."], ["Log'a parola, token ya da kişisel veri yazmak", "Hassas alanları maskele ya da hiç yazma."]],
     gecme: { olcut: "Mini sınavda %80 ve verilen bir hata senaryosunda log mesajı ile kullanıcı mesajını ayrı ayrı doğru yazabilmek.", kritik: ["Hatayı yutmanın 'sorunu çözmek' olduğunu sanmak", "Hata ayrıntısının kullanıcıya gösterilmesinin zararsız olduğunu sanmak"] },
@@ -142,9 +142,9 @@
   };
 
   E[12] = {
-    analoji: { a: "Elektrik aboneliği: santral kurmazsın, kullandığın kadar ödersin; ama sayaca ve faturaya bakmak sana kalır, açık unutulan cihaz faturayı şişirir.", sinir: "Elektrikte tüketim fiziksel olarak sınırlıdır; bulutta hatalı bir döngü ya da unutulan kaynak beklenmedik büyüklükte fatura çıkarabilir, bu yüzden bütçe alarmı şarttır." },
+    analoji: { a: "Elektrik aboneliği: santral kurmazsın, kullandığın kadar ödersin; ama sayaca ve faturaya bakmak sana kalır, açık unutulan cihaz faturayı şişirir.", sinir: "Elektrikte tüketim fiziksel olarak sınırlıdır; bulutta hatalı bir döngü ya da unutulan kaynak beklenmedik büyüklükte fatura çıkarabilir, bu yüzden bütçe alarmı şarttır (Budgets yalnız uyarır, harcamayı kendisi durdurmaz)." },
     rehberli: ["Hesap açmadan önce AWS bulut türleri ve global altyapı sayfalarını oku; bölge ve erişilebilirlik bölgesi (AZ) farkını yaz.", "Yeni hesapta ilk dört adımı (root'a MFA, IAM kullanıcı, fatura alarmı, bölge) kâğıda sırala.", "Bütçe (Budgets) sayfasını oku ve bir aylık 10 USD'lik bütçe için uyarı eşiklerini planla."],
-    bagimsiz: "Kâğıt üzerinde bir 'hesap güvenlik ve maliyet kontrol listesi' hazırla (en az sekiz madde). Kullanılmayan kaynağı kapatmanın faturayı nasıl etkilediğini örnekle açıkla.",
+    bagimsiz: "Kâğıt üzerinde bir 'hesap güvenlik ve maliyet kontrol listesi' hazırla (en az sekiz madde). Kullanılmayan kaynağı durdurmak ile silmenin faturayı nasıl etkilediğini örnekle açıkla (durdurulan kaynağın diski ve sabit adresi ücretlenebilir). Gerçek hesap açma ya da kaynak başlatma.",
     hatalar: [["Günlük işte root kullanıcıyı kullanmak", "Root'a MFA koy ve kilitle; günlük iş için IAM kullanıcısı ya da rol kullan."], ["Bütçe alarmı kurmamak", "Kaynak açmadan önce Budgets ile uyarı kur."], ["Bölgeyi bilmeden kaynak açmak", "Kaynaklar bölgeye bağlıdır; hangi bölgede çalıştığını bil ve gereksiz bölgelerde kaynak bırakma."]],
     gecme: { olcut: "Mini sınavda %80 ve yeni bir hesap için güvenlik ve maliyet adımlarını doğru sırayla sayabilmek.", kritik: ["Ücretsiz katmanın her kaynak için sınırsız olduğunu sanmak", "Kaynağı kullanmadığı sürece fatura çıkmayacağını sanmak (depolama ve açık kaynaklar ücretlenir)"] },
     kaynaklar: [K("AWS: bulut bilişim türleri", A + "whitepapers/latest/aws-overview/types-of-cloud-computing.html", "Bulutun hizmet modellerini kısa özetler."), K("AWS: küresel altyapı", A + "whitepapers/latest/aws-overview/global-infrastructure.html", "Bölge ve erişilebilirlik bölgesi kavramlarını açıklar."), K("AWS Budgets: maliyetleri yönetmek", A + "cost-management/latest/userguide/budgets-managing-costs.html", "Bütçe ve uyarı kurma mantığını anlatır."), K("AWS IAM: root kullanıcı", A + "IAM/latest/UserGuide/id_root-user.html", "Root kullanıcının neden korunması gerektiğini açıklar.")],

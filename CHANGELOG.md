@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Faz 5 tur 6 (dal: faz-5f, QA + teknik İngilizce ek verisi, OSPF/DHCP lab, kalite taraması)
+- QA 18 konu (`content/lessons/qa-ek.js`) ve teknik İngilizce 11 konu (`content/lessons/eng-ek.js`) için ders eki: benzetme + sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar, geçme ölçütü + kritik yanlış anlamalar, telafi, sonraki adım; 14 çekirdek öğe 29 konuda tam. Alıştırmalar kâğıt/yerel; canlı veri, izinsiz yük ya da güvenlik denemesi istemez.
+- Dış kaynak yalnız `curl` 200 dönen ve başlığı konuyla eşleşen sayfalar (2026-10-12): QA 18/18 konuda kaynak var; İngilizce 8/11 (konu 0, 9, 10 kaynaksız; British Council sayfaları erişilemedi, bazı Cambridge sayfaları konu başlığı vermediği için eklenmedi). İngilizce ekinde sınav, seviye ya da puan iddiası yok (testle doğrulanır).
+- OSPF (`ccna-ospf`, `net-ospf`) ve DHCP (`ccna-dhcp`, `net-dhcp`) form tabanlı karar lab'ları (`js/ders/lab-ospf-dhcp.js`, yerel simülasyon etiketli; gerçek router/DHCP sunucusu yok). Doğru cevaplar maliyet, yol toplamı, komşuluk ayarı karşılaştırması, DR seçimi, havuz kapasitesi, aktarma ulaşımı ve adres sınıfı hesabından çıkar. CCNA konu 7 (DHCP) ve 10 (OSPF), Network konu 7 (OSPF; rota ve NAT ile birlikte üç lab) ve 10 (DHCP) derslerine bağlı; `oneri.LAB` güncellendi. Kanıt kapı değildir; kanıt kimliği yola göre ayrı (`lab:ccna-ospf:*` / `lab:net-ospf:*` vb.).
+- Test: `tests/faz5f_lab.js` (yeni, `test:ogrenme` zincirine eklendi); `faz5b_ccna.js`, `faz5c_net.js`, `faz5d_lab.js` yeni lab sayısına, `faz5_net.js` "ek verisi olmayan ders" denetimi (artık tüm yolların eki var; sayfada PP_EK.eng geçici silinerek) uyarlandı; assert zayıflatılmadı.
+
 ## Faz 5 tur 5 (dal: faz-5e, Backend + DevOps ek verisi, alt ağ lab kimliği ayrımı)
 - Backend 38 konu (`content/lessons/bk-ek-1.js`, `bk-ek-2.js`) ve DevOps 18 konu (`content/lessons/dev-ek.js`) için ders eki: benzetme + sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar, geçme ölçütü + kritik yanlış anlamalar, telafi, sonraki adım. Alıştırmalar kâğıt/yerel; canlı ya da maliyetli bulut işlemi istemez.
 - Dış kaynak yalnız `curl` 200 dönenler (2026-10-12); Backend 38/38 konuda, DevOps 16/18 konuda kaynak var (DevOps 0 ve 1 doğrulanamadığı için kaynaksız).

@@ -96,7 +96,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(await sonuc('net-vlan'), 'dogru', 'net VLAN s1: doğru');
   ok((await kanitlar()).includes('lab-net-vlan-s1') && (await kanitlar()).length === once + 1, 'net VLAN: kanıt lab-net-vlan-s1 olarak ayrı kaydedildi');
   await odaAc('net', 's-net-7', 'alis'); await p.waitForTimeout(400);
-  eq(await p.evaluate(() => [...document.querySelectorAll('#view .lab')].map(e => e.dataset.labId)), ['net-rota', 'net-nat'], 'net 6: rota + NAT lab\'ları');
+  eq(await p.evaluate(() => [...document.querySelectorAll('#view .lab')].map(e => e.dataset.labId)), ['net-rota', 'net-nat', 'net-ospf'], 'net 6: rota + NAT + OSPF lab\'ları');
   ok(await p.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), '390 px: yatay taşma yok (net 6, iki lab)');
 
   // 6) Geriye uyum: eski ortak kayıtlar (lab:ccna-rota:*) iki yolda da sayılır; yeni net kaydı ccna'ya sızmaz
