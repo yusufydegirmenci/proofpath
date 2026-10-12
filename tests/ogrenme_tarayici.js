@@ -56,7 +56,7 @@ async function dersOdasi(p) {
     const r = await p.evaluate(() => {
       const G = PP.ogr.ui.graf(), v = PP.ogr.graf.dogrula(G);
       return { var: !!G, hata: PP.ogr.ui.hata() && PP.ogr.ui.hata().message, ok: v.ok, hataSay: v.hata.length, yollar: Object.keys(G.yollar), ders: Object.keys(G.dersler).length,
-        beklenen: TRK_LIST.reduce((a, o) => a + (STARTER[o[0]] || []).length, 0), kapilar: Object.keys(G.kapilar), acik: PP.ogr.program.icerikAcigi(G).map(x => x.eksik) };
+        beklenen: TRK_LIST.reduce((a, o) => a + (STARTER[o[0]] || []).length, 0), kapilar: Object.keys(G.kapilar), acik: PP.ogr.program.icerikAcigi(G) };
     });
     ok(r.var && !r.hata, 'uygulama: grafik içerikten kuruldu' + (r.hata ? ' (' + r.hata + ')' : ''));
     eq([r.ok, r.hataSay], [true, 0], 'uygulama: grafik tutarlı (döngü/bilinmeyen önkoşul/kopya proje yok)');
@@ -64,7 +64,9 @@ async function dersOdasi(p) {
     eq(r.ders, r.beklenen, 'uygulama: ders sayısı = STARTER ders sayısı (' + r.beklenen + ')');
     const beklKapi = await p.evaluate(() => PATHS.reduce((a, pa) => a + [1, 2, 3].filter(lv => pa.projects.some(j => j.lv === lv)).length, 0));
     eq(r.kapilar.length, beklKapi, 'uygulama: her proje yolu × kademe için bir Altın Vuruş kapısı (' + beklKapi + ')');
-    ok(r.acik.every(x => x >= 2), 'uygulama: içerik açığı dürüstçe görünür (kademede <4 çekirdek proje)');
+    // Faz 8 tur 3: sec/qa/bk/sup/ba kademeleri 4 çekirdek projeye ulaştı; açık yalnız gerçekten eksik kapıda görünmeli (eksik = gerekli - tanımlı)
+    ok(r.acik.every(x => x.eksik === Math.max(0, x.gerekli - x.tanimli)), 'uygulama: içerik açığı tanımlı/gerekli farkıyla tutarlı');
+    eq(r.acik.filter(x => x.eksik > 0).map(x => x.kapi), ['altin:gold:3'], 'uygulama: kalan içerik açığı dürüstçe görünür (yalnız Altın yol, 1/4 proje)');
     eq(p.errs, [], 'uygulama: sayfa hatası yok');
     await ctx.close();
   }
