@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Faz 5 tur 7 (dal: faz-5g, içerik düzeltme turu)
+- TMAP (`js/veri/tmap.js`) ders metni ek ile uyumlandı: DevOps 7 Compose `secrets:` bloğu, Backend 22 Parameters/Outputs, DevOps 11 PVC örneği ve `current-context` uyarısı, CCNA 4 trunk komutları.
+- sec 23 kaynağına RFC 2196 eski belge notu; sec 28 NIST AI 100-2 kaynağı E2025 sürümüne güncellendi (curl 200).
+- Kalite taraması 2: 38 ek girdisi okundu (17 girdide bulgu); teknik ve dil düzeltmeleri `content/lessons/*-ek*.js` dosyalarında.
+- Lab sonuç başlığı "Eksik/yanlış" dar ekranda tek satır (`css/ders-odasi.css`).
+
 ## Faz 5 tur 6 (dal: faz-5f, QA + teknik İngilizce ek verisi, OSPF/DHCP lab, kalite taraması)
 - QA 18 konu (`content/lessons/qa-ek.js`) ve teknik İngilizce 11 konu (`content/lessons/eng-ek.js`) için ders eki: benzetme + sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar, geçme ölçütü + kritik yanlış anlamalar, telafi, sonraki adım; 14 çekirdek öğe 29 konuda tam. Alıştırmalar kâğıt/yerel; canlı veri, izinsiz yük ya da güvenlik denemesi istemez.
 - Dış kaynak yalnız `curl` 200 dönen ve başlığı konuyla eşleşen sayfalar (2026-10-12): QA 18/18 konuda kaynak var; İngilizce 8/11 (konu 0, 9, 10 kaynaksız; British Council sayfaları erişilemedi, bazı Cambridge sayfaları konu başlığı vermediği için eklenmedi). İngilizce ekinde sınav, seviye ya da puan iddiası yok (testle doğrulanır).
