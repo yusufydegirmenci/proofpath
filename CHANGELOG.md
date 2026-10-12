@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Faz 10 tur 2 (dal: faz-10b, ortak uygulama alanı PP.alan)
+- `PP.alan` (`js/ders/alan.js`): tek API (ders kimliği, tür, başlangıç kodu, kontrol fonksiyonu, sıfırla, ipucu, kanıt kaydı). Türler: `sql` (sql.js 1.10.3, SQLite/WASM), `python` (Pyodide 0.26.4), `js` (izole Web Worker), `sim` (kod çalışmaz, "simülasyon" etiketli kural kontrolü). Etiket dürüst: çalışan "gerçek çalışır", sim "simülasyon"; çalıştırma kullanılamazsa etiket "simülasyon · gerçek çalıştırma şu an kullanılamıyor" olur.
+- Dış kütüphane: sürümü sabit, jsDelivr; sql.js (betik + wasm) ve Pyodide yükleyicisi SHA-384 ile doğrulanmadan çalıştırılmaz, uyuşmazlıkta/ağ yokta/çevrimdışıyken anlaşılır mesaj. Kütüphane yalnız "Çalıştır"a basınca yüklenir. Sınır: Pyodide çekirdek dosyaları (asm.js/wasm/stdlib) sürüm sabit ama ayrıca hash'lenmez.
+- Güvenlik/sınır: kod yalnız tarayıcıda (işçi) çalışır; çalıştırma sırasında işçide fetch/XHR/WebSocket/importScripts/indexedDB/Worker kaldırılır (en iyi çaba); 5 sn zaman sınırı (aşılınca işçi sonlandırılır, sonsuz döngü kesilir), kod 20000 karakter, çıktı 20000 karakter, SQL sonucu 200 satır, SQLite sayfa sınırı. Tarayıcıda sert bellek sınırı yok (Python için).
+- Kontrol fonksiyonu sabit cevap tutmaz: beklenen değer veriden sayılır ve kod ikinci kez değiştirilmiş veriyle çalıştırılır ("SELECT 2" gibi sabit çözüm geçmez). SECURITY P2-1 genişletilmedi.
+- Veri Analitiği Seviye 0: her derse 1 SQL + 1 Python alanı (`content/veri-analitigi/alanlar.js`, 12 siparişlik sentetik veri; SQL tablosu `siparis`, Python `siparisler`/`sutunlar`). Çözüm `lab` türünde kanıt (`alan-<id>`, ipuçlu `-ipucu`; istemci doğrulaması) + `tercih.va.alan`; Seviye 0 tamamlama koşulu DEĞİŞMEDİ.
+- Test: `tests/faz10_alan.js` (yeni, `test:ogrenme` zincirinde; ağ gerekir, yoksa bölümler "ATLANDI" yazar).
+
 ## Faz 5 tur 7 (dal: faz-5g, içerik düzeltme turu)
 - TMAP (`js/veri/tmap.js`) ders metni ek ile uyumlandı: DevOps 7 Compose `secrets:` bloğu, Backend 22 Parameters/Outputs, DevOps 11 PVC örneği ve `current-context` uyarısı, CCNA 4 trunk komutları.
 - sec 23 kaynağına RFC 2196 eski belge notu; sec 28 NIST AI 100-2 kaynağı E2025 sürümüne güncellendi (curl 200).
