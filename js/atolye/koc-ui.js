@@ -6,7 +6,7 @@ function kocDurum() {
     var kisisel = [];
     try { kisisel = PPPersonal.analyze(personalInput()).items || []; } catch (e) { kisisel = []; }
     var d = PP.ogr.depo.oku();
-    durum.oneriler = PP.koc.oneriler({ tekrar: PP.ogr.ui.tekrarPlani(PP.ogr.gun.bugun()), labKanit: d.kanitlar, kisisel: kisisel });
+    durum.oneriler = PP.koc.oneriler({ tekrar: PP.ogr.ui.tekrarPlani(PP.ogr.gun.bugun()), labKanit: d.kanitlar, kisisel: kisisel, sonraki: (PP.ogr.ui.sonrakiAdim ? PP.ogr.ui.sonrakiAdim() : null) });
     durum.ozet = PP.ogr.ui.ozet();
   } catch (e) { /* kayıt okunamadı: boş durum, uydurma yok */ }
   return durum;

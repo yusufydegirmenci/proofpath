@@ -109,6 +109,13 @@
       kutu.push(h("div", { class: "small" }, h("b", null, "Telafi önerisi: "), t.adimlar.slice(1).map(function (a) { return a.metin; }).join(" → ")));
     }
     if (kok.length) { kutu.push(h("div", { class: "small", style: "margin-top:6px" }, h("b", null, "Önkoşullar"))); kok.slice(-4).forEach(function (y) { kutu.push(satir(y)); }); }
+    var sa = O.oneri ? O.oneri.sonraki(Gr, tr, du) : null;
+    if (sa) {
+      kutu.push(h("div", { class: "small", style: "margin-top:6px", "data-sonraki": sa.tip }, h("b", null, "En küçük sonraki adım: "), sa.adim));
+      kutu.push(h("div", { class: "small mute" }, "Neden: " + sa.neden + (sa.blok ? " Blok: " + sa.blok[0] : "")));
+      var sl = sa.tip === "lab" ? null : O.oneri.sonrakiLab(Gr, tr, du);
+      if (sl) kutu.push(h("div", { class: "small mute", "data-sonraki-lab": sl.lab }, "İsteğe bağlı: " + sl.adim + " " + sl.neden));
+    }
     var altin = Object.keys(Gr.kapilar).filter(function (k) { return k.indexOf("altin:" + tr + ":") === 0; });
     var siradaki = altin.filter(function (k) { return !O.kapi.degerlendir(Gr, k, du).acik; });
     if (altin.length) {

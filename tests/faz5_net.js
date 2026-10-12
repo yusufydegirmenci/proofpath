@@ -76,8 +76,8 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   await doldur({ ag: '192.168.1.64', yayin: '192.168.1.127', ilk: '192.168.1.65', son: '192.168.1.126' });
   eq(await kontrol(), 'dogru', 'lab: senaryo 3 doğru');
 
-  // 4) ek verisi olmayan ders (ccna) etkilenmez; kanıt kapı hesabına karışmaz
-  await p.evaluate(() => { const l = lessonsOf('ccna')[0] || lessonForTopic('ccna', 's-ccna-1'); S.les.track = 'ccna'; lrOpen(l, 'alis'); });
+  // 4) ek verisi olmayan ders (eng; ccna tur 2'de ek aldı) etkilenmez; kanıt kapı hesabına karışmaz
+  await p.evaluate(() => { const l = lessonsOf('eng')[0] || lessonForTopic('eng', 's-eng-1'); S.les.track = 'eng'; lrOpen(l, 'alis'); });
   await p.waitForTimeout(300);
   eq(await p.evaluate(() => document.querySelectorAll('#view .lab,#view [data-ek]').length), 0, 'ek verisi olmayan derste ek/lab yok');
   const kapiEtkisi = await p.evaluate(() => (JSON.parse(localStorage.getItem('ya_pp_ogr') || '{}').kanitlar || []).filter(k => k.tur === 'lab').every(k => k.kapi == null));
