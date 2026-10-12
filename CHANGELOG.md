@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Faz 8 tur 3 (dal: faz-8b, kapanış ve doğrulama)
+- `tests/ogrenme_tarayici.js`: içerik açığı kontrolü eski varsayımı (her kapıda en az 2 eksik) bırakıp gerçeğe bağlandı: eksik = gerekli - tanımlı ve kalan tek açık `altin:gold:3`.
+- Yol kartı (`js/proje/proje-atolyesi.js`): 7'den çok projesi olan yolda kademe başlıkları (taranabilirlik; 390 px'te taşma yok).
+- Kalite taraması: 43 yeni projeden 11'i okundu; bulgular düzeltildi, bulgulu 10 projeye 7. adım ve gerekli kabul ölçütleri eklendi (`js/veri/proje-yeni-*.js`).
+
 ## Faz 10 tur 2 (dal: faz-10b, ortak uygulama alanı PP.alan)
 - `PP.alan` (`js/ders/alan.js`): tek API (ders kimliği, tür, başlangıç kodu, kontrol fonksiyonu, sıfırla, ipucu, kanıt kaydı). Türler: `sql` (sql.js 1.10.3, SQLite/WASM), `python` (Pyodide 0.26.4), `js` (izole Web Worker), `sim` (kod çalışmaz, "simülasyon" etiketli kural kontrolü). Etiket dürüst: çalışan "gerçek çalışır", sim "simülasyon"; çalıştırma kullanılamazsa etiket "simülasyon · gerçek çalıştırma şu an kullanılamıyor" olur.
 - Dış kütüphane: sürümü sabit, jsDelivr; sql.js (betik + wasm) ve Pyodide yükleyicisi SHA-384 ile doğrulanmadan çalıştırılmaz, uyuşmazlıkta/ağ yokta/çevrimdışıyken anlaşılır mesaj. Kütüphane yalnız "Çalıştır"a basınca yüklenir. Sınır: Pyodide çekirdek dosyaları (asm.js/wasm/stdlib) sürüm sabit ama ayrıca hash'lenmez.
