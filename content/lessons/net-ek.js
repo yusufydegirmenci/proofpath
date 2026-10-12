@@ -50,7 +50,7 @@
     ],
     telafi: "/24 ile başla: 254 host, blok 256. Sonra her bit eklediğinde bloğun yarıya indiğini tabloya yaz (/25 → 128, /26 → 64, /27 → 32).",
     sonraki: "Sıradaki konu: IPv6 ve trafik türleri.",
-    lab: "net-altag"
+    lab: "network-altag"
   };
 
   /* ---- Faz 5 tur 3: konu 4–17. Kaynaklar curl ile HTTP 200 doğrulandı (2026-10-12); IEEE/CompTIA/Cisco sayfaları doğrulanamadığı için eklenmedi. ---- */

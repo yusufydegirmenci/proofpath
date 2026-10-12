@@ -37,7 +37,7 @@
     telafi: "Takıldıysan yalnız bir önek seç (/26) ve blok boyutunu (64) bul; adresi bu blok sınırına oturt. Lab'daki ipucu formülü cezasızdır.",
     sonraki: "Sıradaki konu: MAC adresi ve switch.",
     kaynaklar: [R("4632", "CIDR: Classless Inter-domain Routing", "Önek (/n) gösteriminin ve blok toplamanın tanımı."), R("1918", "Address Allocation for Private Internets", "Alt ağ alıştırmalarında kullanılan özel aralıklar.")],
-    lab: "net-altag"
+    lab: "ccna-altag"
   };
 
   E[3] = {

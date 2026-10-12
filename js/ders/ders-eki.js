@@ -70,19 +70,34 @@
     }
   };
 
+  /* Yola göre ayrı kanıt kimliği (Faz 5 tur 5): CCNA `ccna-altag`, Network `network-altag` yazar.
+     `net-altag` = tur 1-4'te ortak yazılmış eski kimlik: kayıtlar silinmez, iki yolda da sayılır (yazanın yolu bilinemez). Yeni kayıt başka yola sızmaz. */
+  var ALTAG_ESKI = "net-altag";
+  ["ccna-altag", "network-altag"].forEach(function (yeni) {
+    var o = {}; Object.keys(LAB.tanimlar[ALTAG_ESKI]).forEach(function (k) { o[k] = LAB.tanimlar[ALTAG_ESKI][k]; }); o.id = yeni; o.eski = ALTAG_ESKI; LAB.tanimlar[yeni] = o;
+  });
+  LAB.ALTAG_IDS = ["ccna-altag", "network-altag"];
+
   /* ---- Arayüz ---- */
   var ST = {};
   function durum(lid) { return ST[lid] || (ST[lid] = { i: 0, cevap: {}, sonuc: null, ipucu: false }); }
-  function kanitId(sid, ipucu) { return "lab-net-altag-" + sid + (ipucu ? "-ipucu" : ""); }
-  function kayit(sid, ipucu) {
-    try { return PP.ogr.depo.kanitEkle({ id: kanitId(sid, ipucu), tur: "lab", hedef: "lab:net-altag:" + sid, dogrulama: "istemci" }); } catch (e) { return { ok: false }; }
+  function kanitId(lid, sid, ipucu) { return "lab-" + lid + "-" + sid + (ipucu ? "-ipucu" : ""); }
+  function kayit(lid, sid, ipucu) {
+    try { return PP.ogr.depo.kanitEkle({ id: kanitId(lid, sid, ipucu), tur: "lab", hedef: "lab:" + lid + ":" + sid, dogrulama: "istemci" }); } catch (e) { return { ok: false }; }
   }
-  function tamamlanan() {
-    try { var d = PP.ogr.depo.oku(); return d.kanitlar.filter(function (k) { return k.tur === "lab" && /^lab:net-altag:/.test(k.hedef || ""); }).map(function (k) { return k.hedef.split(":")[2]; }); } catch (e) { return []; }
+  function tamamlanan(lid) {
+    try {
+      var ids = [lid].concat(LAB.tanimlar[lid] && LAB.tanimlar[lid].eski ? [LAB.tanimlar[lid].eski] : []), out = [];
+      PP.ogr.depo.oku().kanitlar.forEach(function (k) {
+        var b = String(k.hedef || "").split(":");
+        if (k.tur === "lab" && b[0] === "lab" && ids.indexOf(b[1]) >= 0 && b[2] && out.indexOf(b[2]) < 0) out.push(b[2]);
+      });
+      return out;
+    } catch (e) { return []; }
   }
 
-  function labPanel(l) {
-    var T = LAB.tanimlar["net-altag"], A = LAB.altag, st = durum(l.id), S0 = A.SENARYOLAR, s = S0[st.i], bitti = tamamlanan();
+  function labPanel(l, lid) {
+    var T = LAB.tanimlar[lid], A = LAB.altag, st = durum(lid), S0 = A.SENARYOLAR, s = S0[st.i], bitti = tamamlanan(lid);
     var kutu = function (ad, etiket, ph) {
       var sn = st.sonuc && st.sonuc.alanlar[ad];
       return h("label", { class: "lab-f" + (sn === true ? " ok" : sn === false ? " no" : ""), "data-alan": ad }, h("span", null, etiket),
@@ -112,7 +127,7 @@
       h("div", { class: "row", style: "margin-top:8px;gap:8px;flex-wrap:wrap" },
         h("button", { class: "btn", type: "button", onclick: function () {
           st.sonuc = A.kontrol(s, st.cevap);
-          if (st.sonuc.dogru) kayit(s.id, st.ipucu);
+          if (st.sonuc.dogru) kayit(lid, s.id, st.ipucu);
           draw();
         } }, "Kontrol et"),
         h("button", { class: "btn ghost", type: "button", onclick: function () { st.ipucu = true; draw(); } }, "İpucu"),
@@ -144,7 +159,7 @@
       if (e.rehberli) out.push(h("div", { class: "panel", "data-ek": "rehberli" }, h("div", { class: "label" }, "Rehberli alıştırma"), h("ol", { class: "lr-ul" }, e.rehberli.map(function (x) { return h("li", null, x); }))));
       if (e.bagimsiz) out.push(h("div", { class: "panel", "data-ek": "bagimsiz" }, h("div", { class: "label" }, "Bağımsız görev"), h("p", null, e.bagimsiz)));
       [].concat(e.lab || []).forEach(function (lid) {
-        if (lid === "net-altag") out.push(labPanel(l));
+        if (LAB.ALTAG_IDS.indexOf(lid) >= 0) out.push(labPanel(l, lid));
         else if (g.PP.lab.kararPanel && g.PP.lab.tanimlar[lid]) out.push(g.PP.lab.kararPanel(l, lid));
       });
       if (e.telafi) out.push(h("div", { class: "lbox", "data-ek": "telafi" }, h("div", { class: "label" }, "Takıldıysan (telafi)"), h("p", null, e.telafi)));

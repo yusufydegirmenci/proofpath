@@ -30,7 +30,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(await p.evaluate(() => ['ccna-vlan', 'ccna-nat', 'net-vlan', 'net-nat'].map(id => { const T = PP.lab.tanimlar[id]; return T.sc.every(s => T.kontrol(s, s.dogru).dogru && !T.kontrol(s, {}).dogru); })), [true, true, true, true], 'karar lab: doğru cevap geçer, boş cevap geçmez (4 senaryo)');
   eq(await p.evaluate(() => ['ccna-vlan', 'ccna-nat', 'net-vlan', 'net-nat'].map(id => PP.lab.tanimlar[id].sc.length)), [4, 4, 4, 4], 'her yeni lab 4 senaryo');
   eq(await p.evaluate(() => { const L = PP.ogr.oneri.LAB; return [L['ders:net:8'][0].toplam, L['ders:net:7'][1].toplam, L['ders:ccna:5'][0].toplam, L['ders:ccna:8'][0].toplam, L['ders:ccna:14'][0].toplam]; }), [4, 4, 4, 4, 4], 'oneri.LAB: yeni lab toplamları');
-  eq(await p.evaluate(() => { const L = PP.ogr.oneri.LAB, T = PP.lab.tanimlar; return Object.keys(L).every(k => L[k].every(x => (T[x.id] || x.id === 'net-altag') && (x.id === 'net-altag' || T[x.id].sc.length === x.toplam))); }), true, 'oneri.LAB: her lab tanımlı, toplam = senaryo sayısı');
+  eq(await p.evaluate(() => { const L = PP.ogr.oneri.LAB, T = PP.lab.tanimlar, AL = PP.lab.ALTAG_IDS; return Object.keys(L).every(k => L[k].every(x => T[x.id] && (AL.includes(x.id) ? PP.lab.altag.SENARYOLAR.length === x.toplam : T[x.id].sc.length === x.toplam))); }), true, 'oneri.LAB: her lab tanımlı, toplam = senaryo sayısı');
 
   const odaAc = (tr, tid, adim) => p.evaluate(([tr, t, a]) => { const l = lessonsOf(tr).filter(x => x.topicId === t)[0]; S.les.track = tr; lcSet(lessonKey(l), 'w', tr); lrOpen(l, a); return l.id; }, [tr, tid, adim]);
   const kanitlar = () => p.evaluate(() => (JSON.parse(localStorage.getItem('ya_pp_ogr') || '{}').kanitlar || []).filter(k => k.tur === 'lab').map(k => k.id));
@@ -107,6 +107,14 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq((await labDurum({ id: 'ccna-rota', toplam: 4 }, lk('net-rota', 4))).yapilan, 0, 'ayrım: yeni net-rota kaydı ccna-rota\'ya sayılmaz');
   eq((await labDurum({ id: 'net-rota', eski: 'ccna-rota', toplam: 4 }, lk('ccna-rota', 2).concat(lk('net-rota', 3)))).yapilan, 3, 'eski + yeni aynı senaryoyu çift saymaz');
   eq(await p.evaluate(() => { PP.ogr.depo.kanitEkle({ id: 'lab-ccna-rota-s1', tur: 'lab', hedef: 'lab:ccna-rota:s1', dogrulama: 'istemci' }); return [PP.lab.tamamlanan('net-rota'), PP.lab.tamamlanan('ccna-rota'), PP.lab.tamamlanan('net-nat')]; }), [['s1'], ['s1'], []], 'arayüz: eski lab:ccna-rota:s1 kaydı iki yolun sayacında görünür');
+  // Faz 5 tur 5: alt ağ lab'ı kimlikleri yola göre (ccna-altag / network-altag), eski ortak net-altag iki yolda sayılır
+  eq((await labDurum({ id: 'ccna-altag', eski: 'net-altag', toplam: 4 }, lk('net-altag', 3))).yapilan, 3, 'altag geriye uyum: eski lab:net-altag:* kayıtları ccna-altag da sayılır');
+  eq((await labDurum({ id: 'network-altag', eski: 'net-altag', toplam: 4 }, lk('net-altag', 4))).tamam, true, 'altag geriye uyum: eski kayıtlar network-altag da tamam');
+  eq((await labDurum({ id: 'ccna-altag', eski: 'net-altag', toplam: 4 }, lk('network-altag', 4))).yapilan, 0, 'altag ayrım: yeni network-altag kaydı ccna-altag a sızmaz');
+  eq((await labDurum({ id: 'network-altag', eski: 'net-altag', toplam: 4 }, lk('ccna-altag', 4))).yapilan, 0, 'altag ayrım: yeni ccna-altag kaydı network-altag a sızmaz');
+  eq((await labDurum({ id: 'network-altag', eski: 'net-altag', toplam: 4 }, lk('net-altag', 2).concat(lk('network-altag', 3)))).yapilan, 3, 'altag: eski + yeni aynı senaryoyu çift saymaz');
+  eq(await p.evaluate(() => { PP.ogr.depo.kanitEkle({ id: 'lab-net-altag-s1', tur: 'lab', hedef: 'lab:net-altag:s1', dogrulama: 'istemci' }); return [PP.lab.tamamlanan('ccna-altag'), PP.lab.tamamlanan('network-altag')]; }), [['s1'], ['s1']], 'altag arayüz: eski kayıt iki yolda da tamam görünür');
+  ok(await p.evaluate(() => (JSON.parse(localStorage.getItem('ya_pp_ogr') || '{}').kanitlar || []).some(k => k.id === 'lab-net-altag-s1')), 'altag: eski kayıt silinmedi');
   // eski kayıt hâlâ okunur: depo şeması değişmedi
   ok(await p.evaluate(() => (JSON.parse(localStorage.getItem('ya_pp_ogr') || '{}').kanitlar || []).some(k => k.id === 'lab-ccna-rota-s1')), 'eski kayıt silinmedi / biçim değişmedi');
 

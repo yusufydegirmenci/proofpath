@@ -55,7 +55,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(await kanitlar(), [], 'lab: yanlış cevapta kanıt kaydedilmez');
   await p.fill('#view .lab [data-alan=yayin] input', '192.168.10.63');
   eq(await kontrol(), 'dogru', 'lab: düzeltilince doğru');
-  eq(await kanitlar(), ['lab-net-altag-s1'], 'lab: doğru senaryo kanıtı kaydedildi (ipucusuz)');
+  eq(await kanitlar(), ['lab-network-altag-s1'], 'lab: doğru senaryo kanıtı kaydedildi (ipucusuz)');
   await p.locator('#view .lab button:text-is("Kontrol et")').click(); await p.waitForTimeout(200);
   eq((await kanitlar()).length, 1, 'lab: aynı senaryo tekrar doğrulanınca kanıt çoğalmaz');
 
@@ -65,7 +65,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   ok(await p.evaluate(() => /Kullanılabilir host = 2\^/.test(document.querySelector('#view .lab').textContent)), 'lab: ipucu formülü gösterir');
   await doldur({ onek: '28', ag: '172.16.5.0', yayin: '172.16.5.15', ilk: '172.16.5.1', son: '172.16.5.14' });
   eq(await kontrol(), 'dogru', 'lab: senaryo 2 doğru');
-  ok((await kanitlar()).includes('lab-net-altag-s2-ipucu'), 'lab: ipucu kullanılan senaryo ayrı işaretle kaydedildi');
+  ok((await kanitlar()).includes('lab-network-altag-s2-ipucu'), 'lab: ipucu kullanılan senaryo ayrı işaretle kaydedildi');
   await p.locator('#view .lab button:text-is("Sıfırla")').click(); await p.waitForTimeout(200);
   eq(await p.evaluate(() => [...document.querySelectorAll('#view .lab input')].map(i => i.value).join('')), '', 'lab: sıfırla alanları temizler');
   eq((await kanitlar()).length, 2, 'lab: sıfırla kayıtlı kanıtı silmez');
