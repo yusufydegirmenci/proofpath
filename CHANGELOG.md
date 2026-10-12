@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Faz 5 tur 5 (dal: faz-5e, Backend + DevOps ek verisi, alt ağ lab kimliği ayrımı)
+- Backend 38 konu (`content/lessons/bk-ek-1.js`, `bk-ek-2.js`) ve DevOps 18 konu (`content/lessons/dev-ek.js`) için ders eki: benzetme + sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar, geçme ölçütü + kritik yanlış anlamalar, telafi, sonraki adım. Alıştırmalar kâğıt/yerel; canlı ya da maliyetli bulut işlemi istemez.
+- Dış kaynak yalnız `curl` 200 dönenler (2026-10-12); Backend 38/38 konuda, DevOps 16/18 konuda kaynak var (DevOps 0 ve 1 doğrulanamadığı için kaynaksız).
+- Alt ağ lab kanıt kimliği yola göre ayrıldı: CCNA `ccna-altag`, Network `network-altag`. Eski ortak `lab-net-altag-*` kayıtları silinmedi ve iki yolda sayılır; yeni kayıt başka yola sızmaz, eski+yeni çift sayılmaz.
+- Test: `tests/faz5e_ek.js` (yeni); `faz5_net.js`, `faz5b_ccna.js`, `faz5d_lab.js` yeni kimliklere uyarlandı (assert zayıflatılmadı), `faz5d_lab.js`'e altag ayrım/geriye uyum assert'leri eklendi.
+
 ## Faz 5 tur 4 (dal: faz-5d, siber ek + VLAN/STP ve NAT lab + kanıt kimliği ayrımı)
 - Siber güvenlik 31 konu için ders eki (`content/lessons/sec-ek.js`): benzetme + sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar, geçme ölçütü + kritik yanlış anlamalar, telafi, sonraki adım; 14 çekirdek öğe 31 konuda tam. Dış kaynak yalnız HTTP 200 dönen RFC/NIST/OWASP bağlantıları (23 konuda; 8 konuda yok), doğrulama tarihi 2026-10-12. Alıştırmalar kâğıt üstünde ya da kendi cihazında, savunma odaklı.
 - VLAN/STP (`ccna-vlan`, `net-vlan`) ve NAT/PAT (`ccna-nat`, `net-nat`) form tabanlı karar lab'ları (`js/ders/lab-vlan-nat.js`, yerel simülasyon etiketli; gerçek switch/router yok). Doğru cevaplar kök köprü/kök port/NAT tablosu hesabından çıkar. CCNA konu 4, 7, 13 ve Network konu 6, 7'ye bağlı. Kanıt kapı değildir.
