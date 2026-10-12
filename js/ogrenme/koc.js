@@ -72,6 +72,16 @@
       l.push({ id: "tekrar:" + t.hedef, baslik: (t.durum === "kaldi" ? "Telafi: " : "Tekrar: ") + (t.ad || t.hedef), neden: t.neden,
         kanit: [{ kaynak: "deneme kaydı", ayrinti: yz == null ? t.neden : "son oran %" + yz + (t.kritik ? " (kritik hedef)" : "") }], eylem: { tip: "hedef", hedef: t.hedef } });
     });
+    var sn = girdi && girdi.sonraki;
+    if (sn && sn.adim && sn.adim.ders && (sn.adim.tip === "telafi" || sn.adim.tip === "blok")) { /* düz müfredat sırası ("ders") kanıtlı öneri sayılmaz */
+      var sa = sn.adim;
+      l.push({ id: "yol:" + sa.ders, baslik: (sa.tip === "lab" ? "Lab: " : sa.tip === "telafi" ? "Telafi: " : "Sıradaki: ") + sa.ad, neden: sa.adim + " " + sa.neden,
+        kanit: [{ kaynak: sa.kanit, ayrinti: sa.neden + (sa.blok ? " Blok: " + sa.blok[0] : "") }], eylem: { tip: "hedef", hedef: sa.ders + ":sinav" } });
+    }
+    if (sn && sn.lab && sn.lab.ders) {
+      var sb = sn.lab;
+      l.push({ id: "lab:" + sb.ders, baslik: "Lab: " + sb.ad, neden: sb.adim + " " + sb.neden, kanit: [{ kaynak: sb.kanit, ayrinti: sb.neden }], eylem: { tip: "hedef", hedef: sb.ders + ":sinav" } });
+    }
     ((girdi && girdi.kisisel) || []).slice(0, 3).forEach(function (k) {
       if (!k || !k.id || !k.title || !k.detail || !k.act || k.kind === "next") return; /* "sıradaki ders" geçmiş kaydı değil, müfredat sırasıdır: kanıtlı öneri sayılmaz */
       l.push({ id: "kisisel:" + k.id, baslik: k.title, neden: k.detail, kanit: [{ kaynak: "kişisel plan (yanlış/soru geçmişi)", ayrinti: k.detail }], eylem: { tip: "kisisel", act: k.act } });

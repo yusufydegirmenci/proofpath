@@ -81,6 +81,9 @@ Birimler çıkarılırken her birimden sonra: `smoke`, `kritik_akis` ve birimle 
 ## Faz 5 tur 1
 - `node tests/faz5_net.js`: alt ağ hesabı (bağımsız sabit değerlerle), ders eki bloklarının görünmesi, kaynak bağlantıları, lab doğrula/yanlış/ipucu/sıfırla/kanıt, ek olmayan derste etki yok, 390 px taşma. Sonuç: GEÇTİ. smoke, sira, kritik_akis, hesaplar 75, ogrenme 156, ogrenme_tarayici 34, faz4_entegrasyon 26, mobil (135 bakış, 0 sorun) geçti.
 
+## Faz 5 tur 2
+- `node tests/faz5b_ccna.js`: CCNA 17 konu 15 öğe puanı (14 çekirdek öğe tam; kaynak koşullu), kaynak bağlantı biçimi/tarihi, rota seçimi ve ACL/wildcard hesabı (elle hesaplı bağımsız değerlerle), lab arayüzü (doğru/yanlış/ipucu/sıfırla/kanıt, kapı kanıtı değil), grafik önerisi (ders, lab, tamam, telafi+blok), koç önerisi, 390 px. Test edilmedi: içerik doğruluğu uzman incelemesi, gerçek cihaz.
+
 ## Faz 6
 - `node tests/faz6_koc.js`: veri yokken öneri yok, kayıttan öneri + dayanak, gezinme doğrulaması, tercih kalıcılığı ve onaylı sıfırlama, ustalık/kanıt yazamama (kayıt değişmez), sahte sağlayıcı (hata, senkron hata, boş, zaman aşımı, kayıtsız), cevap alanlarının bağlamdan çıkarılması, korumalı değerlendirmede sağlayıcı çağrılmaması, arayüz soru-cevap, 390 px. Sonuç: GEÇTİ. Gerçek sağlayıcı ile test edilmedi.
 

@@ -77,3 +77,5 @@
 .lab-sec{display:flex;gap:6px;margin:8px 0}.lab-ozet{margin:8px 0;font-weight:600}
 .lab{min-width:0;overflow-wrap:anywhere}.lab-sec{flex-wrap:wrap}.lab-et{display:inline-block;max-width:100%;padding:3px 10px;border-radius:99px;border:1px solid var(--line);font-size:12px}
 .lab-f input{max-width:100%}
+.lab-f select{font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card,#fff);color:inherit;min-height:44px;box-sizing:border-box;width:100%;max-width:100%}.lab-f.ok select{border-color:var(--ok)}.lab-f.no select{border-color:var(--bad)}
+.lab-tab{display:grid;gap:2px;margin:6px 0;padding:8px;border:1px solid var(--line);border-radius:8px;font-family:ui-monospace,Consolas,monospace;font-size:12px;overflow-x:auto}.lab-sat{white-space:pre-wrap;overflow-wrap:anywhere}

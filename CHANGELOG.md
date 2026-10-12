@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Faz 5 tur 2 (dal: faz-5b, CCNA yolu)
+- CCNA 17 konusu için ders eki (`content/lessons/ccna-ek.js`): benzetme + sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar, geçme ölçütü + kritik yanlış anlamalar, telafi ve sonraki adım. Dış kaynak yalnız HTTP 200 dönen RFC bağlantıları (11 konu), doğrulama tarihi 2026-10-12; doğrulanamayan konularda kaynak eklenmedi.
+- Lab'lar (yerel simülasyon etiketli): rota seçimi (en uzun önek) ve ACL değerlendirme + wildcard (`js/ders/lab-karar.js`); alt ağ lab'ı CCNA Subnetting dersine de bağlandı. Hedef, başlangıç, görev, gözlem, doğrulama, sıfırla, ipucu, kanıt kaydı; kanıt kapı kanıtı değil.
+- Bilgi grafiği önerisi (`js/ogrenme/yol-oneri.js`, `PP.ogr.oneri`): en küçük sonraki adım + neden + blok nedeni (kritik hedef geçilmediyse telafi); eksik lab önerilir (kapı değil). Ders sayfasındaki "Ustalık ve kapılar" panelinde ve Bugün Koç önerilerinde (yalnız telafi/lab; düz müfredat sırası öneri sayılmaz).
+- Test: `tests/faz5b_ccna.js` (yeni); `tests/faz5_net.js` ek verisi olmayan ders kontrolü ccna yerine eng ile (ccna artık ek aldı).
+
 ## Faz 10 tur 1 (dal: faz-10, Veri Analitiği — yalnız Seviye 0)
 - Müfredat ve önkoşul grafiği (`content/veri-analitigi/mufredat.js`): Seviye 0–8, SQL'in 13 alt konusu M§15.2 sırasıyla; yalnız Seviye 0 "hazır", 1–8 dürüstçe "yok". PL-300 eşlemesi "doğrulanmadı".
 - Seviye 0 (`content/veri-analitigi/seviye0.js`): 3 tam ders (15 öğe), sentetik 12 siparişlik veri seti, 1 lab (3 görev, yerel simülasyon etiketi, doğrulama/ipucu/sıfırla/kanıt), 5 soruluk değerlendirme (%80) ve derse bağlı telafi.

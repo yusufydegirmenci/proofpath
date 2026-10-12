@@ -143,7 +143,8 @@
     } else if (bolum === "alis") {
       if (e.rehberli) out.push(h("div", { class: "panel", "data-ek": "rehberli" }, h("div", { class: "label" }, "Rehberli alıştırma"), h("ol", { class: "lr-ul" }, e.rehberli.map(function (x) { return h("li", null, x); }))));
       if (e.bagimsiz) out.push(h("div", { class: "panel", "data-ek": "bagimsiz" }, h("div", { class: "label" }, "Bağımsız görev"), h("p", null, e.bagimsiz)));
-      if (e.lab && e.lab === "net-altag") out.push(labPanel(l));
+      if (e.lab === "net-altag") out.push(labPanel(l));
+      else if (e.lab && g.PP.lab.kararPanel && g.PP.lab.tanimlar[e.lab]) out.push(g.PP.lab.kararPanel(l, e.lab));
       if (e.telafi) out.push(h("div", { class: "lbox", "data-ek": "telafi" }, h("div", { class: "label" }, "Takıldıysan (telafi)"), h("p", null, e.telafi)));
     }
     return out.length ? out : null;
