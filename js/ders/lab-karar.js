@@ -93,7 +93,7 @@
   /* ---- Lab tanımları (9 öğe, M§8.2) ---- */
   var TAN = {
     "ccna-rota": {
-      id: "ccna-rota", ad: "Rota seçimi laboratuvarı", etiket: "Yerel simülasyon · tarayıcıda hesap, gerçek router yok", sc: ROTA, kontrol: rotaKontrol,
+      id: "ccna-rota", tip: "rota", ad: "Rota seçimi laboratuvarı", etiket: "Yerel simülasyon · tarayıcıda hesap, gerçek router yok", sc: ROTA, kontrol: rotaKontrol,
       hedef: "Bir hedef IP için rota tablosunda uyan satırları bulup router'ın en uzun önek kuralıyla seçtiği satırı belirlemek.",
       baslangic: "Her senaryoda rota tablosu ve hedef IP verilir; cevap alanları boştur.",
       gorev: "4 senaryoda uyan satır sayısını ve seçilen satır numarasını yaz, 'Kontrol et'e bas.",
@@ -102,7 +102,7 @@
       ipucu: "Her satırın önek uzunluğu kadar ilk bitini hedefle karşılaştır. Uyan satırlar arasında en büyük önek (en özgül satır) seçilir; hiçbiri uymazsa paket atılır (0)."
     },
     "ccna-acl": {
-      id: "ccna-acl", ad: "ACL laboratuvarı", etiket: "Yerel simülasyon · tarayıcıda hesap, gerçek router yok", sc: ACL_SEN, kontrol: aclKontrol,
+      id: "ccna-acl", tip: "acl", ad: "ACL laboratuvarı", etiket: "Yerel simülasyon · tarayıcıda hesap, gerçek router yok", sc: ACL_SEN, kontrol: aclKontrol,
       hedef: "Bir ACL'nin paketi nasıl değerlendirdiğini (ilk eşleşme, örtük deny) ve ağ için wildcard maskını yazmayı kavramak.",
       baslangic: "ACL satırları ve paket (ya da ağ) verilir; cevap alanları boştur.",
       gorev: "4 pakette karar ile eşleşen satırı, 2 ağda wildcard maskını yaz; 'Kontrol et'e bas.",
@@ -113,6 +113,10 @@
   };
   LAB.tanimlar = LAB.tanimlar || {};
   Object.keys(TAN).forEach(function (k) { LAB.tanimlar[k] = TAN[k]; });
+  /* Yola göre ayrı kanıt kimliği (Faz 5 tur 4): Network yolu aynı lab'ı kendi kimliğiyle kaydeder (lab-net-rota-*, lab:net-rota:*).
+     `eski`: tur 2-3'te ortak yazılmış kayıtlar (lab-ccna-rota-*) geçerli kalır; kimin yazdığı bilinmediği için iki yolda da sayılır. */
+  function takma(kaynak, yeni) { var o = {}; Object.keys(TAN[kaynak]).forEach(function (k) { o[k] = TAN[kaynak][k]; }); o.id = yeni; o.eski = kaynak; LAB.tanimlar[yeni] = o; }
+  takma("ccna-rota", "net-rota"); takma("ccna-acl", "net-acl");
 
   /* ---- Arayüz ---- */
   var ST = {};
@@ -122,7 +126,15 @@
     try { return PP.ogr.depo.kanitEkle({ id: kanitId(lid, sid, ipucu), tur: "lab", hedef: "lab:" + lid + ":" + sid, dogrulama: "istemci" }); } catch (e) { return { ok: false }; }
   }
   function tamamlanan(lid) {
-    try { var d = PP.ogr.depo.oku(), re = new RegExp("^lab:" + lid + ":"); return d.kanitlar.filter(function (k) { return k.tur === "lab" && re.test(k.hedef || ""); }).map(function (k) { return k.hedef.split(":")[2]; }); } catch (e) { return []; }
+    try {
+      var d = PP.ogr.depo.oku(), T = LAB.tanimlar[lid], ids = [lid].concat(T && T.eski ? [T.eski] : []), out = [];
+      d.kanitlar.forEach(function (k) {
+        if (k.tur !== "lab") return;
+        var b = String(k.hedef || "").split(":");
+        if (b[0] === "lab" && ids.indexOf(b[1]) >= 0 && b[2] && out.indexOf(b[2]) < 0) out.push(b[2]);
+      });
+      return out;
+    } catch (e) { return []; }
   }
   /* Bir ders için tamamlanan senaryo sayısı (bilgi grafiği önerisi okur) */
   LAB.tamamlanan = tamamlanan;
@@ -142,8 +154,9 @@
       sn === true ? h("i", { class: "lab-m", "aria-hidden": "true" }, "✓") : sn === false ? h("i", { class: "lab-m", "aria-hidden": "true" }, "✗") : null);
   }
 
-  function tabloEl(id, s, st) {
-    if (id === "ccna-rota") {
+  function tabloEl(T, s, st) {
+    if (T.tip === "genel") return h("div", { class: "lab-tab", role: "table", "aria-label": s.tabloAd || "Durum" }, s.satirlar.map(function (x) { return h("div", { class: "lab-sat", role: "row" }, x); }));
+    if (T.tip === "rota") {
       var iz = st.sonuc && st.sonuc.iz;
       return h("div", { class: "lab-tab", role: "table", "aria-label": "Rota tablosu" }, s.tablo.map(function (r, i) {
         var m = iz ? (iz[i] ? " uyuyor" + (st.sonuc.secilen === i + 1 ? " · seçilen" : "") : " uymuyor") : "";
@@ -157,15 +170,23 @@
     }).concat([h("div", { class: "lab-sat mute", role: "row" }, "(sonda gizli) deny ip any any")]));
   }
 
+  /* Form tabanlı karar lab'ı (tip "genel"): senaryo {satirlar, alanlar:[{ad,etiket,sec}], dogru:{ad:değer}, aciklama} */
+  LAB.genelKontrol = function (s, c) {
+    var a = {}, ok = true;
+    s.alanlar.forEach(function (f) { a[f.ad] = String(c[f.ad] || "") === s.dogru[f.ad]; if (!a[f.ad]) ok = false; });
+    return { alanlar: a, dogru: ok, aciklama: s.aciklama };
+  };
   LAB.kararPanel = function (l, id) {
-    var T = TAN[id], st = durum(id), s = T.sc[st.i], bitti = tamamlanan(id);
+    var T = LAB.tanimlar[id], st = durum(id), s = T.sc[st.i], bitti = tamamlanan(id);
     var alanlar = [];
-    if (id === "ccna-rota") {
+    if (T.tip === "genel") {
+      s.alanlar.forEach(function (f) { alanlar.push(sec(f.ad, f.etiket, st, f.sec)); });
+    } else if (T.tip === "rota") {
       alanlar.push(metin("eslesen", "Uyan satır sayısı", "sayı yaz", st), sec("satir", "Seçilen satır", st, s.tablo.map(function (r, i) { return [String(i + 1), "Satır " + (i + 1) + " (" + r.net + "/" + r.onek + ")"]; }).concat([["0", "Hiçbiri: paket atılır"]])));
     } else if (s.tip === "paket") {
       alanlar.push(sec("karar", "Karar", st, [["permit", "permit (izin)"], ["deny", "deny (red)"]]), sec("satir", "Eşleşen satır", st, ACL.map(function (r, i) { return [String(i + 1), "Satır " + (i + 1)]; }).concat([["0", "Hiçbiri (örtük deny)"]])));
     } else alanlar.push(metin("wc", "Wildcard maskı", "0.0.0.255", st));
-    var ipc = id === "ccna-acl" ? (s.tip === "paket" ? T.ipucu.paket : T.ipucu.wildcard) : T.ipucu;
+    var ipc = T.tip === "acl" ? (s.tip === "paket" ? T.ipucu.paket : T.ipucu.wildcard) : T.tip === "genel" ? (s.ipucu || T.ipucu) : T.ipucu;
     var secEl = h("div", { class: "lab-sec", role: "group", "aria-label": "Senaryo seç" }, T.sc.map(function (x, k) {
       return h("button", { type: "button", class: "opt" + (k === st.i ? " on" : ""), "aria-pressed": k === st.i ? "true" : "false", onclick: function () { st.i = k; st.cevap = {}; st.sonuc = null; st.ipucu = false; draw(); } }, (k + 1) + (bitti.indexOf(x.id) >= 0 ? " ✓" : ""));
     }));
@@ -177,10 +198,10 @@
       h("div", { class: "small mute", style: "margin-top:6px" }, h("b", null, "Hedef: "), T.hedef),
       h("div", { class: "small mute" }, h("b", null, "Başlangıç: "), T.baslangic),
       h("div", { class: "small mute" }, h("b", null, "Görev: "), T.gorev),
-      secEl, h("p", { class: "lab-ozet" }, s.ozet), tabloEl(id, s, st),
+      secEl, h("p", { class: "lab-ozet" }, s.ozet), tabloEl(T, s, st),
       h("div", { class: "lab-fs" }, alanlar),
       st.ipucu ? h("div", { class: "lbox warn" }, h("div", { class: "label" }, "İpucu"), h("p", null, ipc)) : null,
-      sonucEl,
+      sonucEl, st.sonuc && st.sonuc.aciklama ? h("div", { class: "lbox", "data-lab": "aciklama" }, h("div", { class: "label" }, "Neden"), h("p", null, st.sonuc.aciklama)) : null,
       h("div", { class: "row", style: "margin-top:8px;gap:8px;flex-wrap:wrap" },
         h("button", { class: "btn", type: "button", onclick: function () { st.sonuc = T.kontrol(s, st.cevap); if (st.sonuc.dogru) kayit(id, s.id, st.ipucu); draw(); } }, "Kontrol et"),
         h("button", { class: "btn ghost", type: "button", onclick: function () { st.ipucu = true; draw(); } }, "İpucu"),

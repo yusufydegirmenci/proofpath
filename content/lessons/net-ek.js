@@ -88,10 +88,11 @@
     kaynaklar: [R("3022", "Traditional IP Network Address Translator (Traditional NAT)", "NAT ve PAT'in (NAPT) tanımı."), R("2328", "OSPF Version 2", "Bağlantı-durumu yönlendirme protokolü."), R("4271", "A Border Gateway Protocol 4 (BGP-4)", "İnternetin ağlar arası yönlendirme protokolü."), R("5798", "Virtual Router Redundancy Protocol (VRRP) Version 3", "İki router'ın tek sanal IP paylaşması (FHRP örneği).")],
     telafi: "Tek bir hedef IP seç ve tablodaki her satırı sırayla 'uyuyor mu?' diye işaretle; uyanlar arasında en büyük önek uzunluğunu bul. Lab'daki ipucu cezasızdır.",
     sonraki: "Sıradaki konu: switching, VLAN ve STP.",
-    lab: "ccna-rota"
+    lab: ["net-rota", "net-nat"]
   };
 
   E[7] = {
+    lab: "net-vlan",
     analoji: { a: "Otoyol ve trafik ışığı: VLAN'lar aynı otoyoldaki ayrı şeritler, trunk bu şeritleri etiketli taşıyan ana yoldur; STP ise çevre yolunda aynı anda yalnız bir yolu açık tutar ki araçlar daireler çizmesin.", sinir: "Şeritler fiziksel olarak ayrılmıştır; VLAN'lar mantıksal ayrımdır ve VLAN'lar arası trafik için router ya da L3 switch gerekir. STP döngüyü, yedek bağlantıyı mantıksal olarak bloklayarak önler; kablo fiziksel olarak takılı kalır." },
     rehberli: ["Bir switch'te VLAN 10 (Muhasebe) ve VLAN 20 (Satış) tanımla; port 1–4 VLAN 10, 5–8 VLAN 20 (access).", "İki switch arasındaki bağlantıyı trunk yap; çerçeveye VLAN etiketi eklendiğini (802.1Q) not et. Native VLAN'ın iki uçta aynı olması gerektiğini yaz.", "İki switch'i iki kabloyla bağladığını düşün ve STP olmadan ne olacağını yaz (yayın fırtınası); STP'nin bir kabloyu neden bloklayacağını açıkla."],
     bagimsiz: "Üç bölümlü (Muhasebe, Satış, Misafir) küçük ofis için VLAN planı çıkar: VLAN numarası, ad, alt ağ, port aralığı. Misafir VLAN'ının iç ağa erişememesi için ne gerektiğini yaz. Son olarak iki switch arasında yedek kablo eklenirse STP'nin ne yapacağını anlat.",
@@ -164,7 +165,7 @@
     kaynaklar: [R("4301", "Security Architecture for the Internet Protocol", "IPsec mimarisi."), R("2865", "Remote Authentication Dial In User Service (RADIUS)", "RADIUS'un tanımı."), R("8907", "The TACACS+ Protocol", "TACACS+ protokolü."), R("4120", "The Kerberos Network Authentication Service (V5)", "Kerberos kimlik doğrulama.")],
     telafi: "Tek bir paket seç ve ACL'yi satır satır oku; ilk eşleşmede dur. Eşleşme yoksa sonucu 'red' yaz. Lab'daki ipucu cezasızdır.",
     sonraki: "Sıradaki konu: sorun giderme metodolojisi.",
-    lab: "ccna-acl"
+    lab: "net-acl"
   };
 
   E[14] = {

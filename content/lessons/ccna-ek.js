@@ -52,6 +52,7 @@
   };
 
   E[4] = {
+    lab: "ccna-vlan",
     analoji: { a: "Aynı binada ayrı kat anahtarlı bölümler: muhasebe ve satış aynı binadadır ama koridorları ayrıdır.", sinir: "Katlar fiziksel olarak ayrıdır; VLAN'lar aynı switch üzerinde mantıksal ayrılır ve VLAN'lar arası konuşma için 3. katman cihazı (router) gerekir." },
     rehberli: ["Bir switch'te VLAN 10 (Muhasebe) ve VLAN 20 (Satış) tanımla; port 1–4 access VLAN 10, 5–8 VLAN 20.", "İki switch arasındaki bağlantıyı trunk yap; 802.1Q'nun çerçeveye VLAN etiketi eklediğini not et.", "VLAN 10'daki PC'den VLAN 20'dekine ping neden başarısız, hangi cihazla çözülür, yaz."],
     bagimsiz: "Üç bölümlü (Muhasebe, Satış, Misafir) küçük bir ofis için VLAN planı hazırla: VLAN numarası, isim, alt ağ ve hangi portların hangi VLAN'da olacağını tabloya yaz. Misafirin iç ağa erişememesinin nasıl sağlanacağını açıkla.",
@@ -85,6 +86,7 @@
   };
 
   E[7] = {
+    lab: "ccna-nat",
     analoji: { a: "Şirket santrali: dışarıya tek numara görünür, içeridekiler dahili numaradır; santral kimin aradığını hatırlar.", sinir: "Santral dahili numaralarını görür; NAT cihazı ise bağlantı tablosunu (adres + port) tutar ve dışarıdan başlatılan istek tabloda yoksa içeri geçemez." },
     rehberli: ["İçeride 192.168.1.10:51000 → dışarıda 8.8.8.8:53. NAT cihazı kaynak adresi genel adrese çevirir; tabloya yaz.", "Yanıt dışarıdan geri geldi: tablodan ters çeviri yapılır; yaz.", "İki iç cihaz aynı anda çıkarsa PAT bunları nasıl ayırır (farklı kaynak portlar), yaz."],
     bagimsiz: "Evindeki modemin yönetim sayfasından ya da 'ipconfig' ile iç IP'ni, internette 'IP adresim' diye aratıp genel IP'ni bul ve farkını açıkla. NAT olmasaydı ne olurdu, iki cümleyle yaz.",
@@ -149,6 +151,7 @@
   };
 
   E[13] = {
+    lab: "ccna-vlan",
     analoji: { a: "Trafik ışığı yok: bir şehirde iki yol döngü oluşturursa araçlar sonsuza dek döner; STP bazı yolları kapatarak tek yolu açık bırakır.", sinir: "Şehirde kapalı yol bir daha açılmaz; STP bir bağlantı koparsa yedek portu açar. EtherChannel ise yolları kapatmaz, birden çok bağlantıyı tek mantıksal bağlantıda toplayıp bant genişliği artırır." },
     rehberli: ["Üç switch üçgen bağlandı: döngü yayın fırtınasına yol açar. STP en düşük bridge ID'ye sahip switch'i kök (root) seçer.", "Kök olmayan switch'lerde kök yola en yakın port 'root port', diğer segmentlerde atanan port 'designated', kalan port 'blocked' olur.", "İki switch arasında iki kablo varsa EtherChannel onları tek bağlantı gibi gösterir; STP yalnız tek bağlantı görür."],
     bagimsiz: "Dört switch'li bir topoloji çiz. Bridge ID'leri belirle (öncelik + MAC), kökü seç ve her switch'te root portu işaretle. Sonra bir bağlantı koparsa neyin değişeceğini yaz.",

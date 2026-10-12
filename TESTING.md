@@ -85,6 +85,9 @@ Birimler çıkarılırken her birimden sonra: `smoke`, `kritik_akis` ve birimle 
 - `node tests/faz5b_ccna.js`: CCNA 17 konu 15 öğe puanı (14 çekirdek öğe tam; kaynak koşullu), kaynak bağlantı biçimi/tarihi, rota seçimi ve ACL/wildcard hesabı (elle hesaplı bağımsız değerlerle), lab arayüzü (doğru/yanlış/ipucu/sıfırla/kanıt, kapı kanıtı değil), grafik önerisi (ders, lab, tamam, telafi+blok), koç önerisi, 390 px. Test edilmedi: içerik doğruluğu uzman incelemesi, gerçek cihaz.
 - `node tests/faz5c_net.js`: Network 18 konu 15 öğe puanı (14 çekirdek öğe tam; kaynak koşullu), kaynak biçimi/tarihi, rota ve ACL lab bağlantısı + kanıt, oneri.LAB tutarlılığı, dev/net/qa önkoşul sırası (STARTER=TMAP, doğrusal zincir), 390 px.
 
+## Faz 5 tur 4
+- `node tests/faz5d_lab.js`: VLAN/STP ve NAT saf hesapları (kök köprü, kök port, trunk, NAT dönüş, RFC 1918), her senaryonun doğru cevabı kendi kontrolünden geçer/boş geçmez, lab arayüzü (yanlış→doğru, alan işareti, neden, ipucu, sıfırla, kanıt), yola göre kanıt kimliği (lab-net-*, lab-ccna-*), eski `lab:ccna-rota:*` kaydının iki yolda sayılması ve yeni net kaydının ccna'ya sızmaması, grafik önerisi, siber 31 konu 15 öğe puanı + kaynak biçimi/tarihi, 390 px. Test edilmedi: içerik doğruluğu (insan uzman incelemesi yok), gerçek cihaz.
+
 ## Faz 6
 - `node tests/faz6_koc.js`: veri yokken öneri yok, kayıttan öneri + dayanak, gezinme doğrulaması, tercih kalıcılığı ve onaylı sıfırlama, ustalık/kanıt yazamama (kayıt değişmez), sahte sağlayıcı (hata, senkron hata, boş, zaman aşımı, kayıtsız), cevap alanlarının bağlamdan çıkarılması, korumalı değerlendirmede sağlayıcı çağrılmaması, arayüz soru-cevap, 390 px. Sonuç: GEÇTİ. Gerçek sağlayıcı ile test edilmedi.
 
