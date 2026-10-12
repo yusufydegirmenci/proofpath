@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Faz 8 tur 4 (dal: faz-8b, kalan projelerin taraması ve son tam test; yeni özellik yok)
+- Kalite taraması: tur 3'te okunmayan 34 proje (bk 6, qa 7, sec 7, sup 7, ba 3, VA Seviye 0 için 4) bağımsız Sonnet'lerle salt okunur tarandı; bulgular başka Sonnet'lerce düzeltildi (`js/veri/proje-yeni-*.js`). Kimlikler ve kayıt anahtarları değişmedi.
+- Bulgulu 32 projeye 7. adım ve gereken kabul ölçütleri eklendi; telafi/sonraki metinleri her K'yi sayıyor.
+- Doğrulanamayanlar: Bitwarden ücretsiz planda tekrarlanan parola raporu iddiası yanlıştı, çıkarıldı (ba1c); Windows 11 Dosya Geçmişi ve GitHub Türkçe menü adı "doğrulanmadı / kendi sürümünde doğrula" diye yazıldı (sec1c, ba3d); qa3d önkoşulu "qa2 adım 8" olarak düzeltildi, qa2 paketi 15 test üretir notu eklendi.
+- "Kilidi açılır" cümleleri yumuşatıldı: yeni projelerde proje bazlı makine kilidi yok, kilit yalnız kademe Altın Vuruş kapısında.
+
 ## Faz 8 tur 3 (dal: faz-8b, kapanış ve doğrulama)
 - `tests/ogrenme_tarayici.js`: içerik açığı kontrolü eski varsayımı (her kapıda en az 2 eksik) bırakıp gerçeğe bağlandı: eksik = gerekli - tanımlı ve kalan tek açık `altin:gold:3`.
 - Yol kartı (`js/proje/proje-atolyesi.js`): 7'den çok projesi olan yolda kademe başlıkları (taranabilirlik; 390 px'te taşma yok).

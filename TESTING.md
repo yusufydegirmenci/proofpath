@@ -1,6 +1,6 @@
 # TESTING.md
 
-Son çalıştırma: 2026-10-11 (Faz 4), Windows 11, Node 22.14, Playwright 1.64 (Chromium), `file://` + sahte `window.claude` (`tests/stub.js`).
+Son çalıştırma: 2026-10-12 (Faz 8 tur 4, faz-8b), Windows 11, Node 22.14, Playwright 1.64 (Chromium), `file://` + sahte `window.claude` (`tests/stub.js`). Tam `npm test`: 76 geçti, 0 kaldı, 0 zaman aşımı, 0 çöktü (`emekli/h73.js` sayıma dahil değil); veri düzeltmelerinden sonra, boş bellek 2,7/15,7 GB, kesilmedi.
 
 ## Komutlar
 
