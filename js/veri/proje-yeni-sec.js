@@ -21,8 +21,8 @@
        "phishing types smishing vishing pretext examples"],
       ["E-posta başlığını oku",
        "Bir e-postanın görünen 'Kimden' adı zarfın üstündeki isim gibidir, asıl damga ise ham başlıktır (header). Orada gönderenin gerçek yolu, SPF/DKIM/DMARC doğrulama sonuçları ve Reply-To adresi yazar. Bunları okumak, kimlik kartına mı yoksa sadece isim etiketine mi baktığını ayırt etmeni sağlar.",
-       "Kendi spam klasöründen 2 şüpheli e-postanın ham başlığını aç (içeriğindeki bağlantılara tıklama). Her biri için From, Return-Path, Reply-To ve doğrulama sonuçlarını bir tabloya yaz.",
-       "2 e-postanın başlık alanlarını karşılaştıran tablo",
+       "Kendi spam klasöründen 2 şüpheli e-postanın ham başlığını aç (içeriğindeki bağlantılara tıklama). Her biri için From, Return-Path, Reply-To ve doğrulama sonuçlarını bir tabloya yaz. Tabloya ve ekran görüntüsüne almadan önce başlıktaki tüm e-posta adreslerini ve IP adreslerini karart (örn. a***@örnek, 203.0.x.x); SPF/DKIM/DMARC sonuçlarını (pass/fail) okunur bırak.",
+       "2 e-postanın başlık alanlarını karşılaştıran, adres ve IP'leri karartılmış tablo",
        "email header = e-posta başlığı, SPF = gönderen sunucu izni, DKIM = imza doğrulama, Reply-To = yanıt adresi",
        "how to read email headers spf dkim dmarc pass fail"],
       ["Zararsız örnek kartlar yaz",
@@ -39,32 +39,47 @@
        "what to do if you clicked a phishing link steps"],
       ["Gönüllülerle dene ve ölç",
        "Bir kitin işe yarayıp yaramadığını yalnız denemeyle anlarsın; tatbikat sonrası geri bildirim, bir ilaç denemesindeki öncesi-sonrası ölçümüne benzer. Katılım gönüllü ve haberli olmalıdır, kimse kandırılmaz veya utandırılmaz.",
-       "3 gönüllüye 6 kartı göster ve her birine 'sahte mi meşru mu' diye sor. Önce kitsiz, ardından kit ile ikinci tur yap; doğru sayısını tabloya yaz.",
-       "3 kişi için önce/sonra doğru sayılarının tablosu ve 3 satırlık iyileştirme notu",
+       "Bu adıma başlamadan önce adım 6'daki cevap gerekçelerini yazıp gerekçeleri tamamlanmış kiti hazırla; deneme bu kitle yapılır. 3 gönüllüye 6 kartı göster ve her birine 'sahte mi meşru mu' diye sor. Önce kitsiz, ardından kit ile ikinci tur yap; ikinci turda kartların sırasını karıştır. Katılım iznini not et ve doğru sayısını tabloya yaz. Aynı kartlar iki kez görüldüğü için ikinci turdaki artış ezberden de gelebilir; bunu 3 satırlık notta belirt.",
+       "3 kişi için önce/sonra doğru sayılarının tablosu, katılım izni notu ve 3 satırlık iyileştirme notu (ezber etkisi dahil)",
        "pre-test = ön test, post-test = son test, awareness training = farkındalık eğitimi, feedback = geri bildirim",
-       "security awareness training measure effectiveness simple"]
+       "security awareness training measure effectiveness simple"],
+      ["Cevap gerekçelerini yaz",
+       "Doğru cevap 'sahte' ya da 'meşru' demekle bitmez; neden öyle düşündüğünü söyleyebilmek asıl beceridir. Meşru bir e-postada kırmızı bayrak aranmaz, onun yerine 'beklenen gönderen' ve 'doğrulama geçti' gibi güven işaretleri aranır. Yalnız bayrak arayan biri her e-postaya şüpheyle bakar ve gerçek iletileri de kaçırır.",
+       "6 kartın cevap anahtarını gözden geçir. 3 sahte kart için en az 1 kırmızı bayrak adı, 3 meşru kart için 'neden meşru' gerekçesini (beklenen gönderen, doğrulama geçti gibi) yaz.",
+       "Her kartın yanında bayrak adı veya meşruluk gerekçesi olan cevap anahtarı",
+       "legitimate = meşru, justification = gerekçe, false positive = yanlış alarm, trust signal = güven işareti",
+       "how to tell legitimate email from phishing trust signals"],
+      ["Kiti ikinci sürüme getir ve sınırını yaz",
+       "Bir kit ilk denemeden sonra bitmez; kullanışsız kalan kartı düzeltir, ölçümün sınırlarını yazarsın. Üç kişilik bir deneme kesin sonuç vermez, yalnız bir ipucu verir ve bunu yazmak kitin güvenilirliğini artırır.",
+       "Gönüllülerin en çok yanıldığı kartı bul ve o kartı ya da karar akışını düzelt (v2). Kitin üç sınırını yaz: örneklem küçüklüğü, ezber etkisi, haberli deneme. Kiti iki sürümüyle kaydet.",
+       "Kitin v2 sürümü ve 3 maddelik sınırlar notu",
+       "limitation = sınırlılık, iteration = yinelemeli iyileştirme, sample size = örneklem büyüklüğü, bias = yanlılık",
+       "limitations of small sample user testing awareness"]
     ],
     onkosul: ["Önkoşul yok: temel e-posta kullanımı ve bir e-posta istemcisinde ayarlar menüsünü bulmak yeterlidir.", "Tercihen Dijital Kale (sec1) projesindeki phishing kırmızı bayrak listesini görmüş olmak, bu kit o listeyi bir üst düzeye taşır."],
     gereksinim: [
       "İşlevsel (zorunlu): En az 2 gerçek şüpheli e-postanın ham başlığı alan alan okunup tabloya yazılır.",
       "İşlevsel (zorunlu): 6 zararsız örnek kart (3 sahte, 3 meşru) ve ayrı cevap anahtarı hazırlanır.",
       "İşlevsel (zorunlu): Şüphe anı için en fazla 5 kutulu karar akışı ve bildirim kanalı tanımlanır.",
-      "İşlevsel (zorunlu): En az 3 gönüllüyle önce/sonra denemesi yapılır ve sonuç tabloya yazılır.",
+      "İşlevsel (zorunlu): En az 3 gönüllüyle, cevap gerekçeleri tamamlanmış kitle önce/sonra denemesi yapılır ve sonuç tabloya yazılır.",
+      "İşlevsel (zorunlu): Cevap anahtarında 3 sahte kart için en az 1 kırmızı bayrak adı, 3 meşru kart için 'neden meşru' gerekçesi yazılır (K5).",
+      "İşlevsel (zorunlu): Gönüllülerin en çok yanıldığı kart veya karar akışı düzeltilip kit v2 olarak kaydedilir ve en az 3 sınırlılık (örneklem, ezber etkisi, haberli deneme) yazılır (K6).",
       "İşlevsel (isteğe bağlı): Kit, bir telefona kolay açılacak tek sayfalık bir kart olarak da hazırlanır.",
-      "İşlevsel olmayan: Kitteki hiçbir kartta çalışan bağlantı, gerçek kurum adı veya gerçek kişinin bilgisi bulunmaz."
+      "İşlevsel olmayan: Kitteki hiçbir kartta çalışan bağlantı, gerçek kurum adı veya gerçek kişinin bilgisi bulunmaz; başlık tablosunda gerçek e-posta ve IP adresleri karartılır."
     ],
     kabul: [
-      "K1: Başlık tablosunda 2 e-posta için en az 4 alan (From, Return-Path, Reply-To, doğrulama) dolu | Test: Tabloyu aç, her satırın ham başlıktaki bir satırla eşleştiğini kontrol et.",
+      "K1: Başlık tablosunda 2 e-posta için en az 4 alan (From, Return-Path, Reply-To, doğrulama) dolu; başlıkta bulunmayan alan 'yok' diye yazılmış; e-posta ve IP adresleri karartılmış | Test: Tabloyu aç, her satırın ham başlıktaki bir satırla eşleştiğini ve hiçbir hücrede açık adres veya IP kalmadığını kontrol et.",
       "K2: 6 kartın tümünde çalışan bağlantı yok ve cevap anahtarı ayrı sayfada | Test: Kartları tek tek gez, hiçbir metne tıklanıp gerçek adrese gidilemediğini doğrula.",
       "K3: Karar akışı 5 kutuyu geçmiyor ve 'yanlışlıkla tıkladım' yolu içeriyor | Test: Akışı sayıp bu yolun varlığını işaretle.",
-      "K4: 3 gönüllü için ön ve son test sonuçları tabloda ve katılım izni not edilmiş | Test: Tabloda 3 satır x 2 sütun doğru sayısını ve izin notunu bul.",
-      "K5: Her kartın cevabında en az 1 kırmızı bayrak adıyla belirtilmiş | Test: 6 cevabı oku, her birinde bir bayrak adının yazıldığını say."
+      "K4: 3 gönüllü için ön ve son test sonuçları tabloda, katılım izni not edilmiş ve denemede kullanılan cevap anahtarı K5 gerekçelerini içeriyor | Test: Tabloda 3 satır x 2 sütun doğru sayısını ve izin notunu bul; denemede kullanılan anahtarda gerekçelerin bulunduğunu doğrula.",
+      "K5: 3 sahte kartın cevabında en az 1 kırmızı bayrak adı, 3 meşru kartın cevabında 'neden meşru' gerekçesi (ör. beklenen gönderen, doğrulama geçti) var | Test: 6 cevabı oku; sahtelerde bayrak adını, meşrularda gerekçe cümlesini say.",
+      "K6: Kitin v2 sürümü ve en az 3 sınırlılık (örneklem, ezber etkisi, haberli deneme) yazılı | Test: v1 ile v2'yi yan yana aç, değişen kartı ve 3 sınırlılık maddesini göster."
     ],
     rubrik: [
       { olcut: "Başlık okuma doğruluğu", guclu: "Her alan doğru yorumlanır ve SPF/DKIM sonucu ile gönderen iddiası ilişkilendirilir.", zayif: "Yalnız 'Kimden' adı kopyalanır, doğrulama sonucu yorumlanmaz." },
       { olcut: "Kartların ayırt ediciliği", guclu: "Sahte kartlar farklı bayrak türleri taşır ve meşru kartlar da şüphe çekecek kadar gerçekçidir.", zayif: "Tüm sahte kartlar aynı bayrağı taşır, meşrular belli ki sahtedir." },
       { olcut: "Karar akışının kullanılabilirliği", guclu: "Bir başkası okuyup ilk bakışta ne yapacağını söyleyebilir ve suçlamasız bildirim yolu vardır.", zayif: "Akış soyut öğüt listesidir, bildirim yolu yoktur." },
-      { olcut: "Ölçüm dürüstlüğü", guclu: "Önce/sonra sonuçları olduğu gibi yazılır, küçük örneklemin sınırı belirtilir.", zayif: "Sonuç 'herkes öğrendi' diye genellenir, sayı yoktur." }
+      { olcut: "Ölçüm dürüstlüğü", guclu: "Önce/sonra sonuçları olduğu gibi yazılır, küçük örneklemin sınırı ve ezber etkisi belirtilir.", zayif: "Sonuç 'herkes öğrendi' diye genellenir, sayı yoktur." }
     ],
     savunma: [
       "Neden gönüllü ve haberli bir deneme seçtin; haberli olmanın sonuçları nasıl etkilemiş olabilir?",
@@ -73,19 +88,19 @@
     ],
     yetkinlikler: [
       { ad: "E-posta kaynağı analizi", kanit: "Adım 2'deki başlık karşılaştırma tablosu." },
-      { ad: "Güvenli eğitim içeriği üretme", kanit: "Adım 3'teki 6 kart ve ayrı cevap anahtarı." },
+      { ad: "Güvenli eğitim içeriği üretme", kanit: "Adım 3'teki 6 kart ve ayrı cevap anahtarı; adım 6'daki cevap gerekçeleri." },
       { ad: "Kullanıcı odaklı süreç tasarlama", kanit: "Adım 4'teki karar akışı ve bildirim kanalı notu." },
-      { ad: "Sonucu dürüstçe ölçme", kanit: "Adım 5'teki önce/sonra tablosu ve iyileştirme notu." }
+      { ad: "Sonucu dürüstçe ölçme", kanit: "Adım 5'teki önce/sonra tablosu ve iyileştirme notu; adım 7'deki sınırlar notu." }
     ],
-    telafi: "K1 tutmazsa adım 2'ye dön ve başlıkları satır satır yeniden eşleştir; K2 tutmazsa adım 3'te kartlardan bağlantıları ve gerçek adları çıkarıp yeniden yaz; K4 tutmazsa adım 5'te izin notunu ekleyerek denemeyi yeniden yap.",
-    sonraki: "K1-K5'in tümü tutar ve üç savunma sorusunu kendi sonuçlarınla yanıtlarsan Yedekleme ve Kurtarma Planı (sec1c) projesi ile Seviye 2'deki Log Analizi (sec2b) projesinin kilidi açılır; tamamlama kanıt kaydı üretir."
+    telafi: "K1 tutmazsa adım 2'ye dön, başlıkları satır satır yeniden eşleştir ve adres/IP'leri karart; K2 tutmazsa adım 3'te kartlardan bağlantıları ve gerçek adları çıkarıp yeniden yaz; K3 tutmazsa adım 4'te akışı 5 kutuya indirip 'yanlışlıkla tıkladım' yolunu ekle; K4 tutmazsa adım 6'daki gerekçeleri tamamlayıp adım 5'te izin notunu ekleyerek denemeyi yeniden yap; K5 tutmazsa adım 6'da her kart için bayrak adını veya meşruluk gerekçesini yaz; K6 tutmazsa adım 7'de v2'yi kaydet ve üç sınırlılığı yaz.",
+    sonraki: "K1-K6'nın tümü tutar ve üç savunma sorusunu kendi sonuçlarınla yanıtlarsan Yedekleme ve Kurtarma Planı (sec1c) önerilen sonraki projedir. Tamamlama kanıt kaydı üretir."
   });
 
   K.yeni.push({
     yol: "sec", id: "sec1c", lv: 1,
     title: "Yedekleme ve Kurtarma Planı: Geri Yüklemeyi Ölçerek Kanıtla",
     weeks: 2,
-    tools: "Windows Dosya Geçmişi veya rsync/robocopy, SHA-256 özet aracı (Get-FileHash veya sha256sum), harici disk veya ikinci klasör, elektronik tablo",
+    tools: "Windows'un yerleşik yedekleme aracı (Dosya Geçmişi gibi; Windows 11 sürümünde hangisinin bulunduğu doğrulanmadı, kendi sürümünde kontrol et) veya rsync/robocopy, SHA-256 özet aracı (Get-FileHash veya sha256sum), harici disk veya ikinci klasör, elektronik tablo",
     why: "Yedek aldığını sanıp geri yüklemeyi hiç denemeyen birçok kişi, olay anında yedeğin bozuk ya da eksik olduğunu görür. Kendi dosyaların için hedefleri ve süreleri yazılı bir kurtarma planı hazırlayıp geri yüklemeyi zamanlayarak sınarsın.",
     outcome: ["Dosyalarını önem sırasına göre sınıflandırır ve kurtarma hedefleri yazarsın", "Yedek alır, özet değerleriyle bütünlüğünü doğrularsın", "Zamanlı bir geri yükleme tatbikatı yapıp planı sonuca göre düzeltirsin"],
     pitch: "I wrote a recovery plan, ran a timed restore drill and verified file integrity with checksums.",
@@ -172,7 +187,7 @@
       { ad: "Sürdürülebilir yedekleme", kanit: "Adım 7'deki 3-2-1 değerlendirmesi ve gözden geçirme takvimi." }
     ],
     telafi: "K3 tutmazsa adım 3'te yedeği yeniden al ve adım 4'te özetleri yeniden çıkar; K2 veya K5 tutmazsa adım 2'deki hedefleri tatbikat süresine göre yeniden yaz; K6 tutmazsa adım 6'da belgeyi tek sayfaya sığdırıp yeniden düzenle; K1 tutmazsa adım 1'e dön ve etiketleri gerekçeleriyle tamamla; K4 tutmazsa adım 4'te test dosyasında 1 karakteri değiştirip özetleri yeniden çıkar; K7 tutmazsa adım 7'de değerlendirmeyi, tarihi ve kontrol listesini ekle.",
-    sonraki: "K1-K7'nin tümü tutar ve üç savunma sorusunu kendi ölçümünle yanıtlarsan Mobil Cihaz Gizlilik Denetimi (sec1d) ile Seviye 2'deki Linux Sertleştirme Kontrol Listesi (sec2c) projesinin kilidi açılır; tamamlama kanıt kaydı üretir."
+    sonraki: "K1-K7'nin tümü tutar ve üç savunma sorusunu kendi ölçümünle yanıtlarsan Mobil Cihaz Gizlilik Denetimi (sec1d) önerilen sonraki projedir; Linux Sertleştirme Kontrol Listesi (sec2c) için önkoşul Ev Laboratuvarı (sec2) projesidir, bu proje yalnız isteğe bağlı hazırlıktır; tamamlama kanıt kaydı üretir."
   });
 
   K.yeni.push({
@@ -198,22 +213,34 @@
        "android ios app permissions privacy review location microphone"],
       ["Kilit, bildirim ve ekran gizliliğini sertleştir",
        "Telefon kaybolduğunda ilk savunma ekran kilididir. 4 haneli kısa PIN, kapıya takılmış ince bir iplik gibidir; 6 hane ve üzeri veya parola çok daha dirençlidir. Kilit ekranında bildirim içeriğinin görünmesi, kapının önüne mektup bırakmak gibidir.",
-       "Ekran kilidini en az 6 haneli PIN veya parolaya çevir, otomatik kilit süresini kısalt, kilit ekranında bildirim içeriğini gizle.",
+       "Ekran kilidini en az 6 haneli PIN veya parolaya çevir, otomatik kilit süresini 1 dakikaya veya cihazın sunduğu en kısa seçeneğe ayarla, kilit ekranında bildirim içeriğini gizle.",
        "Üç ayarın önceki ve sonraki değerinin notu",
        "screen lock = ekran kilidi, biometric = biyometrik, lock screen notification = kilit ekranı bildirimi, auto-lock = otomatik kilit",
        "phone lock screen security pin length notifications hide"],
       ["İzleme ve reklam ayarlarını kontrol et",
        "Reklam kimliği, seni uygulamalar arasında takip etmeye yarayan bir yaka kartıdır. Sıfırlayabilir, izlemeyi kısıtlayabilir ve tarayıcıda izleyici engelleyici açabilirsin; amaç görünmez olmak değil, gereksiz paylaşımı azaltmaktır.",
-       "Reklam kimliğini sıfırla veya kısıtla, tarayıcında izleyici engelleme ayarını aç ve hesabının gizlilik panelinde geçmiş/konum kaydı ayarlarını gözden geçir.",
+       "Android'de reklam kimliğini sil veya sıfırla; iOS'ta 'Uygulamaların İzlenme Talep Etmesine İzin Ver' ve Apple reklamlarının kişiselleştirilmesi ayarlarını kapat (menü adları sürüme göre değişir, kendi cihazında doğrula). Tarayıcında izleyici engelleme ayarını aç ve hesabının gizlilik panelinde geçmiş/konum kaydı ayarlarını gözden geçir.",
        "3 ayarın durumunu gösteren ekran notları (kişisel veriyi karart)",
        "advertising ID = reklam kimliği, tracker = izleyici, tracking protection = izleme koruması, data sharing = veri paylaşımı",
        "reset advertising id disable ad tracking browser tracker blocking"],
       ["Kayıp ve çalıntı hazırlığı ve rapor",
        "Telefon kaybolduğunda panik değil bir plan gerekir: cihazı bul, kilitle, gerekirse uzaktan sil. Bunlar daha önce ayarlanmamışsa kayıp anında iş yapılamaz.",
-       "Cihazı bulma özelliğini aç, yedeğin çalıştığını doğrula, 'telefon kaybolursa ilk 5 adım' listesini yaz, ardından denetimin 1 sayfalık önce/sonra raporunu tamamla.",
-       "5 adımlık kayıp planı ve 1 sayfalık denetim raporu",
+       "Cihazı bulma özelliğini aç, yedeğin çalıştığını doğrula, 'telefon kaybolursa ilk 5 adım' listesini yaz, ardından denetimin 1 sayfalık önce/sonra taslak raporunu yaz (rapor adım 6'da güncelleme ve yedek tarihleriyle, adım 7'de tekrar planıyla tamamlanır).",
+       "5 adımlık kayıp planı ve 1 sayfalık denetim taslak raporu",
        "find my device = cihazımı bul, remote wipe = uzaktan silme, SIM lock = SIM kilidi, incident plan = olay planı",
-       "lost phone checklist remote wipe find my device setup"]
+       "lost phone checklist remote wipe find my device setup"],
+      ["Güvenlik güncellemesi ve yedek kontrolü",
+       "Ayarlar tek seferlik değildir; güncellenmeyen telefon, kilidi yeni takılmış ama pencereleri açık bir ev gibidir. Güvenlik güncellemesinin ve yedeğin gerçekten çalıştığını bir kez gözle görmek, plana güvenmekten daha sağlamdır.",
+       "Sistem güncelleme ekranında son güvenlik güncellemesinin tarihini, yedekleme ekranında son yedek tarihini yaz. Güncelleme bekliyorsa kur. Tarihleri rapora ekle.",
+       "Güvenlik güncellemesi ve son yedek tarihleri (rapor eki)",
+       "security update = güvenlik güncellemesi, patch = yama, backup = yedek, last backup = son yedek",
+       "check android ios security update date backup status"],
+      ["Altı ay sonrası için gösterge ve tarih belirle",
+       "Gizlilik denetimi bir kez yapılıp bırakılırsa yeni kurulan uygulamalar iznini yine alır. Tekrarı takvime bağlayıp neye bakacağını önceden yazmak, denetimi alışkanlığa çevirir.",
+       "Taslak raporu bu adımda tamamla: sonuna 6 ay sonrası için bir tarih yaz ve bakacağın en az 3 göstergeyi listele (örnek: kaldırılabilecek uygulama sayısı, 'her zaman' konum izni veren uygulama sayısı, son güncelleme tarihi).",
+       "Tarihli 3 göstergelik tekrar planı",
+       "indicator = gösterge, recurring review = düzenli gözden geçirme, baseline = başlangıç değeri, habit = alışkanlık",
+       "personal security review schedule quarterly checklist"]
     ],
     onkosul: ["Önkoşul yok: kendi telefonunun ayarlar menüsünü kullanabildiğini varsayar.", "Dijital Kale (sec1) projesindeki varlık ve risk kavramları faydalıdır; bu proje onları cihaz düzeyine indirir."],
     gereksinim: [
@@ -221,15 +248,18 @@
       "İşlevsel (zorunlu): En az 8 uygulama izni kısıtlanır ve önce/sonra tablosuna yazılır.",
       "İşlevsel (zorunlu): Ekran kilidi, otomatik kilit ve kilit ekranı bildirimi ayarları sertleştirilir.",
       "İşlevsel (zorunlu): Reklam kimliği ve izleme ayarları gözden geçirilir, kayıp planı yazılır.",
+      "İşlevsel (zorunlu): Son güvenlik güncellemesi ve son yedek tarihleri rapora yazılır; bekleyen güncelleme varsa kurulur (adım 6, K5).",
+      "İşlevsel (zorunlu): Raporun sonuna 6 ay sonrası için bir tarih ve en az 3 gösterge yazılarak rapor tamamlanır (adım 7, K6).",
       "İşlevsel (isteğe bağlı): Aileden bir kişinin telefonu için, izniyle, aynı denetim listesi uygulanır.",
       "İşlevsel olmayan: Rapordaki ekran görüntülerinde numara, ad, konum ve hesap bilgileri karartılır."
     ],
     kabul: [
       "K1: Envanter tablosunda en az 5 kaldırılmış uygulama ve gerekçesi var | Test: Telefonun uygulama listesinde bu uygulamaların artık bulunmadığını kontrol et.",
       "K2: İzin tablosunda en az 8 satır 'önce' ve 'sonra' değerleriyle dolu | Test: Telefonun izin ekranında 3 rastgele satırı açıp tablodaki 'sonra' değeriyle uyuştuğunu doğrula.",
-      "K3: Ekran kilidi en az 6 hane veya parola ve kilit ekranında bildirim içeriği gizli | Test: Ekranı kilitleyip bir bildirim göndererek içeriğin görünmediğini gözle doğrula.",
-      "K4: Reklam kimliği veya izleme ayarı değişmiş ve not edilmiş | Test: İlgili ayar ekranını açıp notla karşılaştır.",
-      "K5: Kayıp planında 5 adım var ve 'cihazı bul' özelliğinin açık olduğu doğrulanmış | Test: Planı say, cihazı bul ayarının açık göründüğü ekranı rapora ekle."
+      "K3: Ekran kilidi en az 6 hane veya parola, kilit ekranında bildirim içeriği gizli ve otomatik kilit süresi en çok 1 dakika (cihazın en kısa seçeneği) | Test: Ekranı kilitleyip bir bildirim göndererek içeriğin görünmediğini gözle doğrula.",
+      "K4: Reklam kimliği veya izleme ayarı (platformun sunduğu karşılığı) değişmiş ve not edilmiş | Test: İlgili ayar ekranını açıp notla karşılaştır.",
+      "K5: Kayıp planında 5 adım var, 'cihazı bul' özelliği açık, son yedek tarihi ve son güvenlik güncellemesi tarihi rapora yazılı | Test: Planı say, cihazı bul ayarının açık göründüğü ekranı rapora ekle; sistem güncelleme ve yedekleme ekranındaki iki tarihi rapordakilerle karşılaştır.",
+      "K6: Denetimin 6 ay sonraki tekrarı için en az 3 gösterge ve bir takvim tarihi yazılı | Test: Rapor sonundaki gösterge listesini say ve tarihi göster."
     ],
     rubrik: [
       { olcut: "İzin kararlarının gerekçesi", guclu: "Her kısıtlama 'bu özellik bu izne ihtiyaç duymaz' mantığıyla açıklanır.", zayif: "İzinler gerekçesiz toplu kapatılır veya hiç değiştirilmez." },
@@ -246,10 +276,10 @@
       { ad: "Yüzey azaltma", kanit: "Adım 1'deki kaldırılmış uygulama tablosu." },
       { ad: "En az yetki uygulama", kanit: "Adım 2'deki izin önce/sonra tablosu." },
       { ad: "Cihaz sertleştirme", kanit: "Adım 3'teki kilit ayar notu ve Adım 4'teki izleme ayar notu." },
-      { ad: "Olay hazırlığı", kanit: "Adım 5'teki kayıp planı ve denetim raporu." }
+      { ad: "Olay hazırlığı", kanit: "Adım 5'teki kayıp planı, adım 6'daki güncelleme ve yedek tarihleri ve adım 7'deki tekrar planı." }
     ],
-    telafi: "K2 tutmazsa adım 2'ye dön ve izinleri cihaz ekranından tek tek kontrol edip tabloyu yeniden doldur; K3 tutmazsa adım 3'te kilit ayarlarını yeniden yapıp bildirim denemesini tekrarla; K5 tutmazsa adım 5'te 'cihazı bul' özelliğini açıp ekranı rapora ekle.",
-    sonraki: "K1-K5'in tümü tutar ve üç savunma sorusunu kendi kararlarınla yanıtlarsan Seviye 2'ye geçiş açılır; Zafiyet Yönetimi Tablosu (sec2d) için bu proje ön hazırlık sayılır. Tamamlama kanıt kaydı üretir."
+    telafi: "K2 tutmazsa adım 2'ye dön ve izinleri cihaz ekranından tek tek kontrol edip tabloyu yeniden doldur; K3 tutmazsa adım 3'te kilit ayarlarını yeniden yapıp bildirim denemesini tekrarla; K5 tutmazsa adım 5 ve 6'da 'cihazı bul' özelliğini açıp ekranı, son yedek tarihini ve son güvenlik güncellemesi tarihini rapora ekle; K6 tutmazsa adım 7'de tarih ve 3 göstergeyi yaz; K1 tutmazsa adım 1'de en az 5 uygulamayı daha kaldır; K4 tutmazsa adım 4'te platformunun reklam/izleme ayarını bulup değiştir.",
+    sonraki: "K1-K6'nın tümü tutar ve üç savunma sorusunu kendi kararlarınla yanıtlarsan Seviye 2 projelerine isteğe bağlı bir sonraki hazırlığı tamamlamış olursun; Ev Laboratuvarı (sec2) için önkoşul Dijital Kale (sec1) projesidir ve Zafiyet Yönetimi Tablosu (sec2d) önkoşuluna bu proje yazılı değildir, bu yüzden bu proje yalnız isteğe bağlı bir hazırlıktır. Tamamlama kanıt kaydı üretir."
   });
 
   /* ---------- LV2 ---------- */
@@ -265,40 +295,46 @@
     steps: [
       ["Kayıt biçimini ve olay türlerini öğren",
        "Log, sunucunun günlüğüdür; her satır bir zaman, bir kaynak ve bir olay söyler. İyi okumak için önce hangi olayların normal olduğunu bilmek gerekir: başarılı giriş, yanlış parola, var olmayan kullanıcı, bağlantı kesilmesi.",
-       "Ubuntu sanal makinende /var/log/auth.log (veya journalctl) içinde SSH satırlarını bul. 5 farklı olay türü seç, her birinden örnek satır ve ne anlama geldiğini yaz (IP adreslerini karart).",
+       "Ubuntu sanal makinende /var/log/auth.log içinde SSH satırlarını bul (dosya yoksa 'journalctl -u ssh > ssh_log.txt' ile günlüğü bir dosyaya aktar ve sonraki adımlarda o dosyayı kullan; satır biçimi Ubuntu sürümüne göre auth.log'dakinden farklı olabilir ve bu çalışmada doğrulanmadı, alan sırasını kendi çıktında kontrol edip komutları ona uyarla). 5 farklı olay türü seç, her birinden örnek satır ve ne anlama geldiğini yaz (IP adreslerini karart).",
        "5 olay türü, örnek satır ve anlam tablosu",
        "authentication log = kimlik doğrulama kaydı, failed password = yanlış parola, invalid user = geçersiz kullanıcı, timestamp = zaman damgası",
        "linux auth.log ssh failed password invalid user meaning"],
       ["Kendi etiketli verini üret",
-       "Bir dedektör yalnız tanıdığı davranışı bulur, bu yüzden elinde cevabı bilinen veri olmalı. Kendi sanal makineni kendin sınarsın: bilerek 6 yanlış parola, 1 doğru giriş ve 3 var olmayan kullanıcı denemesi yap ve bunları bir deftere zamanıyla yaz.",
-       "Yalnız kendi izole sanal makinene, kendi hesabınla ve ağı kapalı ortamda, 3 farklı davranış kümesi oluştur. Her kümenin başlangıç/bitiş saatini deftere yaz. Başka bir sisteme asla deneme yapma.",
-       "Zaman aralıklı etiket defteri (3 küme)",
+       "Bir dedektör yalnız tanıdığı davranışı bulur, bu yüzden elinde cevabı bilinen veri olmalı. Kendi sanal makineni kendin sınarsın: bilerek yanlış parola, zararsız yazım hatası ve var olmayan kullanıcı denemeleri yap ve bunları bir deftere zamanıyla yaz.",
+       "Yalnız kendi izole sanal makinene, kendi hesabınla ve ağı kapalı ortamda 3 küme oluştur: (A) 2 dakika içinde 6 yanlış parola, (B) 2 yazım hatalı yanlış parolayı doğru giriş izlesin (zararsız), (C) 1 dakika içinde 3 var olmayan kullanıcı denemesi. Kümeler arasında en az 10 dakika bırak. Mümkünse A kümesini ikinci bir kaynak adresten (kendi başka sanal makinenden) tekrarla. Her kümenin başlangıç/bitiş saatini deftere yaz ve her küme için bir 'alarm beklenir/beklenmez' sütunu ekle. Sütunu adım 4'teki başlangıç eşiğine (5 dakikada en az 5 başarısız deneme) göre doldur: A için alarm beklenir; B (2 hata) ve C (1 dakikada 3 deneme) eşiğin altında kaldığı için beklenmez. Adım 5'te eşiği değiştirirsen sütunu yeni eşiğe göre yeniden değerlendir. Başka bir sisteme asla deneme yapma.",
+       "Zaman aralıklı ve 'alarm beklenir/beklenmez' sütunlu etiket defteri (3 küme)",
        "labeled data = etiketli veri, ground truth = gerçek cevap, baseline = normal davranış çizgisi, test event = deneme olayı",
        "generate test auth events lab ssh detection ground truth"],
       ["Komut satırı ile sayım yap",
        "grep, awk, sort ve uniq, bir tarayıcının süzgeci gibi gürültüyü eler ve en sık görünenleri öne çıkarır. 'Hangi kaynak, hangi hesap, kaç kez?' sorusu çoğu zaman tek satırlık bir boru hattıyla yanıtlanır.",
-       "Kaynak adres başına başarısız giriş sayısını ve en çok denenen 5 kullanıcı adını çıkaran komutları yaz. Komutlarla sonuçları, etiket defterine göre doğrula.",
-       "Komut satırları ve iki sayım çıktısı",
+       "Kaynak adres başına başarısız giriş sayısını ve en çok denenen 5 kullanıcı adını çıkaran komutları yaz. Komutları her kümenin saat aralığına süzerek çalıştır (tüm logun toplamı kümelerin toplamına eşit olmaz: kümeler arası boşluklar ve başka girişler de vardır) ve sonuçları etiket defterindeki küme sayılarıyla karşılaştır.",
+       "Komut satırları ve küme saat aralığına süzülmüş iki sayım çıktısı",
        "grep = desen arama, awk = sütun işleme, pipe = boru hattı, aggregate = toplulaştırma",
        "grep awk sort uniq count failed ssh attempts per ip"],
       ["Python ile zaman penceresinde eşik kuralı yaz",
        "Sayım 'toplamda kaç'ı verir, ama saldırı ritmini görmek için zaman penceresi gerekir; bir dakikada 6 hata ile bir günde 6 hata aynı şey değildir. Kural: 'N dakikada aynı kaynaktan M başarısız deneme varsa alarm üret'.",
-       "Python betiği yaz: logu oku, aynı kaynaktan 5 dakikalık pencerede en az 5 başarısız denemeyi alarm olarak listele. Eşik değerlerini betiğin başında değişken olarak tut.",
+       "Python betiği yaz: logu (veya dışa aktarılan dosyayı) oku, aynı kaynaktan 5 dakikalık pencerede en az 5 başarısız denemeyi alarm olarak listele. Eşik değerlerini betiğin başında değişken olarak tut.",
        "Betik ve ürettiği alarm listesi",
        "threshold = eşik, sliding window = kayan pencere, alert = alarm, rule = kural",
        "python parse auth.log failed ssh time window threshold alert"],
       ["Kuralı ölç ve iyileştir",
        "Her alarm doğru olmak zorunda değildir ve her saldırı yakalanmaz. Yanlış pozitif (boş alarm) çok olursa kimse bakmaz, yanlış negatif (kaçırılan) çok olursa kural işe yaramaz. İkisini etiket defteriyle ölçersin.",
-       "Etiket defterini kullanarak doğru alarm, yanlış alarm ve kaçırılan sayısını tablolaştır, eşiği değiştirip ikinci bir deneme yap. Hangi eşiğin neden iyi olduğunu yaz.",
+       "Etiket defterindeki 'alarm beklenir/beklenmez' sütununa göre doğru alarm, yanlış alarm ve kaçırılan sayısını tablolaştır, eşiği değiştirip ikinci bir deneme yap. Hangi eşiğin neden iyi olduğunu yaz.",
        "İki eşik denemesinin karşılaştırma tablosu",
        "false positive = yanlış alarm, false negative = kaçırılan olay, precision = isabet oranı, tuning = ayarlama",
        "detection rule false positive false negative tuning explained"],
       ["Bulguyu rapora dök",
        "Bir tespit, yalnız ekranda kalırsa işe yaramaz; bir olay özeti karar vericinin okuyacağı biçimde yazılmalıdır. Raporun ne olduğu, nasıl bulunduğu, ne yapılması gerektiği kısa ve net olmalıdır.",
-       "1 sayfalık 'SSH Giriş Anomalisi Raporu' yaz: bulgu, kanıt (karartılmış log satırı), kural, ölçüm ve önerilen önlem (örn. anahtar tabanlı giriş, hız sınırlama).",
+       "1 sayfalık 'SSH Giriş Anomalisi Raporu' yaz: bulgu, kanıt (karartılmış log satırı), kural, ölçüm, sınırlar (şimdilik bildiğin sınır; adım 7'de güncellenecek) ve önerilen önlem (örn. anahtar tabanlı giriş, hız sınırlama).",
        "1 sayfalık tespit raporu",
        "incident summary = olay özeti, indicator = gösterge, mitigation = azaltma önlemi, key-based auth = anahtar tabanlı kimlik doğrulama",
-       "ssh brute force detection report mitigation key based authentication"]
+       "ssh brute force detection report mitigation key based authentication"],
+      ["Yavaş saldırıyı dene ve kuralı sınırla",
+       "Sabırlı saldırgan denemeleri günlere yayar ve 5 dakikalık pencereyi hiç aşmaz. Kuralın neyi kaçırdığını bilmek, onu iyi sanmaktan daha değerlidir; kaçırılan davranışı kendi etiketli verinde üretip görürsün.",
+       "Kendi izole makinende aynı kaynaktan 30 dakika aralıkla 6 yanlış parola dene ve saatlerini deftere yaz. Betiğin bunu yakalamadığını göster. Daha uzun bir pencerede (örn. 1 saat) sayan ikinci bir kural fikrini 2 cümleyle yaz ve yanlış alarm riskini belirt. Adım 6 raporundaki 'sınırlar' satırını bu bulguyla güncelle.",
+       "Kaçırılan yavaş deneme kaydı, ikinci kural fikri ve güncellenmiş rapor 'sınırlar' satırı",
+       "low and slow = yavaş ve sinsi, detection gap = tespit boşluğu, window size = pencere boyutu, trade-off = ödünleşim",
+       "low and slow brute force detection window"]
     ],
     onkosul: ["Ev Laboratuvarı (sec2) projesindeki sanal makine kurulumu ve izole ağ bilgisi gerekir; burada yalnız kendi Ubuntu makinen kullanılır.", "Temel Linux komut satırı (cd, ls, cat, grep) ve Python'da dosya okuma bilgisi varsayılır."],
     gereksinim: [
@@ -306,23 +342,27 @@
       "İşlevsel (zorunlu): Kendi izole makinende 3 davranış kümesi üretilir ve zaman aralıklarıyla deftere yazılır.",
       "İşlevsel (zorunlu): Komut satırıyla kaynak başına başarısız deneme sayısı çıkarılır.",
       "İşlevsel (zorunlu): Python kuralı kayan pencerede eşik aşımını alarm olarak üretir.",
-      "İşlevsel (zorunlu): Doğru alarm, yanlış alarm ve kaçırılan sayısı iki farklı eşik için ölçülür.",
+      "İşlevsel (zorunlu): Doğru alarm, yanlış alarm ve kaçırılan sayısı, defterdeki 'alarm beklenir/beklenmez' sütununa göre iki farklı eşik için ölçülür.",
+      "İşlevsel (zorunlu): 1 sayfalık rapor bulgu, kanıt, kural, ölçüm, sınırlar ve önlem başlıklarını içerir (K6).",
+      "İşlevsel (zorunlu): Yavaş yayılan bir denemeyle kuralın kaçırdığı durum gösterilir, ikinci kural fikri yazılır ve raporun sınırlar satırı güncellenir (K7).",
       "İşlevsel olmayan: Tüm denemeler yalnız kendi sanal makinende yapılır, IP ve kullanıcı adları raporda karartılır."
     ],
     kabul: [
       "K1: Olay türü tablosunda en az 5 tür ve her biri için karartılmış örnek satır var | Test: Tabloyu sayıp örnek satırların log dosyasında gerçekten bulunduğunu doğrula.",
-      "K2: Etiket defterinde 3 küme ve her birinin başlangıç/bitiş saati yazılı | Test: Saatleri log zaman damgalarıyla karşılaştır.",
-      "K3: Komut çıktısındaki en sık kaynak, defterdeki en yoğun küme ile örtüşüyor | Test: Komutu yeniden çalıştırıp çıktıyı defterle karşılaştır.",
-      "K4: Python betiği aynı log için çalıştırıldığında aynı alarm listesini üretiyor | Test: Betiği iki kez çalıştırıp çıktıları karşılaştır.",
+      "K2: Etiket defterinde 3 küme, her birinin başlangıç/bitiş saati ve 'alarm beklenir/beklenmez' değeri yazılı | Test: Saatleri log zaman damgalarıyla karşılaştır ve her kümede beklentinin dolu olduğunu kontrol et.",
+      "K3: Komut, her kümenin saat aralığına süzülerek çalıştırıldığında kaynak başına sayılar o kümenin defterdeki deneme sayısıyla uyuşuyor | Test: Komutu her kümenin saat aralığına süzerek yeniden çalıştırıp çıktıyı o kümenin satırıyla karşılaştır; tüm logun kaynak başına toplamını A+B+C toplamıyla eşleştirmeye çalışma.",
+      "K4: Python betiği aynı log için aynı alarm listesini üretiyor ve alarm listesi etiket defterindeki A kümesiyle eşleşiyor | Test: Betiği iki kez çalıştırıp çıktıları karşılaştır, ardından alarmları defterdeki A kümesinin saatleriyle karşılaştır.",
       "K5: İki eşik için doğru alarm, yanlış alarm ve kaçırılan sayıları tabloda ve eşik seçimi gerekçeli | Test: Tabloda 2 satır x 3 sayı bulun ve gerekçe cümlesini oku.",
-      "K6: Raporda bulgu, kanıt, kural, ölçüm ve önlem başlıkları var | Test: Başlıkları işaretle ve eksik olanı not et."
+      "K6: Raporda bulgu, kanıt, kural, ölçüm, sınırlar ve önlem başlıkları var | Test: Başlıkları işaretle ve eksik olanı not et.",
+      "K7: Yavaş yayılan bir deneme için kuralın kaçırdığı durum denenmiş ve ikinci bir kural fikri yazılmış ve raporun sınırlar satırı bu bulguyla güncellenmiş | Test: Denemenin saat aralığını ve alarm üretmediğini log ile göster, fikri 2 cümleyle oku ve rapordaki sınırlar satırında bu sınırın yazılı olduğunu göster."
     ],
     rubrik: [
       { olcut: "Log yorumlama", guclu: "Her olay türünün neden normal veya şüpheli olduğu bağlamıyla açıklanır.", zayif: "Satırlar yalnız kopyalanır, anlamları yorumlanmaz." },
       { olcut: "Etiketli veri ve etik sınır", guclu: "Veri yalnız kendi izole makinesinde üretilmiştir ve kümeler zamanla eşleşir.", zayif: "Etiket yoktur veya deneme izin dışı bir hedefe yapılmıştır." },
       { olcut: "Kuralın tekrarlanabilirliği", guclu: "Betik parametrelidir ve aynı girdiyle aynı çıktıyı verir.", zayif: "Elle sayım yapılmıştır, betik çalışmaz." },
       { olcut: "Ölçüm ve ayar", guclu: "İki eşik sayılarla karşılaştırılır ve seçim yanlış alarm/kaçırma dengesiyle savunulur.", zayif: "Tek eşik 'iyi çalışıyor' denilerek geçilir." },
-      { olcut: "Rapor", guclu: "Karar verici tek sayfadan ne olduğunu ve ne yapacağını anlar.", zayif: "Rapor ham log yığınıdır." }
+      { olcut: "Rapor", guclu: "Karar verici tek sayfadan ne olduğunu, kuralın sınırını ve ne yapacağını anlar.", zayif: "Rapor ham log yığınıdır." },
+      { olcut: "Kuralın sınırları", guclu: "Yavaş saldırı kendi etiketli verinde üretilip kuralın kaçırdığı gösterilir, ikinci kural fikri yanlış alarm riskiyle yazılır ve rapor sınırlar satırı güncellenir.", zayif: "Kuralın her saldırıyı yakaladığı varsayılır, sınır yazılmaz." }
     ],
     savunma: [
       "Eşiği düşürürsen hangi yanlış alarmlar çoğalır ve bu bir SOC çalışanının işini nasıl etkiler?",
@@ -333,10 +373,11 @@
       { ad: "Log okuma", kanit: "Adım 1'deki olay türü tablosu." },
       { ad: "Otomasyonla tespit", kanit: "Adım 3'teki komut çıktıları ve Adım 4'teki Python betiği." },
       { ad: "Kural ölçme ve ayarlama", kanit: "Adım 5'teki iki eşiğin karşılaştırma tablosu." },
-      { ad: "Güvenlik raporlama", kanit: "Adım 6'daki 1 sayfalık tespit raporu." }
+      { ad: "Güvenlik raporlama", kanit: "Adım 6'daki 1 sayfalık tespit raporu ve adım 7'de güncellenen sınırlar satırı." },
+      { ad: "Kural sınırlarını bilme", kanit: "Adım 7'deki kaçırılan yavaş deneme kaydı ve ikinci kural fikri." }
     ],
-    telafi: "K3 veya K4 tutmazsa adım 3 ve 4'e dön, komutları ve betiği etiket defteriyle yeniden eşleştir; K5 tutmazsa adım 5'te sayıları defterden yeniden hesapla; K1 tutmazsa adım 1'de log satırlarını doğrudan dosyadan kopyalayarak tabloyu yeniden yap.",
-    sonraki: "K1-K6'nın tümü tutar ve üç savunma sorusunu kendi ölçümlerinle yanıtlarsan Olay Müdahale Tatbikatı (sec3b) ve Tehdit Modelleme (sec3c) projelerinin kilidi açılır; tamamlama kanıt kaydı üretir."
+    telafi: "K7 tutmazsa adım 7'de yavaş denemeyi yeniden üretip saatlerini deftere yaz ve rapor sınırlar satırını güncelle; K6 tutmazsa adım 6'da eksik başlığı (sınırlar dahil) ekle; K2 tutmazsa adım 2'de kümeleri zamanlarıyla yeniden yaz; K3 veya K4 tutmazsa adım 3 ve 4'e dön, komutları ve betiği etiket defteriyle yeniden eşleştir; K5 tutmazsa adım 5'te sayıları defterden yeniden hesapla; K1 tutmazsa adım 1'de log satırlarını doğrudan dosyadan kopyalayarak tabloyu yeniden yap.",
+    sonraki: "K1-K7'nin tümü tutar ve üç savunma sorusunu kendi ölçümlerinle yanıtlarsan Olay Müdahale Tatbikatı (sec3b) açılır ve Zafiyet Yönetimi Tablosu (sec2d) için önkoşul sağlanır; Tehdit Modelleme (sec3c) önkoşulu sec2d olduğundan o proje sonraki adımdır. Tamamlama kanıt kaydı üretir."
   });
 
   K.yeni.push({
@@ -368,8 +409,8 @@
        "ufw default deny allow ssh from specific ip safe enable"],
       ["SSH ve kullanıcı yönetimini sıkılaştır",
        "SSH, sunucunun ana kapısıdır. Parola yerine anahtar kullanmak, ortak kapı zili yerine kişiye özel anahtar vermektir; root ile doğrudan girişi kapatmak, bina müdürünün anahtarını herkese vermemektir.",
-       "Anahtarla giriş kur, 'PermitRootLogin no' ve 'PasswordAuthentication no' ayarlarını yap, sshd yapılandırmasını testten geçir ve yeniden başlat. Her değişiklik için önceki ve sonraki satırı not et. Yeni oturum açıp çalıştığını doğrulamadan eski oturumu kapatma.",
-       "sshd ayarlarının önce/sonra satırları ve başarılı anahtar girişi notu",
+       "Anahtarla giriş kur, 'PermitRootLogin no' ve 'PasswordAuthentication no' ayarlarını yap, sshd yapılandırmasını testten geçir ve yeniden başlat. Başka bir yapılandırma dosyasının (örn. /etc/ssh/sshd_config.d/ altındakilerin) ayarı ezip ezmediği bu çalışmada doğrulanmadı; bu yüzden 'sudo sshd -T | grep -i passwordauth' ile geçerli değerin 'no' olduğunu kontrol et. Her değişiklik için önceki ve sonraki satırı not et. Yeni oturum açıp çalıştığını doğrulamadan eski oturumu kapatma.",
+       "sshd ayarlarının önce/sonra satırları, 'sshd -T' doğrulama çıktısı ve başarılı anahtar girişi notu",
        "SSH key = SSH anahtarı, root login = root girişi, sshd_config = SSH sunucu ayarı, sudo = yetki yükseltme",
        "sshd_config harden disable root password authentication key login"],
       ["Güncelleme ve denetimi otomatikleştir",
@@ -383,30 +424,42 @@
        "Lynis'i yeniden çalıştır, port listesini yeniden al ve puanları karşılaştır. 10 maddelik kontrol listesi yaz: madde, komut/ayar, doğrulama, geri alma.",
        "10 maddelik kontrol listesi ve önce/sonra tablosu",
        "hardening checklist = sertleştirme kontrol listesi, rollback = geri alma, compliance = uyumluluk, benchmark = karşılaştırma ölçütü",
-       "linux hardening checklist rollback lynis score improvement"]
+       "linux hardening checklist rollback lynis score improvement"],
+      ["Geri almayı sına ve dışarıdan doğrula",
+       "Hiç denenmemiş bir geri alma komutu, hiç denenmemiş bir yedek gibi umuttan ibarettir. Ayrıca sertleştirmenin sonucunu içeriden değil dışarıdan, bir saldırganın göreceği yerden ölçmelisin: ana makineden bakınca yalnız SSH kapısı görünmelidir.",
+       "Adım 6'daki kontrol listesinden en az 2 değişikliği kendi geri alma komutuyla geri al (kendini dışarıda bırakma riski olmayanları seç; SSH ve ufw için ikinci oturumu açık tut), etkisini not et, ardından sertleştirilmiş durumu yeniden uygula. Sonra ana makineden yalnız kendi sanal makinene nmap ile tarama yap ve yalnız SSH portunun açık göründüğünü doğrula; başka açık port varsa nedenini yaz ve kapat. Başka bir sisteme tarama yapma.",
+       "2 geri alma denemesinin notu ve ana makineden alınan nmap tarama çıktısı",
+       "rollback test = geri alma sınaması, external scan = dışarıdan tarama, open port = açık port, verification = doğrulama",
+       "nmap scan own vm open ports verify firewall ufw"]
     ],
-    onkosul: ["Ev Laboratuvarı (sec2) projesindeki Ubuntu Server sanal makinesi kurulumu ve snapshot alma bilgisi gerekir.", "Yedekleme ve Kurtarma Planı (sec1c) projesindeki 'geri alma önce planlanır' alışkanlığı burada her ayar için uygulanır."],
+    onkosul: ["Ev Laboratuvarı (sec2) projesindeki Ubuntu Server sanal makinesi kurulumu ve snapshot alma bilgisi gerekir.", "Tercihen Yedekleme ve Kurtarma Planı (sec1c) projesi tamamlanmış olmalı; zorunlu değildir, oradaki 'geri alma önce planlanır' alışkanlığı burada her ayar için uygulanır."],
     gereksinim: [
       "İşlevsel (zorunlu): Değişiklik öncesi snapshot, port listesi ve Lynis başlangıç puanı kaydedilir.",
       "İşlevsel (zorunlu): En az 3 gereksiz servis geri alma komutuyla birlikte devre dışı bırakılır.",
       "İşlevsel (zorunlu): ufw ile varsayılan reddet kuralı ve yalnız ana makineden SSH izni kurulur.",
       "İşlevsel (zorunlu): SSH için anahtar girişi, root girişinin kapatılması ve parola girişinin kapatılması yapılır.",
+      "İşlevsel (zorunlu): Otomatik güvenlik güncellemeleri (unattended-upgrades) etkinleştirilir ve en az 1 dosya için değişiklik denetimi veya log kaydı eklenir (K7).",
+      "İşlevsel (zorunlu): Sertleştirme sonrası Lynis yeniden çalıştırılır ve 10 maddelik, doğrulama ve geri alma sütunlu kontrol listesi yazılır (K5, K6).",
+      "İşlevsel (zorunlu): En az 2 değişiklik geri alma komutuyla sınanır ve ana makineden nmap ile yalnız SSH'ın göründüğü doğrulanır (K8).",
       "İşlevsel (isteğe bağlı): fail2ban benzeri bir hız sınırlama aracı eklenir ve etkisi gözlenir.",
       "İşlevsel olmayan: Tüm değişiklikler yalnız kendi sanal makinende yapılır ve her ayarın bir geri alma yolu yazılır."
     ],
     kabul: [
       "K1: Başlangıç Lynis puanı, uyarı sayısı ve port listesi kayıtlı | Test: Kayıt dosyasını aç, 3 değerin de bulunduğunu doğrula.",
-      "K2: Kapatılan en az 3 servis, 'ss -tulpn' çıktısında artık dinlemiyor | Test: Komutu yeniden çalıştırıp servislerin listede olmadığını gör.",
+      "K2: Kapatılan en az 3 servis 'systemctl is-active' ile etkin değil ve 'systemctl is-enabled' ile devre dışı (kaldırıldıysa kayıt yok); port açan servisler ayrıca 'ss -tulpn' çıktısında artık dinlemiyor | Test: Her servis için iki systemctl komutunu çalıştır, port açan servislerde ss -tulpn çıktısında da listede olmadıklarını gör.",
       "K3: ufw durumu 'inactive' değil ve varsayılan gelen kuralı reddet | Test: 'ufw status verbose' çıktısında bu iki satırı bul.",
-      "K4: Parola ile SSH girişi reddediliyor, anahtarla giriş çalışıyor | Test: Parolayla bağlanmayı dene (reddedilir), anahtarla dene (kabul edilir) ve sonuçları not et.",
+      "K4: Parola ile SSH girişi reddediliyor, anahtarla giriş çalışıyor ve 'sshd -T' geçerli değer olarak parola girişini 'no' gösteriyor | Test: Parolayla bağlanmayı dene (reddedilir), anahtarla dene (kabul edilir), 'sudo sshd -T | grep -i passwordauth' çıktısını göster ve sonuçları not et.",
       "K5: Sertleştirme sonrası Lynis puanı başlangıçtan yüksek ve fark yazılı | Test: İki puanı yan yana göster, farkı hesapla.",
-      "K6: Kontrol listesinde 10 maddenin her biri için doğrulama ve geri alma sütunu dolu | Test: Tablodaki 20 hücreyi say, boş hücre olmadığını doğrula."
+      "K6: Kontrol listesinde 10 maddenin her biri için doğrulama ve geri alma sütunu dolu | Test: Tablodaki 20 hücreyi say, boş hücre olmadığını doğrula.",
+      "K7: unattended-upgrades etkin ve en az 1 dosya için denetim veya log kaydı çalışıyor | Test: Otomatik güncellemenin kurulu ve etkin olduğunu (servis durumu veya apt yapılandırmasındaki otomatik yükseltme ayarı) göster; izlenen dosyayı değiştirip kaydın oluştuğunu göster.",
+      "K8: En az 2 değişiklik kendi geri alma komutuyla geri alınıp yeniden uygulanmış ve ana makineden nmap yalnız SSH portunu açık gösteriyor | Test: Geri alma notunu oku, nmap taramasını yeniden çalıştırıp açık port listesinde yalnız SSH'ı gör."
     ],
     rubrik: [
       { olcut: "Güvenli değişiklik disiplini", guclu: "Her değişiklikten önce snapshot veya ikinci oturum vardır, geri alma yolu yazılıdır.", zayif: "Ayarlar tek seferde yapılır, kendini dışarıda bırakma riski yönetilmez." },
       { olcut: "Servis kararları", guclu: "Kapatılan her servis için neden gereksiz olduğu ve bağımlılığı kontrol edilmiştir.", zayif: "Servisler rastgele kapatılır, çalışan işlev bozulur." },
       { olcut: "Erişim kontrolü", guclu: "Güvenlik duvarı ve SSH ayarları birlikte kurulur ve her ikisi de dışarıdan sınanır.", zayif: "Ayarlar yazılır ama sınanmaz." },
       { olcut: "Ölçüm", guclu: "Önce/sonra puan ve port listesi tutarlı ve yorumludur; puan düşen alanlar da açıklanır.", zayif: "Yalnız son puan paylaşılır, başlangıç yoktur." },
+      { olcut: "Sürdürülebilirlik ve geri alma", guclu: "Otomatik güncelleme ve denetim çalışır halde kanıtlanmıştır, geri alma komutları gerçekten denenmiş ve sonuç dışarıdan doğrulanmıştır.", zayif: "Yapılandırma yazılmış ama çalıştığı gösterilmemiş, geri alma komutları hiç denenmemiştir." },
       { olcut: "Kılavuz kalitesi", guclu: "Bir başkası kılavuzla aynı sonucu elde edip geri alabilir.", zayif: "Kılavuz komut dökümüdür, doğrulama ve geri alma yoktur." }
     ],
     savunma: [
@@ -417,11 +470,13 @@
     yetkinlikler: [
       { ad: "Başlangıç ölçümü", kanit: "Adım 1'deki snapshot, port listesi ve Lynis puanı." },
       { ad: "Saldırı yüzeyi daraltma", kanit: "Adım 2'deki kapatılan servis tablosu ve Adım 3'teki ufw kural listesi." },
-      { ad: "Erişim sertleştirme", kanit: "Adım 4'teki sshd ayar önce/sonra satırları." },
-      { ad: "Devredilebilir kılavuz yazma", kanit: "Adım 6'daki 10 maddelik kontrol listesi ve önce/sonra tablosu." }
+      { ad: "Erişim sertleştirme", kanit: "Adım 4'teki sshd ayar önce/sonra satırları ve sshd -T doğrulaması." },
+      { ad: "Güncelleme ve denetim otomasyonu", kanit: "Adım 5'teki otomatik güncelleme yapılandırması ve çıktı kaydı." },
+      { ad: "Devredilebilir kılavuz yazma", kanit: "Adım 6'daki 10 maddelik kontrol listesi ve önce/sonra tablosu." },
+      { ad: "Geri alma ve dış doğrulama", kanit: "Adım 7'deki geri alma denemesi notu ve ana makineden alınan nmap çıktısı." }
     ],
-    telafi: "K3 veya K4 tutmazsa snapshot'a dönüp adım 3 ve 4'ü ikinci oturum açıkken yeniden yap; K2 tutmazsa adım 2'de servis listesini yeniden çıkarıp gerekçeli kapatma yap; K5 tutmazsa adım 6'da Lynis önerilerinden risk açısından anlamlı olanları seçip yeniden uygula.",
-    sonraki: "K1-K6'nın tümü tutar ve üç savunma sorusunu kendi ayarlarınla yanıtlarsan Zafiyet Yönetimi Tablosu (sec2d) ve Güvenlik Politikası Seti (sec3d) projelerinin kilidi açılır; tamamlama kanıt kaydı üretir."
+    telafi: "K1 tutmazsa adım 1'de snapshot, port listesi ve Lynis başlangıç puanını yeniden kaydet; K3 veya K4 tutmazsa snapshot'a dönüp adım 3 ve 4'ü ikinci oturum açıkken yeniden yap; K2 tutmazsa adım 2'de servis listesini yeniden çıkarıp gerekçeli kapatma yap; K7 tutmazsa adım 5'te otomatik güncellemeyi ve denetim kaydını yeniden kur; K5 tutmazsa adım 6'da Lynis önerilerinden risk açısından anlamlı olanları seçip yeniden uygula; K6 tutmazsa adım 6'da kontrol listesindeki boş doğrulama ve geri alma hücrelerini doldur; K8 tutmazsa adım 7'de geri alma denemesini ve nmap taramasını yeniden yap.",
+    sonraki: "K1-K8'in tümü tutar ve üç savunma sorusunu kendi ayarlarınla yanıtlarsan Zafiyet Yönetimi Tablosu (sec2d) ve Güvenlik Politikası Seti (sec3d) önerilen sonraki projelerdir; sec2d önkoşulu Ev Laboratuvarı (sec2) ile sec2c veya sec2b'den birinin tamamlanmasıdır, sec3d önkoşulu ise sec2c veya sec2d'den birinin tamamlanmasıdır. Tamamlama kanıt kaydı üretir."
   });
 
   K.yeni.push({
@@ -447,13 +502,13 @@
        "nmap -sV service version detection lab authorized scope"],
       ["Bulguları bilinen zafiyetlerle eşleştir",
        "CVE bir zafiyetin ortak adıdır, CVSS ise ciddiyetini gösteren 0-10 arası bir puandır. Puan tek başına karar vermez; aynı zafiyet internete açık bir sunucuda felaket, kapalı bir laboratuvarda ise küçük bir risk olabilir.",
-       "Tablondaki en az 6 servis sürümü için herkese açık CVE arama kaynaklarında kayıt ara. Bulduklarını CVE kodu, CVSS puanı ve tek cümle özetle tabloya ekle. Sürüm eşleşmesi kesin değilse 'doğrulanmadı' yaz.",
+       "Tablondaki en az 6 servis sürümü için herkese açık CVE arama kaynaklarında kayıt ara. Bulduklarını CVE kodu, CVSS puanı (puanın sürümünü, 3.1 veya 4.0, belirt ve tabloda tek sürüm kullan) ve tek cümle özetle tabloya ekle. Sürüm eşleşmesi kesin değilse 'doğrulanmadı' yaz; eşleşmeleri adım 7'de doğrulayacaksın.",
        "En az 6 satırlık CVE eşleştirme tablosu",
        "CVE = ortak zafiyet kimliği, CVSS = ciddiyet puanı, false match = yanlış eşleşme, advisory = güvenlik bülteni",
        "how to search CVE for software version CVSS score meaning"],
       ["Bağlamla önceliklendir",
        "Aynı puanlı iki zafiyetten hangisinin önce yamalanacağı bağlama bağlıdır: makine ne kadar önemli, servis dışarıya ne kadar açık, bilinen kötüye kullanım var mı? Bu üç soru ham puanı gerçek risk sırasına çevirir.",
-       "Her bulgu için önem, maruziyet ve CVSS'yi birleştiren kendi basit kuralını yaz (örn. 1-3 skala). Bulguları sıralayıp en önemli 3'ü için gerekçe yaz ve ham CVSS sırasından farklı çıkan en az 1 örneği açıkla.",
+       "Her bulgu için önem, maruziyet ve CVSS'yi birleştiren kendi basit kuralını yaz (örn. 1-3 skala). Bulguları sıralayıp en önemli 3'ü için gerekçe yaz ve ham CVSS sırasından farklı çıkan en az 1 örneği açıkla; fark çıkmadıysa nedenini yaz (örn. tüm bulgular aynı bağlamda).",
        "Puanlama kuralı ve sıralanmış bulgu tablosu",
        "risk-based prioritization = risk temelli önceliklendirme, exposure = maruziyet, severity = ciddiyet, context = bağlam",
        "vulnerability prioritization context exposure criticality CVSS limits"],
@@ -468,28 +523,39 @@
        "Aynı kapsamla taramayı yenile ve 3 bulgunun durumunu 'kapandı/açık' olarak güncelle. Kapanmayan varsa nedenini yaz. Son olarak tabloyu özetleyen 5 satırlık yönetici özeti ekle.",
        "Güncel durum sütunu ve 5 satırlık yönetici özeti",
        "rescan = yeniden tarama, closure = kapatma, residual risk = kalan risk, executive summary = yönetici özeti",
-       "vulnerability rescan verify remediation residual risk summary"]
+       "vulnerability rescan verify remediation residual risk summary"],
+      ["Eşleşmeyi doğrula",
+       "Bir tarayıcının sürüm bilgisinden CVE bulmak tahmindir; dağıtımlar yamaları eski sürüm numarasına geri taşıyabilir (backport) ve numara eski görünse de açık kapanmış olabilir. Bu yüzden eşleşmeyi kesin saymadan önce paket sürümü, üreticinin güvenlik takipçisi ve backport durumuyla doğrularsın.",
+       "Tablondaki en az 6 CVE eşleşmesi için (düzelttiğin 3 bulgu ve öncelik sırasındaki ilk 3 bulgu zorunlu) kendi laboratuvar makinende paket sürümünü paket yöneticisiyle sorgula (örn. Ubuntu'da 'dpkg -l <paket>' veya 'apt policy <paket>'), dağıtımın güvenlik takipçisindeki kayıtta o sürümün etkilenip etkilenmediğine bak ve backport olasılığını kontrol et. Her satırı 'doğrulandı / yanlış eşleşme / doğrulanmadı' olarak işaretle; yanlış eşleşme çıkarsa öncelik tablosunu güncelle.",
+       "Doğrulama durumu ve kaynak notu sütunlu CVE tablosu",
+       "package version = paket sürümü, backport = yamanın eski sürüme taşınması, vendor advisory = üretici güvenlik bülteni, false match = yanlış eşleşme",
+       "ubuntu security tracker CVE backport package version dpkg apt policy verify"]
     ],
-    onkosul: ["Ev Laboratuvarı (sec2) projesindeki nmap kullanımı ve izole ağ kurulumu gerekir.", "Linux Sertleştirme Kontrol Listesi (sec2c) veya Log Analizi (sec2b) projesinden en az biri tamamlanmış olmalı; çünkü bulgu düzeltmek için servis ve ayar değiştirmeyi bilmek gerekir."],
+    onkosul: ["Ev Laboratuvarı (sec2) projesindeki nmap kullanımı ve izole ağ kurulumu gerekir.", "Linux Sertleştirme Kontrol Listesi (sec2c) veya Log Analizi (sec2b) projesinden en az biri tamamlanmış olmalı: sec2c düzeltme adımındaki servis ve ayar değiştirmeyi, sec2b ise kayıttan kanıt okuyup bulguyu doğrulamayı uygulamalı gösterir."],
     gereksinim: [
       "İşlevsel (zorunlu): En az 2 laboratuvar makinesi için önem derecesi gerekçeli varlık envanteri çıkarılır.",
       "İşlevsel (zorunlu): Yazılı kapsam içinde servis ve sürüm taraması yapılır ve sonuçlar tabloya işlenir.",
-      "İşlevsel (zorunlu): En az 6 bulgu CVE kodu, CVSS puanı ve doğrulama durumuyla eşleştirilir.",
+      "İşlevsel (zorunlu): En az 6 bulgu CVE kodu, CVSS puanı (sürümüyle) ve doğrulama durumuyla eşleştirilir.",
+      "İşlevsel (zorunlu): Eşleşmeler paket sürümü, üretici güvenlik takipçisi ve backport kontrolüyle doğrulanır (K7).",
       "İşlevsel (zorunlu): Önem, maruziyet ve CVSS'yi birleştiren yazılı bir önceliklendirme kuralı uygulanır.",
       "İşlevsel (zorunlu): En az 3 bulgu için düzeltme uygulanır ve yeniden tarama ile doğrulanır.",
+      "İşlevsel (zorunlu): Düzeltme tablosuna çözüm türü, tarih ve sorumlu sütunları yazılır (K8).",
+      "İşlevsel (zorunlu): Tabloyu özetleyen 5 satırlık yönetici özeti kalan riski belirtir (K6).",
       "İşlevsel olmayan: Tarama yalnız kendi izole laboratuvar makinelerinde yapılır ve hiçbir exploit veya saldırı adımı tabloya yazılmaz."
     ],
     kabul: [
       "K1: Envanterde en az 2 makine ve her biri için önem gerekçesi var | Test: Tabloyu say, boş gerekçe hücresi olmadığını kontrol et.",
       "K2: Tarama tablosundaki her port nmap çıktısında gerçekten görünüyor | Test: 3 rastgele satırı nmap çıktısındaki karşılığıyla eşleştir.",
-      "K3: En az 6 bulgu için CVE kodu ve CVSS puanı yazılı, emin olunmayanlar 'doğrulanmadı' | Test: Tabloda 6 dolu satırı say, 2 CVE kaydını arama kaynağında yeniden aç ve puanı karşılaştır.",
-      "K4: Öncelik sırası CVSS sırasından en az 1 noktada farklı ve gerekçesi yazılı | Test: İki sıralamayı yan yana koy, farkı gösteren satırı bul.",
+      "K3: En az 6 bulgu için CVE kodu ve CVSS puanı (sürümüyle) yazılı, emin olunmayanlar 'doğrulanmadı' | Test: Tabloda 6 dolu satırı say, 2 CVE kaydını arama kaynağında yeniden aç ve puanı karşılaştır.",
+      "K4: CVSS sürümü (3.1 veya 4.0) tabloda belirtilmiş ve öncelik sırası CVSS sırasından en az 1 noktada farklı, gerekçesi yazılı; fark yoksa nedeni yazılı | Test: Sürüm bilgisini bul, iki sıralamayı yan yana koy, farkı gösteren satırı veya fark olmama nedenini bul.",
       "K5: En az 3 bulgunun durumu yeniden taramayla 'kapandı' veya 'açık, nedeni şu' olarak güncellenmiş | Test: İlk ve ikinci tarama çıktısını karşılaştır.",
-      "K6: Yönetici özeti 5 satır ve kalan riski açıkça belirtiyor | Test: Satırları say ve 'kalan risk' ifadesini bul."
+      "K6: Yönetici özeti 5 satır ve kalan riski açıkça belirtiyor | Test: Satırları say ve 'kalan risk' ifadesini bul.",
+      "K7: En az 6 CVE eşleşmesinin her biri için paket sürümü, üretici güvenlik takipçisi notu ve 'doğrulandı / yanlış eşleşme / doğrulanmadı' durumu yazılı | Test: 2 satırın paket sürümünü hedef makinede yeniden sorgula, takipçi kaydını aç ve durumun doğru yazıldığını doğrula.",
+      "K8: Düzeltme tablosunda en az 3 bulgu için çözüm türü, tarih ve sorumlu dolu; uygulanamayan varsa 'riski kabul' gerekçesi yazılı | Test: 3 satır x 3 sütunu say ve uygulanan değişiklikleri laboratuvar makinesinde göster."
     ],
     rubrik: [
       { olcut: "Kapsam ve etik sınır", guclu: "Kapsam yazılı ve tarama yalnız kendi makinelerindedir; tablo saldırı adımı içermez.", zayif: "Kapsam belirsizdir veya izin dışı hedefe tarama yapılmıştır." },
-      { olcut: "Eşleştirme doğruluğu", guclu: "CVE eşleşmeleri sürümle doğrulanmış, belirsizler açıkça işaretlenmiştir.", zayif: "Servis adına bakıp rastgele CVE yazılmıştır." },
+      { olcut: "Eşleştirme doğruluğu", guclu: "CVE eşleşmeleri paket sürümü, üretici takipçisi ve backport kontrolüyle doğrulanmış, belirsizler açıkça işaretlenmiştir.", zayif: "Servis adına bakıp rastgele CVE yazılmıştır." },
       { olcut: "Bağlamsal önceliklendirme", guclu: "Kural yazılıdır ve CVSS sırasından sapmanın gerekçesi savunulabilir.", zayif: "Yalnız CVSS puanına göre sıralanmıştır." },
       { olcut: "Düzeltme ve doğrulama", guclu: "Her çözüm sorumlu ve tarihle yazılmış, yeniden tarama ile kanıtlanmıştır.", zayif: "Çözüm önerilir ama uygulanmaz ya da doğrulanmaz." },
       { olcut: "Özet ve kalan risk", guclu: "Yönetici özeti teknik olmayan biri için de anlaşılır, kalan risk açıktır.", zayif: "Kalan risk gizlenir veya özet yoktur." }
@@ -501,12 +567,12 @@
     ],
     yetkinlikler: [
       { ad: "Varlık yönetimi", kanit: "Adım 1'deki gerekçeli varlık envanteri." },
-      { ad: "Zafiyet eşleştirme", kanit: "Adım 2'deki tarama tablosu ve Adım 3'teki CVE eşleştirme tablosu." },
+      { ad: "Zafiyet eşleştirme", kanit: "Adım 2'deki tarama tablosu, Adım 3'teki CVE eşleştirme tablosu ve Adım 7'deki doğrulama durumu sütunu." },
       { ad: "Risk temelli karar verme", kanit: "Adım 4'teki puanlama kuralı ve sıralanmış tablo." },
-      { ad: "Düzeltmeyi doğrulama", kanit: "Adım 5'teki düzeltme tablosu ve Adım 6'daki yeniden tarama sonucu." }
+      { ad: "Düzeltmeyi doğrulama", kanit: "Adım 5'teki düzeltme tablosu (çözüm, tarih, sorumlu) ve Adım 6'daki yeniden tarama sonucu ile yönetici özeti." }
     ],
-    telafi: "K3 tutmazsa adım 3'e dön ve CVE kayıtlarını sürüm bilgisiyle yeniden eşleştir; K4 tutmazsa adım 4'te kuralı yeniden yazıp sıralamayı tekrarla; K5 tutmazsa adım 5 ve 6'da düzeltmeyi uygulayıp aynı kapsamla yeniden tara.",
-    sonraki: "K1-K6'nın tümü tutar ve üç savunma sorusunu kendi kararlarınla yanıtlarsan Mini SOC (sec3) ve Tehdit Modelleme (sec3c) projelerinin kilidi açılır; tamamlama kanıt kaydı üretir."
+    telafi: "K1 tutmazsa adım 1'de envanteri gerekçeleriyle yeniden doldur; K2 tutmazsa adım 2'de taramayı yazılı kapsamla yenileyip tabloyu nmap çıktısıyla yeniden eşleştir; K3 tutmazsa adım 3'e dön ve CVE kayıtlarını sürüm bilgisiyle (CVSS sürümüyle) yeniden eşleştir; K4 tutmazsa adım 4'te kuralı yeniden yazıp sıralamayı tekrarla; K8 tutmazsa adım 5'te çözüm, tarih ve sorumlu sütunlarını doldur; K5 tutmazsa adım 5 ve 6'da düzeltmeyi uygulayıp aynı kapsamla yeniden tara; K6 tutmazsa adım 6'da 5 satırlık yönetici özetini kalan riskle yeniden yaz; K7 tutmazsa adım 7'de eşleşmeleri paket sürümü ve üretici takipçisiyle yeniden doğrula.",
+    sonraki: "K1-K8'in tümü tutar ve üç savunma sorusunu kendi kararlarınla yanıtlarsan Tehdit Modelleme (sec3c) ve Güvenlik Politikası Seti (sec3d) önerilen sonraki projelerdir; sec3c önkoşulu sec2d'dir, sec3d önkoşulu ise sec2c veya sec2d'den birinin tamamlanmasıdır. Tamamlama kanıt kaydı üretir."
   });
 
   /* ---------- LV3 ---------- */
@@ -610,7 +676,7 @@
     yol: "sec", id: "sec3c", lv: 3,
     title: "Tehdit Modelleme: Kendi Küçük Uygulamanı Tasarım Aşamasında Savun",
     weeks: 3,
-    tools: "OWASP Threat Dragon veya draw.io, STRIDE tablosu, elektronik tablo, kendi küçük web uygulaman veya taslağı",
+    tools: "OWASP Threat Dragon (güncel sürümü ve dışa aktarma biçimi doğrulanmadı, kendi kurulumunda kontrol et) veya draw.io, STRIDE tablosu, elektronik tablo, kendi küçük web uygulaman veya taslağı",
     why: "Güvenlik açıklarının çoğu kod yazıldıktan sonra eklenmesi pahalı olan tasarım kararlarından çıkar. Kendi küçük bir uygulaman için veri akış şeması çizip tehditleri sistematik biçimde çıkarır, her tehdide bir karşı önlem ve kalan risk atarsın.",
     outcome: ["Bir uygulamanın veri akış şemasını ve güven sınırlarını çizersin", "STRIDE ile en az 12 tehdidi bulup önceliklendirirsin", "Her yüksek tehdit için azaltma önlemi ve kalan risk yazarsın"],
     pitch: "I threat-modeled my own small web app with data flow diagrams and STRIDE, then mapped each major threat to a mitigation.",
@@ -623,13 +689,13 @@
        "threat modeling basics what are we building assets"],
       ["Veri akış şemasını ve güven sınırlarını çiz",
        "Veri akış şeması, şehir haritası gibi: dış kullanıcı, süreç, veri deposu ve aralarındaki yollar. Güven sınırı, 'buradan sonrası artık kontrolümüzde değil' diyen çizgidir; tehditlerin çoğu bu çizgiyi geçen oklarda çıkar.",
-       "En az 3 süreç, 2 veri deposu ve 1 dış aktör içeren bir veri akış şeması çiz. En az 2 güven sınırı işaretle ve her oku numaralandır.",
-       "Numaralı oklar ve 2 güven sınırı içeren veri akış şeması",
+       "En az 3 süreç, 2 veri deposu ve 1 dış aktör içeren bir veri akış şeması çiz. En az 2 güven sınırı işaretle; her süreci, veri deposunu, dış aktörü ve oku numaralandır (örn. S1, D1, A1, F1).",
+       "Numaralı süreç, depo, aktör ve oklar ile 2 güven sınırı içeren veri akış şeması",
        "data flow diagram = veri akış şeması, trust boundary = güven sınırı, data store = veri deposu, process = süreç",
        "data flow diagram trust boundary threat modeling example"],
       ["STRIDE ile tehditleri bul",
-       "STRIDE altı tehdit türünün baş harfleridir: sahte kimlik (Spoofing), kurcalama (Tampering), inkâr (Repudiation), bilgi sızması (Information disclosure), hizmet engelleme (Denial of service), yetki yükseltme (Elevation of privilege). Her oka ve depoya bu altı soruyu sormak, kontrol listesiyle bina dolaşmaya benzer.",
-       "Şemadaki en az 6 öğe için STRIDE sorularını sor ve en az 12 tehdit yaz. Her tehdit için öğe numarası, STRIDE türü ve tek cümlelik senaryo ekle; saldırı betiği veya exploit adımı yazma.",
+       "STRIDE altı tehdit türünün baş harfleridir: sahte kimlik (Spoofing), kurcalama (Tampering), inkâr (Repudiation), bilgi sızması (Information disclosure), hizmet engelleme (Denial of service), yetki yükseltme (Elevation of privilege). Her öğeye altı sorunun hepsi sorulmaz; öğe türüne göre geçerli harfler sorulur: dış aktör için S ve R, süreç için altısı da, veri deposu için T, I ve D (kayıt tutuyorsa R de), veri akışı oku için T, I ve D. Bu, kontrol listesiyle bina dolaşmaya benzer.",
+       "Şemadaki en az 6 öğe için, öğe türüne göre geçerli STRIDE harflerini sor ve en az 12 tehdit yaz. Her tehdit için öğe numarası, STRIDE türü ve tek cümlelik senaryo ekle; saldırı betiği veya exploit adımı yazma.",
        "En az 12 satırlık STRIDE tehdit tablosu",
        "STRIDE = tehdit sınıflandırma modeli, spoofing = kimlik sahteciliği, tampering = kurcalama, elevation of privilege = yetki yükseltme",
        "STRIDE threat model categories examples per element"],
@@ -641,7 +707,7 @@
        "simple risk matrix likelihood impact threat prioritization"],
       ["Her yüksek tehdide karşı önlem ve kalan risk ata",
        "Her tehdit için seçenekler dörttür: azalt, ortadan kaldır, devret veya kabul et. Önlem de bir tasarım kararıdır: örneğin kimlik doğrulama, girdi doğrulama, yetki kontrolü ve kayıt tutma. Önlemden sonra kalan risk, sıfır olmayabilir ve açıkça yazılmalıdır.",
-       "En yüksek 4 tehdit için önlem, seçenek türü, kalan risk puanı ve önlemin hangi veri akışı okuna uygulandığını yaz. En az 1 tehdidi bilerek 'kabul et' olarak gerekçelendir.",
+       "En yüksek 4 tehdit için önlem, seçenek türü, kalan risk puanı ve önlemin hangi veri akışı okuna uygulandığını yaz. Uygunsa (riski düşük ve önlemi orantısız pahalıysa) 1 tehdidi bilerek 'kabul et' olarak gerekçelendir; uygun tehdit yoksa neden hiçbirini kabul etmediğini yaz.",
        "4 tehdit için önlem ve kalan risk tablosu",
        "mitigation = azaltma önlemi, residual risk = kalan risk, accept = kabul et, authorization check = yetki denetimi",
        "threat mitigation strategies mitigate eliminate transfer accept residual risk"],
@@ -650,45 +716,55 @@
        "Modelini bir kişiye (veya kendin bir hafta sonra) gösterip en az 2 yeni tehdit veya itiraz topla. Modeli 'sürüm 2' olarak güncelle ve 'tasarım değişince hangi bölümü yeniden gözden geçireceğim' için 3 tetikleyici yaz.",
        "Sürüm 2 model ve 3 gözden geçirme tetikleyicisi",
        "design review = tasarım gözden geçirme, living document = yaşayan belge, trigger = tetikleyici, peer review = eş değerlendirme",
-       "threat model review update when design changes triggers"]
+       "threat model review update when design changes triggers"],
+      ["Önlemleri sınanabilir gereksinim ve test senaryosuna çevir",
+       "Önlem yazılmışsa bile sınanamıyorsa uygulandığı bilinemez; 'girdi doğrulanmalı' bir dilek, 'oturumsuz istek reddedilmelidir' ise bir sınav sorusudur. Her önlemi gözlenebilir bir güvenlik gereksinimine ve onu doğrulayacak bir test senaryosuna çevirirsen tasarım kararı kodda sınanabilir hale gelir.",
+       "Adım 5'teki 4 önlemin her biri için 'sistem şunu yapmalıdır' biçiminde, evet/hayır cevaplanabilir bir güvenlik gereksinimi ve onu doğrulayan bir test senaryosu (girdi ve beklenen sonuç) yaz. Her satırı ilgili tehdit ve ok numarasına bağla. Senaryolar kendi uygulamanın tasarımına göre ve savunma bakışıyla yazılsın; saldırı betiği veya exploit adımı yazma.",
+       "4 gereksinim ve 4 test senaryosu tablosu (tehdit ve ok numarasına bağlı)",
+       "security requirement = güvenlik gereksinimi, test case = test senaryosu, testable = sınanabilir, traceability = izlenebilirlik",
+       "security requirements from threat model testable test cases"]
     ],
     onkosul: ["Zafiyet Yönetimi Tablosu (sec2d) projesindeki varlık, risk ve önceliklendirme kavramları gerekir; bu proje onları tasarım aşamasına taşır.", "Basit bir web uygulamasının kullanıcı, sunucu ve veri tabanı bölümlerini ayırt edebilmek varsayılır (kodu yazmış olmak şart değil, taslak yeter)."],
     gereksinim: [
-      "İşlevsel (zorunlu): Sistem özeti ve en az 3 varlık gerekçesiyle yazılır.",
+      "İşlevsel (zorunlu): Sistem özeti ve en az 3 varlık gerekçesiyle yazılır (K7).",
       "İşlevsel (zorunlu): En az 3 süreç, 2 veri deposu, 1 dış aktör ve 2 güven sınırlı numaralı veri akış şeması çizilir.",
       "İşlevsel (zorunlu): STRIDE ile en az 12 tehdit, öğe numarası ve tür etiketiyle tabloya yazılır.",
       "İşlevsel (zorunlu): Tehditler olasılık x etki puanıyla sıralanır ve en yüksek 4 tanesi için önlem ve kalan risk yazılır.",
+      "İşlevsel (zorunlu): Model bir kişiye (veya bir hafta sonra kendine) gösterilip en az 2 yeni tehdit/itiraz ve 3 tetikleyiciyle sürüm 2 olarak güncellenir (K6).",
+      "İşlevsel (zorunlu): Her önlem, ilgili tehdit ve ok numarasına bağlı sınanabilir bir güvenlik gereksinimine ve bir test senaryosuna çevrilir (K8).",
       "İşlevsel (isteğe bağlı): Modeli Threat Dragon gibi bir araçta oluşturup dışa aktarılan dosya eklenir.",
       "İşlevsel olmayan: Tehditler yalnız kendi uygulamanın tasarımı üzerinde ve savunma bakışıyla yazılır, saldırı betiği veya exploit adımı içermez."
     ],
     kabul: [
-      "K1: Şemada en az 3 süreç, 2 depo, 1 aktör, 2 güven sınırı var ve oklar numaralı | Test: Öğeleri say ve numaralandırmanın tekrarsız olduğunu kontrol et.",
-      "K2: Tehdit tablosunda en az 12 satır var ve altı STRIDE türünden en az 5'i temsil ediliyor | Test: Tür sütununu say, farklı tür sayısını yaz.",
+      "K1: Şemada en az 3 süreç, 2 depo, 1 aktör, 2 güven sınırı var; süreçler, depolar, aktör ve oklar numaralı | Test: Öğeleri say ve numaralandırmanın tekrarsız olduğunu kontrol et.",
+      "K2: Tehdit tablosunda en az 12 satır var, altı STRIDE türünden en az 5'i temsil ediliyor ve her tehdidin türü ilgili öğe türü için geçerli | Test: Tür sütununu say, farklı tür sayısını yaz; 3 satırda türün öğe türüne (aktör, süreç, depo, akış) uygun olduğunu kontrol et.",
       "K3: Her tehdit satırı şemadaki gerçek bir öğe numarasına bağlı | Test: 4 rastgele satırın öğe numarasını şemada bul.",
       "K4: Risk puanları olasılık x etki ile hesaplanmış ve tablo azalan sırada | Test: 3 satırın puanını elle yeniden hesapla, sıralamayı kontrol et.",
-      "K5: En yüksek 4 tehdidin her birinde önlem, seçenek türü ve kalan risk dolu; en az 1 'kabul et' gerekçeli | Test: 4x3 hücreyi say, 'kabul et' gerekçesini oku.",
-      "K6: Sürüm 2 modelde en az 2 yeni tehdit/itiraz ve 3 tetikleyici var | Test: Sürüm 1 ve 2 tablolarını karşılaştırıp farkı göster."
+      "K5: En yüksek 4 tehdidin her birinde önlem, seçenek türü ve kalan risk dolu; uygun bir tehdit varsa 'kabul et' gerekçeli, yoksa hiçbirinin kabul edilmeme nedeni yazılı | Test: 4x3 hücreyi say, 'kabul et' gerekçesini veya kabul edilmeme nedenini oku.",
+      "K6: Sürüm 2 modelde en az 2 yeni tehdit/itiraz ve 3 tetikleyici var | Test: Sürüm 1 ve 2 tablolarını karşılaştırıp farkı göster.",
+      "K7: Sistem özeti 5-8 cümle ve en az 3 varlık için ayrı değer gerekçesi yazılı | Test: Cümleleri say, 3 varlığı ve gerekçe hücrelerini göster.",
+      "K8: 4 önlemin her biri için sınanabilir bir güvenlik gereksinimi ve test senaryosu (girdi, beklenen sonuç) var ve her satır bir tehdit/ok numarasına bağlı | Test: 4 satırı say, 2 senaryoyu 'girdi verilirse beklenen sonuç gözlenir mi' diye okuyup sınanabilirliğini ve numara bağını kontrol et."
     ],
     rubrik: [
       { olcut: "Şemanın doğruluğu", guclu: "Güven sınırları gerçekten kontrol değişen yerlere çizilmiştir ve her ok verinin türünü söyler.", zayif: "Şema bir kutu-ok süsüdür, sınırlar rastgeledir." },
       { olcut: "Tehdit kapsamı", guclu: "STRIDE türleri dengelidir ve tehditler şemadaki belirli öğelere bağlanmıştır.", zayif: "Tehditler genel ('hacklenme') ve türler tekrarlıdır." },
       { olcut: "Önceliklendirme", guclu: "Olasılık ve etki gerekçelidir; sıralama sezgiyle çelişirse açıklanır.", zayif: "Puanlar gerekçesiz ve hepsi aynıdır." },
-      { olcut: "Önlem tasarımı", guclu: "Önlemler tasarım kararıdır, ilgili oka bağlıdır ve kalan risk dürüstçe yazılmıştır.", zayif: "Önlem 'güvenli kodlama yap' gibi genel ve kalan risk sıfır gösterilmiştir." },
+      { olcut: "Önlem tasarımı", guclu: "Önlemler tasarım kararıdır, ilgili oka bağlıdır, kalan risk dürüstçe yazılmıştır ve her önlem sınanabilir bir gereksinim ve test senaryosuna çevrilmiştir.", zayif: "Önlem 'güvenli kodlama yap' gibi genel ve kalan risk sıfır gösterilmiştir." },
       { olcut: "Gözden geçirme", guclu: "Dış bakış yeni tehdit üretmiş ve tetikleyiciler somuttur.", zayif: "Model hiç gözden geçirilmemiştir." }
     ],
     savunma: [
       "Güven sınırını burada çizmeni gerektiren ne; sınırı bir kutu kaydırırsan hangi tehditler eklenir veya kalkar?",
-      "Bir tehdidi 'kabul et' olarak bıraktığın karar kime ait olmalı ve hangi koşulda yeniden açılırdı?",
+      "Bir tehdidi 'kabul et' olarak bıraktıysan bu karar kime ait olmalı ve hangi koşulda yeniden açılırdı; hiçbirini kabul etmediysen bunu neden doğru buldun?",
       "STRIDE'ın kaçırabileceği tehdit türleri nelerdir; modelini tamamlamak için ek olarak hangi yaklaşımı kullanırdın?"
     ],
     yetkinlikler: [
       { ad: "Sistem modelleme", kanit: "Adım 1'deki sistem özeti ve Adım 2'deki veri akış şeması." },
       { ad: "Sistematik tehdit bulma", kanit: "Adım 3'teki STRIDE tehdit tablosu." },
       { ad: "Risk temelli karar", kanit: "Adım 4'teki risk puanlı sıralı tablo." },
-      { ad: "Tasarım düzeyinde önlem yazma", kanit: "Adım 5'teki önlem ve kalan risk tablosu ile Adım 6'daki sürüm 2 model." }
+      { ad: "Tasarım düzeyinde önlem yazma", kanit: "Adım 5'teki önlem ve kalan risk tablosu, Adım 6'daki sürüm 2 model ve Adım 7'deki gereksinim ve test senaryosu tablosu." }
     ],
-    telafi: "K1 veya K3 tutmazsa adım 2'ye dönüp şemayı yeniden çiz ve adım 3'te tehditleri öğe numaralarına yeniden bağla; K2 tutmazsa adım 3'te eksik STRIDE türleri için öğeleri yeniden sorgula; K4 veya K5 tutmazsa adım 4 ve 5'te puanları ve önlemleri yeniden yaz.",
-    sonraki: "K1-K6'nın tümü tutar ve üç savunma sorusunu kendi modelinle yanıtlarsan Güvenlik Politikası Seti (sec3d) ve Siber Güvenlik kapston projesinin (sec4) kilidi açılır; tamamlama kanıt kaydı üretir."
+    telafi: "K7 tutmazsa adım 1'de sistem özetini ve 3 varlığın gerekçesini yeniden yaz; K1 veya K3 tutmazsa adım 2'ye dönüp şemayı yeniden çiz ve adım 3'te tehditleri öğe numaralarına yeniden bağla; K2 tutmazsa adım 3'te eksik STRIDE türleri için öğeleri öğe türüne uygun harflerle yeniden sorgula; K4 veya K5 tutmazsa adım 4 ve 5'te puanları ve önlemleri yeniden yaz; K6 tutmazsa adım 6'da modeli bir kişiye gösterip sürüm 2'yi tetikleyicilerle yeniden yaz; K8 tutmazsa adım 7'de her önlemi sınanabilir gereksinim ve test senaryosuna yeniden çevir.",
+    sonraki: "K1-K8'in tümü tutar ve üç savunma sorusunu kendi modelinle yanıtlarsan Güvenlik Politikası Seti (sec3d) ve Siber Güvenlik kapston projesi (sec4) isteğe bağlı sonraki projelerdir; sec4 önkoşulu Ev Laboratuvarı (sec2) ve Mini SOC (sec3) projeleridir, bu projeye bağlı değildir. Tamamlama kanıt kaydı üretir."
   });
 
   K.yeni.push({
@@ -705,16 +781,15 @@
        "Kurgusal 20 kişilik yazılım ofisini tanımla (kişi, cihaz, bulut hizmeti, müşteri verisi). En önemli 5 riski yaz ve 4 politika seç: kabul edilebilir kullanım, erişim ve parola, olay bildirimi, yedekleme ve veri saklama.",
        "Kurum tanımı, 5 risk ve 4 politika başlığı",
        "policy = politika, risk register = risk kaydı, scope = kapsam, acceptable use = kabul edilebilir kullanım",
-       "information security policy small company which policies needed",
-       ],
+       "information security policy small company which policies needed"],
       ["Politika yapısını ve dili belirle",
        "Politika üç katmanla yazılır: ne yapılacak (politika), nasıl yapılacak (standart/prosedür) ve kim sorumlu (rol). 'Kullanıcılar güvenli parola seçmelidir' gibi belirsiz cümle denetlenemez; 'parola en az 14 karakter olmalıdır' gibi cümle denetlenebilir.",
-       "Her politika için amaç, kapsam, roller, 5-7 kural ve ihlal sonucu bölümlerini kullanan ortak bir şablon yaz. Kural cümlelerini 'zorunludur / yasaktır / yapılabilir' gibi net kiplerle yaz.",
+       "Her politika için amaç, kapsam, roller, 5-7 kural, ihlal sonucu bölümlerini ve politikanın cevap verdiği riski gösteren 'ilgili risk' alanını (adım 1'deki risk kaydından) kullanan ortak bir şablon yaz. Kural cümlelerini 'zorunludur / yasaktır / yapılabilir' gibi net kiplerle yaz.",
        "Ortak şablon ve ilk politikanın kural bölümü",
        "standard = standart, procedure = prosedür, shall/must = zorunlu ifadesi, role = rol",
        "security policy template purpose scope roles must shall wording"],
       ["Dört politikayı yaz",
-       "Kısa ve uygulanabilir politika, 4 sayfalık bir yangın talimatı gibi okunur ve bilinir; 40 sayfalık hiç okunmaz. Her politika 1-2 sayfayı geçmemeli ve her kural tek bir davranışı hedeflemelidir.",
+       "Kısa ve uygulanabilir politika, 2 sayfalık bir yangın talimatı gibi okunur ve bilinir; 40 sayfalık hiç okunmaz. Her politika 1-2 sayfayı geçmemeli ve her kural tek bir davranışı hedeflemelidir.",
        "4 politikayı yaz; her biri en fazla 2 sayfa ve 5-7 kural içersin. Kurallarda en az 4 tanesi sayısal veya gözlenebilir bir ölçüt (süre, uzunluk, sıklık) taşısın.",
        "4 politika taslağı, toplam en fazla 8 sayfa",
        "enforceable = uygulanabilir, measurable = ölçülebilir, data retention = veri saklama, access review = erişim gözden geçirme",
@@ -727,7 +802,7 @@
        "policy to control mapping evidence audit traceability matrix"],
       ["İstisna ve gözden geçirme sürecini tanımla",
        "Hiçbir politika her duruma uymaz; istisna süreci olmayan kural, ya göz ardı edilir ya da iş durur. İstisna süreli, gerekçeli, onaylı ve kayıtlı olmalıdır.",
-       "1 sayfalık istisna süreci yaz (talep, gerekçe, telafi edici kontrol, onaylayan rol, bitiş tarihi). Ayrıca politikaların yıllık gözden geçirme takvimini ve sürüm geçmişi tablosunu hazırla.",
+       "1 sayfalık istisna süreci yaz (talep, gerekçe, telafi edici kontrol, onaylayan rol, bitiş tarihi). Ayrıca her politika için bir tarihli yıllık gözden geçirme takvimini ve sürüm geçmişi tablosunu (en az ilk sürüm satırı) hazırla.",
        "İstisna süreci, gözden geçirme takvimi ve sürüm geçmişi tablosu",
        "exception = istisna, compensating control = telafi edici kontrol, approval = onay, review cycle = gözden geçirme döngüsü",
        "security policy exception process compensating control review cycle"],
@@ -736,30 +811,38 @@
        "Teknik olmayan bir kişiye 1 politikanın (en az 5 kural) metnini ver, kuralları kendi cümleleriyle özetlemesini iste. Anlamadığı veya yanlış anladığı kuralları not et ve metni düzelt. Önce/sonra metnini karşılaştır.",
        "Okuyucu özeti, yanlış anlaşılan kurallar ve düzeltilmiş metin",
        "readability = okunabilirlik, plain language = sade dil, user testing = kullanıcı sınaması, ambiguity = belirsizlik",
-       "plain language policy writing test comprehension ambiguity"]
+       "plain language policy writing test comprehension ambiguity"],
+      ["Kuralları gerçek kanıtla sına ve riskle eşle",
+       "Kağıt üzerindeki kontrol, gerçek ayar gösterilmedikçe iddiadan ibarettir; denetçi 'göster' der. Ayrıca her risk bir kuralla karşılanmıyorsa politika boşlukta kalır, her kural bir riske bağlı değilse gereksiz yük taşır; bu yüzden risk ile kural arasındaki bağ yazılı olmalıdır.",
+       "Eşleme tablosundan kendi bilgisayarında veya hesaplarında uygulayabildiğin 3 kuralı seç (örn. ekran kilidi süresi, çok faktörlü doğrulama ayarı, yedekleme son tarihi). Her biri için gerçek ayardan alınmış kanıtı (ekran görüntüsü veya ayar çıktısı; kişisel bilgileri karart) ekle ve kanıtın kuralı doğrulayıp doğrulamadığını 'evet / kısmen / hayır' diye yaz. Eşleme tablosuna zorunlu bir 'ilgili risk' sütunu ekle: adım 1'deki 5 riskin her biri en az bir kurala bağlansın; riski olmayan kural veya kuralı olmayan risk varsa nedenini yaz.",
+       "3 kural için gerçek kanıt dosyası ve durum işareti, ayrıca 'ilgili risk' sütunlu eşleme tablosu",
+       "evidence = kanıt, screenshot = ekran görüntüsü, risk-to-control mapping = risk-kural eşlemesi, coverage gap = kapsam boşluğu",
+       "security policy control evidence screenshot audit risk to control traceability"]
     ],
     onkosul: ["Linux Sertleştirme Kontrol Listesi (sec2c) ve Zafiyet Yönetimi Tablosu (sec2d) projelerinden en az biri tamamlanmış olmalı: kontrol ve kanıt kavramını uygulamalı görmüş olmak gerekir.", "Olay Müdahale Tatbikatı (sec3b) varsa olay bildirim politikasına temel olur, yoksa olay yaşam döngüsünü okumuş olmak yeter."],
     gereksinim: [
       "İşlevsel (zorunlu): Kurgusal kurum, en önemli 5 risk ve 4 politika başlığı yazılır.",
       "İşlevsel (zorunlu): 4 politika, ortak şablonla ve her biri en fazla 2 sayfa olarak yazılır.",
       "İşlevsel (zorunlu): Kuralların en az 20 tanesi kontrol, sorumlu rol, kanıt ve sıklıkla eşlenir.",
-      "İşlevsel (zorunlu): İstisna süreci ve yıllık gözden geçirme takvimi tanımlanır.",
+      "İşlevsel (zorunlu): İstisna süreci, her politika için tarihli yıllık gözden geçirme takvimi ve sürüm geçmişi tablosu tanımlanır (K5).",
       "İşlevsel (zorunlu): En az 1 politika teknik olmayan bir okuyucuyla sınanır ve düzeltilir.",
-      "İşlevsel (isteğe bağlı): Politikalar, risk kaydındaki her riski en az bir kurala bağlayan bir izlenebilirlik sütunuyla genişletilir.",
+      "İşlevsel (zorunlu): En az 3 kural, gerçek ayardan alınmış kanıtla (ekran görüntüsü veya ayar çıktısı) sınanır ve durumu işaretlenir (K7).",
+      "İşlevsel (zorunlu): Eşleme tablosuna 'ilgili risk' sütunu eklenir ve risk kaydındaki her risk en az bir kurala bağlanır (K7).",
       "İşlevsel olmayan: Kurgusal kurum dışında gerçek bir şirket, kişi veya ürün adı kullanılmaz."
     ],
     kabul: [
-      "K1: Kurum tanımında 5 risk ve 4 politika başlığı var ve her politika en az 1 riske bağlı | Test: Politikalar ile riskleri eşleyen bir ok veya sütun bul.",
-      "K2: Her politika en fazla 2 sayfa ve amaç, kapsam, roller, kurallar, ihlal sonucu bölümlerini içeriyor | Test: Sayfa sayısını ve 5 bölüm başlığını kontrol et.",
+      "K1: Kurum tanımında 5 risk ve 4 politika başlığı var ve her politikanın şablonundaki 'ilgili risk' alanı en az 1 riske bağlı | Test: 4 politikanın 'ilgili risk' alanını aç ve her birinin risk kaydındaki bir riski gösterdiğini doğrula.",
+      "K2: Her politika en fazla 2 sayfa ve amaç, kapsam, roller, kurallar, ihlal sonucu bölümlerini ve 'ilgili risk' alanını içeriyor | Test: Sayfa sayısını, 5 bölüm başlığını ve ilgili risk alanını kontrol et.",
       "K3: Kuralların en az 4 tanesi sayısal veya gözlenebilir ölçüt içeriyor | Test: 4 kuralı işaretle ve her birinde bir sayı veya gözlenebilir koşul göster.",
       "K4: Eşleme tablosunda en az 20 kural için kontrol, rol, kanıt ve sıklık dolu | Test: 20x4 hücreyi say, boş hücre kalmadığını doğrula.",
-      "K5: İstisna sürecinde talep, gerekçe, telafi kontrolü, onaylayan ve bitiş tarihi alanları var | Test: 5 alanı sayıp her birinin şablonda bulunduğunu işaretle.",
-      "K6: Okuyucu özetinde yanlış anlaşılan kurallar listelenmiş ve düzeltilmiş metin önce/sonra karşılaştırılmış | Test: Önce ve sonra metinlerini yan yana koyup en az 1 değişikliği göster."
+      "K5: İstisna sürecinde talep, gerekçe, telafi kontrolü, onaylayan ve bitiş tarihi alanları var; her politika için tarihli bir yıllık gözden geçirme girişi ve sürüm geçmişi tablosunda en az ilk sürüm satırı var | Test: 5 alanı sayıp her birinin şablonda bulunduğunu işaretle; takvimde 4 politikanın tarihini ve sürüm tablosundaki satırları göster.",
+      "K6: Okuyucu özetinde yanlış anlaşılan kurallar listelenmiş ve düzeltilmiş metin önce/sonra karşılaştırılmış | Test: Önce ve sonra metinlerini yan yana koyup en az 1 değişikliği göster.",
+      "K7: Eşleme tablosunda 'ilgili risk' sütunu dolu ve 5 riskin her biri en az 1 kurala bağlı; en az 3 kural için gerçek ayardan alınmış kanıt (ekran görüntüsü veya ayar çıktısı) ve 'evet/kısmen/hayır' durumu var | Test: 5 riski sayıp her birinin bir kurala bağlı olduğunu izle; 3 kanıtı aç, ayarın kuralla uyuştuğunu ve kişisel bilgilerin karartıldığını kontrol et."
     ],
     rubrik: [
       { olcut: "Riske dayalı kapsam", guclu: "Her politika kurumun belirli bir riskine cevap verir ve bu ilişki yazılıdır.", zayif: "Politikalar hazır şablondan kopyalanmış genel metinlerdir." },
       { olcut: "Denetlenebilir dil", guclu: "Kurallar net kiplerle yazılmış ve gözlenebilir ölçüt içerir.", zayif: "Kurallar 'uygun şekilde', 'gerektiğinde' gibi belirsiz ifadelerle doludur." },
-      { olcut: "Kontrol ve kanıt eşlemesi", guclu: "Her kuralın bir kontrolü, sorumlusu ve gerçekçi kanıtı vardır; kanıtlanamayan kural ayıklanmıştır.", zayif: "Eşleme yoktur veya kanıt sütunu 'denetlenir' gibi boş ifadedir." },
+      { olcut: "Kontrol ve kanıt eşlemesi", guclu: "Her kuralın bir kontrolü, sorumlusu ve gerçekçi kanıtı vardır; kanıtlanamayan kural ayıklanmıştır, en az 3 kural gerçek ayarla sınanmış ve her risk bir kurala bağlanmıştır.", zayif: "Eşleme yoktur veya kanıt sütunu 'denetlenir' gibi boş ifadedir." },
       { olcut: "İstisna ve yaşam döngüsü", guclu: "İstisna süreli ve onaylıdır; gözden geçirme takvimi ve sürüm geçmişi vardır.", zayif: "İstisna kapıları sınırsızdır veya hiç tanımlanmamıştır." },
       { olcut: "Okunabilirlik sınaması", guclu: "Gerçek bir okuyucudan alınan geri bildirimle metin sadeleşmiştir.", zayif: "Metin hiç sınanmamış, uzun cümlelerle doludur." }
     ],
@@ -769,12 +852,12 @@
       "Sert kurallar çalışanları kuralı aşmaya iterse güvenlik düşer; politikanda bu dengeyi nasıl kurdun?"
     ],
     yetkinlikler: [
-      { ad: "Riske dayalı politika yazma", kanit: "Adım 1'deki risk listesi ve Adım 3'teki 4 politika taslağı." },
+      { ad: "Riske dayalı politika yazma", kanit: "Adım 1'deki risk listesi, Adım 2'deki şablonun 'ilgili risk' alanı ve Adım 3'teki 4 politika taslağı." },
       { ad: "Denetlenebilir kural dili", kanit: "Adım 2'deki şablon ve Adım 3'teki ölçülebilir kurallar." },
-      { ad: "Kontrol ve kanıt eşleme", kanit: "Adım 4'teki en az 20 satırlık kural-kontrol-kanıt tablosu." },
+      { ad: "Kontrol ve kanıt eşleme", kanit: "Adım 4'teki en az 20 satırlık kural-kontrol-kanıt tablosu ve Adım 7'deki 3 gerçek kanıt ile 'ilgili risk' sütunu." },
       { ad: "Süreç ve kullanıcı sınaması", kanit: "Adım 5'teki istisna süreci ve Adım 6'daki okuyucu sınama notu." }
     ],
-    telafi: "K3 veya K4 tutmazsa adım 3 ve 4'e dönüp belirsiz kuralları ölçülebilir hale getir ve eşleme tablosunu yeniden doldur; K5 tutmazsa adım 5'te istisna şablonunu yeniden yaz; K6 tutmazsa adım 6'da yeni bir okuyucuyla metni yeniden sına.",
-    sonraki: "K1-K6'nın tümü tutar ve üç savunma sorusunu kendi politika setinle yanıtlarsan Siber Güvenlik kapston projesi (sec4) için bu proje tasarım ve yönetişim kanıtı olarak kullanılabilir hale gelir; tamamlama kanıt kaydı üretir."
+    telafi: "K1 tutmazsa adım 1 ve 2'de riskleri ve şablondaki 'ilgili risk' alanını yeniden bağla; K2 tutmazsa adım 2 ve 3'te eksik bölümü ekle veya politikayı 2 sayfaya indir; K3 veya K4 tutmazsa adım 3 ve 4'e dönüp belirsiz kuralları ölçülebilir hale getir ve eşleme tablosunu yeniden doldur; K5 tutmazsa adım 5'te istisna şablonunu, gözden geçirme takvimini ve sürüm tablosunu yeniden yaz; K6 tutmazsa adım 6'da yeni bir okuyucuyla metni yeniden sına; K7 tutmazsa adım 7'de 3 kural için gerçek ayar kanıtını alıp 'ilgili risk' sütununu tamamla.",
+    sonraki: "K1-K7'nin tümü tutar ve üç savunma sorusunu kendi politika setinle yanıtlarsan Siber Güvenlik kapston projesi (sec4) için bu proje isteğe bağlı bir tasarım ve yönetişim kanıtı olarak eklenebilir; sec4 önkoşulu Ev Laboratuvarı (sec2) ve Mini SOC (sec3) projeleridir, bu projeye bağlı değildir. Tamamlama kanıt kaydı üretir."
   });
 })(window);
