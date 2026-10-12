@@ -54,10 +54,10 @@
   E[4] = {
     lab: "ccna-vlan",
     analoji: { a: "Aynı binada ayrı kat anahtarlı bölümler: muhasebe ve satış aynı binadadır ama koridorları ayrıdır.", sinir: "Katlar fiziksel olarak ayrıdır; VLAN'lar aynı switch üzerinde mantıksal ayrılır ve VLAN'lar arası konuşma için 3. katman cihazı (router) gerekir." },
-    rehberli: ["Bir switch'te VLAN 10 (Muhasebe) ve VLAN 20 (Satış) tanımla; port 1–4 access VLAN 10, 5–8 VLAN 20.", "İki switch arasındaki bağlantıyı trunk yap; 802.1Q'nun çerçeveye VLAN etiketi eklediğini not et.", "VLAN 10'daki PC'den VLAN 20'dekine ping neden başarısız, hangi cihazla çözülür, yaz."],
+    rehberli: ["Bir switch'te VLAN 10 (Muhasebe) ve VLAN 20 (Satış) tanımla; port 1–4 access VLAN 10, 5–8 VLAN 20.", "İki switch arasındaki bağlantıyı trunk yap; 802.1Q'nun çerçeveye VLAN etiketi eklediğini not et (Cisco'da: switchport mode trunk; izinli VLAN'ları switchport trunk allowed vlan 10,20 ile sınırla).", "VLAN 10'daki PC'den VLAN 20'dekine ping neden başarısız, hangi cihazla çözülür, yaz."],
     bagimsiz: "Üç bölümlü (Muhasebe, Satış, Misafir) küçük bir ofis için VLAN planı hazırla: VLAN numarası, isim, alt ağ ve hangi portların hangi VLAN'da olacağını tabloya yaz. Misafirin iç ağa erişememesinin nasıl sağlanacağını açıkla.",
     hatalar: [["Trunk'ta izin verilen VLAN'ı unutmak", "Trunk, bir VLAN'ı taşımıyorsa o VLAN'ın cihazları karşı switch'e ulaşamaz; izin listesini kontrol et."], ["Native VLAN'ın iki uçta farklı olması", "İki uçta aynı olmalıdır; aksi halde trafik yanlış VLAN'a düşer ve uyarı verir."], ["VLAN'ları aynı alt ağda bırakmak", "Her VLAN kendi alt ağını kullanır; yoksa VLAN'lar arası yönlendirme anlamsızlaşır."]],
-    gecme: { olcut: "Mini sınavda %80 ve access/trunk farkını ve VLAN'lar arası konuşma için router gerektiğini açıklayabilmek.", kritik: ["Switch'in tek başına VLAN'lar arasında yönlendirme yaptığını sanmak", "Access portun birden fazla VLAN taşıdığını sanmak"] },
+    gecme: { olcut: "Mini sınavda %80 ve access/trunk farkını ve VLAN'lar arası konuşma için router gerektiğini açıklayabilmek.", kritik: ["(2. katman) switch'in tek başına VLAN'lar arasında yönlendirme yaptığını sanmak", "Access portun birden fazla VLAN taşıdığını sanmak"] },
     telafi: "Takıldıysan iki VLAN, iki PC ve bir router çizip her PC'nin hangi alt ağda olduğunu işaretle; sonra trafiğin yolunu elle çiz.",
     sonraki: "Sıradaki konu: router ve yönlendirme (lab var)."
   };
@@ -75,6 +75,7 @@
   };
 
   E[6] = {
+    lab: "ccna-dhcp",
     analoji: { a: "Otelde resepsiyon: anahtar kartını (adresi) resepsiyon verir; rehber ise oda numarasını söyleyen defterdir.", sinir: "Otelde kart belirli bir süre kalır; DHCP adresi kiralamadır ve süre dolunca yenilenir. DNS yanıtları da önbelleğe alınır ve süresi (TTL) vardır." },
     rehberli: ["Bir cihaz ağa takıldı: Discover, Offer, Request, Ack (DORA) sırasını yaz ve her adımda kim konuşuyor işaretle.", "Cihaz adresi nasıl alır, kira süresi dolunca ne olur, yaz.", "Tarayıcıya bir alan adı yazıldığında: DNS sorgusu, yanıt, ardından TCP bağlantısı sırasını çiz."],
     bagimsiz: "Komut satırında 'ipconfig /all' ile DHCP sunucusunu ve DNS sunucularını bul; 'nslookup' ile bir alan adının IP'sini sorgula. Aynı adı iki DNS sunucusuna sor ve sonuçları karşılaştır.",
@@ -109,6 +110,7 @@
   };
 
   E[9] = {
+    lab: "ccna-ospf",
     analoji: { a: "Komşular harita paylaşır: herkes kendi sokağının yollarını anlatır, sonunda herkesin elinde şehrin aynı haritası olur.", sinir: "Haritalar gerçek zamanlı değil; OSPF'te komşuluk kurulmadan (hello, aynı alan, aynı parametreler) bilgi paylaşılmaz ve her router en kısa yolu maliyet (cost) toplamıyla hesaplar." },
     rehberli: ["İki router'ı bir bağlantıyla birleştir. Her biri 'hello' paketleri gönderir; komşuluk için aynı alan (area) ve aynı hello/dead süreleri gerekir.", "Bir bağlantının maliyeti, bant genişliğiyle ters orantılıdır; iki yol arasında toplam maliyeti en düşük olan seçilir.", "Broadcast ağlarda bir DR ve bir BDR seçilir; hangi kriterle seçildiğini yaz (en yüksek öncelik, eşitse en yüksek router ID)."],
     bagimsiz: "Üç router'dan oluşan bir üçgen çiz. Her bağlantıya bir maliyet yaz ve A'dan C'ye en düşük toplam maliyetli yolu hesapla. Bir bağlantı kesilirse yolun nasıl değiştiğini yaz.",
@@ -140,10 +142,10 @@
   };
 
   E[12] = {
-    analoji: { a: "Telefon numaralarının uzunlaşması: adres sayısı yetmeyince numara basamağı artırılır; IPv6 adres alanını pratik olarak tüketilemez hale getirir.", sinir: "Telefon numarası uzar ama mantığı değişmez; IPv6'da yayın (broadcast) yoktur, bunun yerine çok noktaya yayın (multicast) ve komşu keşfi (NDP) kullanılır." },
+    analoji: { a: "Telefon numaralarının uzunlaşması: adres sayısı yetmeyince numara basamağı artırılır; IPv6 adres alanını pratik olarak tüketilemez hale getirir.", sinir: "Telefon numarası uzar ama numaranın işlevi aynı kalır; IPv6'da çalışma mantığı da değişir: yayın (broadcast) yoktur, bunun yerine çok noktaya yayın (multicast) ve komşu keşfi (NDP) kullanılır." },
     rehberli: ["2001:0db8:0000:0000:0000:0000:0000:0001 adresini kısalt: baştaki sıfırları at, ardışık sıfır gruplarını bir kez '::' yap → 2001:db8::1.", "fe80::/10 ile başlayan adresin link-local olduğunu ve yalnız o bağlantıda geçerli olduğunu yaz.", "/64'ün tipik bir alt ağ önek uzunluğu olduğunu, 64 bitin arayüz kimliği için ayrıldığını not et."],
     bagimsiz: "Bilgisayarında IPv6 adreslerini listele ('ipconfig' ya da 'ip -6 a'). Bir link-local ve (varsa) bir global adres bul; her birinin önekini ve türünü yaz. '::' kısaltmasını açarak tam biçimine çevir.",
-    hatalar: [["'::' işaretini birden fazla kez kullanmak", "Bir adreste '::' yalnız bir kez kullanılabilir; yoksa kaç sıfır olduğu belli olmaz."], ["IPv6'da yayın adresi aramak", "IPv6'da broadcast yoktur; multicast ve NDP kullanılır."], ["IPv6 alt ağlarını IPv4 gibi küçük bölmek", "Standart alt ağ /64'tür; daha küçük blok seçmek NDP/SLAAC gibi özellikleri bozabilir."]],
+    hatalar: [["'::' işaretini birden fazla kez kullanmak", "Bir adreste '::' yalnız bir kez kullanılabilir; yoksa kaç sıfır olduğu belli olmaz."], ["IPv6'da yayın adresi aramak", "IPv6'da broadcast yoktur; multicast ve NDP kullanılır."], ["IPv6 alt ağlarını IPv4 gibi küçük bölmek", "Standart alt ağ /64'tür; LAN'da /64'ten küçük blok seçmek SLAAC'ı bozar (noktadan noktaya bağlantılarda /127 gibi istisnalar vardır)."]],
     gecme: { olcut: "Mini sınavda %80 ve bir IPv6 adresini kurallara göre kısaltıp açabilmek.", kritik: ["IPv6'da broadcast olduğunu sanmak", "'::' kısaltmasının birden çok kez kullanılabildiğini sanmak"] },
     telafi: "Takıldıysan önce 8 grup x 16 bit düzenini çiz; sonra sıfır gruplarını işaretle ve kısaltma kuralını uygula.",
     sonraki: "Sıradaki konu: STP ve EtherChannel.",

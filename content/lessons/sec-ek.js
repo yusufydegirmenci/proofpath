@@ -205,7 +205,7 @@
   };
 
   E[18] = {
-    analoji: { a: "Apartman: bina sahibi çatı ve girişi korur (sağlayıcı), daire içindeki kilit ve eşya kiracıya aittir (müşteri).", sinir: "Apartmanda sorumluluk sözleşmeyle belirgindir; bulutta sınır hizmet modeline (IaaS/PaaS/SaaS) göre kayar ve çoğu olayda suç 'açık bırakılan yapılandırma'dır." },
+    analoji: { a: "Apartman: bina sahibi çatı ve girişi korur (sağlayıcı), daire içindeki kilit ve eşya kiracıya aittir (müşteri).", sinir: "Apartmanda sorumluluk sözleşmeyle belirgindir; bulutta sınır hizmet modeline (IaaS/PaaS/SaaS) göre kayar ve yanlış yapılandırma bulut olaylarının sık nedenlerindendir." },
     rehberli: ["IaaS, PaaS ve SaaS için tabloda kim neyi yönetir (işletim sistemi, uygulama, veri) işaretle.", "Verinin hangi hizmet modelinde olursa olsun kimde kaldığını yaz (müşteride).", "Herkese açık bırakılmış bir depolama alanı örneğini ve nasıl önleneceğini (varsayılan kapalı, düzenli kontrol) bir cümleyle yaz."],
     bagimsiz: "Kullandığın bir bulut hizmetinde (e-posta ya da depolama) paylaşım ayarlarını aç ve herkese açık paylaşım var mı kontrol et. Gereksiz olanı kapat. Yalnız kendi hesabında çalış.",
     hatalar: [["Bulutta her şeyi sağlayıcının koruduğunu sanmak", "Veri, kimlik ve yapılandırma müşteri sorumluluğundadır."], ["Varsayılan yapılandırmaya güvenmek", "Varsayılanlar kolaylık içindir; paylaşım ve erişimi kendin gözden geçir."], ["Sanallaştırmayı fiziksel ayrım sanmak", "Sanal makineler aynı donanımı paylaşır; ayrım yazılımla sağlanır, yapılandırma önemlidir."]],
@@ -246,10 +246,10 @@
   };
 
   E[22] = {
-    analoji: { a: "Suç mahalli: eldiven giyilir, her nesne etiketlenir, kim aldı kime verdi yazılır; kanıt bozulursa mahkemede değeri düşer.", sinir: "Suç mahallinde eşya yerinde durur; dijital kanıt bellekte uçucudur, kapanınca yok olur ve kopyası aslıyla aynı olabilir, bu yüzden hash ile bütünlük kanıtlanır." },
+    analoji: { a: "Suç mahalli: eldiven giyilir, her nesne etiketlenir, kim aldı kime verdi yazılır; kanıt bozulursa mahkemede değeri düşer.", sinir: "Suç mahallinde eşya yerinde durur; dijital kanıt bellekte uçucudur, kapanınca yok olur; kopyanın aslıyla aynı olduğu söylemekle değil, hash eşleşmesiyle gösterilir." },
     rehberli: ["Uçuculuk sırasını yaz: bellek, ağ bağlantıları, çalışan işlemler, disk, kalıcı yedekler (en uçucudan en kalıcıya).", "Bir diskin kopyası alındıktan sonra aslıyla kopyanın hash'inin eşleşmesinin neden önemli olduğunu yaz.", "Gözetim zinciri formunda neleri belirtirsin (kim, ne zaman, neyi, kime teslim etti)?"],
     bagimsiz: "Kendi sahip olduğun önemsiz bir dosya için kâğıt üzerinde bir gözetim zinciri formu doldur: dosyanın adı, hash değerinin kaydedileceği alan, kim aldı, ne zaman, kime teslim etti. Başkasına ait cihaza dokunma.",
-    hatalar: [["Kanıt olan cihazı hemen kurcalamak", "Çalışan sistemi değiştirmek kanıtı bozar; önce belgele, sonra kopya al."], ["Aslı üzerinde çalışmak", "Analiz kopyada yapılır; asıl korunur ve hash'i kaydedilir."], ["Gözetim zincirini sonradan yazmak", "Zincir her devirde anında kaydedilmelidir; boşluk kanıtı zayıflatır."]],
+    hatalar: [["Kanıt olan cihazı hemen kurcalamak", "Çalışan sistemi değiştirmek kanıtı bozar; uçuculuk sırasına göre topla ve her adımı belgele."], ["Aslı üzerinde çalışmak", "Analiz kopyada yapılır; asıl korunur ve hash'i kaydedilir."], ["Gözetim zincirini sonradan yazmak", "Zincir her devirde anında kaydedilmelidir; boşluk kanıtı zayıflatır."]],
     gecme: { olcut: "Mini sınavda %80 ve uçuculuk sırasını ve gözetim zincirinin neden gerekli olduğunu söyleyebilmek.", kritik: ["Önce diski kopyalayıp belleği sonra düşünmek", "Hash'in kanıtı değiştirmeden bütünlük gösterdiğini bilmemek"] },
     kaynaklar: [S("86", "800-86: Guide to Integrating Forensic Techniques into Incident Response", "Adli tekniklerin olay müdahalesine entegrasyonu."), R("3227", "Guidelines for Evidence Collection and Archiving", "Kanıt toplama ve arşivleme yönergeleri.")],
     telafi: "Takıldıysan iki kuralı tekrarla: kanıtı değiştirme, her devri kaydet.",
@@ -258,7 +258,7 @@
 
   E[23] = {
     analoji: { a: "Trafik kuralları: yasa (politika) neyin yasak olduğunu söyler, yönetmelik (standart) ölçüyü verir, tarife (prosedür) nasıl yapılacağını adım adım gösterir.", sinir: "Trafikte kural herkese ortaktır; kurumda politika rol ve veri türüne göre değişir ve yazılı olup uygulanmayan kural kâğıt üzerinde kalır." },
-    rehberli: ["Aynı konuyu dört katmanda yaz: politika ('parolalar korunur'), standart ('en az 12 karakter'), prosedür (parola sıfırlama adımları), yönerge (iyi parola önerileri).", "Hangisinin zorunlu, hangisinin tavsiye olduğunu işaretle.", "Bir politikanın uygulanabilir olması için üç koşul yaz: yazılı, ölçülebilir, sahibi belli."],
+    rehberli: ["Aynı konuyu dört katmanda yaz: politika ('parolalar korunur'), standart ('en az 12 karakter'), prosedür (parola sıfırlama adımları), yönerge (iyi parola önerileri).", "Hangisinin zorunlu, hangisinin tavsiye olduğunu işaretle.", "Bir politikanın uygulanabilir olması için üç koşul yaz: yazılı, ölçülebilir, uygulanabilir (sahibinin belli olması da iyi uygulamadır)."],
     bagimsiz: "Kendi evin ya da küçük bir iş için 'cihaz kullanımı' konusunda tek sayfalık bir politika, bir standart ve bir prosedür yaz. Yalnız kâğıt üzerinde.",
     hatalar: [["Politikayı prosedürle karıştırmak", "Politika ne ve neden, prosedür nasıl sorusuna cevap verir."], ["Yazıp duyurmamak", "Duyurulmayan ve eğitimi verilmeyen kural uygulanmaz."], ["Yönergeyi zorunlu saymak", "Yönerge tavsiyedir; zorunluluk politika ve standartta yer alır."]],
     gecme: { olcut: "Mini sınavda %80 ve bir metni politika, standart, prosedür ya da yönerge olarak sınıflandırabilmek.", kritik: ["Politikanın ayrıntılı adım adım talimat olduğunu sanmak", "Yazılı politikanın uygulandığı anlamına geldiğini sanmak"] },

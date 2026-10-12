@@ -38,7 +38,7 @@
   };
 
   E[21] = {
-    analoji: { a: "Site görevlisi: olaylar (kargo geldi, asansör bozuldu) ona bildirilir; elindeki kurallara bakıp doğru kişiye yönlendirir.", sinir: "Görevli olayı gönderenin kim olduğuna bakmadan yönlendirir; ancak kural yanlış yazılırsa olay sessizce hiçbir yere gitmez ve bunu fark etmek zordur." },
+    analoji: { a: "Site görevlisi: olaylar (kargo geldi, asansör bozuldu) ona bildirilir; elindeki kurallara bakıp doğru kişiye yönlendirir.", sinir: "Görevli yalnız kurala bakarak yönlendirir; kural yanlış yazılırsa olay sessizce hiçbir yere gitmez ve bunu fark etmek zordur." },
     rehberli: ["Üç olay yaz: sipariş oluştu, ödeme başarısız, gece 02:00 zamanlayıcısı.", "Her olay için bir kural ve bir hedef (ör. Lambda, SQS) eşle.", "Kural hiçbir olayla eşleşmezse ne olacağını ve bunu nasıl fark edeceğini yaz (metrik / arşiv)."],
     bagimsiz: "Bir 'dosya yüklendi' olayı için olay desenini (hangi alanlara bakılır) kâğıda JSON olarak yaz; iki hedef seç ve kuralın yanlış yazıldığını nasıl anlayacağını açıkla.",
     hatalar: [["Olay desenini fazla geniş yazmak", "Her olay hedefi tetikler ve maliyet/gürültü artar; deseni dar tut."], ["Zamanlanmış işi sunucuda cron ile yönetmek", "Zamanlama kuralı yönetilen ve izlenebilir bir seçenektir."], ["Hedef başarısız olunca iş bitti sanmak", "Yeniden deneme ve DLQ ayarla; başarısız teslimi izle."]],
@@ -52,7 +52,7 @@
     analoji: { a: "Mimari proje: aynı projeyle aynı evi defalarca inşa edebilirsin ve değişiklik önce projede yapılır.", sinir: "Proje kâğıttadır; biri şantiyede elle duvar yıkarsa (konsoldan elle değişiklik) gerçek yapı projeden sapar (drift)." },
     rehberli: ["Küçük bir şablon örneğini oku (ör. bir S3 kovası tanımı) ve Resources, Parameters, Outputs bölümlerini işaretle.", "Bir değişiklik düşün: kovaya sürümleme açmak. Change set'in neyi önceden göstereceğini yaz.", "Aynı şablonu dev ve prod için nasıl yeniden kullanacağını (parametre) bir cümleyle yaz."],
     bagimsiz: "Kendi makinende yalnız metin olarak bir SAM şablonu iskeleti yaz (bir fonksiyon, bir API olayı). Dağıtım yapma; yalnız hangi kaynakların oluşacağını listele.",
-    hatalar: [["Şablonu bırakıp konsoldan elle değiştirmek", "Drift oluşur; değişikliği şablonda yap."], ["Change set görmeden güncellemek", "Silinecek ya da yeniden oluşturulacak kaynakları önceden gör."], ["Gizli bilgiyi şablona yazmak", "Parametre ya da Secrets/Parameter Store kullan."]],
+    hatalar: [["Şablonu bırakıp konsoldan elle değiştirmek", "Drift oluşur; değişikliği şablonda yap."], ["Change set görmeden güncellemek", "Silinecek ya da yeniden oluşturulacak kaynakları önceden gör."], ["Gizli bilgiyi şablona yazmak", "Düz parametre gizli sayılmaz; Secrets Manager gibi bir gizli değer deposuna dinamik başvuru kullan."]],
     gecme: { olcut: "Mini sınavda %80 ve bir şablonda kaynak, parametre ve çıktıyı gösterip change set'in amacını söyleyebilmek.", kritik: ["Stack silinince kaynakların kalacağını varsaymak (silme politikasına bakılmalı)", "SAM'in CloudFormation'dan bağımsız bir araç olduğunu sanmak"] },
     kaynaklar: [
       A("AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-changesets.html", "AWS Belgesi: CloudFormation change set", "Değişikliği uygulamadan önce önizlemeyi resmi kaynaktan açıklar."),
@@ -95,7 +95,7 @@
       A("AmazonECR/latest/userguide/what-is-ecr.html", "AWS Belgesi: Amazon ECR nedir", "ECR'nin imaj deposu rolünü doğrular.")
     ],
     telafi: "Takıldıysan akışı üç kutuyla çiz: imajı yap, ECR'ye koy, ECS'te çalıştır.",
-    sonraki: "Sıradaki konu: KMS. Önce bu konunun geçme ölçütünü sağla, sonra devam et."
+    sonraki: "Sıradaki konu: KMS. Devam etmeden önce kritik yanlış anlamaları gözden geçir."
   };
 
   E[26] = {
@@ -212,7 +212,7 @@
   E[35] = {
     analoji: { a: "Otel misafir kartı: belirli süre ve belirli odalar için çalışır, süre dolunca kendiliğinden ölür; ana anahtar ise kasada kalır.", sinir: "Kart süresi dolana kadar kullanılabilir; çalınırsa o süre içinde zarar verir, bu yüzden süre kısa ve yetki dar tutulmalıdır." },
     rehberli: ["Kalıcı erişim anahtarı ile STS geçici kimliğinin farkını (süre, sızıntı etkisi) iki satırda yaz.", "Hesap A'daki bir kullanıcının Hesap B'deki role AssumeRole ile nasıl geçtiğini çiz.", "Rolün güven politikası ile izin politikasının ayrı işlerini yaz."],
-    bagimsiz: "Bir CI hattı için kalıcı anahtar yerine rol kullanma planı yaz: kim rolü üstlenebilir, süre ne kadar, yetki neyle sınırlı? Gerçek bir rol oluşturma.",
+    bagimsiz: "Bir CI hattı için kalıcı anahtar yerine rol kullanma planı yaz: kim rolü üstlenebilir, süre ne kadar, yetki neyle sınırlı? Gerçek rol oluşturma; yalnız plan yaz.",
     hatalar: [["Kalıcı erişim anahtarını koda ya da repoya koymak", "Geçici kimlik ve rol kullan; sızan anahtarı hemen devre dışı bırak."], ["Güven politikasını herkese açmak", "Rolü üstlenebilecek hesap ve kimlikleri dar belirt."], ["Oturum süresini gereksiz uzun tutmak", "En kısa yeterli süreyi seç."]],
     gecme: { olcut: "Mini sınavda %80 ve AssumeRole akışında güven ve izin politikalarını doğru ayırabilmek.", kritik: ["Geçici kimliğin güvenlik riski taşımadığını sanmak", "Güven politikası ile izin politikasını aynı şey sanmak"] },
     kaynaklar: [A("IAM/latest/UserGuide/id_credentials_temp.html", "AWS Belgesi: IAM'de geçici güvenlik bilgileri", "Geçici kimliğin neden ve nasıl kullanıldığını resmi kaynaktan anlatır.")],
