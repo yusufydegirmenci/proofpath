@@ -99,13 +99,13 @@
   };
 
   E[8] = {
-    analoji: { a: "Alet çantası: her alet (kelime) bir işe yarar ve doğru yerde kullanılınca iş hızlanır. Aynı kelimeyi isim ya da fiil gibi kullanmak, çekici tornavida yerine kullanmak gibidir.", sinir: "Çantadaki aletin adı sabit; teknik kelimelerin kullanımı takıma ve şirkete göre değişebilir ve her kelime kısa kalıp gerektirmez, bu yüzden ekibin kullandığı kalıbı gözlemlemek gerekir." },
-    rehberli: ["Dört kelimeyi cümlede kullan: 'I found a bug in the login page.', 'I'm working on a ticket about passwords.', 'We deployed the fix this morning.', 'The release is on Friday.'", "Her kelimenin türünü (isim/fiil) yaz: bug (isim), ticket (isim), deploy (fiil), release (isim ya da fiil).", "Her kelimeden geçmiş zaman cümlesi (deployed, released) ve çoğul cümle (two bugs, three tickets) kur."],
+    analoji: { a: "Alet çantası: her alet (kelime) bir işe yarar ve doğru yerde kullanılınca iş hızlanır. Aynı kelimeyi isim ya da fiil gibi kullanmak, çekici tornavida yerine kullanmak gibidir.", sinir: "Çantadaki aletin adı sabit; teknik kelimelerin kullanımı takıma ve şirkete göre değişebilir ve kalıplar farklı olabilir, bu yüzden ekibin kullandığı kalıbı gözlemlemek gerekir." },
+    rehberli: ["Dört kelimeyi cümlede kullan: 'I found a bug in the login page.', 'I'm working on a ticket about passwords.', 'We deployed the fix this morning.', 'The release is on Friday.'", "Her kelimenin türünü (isim/fiil) yaz: bug (isim), ticket (isim), deploy (fiil), release (isim ya da fiil).", "İsimlerden (bug, ticket) çoğul cümle (two bugs, three tickets), fiillerden (deploy, release) geçmiş zaman cümlesi (deployed, released) kur."],
     bagimsiz: "Kendi projen ya da ödevin için altı cümle yaz: her cümlede bu dört kelimeden en az birini doğru türde ve doğru biçimde kullan (bug, ticket, deploy, release). Birinde geçmiş zaman, birinde çoğul kullan. Sonra bir cümleyi bir iş arkadaşına anlatır gibi sesli söyle.",
     hatalar: [["'I found bug' demek (artikelsiz)", "Sayılabilir isimdir: 'I found a bug.' / 'I found two bugs.'"], ["'We deploy it yesterday' demek", "Dün için past simple: 'We deployed it yesterday.'"], ["Anlamını bilmeden kelimeyi kullanmak", "Emin değilsen sor: 'What do you mean by release here?' Anlam şirkete göre değişebilir."]],
-    gecme: { olcut: "Mini sınavda %80 ve dört temel IT kelimesini doğru türde, geçmiş zaman ve çoğul biçimleriyle cümlede kullanabilmek.", kritik: ["Fiil ile ismi karıştırmak", "Sayılabilir bir ismi artikelsiz ve tekil yazmak"] },
+    gecme: { olcut: "Mini sınavda %80 ve dört temel IT kelimesini doğru türde, isimleri çoğul, fiilleri geçmiş zaman biçimiyle cümlede kullanabilmek.", kritik: ["Fiil ile ismi karıştırmak", "Sayılabilir bir ismi artikelsiz ve tekil yazmak"] },
     kaynaklar: [K("Google developer documentation style guide: Word list", "https://developers.google.com/style/word-list", "Teknik yazıda sık geçen sözcüklerin kullanım önerileri; kendi ekibinin kullanımıyla karşılaştır.")],
-    telafi: "Takıldıysan tek bir kelime seç (ör. bug) ve beş cümle kur: tekil, çoğul, geçmiş, soru, olumsuz. Sonra diğer kelimeye geç.",
+    telafi: "Takıldıysan tek bir isim seç (ör. bug) ve tekil, çoğul, soru, olumsuz ile 'The bug was fixed.' gibi geçmiş olay cümlesi kur; sonra bir fiil (ör. deploy) için geçmiş zaman cümlesi yaz. Sonra diğer kelimeye geç.",
     sonraki: "Sıradaki konu: Hata anlatmak. Bu kelimeleri bir hata raporunda net ve eksiksiz kullanmayı orada göreceksin."
   };
 
