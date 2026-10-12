@@ -75,7 +75,7 @@
 
   E[24] = {
     analoji: { a: "Hazır mobilyalı daire: kodunu getirirsin, tesisat ve düzen kurulmuş gelir.", sinir: "Dairede duvarı kendi isteğine göre yıkamazsın; Beanstalk'ta sıra dışı gereksinim olursa altyapı ayrıntısına inmen ya da başka servise geçmen gerekir." },
-    rehberli: ["Bir web uygulaması için Beanstalk'ın senin yerine kurduğu parçaları (sunucu, yük dengeleyici, ölçekleme) listele.", "Ortam ayarını (ör. ortam değişkeni) koddan neden ayırdığını yaz.", "Beanstalk'ın sana yetmediği bir durumu (özel ağ, ince ayar) örnekle."],
+    rehberli: ["Bir web uygulaması için Beanstalk'ın senin yerine kurduğu parçaları (sunucu, yük dengeleyici, ölçekleme) listele.", "Ortam ayarını (ör. ortam değişkeni) koddan neden ayırman gerektiğini yaz.", "Beanstalk'ın sana yetmediği bir durumu (ör. çok kapsayıcılı karmaşık mimari, işletim sistemi düzeyinde ince ayar) örnekle."],
     bagimsiz: "Küçük bir API için 'Beanstalk mı, ECS mi?' kararını kâğıda iki sütunlu tabloyla ver (hız, kontrol, yönetim yükü). Karar gerekçeni yaz.",
     hatalar: [["Beanstalk'ın altındaki kaynakları elle değiştirmek", "Ayarları Beanstalk yapılandırmasından yönet; elle değişiklik sapma yaratır."], ["Üretim ve geliştirmeyi tek ortamda tutmak", "Ayrı ortamlar kur."], ["Gizli bilgiyi ortam değişkenine düz metin koymak", "Secrets Manager / Parameter Store kullan."]],
     gecme: { olcut: "Mini sınavda %80 ve Beanstalk'ın ne yönettiğini ve ne zaman yetersiz kaldığını anlatabilmek.", kritik: ["Beanstalk'ın altyapısız (sunucusuz) çalıştığını sanmak", "Her uygulama için en iyi seçim olduğunu sanmak"] },
@@ -237,7 +237,7 @@
   E[37] = {
     analoji: { a: "CDK: elle tuğla dizmek yerine bir inşaat makinesi programlarsın; AppSync ise sipariş formu: yalnız istediğin kalemleri yazarsın, fazlasını getirmez.", sinir: "Makine hatalı programlanırsa hatayı tekrarlayarak çoğaltır; esnek sorgu da kötü yazılırsa çok sayıda arka uç çağrısı yapıp yavaşlayabilir." },
     rehberli: ["Aynı kaynağın tekrarını YAML'da ve kodda (döngü/yapı) karşılaştır: kodda neden daha kısa olduğunu yaz.", "Bir construct'ın (yapı) ne olduğunu ve düşük/yüksek seviyeli farkı bir cümleyle açıkla.", "GraphQL sorgusunda yalnız 'ad' ve 'e-posta' isteyip fazla alan getirmemenin faydasını ve çözücünün (resolver) rolünü yaz."],
-    bagimsiz: "Üç kaynak içeren (kovası, fonksiyonu, kuyruğu) küçük bir yapıyı kâğıt üzerinde bir construct olarak tasarla ve bir AppSync şemasında iki alanı hangi veri kaynağına bağlayacağını yaz. Dağıtım yapma.",
+    bagimsiz: "Üç kaynak içeren (kova, fonksiyon, kuyruk) küçük bir yapıyı kâğıt üzerinde bir construct olarak tasarla ve bir AppSync şemasında iki alanı hangi veri kaynağına bağlayacağını yaz. Dağıtım yapma.",
     hatalar: [["CDK çıktısını incelemeden dağıtmak", "Üretilen şablonu ve değişiklik farkını (diff) önce oku."], ["Her şeyi tek dev construct'a koymak", "Küçük, yeniden kullanılabilir yapılar kur."], ["AppSync'te yetkilendirmeyi atlamak", "Alan düzeyinde kimlik doğrulama ve yetki kurallarını tanımla."]],
     gecme: { olcut: "Mini sınavda %80 ve CDK'nın neyi ürettiğini (CloudFormation) ve AppSync çözücüsünün işini anlatabilmek.", kritik: ["CDK'nın CloudFormation'dan bağımsız olduğunu sanmak", "GraphQL'in yetkilendirme gerektirmediğini sanmak"] },
     kaynaklar: [

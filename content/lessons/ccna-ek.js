@@ -32,9 +32,9 @@
     analoji: { a: "Pasta dilimleme: büyük bir pastayı (ağ) eşit boyutlu dilimlere bölersin; her dilim bir alt ağdır.", sinir: "Pasta istediğin kadar dilime bölünür; alt ağ blokları 2'nin kuvveti boyutundadır ve ağ adresi blok boyutunun katında başlamak zorundadır." },
     rehberli: ["50 cihaz için: 2^n - 2 >= 50 sağlayan en küçük n=6 (62 host), önek /26.", "Blok boyutu 64. 192.168.10.0/26'nın ağ adresi .0, yayın adresi .63, kullanılabilir aralık .1–.62.", "Sonraki alt ağın .64'te başladığını ve aralarda boşluk olmadığını doğrula."],
     bagimsiz: "192.168.50.0/24 ağını 4 eşit alt ağa böl. Her birinin ağ, yayın, ilk ve son host adresini yaz. Sonra aşağıdaki lab'da /26 senaryolarını çöz.",
-    hatalar: [["Kullanılabilir host sayısını 2^n sanmak", "Ağ ve yayın adresleri host olamaz: 2^n - 2."], ["Ağ adresini blok sınırına oturtmamak", "Ağ adresi blok boyutunun katıdır; 192.168.1.70/26'nın ağı .64'tür."], ["/31 ve /32'yi sıradan alt ağ saymak", "Sınavda tipik soruların çoğu /30 ve daha kısa öneklerdir; /31 yalnız noktadan noktaya bağlantıda özel kullanılır."]],
+    hatalar: [["Kullanılabilir host sayısını 2^n sanmak", "Ağ ve yayın adresleri host olamaz: 2^n - 2."], ["Ağ adresini blok sınırına oturtmamak", "Ağ adresi blok boyutunun katıdır; 192.168.1.70/26'nın ağı .64'tür."], ["/31 ve /32'yi sıradan alt ağ saymak", "/31 yalnız noktadan noktaya bağlantıda, /32 tek bir ana makine rotası ya da loopback için kullanılır; host barındıran alt ağlar /30 ve daha kısa öneklerdir."]],
     gecme: { olcut: "Mini sınavda %80 ve lab'daki dört senaryonun tamamı doğru.", kritik: ["Ağ ve yayın adresini kullanılabilir host saymak", "İhtiyaca göre önek seçimini 2^n - 2 ile yapamamak"] },
-    telafi: "Takıldıysan yalnız bir önek seç (/26) ve blok boyutunu (64) bul; adresi bu blok sınırına oturt. Lab'daki ipucu formülü cezasızdır.",
+    telafi: "Takıldıysan yalnız bir önek seç (/26) ve blok boyutunu (64) bul; adresi bu blok sınırına oturt. Lab'daki ipucu formülünü kullanmak puan düşürmez.",
     sonraki: "Sıradaki konu: MAC adresi ve switch.",
     kaynaklar: [R("4632", "CIDR: Classless Inter-domain Routing", "Önek (/n) gösteriminin ve blok toplamanın tanımı."), R("1918", "Address Allocation for Private Internets", "Alt ağ alıştırmalarında kullanılan özel aralıklar.")],
     lab: "ccna-altag"
@@ -176,7 +176,7 @@
 
   E[15] = {
     analoji: { a: "Hastane acil girişi: ambulanslar normal hastalardan önce geçer; her araç aynı kapıdan girse de öncelik sırası vardır.", sinir: "Acil önceliği hayat kurtarır ama yol yine dardır; QoS yeni bant genişliği yaratmaz, yalnız sıkışıklıkta kimin önce gideceğini belirler." },
-    rehberli: ["Ses (VoIP) gecikmeye duyarlıdır, dosya indirme ise değildir. Hangisine öncelik verilmeli, yaz.", "Trafiği sınıflandır ve işaretle: IP başlığındaki DSCP alanı sınıfı taşır.", "Sıkışıklıkta kuyruk yönetimi öncelikli trafiği öne alır; kuyruk dolarsa en düşük öncelikli paketler atılır."],
+    rehberli: ["Ses (VoIP) gecikmeye duyarlıdır, dosya indirme ise değildir. Hangisine öncelik verilmeli, yaz.", "Trafiği sınıflandır ve işaretle: IP başlığındaki DSCP alanı sınıfı taşır.", "Sıkışıklıkta kuyruk yönetimi öncelikli trafiği öne alır; kuyruk dolarsa varsayılan olarak gelen paketler atılır (tail drop); WRED gibi mekanizmalar düşük öncelikli sınıfı önce atar."],
     bagimsiz: "Evinde ya da ofisinde aynı anda çalışan beş uygulamayı (video görüşme, indirme, oyun, e-posta, yedekleme) sırala. Her birine bir öncelik ver ve nedenini gecikme/kayıp duyarlılığıyla açıkla.",
     hatalar: [["QoS'in bant genişliğini artırdığını sanmak", "QoS yalnız sıkışıklıkta önceliği belirler; bant genişliği artmaz."], ["Her şeye yüksek öncelik vermek", "Her şey öncelikliyse hiçbir şey öncelikli değildir."], ["İşaretlemeyi uç cihaza bırakıp güvenmek", "İşaretlemeye güvenilen sınırı (trust boundary) belirle; kullanıcı cihazı keyfi işaretleyebilir."]],
     gecme: { olcut: "Mini sınavda %80 ve ses, video ve veri trafiğinin gereksinimlerini sıralayabilmek.", kritik: ["QoS'in tıkanıklığı ortadan kaldırdığını sanmak", "DSCP'nin trafiği sınıflandıran bir işaret olduğunu bilmemek"] },
