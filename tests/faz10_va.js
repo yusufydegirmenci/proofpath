@@ -21,14 +21,14 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
 
   // 1) Müfredat ve önkoşul grafiği
   eq(await ev(() => PP_VA.mufredatDogrula(PP_VA.mufredat)), [], 'müfredat grafiği tutarlı (önkoşullar var, geriye dönük, hazır seviyenin önkoşulu hazır, SQL 13 alt konu)');
-  const kotu = await ev(() => { const m = JSON.parse(JSON.stringify(PP_VA.mufredat)); m.seviyeler[2].durum = 'hazir'; m.seviyeler[4].onkosul = [9]; m.seviyeler[2].konular.pop(); return PP_VA.mufredatDogrula(m); });
+  const kotu = await ev(() => { const m = JSON.parse(JSON.stringify(PP_VA.mufredat)); m.seviyeler[1].durum = 'yok'; m.seviyeler[4].onkosul = [9]; m.seviyeler[2].konular.pop(); return PP_VA.mufredatDogrula(m); });
   ok(kotu.length === 3 && kotu.some(x => /hazır değil/.test(x)) && kotu.some(x => /bilinmeyen önkoşul/.test(x)) && kotu.some(x => /12 \(13 olmalı\)/.test(x)), 'bozuk müfredat (hazır ama önkoşulu yok, bilinmeyen önkoşul, 12 SQL konusu) yakalanır');
-  eq(await ev(() => PP_VA.mufredat.seviyeler.map(s => [s.id, s.durum])), [[0, 'hazir'], [1, 'yok'], [2, 'yok'], [3, 'yok'], [4, 'yok'], [5, 'yok'], [6, 'yok'], [7, 'yok'], [8, 'yok']], 'yalnız Seviye 0 hazır; 1–8 dürüstçe "yok"');
+  eq(await ev(() => PP_VA.mufredat.seviyeler.map(s => [s.id, s.durum])), [[0, 'hazir'], [1, 'hazir'], [2, 'hazir'], [3, 'yok'], [4, 'yok'], [5, 'yok'], [6, 'yok'], [7, 'yok'], [8, 'yok']], 'Seviye 0–2 hazır; 3–8 dürüstçe "yok"');
   eq(await ev(() => PP_VA.mufredat.seviyeler[2].konular.slice(0, 3)), ['Veritabanı, tablo, ilişki, şema', 'SELECT, WHERE, ORDER BY, LIMIT, DISTINCT, NULL', 'CASE WHEN'], 'SQL alt konuları M§15.2 sırasıyla');
   eq(await ev(() => PP_VA.mufredat.sertifika.durum), 'doğrulanmadı', 'PL-300 eşlemesi "doğrulanmadı" olarak işaretli');
 
   // 2) Dersler: 15 öğe
-  const ders = await ev(() => PP_VA.dersler.map(d => ({
+  const ders = await ev(() => PP_VA.dersler.filter(d => !d.seviye).map(d => ({
     id: d.id,
     ogeler: [!!(d.hedefler && d.hedefler.length && d.onkosul), !!d.aciklama, !!(d.terimler && d.terimler.length >= 4), !!(d.ornek && d.ornek.length >= 3), !!(d.analoji && d.analoji.a), !!(d.analoji && d.analoji.sinir), !!d.gorsel,
       !!(d.rehberli && d.rehberli.length), !!d.bagimsiz, !!(d.hatalar && d.hatalar.length >= 3), !!(d.kontrol && d.kontrol.length >= 4), !!(d.gecme && d.gecme.olcut && d.gecme.kritik.length), true /* lab/proje bağlantısı: sonraki alanı */, Array.isArray(d.kaynaklar), !!(d.telafi && d.sonraki)].filter(Boolean).length,
@@ -37,9 +37,9 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   })));
   eq(ders.map(d => d.ogeler), [15, 15, 15], '3 ders M§7\'nin 15 öğesinin hepsini taşıyor');
   ok(ders.every(d => d.kontrolGecerli && d.kaynakGecerli), 'bilgi kontrolü soruları (4 şık, geçerli cevap, neden) ve kaynaklar (https + doğrulama tarihi) geçerli');
-  const dagilim = await ev(() => [...new Set(PP_VA.dersler.flatMap(d => d.kontrol.map(q => q.a)).concat(PP_VA.sinav0.sorular.map(q => q.a)))].sort());
+  const dagilim = await ev(() => [...new Set(PP_VA.dersler.filter(d => !d.seviye).flatMap(d => d.kontrol.map(q => q.a)).concat(PP_VA.sinav0.sorular.map(q => q.a)))].sort());
   ok(dagilim.length >= 2, 'doğru şık hep aynı konumda değil');
-  eq(await ev(() => [PP_VA.dersler.every(d => d.kaynaklar.every(k => /^https:\/\/(www\.rfc-editor\.org|www\.postgresql\.org|www\.kvkk\.gov\.tr)\//.test(k.u))), PP_VA.dersler.map(d => d.kaynaklar.length)]), [true, [0, 3, 1]], 'dış kaynaklar yalnız doğrulanmış alanlar (RFC, PostgreSQL, KVKK)');
+  eq(await ev(() => [PP_VA.dersler.filter(d => !d.seviye).every(d => d.kaynaklar.every(k => /^https:\/\/(www\.rfc-editor\.org|www\.postgresql\.org|www\.kvkk\.gov\.tr)\//.test(k.u))), PP_VA.dersler.filter(d => !d.seviye).map(d => d.kaynaklar.length)]), [true, [0, 3, 1]], 'dış kaynaklar yalnız doğrulanmış alanlar (RFC, PostgreSQL, KVKK)');
 
   // 3) Veri seti ve derslerdeki iddialar tutarlı (bağımsız sayım)
   const veri = await ev(() => {
@@ -86,7 +86,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   // 6) İlerleme ve kanıt kaydı
   await ev(() => localStorage.removeItem('ya_pp_ogr'));
   const D0 = await ev(() => PP.va.durum());
-  eq([D0.tamam, D0.bekleyen.length, D0.sonrakiSeviye.acik], [false, 3, false], 'başlangıç: tamam değil, 3 bekleyen koşul, Seviye 1 kilitli');
+  eq([D0.tamam, D0.bekleyen.length, D0.sonrakiSeviye.acik], [false, 3, true], 'başlangıç: tamam değil, 3 bekleyen koşul, öneri Seviye 0 (kilit zorlanmıyor)');
   eq(await ev(() => PP.va.dersOkundu('yok-ders')), { ok: false, neden: 'bilinmeyen-ders' }, 'bilinmeyen ders işaretlenemez');
   await ev(() => { PP.va.dersOkundu('va0-1'); PP.va.dersOkundu('va0-2'); PP.va.dersOkundu('va0-3'); });
   eq(await ev(() => PP.va.durum().tamam), false, 'dersleri okumak tek başına Seviye 0\'ı tamamlamaz');
@@ -97,14 +97,14 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(await ev(() => [PP.va.durum().sinavGecti, PP.va.durum().tamam]), [false, false], 'başarısız deneme sayılır ama geçti saymaz');
   await ev(() => PP.va.sinavKaydet(PP.va.sinav(PP_VA.sinav0.sorular.map(q => q.a))));
   const D1 = await ev(() => PP.va.durum());
-  eq([D1.tamam, D1.sinavDenemesi, D1.bekleyen, D1.sonrakiSeviye.acik], [true, 2, [], false], 'ders + lab + geçilen değerlendirme → Seviye 0 tamam; Seviye 1 hâlâ kilitli (içerik yok)');
+  eq([D1.tamam, D1.sinavDenemesi, D1.bekleyen, D1.sonrakiSeviye.id], [true, 2, [], 1], 'ders + lab + geçilen değerlendirme → Seviye 0 tamam; önerilen sıradaki Seviye 1 (kilit zorlanmıyor)');
   eq(await ev(() => PP.ogr.depo.oku().kanitlar.filter(k => /^lab-va0/.test(k.id)).map(k => [k.id, k.tur, k.kapi, k.dogrulama]).sort()), [['lab-va0-g1', 'lab', null, 'istemci'], ['lab-va0-g2-ipucu', 'lab', null, 'istemci'], ['lab-va0-g3', 'lab', null, 'istemci'], ['lab-va0-tamam', 'lab', null, 'istemci']], 'lab kanıtları istemci doğrulamalı, kapı kanıtı değil; ipuçlu görev ayrı işaretli');
 
   // 7) Arayüz (temiz durum)
   await ev(() => { localStorage.removeItem('ya_pp_ogr'); S.va = null; S.at2.sec = 'va'; goTab('atolye'); });
   await p.waitForTimeout(400);
-  ok(await ev(() => !!document.querySelector('#view [data-va=ozet]') && /yalnız Seviye 0/.test(document.querySelector('[data-va=ozet]').textContent)), 'Atölye > Veri Analitiği: özet "yalnız Seviye 0 hazır" diyor');
-  eq(await ev(() => [...document.querySelectorAll('[data-va-seviye]')].map(e => /YOK/.test(e.textContent))), [false, true, true, true, true, true, true, true, true], 'arayüzde Seviye 1–8 "YOK" olarak görünür');
+  ok(await ev(() => !!document.querySelector('#view [data-va=ozet]') && /Seviye 0–2 hazır/.test(document.querySelector('[data-va=ozet]').textContent)), 'Atölye > Veri Analitiği: özet "Seviye 0–2 hazır" diyor');
+  eq(await ev(() => [...document.querySelectorAll('[data-va-seviye]')].map(e => /YOK/.test(e.textContent))), [false, false, false, true, true, true, true, true, true], 'arayüzde Seviye 3–8 "YOK" olarak görünür');
   ok(await ev(() => /doğrulanmadı/.test(document.querySelector('[data-va=sertifika]').textContent) && !/sertifika(yı)? (aldın|kazandın|hak ettin)/i.test(document.body.innerText)), 'PL-300 "doğrulanmadı"; sertifika kazanıldığı iddiası yok');
   await ev(() => document.querySelector('[data-va-ders="va0-1"]').click()); await p.waitForTimeout(250);
   const acik = await ev(() => [...document.querySelectorAll('[data-va-acik] .label')].map(e => e.textContent));
@@ -149,7 +149,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   await ev(() => document.querySelector('[data-va=sinav-bitir]').click()); await p.waitForTimeout(250);
   ok(await ev(() => document.querySelector('[data-va-sinav]').dataset.vaSinav === 'gecti'), 'değerlendirme: yeniden denemede geçti');
   await ev(() => { PP.va.dersOkundu('va0-2'); PP.va.dersOkundu('va0-3'); draw(); }); await p.waitForTimeout(250);
-  ok(await ev(() => /Seviye 0:\s*tamam/.test(document.querySelector('[data-va=ozet]').textContent) && /kilitli/.test(document.querySelector('[data-va=sonraki]').textContent)), 'özet: Seviye 0 tamam, Seviye 1 kilitli');
+  ok(await ev(() => /Seviye 0:\s*tamam/.test(document.querySelector('[data-va=ozet]').textContent) && /Seviye 1/.test(document.querySelector('[data-va=sonraki]').textContent) && !/kilitli/.test(document.querySelector('[data-va=sonraki]').textContent)), 'özet: Seviye 0 tamam, sonraki Seviye 1 önerilir, "kilitli" denmez');
   ok(await ev(() => document.documentElement.scrollWidth <= innerWidth + 1), '390 px: yatay taşma yok');
   ok(errs.length === 0, 'sayfa hatası yok ' + errs.join('|'));
   await b.close();

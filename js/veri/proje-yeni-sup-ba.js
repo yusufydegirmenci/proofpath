@@ -32,8 +32,8 @@
       { ad: "Erişim yönetimi bilinci", kanit: "4. adımdaki çıkış listesinde erişim kapatmanın cihaz teslimden önce geldiği görülür." },
       { ad: "Test ve iyileştirme", kanit: "5. adımın v1/v2 farkı bulunan eksikleri ve düzeltmeyi kanıtlar." }
     ],
-    telafi: "K1 tutmazsa adım 3 veya 4'e dön, eksik adımları tamamla. K3 başarısızsa adım 4'ü sırayı yeniden kurarak tekrar yap. K4 tutmazsa adım 5'te sahte çalışanı değiştirip denemeyi yeniden yürüt.",
-    sonraki: "K1-K4 tutar ve üç savunma sorusunu kendi cümlelerinle yazılı cevaplarsan sup1c (Yazıcı ve Ağ Arıza Karar Ağacı) açılır; tamamlama kanıt kaydı üretir."
+    telafi: "K1 tutmazsa adım 3 veya 4'e dön, eksik adımları tamamla. K3 başarısızsa adım 4'ü sırayı yeniden kurarak tekrar yap. K4 tutmazsa adım 5'te sahte çalışanı değiştirip denemeyi yeniden yürüt. K2 tutmazsa adım 3 ve 4'te boş sorumlu ve son tarih hücrelerini doldur. K5 tutmazsa adım 2'de gerçek kişi ve parola izlerini sil, uydurma isim ve rol kartıyla yeniden yaz.",
+    sonraki: "K1-K5 tutar ve üç savunma sorusunu kendi cümlelerinle yazılı cevaplarsan önerilen sonraki proje sup1c (Yazıcı ve Ağ Arıza Karar Ağacı) olur (kilit zorlanmıyor); tamamlama kanıt kaydı üretir."
   });
 
   K.yeni.push({
@@ -260,7 +260,7 @@
       { ad: "Kapanış doğrulaması", kanit: "7. adımdaki kanıt eşleme listesi ve kapanış özeti." }
     ],
     telafi: "K1 tutmazsa adım 2'ye dönüp anketi 4-5 soruya ve en az 1 açık uçlu soruya göre yeniden kur. K2 tutmazsa adım 2'de soruları yeniden yaz. K4 başarısızsa adım 4'te yorumları temalara ayırıp sayımı elle kontrol et. K5 veya K6 tutmazsa adım 5 ve 6'yı bulguya atıf yapacak şekilde tekrarla. K3 eksikse adım 3'te seçenekleri yeniden değerlendir. K7 tutmazsa adım 7'de kanıt eşlemesini ve kapanış özetini yeniden yaz.",
-    sonraki: "K1-K7 tutar ve savunma sorularını yazılı cevaplarsan sup4d (Olay Sonrası İnceleme) açılır; tamamlama kanıt kaydı üretir."
+    sonraki: "K1-K7 tutar ve savunma sorularını yazılı cevaplarsan önerilen sonraki proje sup4d (Olay Sonrası İnceleme) olur (kilit zorlanmıyor); tamamlama kanıt kaydı üretir."
   });
 
   K.yeni.push({
@@ -408,7 +408,7 @@
       { ad: "Güvenlik özeti hazırlama", kanit: "6. adımdaki tek sayfalık güvenlik kartım." },
       { ad: "Meşru ve sahteyi ayırt etme", kanit: "7. adımdaki 6 mesajlık sınıflandırma ve hata analizi." }
     ],
-    telafi: "K2 tutmazsa adım 3'te tekrar eden parolaları değiştir ve yöneticiyi yeniden kontrol et. K3 başarısızsa adım 4'te doğrulamayı yeniden aç ve çıkış-giriş testini tekrar et. K4 tutmazsa adım 5'te her sahte mesaja en az 2 bayrak ekleyip meşru örneği düzelt. K5 tutmazsa adım 6'da kartı 3 kuralla yeniden yaz. K6 tutmazsa adım 7'de alıştırmayı yeni mesajlarla tekrarla.",
+    telafi: "K2 tutmazsa adım 3'te tekrar eden parolaları değiştir ve yöneticiyi yeniden kontrol et. K3 başarısızsa adım 4'te doğrulamayı yeniden aç ve çıkış-giriş testini tekrar et. K4 tutmazsa adım 5'te her sahte mesaja en az 2 bayrak ekleyip meşru örneği düzelt. K5 tutmazsa adım 6'da kartı 3 kuralla yeniden yaz. K6 tutmazsa adım 7'de alıştırmayı yeni mesajlarla tekrarla. K1 tutmazsa adım 2'de örnek parolaları uydurma olanlarla değiştir, notlardaki gerçek parola izlerini sil.",
     sonraki: "K1-K6 tutar ve savunma sorularını yazılı cevaplarsan lv1 başlangıç çekirdeğini bitirmiş olursun; lv2'deki ba3b ve ba3c önerilen sonraki projelerdir (proje bazlı makine kilidi yok). Tamamlama kanıt kaydı üretir."
   });
 
@@ -522,7 +522,7 @@
       { ad: "Mobil ve geri bildirim", kanit: "6. adımdaki telefon görüntüsü ve geri bildirim notu." },
       { ad: "Yayın doğrulama", kanit: "7. adımdaki Pages ayar ekranı ve kaynak okuma notu." }
     ],
-    telafi: "K1 tutmazsa adım 2'de kaynağı satır satır oku, etiketleri tek tek kapat ve yeniden aç. K3 başarısızsa adım 5'te depo adı, görünürlük ve Pages kaynağını baştan kontrol et. K4 tutmazsa adım 6'da viewport satırını ekleyip telefonda yeniden dene. K5 başarısızsa adım 3'te kişisel veriyi çıkar. K6 tutmazsa adım 7'de Pages ayarını ve yayındaki kaynağı yeniden kontrol et.",
+    telafi: "K1 tutmazsa adım 2'de kaynağı satır satır oku, etiketleri tek tek kapat ve yeniden aç. K3 başarısızsa adım 5'te depo adı, görünürlük ve Pages kaynağını baştan kontrol et. K4 tutmazsa adım 6'da viewport satırını ekleyip telefonda yeniden dene. K5 başarısızsa adım 3'te kişisel veriyi çıkar. K6 tutmazsa adım 7'de Pages ayarını ve yayındaki kaynağı yeniden kontrol et. K2 tutmazsa adım 3'e dön, eksik bölümü, listeyi ve bağlantıyı ekle.",
     sonraki: "K1-K6 tutar ve savunma sorularını yazılı cevaplarsan lv2 başlangıç çekirdeğini bitirmiş olursun; lv3 ya da başka bir yolun lv1 projeleri isteğe bağlı sonraki adımlardır (proje bazlı makine kilidi yok; kilit yalnız kademe Altın Vuruş kapısındadır). Tamamlama kanıt kaydı üretir."
   });
 

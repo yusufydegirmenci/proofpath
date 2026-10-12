@@ -1,5 +1,6 @@
 /* Veri Analitiği yolu — müfredat ve önkoşul grafiği (M§15.1 adım 1, M§15.2).
-   DURUM dürüsttür: yalnız "hazir" olan seviyede tam ders + lab + değerlendirme vardır; "yok" olanlar sadece plandır.
+   DURUM dürüsttür: "hazir" = tam ders (15 öğe) + uygulama alanı (PP.alan) + değerlendirme + 4 proje; "yok" olanlar sadece plandır.
+   Seviye 1 (elektronik tablo): çalıştırılamayan kısımlar "simülasyon" etiketli; SQL/Python alanları aynı işin karşılığıdır.
    Sertifika eşlemesi bu turda yapılmadı (doğrulanmadı). */
 (function () {
   var VA = (window.PP_VA = window.PP_VA || {});
@@ -7,8 +8,8 @@
     surum: "2026-10-tur1",
     seviyeler: [
       { id: 0, ad: "Temeller", onkosul: [], durum: "hazir", konular: ["Analist, veri mühendisi, veri bilimci ve iş analisti", "İş problemini analitik soruya çevirmek", "Satır, sütun, kayıt, değişken ve veri türleri; yapılı ve yapısız veri", "CSV, JSON, XLSX ve SQL kaynakları", "Veri sözlüğü, veri kalitesi, gizlilik ve etik yorum", "Gerekli temel matematik ve istatistik"] },
-      { id: 1, ad: "Elektronik tablolar", onkosul: [0], durum: "yok", konular: ["Hücre, veri türü, formül, koşullu fonksiyonlar, aramalar, tarih ve metin", "Sıralama, filtre, tekrar, eksik değer, doğrulama", "Özet tablo, grafik, basit rapor"] },
-      { id: 2, ad: "SQL", onkosul: [0, 1], durum: "yok", konular: [
+      { id: 1, ad: "Elektronik tablolar", onkosul: [0], durum: "hazir", konular: ["Hücre, veri türü, formül, koşullu fonksiyonlar, aramalar, tarih ve metin", "Sıralama, filtre, tekrar, eksik değer, doğrulama", "Özet tablo, grafik, basit rapor"] },
+      { id: 2, ad: "SQL", onkosul: [0, 1], durum: "hazir", konular: [
         "Veritabanı, tablo, ilişki, şema", "SELECT, WHERE, ORDER BY, LIMIT, DISTINCT, NULL", "CASE WHEN", "COUNT, SUM, AVG, MIN, MAX", "GROUP BY ve HAVING", "INNER JOIN, LEFT JOIN ve diğer birleştirmeler",
         "Çok tablolu analiz", "Alt sorgu ve CTE", "Tarih ve metin fonksiyonları", "Pencere fonksiyonları (ROW_NUMBER, RANK, LAG, LEAD)", "Koşullu toplama ve veri kalitesi kontrolleri", "Sorgu planı ve performans temelleri, analitik veri modelleme", "İş sorusunu doğru sorguya çevirmek"] },
       { id: 3, ad: "İstatistik ve analitik düşünme", onkosul: [0, 1], durum: "yok", konular: ["Ortalama, ortanca, mod, yüzdelik, varyans, standart sapma", "Dağılım, aykırı değer, olasılık, örnekleme", "Evren ve örneklem; korelasyon nedensellik değildir", "Hipotez testi ve güven aralığı kavramları", "Eksik veri ve örnekleme yanlılığı", "Zaman eğilimleri, KPI tasarımı, metrik seçimi"] },
