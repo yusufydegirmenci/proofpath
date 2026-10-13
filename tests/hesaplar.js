@@ -57,6 +57,17 @@ const run = (p, body) => p.evaluate(new Function(SIFIR + body));
     2, 'streakInfo: joker günü seriyi köprüler ama sayılmaz (bugün+2 gün önce = 2)');
   eq(await run(p, `S.days=[{date:T(0),minutes:10},{date:T(3),minutes:5}];return streakInfo().n`), 1, 'streakInfo: boşluk seriyi keser');
   eq(await run(p, `S.days=[{date:T(0),minutes:0}];return [streakInfo().n,Object.keys(loggedDates()).length]`), [0, 0], 'loggedDates: 0 dakika sayılmaz');
+  // seri dondurma (Faz 10 tur 4, gerekçe: PP.ogr.seri.dondurma yeni; eski davranış (dondurma hakkı yokken boşluk keser) yukarıdaki testlerle aynen korunur).
+  // Kural: kesintisiz zincirde her 7 etkin günde 1 dondurma, en çok 2; boş günü otomatik köprüler (sayılmaz). Beklenenler elle hesaplandı.
+  const gunler = (a) => `S.days=[${a.join(',')}].map(function(n){return {date:T(n),minutes:5}});`;
+  eq(await run(p, gunler([0, 2, 3, 4, 5, 6, 7, 8]) + `return streakInfo().n`), 8, 'seri dondurma: 7 günlük zincir 1 dondurma kazanır, tek boş gün köprülenir (7 + bugün = 8; dondurmasız 1 olurdu)');
+  eq(await run(p, gunler([0, 2, 3, 4, 5, 6]) + `return streakInfo().n`), 1, 'seri dondurma: 5 günlük zincir dondurma kazanmaz, boşluk keser');
+  eq(await run(p, gunler([0, 3, 4, 5, 6, 7, 8, 9]) + `return streakInfo().n`), 1, 'seri dondurma: 1 dondurma yalnız 1 boş günü köprüler; 2 ardışık boş gün seriyi keser');
+  eq(await run(p, gunler([0, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]) + `return streakInfo().n`), 15, 'seri dondurma: 14 günlük zincir 2 dondurma kazanır, 2 ardışık boş gün köprülenir (14 + bugün = 15)');
+  eq(await run(p, gunler([0, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]) + `return streakInfo().n`), 1, 'seri dondurma: 21 günlükte bile en çok 2 saklanır; 3 ardışık boş gün keser');
+  eq(await run(p, gunler([1, 2, 3, 4, 5, 6, 7]) + `var s=streakInfo();return [s.n,PP.ogr.seri.dondurma(loggedDates(),{},today()).kalan]`), [7, 1], 'seri dondurma: bugün henüz etkin değilse eksik sayılmaz; 7 günlük seri 1 dondurma hakkı verir');
+  eq(await run(p, gunler([0, 2, 3, 4, 5, 6, 7, 8]) + `var d=PP.ogr.seri.dondurma(loggedDates(),{},today());return [d.kalan,d.kazanilan,d.kullanilan,Object.keys(d.kopru).length]`), [0, 1, 1, 1], 'seri dondurma: kazanılan 1, kullanılan 1, kalan 0');
+  eq(await run(p, `return [PP.ogr.seri.kilometre(6),PP.ogr.seri.kilometre(7),PP.ogr.seri.kilometre(8),PP.ogr.seri.kilometre(30),PP.ogr.seri.kilometre(31)]`), [0, 7, 0, 30, 0], 'seri kilometre taşı: yalnız tam 7. ve 30. gün');
   eq(await run(p, `var t0=Date.parse('2026-10-01T10:00:00Z');S.attempts=[0,3,20].map(function(m){return {date:T(0),ts:new Date(t0+m*6e4).toISOString(),xp:1}});return liveMinutes()[T(0)]`),
     6, 'liveMinutes: aralığı ≤8 dk olanlar eklenir (1 + 1+3 + 1 = 6)');
   eq(await run(p, `S.progress=[{id:T(0),g_runs:1},{id:T(1),g_runs:2},{id:T(2),g_runs:1}];return gmStreak()`), 3, 'gmStreak: oyun serisi 3 gün');

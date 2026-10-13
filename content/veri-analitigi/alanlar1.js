@@ -185,7 +185,7 @@
     { id: "va1-1-py", ders: "va1-1", tur: "python", baslik: "İsteğe bağlı · Python · ETOPLA'nın karşılığı (Ankara net ciro)",
       gorev: "İsteğe bağlı: aynı işin SQL/Python karşılığı (Seviye 2/4'te öğrenilen araçların ön izlemesi; zorunlu değil, elektronik tablo çözümü esastır). Aynı işin Python karşılığı (elektronik tablo ETOPLA/EĞERSAY mantığı): `siparisler` sözlük listesidir. Şehri 'Ankara' olan siparişlerin NET ciro toplamını (adet × birim_fiyat × (1 − indirim_orani)) `sonuc`a ata. indirim_orani boşsa (None) 0 say; bu bir varsayımdır.",
       baslangic: "# siparisler: sözlük listesi; sutunlar: sütun adları\nprint(sutunlar)\nprint(siparisler[0])\nsonuc = None",
-      ipucu: ["Ölçüt: s['sehir'] == 'Ankara' (ETOPLA'nın ölçütü).", "Boş indirim None gelir: (s['indirim_orani'] or 0).", "Toplamı bir döngüde ya da sum() ile biriktir."],
+      ipucu: ["ETOPLA'nın Python karşılığı: önce ölçüte uyan siparişleri seç (şehir), sonra her birinin net tutarını toplama ekle.", "Ölçüt s['sehir'] == 'Ankara'; net tutar adet * birim_fiyat * (1 - indirim). Boş indirim None gelir ve None ile aritmetik yapılamaz; 'boşsa yerine 0 al' diyen bir Python ifadesiyle onu 0'a çevirmelisin.", "sonuc = sum(s['adet'] * s['birim_fiyat'] * (1 - (____)) for s in siparisler if s['sehir'] == 'Ankara') ; boşluğa None'ı 0'a çeviren ifadeyi yaz."],
       kontrol: function (s, v) {
         var o = yd.nesneler(v).filter(function (r) { return r.sehir === "Ankara"; }), bek = o.reduce(function (t, r) { return t + net(r); }, 0);
         var bulunan = yd.degerOf(s), brut = o.reduce(function (t, r) { return t + r.adet * r.birim_fiyat; }, 0);
@@ -195,12 +195,12 @@
       }, varyant: varyantAnkara },
     { id: "va1-1-sim", ders: "va1-1", tur: "sim", baslik: "Simülasyon · ETOPLA formülü (ürün adedi)",
       gorev: "SİMÜLASYON (elektronik tablo çalıştırılmaz; yazdığın formül kural tabanlı denetlenir). Tablo A1'den başlar: A siparis_id, B tarih, C musteri_id, D sehir, E urun, F adet, G birim_fiyat, H indirim_orani, I odeme_turu, J iade; veri 2. satırdan son satıra kadar. 'Kulaklık' ürününün toplam adedini hesaplayan ETOPLA (SUMIF) formülünü yaz; yanına bulduğun sayıyı da yaz (ör. formül → sonuç).",
-      baslangic: "=", ipucu: ["ETOPLA(ölçüt_aralığı; ölçüt; toplam_aralığı): ölçüt aralığı ürün sütunu, toplam aralığı adet sütunu.", "Başlık satırını aralığa alma; ayırıcı ',' ya da ';' olabilir, ad İngilizce (SUMIF) de olur.", "Sonucu tabloya bakarak da elle doğrulayabilirsin."],
+      baslangic: "=", ipucu: ["Koşula uyan satırların adetlerini toplayacaksın: tek ölçütlü koşullu toplam işlevini ara, düz TOPLA ya da EĞERSAY değil.", "ETOPLA(ölçüt_aralığı; ölçüt; toplam_aralığı): ölçüt aralığı ürün sütunu (E), toplam aralığı adet sütunu (F); başlık satırını aralığa alma, ayırıcı ',' ya da ';' olabilir.", "=ETOPLA(E2:E13; ____ ; F2:F13) → ____ ; boşluğa ölçütü tırnak içinde yaz, sonucu da Kulaklık satırlarının adetlerini elle toplayarak doğrula."],
       kontrol: kontrolEtopla, varyant: varyantKulaklik },
     { id: "va1-2-py", ders: "va1-2", tur: "python", baslik: "İsteğe bağlı · Python · temizleme: tekrarsız adet toplamı", veri: VA.veriKirli,
       gorev: "İsteğe bağlı: aynı işin SQL/Python karşılığı (Seviye 2/4'te öğrenilen araçların ön izlemesi; zorunlu değil, elektronik tablo çözümü esastır). Aynı işin Python karşılığı (temizleme; kirli veri): `siparisler` sözlük listesidir (sütunlar: kayit_no, tarih, sehir, urun, adet, fiyat, odeme). Kopya (aynı kayit_no) satırları bir kez say ve 'adet' sütunundaki metin sayıları ('2 adet' gibi) sayıya çevirerek toplam adedi `sonuc`a ata. Yaptığın iki dönüşümü kod yorumuyla açıkla (ne yaptın, neden).",
       baslangic: "# Temizleme: önce neyi düzelteceğini yorum satırlarıyla yaz\nfor s in siparisler:\n    print(s['kayit_no'], repr(s['adet']))\nsonuc = None",
-      ipucu: ["Görülen kayit_no'ları bir kümede (set) tut; ikinci kez görünce atla.", "Adet bazen int, bazen metin: isinstance(a, str) ile ayırıp ilk sözcüğü int()'e çevir.", "Dönüşümü yorum satırıyla açıkla: '# K10 kopya olduğu için atlandı'."],
+      ipucu: ["İki ayrı temizlik var: tekrar eden kaydı bir kez saymak ve metin biçimindeki adedi sayıya çevirmek; kayit_no ilkinin anahtarıdır.", "Görülen kayit_no'ları bir kümede (set) tut, ikinci kez görünce continue ile atla. Adet bazen int bazen '2 adet' gibi metindir: isinstance(a, str) ile ayırıp ilk sözcüğü int()'e çevir.", "seen = set(); toplam = 0; for s in siparisler: kayıt görüldüyse continue; seen.add(...); a = s['adet']; if isinstance(a, str): a = ____ ; toplam += a. Sonra sonuc = toplam; her iki dönüşüme '# ...' yorumu yaz."],
       kontrol: function (s, v) {
         var bek = tekilAdetToplam(v), bulunan = yd.degerOf(s);
         var r1 = yd.sayi(bulunan, bek, "Kopya satırı bir kez saymalı ve metin adetleri sayıya çevirmelisin.");
@@ -210,7 +210,7 @@
     { id: "va1-2-sql", ders: "va1-2", tur: "sql", baslik: "İsteğe bağlı · SQL · temizleme: tekrar ve boş değer sayımı", veri: VA.veriKirli,
       gorev: "İsteğe bağlı: aynı işin SQL/Python karşılığı (Seviye 2/4'te öğrenilen araçların ön izlemesi; zorunlu değil, elektronik tablo çözümü esastır). Aynı işin SQL karşılığı (kirli veri; tablo `siparis`). Tek satırda üç sayı döndür, bu sırayla: (1) toplam satır sayısı, (2) benzersiz kayit_no sayısı, (3) fiyatı boş (NULL) olan satır sayısı. İlk iki sayının farkı kopya satır sayısını gösterir.",
       baslangic: "-- siparis: kayit_no, tarih, sehir, urun, adet, fiyat, odeme (kirli veri)\nSELECT * FROM siparis;",
-      ipucu: ["COUNT(*) tüm satırları, COUNT(DISTINCT kayit_no) benzersizleri sayar.", "Boş hücre NULL'dur: COUNT(*) - COUNT(fiyat) ya da SUM(fiyat IS NULL).", "Üç ifadeyi virgülle aynı SELECT içine yaz."],
+      ipucu: ["Tek satırda üç sayı istiyor: tüm satırlar, benzersiz kayıtlar ve boş fiyatlar; ilk ikisinin farkı kopya sayısını verir.", "COUNT(*) tüm satırları sayar; benzersizler için COUNT içinde tekrarları eleyen bir sözcük gerekir. Boş fiyat NULL'dır ve COUNT(sütun) NULL hücreleri atlar; bu farktan ya da NULL denetiminden yararlanıp boş fiyatları sayabilirsin.", "SELECT COUNT(*), COUNT(____ kayit_no), ____ FROM siparis; ilk boşluk tekrarları eleyen sözcük, ikinci boşluk fiyatı NULL olan satırları sayan ifade olmalı."],
       kontrol: function (s, v) {
         var bek = kirliSayilar(v), r = s.satirlar.length === 1 && s.sutunlar.length === 3 ? s.satirlar[0] : null;
         if (!r) return { dogru: false, mesaj: "Tek satır, üç sütun döndürmelisin. Şu an " + s.satirlar.length + " satır, " + s.sutunlar.length + " sütun var." };
@@ -220,12 +220,12 @@
       }, varyant: varyantKirliSayim },
     { id: "va1-2-sim", ders: "va1-2", tur: "sim", baslik: "Simülasyon · kopya kaydı EĞERSAY ile bulma", veri: VA.veriKirli,
       gorev: "SİMÜLASYON (elektronik tablo çalıştırılmaz; formül metni kural tabanlı denetlenir). Kirli tablo A1'den başlar: A kayit_no, B tarih, C sehir, D urun, E adet, F fiyat, G odeme; veri 2. satırdan son satıra kadar. Tabloya bakıp hangi kayit_no'nun birden fazla geçtiğini bul; EĞERSAY (COUNTIF) ile o kaydın kaç kez geçtiğini hesaplayan formülü ve sonucunu yaz (ör. formül → sonuç). Bu, temizlemeden önce kopyayı kanıtlama adımıdır.",
-      baslangic: "=", ipucu: ["EĞERSAY(aralık; ölçüt): aralık kayit_no sütunu, ölçüt tırnak içinde kayıt numarası.", "Kopyayı bulmak için kayit_no sütununu sırala ya da gözle tara.", "Sonuç 1'den büyükse kopya vardır."],
+      baslangic: "=", ipucu: ["Önce tabloya bakıp hangi kayıt numarasının iki kez yazıldığını gözle bul; sonra o numarayı sayan bir formül kur.", "EĞERSAY(aralık; ölçüt): aralık, kayit_no sütununun A2'den son veri satırına kadar olan kısmıdır (kopya satır da dahil); ölçüt tırnak içinde kayıt numarasıdır.", "=EĞERSAY(A2:A14; \"____\") → ____ ; boşluklara kopya olan kayıt numarasını ve formülün bulduğu sayıyı yaz (1'den büyük çıkmalı)."],
       kontrol: kontrolEgersay, varyant: varyantKopya3 },
     { id: "va1-3-sql", ders: "va1-3", tur: "sql", baslik: "İsteğe bağlı · SQL · özet tablonun karşılığı (şehir bazında net ciro)",
       gorev: "İsteğe bağlı: aynı işin SQL/Python karşılığı (Seviye 2/4'te öğrenilen araçların ön izlemesi; zorunlu değil, elektronik tablo çözümü esastır). Aynı işin SQL karşılığı (özet tablo = GROUP BY). Tablo `siparis`. Her şehir için NET ciro toplamını döndür: iki sütun (sehir, net_ciro); net ciro = adet × birim_fiyat × (1 − indirim_orani). Boş (NULL) indirimi 0 say (varsayım). net_ciro'yu 2 ondalığa yuvarla.",
       baslangic: "-- siparis: siparis_id, tarih, musteri_id, sehir, urun, adet, birim_fiyat, indirim_orani, odeme_turu, iade\nSELECT sehir, COUNT(*) FROM siparis GROUP BY sehir;",
-      ipucu: ["GROUP BY sehir her şehir için bir satır üretir (özet tablodaki satır alanı).", "Boş indirim için COALESCE(indirim_orani, 0) kullan; NULL ile çarpım NULL verir ve satır toplamdan düşer.", "ROUND(SUM(...), 2)"],
+      ipucu: ["Özet tablonun SQL karşılığı gruplamadır: her şehir için tek satır ve yanında o şehrin net ciro toplamı.", "GROUP BY sehir her şehre tek satır verir. Net tutar adet * birim_fiyat * (1 - indirim) olur; ama NULL ile çarpım NULL verir ve boş indirimli satır toplamdan düşer, bu yüzden NULL'ı yedek bir değerle değiştiren SQL işlevinden yararlan.", "SELECT sehir, ROUND(SUM(adet * birim_fiyat * (1 - ____(indirim_orani, 0))), 2) AS net_ciro FROM siparis GROUP BY sehir; boşluğa boş indirimi 0'a çeviren işlevin adını yaz."],
       kontrol: function (s, v) {
         var bek = sehirNet(v);
         if (s.sutunlar.length !== 2) return { dogru: false, mesaj: "İki sütun (sehir, net_ciro) döndürmelisin; şu an " + s.sutunlar.length + "." };
@@ -238,7 +238,7 @@
       }, varyant: varyantSehir },
     { id: "va1-3-sim", ders: "va1-3", tur: "sim", baslik: "Simülasyon · ÇOKETOPLA formülü (şehir + ödeme)",
       gorev: "SİMÜLASYON (elektronik tablo çalıştırılmaz; formül metni kural tabanlı denetlenir). Tablo A1'den başlar: A siparis_id, B tarih, C musteri_id, D sehir, E urun, F adet, G birim_fiyat, H indirim_orani, I odeme_turu, J iade; veri 2. satırdan son satıra kadar. Şehri 'İstanbul' VE ödeme türü 'kart' olan siparişlerin toplam adedini hesaplayan ÇOKETOPLA (SUMIFS) formülünü yaz; yanına sonucu da yaz (ör. formül → sonuç).",
-      baslangic: "=", ipucu: ["ÇOKETOPLA(toplam_aralığı; ölçüt_aralığı1; ölçüt1; ölçüt_aralığı2; ölçüt2): toplanacak aralık ilk gelir.", "Ölçütler tırnak içinde; aralıklar başlık satırını içermesin.", "Sonucu iki koşulu sağlayan satırları elle seçip doğrulayabilirsin."],
+      baslangic: "=", ipucu: ["İki koşulun birlikte sağlanması gerekiyor (şehir VE ödeme türü); tek ölçütlü ETOPLA yetmez, çok ölçütlü sürümünü kullan.", "ÇOKETOPLA(toplam_aralığı; ölçüt_aralığı1; ölçüt1; ölçüt_aralığı2; ölçüt2): toplanacak adet sütunu (F) ilk gelir, şehir sütunu D, ödeme sütunu I; başlıksız aralıklar 2. satırdan başlar.", "=ÇOKETOPLA(F2:F13; D2:D13; \"____\"; I2:I13; \"____\") → ____ ; boşlukları şehir adı, ödeme türü ve bulduğun sayıyla doldur."],
       kontrol: kontrolCoketopla, varyant: varyantKart }
   );
 })();
