@@ -41,9 +41,26 @@ function ogrPlanItems(){
       yer?h("button",{class:"btn ghost",type:"button",onclick:git},x.durum==="kaldi"?"Telafi et":"Tekrarla"):null);
   });
 }
+/* Günün sorusu (Faz 10 tur 4): QB havuzundan yerel tarihle deterministik; tekrar kuyruğunun ilk satırı. Yanlışı mevcut oyun tekrar kuyruğuna (gqMark) girer. */
+function gunSorusuHavuz(){
+  var gs=typeof goalSet==="function"?goalSet():null,out=[];
+  for(var i=0;i<QB.length;i++){var q=QB[i];if(q&&q.q&&Array.isArray(q.o)&&typeof q.a==="number"&&(!gs||gs.indexOf(q.t)>=0))out.push(i)}
+  return out;
+}
+function gunSorusuOge(){
+  if(!window.PP||!PP.gunSorusu||typeof QB==="undefined")return null;
+  var td=today(),i=PP.gunSorusu.sec(td,gunSorusuHavuz());if(i==null)return null;
+  var k="qb"+i,q=gmQB(i,rngf(i*13+dayNum(td)),false),pick=PP.gunSorusu.cevap(td,k),done=pick!=null;
+  return {k:k,done:done,el:h("div",{class:"rq gs","data-gun-sorusu":k},
+    h("div",{class:"small mute"},"Günün sorusu · "+trName(QB[i].t)+" · yanıtın cezasızdır"),
+    h("div",{class:"rq-q"},q.q),
+    h("div",{class:"gqo"},q.o.map(function(t,j){return h("button",{type:"button",class:"btn ghost"+(done?(j===q.a?" okb":j===pick?" badb":""):""),disabled:done,"data-gun-sec":String(j),onclick:function(){PP.gunSorusu.cevapla(td,k,j);try{gqMark([[k,j===q.a]])}catch(e){}draw()}},t)})),
+    done?h("div",{class:"small",role:"status",style:"margin-top:6px"},h("b",null,pick===q.a?"Doğru. ":"Doğrusu: "+q.o[q.a]+". "),q.w||"",pick===q.a?"":" Bu soru tekrar kuyruğuna eklendi."):null)};
+}
 function renderReviewQueue(){
-  var due=mistakesDue(),risk=riskTopics(),pl=ogrPlanItems(),total=due.length+risk.length+pl.length;
+  var due=mistakesDue(),risk=riskTopics(),pl=ogrPlanItems(),gso=gunSorusuOge(),total=due.length+risk.length+pl.length+(gso&&!gso.done?1:0);
   var items=pl.slice();
+  if(gso)items.unshift(gso.el);
   due.slice(0,3).forEach(function(m){
     var on=S.mrev[m.id];
     items.push(h("div",{class:"rq "+(m.track==="eng"?"eng":"")},

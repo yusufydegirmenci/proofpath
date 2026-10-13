@@ -31,7 +31,7 @@
   var VA8SQL = { id: "va2-8-sql", ders: "va2-8", tur: "sql", baslik: "SQL · ortalamanın altındaki siparişler", veri: VA.veriSql,
     gorev: "Net tutar = adet × birim_fiyat × (1 − indirim_orani); boş (NULL) indirim, indirimsiz (0) sayılır. Tüm siparişlerin ortalama net tutarının ALTINDA kalan siparişleri `siparis_id` ve `net_tutar` sütunlarıyla (bu sırayla) listele. Ortalamayı sabit yazma: alt sorgu ya da CTE ile hesapla.",
     baslangic: "-- net tutar için: adet * birim_fiyat * (1 - COALESCE(indirim_orani, 0))\nSELECT siparis_id, adet * birim_fiyat AS brut FROM siparis;",
-    ipucu: ["COALESCE(indirim_orani, 0) boş indirimi 0 yapar; bunu yapmazsan net tutar o satırda NULL olur ve satır ortalamadan düşer.", "Ortalama: (SELECT AVG(...) FROM siparis) skaler alt sorgusu WHERE içinde bir sayı gibi kullanılır.", "CTE ile: WITH n AS (SELECT siparis_id, <net> AS net_tutar FROM siparis) SELECT ... FROM n WHERE net_tutar < (SELECT AVG(net_tutar) FROM n)"],
+    ipucu: ["Ortalamayı sabit yazamazsın: sorgu önce ortalamayı hesaplamalı, sonra her siparişin net tutarını onunla karşılaştırmalı.", "Net tutar adet * birim_fiyat * (1 - COALESCE(indirim_orani, 0)); ortalama için WHERE içinde skaler alt sorgu kullan: (SELECT AVG(<aynı ifade>) FROM siparis).", "WITH n AS (SELECT siparis_id, ____ AS net_tutar FROM siparis) SELECT siparis_id, net_tutar FROM n WHERE net_tutar < (SELECT ____(net_tutar) FROM n) ; boşlukları net tutar ifadesi ve ortalama işleviyle doldur."],
     kontrol: function (s, v) {
       var b = altiOrtalama(v), bul = s.satirlar;
       var d = s.sutunlar.length === 2 && yd().ayniSatirlar(bul, b.satirlar);
@@ -41,7 +41,7 @@
   var VA8PY = { id: "va2-8-py", ders: "va2-8", tur: "python", baslik: "Python · ortalama net tutar ve üstündekiler", veri: VA.veriSql,
     gorev: "`siparisler` sözlük listesidir. Net tutar = adet × birim_fiyat × (1 − indirim_orani); indirim_orani None ise 0 say. `sonuc` = [ortalama net tutar (2 ondalığa yuvarlı), ortalamanın ÜSTÜNDE kalan sipariş sayısı] (bu sırayla).",
     baslangic: "def net(s):\n    ind = s['indirim_orani'] or 0\n    return s['adet'] * s['birim_fiyat'] * (1 - ind)\n\nnetler = [net(s) for s in siparisler]\nprint(netler)\nsonuc = None",
-    ipucu: ["Ortalama = sum(netler) / len(netler)", "round(x, 2) ile iki ondalık.", "len([n for n in netler if n > ortalama]) ortalamanın üstündekileri sayar."],
+    ipucu: ["Önce her siparişin net tutarını bir listede topla; ortalamayı bu listeden çıkar, sonra ortalamayı aşanları say.", "None indirimi (s['indirim_orani'] or 0) ile 0 say; ortalama = sum(netler) / len(netler); iki ondalık için round(x, 2); sonuc iki elemanlı liste: [ortalama, üstündekilerin sayısı].", "ort = sum(netler) / len(netler); sonuc = [round(ort, 2), len([n for n in netler if ____])] ; boşluğa 'ortalamanın üstünde' koşulunu yaz."],
     kontrol: function (s, v) {
       var b = altiOrtalama(v), f = yd().degerOf(s), bek = [Math.round(b.ort * 100) / 100, b.ust];
       var d = Array.isArray(f) && f.length === 2 && typeof f[0] === "number" && Math.abs(f[0] - bek[0]) < 0.011 && f[1] === bek[1];
@@ -57,7 +57,7 @@
   var VA9SQL = { id: "va2-9-sql", ders: "va2-9", tur: "sql", baslik: "SQL · aylık sipariş sayısı ve net ciro", veri: VA.veriSql,
     gorev: "Tarih metnini aya çevirip ay bazında özetle: `ay` ('YYYY-AA'), `siparis_sayisi`, `net_ciro` (adet × birim_fiyat × (1 − indirim_orani); NULL indirim 0 sayılır) — bu sırayla, aya göre artan sırada.",
     baslangic: "SELECT tarih, strftime('%Y-%m', tarih) AS ay FROM siparis LIMIT 5;",
-    ipucu: ["strftime('%Y-%m', tarih) tarih metninden 'YYYY-AA' üretir; GROUP BY içinde aynı ifade ya da takma ad kullanılır.", "Net ciro için COALESCE(indirim_orani, 0).", "Sıra: ORDER BY ay"],
+    ipucu: ["Tarihler günlük; aylık özet için her tarihi önce 'YYYY-AA' ay anahtarına çevirip bu anahtara göre gruplamalısın.", "strftime('%Y-%m', tarih) AS ay; COUNT(*) sipariş sayısını, SUM(adet * birim_fiyat * (1 - COALESCE(indirim_orani, 0))) net ciroyu verir; zaman sırası için ORDER BY ay.", "SELECT strftime('____', tarih) AS ay, COUNT(*) AS siparis_sayisi, SUM(____) AS net_ciro FROM siparis GROUP BY ay ORDER BY ____ ; boşlukları biçim kalıbı, net tutar ifadesi ve sıralama sütunuyla doldur."],
     kontrol: function (s, v) { var d = s.sutunlar.length === 3; return d ? yd().satirlar(s.satirlar, aylik(v), "Ay sayısını, her aydaki sipariş sayısını ve indirimi boş olan satırın cirosunu kontrol et.", true) : { dogru: false, mesaj: "3 sütun (ay, siparis_sayisi, net_ciro) bekleniyor; bulduğun sütun sayısı: " + s.sutunlar.length + "." }; },
     varyant: function (v) { return ekle(v, ["S013", "2026-04-09", "M04", "Ankara", "Fare", 4, 250.0, 0.20, "kart", "hayır"]); } };
 
@@ -66,7 +66,7 @@
   var VA10SQL = { id: "va2-10-sql", ders: "va2-10", tur: "sql", baslik: "SQL · önceki aya göre değişim (LAG)", veri: VA.veriSql,
     gorev: "Aylık net ciroyu (adet × birim_fiyat × (1 − indirim_orani); NULL indirim 0) ve bir önceki aya göre farkı listele: `ay`, `net_ciro`, `onceki_aya_fark` (= bu ay − önceki ay). İlk ayın farkı NULL kalmalı (önceki ay yok). Aya göre artan sırada olsun.",
     baslangic: "-- önce aylık ciroyu CTE'de hazırla, sonra LAG(...) OVER (ORDER BY ...) ekle\nSELECT strftime('%Y-%m', tarih) AS ay, SUM(adet * birim_fiyat) AS brut FROM siparis GROUP BY 1;",
-    ipucu: ["WITH aylik AS (SELECT ay, net_ciro ... GROUP BY ay) SELECT ... FROM aylik", "LAG(net_ciro) OVER (ORDER BY ay) önceki satırın değerini getirir; ilk satırda NULL döner.", "Fark = net_ciro - LAG(net_ciro) OVER (ORDER BY ay); ORDER BY ay ile bitir."],
+    ipucu: ["Önce aylık ciroyu bir CTE'de hazırla; farkı o tablonun üstünde, önceki satırı gösteren bir pencere işleviyle hesapla.", "Bir önceki satırın değerini getiren bir pencere işlevi vardır; OVER içindeki sıralama zaman sırasında (aya göre artan) olmalı, yoksa 'önceki' satır yanlış aya denk gelir. İlk ayın önceki satırı olmadığından orada NULL döner; fark = bu ay - önceki ay.", "WITH aylik AS (SELECT strftime('%Y-%m', tarih) AS ay, SUM(____) AS net_ciro FROM siparis GROUP BY ay) SELECT ay, net_ciro, net_ciro - ____(net_ciro) OVER (ORDER BY ay) AS onceki_aya_fark FROM aylik ORDER BY ay ; boşlukları net tutar ifadesi ve pencere işleviyle doldur."],
     kontrol: function (s, v) { var d = s.sutunlar.length === 3; return d ? yd().satirlar(s.satirlar, aylikFark(v), "İlk ayın farkı NULL olmalı; fark = bu ay − önceki ay (işaretine ve OVER içindeki sıralamaya dikkat).", true) : { dogru: false, mesaj: "3 sütun (ay, net_ciro, onceki_aya_fark) bekleniyor; bulduğun: " + s.sutunlar.length + "." }; },
     varyant: function (v) { return degistir(v, "S008", "adet", 1); } };
   function sehirEnBuyuk(v) {
@@ -75,7 +75,7 @@
   var VA10PY = { id: "va2-10-py", ders: "va2-10", tur: "python", baslik: "Python · şehirde en yüksek net tutarlı sipariş", veri: VA.veriSql,
     gorev: "(Python bilgisi varsayar; SQL ile çalışmayı seçtiysen va2-10-sql alanı alternatiftir.) Her şehir için net tutarı (adet × birim_fiyat × (1 − indirim_orani); None indirim 0) EN YÜKSEK olan siparişin `siparis_id` değerini bul. `sonuc` = {şehir: siparis_id} sözlüğü. (SQL'de ROW_NUMBER() OVER (PARTITION BY sehir ORDER BY net DESC) = 1 filtresinin Python karşılığı.)",
     baslangic: "def net(s):\n    return s['adet'] * s['birim_fiyat'] * (1 - (s['indirim_orani'] or 0))\n\nsonuc = {}\nfor s in siparisler:\n    print(s['sehir'], s['siparis_id'], net(s))",
-    ipucu: ["Şehre göre grupla: sözlükte şehir → (en iyi net, siparis_id) tut.", "Döngüde net(s) şu ana kadarki en iyiden büyükse güncelle.", "Sonda yalnız siparis_id değerlerini bırak: {sehir: siparis_id}"],
+    ipucu: ["Her şehir için 'şimdiye kadarki en iyi' bir kayıt tutacaksın; yeni sipariş daha yüksek net tutarlıysa kaydı değiştirirsin.", "Sözlükte şehir → (en yüksek net, siparis_id) tut; şehir ilk kez görülüyorsa ya da net(s) kayıttakini aşıyorsa güncelle. Sonda yalnız siparis_id değerlerini bırak.", "en = {}; for s in siparisler: n = net(s); if s['sehir'] not in en or n ____ en[s['sehir']][0]: en[s['sehir']] = (n, s['siparis_id']); sonra sonuc = {k: t[1] for k, t in en.items()} ; boşluğa karşılaştırma işlecini yaz."],
     kontrol: function (s, v) { return sozluk(yd().degerOf(s), sehirEnBuyuk(v), "Her şehir için yalnız bir sipariş_id döndür; net tutarı indirimle hesapla."); },
     varyant: function (v) { return degistir(degistir(degistir(v, "S001", "adet", 10), "S001", "indirim_orani", 0.5), "S011", "adet", 10); } };
 
@@ -87,7 +87,7 @@
   var VA11SQL = { id: "va2-11-sql", ders: "va2-11", tur: "sql", baslik: "SQL · ödeme türüne göre iade oranı", veri: VA.veriSql,
     gorev: "Ödeme türü başına: `odeme_turu`, `siparis_sayisi`, `iade_sayisi` (iade = 'evet' olanlar) ve `iade_orani` (iade_sayisi / siparis_sayisi, 0–1 arası ondalık). İadesi hiç olmayan ödeme türleri de listede 0 ile görünmeli. Koşullu toplama kullan.",
     baslangic: "SELECT odeme_turu, COUNT(*) AS siparis_sayisi\nFROM siparis\nGROUP BY odeme_turu;",
-    ipucu: ["SUM(CASE WHEN iade = 'evet' THEN 1 ELSE 0 END) koşullu sayım yapar; WHERE iade = 'evet' ise sıfır iadeli grupları listeden düşürür.", "Oran için 1.0 * ... ya da CAST(... AS REAL): tamsayı bölmesi 0 döndürür.", "Sütun sırası: odeme_turu, siparis_sayisi, iade_sayisi, iade_orani"],
+    ipucu: ["Her ödeme türünde iade edilenleri ayrıca saymalısın; WHERE ile süzersen iadesiz türler listeden kaybolur, bu yüzden sayımı koşullu yap.", "Koşullu sayım için SUM içine koşula göre 1 ya da 0 üreten bir CASE ifadesi koy. Oranda iki tamsayı bölününce sonuç tamsayıya kırpılır (0 çıkar); payı ondalık sayıya çeviren bir çarpan ya da dönüşüm gerekir.", "SELECT odeme_turu, COUNT(*) AS siparis_sayisi, SUM(CASE WHEN iade = 'evet' THEN 1 ELSE 0 END) AS iade_sayisi, ____ * SUM(CASE WHEN iade = 'evet' THEN 1 ELSE 0 END) / COUNT(*) AS iade_orani FROM siparis GROUP BY odeme_turu ; boşluğa tamsayı bölmesini önleyen çarpanı yaz."],
     kontrol: function (s, v) {
       var d = s.sutunlar.length === 4 && yakinSatirlar(s.satirlar, iadeOrani(v), 0.0051);
       return { dogru: d, mesaj: d ? "Sonuç veriyle uyuşuyor." : "Bulduğun: " + yd().gosterim(s.satirlar) + ". 4 sütun ve her ödeme türü için tek satır bekleniyor; iadesiz grupların kaybolup kaybolmadığını ve oranın tamsayı bölmesine düşüp düşmediğini kontrol et (2 ondalığa yuvarlama kabul)." };
@@ -109,7 +109,7 @@
   var VA11PY = { id: "va2-11-py", ders: "va2-11", tur: "python", baslik: "Python · veri kalitesi raporu", veri: VA.veriSql,
     gorev: "`siparisler` ve `tablolar['musteri']`, `tablolar['urun']` sözlük listeleridir. `sonuc` sözlüğünde 5 anahtar ver: `bos_indirim` (indirim_orani boş/None sipariş sayısı), `tekrar_id` (toplam satır − benzersiz siparis_id sayısı), `yetim_musteri` (musteri tablosunda karşılığı OLMAYAN musteri_id'li sipariş sayısı), `siparissiz_musteri` (hiç siparişi olmayan müşteri sayısı), `satilmayan_urun` (urun tablosunda olup hiç satılmamış ürün adları listesi).",
     baslangic: "musteri_idleri = {m['musteri_id'] for m in tablolar['musteri']}\nprint(len(siparisler), len(musteri_idleri))\nsonuc = {}",
-    ipucu: ["Küme (set) üyelik testi hızlı ve kısadır: `s['musteri_id'] not in musteri_idleri`", "Tekrar: len(ids) - len(set(ids))", "Katalogda olup satılmayan: set(katalog) - set(satılanlar); listeyi sorted() ile döndür."],
+    ipucu: ["Beş ayrı sayım var; her birini ayrı bir ifadeyle hesaplayıp sonunda sözlüğe koy. Birkaçı küme işlemleriyle (üyelik, fark) kolayca çözülür.", "Müşteri ve ürün adlarını kümelere al: yetim_musteri, müşteri kümesinde olmayan müşteri numaralı siparişlerdir; siparissiz_musteri, müşteri kümesi eksi siparişteki müşterilerdir; satilmayan_urun, katalog eksi satılanlar (sorted ile liste). Boş indirim için None'a özgü denetimi kullan; 0 ile karıştırma.", "sonuc = {'bos_indirim': ____, 'tekrar_id': ____, 'yetim_musteri': ____, 'siparissiz_musteri': ____, 'satilmayan_urun': ____} ; musteri_idleri başlangıç kodunda hazır. Sayımları liste kapsamı ve len() ile, 'siparişsiz' ve 'satılmayan' gibi farkları küme çıkarmasıyla kur; gerekli diğer kümeleri (siparişteki müşteriler, katalog, satılanlar) kendin tanımla."],
     kontrol: function (s, v) { return sozluk(yd().degerOf(s), kalite(v), "Her anahtarı ayrı hesapla; None ile 0'ın farklı olduğunu unutma."); },
     varyant: function (v) { return ekle(v, ["S001", "2026-04-02", "M99", "Bursa", "Kamera", 1, 900.0, "", "kart", "hayır"]); } };
 
@@ -117,13 +117,16 @@
   var VA12SQL = { id: "va2-12-sql", ders: "va2-12", tur: "sql", baslik: "SQL · indeks sonrası sorgu planı", veri: VA.veriSql,
     gorev: "`siparis` tablosunda `musteri_id` ile arama yapan sorgu tablonun tamamını tarar (SCAN). 1) `idx_siparis_musteri` adlı indeksi `siparis(musteri_id)` üzerinde oluştur (tekrar çalıştırmaya dayanıklı: IF NOT EXISTS). 2) EN SON ifade olarak `EXPLAIN QUERY PLAN SELECT * FROM siparis WHERE musteri_id = 'M01'` çalıştır. Plan çıktısında indeksin adı görünmeli.",
     baslangic: "-- önce indeks yokken planı gör:\nEXPLAIN QUERY PLAN SELECT * FROM siparis WHERE musteri_id = 'M01';",
-    ipucu: ["CREATE INDEX IF NOT EXISTS ad ON tablo(sütun);", "Plan satırının 'detail' sütununda önce SCAN, indeksten sonra SEARCH ... USING INDEX ad (sütun=?) görürsün.", "EXPLAIN QUERY PLAN ifadesi dosyadaki SON ifade olmalı; CREATE INDEX ondan önce gelir."],
+    ipucu: ["İki adım sırayla çalışmalı: önce indeksi oluştur, sonra planı iste; plan istemek sorguyu çalıştırmaz, nasıl çalışacağını gösterir.", "CREATE INDEX IF NOT EXISTS ile tablo(sütun) üzerinde idx_siparis_musteri adlı indeksi aç; EXPLAIN QUERY PLAN SELECT ... son ifade olsun. Plan 'detail' sütununda SCAN yerine SEARCH ... USING INDEX görünmeli.", "CREATE INDEX IF NOT EXISTS idx_siparis_musteri ON ____(____); EXPLAIN QUERY PLAN SELECT * FROM siparis WHERE musteri_id = 'M01' ; boşluklara tablo ve sütun adını yaz."],
     kontrol: function (s, v) {
+      /* Plan metninin biçimine bağlı kalma (SCAN/SEARCH ve indeks adı gevşek eşleşir), ama gerçek plan çıktısı şart: EXPLAIN QUERY PLAN
+         "id/parent/(notused)/detail" sütunlarını verir; yalnız "detail" adlı sahte bir SELECT plan sayılmaz (sabit cevap). */
       var i = s.sutunlar.indexOf("detail");
-      if (i < 0 || s.sutunlar.join(",") !== "id,parent,notused,detail") return { dogru: false, mesaj: "Sonuç bir sorgu planı değil (sütunlar: " + s.sutunlar.join(", ") + "). Son ifade EXPLAIN QUERY PLAN SELECT ... olmalı." };
+      if (i < 0 || s.sutunlar.indexOf("parent") < 0 || s.sutunlar.length < 3) return { dogru: false, mesaj: "Sonuç bir sorgu planı değil (sütunlar: " + s.sutunlar.join(", ") + "). Son ifade EXPLAIN QUERY PLAN SELECT ... olmalı." };
       var d = s.satirlar.map(function (r) { return String(r[i]); }).join(" | ");
-      if (/\bSCAN\b[^|]*siparis/i.test(d) && d.indexOf("idx_siparis_musteri") < 0) return { dogru: false, mesaj: "Plan: " + d + ". Hâlâ tablo taranıyor (SCAN): indeks oluşturuldu mu ve ad doğru mu? CREATE INDEX, EXPLAIN'den ÖNCE çalışmalı." };
-      var d2 = /SEARCH\b[^|]*siparis[^|]*USING (COVERING )?INDEX idx_siparis_musteri\b/i.test(d) && d.indexOf("musteri_id=") >= 0;
+      var indeksli = /\bUSING\s+(COVERING\s+)?INDEX\s+idx_siparis_musteri\b/i.test(d);
+      if (/\bSCAN\b/i.test(d) && !indeksli) return { dogru: false, mesaj: "Plan: " + d + ". Hâlâ tablo taranıyor (SCAN): indeks oluşturuldu mu ve ad doğru mu? CREATE INDEX, EXPLAIN'den ÖNCE çalışmalı." };
+      var d2 = /\bSEARCH\b/i.test(d) && /\bsiparis\b/i.test(d) && indeksli && /musteri_id/i.test(d);
       return { dogru: d2, mesaj: d2 ? "Plan indeksi kullanıyor: " + d : "Plan: " + d + ". Beklenen: siparis üzerinde idx_siparis_musteri ile musteri_id aramasında SEARCH." };
     },
     varyant: function (v) { return ekle(v, ["S013", "2026-04-02", "M09", "Bursa", "Kamera", 1, 900.0, 0.0, "kart", "hayır"]); } };
@@ -137,7 +140,7 @@
   var VA13SQL = { id: "va2-13-sql", ders: "va2-13", tur: "sql", baslik: "SQL · 'en iyi müşteriler' sorusunu tanımla ve sorgula", veri: VA.veriSql,
     gorev: "İş sorusu belirsiz: 'En iyi 3 müşterimiz kim?'. Bu görevde TANIM verilmiştir: en iyi = iade EDİLMEMİŞ siparişlerin net cirosu (adet × birim_fiyat × (1 − indirim_orani); NULL indirim 0) en yüksek 3 müşteri. Sütunlar: `musteri_id`, `segment` (musteri tablosundan), `net_ciro`; net ciroya göre azalan sırada.",
     baslangic: "-- tanım: iade = 'hayır' siparişler; net ciro; müşteri başına topla; segment için musteri tablosu\nSELECT * FROM musteri;",
-    ipucu: ["Önce WHERE iade = 'hayır' ile satırları süz, sonra musteri_id'ye göre GROUP BY.", "segment musteri tablosunda: JOIN musteri ... ON siparis.musteri_id = musteri.musteri_id", "ORDER BY net_ciro DESC LIMIT 3"],
+    ipucu: ["Tanım verilmiş; adımlar: iadeli siparişleri çıkar, müşteri başına net ciroyu topla, segmenti müşteri tablosundan getir, sırala ve üçte kes.", "siparis ile musteri'yi ortak musteri_id üzerinden JOIN et; iade koşulu satırları toplamdan önce eler (WHERE); müşteri başına toplam için GROUP BY (segment de gruba girer); boş indirim NULL'ı yedek değerle değiştiren işlevle 0 sayılır; sıralama ve ilk üçte kesme için ORDER BY ile LIMIT kullan, en yüksek ciro en üstte olmalı.", "SELECT s.musteri_id, m.segment, SUM(____) AS net_ciro FROM siparis s JOIN musteri m ON ____ WHERE s.iade = 'hayır' GROUP BY s.musteri_id, m.segment ORDER BY net_ciro ____ LIMIT 3 ; boşlukları net tutar ifadesi, birleştirme koşulu ve sıralama yönüyle doldur."],
     kontrol: function (s, v) { var d = s.sutunlar.length === 3; return d ? yd().satirlar(s.satirlar, enIyi(v), "İadeli siparişleri dışlayıp dışlamadığını, net cirenin indirimi içerdiğini ve sıralamayı kontrol et.", true) : { dogru: false, mesaj: "3 sütun (musteri_id, segment, net_ciro) bekleniyor; bulduğun: " + s.sutunlar.length + "." }; },
     varyant: function (v) { return degistir(v, "S010", "iade", "evet"); } };
 

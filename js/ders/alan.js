@@ -222,7 +222,8 @@
     if (d.tur !== "sim" && !(d.veri && Array.isArray(d.veri.sutunlar) && Array.isArray(d.veri.satirlar))) return { ok: false, neden: "veri-yok" };
     if (d.varyant != null && typeof d.varyant !== "function") return { ok: false, neden: "varyant-gecersiz" };
     var x = { id: d.id, ders: d.ders, tur: d.tur, baslik: d.baslik || "", gorev: d.gorev || "", baslangic: d.baslangic, kontrol: d.kontrol, varyant: d.varyant || null,
-      ipucu: Array.isArray(d.ipucu) ? d.ipucu.slice() : [], veri: d.veri || null, etiket: ETIKET[d.tur] };
+      ipucu: Array.isArray(d.ipucu) ? d.ipucu.slice() : [], veri: d.veri || null, etiket: ETIKET[d.tur],
+      cozum: typeof d.cozum === "string" ? d.cozum : (g.PP_VA && g.PP_VA.alanCozum && typeof g.PP_VA.alanCozum[d.id] === "string" ? g.PP_VA.alanCozum[d.id] : "") };
     kayit[x.id] = x;
     return { ok: true, alan: x };
   }
@@ -255,6 +256,7 @@
   function kanitKaydet(d, ipucu) {
     var O = PP.ogr;
     if (!O || !O.depo || !d) return { ok: false, neden: "depo-yok" };
+    if (PP.cubuk && !PP.cubuk.kanitSayilir("alan:" + d.id)) return { ok: false, neden: "cozum-goruldu" };
     return O.depo.kanitEkle({ id: "alan-" + d.id + (ipucu ? "-ipucu" : ""), tur: "lab", hedef: "lab:" + d.ders + ":" + d.id, dogrulama: "istemci" });
   }
   function sifirlaMetni(d) { return d && typeof d.baslangic === "string" ? d.baslangic : ""; }
@@ -280,9 +282,8 @@
     var ta = hh("textarea", { class: "mono", rows: d.tur === "sim" ? 4 : 6, spellcheck: "false", autocapitalize: "off", autocomplete: "off", "aria-label": "Kod: " + (d.baslik || d.id), "data-alan-kod": d.id, style: "width:100%;box-sizing:border-box;font-size:13px;tab-size:2" });
     ta.value = d.baslangic;
     var cikis = hh("div", { role: "status", "aria-live": "polite", "data-alan-sonuc": d.id });
-    var ipEl = hh("div", { class: "lbox warn", "data-alan-ipucu": d.id, style: "display:none" });
     var etiket = hh("div", { class: "lab-et", "data-alan-etiket": d.id }, d.etiket);
-    var ipAcik = false, mesgul = false, btn;
+    var cid = "alan:" + d.id, mesgul = false, btn, cubuk;
     function yaz() { cikis.textContent = ""; Array.prototype.slice.call(arguments).forEach(function (x) { if (x) cikis.appendChild(typeof x === "string" ? g.document.createTextNode(x) : x); }); }
     function calistirTikla() {
       if (mesgul) return; mesgul = true; btn.disabled = true; btn.textContent = "Çalışıyor…";
@@ -291,6 +292,7 @@
         mesgul = false; btn.disabled = false; btn.textContent = d.tur === "sim" ? "Kontrol et" : "Çalıştır";
         if (r.ok === false && r.calisti === true) {
           etiket.textContent = d.etiket;
+          PP.cubuk.yanlis(cid);
           return yaz(hh("pre", { class: "mono small", style: "white-space:pre-wrap;overflow-wrap:anywhere;margin:4px 0", "data-alan-durum": "hata" }, r.mesaj), hh("div", { class: "small warn", "data-alan-kontrol": "yanlis" }, "✗ Kod hata verdi ya da kesildi; düzeltip tekrar çalıştır."));
         }
         if (!r.ok) {
@@ -306,18 +308,21 @@
         var s = r.sonuc, gor = null;
         if (s && d.tur === "sql") gor = tabloEl(s);
         else if (s) gor = hh("pre", { class: "mono small", style: "white-space:pre-wrap;overflow-wrap:anywhere;margin:4px 0" }, (s.cikti ? s.cikti + "\n" : "") + (s.sonucTanimli ? "sonuc = " + JSON.stringify(s.deger) : ""));
-        var dogru = r.dogru, kanit = null;
-        if (dogru) { var kr = kanitKaydet(d, ipAcik); kanit = kr && kr.ok ? "Kanıt kaydedildi (istemci doğrulaması)." : "Kanıt kaydedilemedi."; if (opts.onDogru) try { opts.onDogru(ipAcik); } catch (e) { /* yoksay */ } }
+        var dogru = r.dogru, kanit = null, ipAcik = PP.cubuk.ipucuKullanildi(cid);
+        if (!dogru) PP.cubuk.yanlis(cid);
+        else if (!PP.cubuk.kanitSayilir(cid)) kanit = "Çözüm görüldüğü için kanıt kaydedilmedi.";
+        else { var kr = kanitKaydet(d, ipAcik); kanit = kr && kr.ok ? "Kanıt kaydedildi (istemci doğrulaması)." : "Kanıt kaydedilemedi."; if (opts.onDogru) try { opts.onDogru(ipAcik); } catch (e) { /* yoksay */ } }
         yaz(gor, hh("div", { class: "small " + (dogru ? "ok" : "warn"), "data-alan-kontrol": dogru ? "dogru" : "yanlis" }, (dogru ? "✓ Doğru. " : "✗ Henüz değil. ") + r.mesaj), kanit ? hh("div", { class: "small mute" }, kanit) : null);
       });
     }
     btn = hh("button", { class: "btn", type: "button", "data-alan": "calistir", onclick: calistirTikla }, d.tur === "sim" ? "Kontrol et" : "Çalıştır");
-    var ipBtn = hh("button", { class: "btn ghost", type: "button", "data-alan": "ipucu", onclick: function () { ipAcik = true; ipEl.style.display = ""; ipEl.textContent = ""; ipEl.appendChild(hh("div", { class: "label" }, "İpuçları")); ipEl.appendChild(hh("ul", { class: "lr-ul" }, d.ipucu.map(function (x) { return hh("li", null, x); }))); } }, "İpucu");
-    var sfBtn = hh("button", { class: "btn ghost", type: "button", "data-alan": "sifirla", onclick: function () { ta.value = sifirlaMetni(d); ipAcik = false; ipEl.style.display = "none"; yaz(); } }, "Sıfırla");
+    var sfBtn = hh("button", { class: "btn ghost", type: "button", "data-alan": "sifirla", onclick: function () { ta.value = sifirlaMetni(d); cubuk.gizle(); yaz(); } }, "Sıfırla");
+    cubuk = PP.cubuk.kur({ id: cid, ipucu: d.ipucu, cozum: function () { return d.cozum; }, birincilEl: btn, sifirlaEl: sfBtn, ipucuAttr: { "data-alan-ipucu": d.id }, ipucuDugmeAttr: { "data-alan": "ipucu" } });
+    var parsons = d.tur === "sql" && PP.parsons ? PP.parsons.panelDers(d.ders) : null;
     return hh("div", { class: "lbox", "data-alan": d.id, "data-alan-tur": d.tur }, hh("div", { class: "label" }, "Kodla dene · " + (d.baslik || d.id)), etiket,
       d.gorev ? hh("p", { class: "small" }, d.gorev) : null, ta,
-      hh("div", { class: "row", style: "gap:6px;flex-wrap:wrap;margin:6px 0" }, btn, d.ipucu.length ? ipBtn : null, sfBtn), ipEl, cikis,
-      hh("div", { class: "small mute" }, d.tur === "sim" ? "Bu alan kodu çalıştırmaz; yalnız yazdığını kurallarla denetler." : "Kod yalnız bu tarayıcıda çalışır, sunucuya gönderilmez. Zaman sınırı " + Math.round(SINIR.zamanMs / 1000) + " sn; sonsuz döngü kesilir."));
+      cubuk, cikis,
+      hh("div", { class: "small mute" }, d.tur === "sim" ? "Bu alan kodu çalıştırmaz; yalnız yazdığını kurallarla denetler." : "Kod yalnız bu tarayıcıda çalışır, sunucuya gönderilmez. Zaman sınırı " + Math.round(SINIR.zamanMs / 1000) + " sn; sonsuz döngü kesilir."), parsons);
   }
 
   PP.alan = { TURLER: TURLER, ETIKET: ETIKET, SINIR: SINIR, KAYNAK: KAYNAK, tanimla: tanimla, bul: bul, calistir: calistir, degerlendir: degerlendir, kanitKaydet: kanitKaydet, sifirla: sifirlaMetni, durum: durumOzet, kapat: kapat, kur: kur };

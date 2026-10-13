@@ -21,6 +21,19 @@ function bgGrid(){
   if(tiles.length<2)return null;
   return h("div",{class:"bg-grid"},tiles.map(function(x,i){return h("button",{type:"button",class:"bg-t "+x.c+((tiles.length%2&&i===tiles.length-1)?" wide":""),onclick:function(){if(x.pre)x.pre();goTab(x.go)}},h("small",null,x.k),h("b",null,x.t),h("span",null,x.s))}));
 }
+/* Seri satırı (Faz 10 tur 4): seri dondurma durumu + 7/30. gün kutlaması. Sade modda gösterilmez (renderToday sade koldan önce döner). */
+function seriSatiri(){
+  var st=streakInfo();if(!st.n)return null;
+  var J={};(S.profile.jokerDates||[]).forEach(function(d){J[d]=1});
+  var Sr=PP.ogr.seri,dz=Sr.dondurma(loggedDates(),J,today()),km=Sr.kilometre(st.n),out=[];
+  var key=km?km+":"+today():"",gorulen=null;try{gorulen=PP.ogr.depo.tercih("seri_kutlama")}catch(e){}
+  if(km&&gorulen!==key)out.push(h("div",{class:"alert",role:"status","data-seri-kutlama":String(km)},h("b",null,km+" günlük seri. "),km===7?"Bir haftadır her gün çalıştın.":"Bir ay boyunca her gün çalıştın; bu artık bir düzen. ",
+    h("button",{class:"btn ghost",type:"button",onclick:function(){try{PP.ogr.depo.tercih("seri_kutlama",key)}catch(e){}draw()}},"Kapat")));
+  var korundu=Object.keys(dz.kopru).filter(function(d){return d>=addDays(today(),-2)}).length;
+  out.push(h("div",{class:"small mute","data-seri-dondurma":String(dz.kalan)},"Seri "+st.n+" gün · dondurma "+dz.kalan+"/"+Sr.DONDURMA_EN_COK+". Kesintisiz her "+Sr.DONDURMA_GUN+" etkin günde 1 dondurma kazanılır; boş kalan bir günü otomatik köprüler."+
+    (korundu?" Son günlerde bir boş gün dondurmayla korundu.":"")+(dz.kalan<Sr.DONDURMA_EN_COK?" Sonrakine "+(Sr.DONDURMA_GUN-dz.ilerleme)+" gün kaldı.":"")));
+  return out;
+}
 function renderToday(){
   if(S.pf.simple)return renderSimpleToday();
   var p=S.profile,st=streakInfo(),wk=weekInfo(),rust=rustList(),out=[],alr=[];
@@ -33,6 +46,7 @@ function renderToday(){
     "Seri gece yarısı risk altında. Yoğunsan 20 dakikalık minimum tekrar yeter, aşağıdan kaydet."));
   if(alr.length===1)out.push(alr[0]);
   else if(alr.length>1)out.push(alr[0],h("details",{class:"more bg-al"},h("summary",null,"Diğer uyarılar ("+(alr.length-1)+")"),h("div",{class:"morebox"},alr.slice(1))));
+  var sk=seriSatiri();if(sk)sk.forEach(function(x){out.push(x)});
   var plOn=!!S.pl.on;if(plOn)out.push(plPanel());
   var jk=jokerCard();if(jk)out.push(jk);
   var wc=welcomeCard();if(wc)out.push(wc);
