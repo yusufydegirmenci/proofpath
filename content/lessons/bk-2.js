@@ -86,7 +86,7 @@
         "Rol: geçici kimlik; servisler ve diğer hesaplar üstlenir.",
         "Politika: izinleri tanımlar ve kimliklere bağlanır."
       ] },
-      { t: "cmd", text: "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [{\n    \"Effect\": \"Allow\",\n    \"Action\": [\"s3:GetObject\"],\n    \"Resource\": \"arn:aws:s3:::benim-kovam/*\"\n  }]\n}" },
+      { t: "cmd", lang: "json", text: "{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [{\n    \"Effect\": \"Allow\",\n    \"Action\": [\"s3:GetObject\"],\n    \"Resource\": \"arn:aws:s3:::benim-kovam/*\"\n  }]\n}" },
       { t: "steps", h: "Değerlendirme kuralları", items: [
         "Varsayılan: her şey reddedilir (örtük deny).",
         "Açık Allow izin verir.",
@@ -136,8 +136,8 @@
     blocks: [
       { t: "h", text: "Neden öğreniyoruz?" },
       { t: "box", h: "Gerçek talep", text: "Dağıtım betiği, test ortamı kurulumu ve Lambda kodu hep CLI ve SDK ile çalışır. Aynı işi 50 kez tıklamak yerine bir betik yazarsın." },
-      { t: "cmd", text: "aws configure --profile dev\naws sts get-caller-identity --profile dev\naws s3 ls\naws dynamodb scan --table-name Siparisler --max-items 5" },
-      { t: "cmd", text: "import boto3\ns3 = boto3.client('s3')\nfor k in s3.list_objects_v2(Bucket='benim-kovam').get('Contents', []):\n    print(k['Key'])" },
+      { t: "cmd", lang: "bash", text: "aws configure --profile dev\naws sts get-caller-identity --profile dev\naws s3 ls\naws dynamodb scan --table-name Siparisler --max-items 5" },
+      { t: "cmd", lang: "python", text: "import boto3\ns3 = boto3.client('s3')\nfor k in s3.list_objects_v2(Bucket='benim-kovam').get('Contents', []):\n    print(k['Key'])" },
       { t: "steps", h: "Kimlik bilgisi sırası (kısaca)", items: [
         "Koda doğrudan verilen bilgi (kaçın).",
         "Ortam değişkenleri (AWS_ACCESS_KEY_ID...).",
@@ -260,7 +260,7 @@
         "Scan: tüm tabloyu okur. Büyük tabloda yavaş ve pahalı, kaçın.",
         "PutItem, UpdateItem, DeleteItem, BatchWriteItem, TransactWriteItems."
       ] },
-      { t: "cmd", text: "# Bir müşterinin Ekim 2026 siparişleri\naws dynamodb query --table-name Siparisler \\\n  --key-condition-expression \"MusteriId = :m AND SiparisTarihi BETWEEN :a AND :b\" \\\n  --expression-attribute-values '{\":m\":{\"S\":\"M-17\"},\":a\":{\"S\":\"2026-10-01\"},\":b\":{\"S\":\"2026-10-31\"}}'" },
+      { t: "cmd", lang: "bash", text: "# Bir müşterinin Ekim 2026 siparişleri\naws dynamodb query --table-name Siparisler \\\n  --key-condition-expression \"MusteriId = :m AND SiparisTarihi BETWEEN :a AND :b\" \\\n  --expression-attribute-values '{\":m\":{\"S\":\"M-17\"},\":a\":{\"S\":\"2026-10-01\"},\":b\":{\"S\":\"2026-10-31\"}}'" },
       { t: "box", h: "İyi partition key", text: "Çok sayıda farklı değeri olan ve erişimi eşit dağılan alan seçilir (kullanıcı kimliği, sipariş kimliği). Düşük çeşitlilik (durum, ülke) 'sıcak bölüm'e yol açar." },
       { t: "box", h: "Tek tablo tasarımı", text: "İlgili varlıkları (müşteri, siparişleri) aynı tabloda, PK/SK önekleriyle (PK = CUSTOMER#17, SK = ORDER#2026-10-11) saklayarak tek Query ile birlikte getirebilirsin." },
       { t: "warn", h: "Tuzak", text: "Scan ile filtre yazmak. Filtre okuma sonrası uygulanır; tüm öğeler okunur ve ücretlendirilir. Erişim kalıbı için anahtar veya indeks tasarla." }

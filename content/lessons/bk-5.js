@@ -82,7 +82,7 @@
     blocks: [
       { t: "h", text: "Neden öğreniyoruz?" },
       { t: "box", h: "Gerçek talep", text: "Kodda sabit yazılmış parola GitHub'a sızar ve değiştirmek için yeniden dağıtım gerekir. Çalışma anında güvenli depodan okumak ve düzenli döndürmek (rotasyon) doğru yoldur." },
-      { t: "cmd", text: "import boto3, json\nsm = boto3.client('secretsmanager')\nsecret = json.loads(sm.get_secret_value(SecretId='prod/db')['SecretString'])\nprint(secret['username'])  # parolayı asla loglama" },
+      { t: "cmd", lang: "python", text: "import boto3, json\nsm = boto3.client('secretsmanager')\nsecret = json.loads(sm.get_secret_value(SecretId='prod/db')['SecretString'])\nprint(secret['username'])  # parolayı asla loglama" },
       { t: "steps", h: "Secrets Manager", items: [
         "Gizli bilgi şifrelidir (KMS), sürümlenir (AWSCURRENT, AWSPREVIOUS).",
         "Otomatik rotasyon: RDS, Redshift, DocumentDB için hazır Lambda; diğerleri için özel Lambda.",
@@ -211,7 +211,7 @@
         "Metric filter: log içindeki desenden metrik üretir.",
         "Olaylar: artık EventBridge ile birleşik."
       ] },
-      { t: "cmd", text: "fields @timestamp, @message\n| filter @message like /ERROR/\n| sort @timestamp desc\n| limit 20" },
+      { t: "cmd", lang: "cwli", calistirma: "atla CloudWatch Logs Insights sorgusu; ayrıştırıcı ve AWS hesabı yok", text: "fields @timestamp, @message\n| filter @message like /ERROR/\n| sort @timestamp desc\n| limit 20" },
       { t: "box", h: "Özel metrik ve ayrıntı", text: "Standart metrikler 5 dakikada, ayrıntılı izleme 1 dakikada gelir (EC2). Kendi metriğini PutMetricData veya Embedded Metric Format (EMF) ile gönderebilirsin. Yüksek çözünürlüklü özel metrik 1 saniyeye kadar inebilir." },
       { t: "box", h: "Yapılandırılmış log", text: "Logları JSON olarak yaz (istek kimliği, kullanıcı, süre). Logs Insights'ta alanlara göre süzmek çok kolaylaşır. Parola ve kişisel veriyi loglama." },
       { t: "steps", h: "Alarm tasarımı", items: [
@@ -330,7 +330,7 @@
         "CloudTrail Lake: olaylar üzerinde SQL sorgusu.",
         "CloudWatch Logs'a gönder ve metrik filtre ile alarm kur (ör. kök kullanıcı girişi, yetkisiz API çağrısı)."
       ] },
-      { t: "cmd", text: "aws cloudtrail lookup-events \\\n  --lookup-attributes AttributeKey=EventName,AttributeValue=DeleteBucket \\\n  --max-results 5" },
+      { t: "cmd", lang: "bash", text: "aws cloudtrail lookup-events \\\n  --lookup-attributes AttributeKey=EventName,AttributeValue=DeleteBucket \\\n  --max-results 5" },
       { t: "box", h: "Kayıt içinde ne var?", text: "eventTime, eventSource, eventName, userIdentity (kim), sourceIPAddress, userAgent, requestParameters, responseElements, errorCode. 'AccessDenied' hata ayıklamada errorCode ve userIdentity'ye bak." },
       { t: "box", h: "CloudWatch ve Config ile fark", text: "CloudTrail: kim ne çağırdı. CloudWatch: performans ve loglar. AWS Config: kaynak yapılandırmasının zaman içindeki durumu ve kurallara uyum." },
       { t: "warn", h: "Tuzak", text: "Sadece olay geçmişine güvenmek: 90 gün sınırı vardır ve veri olaylarını içermez. Denetim için trail kur, kayıt kovasını koru (sürümleme, MFA delete, sıkı politika)." }

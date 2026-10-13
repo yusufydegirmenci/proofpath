@@ -37,11 +37,23 @@
       ] },
       { t: "warn", h: "Tuzak", text: "Üçü her zaman aynı anda maksimum olmaz. Çok sıkı erişim kontrolü gizliliği artırır ama erişilebilirliği düşürür. Güvenlik, riske göre denge kurmaktır." }
     ],
+    objectives: [
+      { id: "h1", text: "Bir güvenlik olayında hangi hedefin (gizlilik, bütünlük, erişilebilirlik) bozulduğunu söyleyerek olayı CIA üçlüsüne göre sınıflandırabilirsin." },
+      { id: "h2", text: "AAA'nın üç bileşenini (authentication, authorization, accounting) ve her birinin sorduğu soruyu ayırt edebilirsin." },
+      { id: "h3", text: "İnkâr edememe (non-repudiation) kavramını açıklayıp ona katkı veren araçları (dijital imza, log) sayabilirsin." }
+    ],
+    summary: [
+      "CIA üçlüsü: gizlilik (yetkisizler okuyamasın), bütünlük (izinsiz değişmesin ya da fark edilsin), erişilebilirlik (gerektiğinde çalışsın).",
+      "Bir olayı okurken sor: kim gördü (gizlilik), ne değişti (bütünlük), ne çalışmaz oldu (erişilebilirlik).",
+      "AAA: authentication \"kimsin?\", authorization \"ne yapabilirsin?\", accounting \"ne yaptın?\" sorusunu cevaplar.",
+      "İnkâr edememe, işlemi yapanın sonradan \"ben yapmadım\" diyememesidir; dijital imza ve loglar sağlar.",
+      "Üçü aynı anda maksimum olmaz; güvenlik riske göre denge kurmaktır."
+    ],
     quiz: [
-      { q: "Bir çalışan müşteri tablosundaki bir fiyatı izinsiz değiştirdi. Hangi güvenlik hedefi bozuldu?", options: ["Bütünlük", "Gizlilik", "Erişilebilirlik", "İnkâr edememe"], answer: "Bütünlük", why: "Verinin yetkisiz değişmesi bütünlük ihlalidir." },
-      { q: "DDoS saldırısıyla bir web sitesi saatlerce kapalı kaldı. Etkilenen hedef hangisi?", options: ["Erişilebilirlik", "Gizlilik", "Bütünlük", "Kimlik doğrulama"], answer: "Erişilebilirlik", why: "Sistem gerektiğinde kullanılamadığı için erişilebilirlik bozulmuştur." },
-      { q: "'Kimsin?' sorusuna cevap veren AAA bileşeni hangisidir?", options: ["Authentication", "Authorization", "Accounting", "Availability"], answer: "Authentication", why: "Kimlik doğrulama (authentication) kimlik iddiasını doğrular." },
-      { q: "Dijital imza ve log kayıtları en çok hangi kavrama katkı sağlar?", options: ["İnkâr edememe (non-repudiation)", "Yedekleme", "Ağ segmentasyonu", "Şifre sıfırlama"], answer: "İnkâr edememe (non-repudiation)", why: "İşlemi yapanın sonradan inkâr etmesini zorlaştırır." }
+      { q: "Bir çalışan müşteri tablosundaki bir fiyatı izinsiz değiştirdi. Hangi güvenlik hedefi bozuldu?", options: ["Bütünlük", "Gizlilik", "Erişilebilirlik", "İnkâr edememe"], answer: "Bütünlük", why: "Verinin yetkisiz değişmesi bütünlük ihlalidir.", obj: "h1", whyNot: { "Gizlilik": "Gizlilik verinin yetkisizlerce okunmasıyla ilgilidir; burada veri okunmadı, değiştirildi.", "Erişilebilirlik": "Veri hâlâ erişilebilir durumda; sorun içeriğinin izinsiz değişmesi.", "İnkâr edememe": "İnkâr edememe, işlemi yapanın sonradan \"ben yapmadım\" diyememesidir ve CIA hedeflerinden biri değildir." } },
+      { q: "DDoS saldırısıyla bir web sitesi saatlerce kapalı kaldı. Etkilenen hedef hangisi?", options: ["Erişilebilirlik", "Gizlilik", "Bütünlük", "Kimlik doğrulama"], answer: "Erişilebilirlik", why: "Sistem gerektiğinde kullanılamadığı için erişilebilirlik bozulmuştur.", obj: "h1", whyNot: { "Gizlilik": "DDoS veriyi okumaz ya da çalmaz; gizlilik bozulmadı.", "Bütünlük": "Veri değişmedi; yalnızca sisteme ulaşılamadı.", "Kimlik doğrulama": "Kimlik doğrulama, kullanıcının kim olduğunu doğrulama sürecidir. DDoS onu değil, hizmetin ayakta kalmasını hedefler." } },
+      { q: "'Kimsin?' sorusuna cevap veren AAA bileşeni hangisidir?", options: ["Authentication", "Authorization", "Accounting", "Availability"], answer: "Authentication", why: "Kimlik doğrulama (authentication) kimlik iddiasını doğrular.", obj: "h2", whyNot: { "Authorization": "Authorization \"ne yapabilirsin?\" sorusunu cevaplar ve kimlik doğrulandıktan sonra gelir.", "Accounting": "Accounting \"ne yaptın?\" diye kayıt tutar; kimlik iddiasını doğrulamaz.", "Availability": "Availability AAA'nın değil CIA üçlüsünün bileşenidir; sistemin gerektiğinde çalışmasıdır." } },
+      { q: "Dijital imza ve log kayıtları en çok hangi kavrama katkı sağlar?", options: ["İnkâr edememe (non-repudiation)", "Yedekleme", "Ağ segmentasyonu", "Şifre sıfırlama"], answer: "İnkâr edememe (non-repudiation)", why: "İşlemi yapanın sonradan inkâr etmesini zorlaştırır.", obj: "h3", whyNot: { "Yedekleme": "Yedekleme veri kaybına karşı erişilebilirliği korur; kimin ne yaptığını kanıtlamaz.", "Ağ segmentasyonu": "Segmentasyon saldırının yayılmasını sınırlar; işlemi yapanı kanıtlamaz.", "Şifre sıfırlama": "Şifre sıfırlama hesaba yeniden erişim verir; işlemi kimin yaptığına dair kanıt üretmez." } }
     ],
     interview: [
       { q: "CIA üçlüsü nedir?", a: "Gizlilik, bütünlük ve erişilebilirlik. Gizlilik yetkisiz erişimi engeller, bütünlük verinin izinsiz değişmesini önler, erişilebilirlik sistemin gerektiğinde çalışmasını sağlar. Her güvenlik olayını bu üçüne göre sınıflandırırım." },
@@ -94,11 +106,21 @@
       { t: "box", h: "Örnek eşleme", text: "Kapı kartı okuyucusu: kategori fiziksel/teknik, işlev önleyici. Kamera: fiziksel, dedektif (ve caydırıcı). SIEM alarmı: teknik, dedektif. Güvenlik eğitimi: operasyonel, önleyici." },
       { t: "warn", h: "Tuzak", text: "Sınavda aynı kontrol birden çok işlev taşıyabilir (kamera hem caydırıcı hem dedektif). Soru 'en iyi' hangisi diyorsa sorunun vurguladığı işleve bak." }
     ],
+    objectives: [
+      { id: "h1", text: "Bir kontrolü kategorisine (teknik, yönetimsel, operasyonel, fiziksel) yerleştirebilirsin." },
+      { id: "h2", text: "Bir kontrolün işlevini (önleyici, caydırıcı, dedektif, düzeltici, telafi edici) söyleyebilirsin." }
+    ],
+    summary: [
+      "Kontroller iki eksende okunur: kategori (kim ya da ne uyguluyor: teknik, yönetimsel, operasyonel, fiziksel) ve işlev (ne işe yarıyor).",
+      "İşlevler: önleyici engeller, caydırıcı vazgeçirir, dedektif fark eder, düzeltici sonradan düzeltir, telafi edici asıl kontrolün yerini tutar, yönlendirici (directive) politika ve kurallarla davranışı yönlendirir.",
+      "Aynı kontrol birden çok işlev taşıyabilir (kamera: caydırıcı ve dedektif); soru hangi işlevi vurguluyorsa ona bak.",
+      "Yalnız önleyici kontrol varsa saldırı olduğunu fark etmezsin; dedektif katman şarttır."
+    ],
     quiz: [
-      { q: "Yamalanamayan eski bir sunucuyu ayrı bir ağa taşımak hangi kontrol işlevidir?", options: ["Telafi edici", "Caydırıcı", "Düzeltici", "Yönlendirici"], answer: "Telafi edici", why: "Asıl kontrol (yama) uygulanamadığı için yerine konan alternatif önlemdir." },
-      { q: "Log analizi ve IDS hangi işlev grubuna girer?", options: ["Dedektif", "Önleyici", "Caydırıcı", "Düzeltici"], answer: "Dedektif", why: "Olayı fark etmeye yarar." },
-      { q: "Güvenlik politikası ve risk değerlendirmesi hangi kategoridedir?", options: ["Yönetimsel", "Teknik", "Fiziksel", "Operasyonel"], answer: "Yönetimsel", why: "Yönetimsel kontroller politika, süreç ve risk yönetimi gibi yönetim araçlarıdır." },
-      { q: "'Bu alan kamerayla izlenmektedir' tabelasının ana işlevi nedir?", options: ["Caydırıcı", "Düzeltici", "Dedektif", "Telafi edici"], answer: "Caydırıcı", why: "Saldırganı vazgeçirmeye yöneliktir." }
+      { q: "Yamalanamayan eski bir sunucuyu ayrı bir ağa taşımak hangi kontrol işlevidir?", options: ["Telafi edici", "Caydırıcı", "Düzeltici", "Yönlendirici"], answer: "Telafi edici", why: "Asıl kontrol (yama) uygulanamadığı için yerine konan alternatif önlemdir.", obj: "h2", whyNot: { "Caydırıcı": "Caydırıcı kontrol saldırganı vazgeçirmeye çalışır. Burada yama yapılamadığı için yerine bir önlem konuyor, caydırma amacı yok.", "Düzeltici": "Düzeltici kontrol olaydan sonra durumu düzeltir (yama, yedekten dönme). Burada olay yok; yamanın yerine alternatif bir önlem konuyor.", "Yönlendirici": "Yönlendirici (directive) kontrol politika ve kurallarla davranışı yönlendirir. Yamalanamayan sunucuyu izole etmek ise asıl kontrolün yerini tuttuğu için telafi edicidir." } },
+      { q: "Log analizi ve IDS hangi işlev grubuna girer?", options: ["Dedektif", "Önleyici", "Caydırıcı", "Düzeltici"], answer: "Dedektif", why: "Olayı fark etmeye yarar.", obj: "h2", whyNot: { "Önleyici": "Önleyici kontrol olayı gerçekleşmeden engeller (güvenlik duvarı, MFA). Log analizi ve IDS olayı fark etmeye yarar.", "Caydırıcı": "Caydırıcı kontrol vazgeçirmeye yöneliktir (tabela, uyarı). Log analizi ve IDS vazgeçirmez, fark eder.", "Düzeltici": "Düzeltici kontrol olaydan sonra düzeltir; log ve IDS yalnızca olayı görünür kılar, düzeltmez." } },
+      { q: "Güvenlik politikası ve risk değerlendirmesi hangi kategoridedir?", options: ["Yönetimsel", "Teknik", "Fiziksel", "Operasyonel"], answer: "Yönetimsel", why: "Yönetimsel kontroller politika, süreç ve risk yönetimi gibi yönetim araçlarıdır.", obj: "h1", whyNot: { "Teknik": "Teknik kontrol yazılım ya da donanımla uygulanır (güvenlik duvarı, şifreleme); politika ve risk değerlendirmesi ise belge ve süreçtir.", "Fiziksel": "Fiziksel kontroller kilit, çit, kamera gibi somut önlemlerdir; politika ve risk değerlendirmesi ise belge ve süreçtir, dokunulabilir bir engel değildir.", "Operasyonel": "Operasyonel kontrol insanların uyguladığı günlük işlerdir (güvenlik görevlisi, eğitim). Politika yazmak ve riski değerlendirmek yönetimin işidir." } },
+      { q: "'Bu alan kamerayla izlenmektedir' tabelasının ana işlevi nedir?", options: ["Caydırıcı", "Düzeltici", "Dedektif", "Telafi edici"], answer: "Caydırıcı", why: "Saldırganı vazgeçirmeye yöneliktir.", obj: "h2", whyNot: { "Düzeltici": "Tabela hiçbir şeyi düzeltmez; olaydan sonra devreye girmez.", "Dedektif": "Tabela olayı fark etmez. Kamera dedektif olabilir ama tabelanın ana işlevi caydırmaktır.", "Telafi edici": "Telafi edici kontrol, asıl kontrol uygulanamazken yerine konan önlemdir; tabelada böyle bir durum yok." } }
     ],
     interview: [
       { q: "Güvenlik kontrolü türlerini anlat.", a: "Kategoriler teknik, yönetimsel, operasyonel ve fiziksel. İşlevler önleyici, caydırıcı, dedektif, düzeltici, telafi edici ve yönlendirici. İyi bir güvenlik programı sadece önleyiciye değil, tespit ve düzeltmeye de yatırım yapar." },
@@ -146,14 +168,26 @@
         "Log bütünlüğü: kayıtların zincirleme hash'i ile değiştirilmesi fark edilir."
       ] },
       { t: "box", h: "Salt ve yavaş hash", text: "Aynı parola aynı hash'i verir; saldırgan hazır tablolarla (rainbow table) eşleştirir. Salt, her kullanıcıya eklenen rastgele değerdir ve bu tabloları işe yaramaz yapar. Parola için hızlı SHA-256 yerine bilerek yavaş olan bcrypt, scrypt, Argon2 ya da PBKDF2 kullanılır." },
-      { t: "cmd", text: "# Windows\ncertutil -hashfile dosya.txt SHA256\n\n# Linux / macOS\nsha256sum dosya.txt\nshasum -a 256 dosya.txt" },
+      { t: "cmd", lang: "cmd", calistirma: "atla Windows komut satırı (Linux/macOS komutlarıyla karışık olabilir); bu ortamda çalıştırılmaz", text: "# Windows\ncertutil -hashfile dosya.txt SHA256\n\n# Linux / macOS\nsha256sum dosya.txt\nshasum -a 256 dosya.txt" },
       { t: "warn", h: "Tuzak", text: "Hash şifreleme değildir. Şifrelemenin anahtarla geri döndürülebilmesi vardır, hash'in yoktur. 'Parolayı hash'ledik, şifreledik' demek yanlıştır." }
     ],
+    objectives: [
+      { id: "h1", text: "Hash'in temel özelliklerini (tek yönlü, sabit uzunluklu çıktı, küçük değişiklikte tamamen değişen sonuç) söyleyebilirsin." },
+      { id: "h2", text: "İndirilen bir dosyanın bütünlüğünü hash'i yayımlanan değerle karşılaştırarak kontrol edebilirsin." },
+      { id: "h3", text: "Parola saklamada salt'ın ve bilerek yavaş algoritmaların neden gerektiğini açıklayıp MD5'ten neden kaçınıldığını söyleyebilirsin." }
+    ],
+    summary: [
+      "Hash herhangi bir veriyi sabit uzunlukta özete çevirir; tek yönlüdür, aynı girdi aynı çıktıyı verir, küçük değişiklik çıktıyı tamamen değiştirir.",
+      "Dosya bütünlüğünü, hesapladığın hash'i yayımlanan değerle karşılaştırarak kontrol edersin.",
+      "MD5 ve SHA-1 güvenlik amacıyla kullanılmamalı; SHA-256 ve SHA-3 güvenli kabul edilir.",
+      "Parolada salt, aynı parolaların aynı hash'i vermesini ve hazır tabloları engeller; hızlı SHA yerine bcrypt, scrypt, Argon2 ya da PBKDF2 kullan.",
+      "Hash şifreleme değildir: geri döndürülemez ve anahtarı yoktur."
+    ],
     quiz: [
-      { q: "Hash fonksiyonunun temel özelliği hangisidir?", options: ["Tek yönlüdür, geri çevrilemez", "Anahtarla geri çözülür", "Çıktı uzunluğu girdiyle büyür", "Sadece metinde çalışır"], answer: "Tek yönlüdür, geri çevrilemez", why: "Hash'ten asıl veri geri elde edilemez; amaç doğrulamadır." },
-      { q: "İndirilen dosyanın değişmediğini nasıl kontrol edersin?", options: ["Hash'i hesaplayıp yayımlananla karşılaştırırım", "Dosyayı şifrelerim", "Dosyayı zip'lerim", "Boyutuna bakarım"], answer: "Hash'i hesaplayıp yayımlananla karşılaştırırım", why: "Hash farklıysa dosya değişmiştir (bütünlük kontrolü)." },
-      { q: "Parola hash'lerinde 'salt' neden kullanılır?", options: ["Aynı parolaların aynı hash'i vermesini ve rainbow table'ı engellemek için", "Hash'i kısaltmak için", "Parolayı şifrelemek için", "Giriş hızını artırmak için"], answer: "Aynı parolaların aynı hash'i vermesini ve rainbow table'ı engellemek için", why: "Salt her kullanıcı için farklı rastgele değerdir." },
-      { q: "Aşağıdakilerden hangisi artık güvenlik amacıyla önerilmez?", options: ["MD5", "SHA-256", "SHA-3", "Argon2"], answer: "MD5", why: "MD5'te çakışma üretilebildiği için kırık sayılır." }
+      { q: "Hash fonksiyonunun temel özelliği hangisidir?", options: ["Tek yönlüdür, geri çevrilemez", "Anahtarla geri çözülür", "Çıktı uzunluğu girdiyle büyür", "Sadece metinde çalışır"], answer: "Tek yönlüdür, geri çevrilemez", why: "Hash'ten asıl veri geri elde edilemez; amaç doğrulamadır.", obj: "h1", whyNot: { "Anahtarla geri çözülür": "Anahtarla geri çözülebilmek şifrelemenin özelliğidir; hash'in geri dönüşü yoktur.", "Çıktı uzunluğu girdiyle büyür": "Hash çıktısı sabit uzunluktadır: tek harf de büyük bir dosya da aynı uzunlukta özet verir (SHA-256 için 256 bit).", "Sadece metinde çalışır": "Hash her tür veriye uygulanır: dosya, görüntü, program ya da parola." } },
+      { q: "İndirilen dosyanın değişmediğini nasıl kontrol edersin?", options: ["Hash'i hesaplayıp yayımlananla karşılaştırırım", "Dosyayı şifrelerim", "Dosyayı zip'lerim", "Boyutuna bakarım"], answer: "Hash'i hesaplayıp yayımlananla karşılaştırırım", why: "Hash farklıysa dosya değişmiştir (bütünlük kontrolü).", obj: "h2", whyNot: { "Dosyayı şifrelerim": "Şifrelemek dosyayı gizler ama orijinalle aynı olup olmadığını söylemez; doğrulama için yayımlanmış bir referans hash gerekir.", "Dosyayı zip'lerim": "Zip'lemek dosyayı sıkıştırır; içeriğinin değiştirilip değiştirilmediği sorusuna cevap vermez.", "Boyutuna bakarım": "Boyutu aynı kalacak biçimde değiştirilmiş bir dosya olabilir; tek baytlık fark hash'i tamamen değiştirir, boyutu değiştirmeyebilir." } },
+      { q: "Parola hash'lerinde 'salt' neden kullanılır?", options: ["Aynı parolaların aynı hash'i vermesini ve rainbow table'ı engellemek için", "Hash'i kısaltmak için", "Parolayı şifrelemek için", "Giriş hızını artırmak için"], answer: "Aynı parolaların aynı hash'i vermesini ve rainbow table'ı engellemek için", why: "Salt her kullanıcı için farklı rastgele değerdir.", obj: "h3", whyNot: { "Hash'i kısaltmak için": "Salt hash'i kısaltmaz; girdiye eklenen rastgele bir değerdir, çıktı uzunluğu aynı kalır.", "Parolayı şifrelemek için": "Salt şifreleme yapmaz; aynı parolaların farklı hash üretmesini sağlar.", "Giriş hızını artırmak için": "Amaç hız değil. Parola hash'lerinde bilerek yavaş algoritmalar seçilir ki kaba kuvvet denemeleri zorlaşsın." } },
+      { q: "Aşağıdakilerden hangisi artık güvenlik amacıyla önerilmez?", options: ["MD5", "SHA-256", "SHA-3", "Argon2"], answer: "MD5", why: "MD5'te çakışma üretilebildiği için kırık sayılır.", obj: "h3", whyNot: { "SHA-256": "SHA-256 genel amaçlı hash (bütünlük, imza) için güvenli sayılır; yalnız parola saklamak için hızlı olduğundan yavaş algoritmalar tercih edilir.", "SHA-3": "SHA-3 güvenli kabul edilen yeni bir standarttır.", "Argon2": "Argon2, parola saklamak için önerilen ve bilerek yavaş çalışan bir algoritmadır." } }
     ],
     interview: [
       { q: "Hash ile şifreleme arasındaki fark nedir?", a: "Şifreleme anahtarla geri çözülebilir, gizliliği hedefler. Hash tek yönlüdür, geri çevrilemez ve bütünlük kontrolü ya da parola doğrulama için kullanılır." },

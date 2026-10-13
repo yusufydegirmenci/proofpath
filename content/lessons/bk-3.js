@@ -127,7 +127,7 @@
     blocks: [
       { t: "h", text: "Neden öğreniyoruz?" },
       { t: "box", h: "Gerçek talep", text: "Görsel yüklendiğinde küçük resim üretmek, kayıt formunu işlemek, zamanlanmış rapor çalıştırmak: Sunucu kiralamadan, trafik yoksa ücret ödemeden." },
-      { t: "cmd", text: "import json\n\ndef handler(event, context):\n    print(json.dumps(event))\n    return {\"statusCode\": 200, \"body\": json.dumps({\"mesaj\": \"merhaba\"})}" },
+      { t: "cmd", lang: "python", text: "import json\n\ndef handler(event, context):\n    print(json.dumps(event))\n    return {\"statusCode\": 200, \"body\": json.dumps({\"mesaj\": \"merhaba\"})}" },
       { t: "steps", h: "Önemli ayarlar", items: [
         "Bellek 128 MB - 10 GB; CPU belleğe orantılı artar.",
         "Zaman aşımı en fazla 15 dakika.",

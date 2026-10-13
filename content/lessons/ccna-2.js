@@ -32,7 +32,7 @@
         "Acknowledge: sunucu 'Onaylandı, kiralama süresi şu kadar' der."
       ] },
       { t: "box", h: "Portlar", text: "DHCP sunucusu UDP 67, istemci UDP 68 kullanır. DHCP istemci broadcast ile başladığı için sunucu başka ağdaysa router'a 'ip helper-address' (DHCP relay) yazılır." },
-      { t: "cmd", text: "# Cisco router'ı DHCP sunucusu yapma:\nRouter(config)# ip dhcp excluded-address 192.168.10.1 192.168.10.10\nRouter(config)# ip dhcp pool MUHASEBE\nRouter(dhcp-config)# network 192.168.10.0 255.255.255.0\nRouter(dhcp-config)# default-router 192.168.10.1\nRouter(dhcp-config)# dns-server 8.8.8.8\n\n# DHCP relay (sunucu başka ağda):\nRouter(config-if)# ip helper-address 192.168.1.5\n\nRouter# show ip dhcp binding" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "# Cisco router'ı DHCP sunucusu yapma:\nRouter(config)# ip dhcp excluded-address 192.168.10.1 192.168.10.10\nRouter(config)# ip dhcp pool MUHASEBE\nRouter(dhcp-config)# network 192.168.10.0 255.255.255.0\nRouter(dhcp-config)# default-router 192.168.10.1\nRouter(dhcp-config)# dns-server 8.8.8.8\n\n# DHCP relay (sunucu başka ağda):\nRouter(config-if)# ip helper-address 192.168.1.5\n\nRouter# show ip dhcp binding" },
       { t: "h", text: "DNS: isimden IP'ye" },
       { t: "p", text: "İnsanlar google.com yazar, bilgisayarlar IP ile çalışır. DNS (Domain Name System) isimleri IP adreslerine çevirir. Benzetme: telefon rehberi. İsmi bulursun, numarayı rehber verir. DNS genellikle UDP 53 kullanır." },
       { t: "steps", h: "En çok kullanılan DNS kayıtları", items: [
@@ -42,7 +42,7 @@
         "MX: o alan adının e-posta sunucusu",
         "PTR: IP → isim (ters sorgu)"
       ] },
-      { t: "cmd", text: "# Windows'ta:\nipconfig /release\nipconfig /renew\nipconfig /flushdns\nnslookup google.com\nping 8.8.8.8\nping google.com" },
+      { t: "cmd", lang: "cmd", calistirma: "atla Windows komut satırı (Linux/macOS komutlarıyla karışık olabilir); bu ortamda çalıştırılmaz", text: "# Windows'ta:\nipconfig /release\nipconfig /renew\nipconfig /flushdns\nnslookup google.com\nping 8.8.8.8\nping google.com" },
       { t: "box", h: "DHCP mi DNS mi? Hızlı ayrım", text: "ping 8.8.8.8 çalışıyor ama ping google.com çalışmıyorsa sorun DNS'tedir. IP hiç yoksa ya da 169.254 görüyorsan sorun DHCP'dedir (ya da DHCP'ye ulaşılamıyor)." },
       { t: "warn", h: "Tuzak", text: "Ağda iki DHCP sunucusu olması (örneğin biri yanlışlıkla bağlanmış bir ev router'ı) yanlış gateway dağıtır ve ağın yarısı internete çıkamaz. 'Rogue DHCP' denir." }
     ],
@@ -105,7 +105,7 @@
         "Outside local: hedefin iç ağdan görünen adresi (çoğu zaman outside global ile aynıdır)."
       ] },
       { t: "h", text: "Yapılandırma (PAT)" },
-      { t: "cmd", text: "Router(config)# interface gigabitethernet0/0\nRouter(config-if)# ip nat inside\nRouter(config)# interface gigabitethernet0/1\nRouter(config-if)# ip nat outside\n\n# Hangi iç adresler çevrilsin (wildcard maske: ters maske)\nRouter(config)# access-list 1 permit 192.168.10.0 0.0.0.255\n\n# Dış arayüzün adresine PAT\nRouter(config)# ip nat inside source list 1 interface gigabitethernet0/1 overload\n\nRouter# show ip nat translations\nRouter# show ip nat statistics" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Router(config)# interface gigabitethernet0/0\nRouter(config-if)# ip nat inside\nRouter(config)# interface gigabitethernet0/1\nRouter(config-if)# ip nat outside\n\n# Hangi iç adresler çevrilsin (wildcard maske: ters maske)\nRouter(config)# access-list 1 permit 192.168.10.0 0.0.0.255\n\n# Dış arayüzün adresine PAT\nRouter(config)# ip nat inside source list 1 interface gigabitethernet0/1 overload\n\nRouter# show ip nat translations\nRouter# show ip nat statistics" },
       { t: "steps", h: "Ne yaptık?", items: [
         "Router'a hangi arayüz içeride (inside), hangisi dışarıda (outside) söyledik.",
         "ACL ile çevrilecek iç adresleri seçtik.",
@@ -170,7 +170,7 @@
       { t: "p", text: "ACL'de alt ağ maskesi yerine wildcard (ters) maske kullanılır. 0 bit 'birebir eşleşmeli', 1 bit 'fark etmez' demektir. /24 ağı için wildcard 0.0.0.255, /26 için 0.0.0.63, tek bir cihaz için 0.0.0.0 (ya da 'host' sözcüğü)." },
       { t: "box", h: "Wildcard nasıl bulunur?", text: "255.255.255.255 eksi alt ağ maskesi. Maske 255.255.255.192 ise wildcard 0.0.0.63." },
       { t: "h", text: "Örnek: sadece web'e izin ver" },
-      { t: "cmd", text: "# 192.168.20.0/24 ağı 192.168.10.5 sunucusunun sadece web'ine (80) erişebilsin\nRouter(config)# ip access-list extended MISAFIR-KURAL\nRouter(config-ext-nacl)# permit tcp 192.168.20.0 0.0.0.255 host 192.168.10.5 eq 80\nRouter(config-ext-nacl)# deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255\nRouter(config-ext-nacl)# permit ip any any\n\n# Arayüze uygula: içeri gelen trafikte\nRouter(config)# interface gigabitethernet0/1\nRouter(config-if)# ip access-group MISAFIR-KURAL in\n\nRouter# show access-lists" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "# 192.168.20.0/24 ağı 192.168.10.5 sunucusunun sadece web'ine (80) erişebilsin\nRouter(config)# ip access-list extended MISAFIR-KURAL\nRouter(config-ext-nacl)# permit tcp 192.168.20.0 0.0.0.255 host 192.168.10.5 eq 80\nRouter(config-ext-nacl)# deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255\nRouter(config-ext-nacl)# permit ip any any\n\n# Arayüze uygula: içeri gelen trafikte\nRouter(config)# interface gigabitethernet0/1\nRouter(config-if)# ip access-group MISAFIR-KURAL in\n\nRouter# show access-lists" },
       { t: "steps", h: "Sıra neden önemli?", items: [
         "1. satır: misafirler sunucunun web'ine girebilir (permit).",
         "2. satır: misafirlerin 192.168.10.0 ağına kalan her erişimi engellenir (deny).",
@@ -249,7 +249,7 @@
       ] },
       { t: "box", h: "Hello ve dead süresi", text: "Broadcast ağlarda hello 10 saniye, dead 40 saniyedir. Komşuluğun kurulması için iki tarafta area, hello/dead süreleri ve alt ağ eşleşmelidir." },
       { t: "h", text: "Yapılandırma" },
-      { t: "cmd", text: "Router(config)# router ospf 1\nRouter(config-router)# router-id 1.1.1.1\nRouter(config-router)# network 10.0.0.0 0.0.0.3 area 0\nRouter(config-router)# network 192.168.10.0 0.0.0.255 area 0\nRouter(config-router)# passive-interface gigabitethernet0/1\n\nRouter# show ip ospf neighbor\nRouter# show ip route ospf\nRouter# show ip ospf interface brief" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Router(config)# router ospf 1\nRouter(config-router)# router-id 1.1.1.1\nRouter(config-router)# network 10.0.0.0 0.0.0.3 area 0\nRouter(config-router)# network 192.168.10.0 0.0.0.255 area 0\nRouter(config-router)# passive-interface gigabitethernet0/1\n\nRouter# show ip ospf neighbor\nRouter# show ip route ospf\nRouter# show ip ospf interface brief" },
       { t: "steps", h: "Satır satır", items: [
         "'router ospf 1': OSPF'i açar. 1, yerel işlem numarasıdır; komşularla aynı olması gerekmez.",
         "'router-id': router'a sabit bir kimlik verir.",
@@ -409,7 +409,7 @@
         "Güncelleme ve yama yönetimi: bilinen açıkları kapatmak."
       ] },
       { t: "h", text: "Switch güvenliği: port security" },
-      { t: "cmd", text: "Switch(config)# interface fastethernet0/1\nSwitch(config-if)# switchport mode access\nSwitch(config-if)# switchport port-security\nSwitch(config-if)# switchport port-security maximum 2\nSwitch(config-if)# switchport port-security mac-address sticky\nSwitch(config-if)# switchport port-security violation shutdown\n\nSwitch# show port-security interface fastethernet0/1" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Switch(config)# interface fastethernet0/1\nSwitch(config-if)# switchport mode access\nSwitch(config-if)# switchport port-security\nSwitch(config-if)# switchport port-security maximum 2\nSwitch(config-if)# switchport port-security mac-address sticky\nSwitch(config-if)# switchport port-security violation shutdown\n\nSwitch# show port-security interface fastethernet0/1" },
       { t: "steps", h: "Ne yapıyor?", items: [
         "Porta en çok 2 MAC adresinin bağlanmasına izin verir.",
         "'sticky': öğrenilen MAC'leri otomatik kaydeder.",
@@ -417,7 +417,7 @@
         "Portu geri açmak için: 'shutdown' ardından 'no shutdown'."
       ] },
       { t: "h", text: "Cihaz yönetim güvenliği" },
-      { t: "cmd", text: "Router(config)# hostname R1\nR1(config)# ip domain-name sirket.local\nR1(config)# crypto key generate rsa modulus 2048\nR1(config)# username yonetici secret <guclu-sifre>\nR1(config)# line vty 0 4\nR1(config-line)# transport input ssh\nR1(config-line)# login local\nR1(config)# enable secret <guclu-sifre>\nR1(config)# service password-encryption" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Router(config)# hostname R1\nR1(config)# ip domain-name sirket.local\nR1(config)# crypto key generate rsa modulus 2048\nR1(config)# username yonetici secret <guclu-sifre>\nR1(config)# line vty 0 4\nR1(config-line)# transport input ssh\nR1(config-line)# login local\nR1(config)# enable secret <guclu-sifre>\nR1(config)# service password-encryption" },
       { t: "box", h: "Telnet yerine SSH", text: "Telnet her şeyi açık metin gönderir, parola da dahil. SSH şifrelidir. Cihaz yönetiminde her zaman SSH kullan. <guclu-sifre> yerine kendi güçlü parolanı yaz; gerçek parolayı asla ders notlarına ya da paylaşılan dosyalara koyma." },
       { t: "warn", h: "Tuzak", text: "'enable password' düz metin tutar, 'enable secret' hash'ler. Her zaman secret kullan. Güvenlik tek bir cihazla değil, katmanlarla sağlanır." }
     ],

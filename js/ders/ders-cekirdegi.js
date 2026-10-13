@@ -123,6 +123,7 @@ function lessonForTopic(tr,tid){
     if(Array.isArray(SL.quiz)&&SL.quiz.length)l.quiz=SL.quiz;
     l.interview=SL.interview||[];l.vocab=SL.vocab||[];l.resources=SL.resources||[];l.sources=SL.sources||[];
     l.warmup=cleanWarm(SL.warmup)||l.warmup;l.story=SL.story||null;l.staticLesson=true;
+    ["objectives","summary","prereq","minutes","sonDogrulama","surum"].forEach(function(k){if(SL[k]!==undefined)l[k]=SL[k]});
     return cleanLesson(l);
   }
   var TM=tmFor(l);

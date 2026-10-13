@@ -77,7 +77,7 @@
       { t: "h", text: "Neden öğreniyoruz?" },
       { t: "box", h: "Gerçek talep", text: "Aynı yapıdan 20 Lambda oluşturacaksın. YAML'da kopyalarsın; CDK'da döngü veya yardımcı fonksiyon yazarsın. Mobil uygulama ise tek ekranda üç farklı kaynaktan veri istiyor; GraphQL ile tek çağrı yeter." },
       { t: "h", text: "CDK" },
-      { t: "cmd", text: "import * as cdk from 'aws-cdk-lib';\nimport * as dynamodb from 'aws-cdk-lib/aws-dynamodb';\nimport * as lambda from 'aws-cdk-lib/aws-lambda';\n\nclass SiparisStack extends cdk.Stack {\n  constructor(scope, id) {\n    super(scope, id);\n    const tablo = new dynamodb.Table(this, 'Siparisler', {\n      partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },\n      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,\n    });\n    const fn = new lambda.Function(this, 'Fn', {\n      runtime: lambda.Runtime.NODEJS_20_X,\n      handler: 'index.handler',\n      code: lambda.Code.fromAsset('src'),\n      environment: { TABLO: tablo.tableName },\n    });\n    tablo.grantReadWriteData(fn); // IAM izni otomatik\n  }\n}" },
+      { t: "cmd", lang: "js", text: "import * as cdk from 'aws-cdk-lib';\nimport * as dynamodb from 'aws-cdk-lib/aws-dynamodb';\nimport * as lambda from 'aws-cdk-lib/aws-lambda';\n\nclass SiparisStack extends cdk.Stack {\n  constructor(scope, id) {\n    super(scope, id);\n    const tablo = new dynamodb.Table(this, 'Siparisler', {\n      partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },\n      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,\n    });\n    const fn = new lambda.Function(this, 'Fn', {\n      runtime: lambda.Runtime.NODEJS_20_X,\n      handler: 'index.handler',\n      code: lambda.Code.fromAsset('src'),\n      environment: { TABLO: tablo.tableName },\n    });\n    tablo.grantReadWriteData(fn); // IAM izni otomatik\n  }\n}" },
       { t: "steps", h: "CDK kavramları", items: [
         "App → Stack → Construct hiyerarşisi.",
         "Construct düzeyleri: L1 (CfnXxx, CloudFormation karşılığı), L2 (makul varsayılanlar ve yardımcı metotlar), L3 (kalıplar).",
@@ -94,7 +94,7 @@
         "Subscription: WebSocket ile gerçek zamanlı güncelleme.",
         "Yetkilendirme: API anahtarı, Cognito, IAM, OIDC, Lambda."
       ] },
-      { t: "cmd", text: "type Siparis { id: ID! tutar: Float! musteri: Musteri }\ntype Query { siparis(id: ID!): Siparis }\ntype Mutation { siparisOlustur(tutar: Float!): Siparis }\ntype Subscription { yeniSiparis: Siparis @aws_subscribe(mutations: [\"siparisOlustur\"]) }" },
+      { t: "cmd", lang: "graphql", calistirma: "atla GraphQL şeması; ayrıştırıcı yok", text: "type Siparis { id: ID! tutar: Float! musteri: Musteri }\ntype Query { siparis(id: ID!): Siparis }\ntype Mutation { siparisOlustur(tutar: Float!): Siparis }\ntype Subscription { yeniSiparis: Siparis @aws_subscribe(mutations: [\"siparisOlustur\"]) }" },
       { t: "box", h: "REST ve GraphQL", text: "REST: çok uç nokta, sabit cevap, fazla/eksik veri riski. GraphQL: tek uç nokta, istemci alanları seçer, tek istekte ilişkili veri. Karmaşık sorgular ve önbellekleme ise sunucuda daha dikkatli tasarım ister." },
       { t: "warn", h: "Tuzak", text: "cdk deploy'dan önce cdk diff bakmamak: kaynak değişimi (replacement) veri kaybına yol açabilir; DynamoDB tablosu ve RDS için removalPolicy: RETAIN kullan." }
     ],

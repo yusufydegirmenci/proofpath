@@ -35,12 +35,25 @@
       { t: "box", h: "Güvenli ve idempotent", text: "GET güvenlidir (veriyi değiştirmez). GET, PUT, DELETE idempotenttir: aynı isteği 5 kez göndermek 1 kez göndermekle aynı sonucu bırakır. POST genelde idempotent değildir; bu yüzden tekrar denemede çift sipariş riski vardır." },
       { t: "warn", h: "Tuzak", text: "401 ve 403 karıştırılır. 401: kim olduğunu bilmiyorum (giriş yok/geçersiz). 403: kim olduğunu biliyorum ama yetkin yok." }
     ],
+    objectives: [
+      { id: "h1", text: "Bir HTTP isteğini yöntem, yol, başlıklar ve gövde olarak parçalarına ayırabilirsin." },
+      { id: "h2", text: "Bir durum kodunun ailesine bakarak sorunun istemciden mi sunucudan mı geldiğini söyleyebilirsin." },
+      { id: "h3", text: "GET, POST, PUT, PATCH ve DELETE'in ne yaptığını ve hangilerinin idempotent olduğunu gerekçesiyle açıklayabilirsin." },
+      { id: "h4", text: "REST'te 'stateless' kavramının ne demek olduğunu açıklayabilirsin." }
+    ],
+    summary: [
+      "Bir istek yöntem + yol, başlıklar ve (varsa) gövdeden oluşur; cevap durum kodu, başlıklar ve gövde taşır.",
+      "Durum kodunun ilk hanesi ailesini söyler: 2xx başarı, 4xx istemci hatası, 5xx sunucu hatası.",
+      "401 'seni tanımıyorum', 403 'seni tanıyorum ama yetkin yok' demektir.",
+      "GET, PUT ve DELETE idempotenttir; POST değildir, bu yüzden tekrar denemede çift kayıt riski taşır.",
+      "REST'te sunucu istekler arasında oturum tutmaz (stateless): her istek kendine yeter."
+    ],
     quiz: [
-      { q: "Var olan bir kaydı tamamen değiştirmek için hangi yöntem kullanılır?", options: ["PUT", "GET", "DELETE", "OPTIONS"], answer: "PUT", why: "PUT kaynağı tamamen değiştirir; kısmi güncelleme için PATCH kullanılır." },
-      { q: "Kimliği doğrulanmış ama yetkisi olmayan kullanıcıya hangi kod döner?", options: ["403", "401", "404", "500"], answer: "403", why: "403 Forbidden: kimlik tamam, yetki yok. 401 kimlik doğrulama eksikliğidir." },
-      { q: "Aşağıdakilerden hangisi idempotenttir?", options: ["DELETE /orders/5", "POST /orders", "Her seferinde yeni sipariş oluşturan istek", "Sayaç artıran istek"], answer: "DELETE /orders/5", why: "Aynı kaydı tekrar silmek durumu değiştirmez." },
-      { q: "Başarıyla oluşturulan kaynak için tipik durum kodu hangisidir?", options: ["201", "204", "301", "503"], answer: "201", why: "201 Created, yeni kaynağın oluşturulduğunu bildirir." },
-      { q: "REST'te 'stateless' ne demektir?", options: ["Sunucu istekler arasında oturum durumu tutmaz", "Veritabanı yoktur", "Sadece GET kullanılır", "Cevap boştur"], answer: "Sunucu istekler arasında oturum durumu tutmaz", why: "Her istek gereken tüm bilgiyi taşır." }
+      { q: "Var olan bir kaydı tamamen değiştirmek için hangi yöntem kullanılır?", options: ["PUT", "GET", "DELETE", "OPTIONS"], answer: "PUT", why: "PUT kaynağı tamamen değiştirir; kısmi güncelleme için PATCH kullanılır.", obj: "h3", whyNot: { "GET": "GET kaydı yalnızca okur; sunucudaki veriyi değiştirmez, bu yüzden bir kaydı değiştiremez.", "DELETE": "DELETE kaydı siler, değiştirmez. Silip yerine yenisini koymak ayrı iki istek olurdu.", "OPTIONS": "OPTIONS sunucunun hangi yöntemleri desteklediğini sorar (örneğin tarayıcının CORS ön kontrolü); kaynağa dokunmaz." } },
+      { q: "Kimliği doğrulanmış ama yetkisi olmayan kullanıcıya hangi kod döner?", options: ["403", "401", "404", "500"], answer: "403", why: "403 Forbidden: kimlik tamam, yetki yok. 401 kimlik doğrulama eksikliğidir.", obj: "h2", whyNot: { "401": "Kullanıcı zaten doğrulanmış, yani sunucu onu tanıyor. 401 kimliğin hiç doğrulanmadığı ya da geçersiz olduğu durumda döner.", "404": "404 kaynak bulunamadı demektir. Burada kaynak var, sorun kullanıcının ona erişme yetkisinin olmaması.", "500": "500 sunucunun kendi içinde hata yaptığını gösterir. Yetkisiz erişim istemcinin durumudur ve 4xx ailesinden döner." } },
+      { q: "Aşağıdakilerden hangisi idempotenttir?", options: ["DELETE /orders/5", "POST /orders", "Her seferinde yeni sipariş oluşturan istek", "Sayaç artıran istek"], answer: "DELETE /orders/5", why: "Aynı kaydı tekrar silmek durumu değiştirmez.", obj: "h3", whyNot: { "POST /orders": "POST her çağrıda yeni kayıt üretir; aynı isteği iki kez göndermek iki sipariş bırakır, bu yüzden idempotent değildir.", "Her seferinde yeni sipariş oluşturan istek": "5 kez göndermek 5 sipariş bırakır; sonuç 1 kez göndermekle aynı olmadığı için idempotent değildir.", "Sayaç artıran istek": "Her çağrıda sayaç değişir; ikinci çağrı sonucu birincisinden farklı bıraktığı için idempotent değildir." } },
+      { q: "Başarıyla oluşturulan kaynak için tipik durum kodu hangisidir?", options: ["201", "204", "301", "503"], answer: "201", why: "201 Created, yeni kaynağın oluşturulduğunu bildirir.", obj: "h2", whyNot: { "204": "204 de başarıdır ama gövde taşımaz ve \"yeni kaynak oluştu\" demez; genelde silme ve güncellemede döner.", "301": "301 kalıcı yönlendirmedir (adres taşındı); oluşturma sonucunu bildirmez.", "503": "503 sunucunun geçici olarak hizmet veremediğini gösteren bir hata kodudur, başarı değil." } },
+      { q: "REST'te 'stateless' ne demektir?", options: ["Sunucu istekler arasında oturum durumu tutmaz", "Veritabanı yoktur", "Sadece GET kullanılır", "Cevap boştur"], answer: "Sunucu istekler arasında oturum durumu tutmaz", why: "Her istek gereken tüm bilgiyi taşır.", obj: "h4", whyNot: { "Veritabanı yoktur": "Stateless, sunucuda veritabanı olmadığı anlamına gelmez; yalnız oturum durumunun istekler arasında sunucu belleğinde tutulmadığını söyler. Veri yine veritabanında durur.", "Sadece GET kullanılır": "Stateless yöntem sınırlaması getirmez; REST'te GET'in yanında POST, PUT, PATCH ve DELETE de kullanılır.", "Cevap boştur": "Cevabın dolu ya da boş olmasıyla ilgisi yok; stateless sunucu da gövdeli cevap döner, yalnız önceki isteği hatırlamaz." } }
     ],
     interview: [
       { q: "PUT ve PATCH arasındaki fark nedir?", a: "PUT kaynağı gönderilen tam gövdeyle değiştirir. PATCH sadece gönderilen alanları günceller. PUT idempotenttir, PATCH tasarıma bağlıdır." },
@@ -81,16 +94,27 @@
         "Yorum satırı yoktur; son elemandan sonra virgül konmaz.",
         "Tek tırnak geçersizdir."
       ] },
-      { t: "cmd", text: "{\n  \"id\": 42,\n  \"ad\": \"Ali\",\n  \"aktif\": true,\n  \"etiketler\": [\"aws\", \"backend\"],\n  \"adres\": { \"sehir\": \"Ankara\" },\n  \"not\": null\n}" },
+      { t: "cmd", lang: "json", text: "{\n  \"id\": 42,\n  \"ad\": \"Ali\",\n  \"aktif\": true,\n  \"etiketler\": [\"aws\", \"backend\"],\n  \"adres\": { \"sehir\": \"Ankara\" },\n  \"not\": null\n}" },
       { t: "box", h: "Sık kullanılan işlemler", text: "Ayrıştırma: JSON.parse(metin) veya Python'da json.loads(metin). Metne çevirme: JSON.stringify(nesne) veya json.dumps(nesne). Komut satırında jq ile süzme: jq '.adres.sehir' dosya.json" },
       { t: "box", h: "YAML ile ilişki", text: "CloudFormation ve SAM şablonları YAML veya JSON olabilir. YAML girinti ile çalışır ve yorum destekler; JSON katıdır ama her yerde desteklenir." },
       { t: "warn", h: "Tuzak", text: "Sayı ile metin karışır: \"5\" ve 5 farklıdır. Ayrıca tarih için JSON'un özel türü yoktur; ISO 8601 metni (2026-10-11T09:00:00Z) kullanılır." }
     ],
+    objectives: [
+      { id: "h1", text: "Verilen bir metnin geçerli JSON olup olmadığını kurallara bakarak söyleyebilirsin." },
+      { id: "h2", text: "JSON'un desteklediği değer türlerini ve desteklemediği şeyleri (yorum, özel tarih türü) sayabilirsin." },
+      { id: "h3", text: "Metni nesneye çevirmeyi (parse) metne çevirmekten (stringify) ve komut satırında jq ile alan süzmeyi ayırt edebilirsin." }
+    ],
+    summary: [
+      "JSON'da anahtarlar ve metin değerler çift tırnaklıdır; yorum yoktur, son elemandan sonra virgül konmaz.",
+      "Türler: metin, sayı, true/false, null, nesne {} ve dizi []; \"5\" metindir, 5 sayıdır.",
+      "Tarih için özel tür yoktur; ISO 8601 metni (2026-10-11T09:00:00Z) kullanılır.",
+      "Parse metni nesneye, stringify nesneyi metne çevirir; jq komut satırında JSON içinden alan süzer."
+    ],
     quiz: [
-      { q: "Aşağıdakilerden hangisi geçerli JSON'dur?", options: ["{\"ad\":\"Ali\"}", "{ad:'Ali'}", "{'ad':'Ali'}", "{\"ad\":\"Ali\",}"], answer: "{\"ad\":\"Ali\"}", why: "Anahtarlar çift tırnakta olmalı ve sondaki virgül yasak." },
-      { q: "JSON'da hangisi desteklenmez?", options: ["Yorum satırı", "Dizi", "null", "İç içe nesne"], answer: "Yorum satırı", why: "JSON yorum desteklemez." },
-      { q: "Metni nesneye çevirmeye ne denir?", options: ["Parse (ayrıştırma)", "Stringify", "Hash", "Encrypt"], answer: "Parse (ayrıştırma)", why: "JSON.parse metni nesneye çevirir." },
-      { q: "Komut satırında JSON'dan alan süzmek için hangi araç kullanılır?", options: ["jq", "ping", "curl -I", "grep -v"], answer: "jq", why: "jq JSON üzerinde sorgu yapar." }
+      { q: "Aşağıdakilerden hangisi geçerli JSON'dur?", options: ["{\"ad\":\"Ali\"}", "{ad:'Ali'}", "{'ad':'Ali'}", "{\"ad\":\"Ali\",}"], answer: "{\"ad\":\"Ali\"}", why: "Anahtarlar çift tırnakta olmalı ve sondaki virgül yasak.", obj: "h1", whyNot: { "{ad:'Ali'}": "Anahtar tırnaksız ve değer tek tırnaklı. JSON'da anahtarlar ve metin değerler çift tırnak ister (bu biçim JavaScript nesne yazımıdır).", "{'ad':'Ali'}": "Tek tırnak JSON'da geçersizdir; hem anahtar hem metin değer çift tırnakla yazılmalı.", "{\"ad\":\"Ali\",}": "Son elemandan sonra virgül (trailing comma) JSON'da yasaktır; ayrıştırıcılar bunu hata sayar." } },
+      { q: "JSON'da hangisi desteklenmez?", options: ["Yorum satırı", "Dizi", "null", "İç içe nesne"], answer: "Yorum satırı", why: "JSON yorum desteklemez.", obj: "h2", whyNot: { "Dizi": "Dizi ([]) JSON'un temel türlerinden biridir, desteklenir.", "null": "null JSON'da \"değer yok\" için tanımlı bir değerdir, desteklenir.", "İç içe nesne": "Bir nesnenin içine başka nesne koymak serbesttir; adres örneğindeki gibi." } },
+      { q: "Metni nesneye çevirmeye ne denir?", options: ["Parse (ayrıştırma)", "Stringify", "Hash", "Encrypt"], answer: "Parse (ayrıştırma)", why: "JSON.parse metni nesneye çevirir.", obj: "h3", whyNot: { "Stringify": "Stringify bunun tersini yapar: nesneyi metne çevirir.", "Hash": "Hash veriyi sabit uzunlukta bir özete indirir ve geri dönüşü yoktur; JSON metnini nesneye çevirmez.", "Encrypt": "Encrypt veriyi anahtarla gizler. Metni nesneye çevirmek şifreleme değil, ayrıştırmadır." } },
+      { q: "Komut satırında JSON'dan alan süzmek için hangi araç kullanılır?", options: ["jq", "ping", "curl -I", "grep -v"], answer: "jq", why: "jq JSON üzerinde sorgu yapar.", obj: "h3", whyNot: { "ping": "ping bir adrese ulaşılıp ulaşılamadığını sınayan ağ aracıdır; dosya içeriğini okumaz.", "curl -I": "curl -I bir adresin yalnız cevap başlıklarını getirir; JSON içinden alan seçmez.", "grep -v": "grep -v verilen kalıbı içermeyen satırları gösterir; JSON'un iç içe yapısını tanımaz, satır satır metin arar." } }
     ],
     interview: [
       { q: "JSON ve YAML arasındaki fark nedir?", a: "JSON katı sözdizimli, her yerde desteklenen bir biçimdir; YAML girintiyle çalışır, yorum destekler ve insan için daha okunaklıdır. Konfigürasyon dosyalarında YAML, API'de JSON yaygındır." },
@@ -131,16 +155,27 @@
         "git push: uzak depoya gönder; git pull: uzaktan getir ve birleştir.",
         "git switch -c yeni-dal: yeni dal aç; git merge dal: birleştir."
       ] },
-      { t: "cmd", text: "git clone https://github.com/kullanici/proje.git\ngit switch -c feature/login\ngit add .\ngit commit -m \"Giriş formu eklendi\"\ngit push -u origin feature/login" },
+      { t: "cmd", lang: "bash", text: "git clone https://github.com/kullanici/proje.git\ngit switch -c feature/login\ngit add .\ngit commit -m \"Giriş formu eklendi\"\ngit push -u origin feature/login" },
       { t: "box", h: "Pull request", text: "Dalını ana dala birleştirmeden önce takım arkadaşına inceletirsin. Küçük, tek amaçlı ve açıklamalı PR'lar daha hızlı onaylanır." },
       { t: "box", h: "Geri alma", text: "git restore dosya: çalışma alanındaki değişikliği at. git revert KOMİT: o kaydı geri alan yeni bir kayıt üret (paylaşılan dalda güvenli). git reset --hard geçmişi ve değişiklikleri siler; paylaşılan dalda kullanma." },
       { t: "warn", h: "Tuzak", text: "Parola, erişim anahtarı ve .env dosyasını commit etme. Bir kez gittiyse geçmişten silmek zordur; anahtarı hemen iptal edip yenile. .gitignore kullan." }
     ],
+    objectives: [
+      { id: "h1", text: "Günlük Git akışını (status, add, commit, push/pull) doğru sırayla uygulayıp her komutun işini söyleyebilirsin." },
+      { id: "h2", text: "Yeni dal açıp birleştirebilir, paylaşılan dalda bir commit'i güvenle geri alabilirsin." },
+      { id: "h3", text: "Yanlışlıkla commit edilmiş bir erişim anahtarı karşısında ilk adımı (anahtarı iptal edip yenilemek) seçebilirsin." }
+    ],
+    summary: [
+      "Günlük akış: status ile bak, add ile hazırla, commit ile kaydet, push ile gönder, pull ile getir.",
+      "Yeni dal: git switch -c ad; birleştirme: git merge dal; ana dala girmeden önce pull request ile inceletilir.",
+      "Paylaşılan dalda geri almak için git revert kullan; git reset --hard geçmişi ve değişiklikleri siler.",
+      "Parola ve erişim anahtarını commit etme; gittiyse anahtarı hemen iptal edip yenile, .gitignore kullan."
+    ],
     quiz: [
-      { q: "Değişiklikleri uzak depoya göndermek için hangi komut kullanılır?", options: ["git push", "git pull", "git add", "git status"], answer: "git push", why: "push yerel kayıtları uzak depoya gönderir." },
-      { q: "Paylaşılan dalda bir commit'i güvenle geri almanın yolu hangisidir?", options: ["git revert", "git reset --hard", "dosyayı silmek", "git init"], answer: "git revert", why: "revert geçmişi yazmadan, geri alan yeni bir kayıt ekler." },
-      { q: "Yeni bir dal açmak için hangisi kullanılır?", options: ["git switch -c dal", "git clone dal", "git push dal", "git merge dal"], answer: "git switch -c dal", why: "-c yeni dal oluşturup geçer (git checkout -b ile aynı)." },
-      { q: "Yanlışlıkla bir erişim anahtarı commit ettin. İlk ne yaparsın?", options: ["Anahtarı iptal edip yenisini oluştururum", "Hiçbir şey yapmam", "Sadece dosyayı silerim", "Depoyu herkese açarım"], answer: "Anahtarı iptal edip yenisini oluştururum", why: "Geçmişte kalır; anahtar ele geçmiş sayılmalı." }
+      { q: "Değişiklikleri uzak depoya göndermek için hangi komut kullanılır?", options: ["git push", "git pull", "git add", "git status"], answer: "git push", why: "push yerel kayıtları uzak depoya gönderir.", obj: "h1", whyNot: { "git pull": "pull yönü tersine çevirir: uzaktaki değişiklikleri getirip yerelle birleştirir, yerel kayıtları göndermez.", "git add": "add değişikliği yalnız hazırlık alanına koyar; uzak depoya hiçbir şey göndermez.", "git status": "status yalnız durumu gösterir (ne değişti, ne hazır); veri taşımaz." } },
+      { q: "Paylaşılan dalda bir commit'i güvenle geri almanın yolu hangisidir?", options: ["git revert", "git reset --hard", "dosyayı silmek", "git init"], answer: "git revert", why: "revert geçmişi yazmadan, geri alan yeni bir kayıt ekler.", obj: "h2", whyNot: { "git reset --hard": "reset --hard dalın ucunu geri taşıyıp commit'leri dalın geçmişinden düşürür ve kaydedilmemiş değişiklikleri siler; paylaşılan dalda zorla göndermek (force-push) gerekir ve başkalarının işini bozar.", "dosyayı silmek": "Dosyayı elle silmek yeni bir değişikliktir; commit'in tüm etkisini (başka dosyalardaki değişiklikler dahil) geri almaz ve geçmişte de kalır.", "git init": "init yeni bir depo başlatır; var olan depoda commit geri almakla ilgisi yoktur." } },
+      { q: "Yeni bir dal açmak için hangisi kullanılır?", options: ["git switch -c dal", "git clone dal", "git push dal", "git merge dal"], answer: "git switch -c dal", why: "-c yeni dal oluşturup geçer (git checkout -b ile aynı).", obj: "h2", whyNot: { "git clone dal": "clone bir depoyu baştan kopyalar; dal açmaz.", "git push dal": "push var olan bir dalı uzağa gönderir; yeni dal oluşturmaz.", "git merge dal": "merge var olan bir dalı bulunduğun dala birleştirir; yeni dal oluşturmaz." } },
+      { q: "Yanlışlıkla bir erişim anahtarı commit ettin. İlk ne yaparsın?", options: ["Anahtarı iptal edip yenisini oluştururum", "Hiçbir şey yapmam", "Sadece dosyayı silerim", "Depoyu herkese açarım"], answer: "Anahtarı iptal edip yenisini oluştururum", why: "Geçmişte kalır; anahtar ele geçmiş sayılmalı.", obj: "h3", whyNot: { "Hiçbir şey yapmam": "Anahtar commit geçmişinde kalır ve depoya erişen herkes görebilir; ele geçmiş sayılmalı.", "Sadece dosyayı silerim": "Silmek yeni bir commit olur; anahtar eski commit'te durmaya devam eder ve geçmişten okunur.", "Depoyu herkese açarım": "Depoyu açmak sızıntıyı büyütür; sızmış bir anahtar önce iptal edilir." } }
     ],
     interview: [
       { q: "git merge ile git rebase farkı nedir?", a: "Merge iki dalı birleştiren bir kayıt oluşturur ve geçmişi korur. Rebase kayıtlarını başka bir dalın ucuna yeniden dizer, çizgisel temiz geçmiş verir; paylaşılan dalda kullanılmamalıdır." },
@@ -174,7 +209,7 @@
     blocks: [
       { t: "h", text: "Neden öğreniyoruz?" },
       { t: "box", h: "Gerçek talep", text: "RDS, Aurora ve Athena'da SQL yazarsın. Bir rapor için 'son 30 günde en çok sipariş veren 10 müşteri' sorusunu tek sorguyla cevaplayabilirsin." },
-      { t: "cmd", text: "SELECT c.ad, COUNT(o.id) AS siparis_sayisi\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE o.tarih >= '2026-09-01'\nGROUP BY c.ad\nORDER BY siparis_sayisi DESC\nLIMIT 10;" },
+      { t: "cmd", lang: "sql", text: "SELECT c.ad, COUNT(o.id) AS siparis_sayisi\nFROM customers c\nJOIN orders o ON o.customer_id = c.id\nWHERE o.tarih >= '2026-09-01'\nGROUP BY c.ad\nORDER BY siparis_sayisi DESC\nLIMIT 10;" },
       { t: "steps", h: "Temel komutlar", items: [
         "SELECT sütunlar FROM tablo WHERE koşul: okuma.",
         "INSERT INTO tablo (...) VALUES (...): ekleme.",

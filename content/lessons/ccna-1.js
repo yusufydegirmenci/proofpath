@@ -48,16 +48,27 @@
         "'ping 127.0.0.1' yaz. Cevap geliyorsa bilgisayarının kendi ağ yazılımı çalışıyor demektir.",
         "'ping' ve ardından Default Gateway adresini yaz. Cevap geliyorsa router'a ulaşıyorsun. Sonra 'ping 8.8.8.8' ile internete bak."
       ] },
-      { t: "cmd", text: "ipconfig\nping 127.0.0.1\nping 192.168.1.1\nping 8.8.8.8" },
+      { t: "cmd", lang: "cmd", calistirma: "atla Windows komut satırı (Linux/macOS komutlarıyla karışık olabilir); bu ortamda çalıştırılmaz", text: "ipconfig\nping 127.0.0.1\nping 192.168.1.1\nping 8.8.8.8" },
       { t: "box", h: "Sorun giderme sırası", text: "Kablo ve ışıklar, sonra bilgisayarın IP'si, sonra gateway'e ping, sonra internete ping. Hangi adımda takıldıysan sorun oradadır. Bu sırayı ezberle; mülakatta da iş yerinde de işe yarar." },
       { t: "warn", h: "Tuzak", text: "Modem ile router aynı şey değildir. Evdeki cihaz çoğu zaman ikisini birden yapar, o yüzden karışır. Ayrıca switch aynı ağdaki cihazları bağlar, ağlar arası yolu router bulur." }
     ],
+    objectives: [
+      { id: "h1", text: "Switch, router, access point ve uç cihazın işini ayırt edip bir senaryoda hangisine ihtiyaç olduğunu seçebilirsin." },
+      { id: "h2", text: "LAN ile WAN farkını ve bakır UTP kablonun mesafe sınırını söyleyebilirsin." },
+      { id: "h3", text: "ipconfig ve ping ile bağlantıyı dört adımda (kendin, IP, gateway, internet) sırayla kontrol edebilirsin." }
+    ],
+    summary: [
+      "Switch aynı ağdaki cihazları, router farklı ağları bağlar; access point kablosuz cihazları ağa katar.",
+      "LAN tek bina ya da ofis, WAN şehirler arası ağdır; bakır UTP en çok 100 metre gider, daha uzağı için fiber gerekir.",
+      "Bağlantı sorununu sırayla ara: kablo ve ışıklar, IP (ipconfig), gateway'e ping, sonra internete ping.",
+      "ping 127.0.0.1 yalnız bilgisayarının kendi ağ yazılımını sınar."
+    ],
     quiz: [
-      { q: "Farklı iki ağı birbirine bağlayan cihaz hangisidir?", options: ["Switch", "Router", "Yazıcı", "Access point"], answer: "Router", why: "Switch aynı ağdaki cihazları bağlar. Farklı ağlar arasındaki yolu router bulur." },
-      { q: "Bakır UTP kablonun standart en uzun mesafesi nedir?", options: ["10 metre", "100 metre", "1 kilometre", "10 kilometre"], answer: "100 metre", why: "UTP Ethernet kablosu 100 metreye kadar güvenilir çalışır. Daha uzun mesafe için fiber ya da araya cihaz gerekir." },
-      { q: "Tek bir ofis binasındaki ağ hangi türdür?", options: ["WAN", "LAN", "Internet", "VPN"], answer: "LAN", why: "LAN, küçük bir alandaki ağdır. WAN şehirler arası uzun mesafeli ağdır." },
-      { q: "Wi-Fi ile bağlanmak için ağa hangi cihaz eklenir?", options: ["Access point", "Hub", "Fiber kablo", "Firewall"], answer: "Access point", why: "Access point kablosuz cihazları kabloluya bağlar." },
-      { q: "'ping 127.0.0.1' neyi test eder?", options: ["İnterneti", "Router'ı", "Bilgisayarın kendi ağ yazılımını", "DNS sunucusunu"], answer: "Bilgisayarın kendi ağ yazılımını", why: "127.0.0.1 loopback adresidir, paket hiç dışarı çıkmaz. Cevap gelmesi yerel ağ yazılımının çalıştığını gösterir." }
+      { q: "Farklı iki ağı birbirine bağlayan cihaz hangisidir?", options: ["Switch", "Router", "Yazıcı", "Access point"], answer: "Router", why: "Switch aynı ağdaki cihazları bağlar. Farklı ağlar arasındaki yolu router bulur.", obj: "h1", whyNot: { "Switch": "Switch aynı ağdaki cihazları bağlar; farklı ağlar arasındaki yolu bulmaz.", "Yazıcı": "Yazıcı bir uç cihazdır: veriyi başlatan ya da alan taraftır, ağları birbirine bağlamaz.", "Access point": "Access point kablosuz cihazları kablolu ağa bağlar; farklı ağlar arasında yönlendirme yapmaz." } },
+      { q: "Bakır UTP kablonun standart en uzun mesafesi nedir?", options: ["10 metre", "100 metre", "1 kilometre", "10 kilometre"], answer: "100 metre", why: "UTP Ethernet kablosu 100 metreye kadar güvenilir çalışır. Daha uzun mesafe için fiber ya da araya cihaz gerekir.", obj: "h2", whyNot: { "10 metre": "10 metre çok kısa; UTP kablo güvenilir biçimde 100 metreye kadar çalışır.", "1 kilometre": "Bakır UTP 100 metreden sonra sinyal kaybeder; kilometrelik mesafe fiber ister.", "10 kilometre": "10 km yalnız fiber (ya da araya cihaz) ile mümkündür; UTP'nin standart sınırı 100 m." } },
+      { q: "Tek bir ofis binasındaki ağ hangi türdür?", options: ["WAN", "LAN", "Internet", "VPN"], answer: "LAN", why: "LAN, küçük bir alandaki ağdır. WAN şehirler arası uzun mesafeli ağdır.", obj: "h2", whyNot: { "WAN": "WAN şehirler ya da ülkeler arası geniş alanı kapsar; tek bir bina için fazla geniş.", "Internet": "İnternet binlerce ağın birbirine bağlanmış halidir, tek bir ofis ağı değil.", "VPN": "VPN başka bir ağa şifreli tünel kurma yöntemidir; ağın büyüklük türü değildir." } },
+      { q: "Wi-Fi ile bağlanmak için ağa hangi cihaz eklenir?", options: ["Access point", "Hub", "Fiber kablo", "Firewall"], answer: "Access point", why: "Access point kablosuz cihazları kabloluya bağlar.", obj: "h1", whyNot: { "Hub": "Hub kablolu çalışır ve gelen sinyali tüm portlara yayar; kablosuz bağlantı sağlamaz.", "Fiber kablo": "Fiber kablo ışıkla veri taşıyan yine bir kablodur; kablosuz bağlantı vermez.", "Firewall": "Firewall trafiği kurala göre süzer (güvenlik); Wi-Fi sinyali yaymaz." } },
+      { q: "'ping 127.0.0.1' neyi test eder?", options: ["İnterneti", "Router'ı", "Bilgisayarın kendi ağ yazılımını", "DNS sunucusunu"], answer: "Bilgisayarın kendi ağ yazılımını", why: "127.0.0.1 loopback adresidir, paket hiç dışarı çıkmaz. Cevap gelmesi yerel ağ yazılımının çalıştığını gösterir.", obj: "h3", whyNot: { "İnterneti": "İnterneti sınamak için dışarıdaki bir adrese ping gerekir (ör. 8.8.8.8); 127.0.0.1 paketi hiç dışarı çıkarmaz.", "Router'ı": "Router'ı sınamak için varsayılan ağ geçidine (default gateway) ping atılır; 127.0.0.1 kendi bilgisayarına döner.", "DNS sunucusunu": "DNS'i sınamak için bir alan adı çözümlenir (ör. nslookup); 127.0.0.1 bir ad çözmez." } }
     ],
     interview: [
       { q: "Switch ile router arasındaki fark nedir?", a: "Switch aynı ağdaki cihazları birbirine bağlar ve MAC adresine bakar. Router farklı ağları birbirine bağlar ve IP adresine bakıp yol seçer. Basitçe: switch bina içi kavşak, router şehir çıkışı." },
@@ -122,15 +133,26 @@
         "Bunlar internette yönlendirilmez, her ofis kendi içinde kullanır. İnternete çıkarken NAT ile genel adrese çevrilir."
       ] },
       { t: "box", h: "Özel adresler", text: "127.0.0.1: kendin (loopback). 169.254.x.x: APIPA. DHCP sunucusundan adres alamayan Windows kendine bu adresi verir. Bir bilgisayarda 169.254 görüyorsan DHCP'den adres alamamıştır." },
-      { t: "cmd", text: "ipconfig\nipconfig /all\n\n# Cisco cihazda:\nshow ip interface brief" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "ipconfig\nipconfig /all\n\n# Cisco cihazda:\nshow ip interface brief" },
       { t: "warn", h: "Tuzak", text: "İlk adres (host kısmı hep 0) ağ adresidir, son adres (host kısmı hep 1) broadcast'tir. İkisi de bir cihaza verilmez. Bu yüzden /24'te 256 değil 254 kullanılabilir adres vardır." }
     ],
+    objectives: [
+      { id: "h1", text: "Bir IPv4 adresi ve maskeden ağ adresini, broadcast adresini ve kullanılabilir host aralığını bulabilirsin." },
+      { id: "h2", text: "İki cihazın aynı ağda olup olmadığını maskeye bakarak söyleyebilirsin." },
+      { id: "h3", text: "Özel adres aralıklarını sayabilir ve 169.254.x.x adresinin ne anlama geldiğini açıklayabilirsin." }
+    ],
+    summary: [
+      "IPv4 adresi 32 bittir ve 8'er bitlik 4 oktete bölünür; maske hangi kısmın ağ, hangisinin host olduğunu söyler.",
+      "/24'te ilk üç oktet ağdır; host kısmı tamamen 0 olan adres ağ adresi, tamamen 1 olan broadcast'tir ve ikisi de cihaza verilmez.",
+      "Oktet sınırlı maskelerde (/8, /16, /24) iki cihaz maskenin 255 olduğu oktetlerde aynıysa aynı ağdadır; /26 gibi maskelerde blok sınırına bakmak gerekir (sonraki ders).",
+      "Özel aralıklar 10.0.0.0/8, 172.16.0.0/12 ve 192.168.0.0/16'dır; 169.254.x.x DHCP'den adres alınamadığını gösterir."
+    ],
     quiz: [
-      { q: "192.168.1.10/24 adresinin ağ adresi nedir?", options: ["192.168.1.0", "192.168.1.1", "192.168.0.0", "192.168.1.255"], answer: "192.168.1.0", why: "/24'te son oktet host'tur, ağ adresinde hep 0 olur: 192.168.1.0." },
-      { q: "Aşağıdakilerden hangisi özel (private) bir adrestir?", options: ["8.8.8.8", "172.20.5.9", "172.40.1.1", "11.0.0.1"], answer: "172.20.5.9", why: "172.16.0.0 ile 172.31.255.255 arası özeldir. 172.40 bu aralığın dışındadır." },
-      { q: "Bir Windows bilgisayarda 169.254.12.7 görüyorsun. Bu ne demektir?", options: ["İnternet çok hızlı", "DHCP'den adres alamadı", "Statik IP verilmiş", "Router bozuk ve internet yok, ama adres normal"], answer: "DHCP'den adres alamadı", why: "169.254.x.x APIPA adresidir. DHCP sunucusuna ulaşılamayınca Windows kendine bu adresi verir." },
-      { q: "255.255.255.0 maskesinin kısa yazımı nedir?", options: ["/16", "/24", "/28", "/8"], answer: "/24", why: "255.255.255.0 içinde 24 tane '1' bit vardır, /24 olur." },
-      { q: "192.168.1.10/24 ile hangi adres aynı ağdadır?", options: ["192.168.2.10", "192.168.1.200", "10.0.0.10", "192.168.0.10"], answer: "192.168.1.200", why: "İlk üç oktet (192.168.1) aynıysa /24'te aynı ağdasınız." }
+      { q: "192.168.1.10/24 adresinin ağ adresi nedir?", options: ["192.168.1.0", "192.168.1.1", "192.168.0.0", "192.168.1.255"], answer: "192.168.1.0", why: "/24'te son oktet host'tur, ağ adresinde hep 0 olur: 192.168.1.0.", obj: "h1", whyNot: { "192.168.1.1": "'.1' ağın ilk kullanılabilir host adresidir; ağ adresinde host kısmı hep 0 olur.", "192.168.0.0": "Üçüncü oktet ağ kısmındadır ve aynen kalır (1); yalnız host oktetinin tamamı 0 olur.", "192.168.1.255": "Host kısmının tamamı 1 olan adres broadcast'tir, ağ adresi değil." } },
+      { q: "Aşağıdakilerden hangisi özel (private) bir adrestir?", options: ["8.8.8.8", "172.20.5.9", "172.40.1.1", "11.0.0.1"], answer: "172.20.5.9", why: "172.16.0.0 ile 172.31.255.255 arası özeldir. 172.40 bu aralığın dışındadır.", obj: "h3", whyNot: { "8.8.8.8": "8.8.8.8 genel (public) bir adrestir (Google DNS); RFC 1918 özel aralıklarında değil.", "172.40.1.1": "Özel 172 aralığı yalnız 172.16.0.0–172.31.255.255; 172.40 bunun dışında, genel adrestir.", "11.0.0.1": "Özel aralıklarda 10.x.x.x vardır, 11.x.x.x yoktur; bu bir genel adrestir." } },
+      { q: "Bir Windows bilgisayarda 169.254.12.7 görüyorsun. Bu ne demektir?", options: ["İnternet çok hızlı", "DHCP'den adres alamadı", "Statik IP verilmiş", "Router bozuk ve internet yok, ama adres normal"], answer: "DHCP'den adres alamadı", why: "169.254.x.x APIPA adresidir. DHCP sunucusuna ulaşılamayınca Windows kendine bu adresi verir.", obj: "h3", whyNot: { "İnternet çok hızlı": "169.254.x.x hızla ilgili değil; Windows'un DHCP'den adres alamayınca kendine verdiği APIPA adresidir.", "Statik IP verilmiş": "Statik IP elle ve ağın adres planına göre verilir; 169.254 otomatik, DHCP'siz atanan adrestir.", "Router bozuk ve internet yok, ama adres normal": "Adres normal değil: 169.254 DHCP'den adres alınamadığını gösterir. Router bozuk olabilir ama \"adres normal\" ifadesi yanlış." } },
+      { q: "255.255.255.0 maskesinin kısa yazımı nedir?", options: ["/16", "/24", "/28", "/8"], answer: "/24", why: "255.255.255.0 içinde 24 tane '1' bit vardır, /24 olur.", obj: "h1", whyNot: { "/16": "/16 = 255.255.0.0; 16 bit \"1\" var, yalnız ilk iki oktet ağ.", "/28": "/28 = 255.255.255.240; son oktette 4 bit \"1\" daha var.", "/8": "/8 = 255.0.0.0; yalnız ilk oktet ağ." } },
+      { q: "192.168.1.10/24 ile hangi adres aynı ağdadır?", options: ["192.168.2.10", "192.168.1.200", "10.0.0.10", "192.168.0.10"], answer: "192.168.1.200", why: "İlk üç oktet (192.168.1) aynıysa /24'te aynı ağdasınız.", obj: "h2", whyNot: { "192.168.2.10": "Üçüncü oktet farklı (2, 1 değil); /24'te ilk üç oktet aynı olmalı, bu farklı bir ağdır.", "10.0.0.10": "İlk oktet bile farklı; tamamen başka bir ağ.", "192.168.0.10": "Üçüncü oktet 0, 1 değil; /24'te farklı ağ demektir." } }
     ],
     interview: [
       { q: "Alt ağ maskesi ne işe yarar?", a: "IP adresinin hangi bölümünün ağ, hangi bölümünün host olduğunu belirler. Cihaz, hedefin kendi ağında olup olmadığını maskeye bakarak anlar. Aynı ağdaysa doğrudan gönderir, değilse gateway'e gönderir." },
@@ -198,15 +220,27 @@
         "Ağ adresi 192.168.10.64, broadcast 192.168.10.127.",
         "Kullanılabilir aralık 192.168.10.65 ile 192.168.10.126."
       ] },
-      { t: "cmd", text: "# Cisco cihazda IP ve maske verme:\nRouter(config)# interface gigabitethernet0/0\nRouter(config-if)# ip address 192.168.10.1 255.255.255.192\nRouter(config-if)# no shutdown" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "# Cisco cihazda IP ve maske verme:\nRouter(config)# interface gigabitethernet0/0\nRouter(config-if)# ip address 192.168.10.1 255.255.255.192\nRouter(config-if)# no shutdown" },
       { t: "warn", h: "Tuzak", text: "Alt ağlar çakışmamalı. Biri 192.168.10.0/26, diğeri 192.168.10.32/27 olamaz, çünkü ikincisi birincinin içindedir. Bölerken hep blok sınırlarında ilerle." }
     ],
+    objectives: [
+      { id: "h1", text: "Bir maskeden blok büyüklüğünü ve kullanılabilir host sayısını (2^h − 2) hesaplayabilirsin." },
+      { id: "h2", text: "Bir IP adresinin hangi alt ağda olduğunu blok sınırlarına bakarak bulabilirsin." },
+      { id: "h3", text: "İhtiyaca göre maske seçebilirsin: ağı eşit alt ağlara bölmek için ya da iki router arası bağlantı için." }
+    ],
+    summary: [
+      "Subnetting host bitlerinden ödünç alır: maske uzar, ağ sayısı artar, her ağdaki host sayısı azalır.",
+      "Kullanılabilir host sayısı = 2^h − 2 (h: host biti); /26 → 62, /27 → 30, /30 → 2.",
+      "Blok büyüklüğü 256 eksi maskenin son oktetidir (/26 → 64); bir IP'nin alt ağı blok katlarına bakılarak bulunur.",
+      "4 alt ağ için 2 bit gerekir (/24 → /26); iki router arası bağlantıda /30 yeter.",
+      "Alt ağlar çakışmamalı; bölerken hep blok sınırlarında ilerle."
+    ],
     quiz: [
-      { q: "/27 maskesinde kaç kullanılabilir host adresi vardır?", options: ["32", "30", "62", "14"], answer: "30", why: "/27'de 5 host biti var: 2^5 = 32, eksi 2 = 30." },
-      { q: "/26 maskesinin blok büyüklüğü kaçtır?", options: ["32", "64", "128", "192"], answer: "64", why: "256 - 192 = 64. 255.255.255.192 maskesinde blok 64'tür." },
-      { q: "192.168.10.77/26 adresinin ağ adresi nedir?", options: ["192.168.10.0", "192.168.10.64", "192.168.10.77", "192.168.10.128"], answer: "192.168.10.64", why: "Bloklar 0, 64, 128, 192. 77 sayısı 64 ile 127 arasında olduğu için ağ adresi .64'tür." },
-      { q: "İki router arasındaki noktadan noktaya bağlantı için en uygun maske hangisidir?", options: ["/24", "/28", "/30", "/16"], answer: "/30", why: "/30'da tam 2 kullanılabilir host vardır, iki router ucu için yeter ve adres israfı olmaz." },
-      { q: "192.168.10.0/24 ağını 4 eşit alt ağa bölmek için yeni maske ne olmalı?", options: ["/25", "/26", "/27", "/28"], answer: "/26", why: "4 alt ağ 2 bit ister. 24 + 2 = 26." }
+      { q: "/27 maskesinde kaç kullanılabilir host adresi vardır?", options: ["32", "30", "62", "14"], answer: "30", why: "/27'de 5 host biti var: 2^5 = 32, eksi 2 = 30.", obj: "h1", whyNot: { "14": "14, /28'in host sayısıdır (4 host biti); /27'de bir host biti daha fazla var.", "32": "32, /27 ağındaki toplam adres sayısıdır; ağ ve broadcast adresi cihaza verilmediği için kullanılabilir sayı 32 − 2.", "62": "62, /26'nın host sayısıdır (6 host biti); /27'de 5 host biti var." } },
+      { q: "/26 maskesinin blok büyüklüğü kaçtır?", options: ["32", "64", "128", "192"], answer: "64", why: "256 - 192 = 64. 255.255.255.192 maskesinde blok 64'tür.", obj: "h1", whyNot: { "32": "32, /27'nin blok büyüklüğüdür (256 − 224); /26'da 256 − 192 = 64.", "128": "128, /25'in blok büyüklüğüdür (256 − 128).", "192": "192 maskenin son oktetidir, blok büyüklüğü değil; blok 256 − 192 = 64." } },
+      { q: "192.168.10.77/26 adresinin ağ adresi nedir?", options: ["192.168.10.0", "192.168.10.64", "192.168.10.77", "192.168.10.128"], answer: "192.168.10.64", why: "Bloklar 0, 64, 128, 192. 77 sayısı 64 ile 127 arasında olduğu için ağ adresi .64'tür.", obj: "h2", whyNot: { "192.168.10.0": ".0 ilk bloğun (0–63) ağ adresidir; 77 ikinci blokta (64–127).", "192.168.10.77": "77 bir host adresi; ağ adresi bloğun ilk adresidir (host kısmı 0).", "192.168.10.128": "128 üçüncü bloğun başı; 77 ondan küçük, 64–127 arasında." } },
+      { q: "İki router arasındaki noktadan noktaya bağlantı için en uygun maske hangisidir?", options: ["/24", "/28", "/30", "/16"], answer: "/30", why: "/30'da tam 2 kullanılabilir host vardır, iki router ucu için yeter ve adres israfı olmaz.", obj: "h3", whyNot: { "/24": "/24 254 host verir; iki uçlu bir bağlantı için 252 adres boşa gider.", "/28": "/28 14 host verir; iki uç için fazla (12 adres boşa).", "/16": "/16 65.534 host verir; noktadan noktaya bir bağlantı için çok büyük." } },
+      { q: "192.168.10.0/24 ağını 4 eşit alt ağa bölmek için yeni maske ne olmalı?", options: ["/25", "/26", "/27", "/28"], answer: "/26", why: "4 alt ağ 2 bit ister. 24 + 2 = 26.", obj: "h3", whyNot: { "/25": "/25 ağı yalnız 2 alt ağa böler (1 bit).", "/27": "/27 ağı 8 alt ağa böler (3 bit), 4 değil.", "/28": "/28 ağı 16 alt ağa böler (4 bit)." } }
     ],
     interview: [
       { q: "Neden subnetting yaparız?", a: "Büyük bir ağı küçük parçalara bölmek için. Böylece broadcast trafiği azalır, güvenlik kuralları departman bazında yazılabilir, IP adresleri israf edilmez ve ağ yönetimi kolaylaşır." },
@@ -262,7 +296,7 @@
         "Bir switch (VLAN yoksa) tek bir broadcast domain'dir. Bir cihazın broadcast'ini herkes alır.",
         "Router her arayüzünde broadcast'i durdurur. Her router arayüzü ayrı bir broadcast domain'dir."
       ] },
-      { t: "cmd", text: "# Windows:\nipconfig /all\narp -a\n\n# Cisco switch:\nshow mac address-table\nshow interfaces status\nshow interfaces fastethernet0/1" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "# Windows:\nipconfig /all\narp -a\n\n# Cisco switch:\nshow mac address-table\nshow interfaces status\nshow interfaces fastethernet0/1" },
       { t: "box", h: "Elle dene", text: "1) Windows'ta cmd aç. 2) 'ipconfig /all' yaz, 'Physical Address' satırını bul: bu MAC adresin. 3) 'arp -a' yaz: IP-MAC eşleşmelerini gör. 4) Tüm MAC'leri 'ff-ff-ff-ff-ff-ff' broadcast satırıyla karşılaştır." },
       { t: "warn", h: "Tuzak", text: "Switch IP adresine bakmaz, MAC adresine bakar (katman 2). IP'ye göre yol seçen router'dır (katman 3). Karıştırırsan mülakatta puan kaybedersin." }
     ],
@@ -327,7 +361,7 @@
         "Native VLAN: trunk'ta etiketsiz giden VLAN. Varsayılan VLAN 1'dir. Güvenlik için kullanılmayan bir VLAN'a değiştirilir."
       ] },
       { t: "h", text: "Cisco switch'te yapılandırma" },
-      { t: "cmd", text: "Switch(config)# vlan 10\nSwitch(config-vlan)# name MUHASEBE\nSwitch(config-vlan)# exit\nSwitch(config)# vlan 20\nSwitch(config-vlan)# name SATIS\nSwitch(config-vlan)# exit\n\nSwitch(config)# interface fastethernet0/1\nSwitch(config-if)# switchport mode access\nSwitch(config-if)# switchport access vlan 10\n\nSwitch(config)# interface gigabitethernet0/24\nSwitch(config-if)# switchport mode trunk\n\nSwitch# show vlan brief\nSwitch# show interfaces trunk" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Switch(config)# vlan 10\nSwitch(config-vlan)# name MUHASEBE\nSwitch(config-vlan)# exit\nSwitch(config)# vlan 20\nSwitch(config-vlan)# name SATIS\nSwitch(config-vlan)# exit\n\nSwitch(config)# interface fastethernet0/1\nSwitch(config-if)# switchport mode access\nSwitch(config-if)# switchport access vlan 10\n\nSwitch(config)# interface gigabitethernet0/24\nSwitch(config-if)# switchport mode trunk\n\nSwitch# show vlan brief\nSwitch# show interfaces trunk" },
       { t: "steps", h: "Satır satır ne yaptık?", items: [
         "'vlan 10' ve 'name MUHASEBE': VLAN'ı oluşturur ve isim verir.",
         "'switchport mode access': portu uç cihaz portu yapar.",
@@ -337,7 +371,7 @@
       ] },
       { t: "h", text: "VLAN'lar arası iletişim" },
       { t: "p", text: "Farklı VLAN'lar farklı alt ağlardır. Aralarında konuşmak için yönlendirme (router ya da katman 3 switch) gerekir. Klasik yöntem 'router-on-a-stick': router'ın tek fiziksel arayüzü, her VLAN için bir alt arayüze (subinterface) bölünür ve switch'e trunk ile bağlanır." },
-      { t: "cmd", text: "Router(config)# interface gigabitethernet0/0.10\nRouter(config-subif)# encapsulation dot1Q 10\nRouter(config-subif)# ip address 192.168.10.1 255.255.255.0\n\nRouter(config)# interface gigabitethernet0/0.20\nRouter(config-subif)# encapsulation dot1Q 20\nRouter(config-subif)# ip address 192.168.20.1 255.255.255.0" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Router(config)# interface gigabitethernet0/0.10\nRouter(config-subif)# encapsulation dot1Q 10\nRouter(config-subif)# ip address 192.168.10.1 255.255.255.0\n\nRouter(config)# interface gigabitethernet0/0.20\nRouter(config-subif)# encapsulation dot1Q 20\nRouter(config-subif)# ip address 192.168.20.1 255.255.255.0" },
       { t: "warn", h: "Tuzak", text: "Port yanlış VLAN'dayken 'cihaz IP alıyor ama kimseye ulaşamıyor' sorunu yaşarsın. Önce 'show vlan brief' ile portun hangi VLAN'da olduğuna bak. Bir de trunk'ta VLAN izinli değilse o VLAN'ın trafiği geçmez." }
     ],
     quiz: [
@@ -399,7 +433,7 @@
         "Hiçbiri eşleşmezse default route (0.0.0.0/0) kullanılır. O da yoksa paket düşer."
       ] },
       { t: "h", text: "Komutlar" },
-      { t: "cmd", text: "Router(config)# interface gigabitethernet0/0\nRouter(config-if)# ip address 10.0.0.1 255.255.255.252\nRouter(config-if)# no shutdown\n\n# Static route: hedef ağ, maske, bir sonraki router (next hop)\nRouter(config)# ip route 192.168.20.0 255.255.255.0 10.0.0.2\n\n# Default route: bilinmeyen her şey bu yöne gitsin\nRouter(config)# ip route 0.0.0.0 0.0.0.0 203.0.113.1\n\nRouter# show ip route\nRouter# show ip interface brief" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Router(config)# interface gigabitethernet0/0\nRouter(config-if)# ip address 10.0.0.1 255.255.255.252\nRouter(config-if)# no shutdown\n\n# Static route: hedef ağ, maske, bir sonraki router (next hop)\nRouter(config)# ip route 192.168.20.0 255.255.255.0 10.0.0.2\n\n# Default route: bilinmeyen her şey bu yöne gitsin\nRouter(config)# ip route 0.0.0.0 0.0.0.0 203.0.113.1\n\nRouter# show ip route\nRouter# show ip interface brief" },
       { t: "steps", h: "show ip route çıktısını okuma", items: [
         "C: doğrudan bağlı ağ.",
         "L: router arayüzünün kendi IP adresi (/32).",
