@@ -1,6 +1,6 @@
 "use strict";
 /* ---- v28 UI: sertifika haritası + portfolyo paketi ---- */
-S.pj.gh="yusufydegirmenci";S.pj.msg="";
+S.pj.gh="";S.pj.msg="";
 var CRC_T=null;
 function crc32(u8){if(!CRC_T){CRC_T=[];for(var n=0;n<256;n++){var c=n;for(var k=0;k<8;k++)c=c&1?0xEDB88320^(c>>>1):c>>>1;CRC_T[n]=c>>>0}}var c2=0xFFFFFFFF;for(var i=0;i<u8.length;i++)c2=CRC_T[(c2^u8[i])&255]^(c2>>>8);return (c2^0xFFFFFFFF)>>>0}
 function zipFiles(files){
@@ -73,9 +73,12 @@ function certPanel(p,def){
     h("div",{class:"small mute"},"Bir hedef, bağlı adımların hepsini bitirince ✓ olur. Bütün hedefler ✓ olunca sınava hazırlık için kendini sınama adımına geç."));
 }
 function exportPanel(p,def){
-  if(!def)return null;var P=S.pj,repo=pjRepo(def),gh=(P.gh||"kullanici").replace(/[^A-Za-z0-9-]/g,"")||"kullanici";
-  var inp=h("input",{type:"text",maxlength:39,"aria-label":"GitHub kullanıcı adı",oninput:function(e){P.gh=e.target.value}});inp.value=P.gh;
-  var cmds="cd "+repo+"\ngit init\ngit add .\ngit commit -m \""+p.title.replace(/"/g,"'")+": ilk sürüm\"\ngit branch -M main\ngit remote add origin https://github.com/"+gh+"/"+repo+".git\ngit push -u origin main";
+  if(!def)return null;var P=S.pj,repo=pjRepo(def),PH="<GitHub-kullanıcı-adın>";
+  function ghName(){return (P.gh||"").replace(/[^A-Za-z0-9-]/g,"")||PH}
+  function mkCmds(){return "cd "+repo+"\ngit init\ngit add .\ngit commit -m \""+p.title.replace(/"/g,"'")+": ilk sürüm\"\ngit branch -M main\ngit remote add origin https://github.com/"+ghName()+"/"+repo+".git\ngit push -u origin main"}
+  var cmds=mkCmds(),pre=h("pre",{class:"lcode"},cmds),warn=h("div",{class:"small",role:"status"},"");
+  function upd(){cmds=mkCmds();pre.textContent=cmds;warn.textContent=ghName()===PH?"Önce GitHub kullanıcı adını yaz; komutlardaki "+PH+" yerine geçecek.":""}
+  var inp=h("input",{type:"text",maxlength:39,placeholder:"GitHub kullanıcı adın","aria-label":"GitHub kullanıcı adı",oninput:function(e){P.gh=e.target.value;upd()}});inp.value=P.gh;upd();
   var li=pjCopyText(def,p);
   return h("div",{class:"panel"},h("div",{class:"label"},"Portfolyo"),h("h2",null,"Emeğini herkese göster"),
     h("div",{class:"small mute"},"Projeyi bitirdikçe kanıtların GitHub'da durur; işverene gösterebileceğin gerçek bir iş olur. Paketin içinde hazır README, .gitignore (şifreleri korur) ve kanıt listesi var."),
@@ -86,7 +89,7 @@ function exportPanel(p,def){
       h("li",null,"Açılan sayfada “uploading an existing file” bağlantısına tıkla."),
       h("li",null,"İndirdiğin zip'i aç. İçindeki dosya ve klasörleri sayfaya sürükle."),
       h("li",null,"En altta “Commit changes”e bas. Bitti; projen yayında.")])),
-    h("div",{class:"lbox"},h("div",{class:"label"},"Git ile yükle (6 komut)"),h("div",{class:"small mute"},"GitHub kullanıcı adın:"),inp,h("pre",{class:"lcode"},cmds),h("button",{class:"btn ghost",type:"button",onclick:function(){pjCopy(cmds)}},"Komutları kopyala")),
+    h("div",{class:"lbox"},h("div",{class:"label"},"Git ile yükle (6 komut)"),h("div",{class:"small mute"},"GitHub kullanıcı adın:"),inp,warn,pre,h("button",{class:"btn ghost",type:"button",onclick:function(){pjCopy(cmds)}},"Komutları kopyala")),
     h("div",{class:"lbox eng"},h("div",{class:"label"},"CV / LinkedIn cümlesi"),h("p",{style:"margin:0 0 6px"},li.en),h("p",{style:"margin:0 0 8px"},li.tr),h("button",{class:"btn ghost",type:"button",onclick:function(){pjCopy(li.en+"\n"+li.tr)}},"Kopyala")),
     h("div",{class:"lbox warn"},h("div",{class:"label"},"Yüklemeden önce"),h("p",null,"Parola, API anahtarı, AWS gizli anahtarı, kişisel veri ve gerçek müşteri verisi repoya girmesin. Ekran görüntülerinde e-posta ve hesap numaralarını karart. Emin değilsen repoyu önce Private aç.")));
 }

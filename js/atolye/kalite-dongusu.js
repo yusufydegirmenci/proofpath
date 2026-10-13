@@ -109,11 +109,14 @@ function plShare(track,lv){
   var nm=(GM_TN[track]||track),t="Proofpath seviye testi: "+nm+" "+lv.toFixed(1)+" / 3."+(ARTIFACT_URL?" Sen de dene: "+ARTIFACT_URL:"");
   try{navigator.clipboard.writeText(t).then(function(){S.pl.msg="Kopyalandı.";draw()},function(){S.pl.msg=t;draw()})}catch(e){S.pl.msg=t;draw()}
 }
-function plPanel(){
-  var P=S.pl,saved=plLoad(),has=Object.keys(saved).length>0;
+function plFocus(){plOdak();setTimeout(plOdak,150);setTimeout(plOdak,500)}
+function plOdak(){if(!S.pl.on)return;var el=document.getElementById("pp-seviye");if(!el||el.contains(document.activeElement))return;try{el.scrollIntoView({behavior:"smooth",block:"start"})}catch(e){el.scrollIntoView()}var hd=el.querySelector("h2");if(hd){hd.setAttribute("tabindex","-1");try{hd.focus({preventScroll:true})}catch(e){hd.focus()}}}
+function plPanel(){var el=plPanelIc();if(el&&el.setAttribute)el.setAttribute("id","pp-seviye");return el}
+function plPanelIc(){
+  var P=S.pl,saved=plLoad(),has=Object.keys(saved).some(function(k){return saved[k]&&!saved[k].skip});
   if(!P.on){
     var seg=h("div",{class:"seg",role:"group","aria-label":"Alan"},TRK_LIST.map(function(o){return h("button",{type:"button","aria-pressed":P.track===o[0]?"true":"false",onclick:function(){P.track=o[0];P.msg="";draw()}},o[1])}));
-    var rows=has?TRK_LIST.filter(function(o){return saved[o[0]]}).map(function(o){var s=saved[o[0]];return h("span",{class:"pill"},o[1]+" "+s.lv.toFixed(1)+"/3")}):[];
+    var rows=has?TRK_LIST.filter(function(o){return saved[o[0]]&&!saved[o[0]].skip}).map(function(o){var s=saved[o[0]];return h("span",{class:"pill"},o[1]+" "+s.lv.toFixed(1)+"/3")}):[];
     return h("div",{class:"panel"},h("div",{class:"label"},has?"Seviyen":"Yeni misin?"),h("h2",null,has?"Seviye testini tekrarla":"Seviyeni belirle"),
       h("div",{class:"small mute"},"6 kısa soru. Sonuca göre nereden başlayacağını söylerim; bilmediğin soruda tahmin etmen yeter."),
       rows.length?h("div",{class:"row"},rows):null,seg,

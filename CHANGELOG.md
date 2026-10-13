@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Tur C (dal: faz-c, canlı öncesi düzeltme; migration, sunucu tablosu ve gizli anahtar yok)
+- Sahibe ait sabitler kaldırıldı: proje ekranında GitHub kullanıcı adı boş başlar, komutlarda `<GitHub-kullanıcı-adın>` yer tutucusu ve "önce adını yaz" uyarısı görünür (yazdıkça komutlar güncellenir); kimlik kartı dosyası `proofpath-kimlik.png`; mülakat model cevabı ve örneklerde `[Adın]`/`[şehir]` ya da nötr ad; sınıf koçu istemlerinde kişi adı yok.
+- Hedef tek kaynak: onboarding'de seçilen hedef (`goalTrack()` / `goalSet()`, `js/cekirdek/temel.js`) Bugün şehir kartı, "Sıradaki ders", Haftalık plan yolu, Alıştırma/Ders/Seviye testi varsayılanı, Sayılar, Kimlik kartı, karne ve marka alt satırını belirler (Siber/Network/Backend/DevOps/Test/İngilizce seçince CCNA gösterilmez). Kurucu hesabı ve hedefi olmayanlar için varsayılan değişmedi (CCNA).
+- Seviye testi: onboarding'deki "Seviye testini yap" testi Bugün'ün üstünde açar ve odaklar; "Sıfırdan başlıyorum" cevabı seviye kaydına yazılır, Ders ekranı aynı soruyu yeniden sormaz.
+- Giriş kartı (`js/giris/giris-ek.js`, `supabase-shim.js`'e dokunmadan): 3 satır değer önerisi, "en az 8 karakter" ipucu, şifre göster, gizlilik notu, "Hesapsız bir ders dene" (yalnız bellekte; ağ, Supabase ve depolama kullanmaz). Oturum/hesap türü belli olana kadar uygulama kabuğu gizli ve `inert`.
+- Hazırlık puanı veri yokken "Henüz ölçülmedi"; Kodla dene'de CDN hatası kısa Türkçe mesaj + "Tekrar dene"; `404.html`.
+- Test: `tests/tur_c.js` (yeni); `tests/stub.js` koç istemi eşleşmesi yeni ifadeye uyarlandı.
+
 ## Faz 10 tur 3 (dal: faz-10c, Veri Analitiği Seviye 1–2 + Faz 8 küçük temizlik)
 - Veri Analitiği Seviye 1 (elektronik tablo, 3 ders) ve Seviye 2 (SQL, 13 ders, M§15.2 sırası): her ders 15 öğe tam (`content/veri-analitigi/seviye1.js`, `seviye2a.js`, `seviye2b.js`), her derste en az 1 SQL/Python `PP.alan` alanı (`alanlar1.js`, `alanlar2a.js`, `alanlar2b.js`; 22 çalışan alan + 3 `sim`), Seviye 1/2 değerlendirmesi (6 + 10 soru, telafi derse bağlı), kademe başına 4 proje (`js/veri/proje-yeni-va12.js`, 7 adım; README/veri sözlüğü/metodoloji/test/sınırlamalar adımlarıyla).
 - Elektronik tablo çalıştırılmaz: alanlar "simülasyon" (kural tabanlı) ya da "aynı işin SQL/Python karşılığı" etiketli; kontrol veriden sayar, her çalışan alanda varyant (sabit cevap reddedilir).

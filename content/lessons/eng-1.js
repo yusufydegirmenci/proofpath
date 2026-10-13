@@ -24,7 +24,7 @@
       { t: "box", h: "Gerçek durum", text: "Yeni bir şirkette ilk gün. Bir iş arkadaşı sana 'Hi, I'm Mark. Nice to meet you!' diyor. Ya da online toplantıda 'Could you introduce yourself?' diye soruluyor. 20 saniyede kendini net ve rahat tanıtabilmen gerekiyor." },
       { t: "h", text: "Kendini tanıtma formülü" },
       { t: "steps", h: "3 cümlelik formül", items: [
-        "1) İsmin: 'Hi, I'm Yusuf.' ya da 'My name is Yusuf.'",
+        "1) İsmin: 'Hi, I'm [Adın].' ya da 'My name is [Adın].'",
         "2) İşin: 'I work as an IT administrator at a global company.'",
         "3) Yerin: 'I'm from Turkey and I live in Ankara.'",
         "Bonus: 'Nice to meet you.' ile bitir."
@@ -66,12 +66,12 @@
       { q: "Hangisi doğru cümledir?", options: ["She is a network engineer.", "She are a network engineer.", "She am a network engineer.", "She be a network engineer."], answer: "She is a network engineer.", why: "'She' ile 'is' kullanılır." }
     ],
     interview: [
-      { q: "Can you introduce yourself?", a: "Hello, my name is ___. I work as an IT administrator at a global company. I live in Ankara. I look after the network, the users and the computers. I'm learning English and networking to improve my career. Nice to meet you." },
+      { q: "Can you introduce yourself?", a: "Hello, my name is ___. I work as an IT administrator at a global company. I live in [şehir]. I look after the network, the users and the computers. I'm learning English and networking to improve my career. Nice to meet you." },
       { q: "What do you do?", a: "I work in IT. I help users with their computers and I take care of the network." },
       { q: "Where are you from?", a: "I'm from Turkey. I live in Ankara." }
     ],
     vocab: [
-      { term: "Nice to meet you", tr: "tanıştığımıza memnun oldum", ex: "Hi, I'm Yusuf. Nice to meet you." },
+      { term: "Nice to meet you", tr: "tanıştığımıza memnun oldum", ex: "Hi, I'm [Adın]. Nice to meet you." },
       { term: "Work as", tr: "... olarak çalışmak", ex: "I work as a system administrator." },
       { term: "Be from", tr: "... lı olmak", ex: "I'm from Turkey." },
       { term: "Look after", tr: "ilgilenmek, bakmak", ex: "I look after the network." },
@@ -422,7 +422,7 @@
         { point: "Rica için 'Could you ...?' kullanılır, fiil yalın gelir.", example: "Could you send the log?" }
       ],
       words: [
-        { word: "regards", tr: "saygılar", pos: "noun", ex: "Best regards, Yusuf", exTr: "En iyi dileklerimle, Yusuf", use: "E-posta kapanışı", level: "A2" },
+        { word: "regards", tr: "saygılar", pos: "noun", ex: "Best regards, [Adın]", exTr: "En iyi dileklerimle, [Adın]", use: "E-posta kapanışı", level: "A2" },
         { word: "attached", tr: "ekte", pos: "adj", ex: "Please find the file attached.", exTr: "Dosya ektedir.", use: "E-posta", level: "A2" },
         { word: "deadline", tr: "son tarih", pos: "noun", ex: "The deadline is Friday.", exTr: "Son tarih cuma.", use: "İş planı", level: "A2" }
       ]
@@ -440,7 +440,7 @@
         "6) Closing (kapanış): 'Best regards,' / 'Kind regards,' ve adın."
       ] },
       { t: "h", text: "Örnek e-posta" },
-      { t: "cmd", text: "Subject: Server maintenance on Saturday 22:00\n\nHi Mark,\n\nI'm writing to inform you that we will do server maintenance on Saturday at 22:00.\nThe email system will be offline for about two hours.\n\nCould you please let your team know?\nPlease contact me if you have any questions.\n\nBest regards,\nYusuf" },
+      { t: "cmd", text: "Subject: Server maintenance on Saturday 22:00\n\nHi Mark,\n\nI'm writing to inform you that we will do server maintenance on Saturday at 22:00.\nThe email system will be offline for about two hours.\n\nCould you please let your team know?\nPlease contact me if you have any questions.\n\nBest regards,\n[Adın]" },
       { t: "h", text: "Yararlı kalıplar" },
       { t: "steps", h: "Amaç, istek, teşekkür", items: [
         "I'm writing to ... (…için yazıyorum)",
@@ -459,7 +459,7 @@
       { t: "box", h: "Altın kurallar", text: "Kısa yaz (5-8 cümle). Tek e-postada tek konu. Konu satırını boş bırakma. Gönderme tuşuna basmadan önce adı, tarihi ve eki kontrol et." },
       { t: "warn", h: "Tuzak", text: "Türkçeden birebir çeviri tehlikelidir. 'I wait your reply' yerine 'I look forward to your reply'. 'Please do the needful' gibi kalıplar da bazı kültürlerde garip karşılanır, sade yaz." }
     ],
-    story: { title: "Bir e-posta", text: "Subject: Password reset. Hi Elif, I reset your password. Your new temporary password is in the next message. Please change it after you log in. Best regards, Yusuf.", question: "What should Elif do after she logs in?" },
+    story: { title: "Bir e-posta", text: "Subject: Password reset. Hi Elif, I reset your password. Your new temporary password is in the next message. Please change it after you log in. Best regards, [Adın].", question: "What should Elif do after she logs in?" },
     quiz: [
       { q: "E-posta kapanışı için hangisi uygundur?", options: ["Best regards,", "See you in the toilet,", "Bye bye boss,", "Answer me,"], answer: "Best regards,", why: "'Best regards' ve 'Kind regards' iş e-postasında yaygın kapanışlardır." },
       { q: "Ekte dosya gönderirken hangi cümle doğrudur?", options: ["Please find the file attached.", "Please find the file attach.", "Please attached the file find.", "The file is attach."], answer: "Please find the file attached.", why: "'Please find ... attached' ekli dosya için kalıp ifadedir." },

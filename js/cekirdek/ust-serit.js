@@ -1,11 +1,11 @@
 "use strict";
 /* ---- üst şerit ---- */
 function skyline(){
-  var C=topicsOf("ccna"),E=topicsOf("eng"),items=[];
-  C.forEach(function(t){items.push({t:t,k:"ccna"})});
+  var G=goalTrack(),C=topicsOf(G),E=G==="eng"?[]:topicsOf("eng"),items=[];
+  C.forEach(function(t){items.push({t:t,k:G})});
   if(C.length&&E.length)items.push({gap:true});
   E.forEach(function(t){items.push({t:t,k:"eng"})});
-  if(!C.length&&!E.length)for(var z=0;z<26;z++)items.push({t:{status:"locked",mastery:0},k:"ccna"});
+  if(!C.length&&!E.length)for(var z=0;z<26;z++)items.push({t:{status:"locked",mastery:0},k:G});
   var step=13,W=items.length*step+8,H=120,g=sv("g",null),i=0,x=4;
   var svg=sv("svg",{class:"skyline-svg",viewBox:"0 0 "+W+" "+H,preserveAspectRatio:"xMidYMax meet","aria-hidden":"true"});
   items.forEach(function(it,idx){
@@ -57,7 +57,7 @@ function heroMessage(st,rust){
 var FLAME="M12 2c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z";
 function mi(d,col){return sv("svg",{viewBox:"0 0 24 24",fill:col||"none",stroke:col?"none":"currentColor","stroke-width":2,"stroke-linecap":"round","stroke-linejoin":"round","aria-hidden":"true"},sv("path",{d:d,fill:col||"none"}))}
 function teaserChip(){
-  var ds=districtsOf("ccna"),nx=ds.filter(function(d){return d.state==="next"})[0],ac=ds.filter(function(d){return d.state==="active"})[0];
+  var ds=districtsOf(goalTrack()),nx=ds.filter(function(d){return d.state==="next"})[0],ac=ds.filter(function(d){return d.state==="active"})[0];
   if(!nx)return null;
   return h("button",{class:"hchip teaser",type:"button",title:"Sıradaki semt, ilerledikçe açılır",onclick:function(){goTab("sehir")}},mi("M3 11l9-8 9 8v9H3z"),"Sıradaki semt: ",maskName(nx.name,ac?ac.avg:0));
 }
@@ -74,14 +74,14 @@ function termWeek(){
 }
 function academyBar(){
   return h("div",{class:"abar"},crest(),
-    h("div",{class:"awm"},h("b",null,"PROOFPATH"),h("span",null,"Ağ ve İngilizce Okulu")),
+    h("div",{class:"awm"},h("b",null,"PROOFPATH"),h("span",null,brandLine())),
     h("div",{class:"ameta mono"},termWeek()));
 }
 function karne(){
-  var C=topicsOf("ccna"),E=topicsOf("eng"),wk=weekInfo();
+  var G=goalTrack(),C=topicsOf(G),E=G==="eng"?[]:topicsOf("eng"),wk=weekInfo();
   var cb=C.filter(PP.ogr.ilerleme.konuTamam).length,eb=E.filter(PP.ogr.ilerleme.konuTamam).length;
   var cn=C.length||27,en=E.length||13,wp=wk.tDays?Math.min(100,wk.days/wk.tDays*100):0;
-  var cells=[["CCNA",cb+"/"+cn,"bina tamam",cb/cn*100,"var(--net)"],["İngilizce",eb+"/"+en,"basamak oturdu",eb/en*100,"var(--eng)"],["Bu hafta",wk.days+(wk.tDays?"/"+wk.tDays:""),"çalışılan gün",wp,"var(--gold)"]];
+  var cells=[[trName(G),cb+"/"+cn,G==="eng"?"basamak oturdu":"bina tamam",cb/cn*100,G==="eng"?"var(--eng)":"var(--net)"]].concat(G==="eng"?[]:[["İngilizce",eb+"/"+en,"basamak oturdu",eb/en*100,"var(--eng)"]]).concat([["Bu hafta",wk.days+(wk.tDays?"/"+wk.tDays:""),"çalışılan gün",wp,"var(--gold)"]]);
   return h("div",{class:"karne",role:"group","aria-label":"Dönem karnesi"},cells.map(function(c){
     return h("div",{class:"kcell"},h("div",{class:"kl"},c[0]),h("div",{class:"kv mono"},c[1]),h("div",{class:"ks"},c[2]),h("div",{class:"kb"},h("i",{style:"width:"+Math.max(3,c[3])+"%;background:"+c[4]})))}));
 }

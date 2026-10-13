@@ -105,13 +105,13 @@ function atSlots(){
     ["12:30",750,"Öğle: bir kavram öğren (Atlas)","5 dk",num(P.a_atlas)>=1,"ders:atlas"],
     ["15:30",930,"Alıştırma: 5 soru","7 dk",num(P.prac_n)>=5,"alistirma"],
     ["17:30",1050,"Oyun: günün koşusu","4 dk",num(P.g_runs)>0,"oyun"],
-    ["20:47",1247,"Akşam: CCNA dersi","25 dk",!!P.read_ccna,"ders:ccna"],
+    goalTrack()==="ccna"?["20:47",1247,"Akşam: CCNA dersi","25 dk",!!P.read_ccna,"ders:ccna"]:null,
     ["21:12",1272,"Akşam: İngilizce dersi","25 dk",!!P.read_eng,"ders:eng"],
     ["22:15",1335,"Gece: bugünün 3 satırı (Defterim)","3 dk",noted,"defter"]];
   if(lessonsOf("sec").length)L.push(["19:32",1172,"Akşam: Siber güvenlik dersi","25 dk",!!P.read_sec,"ders:sec"]);
   if(lessonsOf("bk").length)L.push(["20:07",1207,"Akşam: Backend dersi","25 dk",!!P.read_bk,"ders:bk"]);
   [["net","Network","20:27",1227],["dev","DevOps","20:57",1257],["qa","Test","21:32",1292]].forEach(function(x){if(lessonsOf(x[0]).length)L.push([x[2],x[3],"Akşam: "+x[1]+" dersi","25 dk",!!P["read_"+x[0]],"ders:"+x[0]])});
-  L.sort(function(x,y){return x[1]-y[1]});
+  L=L.filter(Boolean);L.sort(function(x,y){return x[1]-y[1]});
   var cur=-1;L.forEach(function(s,i){if(!s[4]&&cur<0&&s[1]<=hm+90)cur=i});if(cur<0)cur=L.findIndex(function(s){return !s[4]});
   return L.map(function(s,i){return {time:s[0],t:s[2],min:s[3],d:s[4],go:s[5],cur:i===cur&&!s[4]}});
 }
@@ -130,8 +130,8 @@ function atProgram(){
     nx?h("div",{class:"row"},h("button",{class:"btn big",type:"button",onclick:function(){atGo(nx.go)}},"Şimdi yap")):null,
     h("div",{class:"sim-l"},sl.map(function(s){return h("div",{class:"sim-i"+(s.d?" d":"")},h("span",{class:"sim-c"},s.d?"✓":""),h("span",null,h("b",{class:"mono"},s.time+" "),s.t,h("span",{class:"small mute"}," · "+s.min)),s.d?null:h("button",{class:"btn "+(s.cur?"":"ghost"),type:"button",onclick:function(){atGo(s.go)}},s.cur?"Şimdi":"Aç"))}))));
   TRKS.forEach(function(tr){var l=lessonsOf(tr)[0];if(l)out.push(recapCard(l,trName(tr)+" · son ders"))});
-  var T=topicChoices("ccna"),nt=T.filter(function(t){return t.status==="next"})[0]||T[0];
-  if(nt)out.push(h("div",{class:"panel"},h("div",{class:"label"},"Sıradaki konu önizlemesi"),h("h2",null,nt.name),h("div",{class:"small"},nt.analogy||""),h("div",{class:"small mute"},"Yeni ders akşam hazırlanır. Şimdiden sınıfta bu konuyla ısınabilirsin."),h("div",{class:"row"},h("button",{class:"btn ghost",type:"button",onclick:function(){S.cls.track="ccna";S.cls.topicId=nt.id;goTab("sinif")}},"Sınıfta çalış"))));
+  var T=topicChoices(goalTrack()),nt=T.filter(function(t){return t.status==="next"})[0]||T[0];
+  if(nt)out.push(h("div",{class:"panel"},h("div",{class:"label"},"Sıradaki konu önizlemesi"),h("h2",null,nt.name),h("div",{class:"small"},nt.analogy||""),h("div",{class:"small mute"},"Yeni ders akşam hazırlanır. Şimdiden sınıfta bu konuyla ısınabilirsin."),h("div",{class:"row"},h("button",{class:"btn ghost",type:"button",onclick:function(){S.cls.track=goalTrack();S.cls.topicId=nt.id;goTab("sinif")}},"Sınıfta çalış"))));
   return out;
 }
 /* alıştırma */

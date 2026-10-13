@@ -1,10 +1,10 @@
 "use strict";
 /* ---- Bugün ---- */
 function cityCard(){
-  var T=cityTopics("ccna");if(!T.length)return null;
+  var T=cityTopics(goalTrack());if(!T.length)return null;
   var built=T.filter(PP.ogr.ilerleme.konuTamam).length,nx=T.filter(function(t){return t.status==="next"||t.status==="building"})[0];
   var bars=T.slice().sort(function(a,b){return num(a.order)-num(b.order)}).map(function(t){var v=t.status==="built"?1:t.status==="building"?.55:t.status==="next"?.25:.1;return h("i",{style:"height:"+Math.round(8+v*34)+"px;opacity:"+(.3+v*.7)})});
-  return h("div",{class:"panel"},h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"},h("div",null,h("div",{class:"label"},"Ağ Şehrin"),h("h2",{style:"margin:2px 0 0"},built+" / "+T.length+" bina ayakta")),
+  return h("div",{class:"panel"},h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"},h("div",null,h("div",{class:"label"},goalCity().replace("Şehri","Şehrin")),h("h2",{style:"margin:2px 0 0"},built+" / "+T.length+" bina ayakta")),
     h("button",{class:"btn ghost",type:"button",onclick:function(){goTab("sehir")}},"Şehre bak")),
     h("div",{class:"csk","aria-hidden":"true"},bars),
     h("div",{class:"small mute"},nx?"Sırada inşa edilen: "+nx.name+". Bir dersi bitirince bina yükselir.":"Her tamamlanan ders bir bina yükseltir."));
@@ -12,10 +12,10 @@ function cityCard(){
 
 /* ---- v50 Bugün: üs kartları ---- */
 function bgGrid(){
-  var D=dzGet(),dn=gmDay(today()),gdn=num(dn.g_runs)>0,T=cityTopics("ccna"),built=T.filter(PP.ogr.ilerleme.konuTamam).length;
+  var D=dzGet(),dn=gmDay(today()),gdn=num(dn.g_runs)>0,T=cityTopics(goalTrack()),built=T.filter(PP.ogr.ilerleme.konuTamam).length;
   var tiles=[];
   if(!S.guest)tiles.push({c:"bg-g",k:"OYUN",t:"Meydan oku",s:(gqDue().length?gqDue().length+" tekrar sorusu bekliyor · ":"")+(gdn?"Günün koşusu tamam · reyting "+D.r:"Günün koşusu seni bekliyor · reyting "+D.r),go:"oyun"});
-  if(T.length)tiles.push({c:"bg-c",k:"AĞ ŞEHRİ",t:built+" / "+T.length+" bina",s:"Her ders bir bina yükseltir",go:"sehir"});
+  if(T.length)tiles.push({c:"bg-c",k:goalCity().toLocaleUpperCase("tr"),t:built+" / "+T.length+" bina",s:"Her ders bir bina yükseltir",go:"sehir"});
   if(!S.guest&&S.me){var s_=lgStats(myLeague()),n=num(s_.today.tot),TN=qsFor(today(),myTier()).length||num(s_.today.n)||5;tiles.push({c:"bg-l",k:"LİG",t:n>=TN?"Tur tamam":"Günün "+TN+" sorusu",s:n>=TN?s_.today.ok+"/"+TN+" doğru · sıralama":n+"/"+TN+" çözüldü",go:"lig",pre:function(){S.lg.view=n>=TN?"sira":"bugun"}})}
   tiles.push({c:"bg-m",k:"MÜLAKAT",t:"Antrenman",s:"Gerçek mülakat sorularıyla ısın",go:"mul"});
   if(tiles.length<2)return null;
@@ -33,6 +33,7 @@ function renderToday(){
     "Seri gece yarısı risk altında. Yoğunsan 20 dakikalık minimum tekrar yeter, aşağıdan kaydet."));
   if(alr.length===1)out.push(alr[0]);
   else if(alr.length>1)out.push(alr[0],h("details",{class:"more bg-al"},h("summary",null,"Diğer uyarılar ("+(alr.length-1)+")"),h("div",{class:"morebox"},alr.slice(1))));
+  var plOn=!!S.pl.on;if(plOn)out.push(plPanel());
   var jk=jokerCard();if(jk)out.push(jk);
   var wc=welcomeCard();if(wc)out.push(wc);
   if(!wc&&!S.guest)out.push(h("div",{class:"row",style:"justify-content:flex-end"},h("button",{class:"btn ghost",type:"button",onclick:function(){goTab("rehber")}},"Nasıl kullanırım? Adım adım tur")));
@@ -41,7 +42,7 @@ function renderToday(){
   var planP=typeof renderPlan==="function"?renderPlan():null;if(planP)out.push(planP);
   out.push(renderRoute());
   out.push(bgGrid());
-  var tools=[plPanel(),syncLine()];if(!S.guest)tools.push(m5Panel());
+  var tools=[plOn?null:plPanel(),syncLine()];if(!S.guest)tools.push(m5Panel());
   var wd_=new Date().getDay();if(wd_===0||wd_===1)tools.unshift(wkPanel(wd_===1));
   var tl=tools.filter(function(x){return x});
   var gqp=gqPanel();if(gqp)out.push(gqp);

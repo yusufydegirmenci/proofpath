@@ -14,6 +14,11 @@ var ROSTER={ccna:["ayse","demir","zeynep","kocag","ayse"],eng:["elnur","ayse","d
 var TRK_LIST=[["ccna","CCNA"],["net","Network"],["eng","İngilizce"],["sec","Siber"],["bk","Backend"],["dev","DevOps"],["qa","Test Uzmanı"]];var TRKS=TRK_LIST.map(function(o){return o[0]});var TRN={};TRK_LIST.forEach(function(o){TRN[o[0]]=o[1]});function trkMap(v){var o={};TRKS.forEach(function(t){o[t]=typeof v==="function"?v():v});return o}
 var TRK={ccna:{n:"CCNA",cert:"CCNA 200-301"},eng:{n:"İngilizce",cert:"İngilizce"},sec:{n:"Siber",cert:"CompTIA Security+ SY0-801"},bk:{n:"Backend",cert:"AWS Certified Developer – Associate"},net:{n:"Network",cert:"CompTIA Network+ N10-009"},dev:{n:"DevOps",cert:"Linux Foundation KCNA"},qa:{n:"Test Uzmanı",cert:"ISTQB CTFL v4.0"}};
 function trName(t){return (TRK[t]||TRK.ccna).n}
+/* hedef tek kaynak: onboarding goal (yalnız ilk kullanım hesabı); kurucu ve hedefi olmayanlar için ccna */
+function goalTrack(){var g=S.onb&&S.onb.goal;return (S.nonOwner&&g&&TRK[g])?g:"ccna"}
+function goalSet(){var g=S.onb&&S.onb.goal;return (S.nonOwner&&g&&TRK[g])?(g==="eng"?["eng"]:[g,"eng"]):null}
+function goalCity(){var g=goalTrack();return (g==="ccna"||g==="net")?"Ağ Şehri":trName(g)+" Şehri"}
+function brandLine(){var g=goalTrack();return g==="ccna"||g==="net"?"Ağ ve İngilizce Okulu":g==="eng"?"İş İngilizcesi Okulu":trName(g)+" ve İngilizce Okulu"}
 function certName(t){return (TRK[t]||TRK.ccna).cert}
 var ARTIFACT_URL="";
 var RANKS=[

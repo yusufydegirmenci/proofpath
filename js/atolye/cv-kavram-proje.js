@@ -108,7 +108,7 @@ function atCv(){
     h("div",{class:"panel"},h("div",{class:"label"},"CV oluşturucu"),h("h2",null,"Birkaç bilgi ver, CV'in hazır"),
       h("div",{class:"small mute"},"Boş bıraktığın yerleri atlarım. Projelerin ve GitHub bağlantıların CV'ye kendiliğinden eklenir. Bilgiler sadece senin panonda saklanır."),
       h("div",{class:"gm-opt"},h("b",null,"Hedef rol"),roleSeg),h("div",{class:"gm-opt"},h("b",null,"CV dili"),langSeg),h("div",{class:"gm-opt"},h("b",null,"Öğrenme kanıtlarını ekle"),h("div",{class:"seg",role:"group","aria-label":"Kanıtlar"},[[true,"Evet"],[false,"Hayır"]].map(function(o){return h("button",{type:"button","aria-pressed":(C.ev!==false)===o[0]?"true":"false",onclick:function(){C.ev=o[0];cvSave();draw()}},o[1])})))),
-    h("div",{class:"panel"},h("h3",null,"Kim olduğun"),cvField("name","Ad soyad"),cvField("city","Şehir","Ankara"),cvField("email","E-posta"),cvField("phone","Telefon"),cvField("github","GitHub bağlantın","github.com/kullanici"),cvField("linkedin","LinkedIn bağlantın")),
+    h("div",{class:"panel"},h("h3",null,"Kim olduğun"),cvField("name","Ad soyad"),cvField("city","Şehir","Şehrin"),cvField("email","E-posta"),cvField("phone","Telefon"),cvField("github","GitHub bağlantın","github.com/kullanici"),cvField("linkedin","LinkedIn bağlantın")),
     h("div",{class:"panel"},h("h3",null,"Kısa özet"),cvField("summary","Kendini 1-2 cümleyle anlat (boşsa hazır cümleyi kullanırım)","",true),h("div",{class:"small mute"},"Hazır cümle: "+(C.lang==="en"?R.en1:R.tr1)),
       h("h3",{style:"margin-top:12px"},"Beceriler"),cvField("skills","Virgülle ayır","",true),sugg,
       h("div",{class:"small mute"},"Sadece gerçekten bildiklerini yaz; mülakatta sorulur.")),

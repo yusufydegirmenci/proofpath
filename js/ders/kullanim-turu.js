@@ -78,6 +78,7 @@ function welcomeCard(){
 function renderSimpleToday(){
   var steps=routeSteps(),nxt=steps.filter(function(x){return !x.d})[0],done=steps.filter(function(x){return x.d}).length,out=[];
   var w=welcomeCard();if(w)out.push(w);
+  if(S.pl.on)out.push(plPanel());
   out.push(h("div",{class:"panel sim-now"},h("div",{class:"label"},"Şimdi şunu yap"),
     nxt?[h("h2",null,nxt.t),nxt.note?h("div",{class:"small mute"},nxt.note):null,h("button",{class:"btn big",type:"button",onclick:function(){(nxt.go||nxt.toggle)()}},nxt.b==="Aç"?"Dersi aç":nxt.b==="Çöz"?"Soruları çöz":nxt.b)]:
       [h("h2",null,"Bugünkü işler tamam"),h("p",{style:"margin:0"},"Harikasın. Yarın yeni dersin hazır olacak.")]));
