@@ -53,6 +53,7 @@
 
   E[4] = {
     lab: "ccna-vlan",
+    parsons: "ccna-vlan-komut",
     analoji: { a: "Aynı binada ayrı kat anahtarlı bölümler: muhasebe ve satış aynı binadadır ama koridorları ayrıdır.", sinir: "Katlar fiziksel olarak ayrıdır; VLAN'lar aynı switch üzerinde mantıksal ayrılır ve VLAN'lar arası konuşma için 3. katman cihazı (router) gerekir." },
     rehberli: ["Bir switch'te VLAN 10 (Muhasebe) ve VLAN 20 (Satış) tanımla; port 1–4 access VLAN 10, 5–8 VLAN 20.", "İki switch arasındaki bağlantıyı trunk yap; 802.1Q'nun çerçeveye VLAN etiketi eklediğini not et (Cisco'da: switchport mode trunk; izinli VLAN'ları switchport trunk allowed vlan 10,20 ile sınırla).", "VLAN 10'daki PC'den VLAN 20'dekine ping neden başarısız, hangi cihazla çözülür, yaz."],
     bagimsiz: "Üç bölümlü (Muhasebe, Satış, Misafir) küçük bir ofis için VLAN planı hazırla: VLAN numarası, isim, alt ağ ve hangi portların hangi VLAN'da olacağını tabloya yaz. Misafirin iç ağa erişememesinin nasıl sağlanacağını açıkla.",
