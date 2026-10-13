@@ -23,7 +23,7 @@ function weeklyMd(){
   var at=S.attempts.filter(function(a){return a.date>=from}),okc=at.filter(function(a){return num(a.score)>=60}).length;
   var R=rankInfo();
   var lines=["# Akademi haftalık rapor ("+from+" haftası)","","- Rütbe: "+R.cur.n+" · toplam XP: "+R.xp,"- Çalışılan gün: "+days+" · dakika: "+min,"- Canlı sorular: "+at.length+(at.length?" · doğru oranı %"+Math.round(okc/at.length*100):""),""];
-  ["ccna","eng"].forEach(function(tr){
+  (goalSet()||["ccna","eng"]).forEach(function(tr){
     lines.push("## "+trName(tr));
     topicsOf(tr).filter(function(t){return t.status!=="locked"}).forEach(function(t){lines.push("- "+t.name+": %"+Math.round(num(t.mastery))+" ("+t.status+(t.lastReview?", son tekrar "+t.lastReview:"")+")")});
     lines.push("");
@@ -119,7 +119,7 @@ function draw(){
   if(S.more)box.append(moreSheet());
   if(S._rtOpen&&tab==="bugun")box.append(rtOverlay());
   if(tab==="oku"){var rs=STORIES.filter(function(x){return x.id===S.rd.id})[0];if(rs&&S.rd.pop)box.append(wordSheet(rs))}
-  box.append(h("div",{class:"afoot"},h("span",null,"Proofpath"),h("span",null,"Ağ ve İngilizce Okulu · "+termWeek())));
+  box.append(h("div",{class:"afoot"},h("span",null,"Proofpath"),h("span",null,brandLine()+" · "+termWeek())));
   view.replaceChildren(box);
   var rsd=routeSteps().every(function(x){return x.d});
   if(S._rd===false&&rsd&&Date.now()-(S._t0||0)>5000)burst();

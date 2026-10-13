@@ -343,7 +343,7 @@ function lessonPlacement(tr){
   return h("div",{class:"panel welcome"},h("div",{class:"label"},"Derse başlamadan"),h("h2",null,tn+": nereden başlayalım?"),
     h("div",{class:"small mute"},"6 kısa soruyla seviyeni ölçerim. Bildiğin kısımları atlar, ilk dersi sana uygun konudan başlatırım. Bilmediğin soruda tahmin etmen yeter, puan kırılmaz."),
     h("div",{style:"display:grid;gap:8px"},
-      h("button",{class:"btn",type:"button",onclick:function(){S.pl.track=tr;plStart()}},"Seviye testini yap (3 dakika)"),
+      h("button",{class:"btn",type:"button",onclick:function(){S.pl.track=tr;plStart();plFocus()}},"Seviye testini yap (3 dakika)"),
       h("button",{class:"btn ghost",type:"button",onclick:function(){var o=plLoad();o[tr]={lv:1,n:0,ok:0,d:today(),skip:true};plSave(o);draw()}},"Sıfırdan başlıyorum")));
 }
 function lessonGuide(tr,l){

@@ -17,7 +17,7 @@
     ] },
     blocks: [
       { t: "h", text: "Durum" },
-      { t: "box", h: "Gerçek durum", text: "Sabah 9:15, ekip online toplantıda. Sıra sende: 'Yusuf, your update?' Herkes 30 saniye bekliyor. Ezberlenmiş bir kalıbın varsa panik olmaz." },
+      { t: "box", h: "Gerçek durum", text: "Sabah 9:15, ekip online toplantıda. Sıra sende: 'Deniz, your update?' Herkes 30 saniye bekliyor. Ezberlenmiş bir kalıbın varsa panik olmaz." },
       { t: "h", text: "Üç parçalı kalıp" },
       { t: "steps", h: "Dün – Bugün – Engel", items: [
         "Dün (past simple): 'Yesterday I fixed the VPN issue and updated two laptops.'",

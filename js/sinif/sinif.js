@@ -174,7 +174,7 @@ function genPrompt(track,t){
   var wrong=past.filter(function(a){return num(a.score)<50}).slice(0,5).map(function(a){return "- "+a.q}).join("\n")||"(yok)";
   var ros=ROSTER[track].map(function(id,i){return (i+1)+". "+CH[id].n+": "+CH[id].role}).join("\n");
   var common=""+UN()+" bu alanda SIFIRDAN başlayan biri gibi ele alınır; küçümseme, 'kolay' deme. Her soru ilgili karakterin ağzından gelen gerçek bir iş durumu olsun.\n"+
-   "KONU: "+t.name+"\nALAN: "+(t.area||"")+"\nBENZETME (varsa kullan): "+(t.analogy||"yok")+"\nYUSUF'UN GÖRDÜĞÜ KONULAR (yalnız bunlarla ve bu konuyla çözülebilen sorular sor): "+(known.join(", ")||t.name)+"\nUSTALIK: "+m+"/100, zorluk: "+lvl+"\nSON HATALARI (bunlardan birini farklı biçimde tekrar sor):\n"+wrong+"\nDAHA ÖNCE SORULANLAR (aynısını sorma):\n"+asked+"\nKARAKTERLER (soru sırasıyla):\n"+ros+"\n";
+   "KONU: "+t.name+"\nALAN: "+(t.area||"")+"\nBENZETME (varsa kullan): "+(t.analogy||"yok")+"\nÖĞRENCİNİN GÖRDÜĞÜ KONULAR (yalnız bunlarla ve bu konuyla çözülebilen sorular sor): "+(known.join(", ")||t.name)+"\nUSTALIK: "+m+"/100, zorluk: "+lvl+"\nSON HATALARI (bunlardan birini farklı biçimde tekrar sor):\n"+wrong+"\nDAHA ÖNCE SORULANLAR (aynısını sorma):\n"+asked+"\nKARAKTERLER (soru sırasıyla):\n"+ros+"\n";
   if(track==="eng"){
     return "Sen "+UN()+"'un İngilizce koçusun. "+common+
      "KURALLAR: "+UN()+"'un öğrendiği yardımcı fiil/kalıp dışına çıkma. Karakter mesajını İngilizce yazar (situation: 1-2 kısa cümle, basit kelimeler, iş/BT bağlamı), Türkçesi situation_tr alanında. mcq: question Türkçe talimat, options 4 İngilizce cevap, tek doğru (correct = 0-3 indeks). open: question 'Şunu İngilizce yaz: <Türkçe cümle>' biçiminde; model doğru İngilizce cümle; breakdown Türkçe cümlenin ek-parçalama dökümü (beyaz tahta yöntemi): [{\"p\":\"Türkçe parça\",\"m\":\"karşılığı, ör. -abil = can\"}]. 3. ve 4. soru open olsun, diğerleri mcq. explanation Türkçe ve sebepli. Gramer ve kelime %100 doğru olmalı.\n"+
@@ -218,7 +218,7 @@ function answerOpen(text){
   var C=S.cls,q=C.qs[C.i];if(C.phase!=="ask"||!text.trim())return;
   C.phase="grading";draw();
   var track=C.track,idx=C.i;
-  var p="Sen "+UN()+"'un "+trName(track)+" koçusun. "+UN()+" başlangıç seviyesinde; sert olma, ama doğruluk önemli.\nSORU: "+q.question+(q.situation?"\nDURUM: "+q.situation:"")+"\nİDEAL CEVAP: "+q.model+"\nYUSUF'UN CEVABI: "+text.trim().slice(0,600)+
+  var p="Sen "+UN()+"'un "+trName(track)+" koçusun. "+UN()+" başlangıç seviyesinde; sert olma, ama doğruluk önemli.\nSORU: "+q.question+(q.situation?"\nDURUM: "+q.situation:"")+"\nİDEAL CEVAP: "+q.model+"\nÖĞRENCİNİN CEVABI: "+text.trim().slice(0,600)+
    "\nDeğerlendir: anlam ve doğruluk esas, küçük yazım farkları puan kırmasın"+(track==="eng"?" ama gramer hatası (yardımcı fiil, özne, sıra) kırsın":"")+". Yalnızca JSON döndür: {\"score\":0-100 tam sayı,\"good\":\"doğru yaptığı kısım, Türkçe 1 cümle\",\"fix\":\"eksik ya da hata ve sebebi, Türkçe 1-2 cümle; hata yoksa boş\",\"better\":\"düzeltilmiş ya da ideal cevap\"}";
   S.sample.json(p,{modelTier:"quick",cache:false}).then(function(g){
     var sc=Math.max(0,Math.min(100,Math.round(num(g&&g.score))));

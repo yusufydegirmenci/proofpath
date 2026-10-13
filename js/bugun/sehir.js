@@ -11,18 +11,18 @@ function building(t,track){
 }
 function fogOf(d){return d.state==="far"?.96:d.state==="next"?Math.max(.4,.88-d.prevAvg/100*.5):0}
 function renderCity(){
-  var T=cityTopics("ccna"),out=[];
+  var T=cityTopics(goalTrack()),out=[];
   if(!T.length)return [h("div",{class:"empty"},"Şehir henüz boş. Konu haritası ilk koç çalışmasında kurulur.")];
   var done=T.filter(PP.ogr.ilerleme.konuTamam).length;
-  var ds=districtsOf("ccna");
+  var ds=districtsOf(goalTrack());
   ds.forEach(function(d,i){d.prevAvg=i>0?ds[i-1].avg:0;if(d.state==="next"){var a=ds.filter(function(x){return x.state==="active"})[0];d.prevAvg=a?a.avg:0}});
   var path=h("ol",{class:"dpath","aria-label":"Semt yol haritası"},ds.map(function(d,i){
     return h("li",{class:"dp "+d.state,title:d.name},h("span",{class:"dot"},d.state==="done"?"✓":String(i+1)),
       h("span",{class:"dn"},d.state==="far"?"???":d.state==="next"?maskName(d.name,d.prevAvg):d.name));
   }));
-  out.push(h("div",{class:"panel"},h("h2",null,"Ağ Şehri"),
+  out.push(h("div",{class:"panel"},h("h2",null,goalCity()),
     h("div",{class:"small mute"},done+" / "+T.length+" bina tamam. Bina, kapı sınavında yaklaşık %80'i geçince tamamlanır. Boy ustalığı, kırmızı renk 7 günden uzun süredir tekrar edilmediğini gösterir. Sisli semtler, öncekini bitirdikçe açılır."),
-    path,areaBars("ccna")));
+    path,areaBars(goalTrack())));
   S._fog=S._fog||{};
   ds.forEach(function(d){
     var f=fogOf(d),old=S._fog[d.name],fog=h("div",{class:"dfog","aria-hidden":"true",style:"opacity:"+(old!=null&&old!==f?old:f)});
@@ -33,7 +33,7 @@ function renderCity(){
     out.push(h("div",{class:"panel district d-"+d.state},
       h("div",{class:"dhead"},h("h3",null,title),h("span",{class:"pill "+(d.state==="done"?"ok":d.state==="active"?"eng":"")},badge),
         h("span",{class:"mono small mute"},d.state==="far"?"":"ort. "+d.avg+"%")),
-      h("div",{class:"skywrap"},h("div",{class:"skyline"},d.topics.map(function(t){return building(t,"ccna")})),fog)));
+      h("div",{class:"skywrap"},h("div",{class:"skyline"},d.topics.map(function(t){return building(t,goalTrack())})),fog)));
   });
   return out;
 }

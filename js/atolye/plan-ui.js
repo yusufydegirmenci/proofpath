@@ -7,7 +7,7 @@ function planGirdi() {
     return { id: o[0], ad: o[1], tamam: T.filter(PP.ogr.ilerleme.konuTamam).length, toplam: T.length,
       kalan: T.filter(function (t) { return !PP.ogr.ilerleme.konuTamam(t); }).map(function (t) { return { id: t.id, ad: t.name }; }) };
   });
-  if (!tc.yol) { var act = yollar.filter(function (y) { return y.tamam > 0 && y.kalan.length; })[0]; tc.yol = act ? act.id : "ccna"; }
+  if (!tc.yol) { var act = yollar.filter(function (y) { return y.tamam > 0 && y.kalan.length; })[0]; tc.yol = goalSet() ? goalTrack() : (act ? act.id : "ccna"); }
   var tekrar = [];
   try { tekrar = PP.ogr.ui.tekrarPlani(bugun).bugun.map(function (t) { return { id: t.hedef, ad: t.ad }; }); } catch (e) { tekrar = []; }
   return { bugun: bugun, tercih: tc, tekrar: tekrar, yollar: yollar, gunKayit: loggedDates() };

@@ -295,7 +295,12 @@
         }
         if (!r.ok) {
           etiket.textContent = "simülasyon · gerçek çalıştırma şu an kullanılamıyor";
-          return yaz(hh("div", { class: "lbox warn", "data-alan-durum": "kullanilamiyor" }, r.mesaj || "Çalıştırma kullanılamıyor."), hh("div", { class: "small mute" }, "Sayfadaki simülasyon laboratuvarı bundan etkilenmez."));
+          var kisa = r.neden === "ag" ? "Gerçek çalıştırma şu an kullanılamıyor: kütüphane indirilemedi. İnternet bağlantını kontrol edip tekrar dene."
+            : r.neden === "yukleme-zaman" ? "Gerçek çalıştırma şu an kullanılamıyor: kütüphane zamanında yüklenemedi. Bağlantını kontrol edip tekrar dene."
+            : r.neden === "sri" ? "Gerçek çalıştırma şu an kullanılamıyor: kütüphane doğrulanamadı, güvenlik için çalıştırılmadı. Biraz sonra tekrar dene."
+            : (r.mesaj || "Çalıştırma kullanılamıyor.");
+          var tekrar = (r.neden === "ag" || r.neden === "sri" || r.neden === "cevrimdisi" || r.neden === "yukleme-zaman") ? hh("button", { class: "btn ghost", type: "button", "data-alan": "tekrar", onclick: calistirTikla }, "Tekrar dene") : null;
+          return yaz(hh("div", { class: "lbox warn", "data-alan-durum": "kullanilamiyor" }, kisa), tekrar, hh("div", { class: "small mute" }, "Sayfadaki simülasyon laboratuvarı bundan etkilenmez."));
         }
         etiket.textContent = d.etiket;
         var s = r.sonuc, gor = null;

@@ -94,7 +94,7 @@
   N("eng",1,1,"\"I ___ an IT administrator.\"",["am","is","are","be"],0,"I ile am kullanılır: I am.","I'm = I am; 'I is' hiç doğru değildir.");
   N("eng",1,1,"\"She ___ in Ankara.\"",["am","is","are","be"],1,"He/She/It ile is.","She are ve She am yanlıştır.");
   N("eng",1,1,"\"They ___ in the meeting room.\"",["is","am","are","be"],2,"They/We/You ile are.","Çoğul özne = are.");
-  N("eng",1,1,"\"My name ___ Yusuf.\"",["are","am","is","be"],2,"Tekil isim (name) ile is.","My name's Yusuf kısaltması da doğrudur.");
+  N("eng",1,1,"\"My name ___ Deniz.\"",["are","am","is","be"],2,"Tekil isim (name) ile is.","My name's Deniz kısaltması da doğrudur.");
   N("eng",2,1,"\"The printer ___ not working.\"",["am","is","are","do"],1,"Printer tekil (it) olduğu için is not working.","Is not = isn't.");
   N("eng",2,1,"\"Are you ready?\" sorusuna olumlu kısa cevap hangisi?",["Yes, I am.","Yes, I do.","Yes, I is.","Yes, I be."],0,"Are ile sorulana am/are/is ile cevap verilir: Yes, I am.","'do' ile cevap verme; soru are ile başladıysa cevap da be fiiliyle.");
   N("eng",1,2,"\"Can you help me?\" ne demektir?",["Bana yardım edebilir misin?","Sana yardım ettim","Yardım etmeliyim","Yardım ediyordum"],0,"Can you ...? = ...-abilir misin?","Can = -ebilmek; yetenek, izin, rica veya ihtimal anlatır.");

@@ -16,7 +16,7 @@ function ppTeachLog(){
 function ppTracks(){return Object.keys(window.PP_LESSONS||{}).filter(function(t){return STARTER[t]})}
 function ppTitle(tr,n){var T=starterTopics(tr)[n-1];return T?T.name:""}
 function personalInput(){
-  var tracks=ppTracks().map(function(tr){var T=starterTopics(tr),nx=T.filter(function(t){return t.status==="next"})[0],idx=nx?T.indexOf(nx)+1:0;
+  var gs=goalSet(),tracks=ppTracks().filter(function(tr){return !gs||gs.indexOf(tr)>=0}).map(function(tr){var T=starterTopics(tr),nx=T.filter(function(t){return t.status==="next"})[0],idx=nx?T.indexOf(nx)+1:0;
     return {track:tr,name:trName(tr),nextN:idx,nextTitle:nx?nx.name:"",done:T.filter(PP.ogr.ilerleme.konuTamam).length,total:T.length,last:lastStudy(tr)}});
   var cache={};
   function match(tr,text){
@@ -157,7 +157,8 @@ function jrScore(R){
   pjs.forEach(function(p){p.notes.forEach(function(x){if(gh.test(x.text))pf=1});p.steps.forEach(function(s){if(gh.test(s.note||""))pf=1})});
   var parts=[["sk","Bilgi seviyesi",sk,.35],["acc","Soru doğruluğu",acc,.2],["pr","Proje ilerlemesi",pr,.25],["iv","Mülakat pratiği",iv,.1],["pf","GitHub kanıtı",pf,.1]];
   var s=0;parts.forEach(function(p){s+=p[2]*p[3]});
-  return {score:Math.round(s*100),parts:parts,n:n};
+  var sOl=R.tr.some(function(t){return GS.sk[t]!=null&&GS.sk[t]!==1.5});
+  return {score:Math.round(s*100),parts:parts,n:n,olculdu:n>0||pr>0||iv>0||pf>0||sOl};
 }
 function jrActions(R,J){
   var A={sk:["Bu hafta 3 gün Akıllı tur oyna; seviyen sorulara göre yükselir.","Oyuna git",function(){goTab("oyun")}],
@@ -172,12 +173,12 @@ function jrCopy(t){
   try{navigator.clipboard.writeText(t).then(function(){done(true)},function(){done(false)})}catch(e){done(false)}
 }
 function atJobs(){
-  var R=jrRole(),J=jrScore(R),band=J.score<35?"Temeli atıyorsun":J.score<65?"Gelişiyorsun":"Başvuruya yakınsın";
+  var R=jrRole(),J=jrScore(R),band=!J.olculdu?"Soru çöz ya da seviye testi yap":J.score<35?"Temeli atıyorsun":J.score<65?"Gelişiyorsun":"Başvuruya yakınsın";
   var seg=h("div",{class:"seg",role:"group","aria-label":"Hedef rol"},JR.map(function(o){return h("button",{type:"button","aria-pressed":S.jr.role===o.id?"true":"false",onclick:function(){S.jr.role=o.id;S.jr.msg="";draw()}},o.name)}));
   var out=[h("div",{class:"panel"},h("div",{class:"label"},"İşe hazırlık"),h("h2",null,"Hedef rolün: "+R.name),seg,
-    h("div",{class:"gm-grid"},[["Hazırlık puanı",J.score+" / 100"],["Durum",band]].map(function(a){return h("div",{class:"kcell"},h("small",{class:"mute"},a[0]),h("b",{class:"mono"},String(a[1])))})),
-    J.parts.map(function(p){return h("div",{style:"margin-top:8px"},h("div",{style:"display:flex;justify-content:space-between"},h("span",{class:"small"},p[1]),h("span",{class:"small mono"},Math.round(p[2]*100)+"%")),h("div",{class:"xpbar"},h("i",{style:"width:"+Math.max(3,Math.round(p[2]*100))+"%"})))}),
-    h("div",{class:"small mute",style:"margin-top:8px"},"Puan: bilgi seviyesi, soru doğruluğu, yol projesi ilerlemesi, mülakat pratiği ve GitHub kanıtı. Bu bir tahmin; iş garantisi değil."))];
+    h("div",{class:"gm-grid"},[["Hazırlık puanı",J.olculdu?J.score+" / 100":"Henüz ölçülmedi"],["Durum",band]].map(function(a){return h("div",{class:"kcell"},h("small",{class:"mute"},a[0]),h("b",{class:"mono"},String(a[1])))})),
+    J.parts.map(function(p){return h("div",{style:"margin-top:8px"},h("div",{style:"display:flex;justify-content:space-between"},h("span",{class:"small"},p[1]),h("span",{class:"small mono"},J.olculdu?Math.round(p[2]*100)+"%":"–")),h("div",{class:"xpbar"},h("i",{style:"width:"+Math.max(3,Math.round(p[2]*100))+"%"})))}),
+    h("div",{class:"small mute",style:"margin-top:8px"},(J.olculdu?"":"Henüz veri yok: bir seviye testi, birkaç soru ya da proje adımı puanı oluşturur. ")+"Puan: bilgi seviyesi, soru doğruluğu, yol projesi ilerlemesi, mülakat pratiği ve GitHub kanıtı. Bu bir tahmin; iş garantisi değil."))];
   out.push(h("div",{class:"panel"},h("h2",null,"Bu haftanın 3 hamlesi"),jrActions(R,J).map(function(a){return h("div",{class:"lbox"},h("p",{style:"margin:0 0 6px"},a[0]),h("button",{class:"btn ghost",type:"button",onclick:a[2]},a[1]))})));
   planPanel(R).forEach(function(x){out.push(x)});out.push(evPanel(R));
   out.push(h("div",{class:"panel"},h("h2",null,"CV ve LinkedIn cümlesi"),h("div",{class:"lbox"},h("p",{style:"margin:0"},R.tr1),h("button",{class:"btn ghost",type:"button",onclick:function(){jrCopy(R.tr1)}},"Türkçe kopyala")),h("div",{class:"lbox"},h("p",{style:"margin:0"},R.en1),h("button",{class:"btn ghost",type:"button",onclick:function(){jrCopy(R.en1)}},"English kopyala")),S.jr.msg?h("div",{class:"small mute"},S.jr.msg):null,h("div",{class:"small mute"},"Cümleyi gerçekten yaptığın işlere göre düzenle; yapmadığını yazma.")));

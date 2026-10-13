@@ -11,9 +11,9 @@ draw();
 if(window.claude&&window.claude.use){
   Promise.all([window.claude.use("db"),window.claude.use("user")]).then(function(r){
     var db0=r[0],user=r[1];
-    if(!db0)return;
+    if(!db0){if(window.ppGate)ppGate.ac();return}
     var nonOwner=false;try{nonOwner=!!(user&&user.isOwner&&user.isOwner()===false)}catch(e){}
-    S.nonOwner=nonOwner;
+    S.nonOwner=nonOwner;try{draw()}catch(e){}if(window.ppGate)ppGate.ac();
     return Promise.resolve(user&&user.id?user.id():null).catch(function(){return null}).then(function(uid){
     var db=db0;
     if(nonOwner&&uid){
@@ -37,7 +37,7 @@ if(window.claude&&window.claude.use){
       S._ld=S._ld||{};S._ld.attempts=1;S.attempts=s.docs.map(function(d){var x=d.data()||{};x.id=d.id;return x});sched();
     },function(){});
     });
-  });
+  }).catch(function(){if(window.ppGate)ppGate.hata()});
   window.claude.use("sample").then(function(f){S.sample=f||null;sched()},function(){});
   window.claude.use("mcp").then(function(m){S.mcp=m||null;sched()},function(){});
   window.claude.use("downloads").then(function(d){S.dl=d||null;sched()},function(){});

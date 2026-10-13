@@ -46,9 +46,9 @@ function moreSheet(){
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&S.more){S.more=false;draw()}if(e.key==="Escape"&&S._rtOpen){S._rtOpen=false;draw()}});
 /* kimlik kartı */
 function idStats(){
-  var R=rankInfo(),st=streakInfo(),ds=deskState(),c=cityTopics("ccna"),e=topicsOf("eng");
+  var R=rankInfo(),st=streakInfo(),ds=deskState(),G=goalTrack(),c=cityTopics(G),e=G==="eng"?[]:topicsOf("eng");
   function built(a){return a.filter(PP.ogr.ilerleme.konuTamam).length}
-  return {rank:R.cur.n,xp:R.xp,streak:st.n,ccna:built(c),ccnaT:c.length,eng:built(e),engT:e.length,csat:ds.csat,tickets:ds.n,words:S.words.length,term:termWeek(),
+  return {rank:R.cur.n,xp:R.xp,streak:st.n,ccna:built(c),ccnaT:c.length,gn:trName(G),ge:G==="eng",eng:built(e),engT:e.length,csat:ds.csat,tickets:ds.n,words:S.words.length,term:termWeek(),
     bars:c.slice().sort(function(a,b){return num(a.order)-num(b.order)}).map(function(t){return t.status==="built"?1:t.status==="building"?.55:t.status==="next"?.2:.08})};
 }
 function idSerial(){var d=today().replace(/-/g,"");return "YA-"+d.slice(0,4)+"-"+d.slice(4)}
@@ -59,7 +59,7 @@ function renderIdCard(){
     h("div",{class:"idc-in"},
       h("div",{class:"idc-top"},crest(),h("div",null,h("b",null,"PROOFPATH"),h("span",null,"AKADEMİ KİMLİĞİ"))),
       h("div",{class:"idc-name"},MYN()||"Öğrenci"),h("div",{class:"idc-rank"},s.rank),
-      h("div",{class:"idc-grid"},cell(s.xp,"XP"),cell(s.streak,"gün seri"),cell(s.ccna+"/"+s.ccnaT,"CCNA bina"),cell(s.eng+"/"+s.engT,"İng. basamak"),cell(s.tickets,"ticket"),cell(s.csat==null?"–":s.csat,"memnuniyet")),
+      h("div",{class:"idc-grid"},cell(s.xp,"XP"),cell(s.streak,"gün seri"),cell(s.ccna+"/"+s.ccnaT,s.ge?"İng. basamak":s.gn+" bina"),cell(s.ge?"–":s.eng+"/"+s.engT,s.ge?"seviye":"İng. basamak"),cell(s.tickets,"ticket"),cell(s.csat==null?"–":s.csat,"memnuniyet")),
       h("div",{class:"idc-sky","aria-hidden":"true"},s.bars.map(function(v){return h("i",{style:"height:"+Math.round(10+v*38)+"px;opacity:"+(.35+v*.65)})})),
       h("div",{class:"idc-foot"},h("span",null,s.term),h("span",null,idSerial()))));
   card.addEventListener("pointermove",function(e){var r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;card.style.setProperty("--ry",(x*10)+"deg");card.style.setProperty("--rx",(-y*10)+"deg");card.style.setProperty("--gx",(x*100+50)+"%")});
@@ -84,7 +84,7 @@ function idPng(){
   x.fillStyle="#f0c86e";x.font="600 26px "+MONO;x.fillText("AKADEMİ KİMLİĞİ",250,170);
   x.fillStyle="#fff";x.font="600 150px "+SERIF;x.fillText(MYN()||"Öğrenci",80,420);
   x.fillStyle="#35d0c0";x.font="700 60px "+SANS;x.fillText(s.rank,84,505);
-  var cells=[[s.xp,"XP"],[s.streak,"GÜN SERİ"],[s.ccna+"/"+s.ccnaT,"CCNA BİNA"],[s.eng+"/"+s.engT,"İNG. BASAMAK"],[s.tickets,"TICKET"],[s.csat==null?"–":s.csat,"MEMNUNİYET"]];
+  var cells=[[s.xp,"XP"],[s.streak,"GÜN SERİ"],[s.ccna+"/"+s.ccnaT,s.ge?"İNG. BASAMAK":s.gn.toLocaleUpperCase("tr")+" BİNA"],[s.ge?"–":s.eng+"/"+s.engT,s.ge?"SEVİYE":"İNG. BASAMAK"],[s.tickets,"TICKET"],[s.csat==null?"–":s.csat,"MEMNUNİYET"]];
   cells.forEach(function(cl,i){var cx=80+(i%3)*300,cy=600+Math.floor(i/3)*200;x.fillStyle="rgba(255,255,255,.07)";x.fillRect(cx,cy,270,170);x.strokeStyle="rgba(255,255,255,.14)";x.lineWidth=2;x.strokeRect(cx,cy,270,170);
     x.fillStyle="#fff";x.font="700 70px "+SERIF;x.fillText(String(cl[0]),cx+22,cy+95);x.fillStyle="rgba(244,241,232,.7)";x.font="600 22px "+MONO;x.fillText(cl[1],cx+22,cy+140)});
   var n=s.bars.length||1,bw=Math.floor((W-160)/n)-4;
@@ -94,7 +94,7 @@ function idPng(){
 }
 function saveIdCard(){
   var IC=S.idc;if(!S.dl||IC.busy)return;IC.busy=true;IC.msg="";draw();
-  Promise.resolve(document.fonts&&document.fonts.ready).catch(function(){}).then(idPng).then(function(b){return S.dl.save({filename:"yusuf-akademi-kimlik.png",data:b})})
+  Promise.resolve(document.fonts&&document.fonts.ready).catch(function(){}).then(idPng).then(function(b){return S.dl.save({filename:"proofpath-kimlik.png",data:b})})
     .then(function(){IC.msg="Kaydedildi."}).catch(function(e){IC.msg=e&&e.code==="declined"?"Kaydetmeyi reddettin.":"Kaydedilemedi, tekrar dene."}).then(function(){IC.busy=false;draw()});
 }
 

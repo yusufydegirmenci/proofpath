@@ -56,7 +56,7 @@ function syncApply(r){
       }
       if(r.pl&&typeof r.pl==="object"){
         var p=plLoad(),pc=false;
-        Object.keys(r.pl).slice(0,8).forEach(function(t){var v=r.pl[t];if(v&&typeof v==="object"&&typeof v.lv==="number"&&(!p[t]||String(v.d||"")>String(p[t].d||""))){p[t]={lv:v.lv,n:v.n|0,ok:v.ok|0,d:String(v.d||"").slice(0,10)};pc=true}});
+        Object.keys(r.pl).slice(0,8).forEach(function(t){var v=r.pl[t];if(v&&typeof v==="object"&&typeof v.lv==="number"&&(!p[t]||String(v.d||"")>String(p[t].d||""))&&!(v.skip&&p[t]&&!p[t].skip)){p[t]={lv:v.lv,n:v.n|0,ok:v.ok|0,d:String(v.d||"").slice(0,10)};if(v.skip)p[t].skip=true;pc=true}});
         if(pc){try{localStorage.setItem(PL_KEY,JSON.stringify(p))}catch(e){}ch=true}
       }
       if(r.cd&&typeof r.cd==="object"){
@@ -121,16 +121,19 @@ function onbNeeded(){return !!(S.nonOwner&&!S.guest&&S.onbLoaded&&!(S.onb&&(S.on
 function onbApply(o){
   if(!o||!o.goal)return;
   var g=OB_GOALS.filter(function(x){return x[0]===o.goal})[0];if(!g)return;
-  S.les.track=g[3];S.pl.track=g[3];if(g[3]==="ccna"||g[3]==="eng")S.cls.track=g[3];
+  S.les.track=g[3];S.pl.track=g[3];S.pr.track=g[3];if(STARTER[g[3]])S.cls.track=g[3];
   if(JR.some(function(r){return r.id===g[4]}))S.jr.role=g[4];
   if(o.hrs===3||o.hrs===5||o.hrs===8)S.plan.hrs=o.hrs;
 }
 function onbSave(patch,lvl){
   var o={goal:S.ob.goal,hrs:S.ob.hrs,ts:new Date().toISOString()};for(var k in patch)o[k]=patch[k];
   S.onb=o;onbApply(o);
+  var og=OB_GOALS.filter(function(x){return x[0]===o.goal})[0],ot=og?og[3]:o.goal;
+  if(!lvl&&ot){var pl=plLoad();if(!pl[ot]){pl[ot]={lv:1,n:0,ok:0,d:today(),skip:true};plSave(pl)}}
   if(S.db&&S.canWrite)S.db.doc("prefs/onb").set(o).catch(function(){});
-  if(lvl){plStart()}else draw();
-  goTab(lvl?"bugun":"bugun");
+  if(lvl){S.pl.track=ot||S.pl.track;plStart()}else draw();
+  goTab("bugun");
+  if(lvl)plFocus();
 }
 function renderOnboarding(){
   var O=S.ob,st=O.step,out=[];
