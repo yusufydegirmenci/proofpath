@@ -44,9 +44,12 @@ const DERSLER = ['va0-1', 'va0-2', 'va0-3', 'bk-1', 'bk-2', 'bk-3', 'bk-4', 'bk-
   eq(S.kavramDenetimi(bk1, y('error 4040 and unclient')).bulunan, [], 'kavram: tam kelime sınırı (4040, unclient eşleşmez)');
   const bk2 = S.bul('sn-bk-2');
   eq(S.kavramDenetimi(bk2, { observation: 'Do not deleteOrder via GET', why: '', suggestion: '' }).bulunan, [], 'kavram: "deleteOrder" tek kelime DELETE kavramını saymaz');
-  eq(S.kavramDenetimi(bk2, { observation: '', why: '', suggestion: 'Use DELETE /orders/{id}' }).bulunan.sort(), ['DELETE yöntemi', 'yollarda isim/kaynak kullanımı'].sort(), 'kavram: "DELETE /orders/{id}" iki kavramı birden karşılar');
-  eq(S.kavramDenetimi(S.bul('sn-sec-1'), { problem: 'The data was unencrypted and exposed.', cause: '', fix: '', verified: '', next: '' }).bulunan.sort(), ['risk / veri ifşası', 'zafiyet (şifrelenmemiş disk)'].sort(), 'kavram: "unencrypted"/"exposed" eş anlamları');
+  eq(S.kavramDenetimi(bk2, { observation: '', why: '', suggestion: 'Use DELETE /orders/{id}' }).bulunan, ['DELETE yöntemi'], 'kavram: "DELETE /orders/{id}" DELETE kavramını karşılar');
+  eq(S.kavramDenetimi(S.bul('sn-sec-1'), { problem: 'The data was exposed; the weakness is a vulnerability.', cause: '', fix: '', verified: '', next: '' }).bulunan.sort(), ['risk / veri ifşası', 'zafiyet'].sort(), 'kavram: "exposed", "weakness", "vulnerability" eş anlamları');
   eq(S.kelimeSay("Don't panic: it's 5xx, not 4xx."), 6, 'kelime sayımı: kesme işareti ve rakamlı kelimeler tek kelime');
+
+  // Belgeyi aynen yapıştırmak çoğu anahtar kavramı geçirmemeli (kart ezberi/kopya ölçümü)
+  K.forEach(k => { const c = Object.fromEntries(Object.keys(k.ornek).map((a, i) => [a, i === 0 ? k.belge.metin : ''])); const kv = S.kavramDenetimi(k, c); ok(kv.bulunan.length <= Math.ceil(k.mustMention.length / 2), k.id + ': belgeyi kopyalamak anahtar kavramların en çok yarısını geçirir (' + kv.bulunan.length + '/' + kv.toplam + ')'); });
 
   // Yapı denetimi
   const yp = S.yapiDenetimi(bk1, { problem: 'a b c', cause: 'a b', fix: 'a b c', verified: 'a b c', next: 'a b c' });

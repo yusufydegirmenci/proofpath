@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## W1 (dal: faz-w1; migration, sunucu tablosu, AI servisi, gizli anahtar, yeni dış kütüphane yok)
+- `PP.senaryo` (`js/ogrenme/senaryo.js`, arayüz `js/ders/senaryo-ui.js`, veri `content/senaryo/*.js`): ders sonu isteğe bağlı İngilizce iş senaryosu kartı (belge → görev → yazma → yapı + anahtar kavram denetimi → örnek iyi cevap, öz-karşılaştırma). Şablonlar: bug/olay (5 başlık), yanıt, inceleme, açıklayıcı soru. Denetim anlamı değerlendirmez; AI geri bildirimi yok; sonuç kapı/not/ustalık/kanıt sayılmaz. Cevaplar yalnız `ya_pp_ogr.tercih.senaryo`.
+- Pilot: 13 kart (VA Seviye 0 ×3, Backend 1–5, Siber 1–5); ders odasında "notlar" adımının sonunda, VA'da ders kartının sonunda. 15 öğe yapısı değişmedi (kart 16. öğe, isteğe bağlı).
+- Portföy: "İş yazışmalarım" (`PP.rapor.isYazismalari`), hepsi "doğrulanmamış" etiketli; gizlenebilir; dışa aktarma ders notlarını/özel notları içermez.
+- Faz 10 tur 4 açıkları: VA Seviye 0 lab (g1–g3) ortak çubuğa bağlandı (görev başına 3 kademe ipucu, çözüm 2 yanlıştan sonra; eski ipucu düğmesi kalktı; çözüm görülen görev ilerleme sayılır ama kanıt yazılmaz). VA Parsons'ları SQL alan panelinde "Sıra alıştırması" başlığıyla ayrıldı; kod alanı ve sıra alıştırması çözüm durumu iki yerde aynı satırda görünür.
+- Test: `tests/faz_w1.js` (yeni); `tests/faz10_va.js` lab düğme seçicileri çubuğa uyarlandı (assert zayıflatılmadı).
+
 ## Faz 10 tur 4 (dal: faz-10d, alıştırma çubuğu + 5 hızlı öğrenme parçası; migration, sunucu tablosu, gizli anahtar, yeni dış kütüphane yok)
 - Alıştırma çubuğu (`js/ders/cubuk.js`, `PP.cubuk`): Çalıştır/Kontrol · İpucu · Çözümü gör · Sıfırla, tüm alıştırma türlerinde aynı sıra (PP.alan kod alanları, alt ağ laboratuvarı, rota/ACL/VLAN-STP/NAT/OSPF/DHCP karar laboratuvarları, Parsons). "Çözümü gör" ilk 2 yanlış denemeden sonra açılır, iki adımlı onay ister; görülen çözüm "çözüm görüldü" diye kaydedilir ve kanıt/ustalık sayılmaz (`PP.cubuk.kanitSayilir`). Durum mevcut `ya_pp_ogr.tercih.cubuk` içinde; yeni depolama anahtarı yok.
 - 3 kademeli ipucu (yön, daha belirgin, neredeyse çözüm), her kademe kayıtlı. 32 VA alanı, 16 genel karar senaryosu, rota/ACL/alt ağ senaryoları için senaryoya özgü 3 kademe. "Ördeğe anlat" kutusu: yapay zekâ yok, üç soru (ne denedin / ne bekledin / ne oldu), yazılanlar saklanmaz.
