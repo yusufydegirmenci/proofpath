@@ -108,7 +108,7 @@
       gorev: "4 pakette karar ile eşleşen satırı, 2 ağda wildcard maskını yaz; 'Kontrol et'e bas.",
       gozlem: "Kontrolden sonra alan bazlı doğru/yanlış gösterilir; paket senaryolarında satır satır eşleşme izi görünür.",
       kanit: "Doğrulanan her senaryo (ipucu kullanıldıysa ayrı işaretle) kanıt olarak kaydedilir; istemci doğrulamasıdır, sunucu kanıtı değildir.",
-      ipucu: { paket: "ACL satırlarını yukarıdan aşağı oku; kaynak adres wildcard'a, protokole ve porta uyan ilk satırda dur. Hiçbiri uymazsa karar deny, satır 0 (örtük deny).", wildcard: "Wildcard maskı alt ağ maskının tersidir: blok boyutu - 1 değerini ilgili sekizlide yaz (ör. /26 → 0.0.0.63)." }
+      ipucu: { paket: "ACL satırlarını yukarıdan aşağı oku; kaynak adres wildcard'a, protokole ve porta uyan ilk satırda dur. Hiçbiri uymazsa karar deny, satır 0 (örtük deny).", wildcard: "Wildcard maskı alt ağ maskının tersidir: blok boyutu - 1 değerini ilgili sekizlide yaz (ör. /28 → 0.0.0.15)." }
     }
   };
   LAB.tanimlar = LAB.tanimlar || {};
@@ -118,9 +118,39 @@
   function takma(kaynak, yeni) { var o = {}; Object.keys(TAN[kaynak]).forEach(function (k) { o[k] = TAN[kaynak][k]; }); o.id = yeni; o.eski = kaynak; LAB.tanimlar[yeni] = o; }
   takma("ccna-rota", "net-rota"); takma("ccna-acl", "net-acl");
 
+  /* ---- Ortak çubuk (PP.cubuk) için senaryoya özgü 3 kademeli ipucu ve çözüm metni ---- */
+  function etiketOf(f, v) { var o = (f.sec || []).filter(function (x) { return x[0] === v; })[0]; return o ? o[1] : String(v); }
+  function kararKademeleri(T, s) {
+    if (T.tip === "genel") return [s.ipucu || T.ipucu, s.ipucu2, s.ipucu3].filter(function (x) { return typeof x === "string" && x; });
+    if (T.tip === "rota") {
+      var b = rotaSec(s.tablo, s.hedef), on = b.eslesenler.map(function (n) { return "satır " + n + " (/" + s.tablo[n - 1].onek + ")"; });
+      return [T.ipucu,
+        "Hedef " + s.hedef + " için tabloyu satır satır dene: bir satırın önek uzunluğu kadar ilk bitin hedefle aynı olması, o satırın uyduğu anlamına gelir. Önce kaç satırın uyduğunu say, sonra aralarından seç.",
+        "Tablodaki " + s.tablo.length + " satırın önek uzunlukları: " + s.tablo.map(function (r, i) { return (i + 1) + ". satır /" + r.onek; }).join(", ") + ". Hedefe uyan satırları kendin işaretle; birden çok satır uyuyorsa router önek uzunluğu en büyük olanı seçer, hiçbiri uymuyorsa paketi atar."];
+    }
+    if (s.tip === "paket") {
+      return [T.ipucu.paket,
+        "ACL'yi yukarıdan aşağı sırayla dene; her satırda üç şeyi birlikte denetle: protokol (" + s.p.proto + "), kaynak adres (" + s.p.kaynak + ") wildcard aralığında mı ve satır bir port istiyorsa port " + s.p.port + " ile aynı mı. İlk uyan satırda dur.",
+        "Üç denetimi her satırda sırayla yap ve ilk uyan satırda dur; o satırın izin/red kelimesi kararı verir. Hiçbir satır uymuyorsa örtük kural geçerlidir."];
+    }
+    var host = 32 - s.onek, tam = Math.floor(host / 8), kis = host % 8;
+    return [T.ipucu.wildcard,
+      "/" + s.onek + " önekinde ağ bölümü " + s.onek + " bit, host bölümü " + host + " bittir. Wildcard'da host bitleri 1, ağ bitleri 0 olur; yani maskın tersini alırsın.",
+      "Host bölümü " + host + " bit = " + tam + " tam sekizli (her biri 255)" + (kis ? " + " + kis + " bitlik kısmi sekizli (2^" + kis + " − 1 = " + (Math.pow(2, kis) - 1) + ")" : "") + "; ağ sekizlileri 0 kalır. Sekizlileri soldan sağa 0'lar, varsa kısmi sekizli, sonra 255'ler diye diz."];
+  }
+  function kararCozum(T, s) {
+    var NL = String.fromCharCode(10);
+    if (T.tip === "genel") return s.alanlar.map(function (f) { return f.etiket + ": " + etiketOf(f, s.dogru[f.ad]); }).join(NL) + (s.aciklama ? NL + NL + s.aciklama : "");
+    if (T.tip === "rota") { var b = rotaSec(s.tablo, s.hedef); return "Uyan satır sayısı: " + b.eslesenler.length + NL + "Seçilen satır: " + b.secilen + (b.secilen ? " (" + s.tablo[b.secilen - 1].net + "/" + s.tablo[b.secilen - 1].onek + ", en uzun önek)" : " (uyan satır yok, paket atılır)"); }
+    if (s.tip === "paket") { var k = aclKarar(ACL, s.p); return "Karar: " + k.act + NL + "Eşleşen satır: " + k.satir + (k.satir ? "" : " (hiçbiri uymadı: örtük deny)"); }
+    return "Wildcard maskı: " + wcOnek(s.onek);
+  }
+  LAB.kararKademeleri = kararKademeleri; LAB.kararCozum = kararCozum;
+
   /* ---- Arayüz ---- */
   var ST = {};
-  function durum(id) { return ST[id] || (ST[id] = { i: 0, cevap: {}, sonuc: null, ipucu: false }); }
+  function durum(id) { return ST[id] || (ST[id] = { i: 0, cevap: {}, sonuc: null }); }
+  function cid(id, s) { return "lab:" + id + ":" + s.id; }
   function kanitId(lid, sid, ipucu) { return "lab-" + lid + "-" + sid + (ipucu ? "-ipucu" : ""); }
   function kayit(lid, sid, ipucu) {
     try { return PP.ogr.depo.kanitEkle({ id: kanitId(lid, sid, ipucu), tur: "lab", hedef: "lab:" + lid + ":" + sid, dogrulama: "istemci" }); } catch (e) { return { ok: false }; }
@@ -186,13 +216,20 @@
     } else if (s.tip === "paket") {
       alanlar.push(sec("karar", "Karar", st, [["permit", "permit (izin)"], ["deny", "deny (red)"]]), sec("satir", "Eşleşen satır", st, ACL.map(function (r, i) { return [String(i + 1), "Satır " + (i + 1)]; }).concat([["0", "Hiçbiri (örtük deny)"]])));
     } else alanlar.push(metin("wc", "Wildcard maskı", "0.0.0.255", st));
-    var ipc = T.tip === "acl" ? (s.tip === "paket" ? T.ipucu.paket : T.ipucu.wildcard) : T.tip === "genel" ? (s.ipucu || T.ipucu) : T.ipucu;
     var secEl = h("div", { class: "lab-sec", role: "group", "aria-label": "Senaryo seç" }, T.sc.map(function (x, k) {
-      return h("button", { type: "button", class: "opt" + (k === st.i ? " on" : ""), "aria-pressed": k === st.i ? "true" : "false", onclick: function () { st.i = k; st.cevap = {}; st.sonuc = null; st.ipucu = false; draw(); } }, (k + 1) + (bitti.indexOf(x.id) >= 0 ? " ✓" : ""));
+      return h("button", { type: "button", class: "opt" + (k === st.i ? " on" : ""), "aria-pressed": k === st.i ? "true" : "false", onclick: function () { st.i = k; st.cevap = {}; st.sonuc = null; draw(); } }, (k + 1) + (bitti.indexOf(x.id) >= 0 ? " ✓" : ""));
     }));
     var sonucEl = st.sonuc ? h("div", { class: "qz-sum " + (st.sonuc.dogru ? "all" : "low"), role: "status", "data-lab": st.sonuc.dogru ? "dogru" : "yanlis" },
       h("b", null, st.sonuc.dogru ? "Doğru" : "Eksik/yanlış"),
-      h("span", null, st.sonuc.dogru ? "Senaryo tamam; kanıt kaydedildi" + (st.ipucu ? " (ipucu kullanıldı olarak)." : ".") : "İşaretli alanları gözden geçir; ipucu cezasızdır.")) : null;
+      h("span", null, st.sonuc.dogru ? (PP.cubuk.kanitSayilir(cid(id, s)) ? "Senaryo tamam; kanıt kaydedildi" + (PP.cubuk.ipucuKullanildi(cid(id, s)) ? " (ipucu kullanıldı olarak)." : ".") : "Senaryo tamam; çözüm görüldüğü için kanıt kaydedilmedi.") : "İşaretli alanları gözden geçir; ipucu cezasızdır.")) : null;
+    var cubuk = PP.cubuk.kur({ id: cid(id, s), ipucu: kararKademeleri(T, s), cozum: function () { return kararCozum(T, s); },
+      birincilEl: h("button", { class: "btn", type: "button", onclick: function () {
+        st.sonuc = T.kontrol(s, st.cevap);
+        if (!st.sonuc.dogru) PP.cubuk.yanlis(cid(id, s));
+        else if (PP.cubuk.kanitSayilir(cid(id, s))) kayit(id, s.id, PP.cubuk.ipucuKullanildi(cid(id, s)));
+        draw();
+      } }, "Kontrol et"),
+      sifirlaEl: h("button", { class: "btn ghost", type: "button", onclick: function () { st.cevap = {}; st.sonuc = null; draw(); } }, "Sıfırla") });
     return h("div", { class: "panel lab", "data-lab-id": T.id },
       h("div", { class: "label" }, "Lab · " + T.ad), h("div", { class: "lab-et" }, T.etiket),
       h("div", { class: "small mute", style: "margin-top:6px" }, h("b", null, "Hedef: "), T.hedef),
@@ -200,12 +237,8 @@
       h("div", { class: "small mute" }, h("b", null, "Görev: "), T.gorev),
       secEl, h("p", { class: "lab-ozet" }, s.ozet), tabloEl(T, s, st),
       h("div", { class: "lab-fs" }, alanlar),
-      st.ipucu ? h("div", { class: "lbox warn" }, h("div", { class: "label" }, "İpucu"), h("p", null, ipc)) : null,
       sonucEl, st.sonuc && st.sonuc.aciklama ? h("div", { class: "lbox", "data-lab": "aciklama" }, h("div", { class: "label" }, "Neden"), h("p", null, st.sonuc.aciklama)) : null,
-      h("div", { class: "row", style: "margin-top:8px;gap:8px;flex-wrap:wrap" },
-        h("button", { class: "btn", type: "button", onclick: function () { st.sonuc = T.kontrol(s, st.cevap); if (st.sonuc.dogru) kayit(id, s.id, st.ipucu); draw(); } }, "Kontrol et"),
-        h("button", { class: "btn ghost", type: "button", onclick: function () { st.ipucu = true; draw(); } }, "İpucu"),
-        h("button", { class: "btn ghost", type: "button", onclick: function () { st.cevap = {}; st.sonuc = null; st.ipucu = false; draw(); } }, "Sıfırla")),
+      h("div", { style: "margin-top:8px" }, cubuk),
       h("div", { class: "small mute", style: "margin-top:8px" }, h("b", null, "Gözlem: "), T.gozlem, " ", h("b", null, "Kanıt: "), T.kanit),
       h("div", { class: "small mute" }, bitti.length + " / " + T.sc.length + " senaryo kanıtlı."));
   };

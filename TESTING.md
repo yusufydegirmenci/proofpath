@@ -1,6 +1,6 @@
 # TESTING.md
 
-Son çalıştırma: 2026-10-13 (Tur C, faz-c), Windows 11, Node 22.14, Playwright 1.64 (Chromium), `file://` + sahte `window.claude` (`tests/stub.js`). Tam `npm test`: 78 geçti, 0 kaldı, 0 zaman aşımı, 0 çöktü.
+Son çalıştırma: 2026-10-13 (Faz 10 tur 4, faz-10d), Windows 11, Node 22.14, Playwright 1.64 (Chromium), `file://` + sahte `window.claude` (`tests/stub.js`). Tam `npm test` (son kod değişikliğinden sonra, tek koşu): 79 geçti, 0 kaldı, 0 zaman aşımı, 0 çöktü. Yeni: `tests/faz10d.js` (çubuk, Parsons, günün sorusu, seri, va2-12 biçim bağımsızlığı, arayüz); `tests/hesaplar.js` 83 kontrol (8 seri dondurma).
 
 ## Komutlar
 

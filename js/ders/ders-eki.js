@@ -51,11 +51,27 @@
     var dogru = Object.keys(a).every(function (k) { return a[k]; });
     return { alanlar: a, dogru: dogru };
   }
+  /* 3 kademe, senaryoya özgü: 1 yön (formül), 2 senaryonun kendi sayısıyla somut adım, 3 yalnız blok boyutu (tek sınır; gerisini öğrenci türetir) */
+  function ipucuKademeleri(s) {
+    var b = beklenen(s), blok = Math.pow(2, 32 - b.onek);
+    if (s.tip === "ihtiyac") return [
+      "Kullanılabilir host = 2^n - 2 (n host bitidir). " + s.n + " cihaza yetecek en küçük n değerini bul; ilk adım budur.",
+      IPUCU.ihtiyac,
+      s.n + " cihaz için en az " + (s.n + 2) + " adres (ağ ve yayın dahil) gerekir; bunu karşılayan en küçük 2 kuvvetinin kaç olduğuna bak. O 2 kuvveti blok boyutudur: " + blok + ". Önek ve sınırları bundan türet."];
+    return [
+      "Önce /" + s.p + " önekinin blok boyutunu bul: 2 üzeri (32 - " + s.p + ").",
+      IPUCU.adres,
+      "Blok boyutu " + blok + ". " + s.ip + " adresindeki değişen sekizliyi " + blok + " (ya da sekizlide kalan kısmı) ile bölüp aşağı yuvarla, tekrar çarp: ağ adresini bulursun; diğer alanlar ondan türer."];
+  }
+  function cozumMetni(s) {
+    var b = beklenen(s), NL = String.fromCharCode(10);
+    return [s.tip === "ihtiyac" ? "Önek: /" + b.onek : null, "Ağ adresi: " + b.ag, "Yayın adresi: " + b.yayin, "İlk kullanılabilir host: " + b.ilk, "Son kullanılabilir host: " + b.son, "Kullanılabilir host sayısı: " + b.host].filter(Boolean).join(NL);
+  }
   var IPUCU = {
     ihtiyac: "Kullanılabilir host = 2^(host biti) - 2. İhtiyacı karşılayan en küçük host bitini bul, önek = 32 - host biti. Sonra blok boyutu = 2^(host biti); ağ adresi bloğun ilk adresi, yayın son adresidir.",
     adres: "Blok boyutu = 2^(32 - önek). IP'nin değişen sekizlisini blok boyutuna bölüp aşağı yuvarla, tekrar blok boyutuyla çarp: ağ adresi. Yayın = ağ + blok - 1; ilk host = ağ + 1; son host = yayın - 1."
   };
-  LAB.altag = { ipAyir: ipAyir, ipYaz: ipYaz, hesapla: hesapla, enKucukOnek: enKucukOnek, SENARYOLAR: SENARYOLAR, beklenen: beklenen, kontrol: kontrol, IPUCU: IPUCU };
+  LAB.altag = { ipucuKademeleri: ipucuKademeleri, cozumMetni: cozumMetni, ipAyir: ipAyir, ipYaz: ipYaz, hesapla: hesapla, enKucukOnek: enKucukOnek, SENARYOLAR: SENARYOLAR, beklenen: beklenen, kontrol: kontrol, IPUCU: IPUCU };
 
   /* ---- Lab tanımı (9 öğe, M§8.2) ---- */
   LAB.tanimlar = {
@@ -80,7 +96,8 @@
 
   /* ---- Arayüz ---- */
   var ST = {};
-  function durum(lid) { return ST[lid] || (ST[lid] = { i: 0, cevap: {}, sonuc: null, ipucu: false }); }
+  function durum(lid) { return ST[lid] || (ST[lid] = { i: 0, cevap: {}, sonuc: null }); }
+  function cid(lid, s) { return "lab:" + lid + ":" + s.id; }
   function kanitId(lid, sid, ipucu) { return "lab-" + lid + "-" + sid + (ipucu ? "-ipucu" : ""); }
   function kayit(lid, sid, ipucu) {
     try { return PP.ogr.depo.kanitEkle({ id: kanitId(lid, sid, ipucu), tur: "lab", hedef: "lab:" + lid + ":" + sid, dogrulama: "istemci" }); } catch (e) { return { ok: false }; }
@@ -108,12 +125,20 @@
     if (s.tip === "ihtiyac") alanlar.push(kutu("onek", "Önek (/n)", "/26"));
     alanlar.push(kutu("ag", "Ağ adresi", "192.168.1.0"), kutu("yayin", "Yayın adresi", "192.168.1.255"), kutu("ilk", "İlk kullanılabilir host", "192.168.1.1"), kutu("son", "Son kullanılabilir host", "192.168.1.254"));
     var sec = h("div", { class: "lab-sec", role: "group", "aria-label": "Senaryo seç" }, S0.map(function (x, k) {
-      return h("button", { type: "button", class: "opt" + (k === st.i ? " on" : ""), "aria-pressed": k === st.i ? "true" : "false", onclick: function () { st.i = k; st.cevap = {}; st.sonuc = null; st.ipucu = false; draw(); } },
+      return h("button", { type: "button", class: "opt" + (k === st.i ? " on" : ""), "aria-pressed": k === st.i ? "true" : "false", onclick: function () { st.i = k; st.cevap = {}; st.sonuc = null; draw(); } },
         (k + 1) + (bitti.indexOf(x.id) >= 0 ? " ✓" : ""));
     }));
     var sonucEl = st.sonuc ? h("div", { class: "qz-sum " + (st.sonuc.dogru ? "all" : "low"), role: "status", "data-lab": st.sonuc.dogru ? "dogru" : "yanlis" },
       h("b", null, st.sonuc.dogru ? "Doğru" : "Eksik/yanlış"),
-      h("span", null, st.sonuc.dogru ? "Senaryo tamam; kanıt kaydedildi" + (st.ipucu ? " (ipucu kullanıldı olarak)." : ".") : "İşaretli alanları yeniden hesapla; ipucu cezasızdır.")) : null;
+      h("span", null, st.sonuc.dogru ? (PP.cubuk.kanitSayilir(cid(lid, s)) ? "Senaryo tamam; kanıt kaydedildi" + (PP.cubuk.ipucuKullanildi(cid(lid, s)) ? " (ipucu kullanıldı olarak)." : ".") : "Senaryo tamam; çözüm görüldüğü için kanıt kaydedilmedi.") : "İşaretli alanları yeniden hesapla; ipucu cezasızdır.")) : null;
+    var cubuk = PP.cubuk.kur({ id: cid(lid, s), ipucu: ipucuKademeleri(s), cozum: function () { return cozumMetni(s); },
+      birincilEl: h("button", { class: "btn", type: "button", onclick: function () {
+        st.sonuc = A.kontrol(s, st.cevap);
+        if (!st.sonuc.dogru) PP.cubuk.yanlis(cid(lid, s));
+        else if (PP.cubuk.kanitSayilir(cid(lid, s))) kayit(lid, s.id, PP.cubuk.ipucuKullanildi(cid(lid, s)));
+        draw();
+      } }, "Kontrol et"),
+      sifirlaEl: h("button", { class: "btn ghost", type: "button", onclick: function () { st.cevap = {}; st.sonuc = null; draw(); } }, "Sıfırla") });
     return h("div", { class: "panel lab", "data-lab-id": T.id },
       h("div", { class: "label" }, "Lab · " + T.ad), h("div", { class: "lab-et" }, T.etiket),
       h("div", { class: "small mute", style: "margin-top:6px" }, h("b", null, "Hedef: "), T.hedef),
@@ -122,16 +147,8 @@
       sec,
       h("p", { class: "lab-ozet" }, s.ozet),
       h("div", { class: "lab-fs" }, alanlar),
-      st.ipucu ? h("div", { class: "lbox warn" }, h("div", { class: "label" }, "İpucu"), h("p", null, A.IPUCU[s.tip])) : null,
       sonucEl,
-      h("div", { class: "row", style: "margin-top:8px;gap:8px;flex-wrap:wrap" },
-        h("button", { class: "btn", type: "button", onclick: function () {
-          st.sonuc = A.kontrol(s, st.cevap);
-          if (st.sonuc.dogru) kayit(lid, s.id, st.ipucu);
-          draw();
-        } }, "Kontrol et"),
-        h("button", { class: "btn ghost", type: "button", onclick: function () { st.ipucu = true; draw(); } }, "İpucu"),
-        h("button", { class: "btn ghost", type: "button", onclick: function () { st.cevap = {}; st.sonuc = null; st.ipucu = false; draw(); } }, "Sıfırla")),
+      h("div", { style: "margin-top:8px" }, cubuk),
       h("div", { class: "small mute", style: "margin-top:8px" }, h("b", null, "Gözlem: "), T.gozlem, " ", h("b", null, "Kanıt: "), T.kanit),
       h("div", { class: "small mute" }, bitti.length + " / " + S0.length + " senaryo kanıtlı."));
   }
@@ -162,6 +179,7 @@
         if (LAB.ALTAG_IDS.indexOf(lid) >= 0) out.push(labPanel(l, lid));
         else if (g.PP.lab.kararPanel && g.PP.lab.tanimlar[lid]) out.push(g.PP.lab.kararPanel(l, lid));
       });
+      if (e.parsons && g.PP.parsons) { var pe = g.PP.parsons.panel(e.parsons); if (pe) out.push(pe); }
       if (e.telafi) out.push(h("div", { class: "lbox", "data-ek": "telafi" }, h("div", { class: "label" }, "Takıldıysan (telafi)"), h("p", null, e.telafi)));
     }
     return out.length ? out : null;

@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## Faz 10 tur 4 (dal: faz-10d, alıştırma çubuğu + 5 hızlı öğrenme parçası; migration, sunucu tablosu, gizli anahtar, yeni dış kütüphane yok)
+- Alıştırma çubuğu (`js/ders/cubuk.js`, `PP.cubuk`): Çalıştır/Kontrol · İpucu · Çözümü gör · Sıfırla, tüm alıştırma türlerinde aynı sıra (PP.alan kod alanları, alt ağ laboratuvarı, rota/ACL/VLAN-STP/NAT/OSPF/DHCP karar laboratuvarları, Parsons). "Çözümü gör" ilk 2 yanlış denemeden sonra açılır, iki adımlı onay ister; görülen çözüm "çözüm görüldü" diye kaydedilir ve kanıt/ustalık sayılmaz (`PP.cubuk.kanitSayilir`). Durum mevcut `ya_pp_ogr.tercih.cubuk` içinde; yeni depolama anahtarı yok.
+- 3 kademeli ipucu (yön, daha belirgin, neredeyse çözüm), her kademe kayıtlı. 32 VA alanı, 16 genel karar senaryosu, rota/ACL/alt ağ senaryoları için senaryoya özgü 3 kademe. "Ördeğe anlat" kutusu: yapay zekâ yok, üç soru (ne denedin / ne bekledin / ne oldu), yazılanlar saklanmaz.
+- Parsons soruları (`js/ders/parsons.js`, `content/parsons.js`, `content/parsons-net.js`): satırları sıraya dizme, en çok 2 yanlış satır; Ekle/↑/↓/Çıkar düğmeleriyle klavyeden çözülür, sürükleme ek. VA Seviye 2'den 3 (va2-2, va2-5, va2-8) + CCNA VLAN dersinden 1.
+- Çözüm metinleri `content/veri-analitigi/cozumler.js` (32 alan; "Çözümü gör" için istemcide bulunmak zorunda).
+- Seri dondurma (`js/ogrenme/seri.js`): kesintisiz her 7 etkin günde 1 dondurma, en çok 2; boş bir günü otomatik köprüler. Etkin günlerden türetilir, ayrı kayıt yok. Bugün'de dondurma satırı ve 7/30. gün kutlaması (Sade modda kapalı). Eski davranış (dondurma yokken boşluk keser) aynen korundu.
+- Günün sorusu (`js/bugun/gunsorusu.js`, `js/ders/hata-defteri.js`): soru bankasından yerel tarihle deterministik; Bugün'de tekrar kuyruğunun ilk satırı; yanlış cevap mevcut oyun tekrar kuyruğuna (1-3-7-14 gün) girer.
+- va2-12: EXPLAIN QUERY PLAN kontrolü sütun adından ve plan metni biçiminden bağımsız (SCAN/SEARCH ve indeks adı gevşek eşleşme).
+- Test: `tests/faz10d.js` (yeni), `tests/hesaplar.js` seri dondurma (8 yeni kontrol; mevcut kontroller değişmedi).
+- Bilinen: `js/atolye/va-ui.js` kapsam dışıydı; VA Seviye 0 laboratuvarı (g1–g3) eski ipucu düğmesinde kaldı, VA Parsons'ları SQL alan panelinin altında görünür.
+
 ## Tur C (dal: faz-c, canlı öncesi düzeltme; migration, sunucu tablosu ve gizli anahtar yok)
 - Sahibe ait sabitler kaldırıldı: proje ekranında GitHub kullanıcı adı boş başlar, komutlarda `<GitHub-kullanıcı-adın>` yer tutucusu ve "önce adını yaz" uyarısı görünür (yazdıkça komutlar güncellenir); kimlik kartı dosyası `proofpath-kimlik.png`; mülakat model cevabı ve örneklerde `[Adın]`/`[şehir]` ya da nötr ad; sınıf koçu istemlerinde kişi adı yok.
 - Hedef tek kaynak: onboarding'de seçilen hedef (`goalTrack()` / `goalSet()`, `js/cekirdek/temel.js`) Bugün şehir kartı, "Sıradaki ders", Haftalık plan yolu, Alıştırma/Ders/Seviye testi varsayılanı, Sayılar, Kimlik kartı, karne ve marka alt satırını belirler (Siber/Network/Backend/DevOps/Test/İngilizce seçince CCNA gösterilmez). Kurucu hesabı ve hedefi olmayanlar için varsayılan değişmedi (CCNA).
