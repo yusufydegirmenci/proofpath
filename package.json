@@ -6,7 +6,7 @@
     "test": "node tests/run-all.js",
     "test:smoke": "node tests/smoke.js",
     "test:sira": "node tests/sira.js",
-    "test:ogrenme": "node tests/ogrenme.js && node tests/hesaplar.js && node tests/ogrenme_tarayici.js && node tests/faz4_entegrasyon.js && node tests/faz5_net.js && node tests/faz5b_ccna.js && node tests/faz5c_net.js && node tests/faz5d_lab.js && node tests/faz5e_ek.js && node tests/faz5f_lab.js && node tests/faz6_koc.js && node tests/faz7_plan.js && node tests/faz8_kariyer.js && node tests/faz9_senkron.js && node tests/faz9_cevrimdisi.js && node tests/faz10_va.js && node tests/faz10_alan.js && node tests/faz10_va12.js && node tests/faz8_proje.js"
+    "test:ogrenme": "node tests/ogrenme.js && node tests/hesaplar.js && node tests/ogrenme_tarayici.js && node tests/faz4_entegrasyon.js && node tests/faz5_net.js && node tests/faz5b_ccna.js && node tests/faz5c_net.js && node tests/faz5d_lab.js && node tests/faz5e_ek.js && node tests/faz5f_lab.js && node tests/faz6_koc.js && node tests/faz7_plan.js && node tests/faz8_kariyer.js && node tests/faz9_senkron.js && node tests/faz9_cevrimdisi.js && node tests/faz10_va.js && node tests/faz10_alan.js && node tests/faz10_va12.js && node tests/faz8_proje.js && node tests/faz_w1.js"
   },
   "devDependencies": {
     "acorn": "^8.19.0",

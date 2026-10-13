@@ -76,7 +76,7 @@
         var ip = PP.cubuk.ipucuKullanildi(cid), kn = PP.cubuk.kanitSayilir(cid) ? kanitKaydet(d, ip) : null;
         sonuc.kanit = kn ? (kn.ok ? "Kanıt kaydedildi (istemci doğrulaması)." : "Kanıt kaydedilemedi.") : "Çözüm görüldüğü için kanıt kaydedilmedi.";
       } else PP.cubuk.yanlis(cid);
-      odak = "kontrol"; ciz();
+      odak = "kontrol"; ciz(); PP.cubuk.degisti(cid);
     }
     function ciz() {
       var kalan = sirali.filter(function (id) { return sec.indexOf(id) < 0; });

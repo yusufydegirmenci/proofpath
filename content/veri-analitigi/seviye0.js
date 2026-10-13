@@ -106,6 +106,18 @@
     sifirla: "'Sıfırla' cevapları temizler (kayıtlı kanıt silinmez).",
     kanit: "Doğrulanan her görev ve lab tamamı `lab` türünde kanıt olarak kaydedilir (istemci doğrulaması; sunucu kanıtı değil, bağımsızlık kanıtı değil).",
     ipucu: ["Soruyu cevaplamak için hangi hesabı yapacağını yaz; hesaba girenler gereklidir.", "Kimlik/etiket sütunu toplanmaz; kategori metindir; tarih ayrı bir türdür.", "Veride olmayan bir sütun gerekiyorsa ya da nedensellik isteniyorsa 'desteklemez'."],
+    /* Görev başına 3 kademeli ipucu (ortak çubuk PP.cubuk): 1 yön, 2 daha belirgin, 3 neredeyse çözüm (cevabı doğrudan vermez). `ipucu` eski düz liste olarak kalır. */
+    kademe: {
+      g1: ["Her soruda önce hesabı sözle yaz: neyi toplayacaksın, neye göre ayıracaksın, neyi sayacaksın? Hesaba girmeyen sütunu seçme.",
+        "k1 ciroyu şehir bazında topluyor: ciro = adet × birim fiyat olduğundan iki sayı sütunu ve gruplamak için bir kategori gerekir. k2 'kaç farklı' diye soruyor: bir kimliği sayarsın. k3 bir oran: bir kategori ve iade bilgisi.",
+        "k1: ciro formülündeki iki sayı sütununu formülden çıkar; ayrıca şehir gibi bir ayırma sütunu gerekir. k2: aradığın sütun her müşteri için ayrı bir tanımlayıcı taşır. k3: biri ayırma için kategorik, biri evet/hayır türünde iki sütun gerekir."],
+      g2: ["Her sütun için önce tablodaki örnek değerlere bak: kimlik, etiket, sayı, tarih ya da evet/hayır mı?",
+        "Kimlik gibi görünen sütunlar toplanmaz; bunlar tanımlayıcıdır. Metinle yazılan kategoriler 'kategorik metin'dir. Sayıları ayırırken kesirli değer olup olmadığına bak.",
+        "Sayılan şeyler (adet gibi) tam sayıdır; fiyat ve oran gibi kesirli olabilenler ondalıktır; yalnız iki değer alan sütun evet/hayır'dır. Metin sütunlarında hangisinin her satırda benzersiz bir kimlik olduğuna, hangisinin tekrar eden bir kategori olduğuna bak."],
+      g3: ["İfadeyi bu tabloyla hesaplayabilir misin? Gerekli sütun tabloda var mı ve ifade yalnız bu 12 siparişle mi ilgili?",
+        "Nedensellik isteyen ('neden', 'artırdı') ya da tabloda olmayan bir sütun gerektiren ifadeler desteklenmez; yalnız mevcut sütunlarla hesaplanabilen ifadeler desteklenir.",
+        "Beş ifadeden ikisi mevcut sütunlarla hesaplanabilir (ürün ve adet; ödeme türü ve iade); kalan üçü eksik sütun ya da nedensellik gerektirir."]
+    },
     gorev1: [
       { id: "k1", soru: "Hangi şehir en yüksek ciroyu yaptı? (ciro = adet × birim fiyat)", gerekli: ["sehir", "adet", "birim_fiyat"], istege: ["indirim_orani"] },
       { id: "k2", soru: "Kaç farklı müşteri alışveriş yaptı?", gerekli: ["musteri_id"], istege: [] },

@@ -267,6 +267,31 @@
   /* Testler/Çıkış: çalışan işçileri sonlandır */
   function kapat() { Object.keys(iscilar).forEach(function (t) { try { iscilar[t].terminate(); } catch (e) { /* yoksay */ } delete iscilar[t]; }); }
 
+  /* Aynı dersin SQL kod alanı ile Parsons "Sıra alıştırması" çözüm durumu TEK yerden hesaplanır; iki panel de aynı satırı gösterir.
+     çözüldü = istemci kanıtı var (çözüm görülmemiş); çözüm görüldü = kanıt sayılmaz; yoksa henüz çözülmedi. */
+  function kanitVar(kimlik) {
+    try { return PP.ogr.depo.oku().kanitlar.some(function (k) { return k.id === kimlik || k.id === kimlik + "-ipucu"; }); } catch (e) { return false; }
+  }
+  function durumKelimesi(cid, kanitId) {
+    if (PP.cubuk && PP.cubuk.durum(cid).cozum) return "çözüm görüldü (kanıt sayılmaz)";
+    return kanitVar(kanitId) ? "çözüldü ✓" : "henüz çözülmedi";
+  }
+  function siraDurumu(ders, sqlId) {
+    var sira = PP.parsons ? PP.parsons.dersIcin(ders) : [];
+    return { sql: durumKelimesi("alan:" + sqlId, "alan-" + sqlId), sira: sira.map(function (p) { return { id: p.id, durum: durumKelimesi("parsons:" + p.id, "parsons-" + p.id) }; }) };
+  }
+  function siraDurumMetni(ders, sqlId) {
+    var x = siraDurumu(ders, sqlId);
+    return "Bu dersin SQL çalışması · Kod alanı: " + x.sql + " · Sıra alıştırması: " + (x.sira.length ? x.sira.map(function (p) { return p.durum; }).join(", ") : "yok");
+  }
+  function siraDurumSatiri(ders, sqlId) {
+    var hh = g.h, el = hh("div", { class: "small", role: "status", "data-alan-sira-durum": ders });
+    function guncelle() { el.textContent = siraDurumMetni(ders, sqlId); }
+    guncelle();
+    if (g.document && g.document.addEventListener) g.document.addEventListener("pp-cubuk", guncelle);
+    return el;
+  }
+
   /* ---------- Arayüz ---------- */
   function tabloEl(s) {
     var hh = g.h;
@@ -313,17 +338,20 @@
         else if (!PP.cubuk.kanitSayilir(cid)) kanit = "Çözüm görüldüğü için kanıt kaydedilmedi.";
         else { var kr = kanitKaydet(d, ipAcik); kanit = kr && kr.ok ? "Kanıt kaydedildi (istemci doğrulaması)." : "Kanıt kaydedilemedi."; if (opts.onDogru) try { opts.onDogru(ipAcik); } catch (e) { /* yoksay */ } }
         yaz(gor, hh("div", { class: "small " + (dogru ? "ok" : "warn"), "data-alan-kontrol": dogru ? "dogru" : "yanlis" }, (dogru ? "✓ Doğru. " : "✗ Henüz değil. ") + r.mesaj), kanit ? hh("div", { class: "small mute" }, kanit) : null);
+        PP.cubuk.degisti(cid);
       });
     }
     btn = hh("button", { class: "btn", type: "button", "data-alan": "calistir", onclick: calistirTikla }, d.tur === "sim" ? "Kontrol et" : "Çalıştır");
     var sfBtn = hh("button", { class: "btn ghost", type: "button", "data-alan": "sifirla", onclick: function () { ta.value = sifirlaMetni(d); cubuk.gizle(); yaz(); } }, "Sıfırla");
     cubuk = PP.cubuk.kur({ id: cid, ipucu: d.ipucu, cozum: function () { return d.cozum; }, birincilEl: btn, sifirlaEl: sfBtn, ipucuAttr: { "data-alan-ipucu": d.id }, ipucuDugmeAttr: { "data-alan": "ipucu" } });
     var parsons = d.tur === "sql" && PP.parsons ? PP.parsons.panelDers(d.ders) : null;
+    if (parsons) parsons = hh("div", { class: "lbox", "data-alan-sira": d.ders, style: "margin-top:10px" }, hh("div", { class: "label" }, "Sıra alıştırması"),
+      hh("div", { class: "small mute" }, "Ayrı bir alıştırma: kod yazmazsın, karışık SQL satırlarını doğru sıraya dizersin. Yukarıdaki kod alanıyla aynı dersin parçasıdır; çözüm durumu ikisinde de aynı görünür."), siraDurumSatiri(d.ders, d.id), parsons);
     return hh("div", { class: "lbox", "data-alan": d.id, "data-alan-tur": d.tur }, hh("div", { class: "label" }, "Kodla dene · " + (d.baslik || d.id)), etiket,
       d.gorev ? hh("p", { class: "small" }, d.gorev) : null, ta,
-      cubuk, cikis,
+      cubuk, cikis, parsons ? siraDurumSatiri(d.ders, d.id) : null,
       hh("div", { class: "small mute" }, d.tur === "sim" ? "Bu alan kodu çalıştırmaz; yalnız yazdığını kurallarla denetler." : "Kod yalnız bu tarayıcıda çalışır, sunucuya gönderilmez. Zaman sınırı " + Math.round(SINIR.zamanMs / 1000) + " sn; sonsuz döngü kesilir."), parsons);
   }
 
-  PP.alan = { TURLER: TURLER, ETIKET: ETIKET, SINIR: SINIR, KAYNAK: KAYNAK, tanimla: tanimla, bul: bul, calistir: calistir, degerlendir: degerlendir, kanitKaydet: kanitKaydet, sifirla: sifirlaMetni, durum: durumOzet, kapat: kapat, kur: kur };
+  PP.alan = { TURLER: TURLER, ETIKET: ETIKET, SINIR: SINIR, KAYNAK: KAYNAK, tanimla: tanimla, bul: bul, calistir: calistir, degerlendir: degerlendir, kanitKaydet: kanitKaydet, sifirla: sifirlaMetni, durum: durumOzet, kapat: kapat, siraDurumu: siraDurumu, siraDurumMetni: siraDurumMetni, kur: kur };
 })(typeof window !== "undefined" ? window : globalThis);

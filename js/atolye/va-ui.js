@@ -51,16 +51,41 @@ function vaDers(d, st) {
     d.kaynaklar.length ? kp(["Dış kaynaklar (isteğe bağlı)", vaLi(d.kaynaklar.map(function (k) { return h("span", null, h("a", { href: k.u, target: "_blank", rel: "noopener noreferrer" }, k.t), " — " + k.neden + " (son doğrulama: " + k.dogrulama + ")"); }))]) : null,
     kp(["Takıldıysan (telafi)", h("p", null, d.telafi)]),
     h("div", { class: "small mute" }, d.sonraki),
-    h("div", { class: "row" }, h("button", { class: "btn", type: "button", "data-va": "okudum", onclick: function () { PP.va.dersOkundu(d.id); draw(); } }, okundu ? "Okudum (güncelle)" : "Okudum")));
+    h("div", { class: "row" }, h("button", { class: "btn", type: "button", "data-va": "okudum", onclick: function () { PP.va.dersOkundu(d.id); draw(); } }, okundu ? "Okudum (güncelle)" : "Okudum")),
+    window.PP && PP.senaryoUi ? PP.senaryoUi.dersIcin(d.id) : null);
 }
 
+/* Lab görevleri: PP.cubuk (Kontrol · İpucu · Çözümü gör · Sıfırla); görev başına bağımsız çubuk, id "va-lab:gX" */
+var VA_LAB_CID = { g1: "va-lab:g1", g2: "va-lab:g2", g3: "va-lab:g3" };
+function vaLabCozum(g) {
+  var L = PP_VA.lab;
+  if (g === "g1") return L.gorev1.map(function (k) { return k.id + " — " + k.soru + "\n  Gerekli: " + k.gerekli.join(", ") + (k.istege.length ? "  (isteğe bağlı: " + k.istege.join(", ") + ")" : ""); }).join("\n");
+  if (g === "g2") return Object.keys(L.gorev2).map(function (c) { return c + " → " + L.gorev2[c]; }).join("\n");
+  return L.gorev3.map(function (i) { return i.id + " — " + i.ifade + "\n  " + (i.destekler ? "Destekler" : "Desteklemez") + ": " + i.neden; }).join("\n");
+}
+/* Doğru sonuçta kayıt: çözüm görülmüşse ilerleme kaydı var, kanıt yok; yanlışta çubuk yanlış denemeyi sayar */
+function vaLabKontrol(st, g, r) {
+  var cid = VA_LAB_CID[g];
+  st.lab[g] = r;
+  if (!r.hepsi) { PP.cubuk.yanlis(cid); return; }
+  PP.va.labKaydet(g, PP.cubuk.ipucuKullanildi(cid), !PP.cubuk.kanitSayilir(cid));
+}
+function vaLabCubuk(st, g, cevapSifirla) {
+  var cid = VA_LAB_CID[g], kutu = null;
+  kutu = PP.cubuk.kur({ id: cid, ipucu: PP_VA.lab.kademe[g], cozum: function () { return vaLabCozum(g); },
+    birincilEl: h("button", { class: "btn", type: "button", "data-va": g, onclick: function () { vaLabKontrol(st, g, PP.va[g === "g1" ? "gorev1" : g === "g2" ? "gorev2" : "gorev3"](st[g])); draw(); } }, "Kontrol et"),
+    sifirlaEl: h("button", { class: "btn ghost", type: "button", "data-va": "sifirla-" + g, onclick: function () { cevapSifirla(); st.lab[g] = null; if (kutu && kutu.gizle) kutu.gizle(); draw(); } }, "Sıfırla"),
+    ipucuAttr: { "data-va-ipucu": g }, ipucuDugmeAttr: { "data-va": "ipucu-" + g } });
+  return kutu;
+}
 function vaLab(st) {
-  var L = PP_VA.lab, T = PP.va.durum().lab, ip = st.labIp;
+  var L = PP_VA.lab, T = PP.va.durum().lab;
   var tablo = h("div", { style: "overflow:auto;max-width:100%" }, h("table", { class: "small mono", style: "border-collapse:collapse", "data-va": "veri" },
     h("tr", null, PP_VA.veri.sutunlar.map(function (c) { return h("th", { style: "padding:2px 6px;text-align:left;border-bottom:1px solid var(--line)" }, c); })),
     PP_VA.veri.satirlar.slice(0, 12).map(function (r) { return h("tr", null, r.map(function (x) { return h("td", { style: "padding:2px 6px" }, x === "" ? "∅" : String(x)); })); })));
   var sonuc = function (g, kapsa) { return st.lab[g] ? h("div", { class: "small", role: "status", "data-va-sonuc": g }, kapsa(st.lab[g])) : null; };
-  var g1 = h("div", { class: "lbox", "data-va-gorev": "g1" }, h("div", { class: "label" }, "Görev 1 · Soru → gerekli sütunlar" + (T[0].tamam ? " ✓" : "")),
+  var isaret = function (i) { return T[i].tamam ? (T[i].cozum ? " ✓ (çözüm görüldü; kanıt sayılmaz)" : " ✓") : ""; };
+  var g1 = h("div", { class: "lbox", "data-va-gorev": "g1" }, h("div", { class: "label" }, "Görev 1 · Soru → gerekli sütunlar" + isaret(0)),
     L.gorev1.map(function (k) {
       return h("div", { style: "margin:6px 0" }, h("b", { class: "small" }, k.soru),
         h("div", { class: "row", style: "gap:4px;flex-wrap:wrap" }, PP_VA.veri.sutunlar.map(function (c) {
@@ -70,30 +95,27 @@ function vaLab(st) {
           } }, c);
         })));
     }),
-    h("div", { class: "row" }, h("button", { class: "btn", type: "button", "data-va": "g1", onclick: function () { var r = PP.va.gorev1(st.g1); st.lab.g1 = r; if (r.hepsi) PP.va.labKaydet("g1", ip); draw(); } }, "Kontrol et")),
+    vaLabCubuk(st, "g1", function () { st.g1 = {}; }),
     sonuc("g1", function (r) { return r.hepsi ? "Doğru: tüm sorular için gerekli sütunlar seçildi." : L.gorev1.filter(function (k) { return !r[k.id].dogru; }).map(function (k) { return k.id + ": " + (r[k.id].eksik.length ? "eksik " + r[k.id].eksik.join(", ") : "") + (r[k.id].fazla.length ? " fazla " + r[k.id].fazla.join(", ") : ""); }).join(" · "); }));
-  var g2 = h("div", { class: "lbox", "data-va-gorev": "g2" }, h("div", { class: "label" }, "Görev 2 · Sütun → veri türü" + (T[1].tamam ? " ✓" : "")),
+  var g2 = h("div", { class: "lbox", "data-va-gorev": "g2" }, h("div", { class: "label" }, "Görev 2 · Sütun → veri türü" + isaret(1)),
     PP_VA.veri.sutunlar.map(function (c) {
       return h("div", { class: "row", style: "gap:6px;align-items:center;flex-wrap:wrap" }, h("span", { class: "small mono", style: "min-width:110px" }, c),
         h("select", { "aria-label": c + " türü", "data-va-tur": c, onchange: function (e) { st.g2[c] = e.target.value; } },
           h("option", { value: "" }, "seç…"), L.turler.map(function (t) { return h("option", { value: t, selected: st.g2[c] === t ? "" : null }, t); })));
     }),
-    h("div", { class: "row" }, h("button", { class: "btn", type: "button", "data-va": "g2", onclick: function () { var r = PP.va.gorev2(st.g2); st.lab.g2 = r; if (r.hepsi) PP.va.labKaydet("g2", ip); draw(); } }, "Kontrol et")),
+    vaLabCubuk(st, "g2", function () { st.g2 = {}; }),
     sonuc("g2", function (r) { return r.hepsi ? "Doğru: tüm türler doğru." : "Yanlış/eksik: " + Object.keys(L.gorev2).filter(function (c) { return !r[c]; }).join(", "); }));
-  var g3 = h("div", { class: "lbox", "data-va-gorev": "g3" }, h("div", { class: "label" }, "Görev 3 · Veri bunu destekliyor mu?" + (T[2].tamam ? " ✓" : "")),
+  var g3 = h("div", { class: "lbox", "data-va-gorev": "g3" }, h("div", { class: "label" }, "Görev 3 · Veri bunu destekliyor mu?" + isaret(2)),
     L.gorev3.map(function (i) {
       return h("div", { class: "row", style: "gap:6px;align-items:center;flex-wrap:wrap" }, h("span", { class: "small", style: "flex:1;min-width:60%" }, i.ifade),
         [[true, "Destekler"], [false, "Desteklemez"]].map(function (o) { return h("button", { type: "button", class: "btn ghost" + (st.g3[i.id] === o[0] ? " on" : ""), "aria-pressed": st.g3[i.id] === o[0] ? "true" : "false", "data-va-ifade": i.id + ":" + o[0], onclick: function () { st.g3[i.id] = o[0]; draw(); } }, o[1]); }));
     }),
-    h("div", { class: "row" }, h("button", { class: "btn", type: "button", "data-va": "g3", onclick: function () { var r = PP.va.gorev3(st.g3); st.lab.g3 = r; if (r.hepsi) PP.va.labKaydet("g3", ip); draw(); } }, "Kontrol et")),
+    vaLabCubuk(st, "g3", function () { st.g3 = {}; }),
     sonuc("g3", function (r) { return r.hepsi ? "Doğru. " + L.gorev3.map(function (i) { return i.neden; }).join(" ") : "Yanlış/eksik: " + L.gorev3.filter(function (i) { return !r[i.id]; }).map(function (i) { return i.id; }).join(", "); }));
   return h("div", { class: "panel", "data-va": "lab" }, h("div", { class: "label" }, "Lab · " + L.ad), h("div", { class: "lab-et" }, L.etiket),
     h("div", { class: "small mute", style: "margin-top:6px" }, h("b", null, "Hedef: "), L.hedef), h("div", { class: "small mute" }, h("b", null, "Başlangıç: "), L.baslangic), h("div", { class: "small mute" }, h("b", null, "Görev: "), L.gorev),
     tablo, g1, g2, g3,
-    st.labIp ? h("div", { class: "lbox warn" }, h("div", { class: "label" }, "İpuçları"), vaLi(L.ipucu)) : null,
-    h("div", { class: "row", style: "gap:6px;flex-wrap:wrap" }, h("button", { class: "btn ghost", type: "button", "data-va": "ipucu", onclick: function () { st.labIp = true; draw(); } }, "İpucu"),
-      h("button", { class: "btn ghost", type: "button", "data-va": "sifirla", onclick: function () { st.g1 = {}; st.g2 = {}; st.g3 = {}; st.lab = {}; st.labIp = false; draw(); } }, "Sıfırla")),
-    h("div", { class: "small mute" }, h("b", null, "Gözlem: "), L.gozlem, " ", h("b", null, "Kanıt: "), L.kanit));
+    h("div", { class: "small mute" }, h("b", null, "Gözlem: "), L.gozlem, " ", h("b", null, "Kanıt: "), L.kanit, " Çözümü görürsen o görev ilerleme olarak kalır ama kanıt yazılmaz."));
 }
 
 function vaSinav(st, L) {

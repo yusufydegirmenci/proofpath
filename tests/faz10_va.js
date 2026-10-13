@@ -129,13 +129,13 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   ok(await ev(() => /Yanlış\/eksik: siparis_id/.test(document.querySelector('[data-va-sonuc=g2]').textContent)), 'lab görev 2: tanımlayıcıyı tam sayı seçmek yanlış');
   await ev(() => { const s = document.querySelector('[data-va-tur="siparis_id"]'); s.value = 'tanımlayıcı'; s.dispatchEvent(new Event('change')); });
   await ev(() => document.querySelector('[data-va=g2]').click()); await p.waitForTimeout(200);
-  await ev(() => document.querySelector('[data-va=ipucu]').click()); await p.waitForTimeout(150);
+  await ev(() => document.querySelector('[data-va-gorev=g3] [data-cubuk=ipucu]').click()); await p.waitForTimeout(150);
   await ev(() => { PP_VA.lab.gorev3.forEach(i => document.querySelector('[data-va-ifade="' + i.id + ':' + i.destekler + '"]').click()); });
   await p.waitForTimeout(150);
   await ev(() => document.querySelector('[data-va=g3]').click()); await p.waitForTimeout(250);
   eq(await ev(() => PP.va.durum().lab.map(l => [l.tamam, l.ipucu])), [[true, false], [true, false], [true, true]].map((x, i) => i === 1 ? [true, false] : x), 'üç lab görevi kaydedildi (ipucu yalnız sonradan açılan görevlerde işaretli)');
   ok(await ev(() => /İpuçları/.test(document.querySelector('[data-va=lab]').textContent) && /yerel simülasyon/i.test(document.querySelector('[data-va=lab]').textContent)), 'lab ipucu gösterir ve "yerel simülasyon" etiketini taşır');
-  await ev(() => document.querySelector('[data-va=sifirla]').click()); await p.waitForTimeout(200);
+  await ev(() => ['g1', 'g2', 'g3'].forEach(g => document.querySelector('[data-va=sifirla-' + g + ']').click())); await p.waitForTimeout(200);
   eq(await ev(() => document.querySelectorAll('[data-va-sonuc]').length), 0, 'lab sıfırla cevapları temizler');
   eq(await ev(() => PP.va.durum().lab.every(l => l.tamam)), true, 'sıfırla kayıtlı ilerlemeyi silmez');
 
