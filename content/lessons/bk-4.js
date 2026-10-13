@@ -78,7 +78,7 @@
         "Hedef: Lambda, SQS, SNS, Step Functions, Kinesis, API hedefi vb. (kural başına birden fazla).",
         "EventBridge Scheduler: tek seferlik veya tekrarlayan zamanlanmış çağrılar."
       ] },
-      { t: "cmd", text: "{\n  \"source\": [\"aws.s3\"],\n  \"detail-type\": [\"Object Created\"],\n  \"detail\": { \"bucket\": { \"name\": [\"benim-kovam\"] } }\n}" },
+      { t: "cmd", lang: "json", text: "{\n  \"source\": [\"aws.s3\"],\n  \"detail-type\": [\"Object Created\"],\n  \"detail\": { \"bucket\": { \"name\": [\"benim-kovam\"] } }\n}" },
       { t: "box", h: "Zamanlama", text: "cron(0 2 * * ? *) her gün 02:00 UTC. rate(5 minutes) her 5 dakikada. Saat dilimi dikkat: cron ifadeleri varsayılan UTC'dir." },
       { t: "steps", h: "Ek özellikler", items: [
         "Arşiv ve yeniden oynatma (replay): geçmiş olayları tekrar işle.",
@@ -128,7 +128,7 @@
     blocks: [
       { t: "h", text: "Neden öğreniyoruz?" },
       { t: "box", h: "Gerçek talep", text: "Dev, test ve prod ortamlarının aynı olmasını istiyorsun. Elle kurulumda her ortam biraz farklıdır. Şablonla aynı altyapıyı her seferinde aynı kurarsın." },
-      { t: "cmd", text: "AWSTemplateFormatVersion: '2010-09-09'\nParameters:\n  Ortam: { Type: String, Default: dev }\nResources:\n  Kova:\n    Type: AWS::S3::Bucket\n    Properties:\n      BucketName: !Sub benim-kova-${Ortam}\nOutputs:\n  KovaAdi:\n    Value: !Ref Kova" },
+      { t: "cmd", lang: "yaml", text: "AWSTemplateFormatVersion: '2010-09-09'\nParameters:\n  Ortam: { Type: String, Default: dev }\nResources:\n  Kova:\n    Type: AWS::S3::Bucket\n    Properties:\n      BucketName: !Sub benim-kova-${Ortam}\nOutputs:\n  KovaAdi:\n    Value: !Ref Kova" },
       { t: "steps", h: "Şablon bölümleri", items: [
         "Resources (zorunlu): oluşturulacak kaynaklar.",
         "Parameters: dağıtımda verilen değerler.",
@@ -144,7 +144,7 @@
         "Stack policy: kritik kaynakları korur."
       ] },
       { t: "box", h: "SAM", text: "AWS SAM, CloudFormation'ın sunucusuz uzantısıdır. Transform: AWS::Serverless-2016-10-31 ile AWS::Serverless::Function, ::Api, ::SimpleTable gibi kısa tanımlar yazılır. sam build, sam local invoke, sam deploy --guided komutları vardır." },
-      { t: "cmd", text: "Transform: AWS::Serverless-2016-10-31\nResources:\n  Fn:\n    Type: AWS::Serverless::Function\n    Properties:\n      Runtime: python3.12\n      Handler: app.handler\n      CodeUri: src/\n      Events:\n        Api: { Type: Api, Properties: { Path: /merhaba, Method: get } }" },
+      { t: "cmd", lang: "yaml", text: "Transform: AWS::Serverless-2016-10-31\nResources:\n  Fn:\n    Type: AWS::Serverless::Function\n    Properties:\n      Runtime: python3.12\n      Handler: app.handler\n      CodeUri: src/\n      Events:\n        Api: { Type: Api, Properties: { Path: /merhaba, Method: get } }" },
       { t: "warn", h: "Tuzak", text: "Yığının yönettiği kaynağı konsoldan elle değiştirmek (drift). Bir sonraki dağıtımda değişikliğin üzerine yazılır veya hata alırsın. Değişiklik şablondan yapılmalıdır." }
     ],
     quiz: [
@@ -192,7 +192,7 @@
         "CodeDeploy: EC2, on-premises, Lambda ve ECS'ye dağıtım; appspec dosyası.",
         "CodePipeline: aşamaları (Source, Build, Test, Deploy, Approval) birleştiren orkestratör."
       ] },
-      { t: "cmd", text: "version: 0.2\nphases:\n  install:\n    commands: [pip install -r requirements.txt]\n  build:\n    commands: [pytest, sam build]\nartifacts:\n  files: ['**/*']" },
+      { t: "cmd", lang: "yaml", text: "version: 0.2\nphases:\n  install:\n    commands: [pip install -r requirements.txt]\n  build:\n    commands: [pytest, sam build]\nartifacts:\n  files: ['**/*']" },
       { t: "steps", h: "Dağıtım stratejileri", items: [
         "In-place (yerinde): mevcut örnekler güncellenir; kısa kesinti riski.",
         "Rolling: örnekler gruplar hâlinde güncellenir.",
@@ -303,7 +303,7 @@
     blocks: [
       { t: "h", text: "Neden öğreniyoruz?" },
       { t: "box", h: "Gerçek talep", text: "Uygulaman özel sistem kütüphaneleri istiyor ve Lambda sınırlarına sığmıyor. Konteynerleştirip ECR'a koyar, ECS ile Fargate üzerinde sunucu yönetmeden çalıştırırsın." },
-      { t: "cmd", text: "FROM python:3.12-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY . .\nEXPOSE 8080\nCMD [\"python\", \"app.py\"]" },
+      { t: "cmd", lang: "dockerfile", text: "FROM python:3.12-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install --no-cache-dir -r requirements.txt\nCOPY . .\nEXPOSE 8080\nCMD [\"python\", \"app.py\"]" },
       { t: "steps", h: "ECR", items: [
         "Yönetilen konteyner imaj deposu (private/public).",
         "aws ecr get-login-password ile docker login; docker tag + docker push.",

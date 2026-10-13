@@ -423,5 +423,65 @@ function kapiOrnek() {
   ok(O.depo.sifirla(R) && !('ya_pp_ogr' in R.m) && R.m.ya_lc === '{"a":1}', 'depo.sifirla: yalnız ya_pp_ogr kaldırılır, başka anahtar silinmez');
 }
 
+// ---- Faz 12 V1: ders şeması (isteğe bağlı alanlar) ve ders içeriği denetimi (content/lessons) ----
+{
+  const vm = require('vm');
+  const OD = O.ders;
+  const temel = (ek) => Object.assign({ hook: 'h', homework: 'ö', blocks: [{ t: 'p', text: 'x' }], quiz: [{ q: 'Soru?', options: ['A', 'B', 'C', 'D'], answer: 'B', why: 'çünkü' }] }, ek || {});
+  const bugun = '2026-10-13';
+  // eski ders (yeni alan yok) hata vermez; yalnız "eksik" sayılır
+  let r = OD.denetle({ x: { 1: temel() } }, null, bugun);
+  eq(r.hata, [], 'şema: yeni alanı olmayan eski ders hatasız');
+  eq([r.eksik[0].objectivesYok, r.eksik[0].ozetYok, r.eksik[0].whyNotEksik, r.eksik[0].dogrulamaYok], [true, true, 3, true], 'şema: eksik raporu hedef, özet, whyNot (3 yanlış seçenek) ve doğrulama eksiğini söyler');
+  // geçerli yeni alanlar
+  const tam = temel({ objectives: ['Bir isteği okuyabilir', { id: 'h2', text: 'Durum kodunu yorumlayabilir' }], summary: ['a', 'b', 'c'], prereq: [], minutes: 20, sonDogrulama: '2026-10-01', surum: '1',
+    quiz: [{ q: 'Soru?', options: ['A', 'B', 'C', 'D'], answer: 'B', why: 'çünkü', obj: 'h1', whyNot: { A: 'a değil', C: 'c değil', D: 'd değil' } }] });
+  r = OD.denetle({ x: { 1: tam, 2: temel({ prereq: [1] }) } }, null, bugun);
+  eq(r.hata, [], 'şema: geçerli objectives/summary/prereq/minutes/sonDogrulama/surum/obj/whyNot hatasız');
+  eq([r.say.hedefli, r.say.ozetli, r.say.dogrulamali, r.say.whyNotVar], [1, 1, 1, 3], 'şema: sayaçlar (hedefli, özetli, doğrulamalı, whyNot)');
+  eq(r.eksik[0].hedefSorusuz, ['h2'], 'şema: soru eşlemesi olmayan hedef (h2) raporlanır');
+  eq(OD.hedefler(tam).map(x => x.id + ':' + x.text), ['h1:Bir isteği okuyabilir', 'h2:Durum kodunu yorumlayabilir'], 'hedefler: dizgi ve nesne biçimi aynı sonuca normalleşir');
+  eq([OD.secenekNedeni(tam.quiz[0], 'A'), OD.secenekNedeni(tam.quiz[0], 'B'), OD.secenekNedeni(tam.quiz[0], 'yok'), OD.secenekNedeni(temel().quiz[0], 'A')], ['a değil', null, null, null], 'secenekNedeni: yalnız yanlış seçenek için, doğru seçenek ve alan yokken null');
+  // bozuk alanlar yakalanır (her biri ayrı)
+  const kotu = (ek, parca, m) => { const x = OD.denetle({ x: { 1: temel(ek), 2: temel() } }, null, bugun).hata.join(' | '); ok(x.indexOf(parca) >= 0, 'şema hatası yakalanır: ' + m + (x.indexOf(parca) >= 0 ? '' : ' → ' + x)); };
+  const q = (ek) => [Object.assign({ q: 'S?', options: ['A', 'B'], answer: 'B', why: 'w' }, ek)];
+  kotu({ objectives: ['tek'] }, 'objectives 2-4', 'tek hedef');
+  kotu({ objectives: ['a', 'b', 'c', 'd', 'e'] }, 'objectives 2-4', 'beş hedef');
+  kotu({ objectives: ['a', ''] }, 'objectives 2-4', 'boş hedef metni');
+  kotu({ quiz: q({ obj: 'h9' }), objectives: ['a', 'b'] }, 'bilinmeyen hedefe', 'olmayan hedefe obj');
+  kotu({ quiz: q({ whyNot: { Z: 'x' } }) }, 'seçenek değil', 'whyNot anahtarı seçenek değil');
+  kotu({ quiz: q({ whyNot: { B: 'x' } }) }, 'doğru seçenek için', 'whyNot doğru seçenek için');
+  kotu({ quiz: q({ whyNot: { A: ' ' } }) }, 'metni boş', 'whyNot boş metin');
+  kotu({ quiz: q({ answer: 'Z' }) }, 'answer seçeneklerde yok', 'cevap seçeneklerde yok');
+  kotu({ summary: ['a', 'b'] }, 'summary 3-5', 'iki maddelik özet');
+  kotu({ prereq: [9] }, 'bilinmeyen ders', 'olmayan önkoşul');
+  kotu({ prereq: [1] }, 'kendi önkoşulu', 'kendi önkoşulu');
+  kotu({ minutes: 0 }, 'minutes 1-120', 'sıfır dakika');
+  kotu({ sonDogrulama: '2026-13-40' }, 'sonDogrulama YYYY-AA-GG', 'geçersiz tarih');
+  kotu({ sonDogrulama: '2027-01-01' }, 'gelecekte', 'gelecek tarihli doğrulama');
+  kotu({ hook: '' }, 'hook yok', 'zorunlu alan: hook');
+  kotu({ quiz: [] }, 'quiz yok', 'zorunlu alan: quiz');
+  // döngü ve kopya başlık
+  const dong = OD.denetle({ x: { 1: temel({ prereq: [2] }), 2: temel({ prereq: [1] }) } }, null, bugun).hata.join(' | ');
+  ok(/önkoşul döngüsü/.test(dong), 'önkoşul döngüsü yakalanır: ' + dong);
+  eq(OD.denetle({ x: { 1: temel(), 2: temel() } }, { x: ['Aynı', 'Aynı'] }, bugun).hata.length, 1, 'kopya ders başlığı yakalanır');
+  // son doğrulama etiketi ve bayat uyarısı (6 ay = 183 gün)
+  eq([OD.dogrulamaDurumu({ sonDogrulama: '2026-10-01' }, bugun), OD.dogrulamaDurumu({}, bugun), OD.dogrulamaDurumu({ sonDogrulama: 'x' }, bugun)], [{ bayat: false, gun: 12, etiket: 'son doğrulama: 2026-10-01' }, null, null], 'doğrulama durumu: güncel / yok / geçersiz');
+  eq([OD.dogrulamaDurumu({ sonDogrulama: '2026-04-12' }, bugun).bayat, OD.dogrulamaDurumu({ sonDogrulama: '2026-04-13' }, bugun).bayat], [true, false], 'doğrulama durumu: 183 günden eski = bayat (2026-04-12 = 184 gün bayat, 2026-04-13 = 183 gün değil)');
+
+  // gerçek içerik: content/lessons/*.js, index.html'deki sırayla
+  const html = fs.readFileSync(path.join(__dirname, '..', 'index.html'), 'utf8');
+  const win = {}, ctx = { window: win, console }; ctx.self = ctx.globalThis = win; vm.createContext(ctx);
+  [...html.matchAll(/<script src="(content\/lessons\/[^"]+)"/g)].forEach(m => vm.runInContext(fs.readFileSync(path.join(__dirname, '..', m[1]), 'utf8'), ctx, { filename: m[1] }));
+  const sinif = fs.readFileSync(path.join(__dirname, '..', 'js', 'sinif', 'sinif.js'), 'utf8');
+  const bas = sinif.indexOf('var STARTER='), bit = sinif.indexOf('function starterTopics', bas);
+  const basliklar = {};
+  if (bas >= 0 && bit > bas) { const S_ = vm.runInNewContext('(function(){' + sinif.slice(bas, bit) + ';return STARTER})()'); Object.keys(S_).forEach(y => { basliklar[y] = S_[y].map(x => x[0]); }); }
+  ok(Object.keys(basliklar).length >= 4, 'ders başlıkları (STARTER) okundu: ' + Object.keys(basliklar).join(','));
+  const g = OD.denetle(win.PP_LESSONS, basliklar, bugun);
+  eq(g.hata, [], 'ders içeriği (content/lessons): ' + g.say.ders + ' ders, ' + g.say.soru + ' soru; zorunlu alanlar, soru/cevap, whyNot/obj/summary/prereq geçerliliği, önkoşul döngüsü ve kopya başlık yok');
+  ok(g.say.ders >= 90 && g.say.soru >= 400, 'ders içeriği kapsamı beklenenden küçük değil (' + g.say.ders + ' ders, ' + g.say.soru + ' soru)');
+}
+
 console.log(`\n${n} kontrol, ${fails} hata`);
 process.exit(fails ? 1 : 0);

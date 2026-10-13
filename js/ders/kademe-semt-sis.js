@@ -186,12 +186,20 @@ function cleanLesson(l){
     r.items=Array.isArray(b.items)?b.items.map(str):[];
     r.parts=objs(b.parts).map(function(p){return pick(p,["tr","q","en"])});
     return r});
-  l.quiz=objs(l.quiz).map(function(q){var r=pick(q,["q","answer","why"]);r.options=Array.isArray(q.options)?q.options.map(str):null;return r});
+  l.quiz=objs(l.quiz).map(function(q){var r=pick(q,["q","answer","why","obj"]);r.options=Array.isArray(q.options)?q.options.map(str):null;
+    if(q.whyNot&&typeof q.whyNot==="object"&&!Array.isArray(q.whyNot)){r.whyNot={};Object.keys(q.whyNot).forEach(function(k){if(typeof q.whyNot[k]==="string")r.whyNot[k]=q.whyNot[k]})}
+    return r});
   l.interview=objs(l.interview).map(function(x){return pick(x,["q","a"])});
   l.vocab=objs(l.vocab).map(function(x){return pick(x,["term","tr","ex"])});
   l.resources=objs(l.resources).map(function(x){return pick(x,["title","url","query","type","why","length","level","lang"])});
   l.sources=objs(l.sources).map(function(x){return pick(x,["title","url"])});
   l.warmup=cleanWarm(l.warmup);
+  /* Faz 12 V1: isteğe bağlı şema alanları (yoksa boş; eski dersler aynen çalışır) */
+  l.objectives=window.PP&&PP.ogr&&PP.ogr.ders?PP.ogr.ders.hedefler(l):[];
+  l.summary=Array.isArray(l.summary)?l.summary.map(str).filter(Boolean):[];
+  l.prereq=Array.isArray(l.prereq)?l.prereq.map(str).filter(Boolean):[];
+  l.minutes=typeof l.minutes==="number"&&l.minutes>0?l.minutes:0;
+  l.sonDogrulama=str(l.sonDogrulama);l.surum=str(l.surum);
   l.story=l.story&&typeof l.story==="object"&&!Array.isArray(l.story)?pick(l.story,["title","text","question"]):null;
   return l;
 }

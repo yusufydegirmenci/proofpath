@@ -225,7 +225,7 @@
         "SSRF: sunucuyu iç ağa istek yaptırmak. Savunma: URL beyaz liste, iç ağ erişimini sınırlama.",
         "Race condition / TOCTOU: kontrol ile kullanım arasındaki zaman farkını suistimal etmek."
       ] },
-      { t: "cmd", text: "# Savunmasız:   SELECT * FROM users WHERE name = '" + "$girdi" + "'\n# Girdi:         ' OR '1'='1\n# Sonuç:        tüm kullanıcılar döner\n\n# Güvenli (parametreli):\n# SELECT * FROM users WHERE name = ?   -- değer sorgudan ayrı gönderilir" },
+      { t: "cmd", lang: "text", calistirma: "atla yorum satırlarıyla anlatılan SQL enjeksiyon örneği; çalıştırılacak kod yok", text: "# Savunmasız:   SELECT * FROM users WHERE name = '" + "$girdi" + "'\n# Girdi:         ' OR '1'='1\n# Sonuç:        tüm kullanıcılar döner\n\n# Güvenli (parametreli):\n# SELECT * FROM users WHERE name = ?   -- değer sorgudan ayrı gönderilir" },
       { t: "box", h: "Ortak kök", text: "Hepsinde veri ile komutun karışması vardır. Çözüm ortak: girdiyi doğrula, çıktıyı encode et, parametreli arayüz kullan, en az yetki ver." },
       { t: "steps", h: "Güvenli yazılım yöntemleri", items: [
         "Girdi doğrulama (beyaz liste) ve çıktı kodlama.",

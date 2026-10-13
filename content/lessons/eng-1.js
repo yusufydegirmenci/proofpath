@@ -58,12 +58,23 @@
       { t: "warn", h: "Tuzak", text: "'I am 30 years old' diyebilirsin ama 'I have 30 years' diyemezsin. Yaş için 'be' fiili kullanılır. Ayrıca iş için 'I work as...' der, 'I work like...' demezsin." }
     ],
     story: { title: "Ayşe'nin ilk günü", text: "Ayşe bugün yeni bir şirkette başladı. Masasına oturdu. Yanındaki kişi gülümsedi: 'Hi, I'm Mark. I'm in the finance team. Nice to meet you!' Ayşe de gülümsedi: 'Hi, I'm Ayşe. I work as an IT support specialist. Nice to meet you too.'", question: "Ayşe'nin işi nedir? (İngilizce cevapla)" },
+    objectives: [
+      { id: "h1", text: "'I' için 'am', 'he/she/it' için 'is', 'you/we/they' için 'are' fiilini seçebilirsin." },
+      { id: "h2", text: "Kendini üç cümleyle (isim, iş, yer) İngilizce tanıtabilirsin." },
+      { id: "h3", text: "Tanışma cümlesine doğal karşılık verebilir ('Nice to meet you too') ve 'Where are you from?' sorusunu cevaplayabilirsin." }
+    ],
+    summary: [
+      "I → am, he/she/it → is, you/we/they → are; kısa yazımlar: I'm, she's, you're.",
+      "Kendini tanıtma formülü: adın (I'm ...), işin (I work as ... at ...), yerin (I'm from ... and I live in ...).",
+      "Meslek için 'I work as ...' denir ('like' değil); yaş için 'be' fiili kullanılır ('I am 30', 'I have 30' değil).",
+      "'Nice to meet you.' cümlesine 'Nice to meet you too.' diye karşılık verilir."
+    ],
     quiz: [
-      { q: "'I ___ from Turkey.' boşluğa hangisi gelir?", options: ["am", "is", "are", "be"], answer: "am", why: "'I' öznesiyle 'am' kullanılır." },
-      { q: "'Bir BT yöneticisi olarak çalışıyorum.' cümlesinin İngilizcesi hangisidir?", options: ["I work as an IT administrator.", "I am work as an IT administrator.", "I works like IT administrator.", "I working IT administrator."], answer: "I work as an IT administrator.", why: "Alışkanlık ve meslek için present simple: I work as ..." },
-      { q: "Biri 'Nice to meet you.' dedi. Doğal cevap hangisidir?", options: ["Nice to meet you too.", "I am fine, thanks.", "Yes, please.", "See you later."], answer: "Nice to meet you too.", why: "Aynı cümle karşılıklı söylenir: 'Nice to meet you too.'" },
-      { q: "'Where are you from?' sorusuna hangi cevap uygundur?", options: ["I'm from Turkey.", "I'm fine.", "I'm 30 years old.", "I like pizza."], answer: "I'm from Turkey.", why: "'Where are you from?' nereli olduğunu sorar." },
-      { q: "Hangisi doğru cümledir?", options: ["She is a network engineer.", "She are a network engineer.", "She am a network engineer.", "She be a network engineer."], answer: "She is a network engineer.", why: "'She' ile 'is' kullanılır." }
+      { q: "'I ___ from Turkey.' boşluğa hangisi gelir?", options: ["am", "is", "are", "be"], answer: "am", why: "'I' öznesiyle 'am' kullanılır.", obj: "h1", whyNot: { "is": "'is' he/she/it ile kullanılır; 'I' ile değil.", "are": "'are' you/we/they ile kullanılır.", "be": "'be' fiilin yalın hâlidir; özneye göre am/is/are olur, 'I be from Turkey' standart İngilizcede doğru değildir." } },
+      { q: "'Bir BT yöneticisi olarak çalışıyorum.' cümlesinin İngilizcesi hangisidir?", options: ["I work as an IT administrator.", "I am work as an IT administrator.", "I works like IT administrator.", "I working IT administrator."], answer: "I work as an IT administrator.", why: "Alışkanlık ve meslek için present simple: I work as ...", obj: "h2", whyNot: { "I am work as an IT administrator.": "'am' ile düz 'work' birlikte olmaz; alışkanlık için present simple'da yalnızca 'I work' denir.", "I works like IT administrator.": "'I' ile fiile -s eklenmez ('work', 'works' değil) ve meslek için 'like' değil 'as' kullanılır.", "I working IT administrator.": "'working' yardımcı fiil olmadan kullanılamaz (I am working ...); ayrıca meslek bildiren 'as' eksik." } },
+      { q: "Biri 'Nice to meet you.' dedi. Doğal cevap hangisidir?", options: ["Nice to meet you too.", "I am fine, thanks.", "Yes, please.", "See you later."], answer: "Nice to meet you too.", why: "Aynı cümle karşılıklı söylenir: 'Nice to meet you too.'", obj: "h3", whyNot: { "I am fine, thanks.": "Bu 'How are you?' sorusunun cevabıdır; tanışma cümlesine karşılık değildir.", "Yes, please.": "'Yes, please' bir teklifi kabul etmektir; tanışmaya karşılık vermez.", "See you later.": "Vedalaşma cümlesidir; tanışırken söylenmez." } },
+      { q: "'Where are you from?' sorusuna hangi cevap uygundur?", options: ["I'm from Turkey.", "I'm fine.", "I'm 30 years old.", "I like pizza."], answer: "I'm from Turkey.", why: "'Where are you from?' nereli olduğunu sorar.", obj: "h3", whyNot: { "I'm fine.": "'How are you?' sorusuna 'I'm fine' denir; 'Where are you from?' bir yer sorusudur, cevabı 'I'm from ...' kalıbıyla başlar.", "I'm 30 years old.": "Yaşı söyler; soru yaşı değil, nereli olduğunu soruyor.", "I like pizza.": "Bir zevki anlatır; sorunun nereli olduğunu sormasıyla ilgisi yok." } },
+      { q: "Hangisi doğru cümledir?", options: ["She is a network engineer.", "She are a network engineer.", "She am a network engineer.", "She be a network engineer."], answer: "She is a network engineer.", why: "'She' ile 'is' kullanılır.", obj: "h1", whyNot: { "She are a network engineer.": "'are' you/we/they ile kullanılır; 'she' için 'is' gerekir.", "She am a network engineer.": "'am' yalnızca 'I' ile kullanılır.", "She be a network engineer.": "'be' yalın fiildir; 'she' ile 'is' (kısaca she's) kullanılır." } }
     ],
     interview: [
       { q: "Can you introduce yourself?", a: "Hello, my name is ___. I work as an IT administrator at a global company. I live in [şehir]. I look after the network, the users and the computers. I'm learning English and networking to improve my career. Nice to meet you." },
@@ -440,7 +451,7 @@
         "6) Closing (kapanış): 'Best regards,' / 'Kind regards,' ve adın."
       ] },
       { t: "h", text: "Örnek e-posta" },
-      { t: "cmd", text: "Subject: Server maintenance on Saturday 22:00\n\nHi Mark,\n\nI'm writing to inform you that we will do server maintenance on Saturday at 22:00.\nThe email system will be offline for about two hours.\n\nCould you please let your team know?\nPlease contact me if you have any questions.\n\nBest regards,\n[Adın]" },
+      { t: "cmd", lang: "text", calistirma: "atla e-posta metni; kod değil", text: "Subject: Server maintenance on Saturday 22:00\n\nHi Mark,\n\nI'm writing to inform you that we will do server maintenance on Saturday at 22:00.\nThe email system will be offline for about two hours.\n\nCould you please let your team know?\nPlease contact me if you have any questions.\n\nBest regards,\n[Adın]" },
       { t: "h", text: "Yararlı kalıplar" },
       { t: "steps", h: "Amaç, istek, teşekkür", items: [
         "I'm writing to ... (…için yazıyorum)",

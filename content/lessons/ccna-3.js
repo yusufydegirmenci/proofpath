@@ -48,7 +48,7 @@
         "Dokümantasyon adresi: 2001:db8::/32. Örneklerde bunu kullanırız."
       ] },
       { t: "h", text: "Cisco router'da yapılandırma" },
-      { t: "cmd", text: "Router(config)# ipv6 unicast-routing\nRouter(config)# interface gigabitethernet0/0\nRouter(config-if)# ipv6 address 2001:db8:acad:1::1/64\nRouter(config-if)# ipv6 address fe80::1 link-local\nRouter(config-if)# no shutdown\n\n# Static route:\nRouter(config)# ipv6 route 2001:db8:acad:2::/64 2001:db8:acad:12::2\n\nRouter# show ipv6 interface brief\nRouter# show ipv6 route" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Router(config)# ipv6 unicast-routing\nRouter(config)# interface gigabitethernet0/0\nRouter(config-if)# ipv6 address 2001:db8:acad:1::1/64\nRouter(config-if)# ipv6 address fe80::1 link-local\nRouter(config-if)# no shutdown\n\n# Static route:\nRouter(config)# ipv6 route 2001:db8:acad:2::/64 2001:db8:acad:12::2\n\nRouter# show ipv6 interface brief\nRouter# show ipv6 route" },
       { t: "box", h: "Neden 'ipv6 unicast-routing'?", text: "Bu komut olmadan Cisco router IPv6 paketleri yönlendirmez. Arayüze adres verdin diye router otomatik yönlendirici olmaz." },
       { t: "warn", h: "Tuzak", text: "'::' bir adreste yalnızca bir kez kullanılabilir. 2001::db8::1 geçersizdir, çünkü kaç sıfır grubunun nereye gittiği belirsiz olur." }
     ],
@@ -112,7 +112,7 @@
         "RSTP (802.1w) bunu saniyeler içine indirir. Durumlar: Discarding, Learning, Forwarding.",
         "Cisco'nun varsayılanı PVST+: her VLAN için ayrı STP örneği."
       ] },
-      { t: "cmd", text: "Switch# show spanning-tree\nSwitch(config)# spanning-tree mode rapid-pvst\nSwitch(config)# spanning-tree vlan 1 root primary\nSwitch(config)# spanning-tree vlan 1 priority 4096\n\n# Bilgisayar portu için (uç cihaz):\nSwitch(config-if)# spanning-tree portfast\nSwitch(config-if)# spanning-tree bpduguard enable" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Switch# show spanning-tree\nSwitch(config)# spanning-tree mode rapid-pvst\nSwitch(config)# spanning-tree vlan 1 root primary\nSwitch(config)# spanning-tree vlan 1 priority 4096\n\n# Bilgisayar portu için (uç cihaz):\nSwitch(config-if)# spanning-tree portfast\nSwitch(config-if)# spanning-tree bpduguard enable" },
       { t: "steps", h: "PortFast ve BPDU Guard", items: [
         "PortFast: uç cihaz portunu beklemeden hemen forwarding yapar. Bilgisayar anında bağlanır.",
         "BPDU Guard: PortFast'li porta yanlışlıkla bir switch takılırsa (BPDU gelirse) portu kapatır. Döngü riskini önler.",
@@ -125,7 +125,7 @@
         "PAgP: Cisco'ya özel. Modlar: desirable, auto.",
         "On: protokol yok, elle zorla. Karşı taraf da 'on' olmalı."
       ] },
-      { t: "cmd", text: "Switch(config)# interface range gigabitethernet0/1-2\nSwitch(config-if-range)# channel-group 1 mode active\nSwitch(config)# interface port-channel 1\nSwitch(config-if)# switchport mode trunk\n\nSwitch# show etherchannel summary" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Switch(config)# interface range gigabitethernet0/1-2\nSwitch(config-if-range)# channel-group 1 mode active\nSwitch(config)# interface port-channel 1\nSwitch(config-if)# switchport mode trunk\n\nSwitch# show etherchannel summary" },
       { t: "warn", h: "Tuzak", text: "EtherChannel'da bağlanan portların hız, duplex, VLAN ve trunk ayarları aynı olmalıdır. Biri farklıysa kanal oluşmaz. Ayrıca iki taraf 'passive-passive' ya da 'auto-auto' kalırsa kimse teklif etmez ve kanal kurulmaz." }
     ],
     quiz: [
@@ -174,7 +174,7 @@
       { t: "box", h: "Gerçek talep", text: "Dün gece 03:12'de ağda bir kesinti oldu. Üç farklı cihazın log'una bakıyorsun ve saatler birbirini tutmuyor; hangi olay önce oldu anlayamıyorsun. Ayrıca 200 cihazı tek tek açıp kontrol etmek yerine merkezden izlemek istiyorsun. NTP, Syslog ve SNMP bunun için." },
       { t: "h", text: "NTP: herkes aynı saatte" },
       { t: "p", text: "NTP (Network Time Protocol), ağdaki cihazların saatini güvenilir bir kaynağa göre eşitler (UDP 123). Log'larda doğru sıra, sertifika geçerliliği ve güvenlik denetimi için doğru saat şarttır. Kaynakların güvenilirlik katmanına 'stratum' denir; 0 atomik saat, 1 ona bağlı sunucu, sayı büyüdükçe kaynaktan uzaklaşılır." },
-      { t: "cmd", text: "Router(config)# ntp server 10.0.0.5\nRouter# show ntp status\nRouter# show ntp associations\nRouter# show clock" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Router(config)# ntp server 10.0.0.5\nRouter# show ntp status\nRouter# show ntp associations\nRouter# show clock" },
       { t: "h", text: "Syslog: merkezi olay günlüğü" },
       { t: "p", text: "Cihazlar olayları (arayüz açıldı, yapılandırma değişti, hata) mesaj olarak üretir. Syslog bunları konsola, belleğe ya da merkezi bir sunucuya (UDP 514) gönderir. Her mesajın 0 ile 7 arasında bir önem seviyesi vardır." },
       { t: "steps", h: "Syslog seviyeleri (0 en ciddi)", items: [
@@ -188,7 +188,7 @@
         "7 Debugging: hata ayıklama ayrıntısı"
       ] },
       { t: "box", h: "Ezber ipucu", text: "Seviye sayısı küçüldükçe olay ciddileşir. 'logging trap warnings' dersen 4 ve daha küçük (0-4) seviyeler sunucuya gider." },
-      { t: "cmd", text: "Router(config)# service timestamps log datetime msec\nRouter(config)# logging host 10.0.0.9\nRouter(config)# logging trap warnings\nRouter# show logging" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Router(config)# service timestamps log datetime msec\nRouter(config)# logging host 10.0.0.9\nRouter(config)# logging trap warnings\nRouter# show logging" },
       { t: "h", text: "SNMP: izleme ve yönetim" },
       { t: "p", text: "SNMP (Simple Network Management Protocol), bir yönetim istasyonunun (manager) cihazlardaki küçük yazılımlardan (agent) bilgi alıp ayar yapmasını sağlar. Cihazın bilgileri MIB denen bir veri ağacında OID numaralarıyla tutulur (örneğin CPU, arayüz trafiği)." },
       { t: "steps", h: "Temel bilgiler", items: [
@@ -197,7 +197,7 @@
         "SNMPv1 ve v2c: topluluk adı (community string) ile çalışır, şifresizdir. Zayıf.",
         "SNMPv3: kimlik doğrulama ve şifreleme sunar. Mümkünse bunu kullan."
       ] },
-      { t: "cmd", text: "# Salt okunur topluluk (örnek isim; gerçekte tahmin edilmesi zor bir değer kullan):\nRouter(config)# snmp-server community <topluluk-adi> ro\nRouter(config)# snmp-server host 10.0.0.9 version 2c <topluluk-adi>" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "# Salt okunur topluluk (örnek isim; gerçekte tahmin edilmesi zor bir değer kullan):\nRouter(config)# snmp-server community <topluluk-adi> ro\nRouter(config)# snmp-server host 10.0.0.9 version 2c <topluluk-adi>" },
       { t: "warn", h: "Tuzak", text: "'public' ve 'private' gibi varsayılan topluluk adları saldırganların ilk dediği şeydir. Yazma (rw) yetkisini gereksiz yere açma. Yeni kurulumlarda SNMPv3 tercih et." }
     ],
     quiz: [
@@ -341,9 +341,10 @@
         "DELETE: sil (Delete)",
         "Yanıt kodları: 200 başarılı, 201 oluşturuldu, 400 hatalı istek, 401 yetkisiz, 404 bulunamadı, 500 sunucu hatası."
       ] },
-      { t: "cmd", text: "curl -X GET https://api.ornek.com/devices -H \"Accept: application/json\"" },
+      { t: "cmd", lang: "bash", text: "curl -X GET https://api.ornek.com/devices -H \"Accept: application/json\"" },
       { t: "h", text: "Veri formatları" },
-      { t: "cmd", text: "# JSON\n{\n  \"hostname\": \"R1\",\n  \"interfaces\": [\n    { \"name\": \"Gi0/0\", \"ip\": \"10.0.0.1\" },\n    { \"name\": \"Gi0/1\", \"ip\": \"192.168.10.1\" }\n  ]\n}\n\n# YAML (aynı veri)\nhostname: R1\ninterfaces:\n  - name: Gi0/0\n    ip: 10.0.0.1\n  - name: Gi0/1\n    ip: 192.168.10.1" },
+      { t: "cmd", lang: "json", text: "# JSON\n{\n  \"hostname\": \"R1\",\n  \"interfaces\": [\n    { \"name\": \"Gi0/0\", \"ip\": \"10.0.0.1\" },\n    { \"name\": \"Gi0/1\", \"ip\": \"192.168.10.1\" }\n  ]\n}" },
+      { t: "cmd", lang: "yaml", text: "# YAML (aynı veri)\nhostname: R1\ninterfaces:\n  - name: Gi0/0\n    ip: 10.0.0.1\n  - name: Gi0/1\n    ip: 192.168.10.1" },
       { t: "steps", h: "Farkları", items: [
         "JSON: süslü parantez ve tırnak kullanır, API'lerde çok yaygın.",
         "YAML: girinti ile yazılır, insan için daha okunur. Ansible dosyalarında kullanılır.",

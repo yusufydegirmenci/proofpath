@@ -27,7 +27,7 @@
         "Üst sınır: en fazla N deneme ve toplam süre.",
         "AWS SDK'ları bunu varsayılan yapar; ayarlanabilir."
       ] },
-      { t: "cmd", text: "import random, time\ndef cagir(fn, deneme=5):\n    for i in range(deneme):\n        try:\n            return fn()\n        except GeciciHata:\n            time.sleep(random.uniform(0, min(10, 0.1 * 2 ** i)))\n    raise" },
+      { t: "cmd", lang: "python", text: "import random, time\ndef cagir(fn, deneme=5):\n    for i in range(deneme):\n        try:\n            return fn()\n        except GeciciHata:\n            time.sleep(random.uniform(0, min(10, 0.1 * 2 ** i)))\n    raise" },
       { t: "steps", h: "Idempotency nasıl sağlanır?", items: [
         "İstemci benzersiz anahtar üretir (UUID) ve her tekrarda aynı anahtarı gönderir.",
         "Sunucu anahtarı kaydeder: işlenmişse kayıtlı sonucu döner, yeniden işlemez.",
@@ -330,7 +330,7 @@
         "Süre: 15 dakika - 12 saat (rol ayarına göre; varsayılan 1 saat).",
         "Oturum politikası ile yetki daha da daraltılabilir; rol izin sınırını aşamaz."
       ] },
-      { t: "cmd", text: "aws sts assume-role \\\n  --role-arn arn:aws:iam::222222222222:role/UretimDeploy \\\n  --role-session-name ci-dagitim" },
+      { t: "cmd", lang: "bash", text: "aws sts assume-role \\\n  --role-arn arn:aws:iam::222222222222:role/UretimDeploy \\\n  --role-session-name ci-dagitim" },
       { t: "box", h: "Hesaplar arası erişim", text: "İki taraf gerekir: (1) Hedef hesaptaki rolün güven politikası kaynak hesabı/rolü Principal olarak ister. (2) Kaynak hesaptaki kimliğin kimlik politikası sts:AssumeRole iznini ister. İkisi de olmazsa AccessDenied." },
       { t: "box", h: "Güvenlik ayrıntıları", text: "ExternalId: üçüncü taraf erişiminde 'confused deputy' saldırısını önler. MFA koşulu: güven politikasına aws:MultiFactorAuthPresent. Oturum etiketleri ve CloudTrail'de oturum adıyla izlenebilirlik." },
       { t: "warn", h: "Tuzak", text: "Geçici kimlik bilgilerini dosyaya yazıp uzun süre kullanmak ve SessionToken'ı atlamak. SDK/CLI profilleri rolü otomatik üstlenip yeniler; elle token taşımayı azalt." }

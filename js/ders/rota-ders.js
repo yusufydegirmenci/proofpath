@@ -111,6 +111,7 @@ function askCoach(l,text){
   draw();
 }
 function lessonMinutes(l){
+  if(typeof l.minutes==="number"&&l.minutes>0)return Math.round(l.minutes);
   var w=0;(l.blocks||[]).forEach(function(b){w+=(b.text+" "+b.h+" "+b.items.join(" ")+" "+b.parts.map(function(p){return p.tr+p.q+p.en}).join(" ")).split(/\s+/).length});
   return Math.max(5,Math.ceil(w/150)+(l.quiz||[]).length*2+(l.interview||[]).length);
 }
