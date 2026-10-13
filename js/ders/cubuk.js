@@ -19,7 +19,9 @@
   function guncelle(id, f) { var m = depoOku(), e = Object.assign({}, m[id] || {}); f(e); m[id] = e; return depoYaz(m); }
 
   var yenileyici = {};   /* id → çubuğu yeniden çizen son işlev (yanlış deneme kaydedilince düğme durumu güncellensin) */
-  function yenile(id) { if (yenileyici[id]) try { yenileyici[id](); } catch (e) { /* yoksay */ } }
+  function yenile(id) { if (yenileyici[id]) try { yenileyici[id](); } catch (e) { /* yoksay */ } degisti(id); }
+  /* Aynı dersin başka panelleri (ör. SQL alanı ↔ Sıra alıştırması çözüm durumu) kendini tazelesin diye belge olayı */
+  function degisti(id) { try { if (g.document && g.document.dispatchEvent && g.CustomEvent) g.document.dispatchEvent(new g.CustomEvent("pp-cubuk", { detail: id })); } catch (e) { /* yoksay */ } }
 
   function durum(id) {
     var e = depoOku()[id] || {};
@@ -122,5 +124,5 @@
     return kutu;
   }
 
-  PP.cubuk = { ESIK: ESIK, KADEME: KADEME, durum: durum, yanlis: yanlis, ipucuAc: ipucuAc, cozumAcik: cozumAcik, cozumGor: cozumGor, kanitSayilir: kanitSayilir, ipucuKullanildi: ipucuKullanildi, kademeler: kademeler, ozet: ozet, kur: kur, SORULAR: SORULAR };
+  PP.cubuk = { ESIK: ESIK, KADEME: KADEME, durum: durum, yanlis: yanlis, ipucuAc: ipucuAc, cozumAcik: cozumAcik, cozumGor: cozumGor, degisti: degisti, kanitSayilir: kanitSayilir, ipucuKullanildi: ipucuKullanildi, kademeler: kademeler, ozet: ozet, kur: kur, SORULAR: SORULAR };
 })(typeof window !== "undefined" ? window : globalThis);

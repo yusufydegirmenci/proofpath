@@ -140,5 +140,22 @@
     return { terimler: terimler.slice(0, 8), ornekTanitim: (def && def.pitch) || (rol && rol.en1) || null, not: "Örnek tanıtım cümlesi bir şablondur; İngilizce yetkinliğin kanıtı değildir (İngilizce yolundaki sınavlar ayrıdır)." };
   }
 
-  PP.rapor = { DURUMLAR: DURUMLAR, TANIM_ALANLARI: TANIM_ALANLARI, tanimDenetimi: tanimDenetimi, olustur: olustur, isverenGorunumu: isverenGorunumu, cv: cv, bosluk: bosluk, ingilizce: ingilizce };
+  /* W1: "İş yazışmalarım" — ders sonu İngilizce iş senaryosu cevapları (PP.senaryo.portfoyKayitlari). Hepsi "doğrulanmamış": otomatik denetim yapı ve anahtar kavramı sayar,
+     anlamı/dilbilgisini değerlendirmez; kimse okumadı. Yetkinlik durumu (DURUMLAR) üretmez, genelDurum'u etkilemez. Gizli işaretli kayıtlar dışa aktarmaya girmez; özel not/ders notu bu işleve hiç verilmez. */
+  function isYazismalari(kayitlar) {
+    var hepsi = (kayitlar || []).filter(function (k) { return k && typeof k.id === "string"; }), acik = hepsi.filter(function (k) { return !k.gizli; });
+    var iddialar = acik.map(function (k) {
+      return { id: "yazi-" + k.id, metin: "İş yazışması taslağı yazıldı: " + k.baslik + " (" + k.sablon + ", " + k.kelime + " kelime)", durum: "dogrulanmamis", etiket: "doğrulanmamış",
+        kanit: [{ kaynak: "iş yazışması (yerel kayıt)", ayrinti: (k.tarih || "") + " · yapı " + (k.yapiTamam ? "tamam" : "eksik") + " · anahtar kavram " + k.kavram + " · öz-karşılaştırma " + k.kontrolOz, guven: "beyan" }] };
+    });
+    return { baslik: "İş yazışmalarım", etiket: "doğrulanmamış", sayi: acik.length, gizli: hepsi.length - acik.length, iddialar: iddialar,
+      not: "Bu yazılar öz-beyandır: otomatik denetim yalnız yapıyı ve anahtar kavramı sayar, anlamı ve dilbilgisini değerlendirmez; yetkinlik, not ya da ustalık kanıtı sayılmaz." };
+  }
+  function isYazismalariMetni(kayitlar) {
+    var r = isYazismalari(kayitlar), acik = (kayitlar || []).filter(function (k) { return k && !k.gizli; });
+    var parca = acik.map(function (k) { return "## " + k.baslik + " (" + k.tarih + ") — doğrulanmamış\nŞablon: " + k.sablon + " · " + k.kelime + " kelime\n\n" + k.metin; });
+    return "# İş yazışmalarım (doğrulanmamış)\n" + r.not + "\n\n" + (parca.length ? parca.join("\n\n---\n\n") : "Dışa aktarılacak yazışma yok.") + "\n";
+  }
+
+  PP.rapor = { isYazismalari: isYazismalari, isYazismalariMetni: isYazismalariMetni, DURUMLAR: DURUMLAR, TANIM_ALANLARI: TANIM_ALANLARI, tanimDenetimi: tanimDenetimi, olustur: olustur, isverenGorunumu: isverenGorunumu, cv: cv, bosluk: bosluk, ingilizce: ingilizce };
 })(typeof window !== "undefined" ? window : globalThis);

@@ -55,14 +55,15 @@
     if (!V.dersler.some(function (d) { return d.id === id; })) return { ok: false, neden: "bilinmeyen-ders" };
     var t = kayit(); t.ders = t.ders || {}; t.ders[id] = O.gun.bugun(); return yaz(t) ? { ok: true } : { ok: false, neden: "yazilamadi" };
   }
-  /* Lab görevi doğruysa kaydet: tercih + lab kanıtı (ipucusu için ayrı kimlik) */
-  function labKaydet(gorev, ipucu) {
+  /* Lab görevi doğruysa kaydet: tercih + lab kanıtı (ipucusu için ayrı kimlik).
+     cozum=true (çözüm görüldü, PP.cubuk): görev ilerleme kaydı olarak sayılır (Seviye 0 tamamlama yine istemci kaydıdır) ama lab KANITI yazılmaz. */
+  function labKaydet(gorev, ipucu, cozum) {
     if (["g1", "g2", "g3"].indexOf(gorev) < 0) return { ok: false, neden: "bilinmeyen-gorev" };
     var t = kayit(); t.lab = t.lab || {};
-    t.lab[gorev] = { tarih: O.gun.bugun(), ipucu: !!ipucu };
-    O.depo.kanitEkle({ id: "lab-va0-" + gorev + (ipucu ? "-ipucu" : ""), tur: "lab", hedef: "lab:va0-lab:" + gorev, dogrulama: "istemci" });
-    var hepsi = ["g1", "g2", "g3"].every(function (x) { return !!t.lab[x]; });
-    if (hepsi) O.depo.kanitEkle({ id: "lab-va0-tamam", tur: "lab", hedef: "lab:va0-lab", dogrulama: "istemci" });
+    t.lab[gorev] = cozum ? { tarih: O.gun.bugun(), ipucu: !!ipucu, cozum: true } : { tarih: O.gun.bugun(), ipucu: !!ipucu };
+    if (!cozum) O.depo.kanitEkle({ id: "lab-va0-" + gorev + (ipucu ? "-ipucu" : ""), tur: "lab", hedef: "lab:va0-lab:" + gorev, dogrulama: "istemci" });
+    var hepsi = ["g1", "g2", "g3"].every(function (x) { return !!t.lab[x]; }), temiz = hepsi && ["g1", "g2", "g3"].every(function (x) { return !t.lab[x].cozum; });
+    if (temiz) O.depo.kanitEkle({ id: "lab-va0-tamam", tur: "lab", hedef: "lab:va0-lab", dogrulama: "istemci" });
     return yaz(t) ? { ok: true, tamam: hepsi } : { ok: false, neden: "yazilamadi" };
   }
   /* Uygulama alanı (PP.alan) çözümü: tercih.va.alan[id] (kanıtı PP.alan kaydeder); seviye tamamlama koşulu DEĞİL */
@@ -83,7 +84,7 @@
   /* Seviye 0 durumu: tamam = 3 ders okundu + 3 lab görevi + son/en iyi sınav ≥ eşik. Seviye 1+ "yok" (önkoşul kapısı). */
   function durum() {
     var t = kayit(), dersler = V.dersler.filter(function (d) { return !d.seviye; }).map(function (d) { return { id: d.id, ad: d.ad, okundu: !!(t.ders && t.ders[d.id]) }; });
-    var lab = ["g1", "g2", "g3"].map(function (x) { return { gorev: x, tamam: !!(t.lab && t.lab[x]), ipucu: !!(t.lab && t.lab[x] && t.lab[x].ipucu) }; });
+    var lab = ["g1", "g2", "g3"].map(function (x) { return { gorev: x, tamam: !!(t.lab && t.lab[x]), ipucu: !!(t.lab && t.lab[x] && t.lab[x].ipucu), cozum: !!(t.lab && t.lab[x] && t.lab[x].cozum) }; });
     var den = dizi(t.sinav), gecti = den.some(function (x) { return x.gecti; });
     var tamam = dersler.every(function (d) { return d.okundu; }) && lab.every(function (l) { return l.tamam; }) && gecti;
     var bekleyen = [];

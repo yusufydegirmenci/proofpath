@@ -156,6 +156,7 @@ function renderLessonRoom(){
       T?h("ul",{class:"lr-ul"},[h("li",null,h("b",null,"Ana fikir: "),T.m.h),h("li",null,h("b",null,"Sonunda bileceklerin: "),T.m.o)].concat(T.m.u.slice(0,3).map(function(u){return h("li",null,h("b",null,"Nerede? "),u[0]+" → "+u[1])}))):(l.hook?h("p",null,l.hook):null),
       miss.length?h("div",{class:"lr-miss"},h("div",{class:"label",style:"color:var(--bad)"},"Kaçırdıkların (tekrar listende)"),miss.map(function(q){return h("div",{class:"qz-fb no"},h("b",null,q.q),h("div",null,"Doğru: "+String(q.answer==null?"":q.answer)),q.why?h("div",{class:"small"},q.why):null)})):(qsx.length?h("div",{class:"qz-sum all"},h("b",null,"✓"),h("span",null,"Kaçırdığın soru yok.")):null)));
     body.push(h("div",{class:"nb"},h("i",{class:"nb-tape"}),ntPageEl({id:"l:"+l.id,grp:"Ders notları",title:l.title||"Ders",kind:"l",d:l})));
+    var sn=typeof lrSenaryo==="function"?lrSenaryo(l):null;if(sn)sn.forEach(function(x){body.push(x)});
     var dd=lcDone(k);
     body.push(h("div",{class:"panel"},dd?h("div",{class:"qz-sum all"},h("b","✓"),h("span",null,"Ders tamamlandı. Sıradaki konu açıldı.")):h("div",{class:"small mute"},"Eksik adımlar: "+LR_STEPS.slice(0,4).filter(function(x){return !lrDone(l,x[0])}).map(function(x){return x[1]}).join(", ")),
       h("div",{class:"row",style:"margin-top:8px"},h("button",{class:"btn big",type:"button",onclick:lrClose},"Derslere dön"),
