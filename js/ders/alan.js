@@ -32,7 +32,8 @@
     js: "gerçek çalışır · JavaScript (izole işçi) bu tarayıcıda",
     sim: "simülasyon · kod çalıştırılmaz; yalnız kural tabanlı kontrol"
   };
-  var SINIR = { kodUzunluk: 20000, satir: 200, cikti: 20000, zamanMs: 5000, yuklemeMs: 120000, sayfa: 2000 };
+  var SINIR = { kodUzunluk: 20000, satir: 200, cikti: 20000, zamanMs: 5000, yuklemeMs: 120000, sayfa: 2000,
+    adim: 300, deger: 80, izleMs: 3000 };   /* adım izi (E2): en fazla adım, değer metni uzunluğu, Python içi süre sınırı (işçi zaman sınırından kısa: kesilirse o ana kadarki iz gösterilir) */
 
   /* ---------- İşçi gövdesi (Blob olarak çalışır; kendi kendine yeten olmalı) ---------- */
   function iscaGovdesi() {
@@ -103,16 +104,100 @@
         return { sutunlar: son.columns, satirlar: son.values.slice(0, m.sinir.satir), kesildi: son.values.length > m.sinir.satir };
       } finally { db.close(); }
     }
+    function pyVeriKoy(py, ns, v) {
+      var satirlar = v.satirlar.map(function (r) { var o = {}; v.sutunlar.forEach(function (c, i) { o[c] = r[i]; }); return o; });
+      ns.set("siparisler", py.toPy(satirlar)); ns.set("sutunlar", py.toPy(v.sutunlar));
+      var tablolar = {};
+      Object.keys(v.ek || {}).forEach(function (ad) { var t = v.ek[ad]; tablolar[ad] = t.satirlar.map(function (r) { var o = {}; t.sutunlar.forEach(function (c, i) { o[c] = r[i]; }); return o; }); });
+      ns.set("tablolar", py.toPy(tablolar));
+    }
+    /* Adım izi (E2): kullanıcı kodu aynı işçide, aynı kilitli ortamda (kilitle() çağrıldı) ve aynı ad alanı kurulumuyla çalışır; yalnız sys.settrace ile satır/dönüş olayları toplanır.
+       Yardımcı Python kodu sabittir (öğrenci kodu '<izle>' dosyası olarak derlenir; yalnız o dosyanın çerçeveleri izlenir). Sınırlar: adım sayısı, süre, değer uzunluğu, çıktı boyu.
+       Adım alanları: s satır no · y çağrı yığını (ad listesi) · v değişkenler {ad: kısa metin} · o o ana dek yazılan çıktı uzunluğu · r dönüş adımı (1) · g dönüş değeri.
+       Hata yayılırken Python'un ürettiği sahte "return" olayı atlanır (istisna kümesi); kodun kendi yakaladığı hata normal akıştır (sonraki 'line' olayı kümeden çıkarır).
+       Sınır aşımı BaseException ile durdurur (öğrencinin "except Exception" bloğu yutmasın); "except:" ile yutulsa bile işçi zaman sınırı en son çare olarak işçiyi sonlandırır. */
+    var IZLE_PY = [
+      "import sys, time, json, types, reprlib",
+      "class Sinir(BaseException): pass",
+      "R = reprlib.Repr()",
+      "R.maxlevel = 2",
+      "R.maxlist = R.maxtuple = R.maxset = R.maxfrozenset = R.maxdeque = R.maxarray = 6",
+      "R.maxdict = 5",
+      "R.maxstring = R.maxother = R.maxlong = 40",
+      "class Cikti:",
+      "    def __init__(self): self.p = []; self.n = 0",
+      "    def write(self, s):",
+      "        s = str(s); k = 4000 - self.n",
+      "        if k > 0: self.p.append(s[:k]); self.n += min(len(s), k)",
+      "        return len(s)",
+      "    def flush(self): pass",
+      "def goster(v, n):",
+      "    if isinstance(v, types.FunctionType): return 'fonksiyon ' + v.__name__",
+      "    if isinstance(v, type): return 'sınıf ' + v.__name__",
+      "    try: s = R.repr(v)",
+      "    except Exception: s = '<gösterilemedi>'",
+      "    return s if len(s) <= n else s[:n - 1] + '…'",
+      "def izle(kod, ns, azami, sure_ms, n):",
+      "    try: kodobj = compile(kod, '<izle>', 'exec')",
+      "    except SyntaxError as e:",
+      "        return json.dumps({'adimlar': [], 'hata': {'tur': 'SyntaxError', 'ileti': str(e.msg), 'satir': e.lineno}, 'sinir': None, 'cikti': ''}, ensure_ascii=False)",
+      "    haric = set(ns.keys()); adimlar = []; cikti = Cikti(); bitis = time.monotonic() + sure_ms / 1000.0; istisna = set()",
+      "    def yigin(f):",
+      "        a = []",
+      "        while f is not None:",
+      "            if f.f_code.co_filename == '<izle>': a.append('ana program' if f.f_code.co_name == '<module>' else f.f_code.co_name[:40])",
+      "            f = f.f_back",
+      "        a.reverse(); return a[-20:]",
+      "    def iz(frame, olay, arg):",
+      "        if frame.f_code.co_filename != '<izle>': return None",
+      "        if olay == 'exception': istisna.add(id(frame)); return iz",
+      "        if olay == 'line': istisna.discard(id(frame))",
+      "        if olay == 'return' and id(frame) in istisna: return iz",
+      "        if olay == 'line' or olay == 'return':",
+      "            if len(adimlar) >= azami: raise Sinir('adim')",
+      "            if time.monotonic() > bitis: raise Sinir('sure')",
+      "            ana = frame.f_code.co_name == '<module>'; v = {}",
+      "            for k, x in list(frame.f_locals.items()):",
+      "                if k.startswith('__') or isinstance(x, types.ModuleType) or (ana and k in haric): continue",
+      "                if len(v) >= 30: break",
+      "                v[k] = goster(x, n)",
+      "            a = {'s': frame.f_lineno, 'y': yigin(frame), 'v': v, 'o': cikti.n}",
+      "            if olay == 'return':",
+      "                a['r'] = 1",
+      "                if not ana: a['g'] = goster(arg, n)",
+      "            adimlar.append(a)",
+      "        return iz",
+      "    hata = None; sinir = None; eski = sys.stdout; sys.stdout = cikti",
+      "    sys.settrace(iz)",
+      "    try: exec(kodobj, ns)",
+      "    except Sinir as e: sinir = e.args[0]",
+      "    except SystemExit: pass",
+      "    except Exception as e:",
+      "        sys.settrace(None); satir = None; tb = e.__traceback__",
+      "        while tb is not None:",
+      "            if tb.tb_frame.f_code.co_filename == '<izle>': satir = tb.tb_lineno",
+      "            tb = tb.tb_next",
+      "        hata = {'tur': type(e).__name__, 'ileti': str(e)[:200], 'satir': satir}",
+      "    finally:",
+      "        sys.settrace(None); sys.stdout = eski",
+      "    return json.dumps({'adimlar': adimlar, 'hata': hata, 'sinir': sinir, 'cikti': ''.join(cikti.p)}, ensure_ascii=False)",
+      "izle"
+    ].join("\n");
+    function pyIzle(py, m) {
+      var ns = py.toPy({}), s = m.sinir;
+      try {
+        pyVeriKoy(py, ns, m.veri);
+        if (!hazir.izle) hazir.izle = py.runPython(IZLE_PY, { globals: py.toPy({}) });
+        var r = JSON.parse(hazir.izle(m.kod, ns, s.adim, s.izleMs, s.deger));
+        return { izle: true, adimlar: r.adimlar, hata: r.hata, kesildi: r.sinir, cikti: r.cikti };
+      } finally { try { ns.destroy(); } catch (e3) { /* yoksay */ } }
+    }
     function pyCalistir(py, m) {
       var cikti = [], v = m.veri, ns = py.toPy({});
       py.setStdout({ batched: function (s) { cikti.push(s); } });
       py.setStderr({ batched: function (s) { cikti.push(s); } });
       try {
-        var satirlar = v.satirlar.map(function (r) { var o = {}; v.sutunlar.forEach(function (c, i) { o[c] = r[i]; }); return o; });
-        ns.set("siparisler", py.toPy(satirlar)); ns.set("sutunlar", py.toPy(v.sutunlar));
-        var tablolar = {};
-        Object.keys(v.ek || {}).forEach(function (ad) { var t = v.ek[ad]; tablolar[ad] = t.satirlar.map(function (r) { var o = {}; t.sutunlar.forEach(function (c, i) { o[c] = r[i]; }); return o; }); });
-        ns.set("tablolar", py.toPy(tablolar));
+        pyVeriKoy(py, ns, v);
         try { py.runPython(m.kod, { globals: ns }); }
         catch (e) { var t = String(e && e.message || e).trim().split("\n"); throw hata("kod", t.slice(-4).join("\n")); }
         var deger = null, tanimli = false;
@@ -135,7 +220,7 @@
       once.then(function (rt) {
         self.postMessage({ id: m.id, asama: "calisiyor" });
         kilitle();
-        var r = m.tur === "sql" ? sqlCalistir(rt, m) : m.tur === "python" ? pyCalistir(rt, m) : jsCalistir(m);
+        var r = m.tur === "sql" ? sqlCalistir(rt, m) : m.tur === "python" ? (m.izle ? pyIzle(rt, m) : pyCalistir(rt, m)) : jsCalistir(m);
         r.id = m.id; r.ok = true; self.postMessage(r);
       }).catch(function (err) {
         var msj = String(err && err.message || err);
@@ -199,7 +284,7 @@
         bitir({ ok: false, calisti: !yuk, neden: m.neden, mesaj: yuk ? "Gerçek çalıştırma kullanılamıyor: " + m.mesaj : m.mesaj, sonlandir: yuk });
       };
       w.onerror = function (ev) { bitir({ ok: false, calisti: false, neden: "isci", sonlandir: true, mesaj: "Çalıştırma ortamı hatası: " + (ev && ev.message || "bilinmiyor") }); };
-      w.postMessage({ id: id, tur: tur, kod: kod, veri: veriHazirla(veri), kaynak: KAYNAK, sinir: SINIR });
+      w.postMessage({ id: id, tur: tur, kod: kod, veri: veriHazirla(veri), kaynak: KAYNAK, sinir: SINIR, izle: opts.izle === true && tur === "python" });
     });
   }
   /* Aynı türden çalıştırmalar sıraya girer (tek işçi) */
@@ -208,6 +293,11 @@
     var p = s.then(function () { return calistirTek(tur, kod, veri, opts); });
     sira[tur] = p.then(function () {}, function () {});
     return p;
+  }
+  /* Adım izi (E2): yalnız Python. Kontrol/kanıt yok; iz öğrenme içindir. Döner: calistir ile aynı biçim + {adimlar, hata, kesildi, cikti} */
+  function izle(d, kod, opts) {
+    if (!d || d.tur !== "python") return Promise.resolve({ ok: false, calisti: false, neden: "tur", mesaj: "Adım izi yalnız Python alanlarında var." });
+    return calistir("python", kod, d.veri, Object.assign({}, opts, { izle: true }));
   }
 
   /* ---------- Tanım ve değerlendirme ---------- */
@@ -222,7 +312,7 @@
     if (d.tur !== "sim" && !(d.veri && Array.isArray(d.veri.sutunlar) && Array.isArray(d.veri.satirlar))) return { ok: false, neden: "veri-yok" };
     if (d.varyant != null && typeof d.varyant !== "function") return { ok: false, neden: "varyant-gecersiz" };
     var x = { id: d.id, ders: d.ders, tur: d.tur, baslik: d.baslik || "", gorev: d.gorev || "", baslangic: d.baslangic, kontrol: d.kontrol, varyant: d.varyant || null,
-      ipucu: Array.isArray(d.ipucu) ? d.ipucu.slice() : [], veri: d.veri || null, etiket: ETIKET[d.tur],
+      ipucu: Array.isArray(d.ipucu) ? d.ipucu.slice() : [], adimla: typeof d.adimla === "string" ? d.adimla : "", veri: d.veri || null, etiket: ETIKET[d.tur],
       cozum: typeof d.cozum === "string" ? d.cozum : (g.PP_VA && g.PP_VA.alanCozum && typeof g.PP_VA.alanCozum[d.id] === "string" ? g.PP_VA.alanCozum[d.id] : "") };
     kayit[x.id] = x;
     return { ok: true, alan: x };
@@ -334,6 +424,85 @@
       s.satirlar.map(function (r) { return hh("tr", null, r.map(function (x) { return hh("td", { style: "padding:2px 6px" }, x === null ? "NULL" : String(x)); })); })),
       s.kesildi ? hh("div", { class: "small mute" }, "İlk " + SINIR.satir + " satır gösterildi.") : null);
   }
+  function yokMesaji(r) {
+    return r.neden === "ag" ? "Gerçek çalıştırma şu an kullanılamıyor: kütüphane indirilemedi. İnternet bağlantını kontrol edip tekrar dene."
+      : r.neden === "yukleme-zaman" ? "Gerçek çalıştırma şu an kullanılamıyor: kütüphane zamanında yüklenemedi. Bağlantını kontrol edip tekrar dene."
+      : r.neden === "sri" ? "Gerçek çalıştırma şu an kullanılamıyor: kütüphane doğrulanamadı, güvenlik için çalıştırılmadı. Biraz sonra tekrar dene."
+      : (r.mesaj || "Çalıştırma kullanılamıyor.");
+  }
+
+  /* ---------- Adım izi arayüzü (E2) ----------
+     Satır vurgusu: paket (vendor/) bu fazın dosya listesinde olmadığı için editöre dekorasyon API'si eklenmedi; CodeMirror'ın çizdiği .cm-line öğesine sınıf verilir
+     (yalnız kodun tüm satırları çizilmişse; kısa alıştırma kodlarında hep böyle). Textarea yedeğinde satır seçilir. Panel her adımda satırı kendisi de yazar (vurgu olmasa da anlaşılır).
+     shortcut: uzun kodda (sanal kaydırma) editör vurgusu atlanır, panelin "satır" kutusu kalır; dekorasyon için paket yeniden derlenmeli. */
+  var HATA_AD = { SyntaxError: "Sözdizimi hatası", NameError: "Tanımsız ad", TypeError: "Tür hatası", ValueError: "Değer hatası", IndexError: "Dizin hatası", KeyError: "Anahtar hatası", ZeroDivisionError: "Sıfıra bölme", AttributeError: "Özellik hatası", RecursionError: "Çok derin özyineleme" };
+  function hataMetni(h) { return (h.satir ? "Satır " + h.satir + ": " : "") + (HATA_AD[h.tur] || "Hata") + " (" + h.tur + ")" + (h.ileti ? " — " + h.ileti : ""); }
+  function izVurgula(ta, kap, kod, n, onceki) {
+    if (onceki) onceki.classList.remove("pp-izle-satir");
+    var ls = kod.split("\n");
+    if (ta.__cm) {
+      var L = kap.querySelectorAll(".cm-content > .cm-line");
+      if (L.length !== ls.length || !L[n - 1]) return null;
+      var el = L[n - 1], sc = kap.querySelector(".cm-scroller");
+      el.classList.add("pp-izle-satir");
+      if (sc) { var rs = sc.getBoundingClientRect(), rl = el.getBoundingClientRect(); if (rl.top < rs.top) sc.scrollTop -= rs.top - rl.top; else if (rl.bottom > rs.bottom) sc.scrollTop += rl.bottom - rs.bottom; }
+      return el;
+    }
+    var bas = 0; for (var i = 0; i < n - 1; i++) bas += ls[i].length + 1;
+    try { ta.setSelectionRange(bas, bas + (ls[n - 1] || "").length); } catch (e) { /* yoksay */ }
+    return null;
+  }
+  /* izPaneli: r = izle() sonucu (ok, adimlar dolu). kapat(odakDon) paneli kaldırır. */
+  function izPaneli(r, ta, kap, kapat) {
+    var hh = g.h, kod = ta.value, n = r.adimlar.length, i = 0, vur = null;
+    var baslik = hh("strong", { role: "status", "aria-live": "polite", "data-izle": "baslik" });
+    var satir = hh("div", { class: "mono small izle-satir", "data-izle": "satir" });
+    var not = hh("div", { class: "small mute", "data-izle": "not" });
+    var yigin = hh("div", { class: "small mute", "data-izle": "yigin" });
+    var tablo = hh("div", { class: "izle-tablo", "data-izle": "degiskenler" });
+    var cikti = hh("pre", { class: "mono small izle-cikti", "data-izle": "cikti" });
+    var kay = hh("input", { type: "range", min: 1, max: n, value: 1, class: "izle-kay", "aria-label": "Adım seç", "data-izle": "kaydirici" });
+    var geri = hh("button", { class: "btn ghost", type: "button", "data-izle": "geri", onclick: function () { git(i - 1); } }, "‹ Geri");
+    var ileri = hh("button", { class: "btn", type: "button", "data-izle": "ileri", onclick: function () { git(i + 1); } }, "İleri ›");
+    var kpt = hh("button", { class: "btn ghost", type: "button", "data-izle": "kapat", onclick: function () { kapat(true); } }, "Kapat (Esc)");
+    var uyar = [];
+    if (r.hata) uyar.push("Kod " + hataMetni(r.hata) + ". Adımlar hataya kadar gösteriliyor.");
+    if (r.kesildi === "adim") uyar.push("İzleme en fazla " + SINIR.adim + " adımla sınırlı; ilk " + SINIR.adim + " adım gösteriliyor.");
+    if (r.kesildi === "sure") uyar.push("Süre sınırı (" + Math.round(SINIR.izleMs / 1000) + " sn) aşıldı; o ana kadarki adımlar gösteriliyor (sonsuz döngü olabilir).");
+    var el = hh("div", { class: "lbox izle-panel", role: "region", "aria-label": "Adım adım izleme", "data-alan-izle-panel": "1" },
+      hh("div", { class: "izle-ust" }, baslik, kpt),
+      uyar.length ? hh("div", { class: "small warn", "data-izle": "uyari" }, uyar.join(" ")) : null,
+      hh("div", { class: "izle-kontrol" }, geri, ileri, kay),
+      satir, not, yigin, tablo, cikti,
+      hh("div", { class: "small mute" }, "● işaretli değişken bu adımda yeni ya da değişti. İpucu: ← → tuşları da adım atar."));
+    function ciz() {
+      var a = r.adimlar[i], onc = i > 0 ? r.adimlar[i - 1] : null, ayni = onc && onc.y.length === a.y.length && onc.y[onc.y.length - 1] === a.y[a.y.length - 1];
+      var ad = a.y.length ? a.y[a.y.length - 1] : "ana program";
+      baslik.textContent = "Adım " + (i + 1) + " / " + n + " · satır " + a.s;
+      kay.value = String(i + 1); kay.setAttribute("aria-valuetext", baslik.textContent);
+      satir.textContent = a.s + ": " + ((kod.split("\n")[a.s - 1] || "").replace(/\s+$/, "") || "(boş satır)");
+      not.textContent = a.r ? (a.g !== undefined ? "Bu işlev biter; döndürdüğü değer: " + a.g : "Program biter; aşağıdakiler son değerlerdir.") : "Bu satır henüz çalışmadı; aşağıda satırdan ÖNCEKİ değerler var.";
+      yigin.textContent = "Çağrı yığını: " + (a.y.length ? a.y.join(" › ") : "ana program") + " · gösterilen değişkenler: " + ad;
+      var ks = Object.keys(a.v);
+      tablo.textContent = "";
+      if (!ks.length) tablo.appendChild(hh("div", { class: "small mute" }, "Henüz değişken yok."));
+      else tablo.appendChild(hh("table", { class: "small mono", "data-izle-tablo": "1" },
+        hh("tr", null, hh("th", null, "Değişken"), hh("th", null, "Değer")),
+        ks.map(function (k) { var yeni = !ayni || onc.v[k] !== a.v[k]; return hh("tr", { "data-izle-degisken": k, class: yeni ? "izle-yeni" : null }, hh("td", null, (yeni ? "● " : "") + k), hh("td", null, a.v[k])); })));
+      cikti.textContent = (r.cikti || "").slice(0, a.o); cikti.style.display = cikti.textContent ? "" : "none";
+      vur = izVurgula(ta, kap, kod, a.s, vur);
+    }
+    function git(k) { i = Math.max(0, Math.min(n - 1, k)); ciz(); }
+    kay.addEventListener("input", function () { git(parseInt(kay.value, 10) - 1); });
+    el.addEventListener("keydown", function (e) {
+      if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); kapat(true); }
+      else if (e.target !== kay && e.key === "ArrowRight") { e.preventDefault(); git(i + 1); }
+      else if (e.target !== kay && e.key === "ArrowLeft") { e.preventDefault(); git(i - 1); }
+    });
+    ciz();
+    return { el: el, ileri: ileri, git: git, temizle: function () { if (vur) vur.classList.remove("pp-izle-satir"); vur = null; } };
+  }
+
   /* kur(d, opts): çalışan bir alan paneli döndürür; opts.onDogru(ipucuKullanildi) kanıt sonrası çağrılır; opts.yenile() yeniden çizim */
   function kur(d, opts) {
     var hh = g.h; opts = opts || {};
@@ -343,6 +512,22 @@
     var cikis = hh("div", { role: "status", "aria-live": "polite", "data-alan-sonuc": d.id });
     var etiket = hh("div", { class: "lab-et", "data-alan-etiket": d.id }, d.etiket);
     var cid = "alan:" + d.id, mesgul = false, btn, cubuk;
+    var izKap = hh("div", { "data-alan-izle": d.id }), izBtn = null, izAcik = null, izMesgul = false;
+    function izKapat(odakDon) { if (izAcik) { izAcik.temizle(); izAcik = null; } izKap.textContent = ""; if (odakDon && izBtn) izBtn.focus(); }
+    function izMesaj(metin, sinif, ek) { izKap.textContent = ""; izKap.appendChild(hh("div", { class: "lbox " + (sinif || ""), role: "status", "data-izle-durum": ek || "mesaj" }, metin)); }
+    function izleTikla() {
+      if (izMesgul) return; izMesgul = true; izBtn.disabled = true; izBtn.textContent = "İzleniyor…"; izKapat(false);
+      izMesaj("Kod adım adım çalıştırılıyor…", "", "calisiyor");
+      izle(d, ta.value, { durum: function (a) { if (a === "yukleniyor") izMesaj("Python kütüphanesi yükleniyor (~10 MB, ilk seferde birkaç saniye)… Kod yalnız bu tarayıcıda çalışır.", "", "yukleniyor"); } }).then(function (r) {
+        izMesgul = false; izBtn.disabled = false; izBtn.textContent = "Adım adım göster";
+        if (r.ok === false && !r.calisti) { izMesaj(yokMesaji(r).replace("Gerçek çalıştırma", "Adım adım gösterim") + " Düğmeye tekrar basarak yeniden dene.", "warn", "kullanilamiyor"); return izBtn.focus(); }
+        if (r.ok === false) { izMesaj(r.neden === "zaman" ? "Zaman sınırı aşıldı; kod sonsuz döngüde olabilir. Düzeltip tekrar dene." : r.mesaj, "warn", "hata"); return izBtn.focus(); }
+        if (!r.adimlar.length) { izMesaj(r.hata ? "Kodda " + hataMetni(r.hata) + ". Önce düzelt, sonra tekrar dene." : "İzlenecek satır yok (kod boş ya da yalnız yorum).", "warn", "hata"); return izBtn.focus(); }
+        izKap.textContent = ""; izAcik = izPaneli(r, ta, kap, izKapat); izKap.appendChild(izAcik.el); izAcik.ileri.focus();
+      }).catch(function () { izMesgul = false; izBtn.disabled = false; izBtn.textContent = "Adım adım göster"; izMesaj("Adım izi beklenmedik biçimde başarısız oldu. Sayfayı yenileyip tekrar dene.", "warn", "hata"); });
+    }
+    if (d.tur === "python") izBtn = hh("button", { class: "btn ghost", type: "button", "data-alan": "adimla", onclick: izleTikla }, "Adım adım göster");
+    kap.addEventListener("input", function () { if (izAcik) izKapat(false); });   /* kod değişti: eski iz artık bu kodla uyuşmaz */
     function yaz() { cikis.textContent = ""; Array.prototype.slice.call(arguments).forEach(function (x) { if (x) cikis.appendChild(typeof x === "string" ? g.document.createTextNode(x) : x); }); }
     function calistirTikla() {
       if (mesgul) return; mesgul = true; btn.disabled = true; btn.textContent = "Çalışıyor…";
@@ -356,10 +541,7 @@
         }
         if (!r.ok) {
           etiket.textContent = "simülasyon · gerçek çalıştırma şu an kullanılamıyor";
-          var kisa = r.neden === "ag" ? "Gerçek çalıştırma şu an kullanılamıyor: kütüphane indirilemedi. İnternet bağlantını kontrol edip tekrar dene."
-            : r.neden === "yukleme-zaman" ? "Gerçek çalıştırma şu an kullanılamıyor: kütüphane zamanında yüklenemedi. Bağlantını kontrol edip tekrar dene."
-            : r.neden === "sri" ? "Gerçek çalıştırma şu an kullanılamıyor: kütüphane doğrulanamadı, güvenlik için çalıştırılmadı. Biraz sonra tekrar dene."
-            : (r.mesaj || "Çalıştırma kullanılamıyor.");
+          var kisa = yokMesaji(r);
           var tekrar = (r.neden === "ag" || r.neden === "sri" || r.neden === "cevrimdisi" || r.neden === "yukleme-zaman") ? hh("button", { class: "btn ghost", type: "button", "data-alan": "tekrar", onclick: calistirTikla }, "Tekrar dene") : null;
           return yaz(hh("div", { class: "lbox warn", "data-alan-durum": "kullanilamiyor" }, kisa), tekrar, hh("div", { class: "small mute" }, "Sayfadaki simülasyon laboratuvarı bundan etkilenmez."));
         }
@@ -376,7 +558,7 @@
       });
     }
     btn = hh("button", { class: "btn", type: "button", "data-alan": "calistir", onclick: calistirTikla }, d.tur === "sim" ? "Kontrol et" : "Çalıştır");
-    var sfBtn = hh("button", { class: "btn ghost", type: "button", "data-alan": "sifirla", onclick: function () { ta.value = sifirlaMetni(d); cubuk.gizle(); yaz(); } }, "Sıfırla");
+    var sfBtn = hh("button", { class: "btn ghost", type: "button", "data-alan": "sifirla", onclick: function () { ta.value = sifirlaMetni(d); cubuk.gizle(); yaz(); izKapat(false); } }, "Sıfırla");
     cubuk = PP.cubuk.kur({ id: cid, ipucu: d.ipucu, cozum: function () { return d.cozum; }, birincilEl: btn, sifirlaEl: sfBtn, ipucuAttr: { "data-alan-ipucu": d.id }, ipucuDugmeAttr: { "data-alan": "ipucu" } });
     ta.addEventListener("keydown", function (e) { if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); calistirTikla(); } });
     editorEkle(ta, kap, d, calistirTikla);
@@ -385,9 +567,9 @@
       hh("div", { class: "small mute" }, "Ayrı bir alıştırma: kod yazmazsın, karışık SQL satırlarını doğru sıraya dizersin. Yukarıdaki kod alanıyla aynı dersin parçasıdır; çözüm durumu ikisinde de aynı görünür."), siraDurumSatiri(d.ders, d.id), parsons);
     return hh("div", { class: "lbox", "data-alan": d.id, "data-alan-tur": d.tur }, hh("div", { class: "label" }, "Kodla dene · " + (d.baslik || d.id)), etiket,
       d.gorev ? hh("p", { class: "small" }, d.gorev) : null, kap,
-      cubuk, cikis, parsons ? siraDurumSatiri(d.ders, d.id) : null,
+      cubuk, izBtn ? hh("div", { class: "izle-satir-kap" }, izBtn, d.adimla ? hh("span", { class: "small", "data-alan-adimla": d.id }, "Öneri: " + d.adimla) : null) : null, izKap, cikis, parsons ? siraDurumSatiri(d.ders, d.id) : null,
       hh("div", { class: "small mute" }, d.tur === "sim" ? "Bu alan kodu çalıştırmaz; yalnız yazdığını kurallarla denetler." : "Kod yalnız bu tarayıcıda çalışır, sunucuya gönderilmez. Zaman sınırı " + Math.round(SINIR.zamanMs / 1000) + " sn; sonsuz döngü kesilir."), parsons);
   }
 
-  PP.alan = { TURLER: TURLER, ETIKET: ETIKET, SINIR: SINIR, KAYNAK: KAYNAK, tanimla: tanimla, bul: bul, calistir: calistir, degerlendir: degerlendir, kanitKaydet: kanitKaydet, sifirla: sifirlaMetni, durum: durumOzet, kapat: kapat, siraDurumu: siraDurumu, siraDurumMetni: siraDurumMetni, kur: kur };
+  PP.alan = { TURLER: TURLER, ETIKET: ETIKET, SINIR: SINIR, KAYNAK: KAYNAK, tanimla: tanimla, bul: bul, calistir: calistir, izle: izle, degerlendir: degerlendir, kanitKaydet: kanitKaydet, sifirla: sifirlaMetni, durum: durumOzet, kapat: kapat, siraDurumu: siraDurumu, siraDurumMetni: siraDurumMetni, kur: kur };
 })(typeof window !== "undefined" ? window : globalThis);

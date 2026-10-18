@@ -3,7 +3,7 @@
    - Strateji: ağ önce, önbellek yedek (çevrimiçi kullanıcı hep güncel dosyayı alır; çevrimdışıyken son görülen sürüm açılır).
    - Kapsam: sw.js'nin bulunduğu klasör (GitHub Pages alt yolu korunur; mutlak "/" yolu kullanılmaz).
    - Yeni sürüm kendiliğinden devralmaz: istemci "guncelle" iletisi gönderirse skipWaiting yapılır (yarım kalan işi bölmemek için). */
-var SURUM = "2026-10-12-1";
+var SURUM = "2026-10-18-1";
 var KABUK = "pp-kabuk-" + SURUM;
 var SERBEST_DIS = /^https:\/\/(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com)\//;
 
@@ -27,7 +27,8 @@ self.addEventListener("install", function (e) {
       return fetch(idx, { cache: "reload" }).then(function (r) {
         if (!r.ok) throw new Error("index.html alınamadı");
         return r.clone().text().then(function (html) {
-          var liste = ayikla(html, idx).concat([kok, idx, new URL("manifest.webmanifest", self.location).href, new URL("ikon.svg", self.location).href]);
+          var liste = ayikla(html, idx).concat([kok, idx, new URL("manifest.webmanifest", self.location).href, new URL("ikon.svg", self.location).href,
+            new URL("vendor/codemirror-6.43.14.js", self.location).href]);   /* kod editörü index.html'de değil alan.js ile tembel yüklenir; çevrimdışı açılsın diye kurulumda alınır. Dosya adı alan.js CM.dosya ile aynı olmalı (tests/e2_adim.js denetler) */
           liste = liste.filter(function (x, i) { return liste.indexOf(x) === i; });
           /* Tek tek: bir dosya alınamazsa kurulum yarım kalmaz, eksik dosya çevrimdışı sayfada eksik olur */
           return Promise.all(liste.map(function (u) {
