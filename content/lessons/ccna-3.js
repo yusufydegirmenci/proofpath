@@ -56,7 +56,7 @@
       { id: "h1", text: "Uzun bir IPv6 adresini baştaki sıfırları silip tek '::' kullanarak kısaltabilir, geçersiz kısaltmayı bulabilirsin." },
       { id: "h2", text: "Bir adresi önekine bakarak global unicast, link-local, unique local veya multicast olarak ayırt edebilirsin." },
       { id: "h3", text: "IPv6'nın IPv4'ten farklarını (broadcast yerine multicast, ARP yerine NDP, /64 alt ağ) ayırt edebilirsin." },
-      { id: "h4", text: "Cisco router arayüzüne IPv6 adresi verip statik rota yazabilir ve yönlendirmeyi açan komutu bulabilirsin." }
+      { id: "h4", text: "Cisco router'da IPv6 statik rota yazabilir ve yönlendirmeyi açan komutu bulabilirsin." }
     ],
     summary: [
       "IPv6 adresi 128 bittir: 16 bitlik 8 grup, her grup 4 hex karakter; baştaki sıfırlar silinir ve art arda gelen tamamen sıfır gruplar yalnızca bir kez '::' olur.",
@@ -122,7 +122,7 @@
         "3) Her segmentte root'a en yakın taraftaki port 'designated port' olur.",
         "4) Geriye kalan portlar 'alternate/blocked' olur ve trafik taşımaz."
       ] },
-      { t: "box", h: "Maliyet (cost)", text: "Yol maliyeti hıza bağlıdır: 10 Mbps = 100, 100 Mbps = 19, 1 Gbps = 4, 10 Gbps = 2. Düşük maliyet daha iyi yoldur." },
+      { t: "box", h: "Maliyet (cost)", text: "Yol maliyeti hıza bağlıdır: 10 Mbps = 100, 100 Mbps = 19, 1 Gbps = 4, 10 Gbps = 2. Düşük maliyet daha iyi yoldur. Bu tablo klasik (short) yöntemdir; long yöntemde 1 Gbps = 20.000 olur." },
       { t: "steps", h: "Port durumları (802.1D)", items: [
         "Blocking → Listening → Learning → Forwarding (toplam 30-50 saniye).",
         "RSTP (802.1w) bunu saniyeler içine indirir. Durumlar: Discarding, Learning, Forwarding.",
@@ -146,14 +146,14 @@
     ],
     objectives: [
       { id: "h1", text: "Switch'lerin öncelik ve MAC değerlerinden Bridge ID'yi karşılaştırıp root bridge'i bulabilirsin." },
-      { id: "h2", text: "STP'nin döngüyü nasıl önlediğini ve root port, designated port, blocked port rollerini ayırt edebilirsin." },
+      { id: "h2", text: "STP'nin döngüyü nasıl önlediğini ve root port, designated port, blocked port rollerini ayırt edip bağlantı hızından yol maliyetini bulabilirsin." },
       { id: "h3", text: "PortFast ve BPDU Guard'ı uç cihaz portuna uygulayan komutları yazabilir ve hangi portlarda kullanılmayacağını bulabilirsin." },
       { id: "h4", text: "EtherChannel için LACP ve PAgP modlarının hangi çiftlerde kanal kurduğunu ayırt edebilirsin." }
     ],
     summary: [
       "Ethernet çerçevesinde TTL olmadığı için Layer 2 döngüsünde broadcast sonsuza kadar dolaşır ve broadcast storm ağı kilitler; STP fazla yolları bloklayarak bunu önler.",
       "Root bridge en düşük Bridge ID'ye sahip switch'tir: öncelik (varsayılan 32768 + VLAN no) önce, eşitse MAC adresi karar verir; 'spanning-tree vlan 1 priority 4096' ya da 'root primary' ile root seçilir.",
-      "Klasik yol maliyeti: 10 Mbps = 100, 100 Mbps = 19, 1 Gbps = 4, 10 Gbps = 2; roller root port, designated port ve bloklanan alternate porttur.",
+      "Klasik (short) yol maliyeti: 10 Mbps = 100, 100 Mbps = 19, 1 Gbps = 4, 10 Gbps = 2 (long yöntemde 1 Gbps = 20.000); roller root port, designated port ve bloklanan alternate porttur.",
       "802.1D'de blocking, listening, learning, forwarding geçişi 30-50 saniye sürer; RSTP (802.1w) saniyelere indirir, Cisco varsayılanı PVST+'tır (VLAN başına ayrı örnek).",
       "PortFast ve BPDU Guard yalnızca uç cihaz portlarına yazılır; EtherChannel'da LACP active/passive, PAgP desirable/auto kullanır ve bağlanan portların hız, duplex, VLAN ayarı aynı olmalıdır."
     ],
@@ -164,7 +164,7 @@
       { q: "Birden çok fiziksel linki tek mantıksal link yapan teknoloji hangisidir?", options: ["VLAN", "EtherChannel", "NAT", "HSRP"], answer: "EtherChannel", why: "EtherChannel, linkleri port-channel altında birleştirir.", obj: "h4", whyNot: { "VLAN": "VLAN broadcast alanını böler, fiziksel linkleri birleştirmez.", "NAT": "NAT adres çevirisidir; linklerle ilgisi yoktur.", "HSRP": "HSRP varsayılan ağ geçidi yedekliliği sağlayan bir first-hop protokolüdür, Layer 2 link birleştirme yapmaz." } },
       { q: "LACP için iki tarafın moduna ne uygun olur?", options: ["passive-passive", "active-passive", "auto-auto", "desirable-auto"], answer: "active-passive", why: "En az bir taraf active olmalıdır. passive-passive'de kimse teklif etmez. desirable ve auto PAgP içindir.", obj: "h4", whyNot: { "passive-passive": "İkisi de passive olursa kimse LACP teklifi göndermez ve kanal kurulmaz.", "auto-auto": "auto PAgP modudur ve pasiftir; iki taraf auto ise teklif eden olmaz, ayrıca LACP sorusunda protokol uymaz.", "desirable-auto": "Bu çift PAgP içindir ve çalışır; ama soru LACP'yi sorar, desirable ve auto LACP modu değildir." } },
       { q: "VLAN 1'de SW1 (öncelik 32769, MAC 0000.0C00.0002), SW2 (öncelik 32769, MAC 0000.0C00.0001) ve SW3 (öncelik 4097, MAC 0000.0C00.00FF) var. Root bridge hangisidir?", options: ["SW1","SW2","SW3","Öncelikler eşit olmadığı için root seçilemez"], answer: "SW3", why: "Önce öncelik karşılaştırılır: 4097 en düşük olduğundan SW3 root olur; MAC yalnızca öncelikler eşitse devreye girer.", obj: "h1", whyNot: { "SW1": "Önceliği 32769 ile SW3'ten (4097) yüksektir; MAC'e eşitlik olursa bakılır.", "SW2": "MAC adresi en düşük olsa da önceliği 32769'dur; öncelik MAC'ten önce değerlendirilir.", "Öncelikler eşit olmadığı için root seçilemez": "STP en düşük değeri seçer; öncelikler farklıysa en düşük öncelik kazanır, eşitlik aranmaz." } },
-      { q: "STP maliyet tablosuna göre 1 Gbps bir linkin klasik yol maliyeti kaçtır?", options: ["4","19","2","100"], answer: "4", why: "Klasik değerler: 10 Mbps = 100, 100 Mbps = 19, 1 Gbps = 4, 10 Gbps = 2.", obj: "h2", whyNot: { "2": "2, 10 Gbps linkin maliyetidir.", "19": "19 Fast Ethernet (100 Mbps) linkin maliyetidir.", "100": "100, 10 Mbps linkin maliyetidir." } },
+      { q: "STP klasik (short) maliyet tablosuna göre 1 Gbps bir linkin yol maliyeti kaçtır?", options: ["4","19","2","100"], answer: "4", why: "Klasik (short) değerler: 10 Mbps = 100, 100 Mbps = 19, 1 Gbps = 4, 10 Gbps = 2. Long yöntemde 1 Gbps = 20.000 olur.", obj: "h2", whyNot: { "2": "2, 10 Gbps linkin maliyetidir.", "19": "19 Fast Ethernet (100 Mbps) linkin maliyetidir.", "100": "100, 10 Mbps linkin maliyetidir." } },
       { q: "Root olmayan bir switch'te root bridge'e en iyi yolu veren port hangi rolü alır?", options: ["Root port","Designated port","Alternate (blocked) port","Edge port"], answer: "Root port", why: "Her root olmayan switch'te root'a en düşük maliyetle ulaşan tek port root port olur.", obj: "h2", whyNot: { "Designated port": "Designated port, her segmentte root'a en yakın taraftaki porttur; root'a giden yol portu değildir.", "Alternate (blocked) port": "Alternate port, root'a ikinci yolu verip trafik taşımayan bloklanmış porttur.", "Edge port": "Edge port, PortFast'li uç cihaz portu için kullanılan bir terimdir, root'a giden yolla ilgisi yoktur." } },
       { q: "Bilgisayar bağlanan portu hemen forwarding'e alıp porta yanlışlıkla switch takılırsa portu kapatması için hangi komut çifti yazılır?", options: ["spanning-tree portfast ve spanning-tree bpduguard enable","spanning-tree mode rapid-pvst ve channel-group 1 mode active","spanning-tree vlan 1 priority 4096 ve switchport mode trunk","spanning-tree vlan 1 root primary ve channel-group 1 mode on"], answer: "spanning-tree portfast ve spanning-tree bpduguard enable", why: "PortFast portu hemen forwarding yapar, BPDU Guard porta BPDU gelirse portu kapatır.", obj: "h3", whyNot: { "spanning-tree mode rapid-pvst ve channel-group 1 mode active": "Birincisi global STP modunu seçer, ikincisi EtherChannel kurar; ikisi de uç cihaz portunu korumaz.", "spanning-tree vlan 1 priority 4096 ve switchport mode trunk": "Biri root seçimini etkiler, diğeri portu trunk yapar; trunk uç cihaz portu için doğru değildir.", "spanning-tree vlan 1 root primary ve channel-group 1 mode on": "Root primary root seçimini ayarlar, channel-group ise EtherChannel'dır; PortFast veya BPDU Guard yoktur." } },
       { q: "BPDU Guard'lı bir PortFast portuna BPDU gönderen bir switch bağlanırsa port ne olur?", options: ["Port err-disabled durumuna geçip kapanır","Port forwarding'de kalır ve BPDU yok sayılır","Port otomatik olarak root port seçilir","Port EtherChannel'a eklenir"], answer: "Port err-disabled durumuna geçip kapanır", why: "BPDU Guard, uç cihaz portunda BPDU görürse döngü riskini önlemek için portu err-disabled yapar.", obj: "h3", whyNot: { "Port forwarding'de kalır ve BPDU yok sayılır": "Yok saymak PortFast'li portu döngüye açık bırakırdı; BPDU Guard tam olarak bunu engeller.", "Port otomatik olarak root port seçilir": "Root port seçimi BPDU Guard'ın işi değildir; porta BPDU gelmesi portun kapanmasına yol açar.", "Port EtherChannel'a eklenir": "EtherChannel elle veya LACP/PAgP ile kurulur; BPDU Guard portu kanala eklemez." } },
@@ -430,7 +430,7 @@
       { t: "warn", h: "Tuzak", text: "Otomasyon hatayı da hızla çoğaltır. Bir script yanlışsa 150 cihaz bir anda bozulur. Önce test ortamında, sonra küçük bir grupta dene; her zaman yedek al." }
     ],
     objectives: [
-      { id: "h1", text: "Data plane, control plane ve management plane görevlerini ile northbound/southbound API yönlerini ayırt edebilirsin." },
+      { id: "h1", text: "Data plane, control plane ve management plane görevlerini ve northbound/southbound API yönlerini ayırt edebilirsin." },
       { id: "h2", text: "Bir REST isteği için uygun HTTP fiilini (POST, GET, PUT/PATCH, DELETE) ve yanıt kodunu (200, 401, 404 vb.) seçebilirsin." },
       { id: "h3", text: "Aynı veriyi JSON, YAML veya XML biçiminden tanıyıp ayırt edebilirsin." },
       { id: "h4", text: "Ansible, Puppet ve Chef'i ajan gerektirme durumuna göre ayırt edebilirsin." }
