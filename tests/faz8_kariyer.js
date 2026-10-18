@@ -18,6 +18,9 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   p.on('pageerror', e => errs.push(e.message));
   await p.goto(U + '#bugun');
   await p.waitForTimeout(1500);
+  // ready2'den sonra her çizim lig yazar ve S.projects depodan yeniden kurulur: başlangıç oturana kadar bekle.
+  await p.waitForFunction(() => S.ready2, null, { timeout: 15000 });
+  await p.waitForTimeout(800);
   const ev = (f, a) => p.evaluate(f, a);
 
   const DEF = { id: 'x1', title: 'API testi', path: 'qa', why: 'Neden', tools: 'Postman, SQL', outcome: ['Test yaz', 'Hata raporla'], pitch: 'I tested an API.',
@@ -148,7 +151,8 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   // 9) Arayüz
   await ev(() => {
     const d = pathProj('sec1');
-    S.projects.push({ id: 'path-sec1', title: d.title, why: d.why, kind: 'path', pid: 'sec1', lv: d.lv, status: 'yapılıyor', notes: [], claude: [], created: '2026-10-01', finished: '',
+    // Depoya yaz (misafirde pjSave yazmaz): dinleyici S.projects'i depodan kurar, sonraki çizimler projeyi silmez.
+    S.db.doc('projects/path-sec1').set({ title: d.title, why: d.why, kind: 'path', pid: 'sec1', lv: d.lv, status: 'yapılıyor', notes: [], claude: [], created: '2026-10-01', finished: '',
       steps: d.steps.map((s, i) => ({ t: s.t, done: i < 2, ts: i < 2 ? '2026-10-0' + (i + 1) + 'T10:00:00Z' : '', note: '' })) });
     S.pj.sel = 'path-sec1'; goTab('proje');
   });
