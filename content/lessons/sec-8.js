@@ -104,83 +104,15 @@
       "Tuzak üretim ağından yalıtılmalı, gerçek veri içermemeli ve hukuki onayla, yalnızca kendi sistemlerinde kurulmalıdır."
     ],
     quiz: [
-      {
-        id: "d5691a61",
-        q: "Saldırganı çekmek için kasıtlı olarak kurulmuş, gerçek kullanıcıların hiçbir işi olmayan sahte sistem hangisidir?",
-        options: [
-          "Honeypot",
-          "Honeytoken",
-          "Sandbox",
-          "DNS sinkhole"
-        ],
-        obj: "h1"
-      },
-      {
-        id: "0e04f688",
-        q: "Dosya paylaşımında 'maaslar.xlsx' adında sahte bir dosya duruyor; biri açtığında güvenlik ekibine uyarı gidiyor. Bu düzenek hangisidir?",
-        options: [
-          "Honeynet",
-          "Honeyfile",
-          "DNS sinkhole",
-          "Sahte telemetri"
-        ],
-        obj: "h1"
-      },
-      {
-        id: "8d7599eb",
-        q: "Kurumdaki birkaç bilgisayar bilinen zararlı bir alan adını sorguluyor. Ekip bu adın DNS yanıtını kendi kontrol ettiği bir sunucuya çevirip sorgulayan cihazları listelemek istiyor. Hangisi uygulanıyor?",
-        options: [
-          "Honeyfile",
-          "Sandbox",
-          "DNS sinkhole",
-          "Honeytoken"
-        ],
-        obj: "h2"
-      },
-      {
-        id: "de47b23c",
-        q: "Gelen e-postadaki bilinmeyen bir ek zararlı olabilir. Analist, üretim ağına zarar vermeden ekin davranışını incelemek istiyor. En uygun yöntem hangisidir?",
-        options: [
-          "Eki kendi iş bilgisayarında açıp bakmak",
-          "Eki doğrudan dosya sunucusuna kopyalayıp açmak",
-          "Eke sahte kimlik bilgisi ekleyip göndericiye geri yollamak",
-          "Eki yalıtılmış bir sandbox'ta çalıştırıp davranışını izlemek"
-        ],
-        obj: "h2"
-      },
-      {
-        id: "be0046a8",
-        q: "Ekip, üretim ağıyla aynı VLAN'a bir honeypot kurdu ve içine gerçek bir yönetici hesabının parolasını koydu. Bu tasarımdaki asıl sorun nedir?",
-        options: [
-          "Honeypot kullanmak başlı başına hukuka aykırıdır",
-          "Tuzak sistemin günlük tutması gerekmez",
-          "Tuzak üretim ağından yalıtılmamış ve gerçek kimlik bilgisi içeriyor",
-          "Honeypot yalnızca bulut ortamında kurulabilir"
-        ],
-        obj: "h3"
-      },
-      {
-        id: "43fcf6a1",
-        q: "Honeytoken kaynaklı uyarıların yanlış alarm oranı neden genellikle düşüktür?",
-        options: [
-          "Saldırganın trafiğini otomatik olarak şifreleyip etkisiz hale getirir",
-          "Meşru bir kullanıcının onu kullanması için bir neden yoktur, bu yüzden kullanımı büyük ihtimalle şüphelidir",
-          "Ağdaki bütün tarama araçlarını kalıcı olarak devre dışı bırakır",
-          "Saldırganın IP adresini kalıcı olarak değiştirir"
-        ],
-        obj: "h3"
-      },
-      {
-        id: "6862dce8",
-        q: "Bir kurum honeypot kurmayı planlıyor. Hukuki ve etik açıdan en doğru yaklaşım hangisidir?",
-        options: [
-          "Hukuk ve gizlilik birimlerinin onayıyla, yalnızca kendi sistemlerinde ve kayıt kuralları belli olarak kurmak",
-          "Saldırganı yakalamak için onun sistemlerine girip delil toplamak",
-          "Yem olarak gerçek müşteri verilerini kullanmak",
-          "Çalışanlara haber vermeden kişisel cihazlarını tuzak olarak kullanmak"
-        ],
-        obj: "h3"
-      }
+      { id: "48cca087", q: "Saldırganı çekmek için kasıtlı olarak kurulmuş, gerçek kullanıcıların işi olmayan sahte sistem hangisidir?", options: ["Honeytoken (sahte kimlik kaydı)","Sandbox (yalıtılmış çalıştırma)","Honeypot (tuzak sistem)","DNS sinkhole (alan adı yönlendirme)"], obj: "h1" },
+      { id: "16bddbd7", q: "Dosya paylaşımında 'maaslar.xlsx' adında sahte bir dosya duruyor; biri açtığında güvenlik ekibine uyarı gidiyor. Bu düzenek hangisidir?", options: ["Honeyfile (yem dosya)","Honeynet (tuzak ağ)","DNS sinkhole (yönlendirme)","Sahte telemetri (yanıltıcı ölçüm)"], obj: "h1" },
+      { id: "5b41ca03", q: "Birkaç bilgisayar bilinen zararlı bir alan adını sorguluyor. Ekip bu adın DNS yanıtını kendi kontrol ettiği bir sunucuya çevirip sorgulayan cihazları listelemek istiyor. Hangisi uygulanıyor?", options: ["Honeyfile (yem dosya)","Sandbox (yalıtılmış ortam)","Honeytoken (sahte kimlik kaydı)","DNS sinkhole (yönlendirme)"], obj: "h2" },
+      { id: "f2a1c9d4", q: "Gelen e-postadaki bilinmeyen bir ek zararlı olabilir. Analist, üretim ağına zarar vermeden ekin davranışını incelemek istiyor. En uygun yöntem hangisidir?", options: ["Eki iş bilgisayarında açıp virüs tarayıcısıyla birlikte incelemek","Eki yalıtılmış bir sandbox'ta çalıştırıp davranışını izlemek","Eki dosya sunucusuna kopyalayıp orada davranışını gözlemek","Eki göndericiye sahte kimlik bilgisiyle yanıtlayıp tepkisini izlemek"], obj: "h2" },
+      { id: "55f4a5d0", q: "Ekip, üretim ağıyla aynı VLAN'a bir honeypot kurdu ve içine gerçek bir yönetici hesabının parolasını koydu. Bu tasarımdaki asıl sorun nedir?", options: ["Honeypot kullanmak başlı başına hukuka aykırıdır","Tuzakta günlük tutmak saldırganın davranışını bozduğu için gereksizdir","Tuzak üretim ağından yalıtılmamış ve gerçek kimlik bilgisi içeriyor","Honeypot yalnızca bulut ortamında, üretim ağının dışında kurulabilir"], obj: "h3" },
+      { id: "177f6ac1", q: "Honeytoken kaynaklı uyarıların yanlış alarm oranı neden genellikle düşüktür?", options: ["Meşru bir kullanıcının onu kullanmak için nedeni yoktur; kullanım şüphelidir","Saldırganın trafiğini otomatik olarak şifreleyip tuzağa yönlendirerek etkisiz hale getirir","Ağ tarayıcılarını ve yedekleme yazılımlarını devre dışı bırakır","Saldırganın IP adresini değiştirip izini kaybettirir"], obj: "h3" },
+      { id: "ed3403ea", q: "Bir kurum honeypot kurmayı planlıyor. Hukuki ve etik açıdan en doğru yaklaşım hangisidir?", options: ["Saldırganı yakalamak için onun sistemlerine girip delil toplayarak olayı kanıtlamak","Yem olarak gerçek müşteri kayıtlarını kullanıp tuzağı daha inandırıcı hale getirmek","Çalışanlara haber vermeden kişisel cihazlarını tuzak olarak kullanmak","Hukuk onayı alıp yalnızca kendi sistemlerinde, kayıt kuralları belli olarak kurmak"], obj: "h3" },
+      { id: "0f8719fc", q: "Ekip, birden çok tuzak sunucudan oluşan ve gerçek bir kurum ağını taklit eden yalıtılmış bir ortam kuruyor. Bu düzenek hangisidir?", options: ["Honeypot (tek tuzak sistem)","Honeynet (tuzak ağ)","Honeyfile (yem dosya)","DNS sinkhole (yönlendirme)"], obj: "h1" },
+      { id: "b7f3274a", q: "Savunma ekibi, saldırganın ya da zararlının gördüğü sensör ve ölçüm yanıtlarını bilerek yanıltıcı hale getiriyor. Bu teknik hangisidir?", options: ["Honeytoken (sahte kimlik kaydı)","Sandbox (yalıtılmış ortam)","Sahte telemetri (yanıltıcı ölçüm)","DNS sinkhole (yönlendirme)"], obj: "h2" }
     ],
     interview: [
       {
@@ -337,83 +269,15 @@
       "EDR uç noktayı izleyip makineyi yalıtabilir, XDR birçok kaynağı ilişkilendirir; tehdit avı hipotezle başlayan proaktif araştırmadır, alarm yönetimi ise tepkiseldir."
     ],
     quiz: [
-      {
-        id: "8d12042b",
-        q: "Trafiği hat üzerinde (inline) izleyip kötü amaçlı paketi iletmeden düşürebilen sistem hangisidir?",
-        options: [
-          "IDS",
-          "DLP",
-          "IPS",
-          "NAC"
-        ],
-        obj: "h1"
-      },
-      {
-        id: "1f9e1b2b",
-        q: "Bilinen saldırı desenlerinin veritabanıyla eşleştirme yapan, yeni ve bilinmeyen saldırıları ise kaçırabilen tespit yöntemi hangisidir?",
-        options: [
-          "İmza tabanlı tespit",
-          "Anomali tabanlı tespit",
-          "Kural tabanlı güvenlik duvarı filtresi",
-          "Konak tabanlı (HIDS) yerleşim"
-        ],
-        obj: "h1"
-      },
-      {
-        id: "4bfcbe99",
-        q: "Bir misafir, antivirüsü güncel olmayan dizüstü bilgisayarını kablolu porta taktı. Politika, uyumsuz cihazın iç ağa girmemesini ama güncelleme yapabilmesini şart koşuyor. NAC ne yapmalıdır?",
-        options: [
-          "Cihazı üretim VLAN'ına alıp yalnızca alarm üretmek",
-          "Cihazı karantina (onarım) VLAN'ına alıp güncelleme sonrası yeniden değerlendirmek",
-          "Kullanıcı adı sorup doğru girilirse tam erişim vermek",
-          "Cihazın diskini uzaktan silmek"
-        ],
-        obj: "h2"
-      },
-      {
-        id: "1deeb1ff",
-        q: "Bir çalışanın kredi kartı numarası biçimindeki verileri e-postayla kurum dışına göndermesini içerik kurallarıyla yakalayıp engelleyen çözüm hangisidir?",
-        options: [
-          "HIDS",
-          "NIDS",
-          "802.1X",
-          "DLP"
-        ],
-        obj: "h2"
-      },
-      {
-        id: "48785d0d",
-        q: "Güvenlik ekibi uç nokta, e-posta, ağ ve bulut telemetrisini tek yerde ilişkilendirip bir saldırı zincirini bütün olarak görmek istiyor. Hangi çözüm bu amaca en uygundur?",
-        options: [
-          "EDR",
-          "XDR",
-          "HIDS",
-          "NAC"
-        ],
-        obj: "h2"
-      },
-      {
-        id: "48a13ea4",
-        q: "Hiçbir alarm yokken bir analist 'saldırgan zaten içeride olabilir ve düzenli aralıklarla dışarıya bağlantı kuruyordur' varsayımıyla ağ kayıtlarında bunu doğrulayacak izleri arıyor. Bu çalışma hangisidir?",
-        options: [
-          "Alarm triyajı",
-          "Yanlış pozitif ayarı",
-          "Zafiyet taraması",
-          "Hipotez güdümlü tehdit avı"
-        ],
-        obj: "h3"
-      },
-      {
-        id: "5d9b91b5",
-        q: "Yeni bir IPS kuralı sonrasında yöneticinin meşru yedekleme trafiği engellendi. Bu hangi durumdur ve doğru tepki nedir?",
-        options: [
-          "Yanlış negatif; IPS'i kalıcı olarak kapatmak",
-          "Yanlış pozitif; alarmları yok sayıp hiçbir değişiklik yapmamak",
-          "Yanlış pozitif; kural için istisna ya da eşik ayarı yapıp test etmek",
-          "Yanlış negatif; yedekleme trafiğini tamamen yasaklamak"
-        ],
-        obj: "h3"
-      }
+      { id: "152114ac", q: "Trafiği hat üzerinde (inline) izleyip kötü amaçlı paketi iletmeden düşürebilen sistem hangisidir?", options: ["IPS (hat üzerinde engeller)","IDS (kopya trafikte uyarı verir)","DLP (veri sızıntısı önleme)","NAC (ağ erişim denetimi)"], obj: "h1" },
+      { id: "2be13142", q: "Bilinen saldırı desenlerinin veritabanıyla eşleştirme yapan, yeni ve bilinmeyen saldırıları ise kaçırabilen tespit yöntemi hangisidir?", options: ["Anomali tabanlı tespit","Kural tabanlı güvenlik duvarı filtresi","Konak tabanlı (HIDS) yerleşim","İmza tabanlı tespit"], obj: "h1" },
+      { id: "2eb0ecee", q: "NIDS ile HIDS farkını doğru anlatan ifade hangisidir?", options: ["NIDS tek bir makinenin dosya ve günlüklerini, HIDS ağ trafiğini izler","NIDS ağ trafiğini, HIDS tek bir makinenin dosya, süreç ve günlüklerini izler","NIDS yalnızca trafiği engeller, HIDS yalnızca uyarı verir","NIDS yalnızca bulutta, HIDS yalnızca yerel ağda çalışır"], obj: "h1" },
+      { id: "03dee3d5", q: "Bir misafir, antivirüsü güncel olmayan dizüstü bilgisayarını kablolu porta taktı. Politika, uyumsuz cihazın iç ağa girmemesini ama güncelleme yapabilmesini şart koşuyor. NAC ne yapmalıdır?", options: ["Üretim VLAN'ına alıp antivirüs güncellemesi için kullanıcıya e-posta atmak","Kullanıcı kimliğini doğrulayıp sağlık denetimini sonraya bırakarak tam erişim vermek","Karantina VLAN'ına alıp güncelleme sonrası yeniden değerlendirmek","Cihazın diskini uzaktan silip işletim sistemini yeniden kurmak"], obj: "h2" },
+      { id: "cf634671", q: "Bir çalışanın kredi kartı numarası biçimindeki verileri e-postayla kurum dışına göndermesini içerik kurallarıyla yakalayıp engelleyen çözüm hangisidir?", options: ["DLP (veri sızıntısı önleme)","HIDS (konak tabanlı tespit)","NIDS (ağ tabanlı tespit)","802.1X (port tabanlı kimlik doğrulama)"], obj: "h2" },
+      { id: "b6568bbe", q: "Güvenlik ekibi uç nokta, e-posta, ağ ve bulut telemetrisini tek yerde ilişkilendirip bir saldırı zincirini bütün olarak görmek istiyor. Hangi çözüm bu amaca en uygundur?", options: ["EDR (uç nokta tespit ve yanıt)","HIDS (konak tabanlı tespit)","NAC (cihaz kabulü ve sağlık denetimi)","XDR (genişletilmiş tespit ve yanıt)"], obj: "h2" },
+      { id: "00f0f2c5", q: "Bir dizüstü bilgisayarda şüpheli süreç davranışı görüldü. Ekip, uç nokta telemetrisini inceleyip makineyi ağdan yalıtmak istiyor. Hangi çözüm bu işi yapar?", options: ["NAC (ağ erişim denetimi)","EDR (uç nokta tespit ve yanıt)","DLP (veri sızıntısı önleme)","IDS (kopya trafikte uyarı verir)"], obj: "h2" },
+      { id: "18d1a876", q: "Hiçbir alarm yokken bir analist 'saldırgan zaten içeride olabilir ve düzenli aralıklarla dışarıya bağlantı kuruyordur' varsayımıyla ağ kayıtlarında bunu doğrulayacak izleri arıyor. Bu çalışma hangisidir?", options: ["Alarm triyajı ve olay sıralaması","Yanlış pozitif oranını düşürme ayarı","Hipotez güdümlü tehdit avı","Zafiyet taraması (bilinen açık listesi)"], obj: "h3" },
+      { id: "80af0261", q: "Yeni bir IPS kuralı sonrasında yöneticinin meşru yedekleme trafiği engellendi. Bu hangi durumdur ve doğru tepki nedir?", options: ["Yanlış pozitif; kurala istisna ya da eşik ayarı yapıp test etmek","Yanlış negatif; IPS'i kalıcı olarak kapatıp tüm kuralları silmek","Yanlış pozitif; alarmları yok sayıp kuralı olduğu gibi bırakmak","Yanlış negatif; yedekleme trafiğini baştan yasaklamak"], obj: "h3" }
     ],
     interview: [
       {
@@ -513,7 +377,7 @@
           "Kritik süreç: durması işi hızla ve ağır biçimde etkileyen süreç; önce korunur.",
           "RTO (Recovery Time Objective): kesintiden sonra sürecin geri gelmesi için hedef süre.",
           "RPO (Recovery Point Objective): kabul edilebilir veri kaybı, zaman olarak. RPO 2 saatse yedek en geç 2 saatte bir alınmalı.",
-          "MTTR (Mean Time To Repair): bir arızanın ortalama onarım süresi. MTBF (Mean Time Between Failures): iki arıza arasındaki ortalama çalışma süresi. İkisi de geçmişi ölçer, hedef koymaz."
+          "MTTR (Mean Time To Repair): bir arızanın ortalama onarım süresi. MTBF (Mean Time Between Failures): iki arıza arasındaki ortalama çalışma süresi. İkisi çoğunlukla gözlenen ölçüm göstergeleridir; RTO ise iş için konan hedeftir."
         ]
       },
       {
@@ -570,83 +434,15 @@
       "Doğal risk kontrollerden önceki, artık risk kontrollerden sonraki risktir; risk azaltılır, aktarılır, kabul edilir ya da kaçınılır."
     ],
     quiz: [
-      {
-        id: "f9952a8c",
-        q: "Bir kesintiden sonra sürecin ne kadar sürede yeniden çalışır olması gerektiğini söyleyen hedef değer hangisidir?",
-        options: [
-          "RPO",
-          "MTBF",
-          "MTTR",
-          "RTO"
-        ],
-        obj: "h1"
-      },
-      {
-        id: "293dcfd2",
-        q: "Son yedek 6 saat önce alınmış, kurumun RPO'su ise 2 saat. Durum nedir?",
-        options: [
-          "RPO aşılıyor; yedek aralığı en çok 2 saate indirilmeli",
-          "RPO sağlanıyor, çünkü bir yedek mevcut",
-          "Sorun RTO ile ilgilidir, yedek aralığı değişmemeli",
-          "MTBF yükseltilirse sorun kendiliğinden çözülür"
-        ],
-        obj: "h1"
-      },
-      {
-        id: "a1bfb5a7",
-        q: "Felaket kurtarma (DR) planı, iş sürekliliği (BC) planına göre nasıl tanımlanır?",
-        options: [
-          "BC'den bağımsız, yalnızca yangın söndürmeyi anlatan plan",
-          "Riskin sigortaya aktarılmasını anlatan mali plan",
-          "BC'nin içinde yer alan, BT sistemleri ve verinin felaket sonrası geri getirilmesine odaklanan plan",
-          "Yıllık risk değerlendirmesinin raporu"
-        ],
-        obj: "h1"
-      },
-      {
-        id: "eae4196d",
-        q: "Yönetim kurulu 'yeni pazarlarda büyümek için orta düzeyde risk almaya razıyız' diyor. Bu ifade hangi kavramı anlatır?",
-        options: [
-          "Artık risk",
-          "Risk iştahı",
-          "Doğal risk",
-          "MTTR"
-        ],
-        obj: "h2"
-      },
-      {
-        id: "0d33771d",
-        q: "Güvenlik duvarı, eğitim ve yedekleme gibi kontroller uygulandıktan sonra geriye kalan risk nasıl adlandırılır?",
-        options: [
-          "Doğal (inherent) risk",
-          "Risk iştahı",
-          "Risk eşiği",
-          "Artık (residual) risk"
-        ],
-        obj: "h2"
-      },
-      {
-        id: "1b418415",
-        q: "BIA'da sipariş sisteminin RTO'su 15 dakika, RPO'su birkaç saniye çıktı. Hangi çözüm bu hedefleri karşılar?",
-        options: [
-          "Sürekli veri çoğaltmalı sıcak (hot) site ya da yüksek erişilebilirlik",
-          "Haftalık bantlı yedek ve soğuk (cold) site",
-          "Ayda bir manuel disk kopyası",
-          "Yalnızca sigorta yaptırmak"
-        ],
-        obj: "h3"
-      },
-      {
-        id: "83a3f60d",
-        q: "Deprem riski taşıyan bir bölgedeki tek veri merkezi için kurum, olası hasarın büyük bölümünü bir sigorta şirketine devrediyor. Bu risk yanıtı hangisidir?",
-        options: [
-          "Kaçınma",
-          "Kabul etme",
-          "Aktarma",
-          "Azaltma"
-        ],
-        obj: "h3"
-      }
+      { id: "26666289", q: "Bir kesintiden sonra sürecin ne kadar sürede yeniden çalışır olması gerektiğini söyleyen hedef değer hangisidir?", options: ["RPO (hedef veri kaybı)","MTBF (arızalar arası süre)","MTTR (ortalama onarım süresi)","RTO (hedef kurtarma süresi)"], obj: "h1" },
+      { id: "40f64bad", q: "Yedekler 6 saatte bir alınıyor ve son yedek 6 saat önce alınmış. Kurumun RPO'su 2 saat ise durum nedir?", options: ["RPO sağlanıyor, çünkü en son bir yedek mevcut","RPO aşılıyor; yedek aralığı en çok 2 saate indirilmeli","Sorun RTO ile ilgili, yedek aralığı olduğu gibi kalmalı","MTBF artırılırsa veri kaybı hedefi kendiliğinden sağlanır"], obj: "h1" },
+      { id: "820a72e4", q: "Felaket kurtarma (DR) planı, iş sürekliliği (BC) planına göre nasıl tanımlanır?", options: ["BC'den bağımsız çalışan ve yalnızca fiziksel yangın söndürme adımlarını anlatan plan","Riskin sigortaya aktarılmasını ve prim ödemelerini düzenleyen mali plan","BC'nin parçası olan, BT sistemleri ve verinin geri getirilmesine odaklı plan","Yıllık risk değerlendirmesi sonuçlarını özetleyen rapor"], obj: "h1" },
+      { id: "258cb5b8", q: "Yönetim kurulu 'yeni pazarlarda büyümek için orta düzeyde risk almaya razıyız' diyor. Bu ifade hangi kavramı anlatır?", options: ["Risk iştahı (genel risk düzeyi)","Artık risk (kontrol sonrası kalan)","Doğal risk (kontrol öncesi)","Risk eşiği (harekete geçiren seviye)"], obj: "h2" },
+      { id: "331c30c0", q: "Kontroller uygulanmadan önceki risk ile kontrollerden sonra kalan risk sırasıyla nasıl adlandırılır?", options: ["Artık (residual) risk; ardından doğal (inherent) risk","Risk iştahı; risk toleransı","Risk eşiği; risk iştahı","Doğal (inherent) risk; ardından artık (residual) risk"], obj: "h2" },
+      { id: "1242ac30", q: "BIA'da sipariş sisteminin RTO'su 15 dakika, RPO'su birkaç saniye çıktı. Hangi çözüm bu hedefleri karşılar?", options: ["Haftalık bantlı yedek ve gerektiğinde kurulacak soğuk (cold) site","Sürekli çoğaltmalı sıcak (hot) site ya da yüksek erişilebilirlik","Günde bir alınan bulut yedeği ve birkaç günde devreye giren ılık (warm) site","Ayda bir alınan manuel disk kopyası ve elle yeniden kurulum"], obj: "h3" },
+      { id: "ab1cde10", q: "Deprem riski taşıyan bir bölgedeki tek veri merkezi için kurum, olası hasarın büyük bölümünü bir sigorta şirketine devrediyor. Bu risk yanıtı hangisidir?", options: ["Kaçınma (faaliyeti bırakma)","Kabul etme (riski taşıma)","Aktarma (sigorta)","Azaltma (kontrol ekleme)"], obj: "h3" },
+      { id: "5ea6d5a5", q: "MTBF ve MTTR göstergelerini doğru tanımlayan ifade hangisidir?", options: ["MTBF arızalar arası ortalama çalışma süresi, MTTR ortalama onarım süresidir","MTBF ortalama onarım süresi, MTTR iki arıza arasındaki ortalama süredir","MTBF kabul edilen veri kaybı, MTTR hedef kurtarma süresidir","İkisi de iş için konan hedeflerdir; MTBF süreyi, MTTR ise veri kaybını sınırlar"], obj: "h1" },
+      { id: "507e8f07", q: "Kurumun genel risk iştahı 'orta düzey' olarak belirlenmiş. Operasyon ekibi, belirli bir hedef için kabul edilen ölçülebilir sapma payını 'aylık toplam kesinti en çok 4 saat' diye yazdı. Bu ifade hangi kavramdır?", options: ["Risk iştahı (üst yönetimin genel risk düzeyi)","Doğal risk (kontroller uygulanmadan önceki risk)","Artık risk (kontroller sonrası kalan risk)","Risk toleransı (ölçülebilir sapma payı)"], obj: "h2" }
     ],
     interview: [
       {
@@ -801,83 +597,15 @@
       "Zafiyet taraması sızma testi değildir; test sonunda rapor verilir ve düzeltmeler yeniden testle doğrulanır."
     ],
     quiz: [
-      {
-        id: "fce04be7",
-        q: "Test ekibine ağ şeması, kaynak kodu ve yönetici hesabı verilerek yapılan test hangisidir?",
-        options: [
-          "Bilinmeyen ortam testi (kara kutu)",
-          "Bilinen ortam testi (beyaz kutu)",
-          "Kısmen bilinen ortam testi (gri kutu)",
-          "Bug bounty programı"
-        ],
-        obj: "h1"
-      },
-      {
-        id: "4a5cd137",
-        q: "Test ekibi hedef kuruma doğrudan paket göndermeden alan adı kayıtlarından, iş ilanlarından ve herkese açık sosyal medya sayfalarından bilgi topluyor. Bu çalışma hangisidir?",
-        options: [
-          "Pasif keşif",
-          "Aktif keşif",
-          "Kırmızı takım operasyonu",
-          "Düzeltme doğrulaması"
-        ],
-        obj: "h1"
-      },
-      {
-        id: "ee513795",
-        q: "Teste başlamadan önce, testin hangi sistemlerde, hangi saatlerde ve hangi yöntemlerle yapılabileceğini ve acil durumda kimlerin aranacağını belirleyen belge hangisidir?",
-        options: [
-          "Olay sonrası inceleme raporu",
-          "İş etki analizi",
-          "Zafiyet tarama çıktısı",
-          "Rules of Engagement (etkileşim kuralları)"
-        ],
-        obj: "h2"
-      },
-      {
-        id: "fb04f1bc",
-        q: "Bir kurum, saldırgan taklidi yapan ekip ile savunma ekibinin bulgularını birlikte inceleyip tespitleri iyileştirmeyi koordine edecek bir yapı istiyor. Hangi takım rolü bunu üstlenir?",
-        options: [
-          "Kırmızı takım",
-          "Mavi takım",
-          "Mor takım",
-          "Bug bounty araştırmacıları"
-        ],
-        obj: "h2"
-      },
-      {
-        id: "049b4020",
-        q: "Bir yönetici 'tarama aracının çıktısını aldık, yani sızma testi yaptırdık' diyor. Bu neden yanlıştır?",
-        options: [
-          "Tarama, sızma testinden her zaman daha derin sonuç verir",
-          "Tarama bilinen açıkları listeler; sızma testi ise yetkiyle bulguları doğrulayıp gerçek etkiyi gösterir",
-          "Sızma testi yalnızca otomatik araç çıktısından oluşur",
-          "İkisi arasında fark yoktur, yalnızca adları farklıdır"
-        ],
-        obj: "h3"
-      },
-      {
-        id: "8683e526",
-        q: "Rapor sunuldu ve ekip kritik bulguları düzeltti. Sızma testi sürecinin bir sonraki adımı ne olmalıdır?",
-        options: [
-          "Düzeltmelerin bulguları gerçekten kapattığını yeniden testle doğrulamak",
-          "Raporu arşivleyip bulguları kapalı saymak",
-          "Tüm bulguları 'kabul edilen risk' olarak işaretlemek",
-          "Testi yazılı izin almadan kapsam dışı sistemlere genişletmek"
-        ],
-        obj: "h3"
-      },
-      {
-        id: "d4face8a",
-        q: "Bug bounty programı ile kurumun sözleşmeli bir firmaya yaptırdığı sızma testi arasındaki temel fark hangisidir?",
-        options: [
-          "Bug bounty'de kapsam ve kural yoktur, herkes her sistemi deneyebilir",
-          "Bug bounty yalnızca fiziksel güvenlik testlerini kapsar",
-          "Bug bounty'de kapsam ve kuralları yayımlanmış programa çok sayıda bağımsız araştırmacı katılır; ödül genellikle bulgu karşılığı verilir",
-          "Sızma testinde yazılı izin gerekmez, bug bounty'de gerekir"
-        ],
-        obj: "h2"
-      }
+      { id: "bd43c8e5", q: "Test ekibine ağ şeması, kaynak kodu ve yönetici hesabı verilerek yapılan test hangisidir?", options: ["Bilinmeyen ortam testi (kara kutu)","Bilinen ortam testi (beyaz kutu)","Kısmen bilinen ortam testi (gri kutu)","Açık ödül programı (bug bounty)"], obj: "h1" },
+      { id: "11133f32", q: "Test ekibi önce alan adı kayıtlarına, iş ilanlarına ve herkese açık sosyal medya sayfalarına bakıyor; sonra hedefin canlı sistemlerini ve açık servislerini bulmak için doğrudan sorgu gönderiyor. Bu iki aşama sırasıyla nasıl adlandırılır?", options: ["Önce aktif keşif, sonra da pasif keşif aşaması","Her iki aşama da pasif keşif sayılır","Önce pasif keşif, sonra aktif keşif","Önce kırmızı takım, sonra mavi takım çalışması"], obj: "h1" },
+      { id: "b1008686", q: "Teste başlamadan önce, testin hangi sistemlerde, hangi saatlerde ve hangi yöntemlerle yapılabileceğini ve acil durumda kimlerin aranacağını belirleyen belge hangisidir?", options: ["RoE (etkileşim kuralları belgesi)","Olay sonrası inceleme raporu ve çıkarılan dersler","İş etki analizi (BIA) çalışma çıktısı","Zafiyet tarama çıktısı ve bulgu listesi"], obj: "h2" },
+      { id: "08db6990", q: "Bir kurum, saldırgan taklidi yapan ekip ile savunma ekibinin bulgularını birlikte inceleyip tespitleri iyileştirmeyi koordine edecek bir yapı istiyor. Hangi takım rolü bunu üstlenir?", options: ["Kırmızı takım","Mavi takım","Bug bounty araştırmacıları","Mor takım"], obj: "h2" },
+      { id: "bcd38479", q: "Bir yönetici 'tarama aracının çıktısını aldık, yani sızma testi yaptırdık' diyor. Bu neden yanlıştır?", options: ["Tarama, sızma testinden daha derin ve bağlam odaklı sonuç verdiği için testin yerini tutar","Tarama açıkları listeler; sızma testi bulguları doğrulayıp gerçek etkiyi gösterir","Sızma testi yalnızca otomatik araç çıktısının yönetici özeti biçiminde sunulmasıdır","İkisi aynı çalışmadır; fark yalnızca raporun biçiminde ve başlık düzenindedir"], obj: "h3" },
+      { id: "7212e284", q: "Rapor sunuldu ve ekip kritik bulguları düzeltti. Sızma testi sürecinin bir sonraki adımı ne olmalıdır?", options: ["Raporu arşivleyip düzeltmeler uygulandığı için bulguları kapalı saymak","Düzeltilen bulguları da kabul edilen risk olarak işaretleyip dosyayı kapatmak","Düzeltmelerin bulguları gerçekten kapattığını yeniden testle doğrulamak","Testi yazılı izin almadan kapsam dışı sistemlere de genişletmek"], obj: "h3" },
+      { id: "89bb853d", q: "Bug bounty programı ile kurumun sözleşmeli bir firmaya yaptırdığı sızma testi arasındaki temel fark hangisidir?", options: ["Kapsamı yayımlanmış programa bağımsız araştırmacılar katılır; ödül bulguya göre verilir","Bug bounty'de kapsam ve kural bulunmaz, katılan araştırmacılar istedikleri her sistemi deneyebilir","Bug bounty yalnızca binaların ve çalışma alanlarının fiziksel güvenlik testlerini kapsar","Sızma testi için yazılı izin gerekmez, bug bounty için gerekir"], obj: "h2" },
+      { id: "a8ff6129", q: "Test ekibine yalnızca sıradan bir kullanıcı hesabı verilerek sınırlı bilgiyle yapılan test hangisidir?", options: ["Bilinen ortam testi (beyaz kutu)","Bilinmeyen ortam testi (kara kutu)","Kırmızı takım operasyonu (saldırgan rolü)","Kısmen bilinen ortam testi (gri kutu)"], obj: "h1" },
+      { id: "7cff8b6a", q: "Yetkili test sırasında ekip, kapsam listesinde olmayan bir sunucunun açık olduğunu fark etti. Doğru davranış nedir?", options: ["Yöneticiden sözlü onay alıp sunucuyu da teste dahil etmek ve sonra rapora yazmak","Sunucuya dokunmadan bildirip kapsamın yazılı olarak genişletilmesini istemek","Sunucunun da kuruma ait olduğunu varsayıp hızlıca tarama yapmak","Yalnızca okuma yapacağını söyleyerek sunucuya sessizce bağlanıp bakmak"], obj: "h2" }
     ],
     interview: [
       {

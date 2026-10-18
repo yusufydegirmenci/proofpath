@@ -1,4 +1,4 @@
-/* Siber güvenlik yolu · Faz 5 tur 4 devamı: yeni dersler için ek girdileri (anahtar 35-38).
+/* Siber güvenlik yolu · Faz 5 tur 4 devamı: yeni dersler için ek girdileri (anahtar = TMAP.sec dizini 35-38; bunlar ders no 39-42'ye karşılık gelir, ders no = anahtar + 4).
    Her girdi benzetme ve sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar, geçme ölçütü, kaynak ve telafi/sonraki adım içerir.
    Uygulamalar savunma ve politika odaklıdır; yalnızca kâğıt üzerinde ya da kendi izole ortamında yapılır. Kaynaklar sec-ek.js'te doğrulananlarla sınırlıdır. */
 (function () {
