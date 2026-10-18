@@ -9,7 +9,7 @@ function vaAlanlar(d, st) {
   var liste = PP_VA.alanlar.filter(function (a) { return a.ders === d.id; }), cozulen = PP.va.durum().alanlar;
   var paneller = liste.map(function (a) {
     if (!st.alanEl[a.id]) {
-      var t = PP.alan.tanimla({ id: a.id, ders: a.ders, tur: a.tur, baslik: a.baslik, gorev: a.gorev, baslangic: a.baslangic, kontrol: a.kontrol, varyant: a.varyant, ipucu: a.ipucu, veri: a.veri || PP_VA.veri });
+      var t = PP.alan.tanimla({ id: a.id, ders: a.ders, tur: a.tur, baslik: a.baslik, gorev: a.gorev, baslangic: a.baslangic, kontrol: a.kontrol, varyant: a.varyant, ipucu: a.ipucu, adimla: a.adimla, veri: a.veri || PP_VA.veri });
       if (!t.ok) return h("div", { class: "lbox warn" }, "Alan tanımı geçersiz: " + t.neden);
       st.alanEl[a.id] = PP.alan.kur(t.alan, { onDogru: function (ip) { PP.va.alanKaydet(a.id, ip); } });
     }

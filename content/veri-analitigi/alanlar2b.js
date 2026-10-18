@@ -38,7 +38,7 @@
       return { dogru: d, mesaj: d ? "Sonuç veriyle uyuşuyor." : "Bulduğun: " + bul.length + " satır, " + s.sutunlar.length + " sütun. İki sütun (siparis_id, net_tutar) bekleniyor; boş indirimli satırı ve ortalamanın hangi satırlarla hesaplandığını kontrol et." };
     },
     varyant: function (v) { return degistir(v, "S010", "adet", 5); } };
-  var VA8PY = { id: "va2-8-py", ders: "va2-8", tur: "python", baslik: "Python · ortalama net tutar ve üstündekiler", veri: VA.veriSql,
+  var VA8PY = { id: "va2-8-py", ders: "va2-8", tur: "python", adimla: "«Adım adım göster»e bas: `net(s)` işlevine her girişte `s` ve `ind` değerlerinin nasıl değiştiğini ve işlevin ne döndürdüğünü gör.", baslik: "Python · ortalama net tutar ve üstündekiler", veri: VA.veriSql,
     gorev: "`siparisler` sözlük listesidir. Net tutar = adet × birim_fiyat × (1 − indirim_orani); indirim_orani None ise 0 say. `sonuc` = [ortalama net tutar (2 ondalığa yuvarlı), ortalamanın ÜSTÜNDE kalan sipariş sayısı] (bu sırayla).",
     baslangic: "def net(s):\n    ind = s['indirim_orani'] or 0\n    return s['adet'] * s['birim_fiyat'] * (1 - ind)\n\nnetler = [net(s) for s in siparisler]\nprint(netler)\nsonuc = None",
     ipucu: ["Önce her siparişin net tutarını bir listede topla; ortalamayı bu listeden çıkar, sonra ortalamayı aşanları say.", "None indirimi (s['indirim_orani'] or 0) ile 0 say; ortalama = sum(netler) / len(netler); iki ondalık için round(x, 2); sonuc iki elemanlı liste: [ortalama, üstündekilerin sayısı].", "ort = sum(netler) / len(netler); sonuc = [round(ort, 2), len([n for n in netler if ____])] ; boşluğa 'ortalamanın üstünde' koşulunu yaz."],

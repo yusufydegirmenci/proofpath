@@ -10,6 +10,7 @@ const ok = (c, m) => { console.log((c ? 'OK    ' : 'HATA  ') + m); if (!c) fails
 const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(s, m + (s ? '' : '  → beklenen ' + JSON.stringify(b) + ', gelen ' + JSON.stringify(a))); };
 const MIME = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript; charset=utf-8', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.webmanifest': 'application/manifest+json', '.png': 'image/png' };
 
+const SW_SURUM = /var SURUM = "([^"]+)"/.exec(fs.readFileSync(path.join(__dirname, '..', 'sw.js'), 'utf8'))[1];   // asıl sürüm sw.js'den okunur (sabit yazılmaz)
 let swSurum = null;   // sunucu, sw.js içindeki SURUM değerini bununla değiştirir (güncelleme testi)
 const sunucu = http.createServer((req, res) => {
   const u = decodeURIComponent(req.url.split('?')[0]);
@@ -256,8 +257,8 @@ const SAHTE = `
       const r = await navigator.serviceWorker.getRegistration(), ks = await caches.keys(), c = await caches.open(ks[0]), tum = (await c.keys()).map(x => x.url), urls = tum.map(x => new URL(x).pathname);
       return { tum, scope: new URL(r.scope).pathname, kontrol: !!navigator.serviceWorker.controller, ks, manifest: !!document.querySelector('link[rel=manifest]'), urls };
     });
-    eq([bilgi.scope, bilgi.kontrol, bilgi.ks, bilgi.manifest], ['/proofpath/', true, ['pp-kabuk-2026-10-12-1'], true], 'B2: SW alt yolda (/proofpath/) kayıtlı ve sayfayı denetliyor; manifest bağlandı');
-    ok(['/proofpath/index.html', '/proofpath/content/lessons/net-ek.js', '/proofpath/js/ogrenme/koc.js', '/proofpath/css/genel.css', '/proofpath/manifest.webmanifest'].every(u => bilgi.urls.includes(u)), 'B2: uygulama kabuğu ve ders içeriği önbelleğe alındı');
+    eq([bilgi.scope, bilgi.kontrol, bilgi.ks, bilgi.manifest], ['/proofpath/', true, ['pp-kabuk-' + SW_SURUM], true], 'B2: SW alt yolda (/proofpath/) kayıtlı ve sayfayı denetliyor; manifest bağlandı');
+    ok(['/proofpath/index.html', '/proofpath/content/lessons/net-ek.js', '/proofpath/js/ogrenme/koc.js', '/proofpath/css/genel.css', '/proofpath/manifest.webmanifest', '/proofpath/vendor/codemirror-6.43.14.js'].every(u => bilgi.urls.includes(u)), 'B2: uygulama kabuğu, ders içeriği ve kod editörü paketi (E2: kurulumda) önbelleğe alındı');
     ok(bilgi.tum.every(u => u.indexOf(location0) === 0 || /^https:\/\/(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com)\//.test(u)), 'B2: önbellekte yalnız uygulama dosyaları ve izinli statik CDN var');
 
     // Çevrimdışı: yenile → önbellekten açılır, ders içeriği erişilebilir
@@ -270,15 +271,15 @@ const SAHTE = `
     await ctx.setOffline(false);
 
     // Güncelleme: yeni sürüm kendiliğinden devralmaz; kullanıcı onayıyla uygulanır, eski önbellek silinir
-    swSurum = '2026-10-12-2';
+    swSurum = SW_SURUM + '-yeni';
     await p.evaluate(async () => { const r = await navigator.serviceWorker.getRegistration(); await r.update(); });
     await p.waitForFunction(() => PP.cevrimdisi.bekleyenSurum === true, null, { timeout: 20000 });
-    eq(await p.evaluate(async () => [(await caches.keys()).sort(), !!(await navigator.serviceWorker.getRegistration()).waiting]), [['pp-kabuk-2026-10-12-1', 'pp-kabuk-2026-10-12-2'], true], 'B4: yeni sürüm bekliyor, eski sürüm hâlâ devrede (sessiz değişim yok)');
+    eq(await p.evaluate(async () => [(await caches.keys()).sort(), !!(await navigator.serviceWorker.getRegistration()).waiting]), [['pp-kabuk-' + SW_SURUM, 'pp-kabuk-' + SW_SURUM + '-yeni'].sort(), true], 'B4: yeni sürüm bekliyor, eski sürüm hâlâ devrede (sessiz değişim yok)');
     await p.evaluate(() => goTab('ayar')); await p.waitForTimeout(400);
     ok(await p.evaluate(() => !!document.querySelector('[data-gvn=yeni-surum]')), 'B4: Güven merkezinde "yeni sürüm hazır" bildirimi');
     await Promise.all([p.waitForNavigation({ timeout: 20000 }), p.evaluate(() => PP.cevrimdisi.guncelle())]);
     await p.waitForTimeout(1500);
-    eq(await p.evaluate(async () => (await caches.keys()).sort()), ['pp-kabuk-2026-10-12-2'], 'B4: onaydan sonra yeni sürüm devraldı, eski önbellek silindi');
+    eq(await p.evaluate(async () => (await caches.keys()).sort()), ['pp-kabuk-' + SW_SURUM + '-yeni'], 'B4: onaydan sonra yeni sürüm devraldı, eski önbellek silindi');
 
     // Kapat: SW ve önbellek kaldırılır
     const kp = await p.evaluate(async () => { const r = await PP.cevrimdisi.kapat(); return [r.ok, (await navigator.serviceWorker.getRegistrations()).length, (await caches.keys()).filter(k => k.indexOf('pp-kabuk-') === 0).length, localStorage.getItem('pp_pwa')]; });

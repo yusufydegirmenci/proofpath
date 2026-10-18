@@ -80,3 +80,9 @@
 .lab-f select{font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card,#fff);color:inherit;min-height:44px;box-sizing:border-box;width:100%;max-width:100%}.lab-f.ok select{border-color:var(--ok)}.lab-f.no select{border-color:var(--bad)}
 .lab-tab{display:grid;gap:2px;margin:6px 0;padding:8px;border:1px solid var(--line);border-radius:8px;font-family:ui-monospace,Consolas,monospace;font-size:12px;overflow-x:auto}.lab-sat{white-space:pre-wrap;overflow-wrap:anywhere}
 .lab .qz-sum b{white-space:nowrap;flex:none;font-size:18px}.lab .qz-sum span{min-width:0}
+.cm-line.pp-izle-satir{background:#f5b50040;box-shadow:inset 3px 0 0 var(--gold,#d99a00)}
+.izle-panel{margin-top:8px;min-width:0}.izle-ust{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.izle-kontrol{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}.izle-kay{flex:1 1 120px;min-width:0;min-height:44px}
+.izle-satir{white-space:pre-wrap;overflow-wrap:anywhere;padding:4px 6px;border-left:3px solid var(--gold,#d99a00);background:#f5b50022;margin:4px 0}
+.izle-tablo{overflow:auto;max-width:100%;margin:6px 0}.izle-tablo table{border-collapse:collapse}.izle-tablo th,.izle-tablo td{padding:2px 6px;text-align:left;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
+.izle-tablo tr.izle-yeni td{font-weight:700}.izle-cikti{white-space:pre-wrap;overflow-wrap:anywhere;margin:4px 0}.izle-satir-kap{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
