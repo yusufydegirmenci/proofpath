@@ -3,6 +3,8 @@
 var LC_KEY="ya_lc",LC_FROM="2026-10-08";
 function lcLoad(){try{var o=JSON.parse(localStorage.getItem(LC_KEY)||"null");return o&&typeof o==="object"?o:{}}catch(e){return {}}}
 function lcHas(k,f){var o=lcLoad()[k];return !!(o&&o[f])}
+function lcW(k){return lcHas(k,"w")||lcHas(k,"w-atla")}
+function lcAtla(k,tr){lcSet(k,"w-atla",tr);rtToast("Isınma atlandı. Anlatım açıldı. Mini sınavda %80'in altında kalırsan 2 dakikalık ısınmayı önereceğim.")}
 function lcSet(k,f,tr){if(!k||lcHas(k,f))return false;var o=lcLoad();o[k]=o[k]||{};o[k][f]=1;o[k].d=today();try{localStorage.setItem(LC_KEY,JSON.stringify(o))}catch(e){return false}syncPush();
   if(tr&&lcDone(k)){lcCut(tr,{ts:new Date().toISOString(),pn:num(prog().prac_n),d:today()});setTimeout(function(){rtToast("Ders tamam. Sıradaki konu açıldı.");sched()},50)}return true}
 function lcUnset(k,f){var o=lcLoad();if(o[k]&&o[k][f]){delete o[k][f];try{localStorage.setItem(LC_KEY,JSON.stringify(o))}catch(e){}}}
@@ -28,7 +30,7 @@ function lastStudy(T){var o=lcLoad(),best="";Object.keys(o).forEach(function(k){
 function activeLesson(){
   var o=lcLoad(),best=null;
   Object.keys(o).forEach(function(k){
-    if(k.charAt(0)==="_")return;var v=o[k];if(!v||!v.w||lcDone(k))return;
+    if(k.charAt(0)==="_")return;var v=o[k];if(!v||!(v.w||v["w-atla"])||lcDone(k))return;
     var tr=keyTrack(k);if(!tr)return;
     var l=lessonListFor(tr).list.filter(function(x){return lessonKey(x)===k&&!lcGrand(x)})[0];if(!l)return;
     if(!best||String(v.d||"")>String(best.d||""))best={l:l,track:tr,key:k,d:v.d};
@@ -193,7 +195,7 @@ function renderLessonBase(){
   out.push(lessonGuide(tr,l));
   var lp=lessonPath(tr,l);if(lp)out.push(lp);try{var ppo=PP.ogr.ui.panel(tr,l);if(ppo)out.push(ppo)}catch(e){}
   var pvl=list[list.indexOf(l)+1];
-  if(!lcGrand(l)&&!lcHas(lk,"w")){
+  if(!lcGrand(l)&&!lcW(lk)){
     var wu0=renderWarmup(l),ww=l.warmup||S.les.wg[l.id].w,its=ww?(tr==="eng"?ww.words:ww.concepts)||[]:[],rdy=0;
     its.forEach(function(x,i){if(S.les.wk[l.id+":"+i])rdy++});
     var allr=rdy>=its.length;
@@ -203,7 +205,8 @@ function renderLessonBase(){
     var tmP=renderTMap(l,false);if(tmP)out.push(tmP);
     if(wu0)out.push(wu0);
     out.push(h("div",{class:"panel"},h("button",{class:"btn",type:"button",disabled:!allr,onclick:function(){lcSet(lk,"w",tr);rtToast("Isınma tamam. Ders açıldı.");lrOpen(l,"anlat")}},"Isınmayı bitirdim, derse gir"),
-      h("div",{class:"small mute",style:"margin-top:6px"},its.length?(allr?"Hazırsın.":"Kartlarda 'Hazırım' de, sonra ders açılır. ("+rdy+"/"+its.length+")"):"Yukarıdaki özeti oku, sonra devam et.")));
+      h("div",{class:"small mute",style:"margin-top:6px"},its.length?(allr?"Hazırsın.":"Kartlarda 'Hazırım' de, sonra ders açılır. ("+rdy+"/"+its.length+")"):"Yukarıdaki özeti oku, sonra devam et."),
+      h("button",{class:"btn ghost",type:"button","data-atla":"1",onclick:function(){lcAtla(lk,tr);lrOpen(l,"anlat")}},"Isınmayı atla")));
     return out;
   }
   out.push(lessonNav(l));

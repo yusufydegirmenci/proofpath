@@ -28,7 +28,7 @@ function rsApplyRemote(r){
 }
 function rsRun(scope){
   var R=S.rs;R.busy=true;R.msg="Yedek hazırlanıyor…";draw();
-  var now=new Date().toISOString(),bk={at:now,scope:scope,progress:S.progress,days:S.days,attempts:S.attempts.slice(0,400),mistakes:S.mistakes,badges:S.badges,lc:lcLoad(),gs:GS,lv:lvLoad(),fk:fkLoad(),nw:nwLoad(),ogr:(function(){try{return PP.ogr.depo.oku()}catch(e){return null}})()};
+  var now=new Date().toISOString(),bk={uyari:"Bu dosya geri bildirim metinlerini de içerir; paylaşmadan önce kontrol et.",at:now,scope:scope,progress:S.progress,days:S.days,attempts:S.attempts.slice(0,400),mistakes:S.mistakes,badges:S.badges,lc:lcLoad(),gs:GS,lv:lvLoad(),fk:fkLoad(),nw:nwLoad(),ogr:(function(){try{return PP.ogr.depo.oku()}catch(e){return null}})()};
   try{if(S.dl)S.dl.save({filename:"proofpath-yedek-"+today()+".json",data:new Blob([JSON.stringify(bk)],{type:"application/json"})}).catch(function(){})}catch(e){}
   var jobs=[];
   if(S.db&&S.canWrite){
@@ -61,7 +61,7 @@ function renderReset(){
   if(R.busy)rb.append(h("div",{class:"lbox"},h("p",{style:"margin:0"},R.msg||"Çalışıyor…")));
   else if(R.confirm){
     var all=R.confirm==="all",nm=all?"HER ŞEYİ":(tracks.filter(function(t){return t[0]===R.confirm})[0]||[0,R.confirm])[1]+" alanını";
-    rb.append(h("div",{class:"lbox warn"},h("div",{class:"label"},"Emin misin?"),h("p",null,nm+" sıfırlamak üzeresin. "+(all?"XP, seri, rozetler, günlük kayıtlar, ders adımları, oyun ve Fetih ilerlemesi, kavram atlası, notların kaydı silinir. Önce yedek dosyası indirilir. Arkadaş ekranında Lig kaydın da silinir. Bu işlem geri alınamaz.":"Bu alandaki ders adımları, oyun soru geçmişin, kademen ve alıştırma kayıtların silinir. XP kalır. Geri alınamaz."))),
+    rb.append(h("div",{class:"lbox warn"},h("div",{class:"label"},"Emin misin?"),h("p",null,nm+" sıfırlamak üzeresin. "+(all?"XP, seri, rozetler, günlük kayıtlar, ders adımları, oyun ve Fetih ilerlemesi, kavram atlası, notların kaydı silinir. Önce yedek dosyası indirilir (geri bildirim metinlerini de içerir; paylaşırsan onlar da gider). Arkadaş ekranında Lig kaydın da silinir. Bu işlem geri alınamaz.":"Bu alandaki ders adımları, oyun soru geçmişin, kademen ve alıştırma kayıtların silinir. XP kalır. Geri alınamaz."))),
       h("div",{class:"row"},h("button",{class:"btn rs-go",type:"button",onclick:function(){rsRun(R.confirm)}},"Evet, sıfırla"),h("button",{class:"btn ghost",type:"button",onclick:function(){R.confirm=null;draw()}},"Vazgeç")))}
   else{
     rb.append(h("div",{class:"row"},tracks.map(function(t){return h("button",{class:"btn ghost",type:"button",onclick:function(){R.confirm=t[0];draw()}},t[1]+" sıfırla")}),h("button",{class:"btn ghost rs-all",type:"button",onclick:function(){R.confirm="all";draw()}},"Hepsini sıfırla")));
@@ -122,7 +122,7 @@ var GUIDE_M=[
 ["Notlarım","Kendi defterini tut",["<b>Ders → Notlar</b> bölümüne gir.","<b>Kendi notum</b> düğmesine bas, yaz, kaydet. Notun defter sayfası gibi görünür."]],
 ["Okuma, Masa, Ofis","Gerçek iş hayatı gibi alıştırma",["<b>Daha fazla</b> menüsünden <b>Masa</b>'yı aç: müşteri talepleri gelir. Nazik ve doğru cevap ver, ruh hâli değişir.","<b>Okuma</b>: kısa İngilizce metin oku, kelimeye dokununca anlamı çıkar."]],
 ["Arkadaşınla eşitleme","Evdeki ve işteki bilgisayarda aynı ilerleme",["<b>Ayarlar</b>'ın en üstündeki <b>Eşitleme</b> bölümüne bak.","Aynı hesapla açtığında ilerlemen otomatik gelir.","Arkadaşın kendi sayfasını açınca <b>Lig</b>'de seni görür."]],
-["Sıfırlama","Baştan başlamak istersen",["<b>Ayarlar → Gelişimi sıfırla</b>.","Bir alan ya da <b>Hepsini sıfırla</b> seç, <b>Evet, sıfırla</b>ya bas. Önce yedek dosyası inmeye çalışır.","Dersler silinmez, sadece senin ilerlemen silinir."]]
+["Sıfırlama","Baştan başlamak istersen",["<b>Ayarlar → Gelişimi sıfırla</b>.","Bir alan ya da <b>Hepsini sıfırla</b> seç, <b>Evet, sıfırla</b>ya bas. Önce yedek dosyası inmeye çalışır; geri bildirim metinlerini de içerir, paylaşmadan önce kontrol et.","Dersler silinmez, sadece senin ilerlemen silinir."]]
 ];
 function guideManual(){
   return h("div",{class:"panel gd-man"},h("div",{class:"label"},"Kılavuz"),h("h2",null,"Uygulama nasıl kullanılır?"),h("div",{class:"small mute"},"Her başlığa dokun, adımları sırayla yap."),
