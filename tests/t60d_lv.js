@@ -1,14 +1,16 @@
 const {INIT,chromium}=require('./stub.js');
+const {SAHTE_INIT}=require('./sunucu_sahte.js');
 (async()=>{const b=await chromium.launch();
 const ctx=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
-await p.addInitScript(INIT);await p.addInitScript("localStorage.ya_gm_seen='1'");
+await p.addInitScript(INIT);await p.addInitScript(SAHTE_INIT);await p.addInitScript("localStorage.ya_gm_seen='1'");
 await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","index.html")).href+'#ayar');await p.waitForTimeout(900);
 console.log('rows',await p.$$eval('.lv-r',a=>a.map(x=>x.querySelector('b').textContent)));
 for(const t of ['Network','DevOps','Test Uzmanı','CCNA']){
  await p.locator('.lv-r:has(b:text-is("'+t+'")) button').click();await p.waitForTimeout(250);
  let n=0;
  for(let i=0;i<12;i++){const c=await p.locator('.qz-o:not([disabled])').count();if(!c)break;n++;await p.locator('.qz-o:not([disabled])').nth(i%c).click();await p.waitForTimeout(80);
-  await p.locator('button:text-matches("Sıradaki soru|Sonucu gör")').first().click();await p.waitForTimeout(100)}
+  await p.locator('button:text-matches("Sıradaki soru|Bitir ve sunucuya gönder")').first().click();await p.waitForTimeout(100)}
+ await p.waitForTimeout(500);
  const txt=await p.evaluate(()=>document.querySelector('#view').innerText.replace(/Dersin okunduğu[\s\S]*?Anladım/,'').slice(0,200).replace(/\n/g,' | '));
  console.log(t,'q',n,'=>',txt);
  await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","index.html")).href+'?'+Math.random()+'#ayar');await p.waitForTimeout(700);

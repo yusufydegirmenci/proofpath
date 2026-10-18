@@ -11,7 +11,7 @@ const args = process.argv.slice(2);
 const tArg = args.find(a => a.startsWith('--timeout='));
 const TIMEOUT = (tArg ? parseInt(tArg.slice(10), 10) : 420) * 1000;
 const filter = args.find(a => !a.startsWith('--'));
-const SKIP = new Set(['stub.js', 'run-all.js', 'make-dbg.js']);
+const SKIP = new Set(['stub.js', 'run-all.js', 'make-dbg.js', 'sunucu_sahte.js']);
 
 // page_dbg.html (hata ayıklama kancalı kopya) testlerden önce üretilir.
 const gen = require('child_process').spawnSync(process.execPath, [path.join(__dirname, 'make-dbg.js')], { encoding: 'utf8' });

@@ -46,11 +46,11 @@
       { t: "warn", h: "Tuzak", text: "Idempotent olmayan işlemde (POST ödeme) körü körüne yeniden deneme. Önce idempotency anahtarı tasarla, sonra retry ekle." }
     ],
     quiz: [
-      { q: "Yeniden denemelerin aynı anda yığılmasını önleyen teknik hangisidir?", options: ["Jitter", "Şifreleme", "Sharding", "Snapshot"], answer: "Jitter", why: "Bekleme süresine rastgelelik ekler." },
-      { q: "Hangi hata için yeniden deneme MANTIKLI DEĞİLDİR?", options: ["400 Bad Request", "503", "429", "Zaman aşımı"], answer: "400 Bad Request", why: "İstek hatalıdır; tekrar etmek sonucu değiştirmez." },
-      { q: "Ödemede çift tahsilatı önleyen temel yöntem nedir?", options: ["Idempotency anahtarı", "Daha hızlı ağ", "Daha büyük disk", "Log tutmak"], answer: "Idempotency anahtarı", why: "Aynı anahtarlı istek bir kez işlenir." },
-      { q: "Sürekli hata veren bağımlılığa istek göndermeyi geçici durduran kalıp nedir?", options: ["Circuit breaker", "Blue/Green", "Fan-out", "Canary"], answer: "Circuit breaker", why: "Bağımlılığın toparlanmasına zaman tanır." },
-      { q: "DynamoDB ile tekrar yazmayı engelleyen mekanizma hangisidir?", options: ["Koşullu yazma", "Scan", "Stream", "TTL"], answer: "Koşullu yazma", why: "attribute_not_exists ile ikinci yazma reddedilir." }
+      { id: "62e815d8", q: "Yeniden denemelerin aynı anda yığılmasını önleyen teknik hangisidir?", options: ["Jitter", "Şifreleme", "Sharding", "Snapshot"] },
+      { id: "6c0dbbd0", q: "Hangi hata için yeniden deneme MANTIKLI DEĞİLDİR?", options: ["400 Bad Request", "503", "429", "Zaman aşımı"] },
+      { id: "79a8ef0a", q: "Ödemede çift tahsilatı önleyen temel yöntem nedir?", options: ["Idempotency anahtarı", "Daha hızlı ağ", "Daha büyük disk", "Log tutmak"] },
+      { id: "b564bef2", q: "Sürekli hata veren bağımlılığa istek göndermeyi geçici durduran kalıp nedir?", options: ["Circuit breaker", "Blue/Green", "Fan-out", "Canary"] },
+      { id: "63b5abfc", q: "DynamoDB ile tekrar yazmayı engelleyen mekanizma hangisidir?", options: ["Koşullu yazma", "Scan", "Stream", "TTL"] }
     ],
     interview: [
       { q: "Idempotency nedir, nasıl uygularsın?", a: "Aynı işlemin birden çok kez uygulanmasının tek kez uygulamayla aynı sonucu vermesidir. İstemci benzersiz anahtar gönderir, sunucu bu anahtarı koşullu yazma ile kaydeder; tekrar gelirse kayıtlı sonucu döner." },
@@ -108,11 +108,11 @@
       { t: "warn", h: "Tuzak", text: "Tek örnek ve elle yama: örnek bozulursa servis durur. En az iki AZ'de ASG ve sağlık denetimi kullan; örnekleri 'evcil hayvan' değil 'sürü' olarak gör." }
     ],
     quiz: [
-      { q: "HTTP yol tabanlı yönlendirme yapan yük dengeleyici hangisidir?", options: ["ALB", "NLB", "Route 53 kaydı", "Gateway endpoint"], answer: "ALB", why: "Application Load Balancer katman 7'de çalışır." },
-      { q: "Kesilebilir ama çok ucuz EC2 seçeneği hangisidir?", options: ["Spot", "On-Demand", "Dedicated Host", "Reserved"], answer: "Spot", why: "Boş kapasiteyi indirimle kiralar; AWS geri alabilir." },
-      { q: "Sağlıksız örneği otomatik yenileyen yapı hangisidir?", options: ["Auto Scaling Group", "Subnet", "Bucket", "Alias"], answer: "Auto Scaling Group", why: "Sağlık denetimine göre değiştirir." },
-      { q: "Örnekle birlikte silinen geçici disk hangisidir?", options: ["Instance store", "EBS", "S3", "EFS"], answer: "Instance store", why: "Örnek durunca veri kaybolur." },
-      { q: "Hedef takibi ölçekleme politikası ne yapar?", options: ["Bir metriği hedef değerde tutacak şekilde ölçekler", "Her gün aynı saatte kapatır", "Sadece alarm gönderir", "Örnekleri şifreler"], answer: "Bir metriği hedef değerde tutacak şekilde ölçekler", why: "Örneğin ortalama CPU %50." }
+      { id: "eb41faa7", q: "HTTP yol tabanlı yönlendirme yapan yük dengeleyici hangisidir?", options: ["ALB", "NLB", "Route 53 kaydı", "Gateway endpoint"] },
+      { id: "34eae9a5", q: "Kesilebilir ama çok ucuz EC2 seçeneği hangisidir?", options: ["Spot", "On-Demand", "Dedicated Host", "Reserved"] },
+      { id: "eec64949", q: "Sağlıksız örneği otomatik yenileyen yapı hangisidir?", options: ["Auto Scaling Group", "Subnet", "Bucket", "Alias"] },
+      { id: "c560d878", q: "Örnekle birlikte silinen geçici disk hangisidir?", options: ["Instance store", "EBS", "S3", "EFS"] },
+      { id: "aa894bc2", q: "Hedef takibi ölçekleme politikası ne yapar?", options: ["Bir metriği hedef değerde tutacak şekilde ölçekler", "Her gün aynı saatte kapatır", "Sadece alarm gönderir", "Örnekleri şifreler"] }
     ],
     interview: [
       { q: "ALB ve NLB farkı?", a: "ALB katman 7'de HTTP/HTTPS, yol ve host tabanlı yönlendirme sunar. NLB katman 4'te TCP/UDP trafiği çok yüksek performansla ve sabit IP ile taşır." },
@@ -164,11 +164,11 @@
       { t: "warn", h: "Tuzak", text: "Veritabanı güvenlik grubunda 0.0.0.0/0 açmak. Kaynak olarak yalnızca uygulamanın güvenlik grubunu göster." }
     ],
     quiz: [
-      { q: "Private subnet'teki örneğin internete çıkması için gerekli olan nedir?", options: ["NAT Gateway", "Internet Gateway doğrudan", "Security group silmek", "Route 53"], answer: "NAT Gateway", why: "NAT sadece çıkışa izin verir, içeri bağlantı kurdurmaz." },
-      { q: "Security group için doğru ifade hangisidir?", options: ["Durum bilgilidir ve sadece izin kuralı vardır", "Durumsuzdur", "Subnet düzeyindedir", "Ret kuralı içerir"], answer: "Durum bilgilidir ve sadece izin kuralı vardır", why: "NACL ise durumsuzdur ve ret kuralı içerir." },
-      { q: "İnternete çıkmadan S3'e özel erişim için ne kullanılır?", options: ["VPC gateway endpoint", "Internet Gateway", "NAT Gateway", "Direct Connect"], answer: "VPC gateway endpoint", why: "S3 ve DynamoDB için gateway endpoint vardır." },
-      { q: "Lambda özel RDS'e erişemiyor. İlk neye bakarsın?", options: ["VPC bağlantısı, subnet ve güvenlik grupları", "Kova politikası", "CloudFront", "KMS"], answer: "VPC bağlantısı, subnet ve güvenlik grupları", why: "Ağ yolu ve izinleri kontrol edilir." },
-      { q: "Public subnet'i public yapan nedir?", options: ["Internet Gateway'e giden route", "Büyük CIDR", "Adı", "Güvenlik grubu"], answer: "Internet Gateway'e giden route", why: "Route table'da 0.0.0.0/0 → IGW vardır." }
+      { id: "af56c241", q: "Private subnet'teki örneğin internete çıkması için gerekli olan nedir?", options: ["NAT Gateway", "Internet Gateway doğrudan", "Security group silmek", "Route 53"] },
+      { id: "3bf47d88", q: "Security group için doğru ifade hangisidir?", options: ["Durum bilgilidir ve sadece izin kuralı vardır", "Durumsuzdur", "Subnet düzeyindedir", "Ret kuralı içerir"] },
+      { id: "db318897", q: "İnternete çıkmadan S3'e özel erişim için ne kullanılır?", options: ["VPC gateway endpoint", "Internet Gateway", "NAT Gateway", "Direct Connect"] },
+      { id: "7c0d1bf3", q: "Lambda özel RDS'e erişemiyor. İlk neye bakarsın?", options: ["VPC bağlantısı, subnet ve güvenlik grupları", "Kova politikası", "CloudFront", "KMS"] },
+      { id: "f4bb20fc", q: "Public subnet'i public yapan nedir?", options: ["Internet Gateway'e giden route", "Büyük CIDR", "Adı", "Güvenlik grubu"] }
     ],
     interview: [
       { q: "Security group ve NACL farkı?", a: "Security group örnek düzeyinde, durum bilgili, sadece izin kuralları içerir. NACL subnet düzeyinde, durumsuz, izin ve ret kuralları ve sıra numarası içerir." },
@@ -223,11 +223,11 @@
       { t: "warn", h: "Tuzak", text: "S3 kovasını herkese açıp CloudFront'u atlatmak. Kovayı özel tut, OAC ile sadece CloudFront'a izin ver. Ayrıca kök alan adı için CNAME değil alias kullan." }
     ],
     quiz: [
-      { q: "S3'e doğrudan erişimi kapatıp sadece CloudFront'tan okutan özellik hangisidir?", options: ["Origin Access Control", "Presigned URL tek başına", "Versioning", "Lifecycle"], answer: "Origin Access Control", why: "Kova özel kalır." },
-      { q: "Kök alan adını (example.com) CloudFront'a yönlendirmek için ne kullanılır?", options: ["Alias kaydı", "CNAME", "MX", "TXT"], answer: "Alias kaydı", why: "CNAME kök alan adında kullanılamaz." },
-      { q: "Gecikmesi en düşük bölgeye yönlendiren Route 53 politikası hangisidir?", options: ["Gecikme tabanlı", "Basit", "Ağırlıklı", "Sabit"], answer: "Gecikme tabanlı", why: "Kullanıcıya en hızlı bölge seçilir." },
-      { q: "CloudFront'ta güncellenen içeriği hemen yansıtmanın alternatifi olarak önerilen yöntem?", options: ["Sürümlü dosya adı", "Daha çok bellek", "Kök hesap", "VPN"], answer: "Sürümlü dosya adı", why: "app.v2.js gibi adlar önbellek sorununu çözer, invalidation maliyetli olabilir." },
-      { q: "CloudFront için ACM sertifikası hangi bölgede olmalıdır?", options: ["us-east-1", "eu-central-1", "ap-south-1", "Herhangi"], answer: "us-east-1", why: "CloudFront küresel olduğundan sertifika N. Virginia'da istenir." }
+      { id: "284a0584", q: "S3'e doğrudan erişimi kapatıp sadece CloudFront'tan okutan özellik hangisidir?", options: ["Origin Access Control", "Presigned URL tek başına", "Versioning", "Lifecycle"] },
+      { id: "dd258e9b", q: "Kök alan adını (example.com) CloudFront'a yönlendirmek için ne kullanılır?", options: ["Alias kaydı", "CNAME", "MX", "TXT"] },
+      { id: "5248cf9e", q: "Gecikmesi en düşük bölgeye yönlendiren Route 53 politikası hangisidir?", options: ["Gecikme tabanlı", "Basit", "Ağırlıklı", "Sabit"] },
+      { id: "8fba2ac6", q: "CloudFront'ta güncellenen içeriği hemen yansıtmanın alternatifi olarak önerilen yöntem?", options: ["Sürümlü dosya adı", "Daha çok bellek", "Kök hesap", "VPN"] },
+      { id: "ff873066", q: "CloudFront için ACM sertifikası hangi bölgede olmalıdır?", options: ["us-east-1", "eu-central-1", "ap-south-1", "Herhangi"] }
     ],
     interview: [
       { q: "CloudFront nasıl performans sağlar?", a: "İçeriği kenar konumlarında önbelleğe alır; kullanıcı yakın noktadan alır, köken yükü ve gecikme azalır. Ayrıca bağlantı yeniden kullanımı ve TLS sonlandırma sağlar." },
@@ -280,11 +280,11 @@
       { t: "warn", h: "Tuzak", text: "Partition key olarak düşük çeşitlilikli alan (ülke kodu) seçmek: tek shard sıcak kalır, diğerleri boş." }
     ],
     quiz: [
-      { q: "Kayıtların hangi shard'a gideceğini ne belirler?", options: ["Partition key", "Bucket adı", "ARN", "Subnet"], answer: "Partition key", why: "Aynı anahtar aynı shard'a gider ve sıra korunur." },
-      { q: "Akışı S3'e yönetilen şekilde boşaltan servis hangisidir?", options: ["Firehose", "Data Streams tek başına", "SQS", "Cognito"], answer: "Firehose", why: "Sunucusuz yükleme servisidir." },
-      { q: "Aynı veriyi birden çok bağımsız tüketicinin okuyabilmesi hangi servisin avantajıdır?", options: ["Kinesis Data Streams", "SQS standart", "SNS SMS", "Route 53"], answer: "Kinesis Data Streams", why: "Her tüketici kendi konumundan okur; veri saklama süresince kalır." },
-      { q: "Shard başına yazma sınırı nedir?", options: ["1 MB/sn veya 1000 kayıt/sn", "100 MB/sn", "1 KB/sn", "Sınırsız"], answer: "1 MB/sn veya 1000 kayıt/sn", why: "Aşılırsa ProvisionedThroughputExceeded alınır." },
-      { q: "Sıcak shard'ın çözümü hangisidir?", options: ["Partition key dağılımını iyileştirmek", "Daha çok log", "Parolayı değiştirmek", "KMS silmek"], answer: "Partition key dağılımını iyileştirmek", why: "Yük shard'lara eşit dağıtılmalıdır." }
+      { id: "391f3eb2", q: "Kayıtların hangi shard'a gideceğini ne belirler?", options: ["Partition key", "Bucket adı", "ARN", "Subnet"] },
+      { id: "00fe92f5", q: "Akışı S3'e yönetilen şekilde boşaltan servis hangisidir?", options: ["Firehose", "Data Streams tek başına", "SQS", "Cognito"] },
+      { id: "2c0d0fb9", q: "Aynı veriyi birden çok bağımsız tüketicinin okuyabilmesi hangi servisin avantajıdır?", options: ["Kinesis Data Streams", "SQS standart", "SNS SMS", "Route 53"] },
+      { id: "61a139df", q: "Shard başına yazma sınırı nedir?", options: ["1 MB/sn veya 1000 kayıt/sn", "100 MB/sn", "1 KB/sn", "Sınırsız"] },
+      { id: "06ad4c91", q: "Sıcak shard'ın çözümü hangisidir?", options: ["Partition key dağılımını iyileştirmek", "Daha çok log", "Parolayı değiştirmek", "KMS silmek"] }
     ],
     interview: [
       { q: "Kinesis Data Streams ve SQS farkı?", a: "Kinesis sıralı (shard içinde), birden çok tüketicinin okuyabildiği ve saklama süresince tekrar oynatılabilen bir akıştır. SQS mesajı bir tüketiciye teslim edip işlenince siler; sıra garantisi yalnızca FIFO'da vardır." },
@@ -336,11 +336,11 @@
       { t: "warn", h: "Tuzak", text: "Geçici kimlik bilgilerini dosyaya yazıp uzun süre kullanmak ve SessionToken'ı atlamak. SDK/CLI profilleri rolü otomatik üstlenip yeniler; elle token taşımayı azalt." }
     ],
     quiz: [
-      { q: "Başka bir hesaptaki rolü üstlenmek için kullanılan STS çağrısı hangisidir?", options: ["AssumeRole", "GetObject", "PutItem", "Decrypt"], answer: "AssumeRole", why: "Geçici kimlik bilgisi döndürür." },
-      { q: "Geçici kimlik bilgisi hangi üç parçadan oluşur?", options: ["AccessKeyId, SecretAccessKey, SessionToken", "Kullanıcı adı, parola, PIN", "Sertifika, anahtar, imza", "ARN, bölge, hesap"], answer: "AccessKeyId, SecretAccessKey, SessionToken", why: "SessionToken olmadan geçici anahtar çalışmaz." },
-      { q: "Hesaplar arası rol üstlenmede hedef rolde hangi politika kimin üstleneceğini belirler?", options: ["Güven politikası", "Kova politikası", "Güvenlik grubu", "SCP"], answer: "Güven politikası", why: "Principal alanında kaynak hesap/rol belirtilir." },
-      { q: "'Ben kimim?' sorusunu cevaplayan çağrı hangisidir?", options: ["GetCallerIdentity", "ListUsers", "DescribeInstances", "GetBucketPolicy"], answer: "GetCallerIdentity", why: "İzin gerektirmez." },
-      { q: "Üçüncü taraf erişiminde 'confused deputy' riskini azaltan değer nedir?", options: ["ExternalId", "TTL", "CIDR", "Alias"], answer: "ExternalId", why: "Güven politikasında koşul olarak kullanılır." }
+      { id: "1257f0e8", q: "Başka bir hesaptaki rolü üstlenmek için kullanılan STS çağrısı hangisidir?", options: ["AssumeRole", "GetObject", "PutItem", "Decrypt"] },
+      { id: "8944e5cb", q: "Geçici kimlik bilgisi hangi üç parçadan oluşur?", options: ["AccessKeyId, SecretAccessKey, SessionToken", "Kullanıcı adı, parola, PIN", "Sertifika, anahtar, imza", "ARN, bölge, hesap"] },
+      { id: "5da0860d", q: "Hesaplar arası rol üstlenmede hedef rolde hangi politika kimin üstleneceğini belirler?", options: ["Güven politikası", "Kova politikası", "Güvenlik grubu", "SCP"] },
+      { id: "08deee6f", q: "'Ben kimim?' sorusunu cevaplayan çağrı hangisidir?", options: ["GetCallerIdentity", "ListUsers", "DescribeInstances", "GetBucketPolicy"] },
+      { id: "69fa1f19", q: "Üçüncü taraf erişiminde 'confused deputy' riskini azaltan değer nedir?", options: ["ExternalId", "TTL", "CIDR", "Alias"] }
     ],
     interview: [
       { q: "Neden uzun ömürlü anahtar yerine geçici kimlik?", a: "Geçici kimlik kısa sürede biter; sızsa bile hasar süresi sınırlıdır. Rotasyon derdi yoktur ve rol bazlı en az yetki uygulanır." },

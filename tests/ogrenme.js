@@ -478,8 +478,20 @@ function kapiOrnek() {
   const basliklar = {};
   if (bas >= 0 && bit > bas) { const S_ = vm.runInNewContext('(function(){' + sinif.slice(bas, bit) + ';return STARTER})()'); Object.keys(S_).forEach(y => { basliklar[y] = S_[y].map(x => x[0]); }); }
   ok(Object.keys(basliklar).length >= 4, 'ders başlıkları (STARTER) okundu: ' + Object.keys(basliklar).join(','));
-  const g = OD.denetle(win.PP_LESSONS, basliklar, bugun);
+  // Cevap anahtarı sunucuda (Faz 9): yerelde gizli tohum varsa (supabase/seed/*_anahtar.sql; halka açık repoda YOK) answer/why/whyNot denetimi de çalışır;
+  // yoksa açıkça ATLANDI yazılır (sessizce geçmez).
+  const seedDir = path.join(__dirname, '..', 'supabase', 'seed'), anahtarDosyalari = fs.existsSync(seedDir) ? fs.readdirSync(seedDir).filter(f => /_anahtar\.sql$/.test(f)) : [];
+  let cozucu = null;
+  if (anahtarDosyalari.length) {
+    const harita = new Map();
+    anahtarDosyalari.forEach(f => require('../tools/cevap-anahtari.js').anahtarSqlOku(fs.readFileSync(path.join(seedDir, f), 'utf8')).forEach(r => harita.set(r[0] + '|' + r[1] + '|' + r[2], { dogru: r[3], aciklama: r[5] || {} })));
+    cozucu = (yol, no, id) => harita.get('ders:' + yol + ':' + no + ':sinav|v1|' + id) || null;
+  }
+  const g = OD.denetle(win.PP_LESSONS, basliklar, bugun, cozucu);
   eq(g.hata, [], 'ders içeriği (content/lessons): ' + g.say.ders + ' ders, ' + g.say.soru + ' soru; zorunlu alanlar, soru/cevap, whyNot/obj/summary/prereq geçerliliği, önkoşul döngüsü ve kopya başlık yok');
+  ok(g.say.sunucuSoru === g.say.soru, 'tüm ders sınavı soruları sunucuya ayrılmış (içerikte answer/why yok, id var): ' + g.say.sunucuSoru + '/' + g.say.soru);
+  if (cozucu) ok(g.say.anahtarDenetimiAtlandi === 0, 'cevap anahtarı denetimi (yerel gizli tohum): ' + g.say.sunucuSoru + ' sorunun hepsi answer/why/whyNot kurallarıyla denetlendi');
+  else console.log('ATLANDI  cevap anahtarı denetimi: gizli tohum (supabase/seed/*_anahtar.sql) bu makinede yok; ' + g.say.anahtarDenetimiAtlandi + ' soruda yalnız yapı denetlendi');
   ok(g.say.ders >= 90 && g.say.soru >= 400, 'ders içeriği kapsamı beklenenden küçük değil (' + g.say.ders + ' ders, ' + g.say.soru + ' soru)');
 }
 

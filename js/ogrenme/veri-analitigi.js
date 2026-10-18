@@ -32,20 +32,31 @@
     return out;
   }
 
-  /* Değerlendirme: cevaplar = seçilen şık indeksleri; telafi yanlış sorunun ait olduğu derse ve bölümüne bağlanır */
+  /* Değerlendirme (Faz 9 sunucu): cevaplar = seçilen şık indeksleri. Cevap anahtarı istemcide YOK; cevaplar PP.ogr.sunucu ile sunucuya gider,
+     puan ve geçti kararı sunucudan gelir. Kalınca yalnız doğru sayısı döner (hangi sorunun yanlış olduğu açılmaz): telafi sınavın tüm bölümlerine verilir.
+     Geçince sunucu doğru cevapları açar: yanlış sorular derse bağlanır. Dönüş: söz → {ok,...} ya da {ok:false, neden, mesaj}. */
   function sinavOf(sev) { return sev === 1 ? V.sinav1 : sev === 2 ? V.sinav2 : V.sinav0; }
-  function sinav(cevaplar, seviye) {
+  function sinavGonder(cevaplar, seviye) {
     var sev = seviye === 1 || seviye === 2 ? seviye : 0, S0 = sinavOf(sev);
-    if (!S0 || !Array.isArray(S0.sorular)) return { ok: false, neden: "sinav-yok" };
-    var n = S0.sorular.length, dogru = 0, yanlis = [];
-    if (!Array.isArray(cevaplar) || cevaplar.length !== n || cevaplar.some(function (c) { return !(c >= 0); })) return { ok: false, neden: "eksik-cevap" };
-    S0.sorular.forEach(function (q, i) {
-      if (cevaplar[i] === q.a) dogru++;
-      else { var d = V.dersler.filter(function (x) { return x.id === q.bolum; })[0]; yanlis.push({ soru: i + 1, ders: d ? d.ad : q.bolum, dersId: q.bolum, dogruSik: q.o[q.a], telafi: d ? d.telafi : "" }); }
+    if (!S0 || !Array.isArray(S0.sorular)) return Promise.resolve({ ok: false, neden: 'sinav-yok' });
+    var n = S0.sorular.length;
+    if (!Array.isArray(cevaplar) || cevaplar.length !== n || cevaplar.some(function (c) { return !(c >= 0); })) return Promise.resolve({ ok: false, neden: 'eksik-cevap' });
+    var cev = PP.ogr.sunucu.cevaplar(S0.sorular, cevaplar, 'o');
+    if (!cev) return Promise.resolve({ ok: false, neden: 'eksik-cevap' });
+    return PP.ogr.sunucu.gonder({ hedef: S0.id, varyant: 'v1', cevaplar: cev }).then(function (r) {
+      if (!r.ok) return { ok: false, neden: r.neden, mesaj: r.mesaj };
+      var yanlis = [], dersMap = function (id) { return V.dersler.filter(function (x) { return x.id === id; })[0]; };
+      if (r.anahtar) S0.sorular.forEach(function (q, i) {
+        var k = r.anahtar[q.id];
+        if (k && !k.ok) { var d = dersMap(q.bolum); yanlis.push({ soru: i + 1, ders: d ? d.ad : q.bolum, dersId: q.bolum, dogruSik: k.dogru, telafi: d ? d.telafi : '' }); }
+      });
+      var bolumler = [];
+      S0.sorular.forEach(function (q) { if (bolumler.indexOf(q.bolum) < 0) bolumler.push(q.bolum); });
+      var dogru = r.dogruSayisi != null ? r.dogruSayisi : Math.round(r.oran * n);
+      return { ok: true, sunucu: true, seviye: sev, puan: dogru, maks: n, oran: r.oran, esik: r.esik != null ? r.esik : S0.esik, gecti: r.gecti, yanlis: yanlis,
+        telafiDersler: r.gecti ? [] : bolumler.map(function (id) { var d = dersMap(id); return { dersId: id, ders: d ? d.ad : id, telafi: d ? d.telafi : '' }; }),
+        varyantNotu: 'Tek soru seti var: yeniden denemede aynı sorular gelir (farklı varyant yok). Sunucu puanı hesaplar; doğru cevaplar yalnız geçince açılır, saatte en çok 5 deneme.' };
     });
-    var oran = dogru / n;
-    return { ok: true, seviye: sev, puan: dogru, maks: n, oran: oran, esik: S0.esik, gecti: oran + 1e-9 >= S0.esik, yanlis: yanlis,
-      varyantNotu: "Tek soru seti var: yeniden denemede aynı sorular gelir (farklı varyant yok); ezberle geçmek mümkündür, bu bir sınırlamadır." };
   }
 
   function kayit() { var t = null; try { t = O.depo.tercih("va"); } catch (e) { t = null; } return t && typeof t === "object" ? t : { ders: {}, lab: {}, sinav: [] }; }
@@ -112,5 +123,5 @@
     return { dersler: dersler, lab: lab, alanlar: alanlar, sinavDenemesi: den.length, sinavGecti: gecti, tamam: tamam, bekleyen: bekleyen, seviyeler: sev, okundu: okunduHepsi, sonrakiSeviye: siradaki };
   }
 
-  PP.va = { gorev1: gorev1, gorev2: gorev2, gorev3: gorev3, sinav: sinav, dersOkundu: dersOkundu, labKaydet: labKaydet, alanKaydet: alanKaydet, sinavKaydet: sinavKaydet, durum: durum };
+  PP.va = { gorev1: gorev1, gorev2: gorev2, gorev3: gorev3, sinavGonder: sinavGonder, dersOkundu: dersOkundu, labKaydet: labKaydet, alanKaydet: alanKaydet, sinavKaydet: sinavKaydet, durum: durum };
 })(typeof window !== "undefined" ? window : globalThis);

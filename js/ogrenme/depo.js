@@ -34,7 +34,7 @@
   }
 
   /* Denemeyi doğrula ve normalleştir. Dönüş {ok, deneme} ya da {ok:false, neden}. */
-  function normalle(d) {
+  function normalle(d, sunucu) {
     if (!d || typeof d !== "object") return { ok: false, neden: "bos" };
     if (typeof d.hedef !== "string" || !d.hedef) return { ok: false, neden: "hedef-yok" };
     if (!(typeof d.maks === "number" && d.maks > 0 && isFinite(d.maks))) return { ok: false, neden: "maks-gecersiz" };
@@ -46,20 +46,23 @@
       hedef: d.hedef, varyant: d.varyant == null ? null : String(d.varyant), puan: d.puan, maks: d.maks, tarih: tarih,
       surum: d.surum == null ? null : String(d.surum),
       yardim: { tur: YARDIM[y.tur] ? y.tur : "bilinmiyor", guvenilir: false },   /* istemci yardım beyanı güvenilir sayılmaz */
-      dogrulama: d.dogrulama === "beyan" ? "beyan" : "istemci",   /* "sunucu" istemci yazımında KABUL EDİLMEZ: yalnız sunucudan okunan kayıt güvenilir olabilir */
+      dogrulama: sunucu === true ? "sunucu" : d.dogrulama === "beyan" ? "beyan" : "istemci",   /* "sunucu" yalnız sunucuEkle ile (PP.ogr.sunucu RPC sonucu) yazılır; denemeEkle ona KABUL ETMEZ */
       kaynak: typeof d.kaynak === "string" ? d.kaynak.slice(0, 40) : "uygulama"
     } };
   }
 
   /* Ekle: aynı kimlikli kayıt varsa yenisi eskisini EZMEZ (kanıt değişmez). */
-  function denemeEkle(deneme, depo) {
-    var n = normalle(deneme);
+  function ekle(deneme, depo, sunucu) {
+    var n = normalle(deneme, sunucu);
     if (!n.ok) return n;
     var d = oku(depo);
     if (d.denemeler.some(function (x) { return x.id === n.deneme.id; })) return { ok: true, tekrar: true, deneme: n.deneme };
     d.denemeler.push(n.deneme);
     return yaz(depo, d) ? { ok: true, deneme: n.deneme } : { ok: false, neden: "yazilamadi" };
   }
+  /* Sunucu RPC sonucunun yerel önbelleği: dogrulama "sunucu". Çağıran yalnız PP.ogr.sunucu (sunucudan gelen yanıtla). Yerel depo kullanıcı denetimindedir; güvenilir karar ogr_kapi_degerlendir'dendir. */
+  function denemeEkle(deneme, depo) { return ekle(deneme, depo, false); }
+  function sunucuEkle(deneme, depo) { return ekle(deneme, depo, true); }
   function projeIsaretle(projeId, bilgi, depo) {
     if (typeof projeId !== "string" || !projeId) return { ok: false, neden: "proje-yok" };
     var d = oku(depo), eski = d.projeler[projeId];
@@ -99,5 +102,5 @@
     try { depo.removeItem(KEY); return true; } catch (e) { return false; }
   }
 
-  O.depo = { varsayilan: varsayilanDepo, KEY: KEY, oku: oku, normalle: normalle, denemeEkle: denemeEkle, projeIsaretle: projeIsaretle, kanitEkle: kanitEkle, tercih: tercih, geriBildirim: geriBildirim, sifirla: sifirla };
+  O.depo = { varsayilan: varsayilanDepo, KEY: KEY, oku: oku, normalle: normalle, denemeEkle: denemeEkle, sunucuEkle: sunucuEkle, projeIsaretle: projeIsaretle, kanitEkle: kanitEkle, tercih: tercih, geriBildirim: geriBildirim, sifirla: sifirla };
 })(typeof window !== "undefined" ? window : globalThis);

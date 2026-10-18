@@ -68,8 +68,8 @@
   }
   /* Şema denetimi. L = {yol: {no: ders}}, basliklar = {yol: [başlık,…]} (isteğe bağlı; ders no = sıra + 1).
      Dönen: {hata:[metin], eksik:[{yol,no,…}], say:{…}}. hata = bozuk içerik (test düşürür); eksik = yalnız rapor. */
-  function denetle(L, basliklar, bugun) {
-    var hata = [], eksik = [], say = { ders: 0, soru: 0, yanlisSecenek: 0, whyNotVar: 0, hedefli: 0, ozetli: 0, dogrulamali: 0 };
+  function denetle(L, basliklar, bugun, anahtar) {
+    var hata = [], eksik = [], say = { ders: 0, soru: 0, yanlisSecenek: 0, whyNotVar: 0, hedefli: 0, ozetli: 0, dogrulamali: 0, sunucuSoru: 0, anahtarDenetimiAtlandi: 0 };
     Object.keys(L || {}).forEach(function (yol) {
       var gor = {}, renk = {};
       Object.keys(L[yol]).forEach(function (no) {
@@ -86,21 +86,36 @@
         qs.forEach(function (q, i) {
           var s = k + " soru " + (i + 1), o = Array.isArray(q.options) ? q.options : [];
           say.soru++;
+          /* Faz 9 sunucu: cevap anahtarı sunucuya ayrılmış soru (answer yok, id var). Anahtar denetimi için isteğe bağlı çözücü: anahtar(yol, no, id) → {dogru, aciklama:{why, whyNot}} */
+          var sunucu = q.answer === undefined, ans = q.answer, why = q.why, wnot = q.whyNot;
+          if (sunucu) {
+            say.sunucuSoru++;
+            if (typeof q.id !== "string" || !/^[0-9a-f]{8}$/.test(q.id)) hata.push(s + ": sunucu sorusunda id (8 onaltılık) yok");
+            if (q.why !== undefined || q.whyNot !== undefined) hata.push(s + ": sunucuya ayrılmış soruda why/whyNot içerikte kalmış");
+            var kz = typeof anahtar === "function" ? anahtar(yol, no, q.id) : null;
+            if (typeof anahtar === "function") {
+              if (!kz) hata.push(s + ": cevap anahtarı sunucu tohumunda yok (id " + q.id + ")");
+              else { ans = kz.dogru; why = kz.aciklama && kz.aciklama.why; wnot = kz.aciklama && kz.aciklama.whyNot; }
+            } else say.anahtarDenetimiAtlandi++;
+          }
+          var anahtarVar = !sunucu || (typeof anahtar === "function" && ans !== undefined);
           if (typeof q.q !== "string" || !q.q) hata.push(s + ": soru metni yok");
           if (o.length < 2) hata.push(s + ": seçenek yok");
-          else if (o.indexOf(q.answer) < 0) hata.push(s + ": answer seçeneklerde yok");
-          if (typeof q.why !== "string" || !q.why) hata.push(s + ": why yok");
+          else if (anahtarVar && o.indexOf(ans) < 0) hata.push(s + ": answer seçeneklerde yok");
+          if (anahtarVar && (typeof why !== "string" || !why)) hata.push(s + ": why yok");
           if (q.obj !== undefined) { if (!(q.obj in hid)) hata.push(s + ": obj bilinmeyen hedefe işaret ediyor (" + q.obj + ")"); else hid[q.obj]++; }
-          if (q.whyNot !== undefined) {
-            if (!q.whyNot || typeof q.whyNot !== "object" || Array.isArray(q.whyNot)) hata.push(s + ": whyNot nesne olmalı");
-            else Object.keys(q.whyNot).forEach(function (sx) {
+          if (anahtarVar && wnot !== undefined) {
+            if (!wnot || typeof wnot !== "object" || Array.isArray(wnot)) hata.push(s + ": whyNot nesne olmalı");
+            else Object.keys(wnot).forEach(function (sx) {
               if (o.indexOf(sx) < 0) hata.push(s + ": whyNot anahtarı seçenek değil (" + sx + ")");
-              else if (sx === q.answer) hata.push(s + ": whyNot doğru seçenek için yazılamaz");
-              else if (typeof q.whyNot[sx] !== "string" || !q.whyNot[sx].trim()) hata.push(s + ": whyNot metni boş (" + sx + ")");
+              else if (sx === ans) hata.push(s + ": whyNot doğru seçenek için yazılamaz");
+              else if (typeof wnot[sx] !== "string" || !wnot[sx].trim()) hata.push(s + ": whyNot metni boş (" + sx + ")");
             });
           }
-          var yanlis = o.filter(function (x) { return x !== q.answer; }), var_ = yanlis.filter(function (x) { return secenekNedeni(q, x); }).length;
-          say.yanlisSecenek += yanlis.length; say.whyNotVar += var_; e.whyNotEksik += yanlis.length - var_;
+          if (anahtarVar) {
+            var yanlis = o.filter(function (x) { return x !== ans; }), var_ = yanlis.filter(function (x) { var t = wnot && typeof wnot === "object" ? wnot[x] : null; return typeof t === "string" && t.trim(); }).length;
+            say.yanlisSecenek += yanlis.length; say.whyNotVar += var_; e.whyNotEksik += yanlis.length - var_;
+          }
         });
         if (!hs.length) e.objectivesYok = true;
         else { say.hedefli++; hs.forEach(function (h) { if (!hid[h.id]) e.hedefSorusuz.push(h.id); }); }

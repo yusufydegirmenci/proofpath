@@ -2,6 +2,7 @@
 // Beklenen değerler veri setinden bağımsız elle hesaplandı. Hata → çıkış 1.
 const path = require('path');
 const { INIT, chromium } = require('./stub.js');
+const { SAHTE_INIT } = require('./sunucu_sahte.js');
 const U = require('url').pathToFileURL(path.join(__dirname, '..', 'index.html')).href;
 let fails = 0;
 const ok = (c, m) => { console.log((c ? 'OK    ' : 'HATA  ') + m); if (!c) fails++; };
@@ -11,7 +12,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   const b = await chromium.launch();
   const ctx = await b.newContext({ viewport: { width: 390, height: 844 } });
   await ctx.addInitScript('window.__guest=true');
-  await ctx.addInitScript(INIT);
+  await ctx.addInitScript(INIT); await ctx.addInitScript(SAHTE_INIT);
   const p = await ctx.newPage();
   const errs = [];
   p.on('pageerror', e => errs.push(e.message));
@@ -70,8 +71,9 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq([L3.d.hepsi, L3.y.hepsi, L3.y.i3, L3.e, L3.s], [true, false, false, false, false], 'görev 3: nedensellik iddiası "destekler" işaretlenirse yanlış; eksik/tip dışı cevap kabul edilmez');
 
   // 5) Değerlendirme + telafi
-  const dogruCev = await ev(() => PP_VA.sinav0.sorular.map(q => q.a));
-  const S = (cev) => ev(c => PP.va.sinav(c), cev);
+  const dogruCev = await ev(() => PP_VA.sinav0.sorular.map(q => q.o.indexOf(window.__sentetikDogru(q))));   // sentetik sunucu anahtarı (gerçek anahtar repoda yok)
+  await ev(() => { window.__ogrDurum.sinir = 100; });
+  const S = (cev) => ev(c => PP.va.sinavGonder(c), cev);
   const tam = await S(dogruCev);
   eq([tam.ok, tam.puan, tam.maks, tam.gecti, tam.yanlis.length], [true, 5, 5, true, 0], 'hepsi doğru → geçti');
   const bir = await S(dogruCev.map((a, i) => i === 1 ? (a + 1) % 4 : a));
@@ -79,7 +81,8 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(bir.yanlis.map(y => [y.soru, y.dersId]), [[2, 'va0-2']], 'yanlış soru ilgili derse bağlanır');
   ok(/tablodan bir sütun/i.test(bir.yanlis[0].telafi) && bir.yanlis[0].dogruSik.length > 0, 'telafi metni ve doğru şık verilir');
   const uc = await S(dogruCev.map((a, i) => i < 3 ? (a + 1) % 4 : a));
-  eq([uc.puan, uc.gecti, uc.yanlis.map(y => y.dersId)], [2, false, ['va0-1', 'va0-2', 'va0-2']], '2/5 → kaldı; yanlışlar derslere bağlandı');
+  eq([uc.puan, uc.gecti, uc.yanlis.length], [2, false, 0], '2/5 → kaldı; sunucu hangi soruların yanlış olduğunu AÇMAZ (yanlış listesi boş, doğru şık sızmaz)');
+  eq(uc.telafiDersler.map(d => d.dersId), await ev(() => [...new Set(PP_VA.sinav0.sorular.map(q => q.bolum))]), 'kalınca telafi sınavın tüm bölümlerine verilir (hangi sorunun yanlış olduğu açılmadığı için)');
   ok(/aynı sorular gelir/.test(uc.varyantNotu), 'tek soru seti sınırlaması dürüstçe yazılı');
   eq([(await S([0, 1])).neden, (await S([0, 0, 0, 0, -1])).neden, (await S(null)).neden], ['eksik-cevap', 'eksik-cevap', 'eksik-cevap'], 'eksik/geçersiz cevap kümesi reddedilir');
 
@@ -93,9 +96,9 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(await ev(() => [PP.va.labKaydet('g1', false), PP.va.labKaydet('g2', true), PP.va.labKaydet('g9')]), [{ ok: true, tamam: false }, { ok: true, tamam: false }, { ok: false, neden: 'bilinmeyen-gorev' }], 'lab görevleri kaydedilir; bilinmeyen görev reddedilir');
   await ev(() => PP.va.labKaydet('g3', false));
   eq(await ev(() => PP.va.durum().tamam), false, 'ders + lab tamam ama değerlendirme geçilmedi → Seviye 0 tamam DEĞİL');
-  await ev(() => PP.va.sinavKaydet(PP.va.sinav([0, 0, 0, 0, 0])));
+  await ev(async () => PP.va.sinavKaydet(await PP.va.sinavGonder(PP_VA.sinav0.sorular.map(q => (q.o.indexOf(window.__sentetikDogru(q)) + 1) % 4))));
   eq(await ev(() => [PP.va.durum().sinavGecti, PP.va.durum().tamam]), [false, false], 'başarısız deneme sayılır ama geçti saymaz');
-  await ev(() => PP.va.sinavKaydet(PP.va.sinav(PP_VA.sinav0.sorular.map(q => q.a))));
+  await ev(async () => PP.va.sinavKaydet(await PP.va.sinavGonder(PP_VA.sinav0.sorular.map(q => q.o.indexOf(window.__sentetikDogru(q))))));
   const D1 = await ev(() => PP.va.durum());
   eq([D1.tamam, D1.sinavDenemesi, D1.bekleyen, D1.sonrakiSeviye.id], [true, 2, [], 1], 'ders + lab + geçilen değerlendirme → Seviye 0 tamam; önerilen sıradaki Seviye 1 (kilit zorlanmıyor)');
   eq(await ev(() => PP.ogr.depo.oku().kanitlar.filter(k => /^lab-va0/.test(k.id)).map(k => [k.id, k.tur, k.kapi, k.dogrulama]).sort()), [['lab-va0-g1', 'lab', null, 'istemci'], ['lab-va0-g2-ipucu', 'lab', null, 'istemci'], ['lab-va0-g3', 'lab', null, 'istemci'], ['lab-va0-tamam', 'lab', null, 'istemci']], 'lab kanıtları istemci doğrulamalı, kapı kanıtı değil; ipuçlu görev ayrı işaretli');
@@ -140,13 +143,12 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(await ev(() => PP.va.durum().lab.every(l => l.tamam)), true, 'sıfırla kayıtlı ilerlemeyi silmez');
 
   // Değerlendirme arayüzü: kaldı → telafi → yeniden → geçti
-  await ev(() => document.querySelector('[data-va-sec="0:0"]').click());
-  for (let i = 1; i < 5; i++) await ev(i => document.querySelector('[data-va-sec="' + i + ':0"]').click(), i);
-  await ev(() => document.querySelector('[data-va=sinav-bitir]').click()); await p.waitForTimeout(250);
+  await ev(() => PP_VA.sinav0.sorular.forEach((q, i) => document.querySelector('[data-va-sec="' + i + ':' + ((q.o.indexOf(window.__sentetikDogru(q)) + 1) % 4) + '"]').click()));
+  await ev(() => document.querySelector('[data-va=sinav-bitir]').click()); await p.waitForTimeout(700);
   ok(await ev(() => document.querySelector('[data-va-sinav]').dataset.vaSinav === 'kaldi' && /Telafi:/.test(document.querySelector('[data-va=sinav]').textContent)), 'değerlendirme: kalınca telafi ve derse yönlendirme');
   await ev(() => document.querySelector('[data-va=yeniden]').click()); await p.waitForTimeout(200);
-  await ev(() => PP_VA.sinav0.sorular.forEach((q, i) => document.querySelector('[data-va-sec="' + i + ':' + q.a + '"]').click()));
-  await ev(() => document.querySelector('[data-va=sinav-bitir]').click()); await p.waitForTimeout(250);
+  await ev(() => PP_VA.sinav0.sorular.forEach((q, i) => document.querySelector('[data-va-sec="' + i + ':' + q.o.indexOf(window.__sentetikDogru(q)) + '"]').click()));
+  await ev(() => document.querySelector('[data-va=sinav-bitir]').click()); await p.waitForTimeout(700);
   ok(await ev(() => document.querySelector('[data-va-sinav]').dataset.vaSinav === 'gecti'), 'değerlendirme: yeniden denemede geçti');
   await ev(() => { PP.va.dersOkundu('va0-2'); PP.va.dersOkundu('va0-3'); draw(); }); await p.waitForTimeout(250);
   ok(await ev(() => /Seviye 0:\s*tamam/.test(document.querySelector('[data-va=ozet]').textContent) && /Seviye 1/.test(document.querySelector('[data-va=sonraki]').textContent) && !/kilitli/.test(document.querySelector('[data-va=sonraki]').textContent)), 'özet: Seviye 0 tamam, sonraki Seviye 1 önerilir, "kilitli" denmez');

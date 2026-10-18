@@ -4,6 +4,7 @@
 // Beklenenler elle yazıldı (content/lessons içeriğinden okunmaz).
 const path = require('path');
 const { INIT, chromium } = require('./stub.js');
+const { SAHTE_INIT } = require('./sunucu_sahte.js');
 const U = require('url').pathToFileURL(path.join(__dirname, '..', 'index.html')).href;
 let fails = 0;
 const ok = (c, m) => { console.log((c ? 'OK    ' : 'HATA  ') + m); if (!c) fails++; };
@@ -11,7 +12,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
 
 (async () => {
   const b = await chromium.launch(), ctx = await b.newContext({ viewport: { width: 390, height: 844 } });
-  await ctx.addInitScript(INIT); await ctx.addInitScript("localStorage.ya_gm_seen='1';");
+  await ctx.addInitScript(INIT); await ctx.addInitScript(SAHTE_INIT); await ctx.addInitScript("localStorage.ya_gm_seen='1';");
   const p = await ctx.newPage(), errs = []; p.on('pageerror', e => { errs.push(e.message); console.log('PAGEERR ' + e.message); });
   await p.goto(U + '#ders'); await p.waitForTimeout(3500);
   const ev = (f, a) => p.evaluate(f, a);
@@ -32,16 +33,28 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq([(await hedef()).length, (await ozet()).length], [0, 0], 'bk-30 (alan henüz yok): hedef ve özet kutusu yok, ders eski haliyle');
   ok(await ev(() => document.querySelectorAll('.lr-read').length === 1), 'bk-30: ders metni yine görünür');
 
-  // 2) Mini sınav: yanlış cevap → yalnız seçilen seçeneğin nedeni; doğru cevap → neden yok; pilot dışı derste whyNot satırı yok
+  // 2) Mini sınav (Faz 9 sunucu): cevap anahtarı istemcide yok; şıklar seçilir, sunucuya gönderilir. Sunucu GEÇİNCE doğru cevabı ve whyNot'u açar,
+  //    KALINCA hiçbir şey açmaz. whyNot yalnız yanlış seçilen seçenek için görünür. (Sentetik sunucu: tests/sunucu_sahte.js — gerçek anahtar repoda yok.)
   await ac('bk', 1, 'sinav'); await p.waitForTimeout(300);
   const tikla = (soru, secenek) => ev(([s, j]) => document.querySelectorAll('.qz')[s].querySelectorAll('.qz-o')[j].click(), [soru, secenek]);
   const neden = (soru) => ev((s) => { const e = document.querySelectorAll('.qz')[s].querySelector('[data-whynot]'); return e ? e.textContent : null; }, soru);
-  await tikla(1, 1); await p.waitForTimeout(200); // Soru 2 seçenekler: 403 (doğru), 401, 404, 500 → 401 yanlış
+  const plan = await ev(() => { const l = lessonForTopic('bk', 's-bk-1'); return l.quiz.map(q => { const d = q.options.indexOf(window.__sentetikDogru(q)); return { dogru: d, yanlis: q.options.findIndex((x, i) => i !== d) }; }); });
+  const gonder = () => ev(() => document.querySelector('[data-sunucu-gonder]').click());
+  ok(await ev(() => !document.querySelector('.qz-fb') && document.querySelectorAll('.qz-o').length > 0), 'mini sınav açılışında hiçbir doğru cevap/açıklama görünmez');
+  eq(await ev(() => document.querySelector('[data-sunucu-gonder]').disabled), true, 'tüm sorular cevaplanmadan gönder düğmesi kapalı');
+  // 2a) KALMA: 6 sorudan 3'ü yanlış → sunucu açmaz
+  for (let i = 0; i < plan.length; i++) await tikla(i, i < 3 ? plan[i].yanlis : plan[i].dogru);
+  await gonder(); await p.waitForTimeout(500);
+  eq(await ev(() => document.querySelector('[data-kapi]').dataset.kapi), 'kaldi', 'yanlışlar çoğunlukta: sunucu kararı kaldı');
+  ok(await ev(() => !document.querySelector('.qz-fb') && !document.querySelector('[data-whynot]') && !/Doğrusu/.test(document.querySelector('#ls-sinav').textContent)), 'kalınca doğru cevap ve nedenleri sızmaz');
+  // 2b) GEÇME: ilk soru yanlış (açıklaması olan ilk yanlış şık), kalanı doğru → 5/6 ≥ %80
+  await ev(() => document.querySelector('.qz-res button.btn').click()); await p.waitForTimeout(200);
+  for (let i = 0; i < plan.length; i++) await tikla(i, i === 1 ? plan[i].yanlis : plan[i].dogru);
+  await gonder(); await p.waitForTimeout(500);
+  eq(await ev(() => document.querySelector('[data-kapi]').dataset.kapi), 'gecti', 'geçilince sunucu kararı geçti');
   const n1 = await neden(1);
-  ok(n1 && /Seçtiğin cevap neden olmadı: /.test(n1) && /Kullanıcı zaten doğrulanmış/.test(n1), 'yanlış cevap (401): seçilen seçeneğin nedeni gösterilir');
-  ok(n1 && !/404|500/.test(n1.replace(/401/g, '')), 'yalnız seçilen seçeneğin nedeni (diğer yanlış seçeneklerin metni görünmez)');
-  ok(await ev(() => /Doğrusu: 403/.test(document.querySelectorAll('.qz')[1].querySelector('.qz-fb').textContent)), 'doğru cevap ve genel "why" yine görünür');
-  await tikla(0, 0); await p.waitForTimeout(200); // Soru 1: PUT doğru
+  ok(n1 && /Seçtiğin cevap neden olmadı: /.test(n1) && /sentetik neden/.test(n1), 'yanlış cevap (geçtikten sonra): seçilen seçeneğin nedeni gösterilir');
+  ok(await ev(() => /Doğrusu: /.test(document.querySelectorAll('.qz')[1].querySelector('.qz-fb').textContent)), 'geçilince doğru cevap ve genel açıklama sunucudan görünür');
   eq(await neden(0), null, 'doğru cevapta whyNot satırı yok');
   ok(await tasma(), 'bk-1 mini sınav: 390 px yatay taşma yok');
   // pilot dışı soru (whyNot alanı yok): neden satırı üretilmez; alanlı soruda yalnız yanlış seçenek için üretilir

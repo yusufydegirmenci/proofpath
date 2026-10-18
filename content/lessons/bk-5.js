@@ -44,11 +44,11 @@
       { t: "warn", h: "Tuzak", text: "Anahtarı silmeyi planlayıp 'zaten kullanılmıyor' demek: bu anahtarla şifreli bir yedek varsa veriye bir daha ulaşamazsın. Silmek yerine devre dışı bırakıp izle." }
     ],
     quiz: [
-      { q: "KMS doğrudan en fazla kaç KB veriyi şifreleyebilir?", options: ["4 KB", "4 GB", "256 MB", "1 TB"], answer: "4 KB", why: "Büyük veri için zarf şifreleme kullanılır." },
-      { q: "Veriyi veri anahtarıyla, veri anahtarını KMS anahtarıyla şifreleme yöntemine ne denir?", options: ["Envelope encryption", "Hashing", "Salting", "Tokenization"], answer: "Envelope encryption", why: "GenerateDataKey ile uygulanır." },
-      { q: "Politikasını ve rotasyonunu kontrol edebildiğin anahtar türü hangisidir?", options: ["Customer managed key", "AWS owned key", "AWS managed key", "Hiçbiri"], answer: "Customer managed key", why: "Politikayı sen yönetirsin." },
-      { q: "Bir KMS anahtarı silinmeye planlanırsa ne olur?", options: ["7-30 gün bekleme süresi uygulanır", "Anında silinir", "Hiç silinmez", "S3'e taşınır"], answer: "7-30 gün bekleme süresi uygulanır", why: "Yanlışlıkla silmeye karşı koruma." },
-      { q: "KMS anahtar kullanımı nerede kayıt altına alınır?", options: ["CloudTrail", "Route 53", "SQS", "ECR"], answer: "CloudTrail", why: "Decrypt, Encrypt çağrıları günlüğe yazılır." }
+      { id: "ddb58c9f", q: "KMS doğrudan en fazla kaç KB veriyi şifreleyebilir?", options: ["4 KB", "4 GB", "256 MB", "1 TB"] },
+      { id: "cb808b4a", q: "Veriyi veri anahtarıyla, veri anahtarını KMS anahtarıyla şifreleme yöntemine ne denir?", options: ["Envelope encryption", "Hashing", "Salting", "Tokenization"] },
+      { id: "854d6b25", q: "Politikasını ve rotasyonunu kontrol edebildiğin anahtar türü hangisidir?", options: ["Customer managed key", "AWS owned key", "AWS managed key", "Hiçbiri"] },
+      { id: "b2f471bf", q: "Bir KMS anahtarı silinmeye planlanırsa ne olur?", options: ["7-30 gün bekleme süresi uygulanır", "Anında silinir", "Hiç silinmez", "S3'e taşınır"] },
+      { id: "83779b5c", q: "KMS anahtar kullanımı nerede kayıt altına alınır?", options: ["CloudTrail", "Route 53", "SQS", "ECR"] }
     ],
     interview: [
       { q: "Zarf şifreleme nedir, neden kullanılır?", a: "Veri, bir veri anahtarıyla şifrelenir; o veri anahtarı da KMS anahtarıyla şifrelenip veriyle saklanır. KMS 4 KB sınırı olduğundan ve büyük veride ağ yükünü azaltmak için bu yöntem kullanılır." },
@@ -105,11 +105,11 @@
       { t: "warn", h: "Tuzak", text: "Gizli bilgiyi Lambda ortam değişkenine açık metin koymak: konsolda, loglarda ve CloudFormation şablonunda görünebilir. Ayrıca her çağrıda yeniden okumak gecikme ve maliyet artırır; önbellekle." }
     ],
     quiz: [
-      { q: "Veritabanı parolasını otomatik döndürmek için hangi servis uygundur?", options: ["Secrets Manager", "S3", "CloudFront", "SNS"], answer: "Secrets Manager", why: "Yerleşik rotasyon desteği vardır." },
-      { q: "Ücretsiz standart parametre depolayabilen servis hangisidir?", options: ["Parameter Store", "Secrets Manager", "KMS", "Cognito"], answer: "Parameter Store", why: "Standard parametreler ücretsizdir." },
-      { q: "Parameter Store'da şifreli değer için hangi tür kullanılır?", options: ["SecureString", "String", "StringList", "BinaryDoc"], answer: "SecureString", why: "KMS ile şifrelenir." },
-      { q: "Secrets Manager'dan parola okumak için gerekli IAM eylemi hangisidir?", options: ["secretsmanager:GetSecretValue", "s3:GetObject", "ec2:RunInstances", "sqs:SendMessage"], answer: "secretsmanager:GetSecretValue", why: "KMS anahtarı için ayrıca kms:Decrypt gerekebilir." },
-      { q: "Parola için en kötü yaklaşım hangisidir?", options: ["Kodda sabit yazmak", "Secrets Manager", "SecureString", "Rotasyon"], answer: "Kodda sabit yazmak", why: "Sızıntı ve değiştirme zorluğu yaratır." }
+      { id: "c919f703", q: "Veritabanı parolasını otomatik döndürmek için hangi servis uygundur?", options: ["Secrets Manager", "S3", "CloudFront", "SNS"] },
+      { id: "e8b9334a", q: "Ücretsiz standart parametre depolayabilen servis hangisidir?", options: ["Parameter Store", "Secrets Manager", "KMS", "Cognito"] },
+      { id: "83c9b07e", q: "Parameter Store'da şifreli değer için hangi tür kullanılır?", options: ["SecureString", "String", "StringList", "BinaryDoc"] },
+      { id: "9d1816b0", q: "Secrets Manager'dan parola okumak için gerekli IAM eylemi hangisidir?", options: ["secretsmanager:GetSecretValue", "s3:GetObject", "ec2:RunInstances", "sqs:SendMessage"] },
+      { id: "38e9799c", q: "Parola için en kötü yaklaşım hangisidir?", options: ["Kodda sabit yazmak", "Secrets Manager", "SecureString", "Rotasyon"] }
     ],
     interview: [
       { q: "Secrets Manager ve Parameter Store farkı?", a: "Secrets Manager gizli bilgiler için tasarlanmıştır: otomatik rotasyon, sürümleme, hesaplar arası paylaşım ve ücretlidir. Parameter Store daha çok yapılandırma içindir, standart katman ücretsizdir, SecureString ile şifreli saklayabilir ama yerleşik rotasyonu yoktur." },
@@ -164,11 +164,11 @@
       { t: "warn", h: "Tuzak", text: "Kullanıcı havuzu ile kimlik havuzunu karıştırmak. API'yi korumak için çoğu zaman sadece kullanıcı havuzu yeter; AWS kaynaklarına doğrudan erişim gerekiyorsa kimlik havuzu eklenir." }
     ],
     quiz: [
-      { q: "Kayıt ve giriş yapan, JWT üreten Cognito bileşeni hangisidir?", options: ["User pool", "Identity pool", "IAM role", "KMS key"], answer: "User pool", why: "Kullanıcı dizini ve kimlik doğrulamadır." },
-      { q: "Kullanıcıya geçici AWS kimlik bilgisi veren bileşen hangisidir?", options: ["Identity pool", "User pool", "Hosted UI", "WAF"], answer: "Identity pool", why: "STS ile geçici anahtar üretir." },
-      { q: "API yetkilendirmede kullanılan token hangisidir?", options: ["Access token", "Refresh token", "Parola özeti", "Çerez"], answer: "Access token", why: "Kapsamlar (scopes) taşır." },
-      { q: "Yeni token almak için kullanılan uzun ömürlü token hangisidir?", options: ["Refresh token", "ID token", "Access token", "API anahtarı"], answer: "Refresh token", why: "Kısa ömürlü token'lar sona erince yenilenir." },
-      { q: "Kayıt öncesi özel doğrulama yapmak için ne kullanılır?", options: ["Lambda tetikleyicisi", "S3 olayı", "Route 53", "VPC"], answer: "Lambda tetikleyicisi", why: "Pre sign-up trigger." }
+      { id: "08f8c107", q: "Kayıt ve giriş yapan, JWT üreten Cognito bileşeni hangisidir?", options: ["User pool", "Identity pool", "IAM role", "KMS key"] },
+      { id: "5cd3a45f", q: "Kullanıcıya geçici AWS kimlik bilgisi veren bileşen hangisidir?", options: ["Identity pool", "User pool", "Hosted UI", "WAF"] },
+      { id: "f24a08e2", q: "API yetkilendirmede kullanılan token hangisidir?", options: ["Access token", "Refresh token", "Parola özeti", "Çerez"] },
+      { id: "bbb9d85c", q: "Yeni token almak için kullanılan uzun ömürlü token hangisidir?", options: ["Refresh token", "ID token", "Access token", "API anahtarı"] },
+      { id: "8f9a90fd", q: "Kayıt öncesi özel doğrulama yapmak için ne kullanılır?", options: ["Lambda tetikleyicisi", "S3 olayı", "Route 53", "VPC"] }
     ],
     interview: [
       { q: "User pool ile identity pool farkı?", a: "User pool kimlik doğrulama ve token üretimidir (kim). Identity pool bu kimliği IAM rolüne eşleyip geçici AWS kimlik bilgisi verir (neye erişir)." },
@@ -223,11 +223,11 @@
       { t: "warn", h: "Tuzak", text: "Log saklama süresi varsayılan olarak 'süresiz'dir ve maliyet büyür. Log gruplarına saklama süresi koy." }
     ],
     quiz: [
-      { q: "Log içindeki desenden metrik üreten özellik hangisidir?", options: ["Metric filter", "X-Ray", "Lifecycle", "Stage"], answer: "Metric filter", why: "Örneğin ERROR sayısını metriğe çevirir." },
-      { q: "Günlüklerde sorgu dili ile arama yapan araç hangisidir?", options: ["Logs Insights", "CloudTrail", "Config", "Inspector"], answer: "Logs Insights", why: "filter, stats, sort komutlarıyla sorgular." },
-      { q: "Alarm durumlarından hangisi veri yetersizliğini gösterir?", options: ["INSUFFICIENT_DATA", "OK", "ALARM", "PAUSED"], answer: "INSUFFICIENT_DATA", why: "Metrik henüz veri yayınlamıyor olabilir." },
-      { q: "Alarm tetiklenince e-posta göndermek için hangi servis eylem hedefi olur?", options: ["SNS", "S3", "KMS", "ECR"], answer: "SNS", why: "SNS abonelerine bildirir." },
-      { q: "Log maliyetini sınırlamak için ne yapılır?", options: ["Saklama süresi ayarlamak", "Hiç log tutmamak", "Kök kullanıcı kullanmak", "Logları herkese açmak"], answer: "Saklama süresi ayarlamak", why: "Varsayılan saklama süresiz olduğundan maliyet artar." }
+      { id: "b77ba5ca", q: "Log içindeki desenden metrik üreten özellik hangisidir?", options: ["Metric filter", "X-Ray", "Lifecycle", "Stage"] },
+      { id: "5a7dfdd2", q: "Günlüklerde sorgu dili ile arama yapan araç hangisidir?", options: ["Logs Insights", "CloudTrail", "Config", "Inspector"] },
+      { id: "647fbf22", q: "Alarm durumlarından hangisi veri yetersizliğini gösterir?", options: ["INSUFFICIENT_DATA", "OK", "ALARM", "PAUSED"] },
+      { id: "f6e1fe56", q: "Alarm tetiklenince e-posta göndermek için hangi servis eylem hedefi olur?", options: ["SNS", "S3", "KMS", "ECR"] },
+      { id: "57752e2c", q: "Log maliyetini sınırlamak için ne yapılır?", options: ["Saklama süresi ayarlamak", "Hiç log tutmamak", "Kök kullanıcı kullanmak", "Logları herkese açmak"] }
     ],
     interview: [
       { q: "CloudWatch ile CloudTrail farkı nedir?", a: "CloudWatch performans ve uygulama izlemedir: metrik, log, alarm. CloudTrail 'kim hangi API'yi ne zaman çağırdı' denetim kaydıdır." },
@@ -280,11 +280,11 @@
       { t: "warn", h: "Tuzak", text: "Her isteği izlemek maliyetli ve gürültülüdür; örnekleme kuralı kullan. Ayrıca kişisel veriyi iz içine yazma." }
     ],
     quiz: [
-      { q: "Bir isteğin servisler arası uçtan uca yolunu gösteren yapı nedir?", options: ["Trace", "Alarm", "Bucket", "Stage"], answer: "Trace", why: "Tüm segmentleri kapsar." },
-      { q: "Aranabilir (indekslenen) ek veri hangisidir?", options: ["Annotation", "Metadata", "Log", "Layer"], answer: "Annotation", why: "Filtre ifadelerinde kullanılır." },
-      { q: "Lambda için X-Ray'i etkinleştirmek ne gerektirir?", options: ["Active tracing ayarı ve rol izni", "EC2 kurmak", "VPC peering", "KMS anahtarı"], answer: "Active tracing ayarı ve rol izni", why: "Daemon gerekmez; rol xray:Put* iznine sahip olmalı." },
-      { q: "X-Ray maliyetini ve gürültüyü azaltan mekanizma nedir?", options: ["Örnekleme (sampling)", "Şifreleme", "Rotasyon", "Replika"], answer: "Örnekleme (sampling)", why: "Tüm isteklerden sadece oran kadarı izlenir." },
-      { q: "Servisler arası bağımlılık ve gecikmeyi görsel gösteren çıktı nedir?", options: ["Servis haritası", "Dockerfile", "Change set", "Lifecycle kuralı"], answer: "Servis haritası", why: "Düğümler servis, oklar çağrıdır." }
+      { id: "3c662b18", q: "Bir isteğin servisler arası uçtan uca yolunu gösteren yapı nedir?", options: ["Trace", "Alarm", "Bucket", "Stage"] },
+      { id: "6c277206", q: "Aranabilir (indekslenen) ek veri hangisidir?", options: ["Annotation", "Metadata", "Log", "Layer"] },
+      { id: "e67cbb82", q: "Lambda için X-Ray'i etkinleştirmek ne gerektirir?", options: ["Active tracing ayarı ve rol izni", "EC2 kurmak", "VPC peering", "KMS anahtarı"] },
+      { id: "6616b2d0", q: "X-Ray maliyetini ve gürültüyü azaltan mekanizma nedir?", options: ["Örnekleme (sampling)", "Şifreleme", "Rotasyon", "Replika"] },
+      { id: "77d5ddb7", q: "Servisler arası bağımlılık ve gecikmeyi görsel gösteren çıktı nedir?", options: ["Servis haritası", "Dockerfile", "Change set", "Lifecycle kuralı"] }
     ],
     interview: [
       { q: "Dağıtık izleme neden gerekir?", a: "Bir istek birçok servisten geçtiğinde tek tek log ve metrikler darboğazı göstermez. İzleme isteğin tüm yolunu ve her adımın süresini görünür kılar." },
@@ -336,11 +336,11 @@
       { t: "warn", h: "Tuzak", text: "Sadece olay geçmişine güvenmek: 90 gün sınırı vardır ve veri olaylarını içermez. Denetim için trail kur, kayıt kovasını koru (sürümleme, MFA delete, sıkı politika)." }
     ],
     quiz: [
-      { q: "Bir kaynağı kimin sildiğini bulmak için hangi servise bakılır?", options: ["CloudTrail", "CloudFront", "SQS", "ECR"], answer: "CloudTrail", why: "API çağrılarının kim/ne zaman kaydını tutar." },
-      { q: "Olay geçmişi (Event history) ne kadar geriyi gösterir?", options: ["90 gün", "7 gün", "10 yıl", "24 saat"], answer: "90 gün", why: "Daha uzun saklama için trail gerekir." },
-      { q: "Varsayılan olarak KAPALI olan olay türü hangisidir?", options: ["Veri olayları", "Yönetim olayları", "Konsol girişi", "IAM değişikliği"], answer: "Veri olayları", why: "S3 nesne ve Lambda çağrıları isteğe bağlı açılır." },
-      { q: "Kayıt dosyalarının değiştirilmediğini kanıtlayan özellik nedir?", options: ["Log dosyası bütünlük doğrulaması", "Presigned URL", "Lifecycle", "Read replica"], answer: "Log dosyası bütünlük doğrulaması", why: "Hash'li digest dosyaları üretilir." },
-      { q: "CloudTrail kayıtlarında 'kim' bilgisi hangi alandadır?", options: ["userIdentity", "eventTime", "awsRegion", "eventVersion"], answer: "userIdentity", why: "Kimliğin türü, ARN ve erişim anahtarını içerir." }
+      { id: "f7dd13e0", q: "Bir kaynağı kimin sildiğini bulmak için hangi servise bakılır?", options: ["CloudTrail", "CloudFront", "SQS", "ECR"] },
+      { id: "935474bc", q: "Olay geçmişi (Event history) ne kadar geriyi gösterir?", options: ["90 gün", "7 gün", "10 yıl", "24 saat"] },
+      { id: "b64be3fc", q: "Varsayılan olarak KAPALI olan olay türü hangisidir?", options: ["Veri olayları", "Yönetim olayları", "Konsol girişi", "IAM değişikliği"] },
+      { id: "ce82817e", q: "Kayıt dosyalarının değiştirilmediğini kanıtlayan özellik nedir?", options: ["Log dosyası bütünlük doğrulaması", "Presigned URL", "Lifecycle", "Read replica"] },
+      { id: "348e3399", q: "CloudTrail kayıtlarında 'kim' bilgisi hangi alandadır?", options: ["userIdentity", "eventTime", "awsRegion", "eventVersion"] }
     ],
     interview: [
       { q: "CloudTrail ile CloudWatch farkı?", a: "CloudTrail hesapta kim hangi API'yi çağırdı kaydıdır (denetim). CloudWatch metrik, log ve alarmla performans ve uygulama izlemedir." },

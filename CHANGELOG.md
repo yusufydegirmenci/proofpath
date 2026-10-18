@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## Faz 9 sunucu (dal: faz-9s; migration ve tohum UYGULANMADI, canlı DB, gizli anahtar, zamanlanmış iş, yeni dış kütüphane yok)
+- Ustalığa/kapıya sayılan sınavların cevap anahtarı içerikten ve tarayıcıdan çıkarıldı: ders mini sınavı (587 soru), seviye sınavı (7 alan × 10 soru, soru bankasından ayrıldı; bankada yer tutucu kaldı, dizinler kaymaz) ve Veri Analitiği sınavları (21 soru). Sorularda yalnız metin, seçenek ve `id` kalır; puanı ve geçti kararını sunucu verir (`claude.use("ogr")` → `ogr_deneme_gonder`, kapı: `ogr_kapi_degerlendir`).
+- Doğru cevap ve açıklamalar yalnız sınav GEÇİLİNCE sunucudan gelir; kalınca yalnız puan/doğru sayısı. Çevrimdışı, misafir, oturum, sunucu hazır değil, çok sık deneme için Türkçe mesajlar; bu denemeler ustalığa sayılmaz. Yerel kayıt sunucu yanıtının önbelleğidir (`dogrulama: "sunucu"`, yalnız `PP.ogr.sunucu` yazar).
+- Ders içi alıştırma, Parsons, lab, "çözümü göster", oyun/tekrar soru bankası ve yerleştirme testi istemcide kalır (çevrimdışı çalışır, ustalık/lig saymaz).
+- Araç: `node tools/cevap-anahtari.js` (kuru çalışma) / `--yaz`: anahtarı SQL tohumuna ayırır, içerikten siler, soru kimliği ekler; tekrar çalıştırmada tohum birleşir. Anahtar tohumu `supabase/seed/*_anahtar.sql` halka açık repoya girmez (`supabase/seed/.gitignore`); hedef metadata tohumu girer.
+- `supabase/migrations/20261019_ogrenme_sunucu_sinav.sql` (UYGULANMADI): yalnız ek (anahtar tablosuna `agirlik`, `aciklama`; `ogr_deneme_gonder` aynı imzayla yenilenir). Uygulama sırası: migration → hedef tohumu → anahtar tohumu → ancak sonra istemci yayını.
+- Hesapsız deneme kendi 3 tanıtım sorusunu kullanır (kaydedilmez). Eski `qzCorrect` iki soruda yanlış şıkkı doğru gösteriyordu ("A" cevabı, IPv6 sorusu); tam eşleşme öne alındı.
+- Test: `tests/faz9s_arac.js` (39), `faz9s_sunucu.js` (49), `faz9s_tarama.js` (22; sızıntı taraması); sahte sınav sunucusu `tests/sunucu_sahte.js` SENTETİK anahtar kullanır. Etkilenen testler (kritik_akis, faz4_entegrasyon, ogrenme_tarayici, faz12_sema, faz10_va, faz10_va12, hesaplar, h79, t59b, t60d, tur_c) yeni akışa uyarlandı, assert zayıflatılmadı.
+
 ## E1 (dal: faz-e1; migration, canlı DB, gizli anahtar, zamanlanmış iş yok)
 - Alan egzersizlerinde (SQL/Python/JS) düz textarea yerine CodeMirror 6: sözdizimi rengi, satır numarası, otomatik girinti, Ctrl+Enter çalıştırır, Esc odaktan çıkarır, açık/koyu tema (`--cm-*` renkleri `css/son-eklemeler.css`).
 - Tek yerel paket: `vendor/codemirror-6.43.14.js` (476 KB ham, ~167 KB gzip), SHA-384 SRI (`<script integrity>`), tam sabit sürümler, çalışma anında CDN yok. Yalnız ilk alan kurulunca yüklenir (tembel).

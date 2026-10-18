@@ -121,6 +121,14 @@
     ]);
   }
 
+  /* Hesapsız denemenin KENDİ soruları (Faz 9 sunucu): gerçek ders sınavı soruları değil; ders sınavlarının anahtarı istemcide bulunmaz.
+     Bu üç soru yalnız bellekte tanıtım içindir, hiçbir şey kaydedilmez ve ustalığa sayılmaz. */
+  var DENEME_SORULARI = [
+    { q: "Aynı evdeki bilgisayar, telefon ve yazıcıyı tek yerel ağda toplayan cihaz hangisidir?", options: ["Hoparlör", "Switch", "Monitör", "Kulaklık"], answer: "Switch", why: "Switch, aynı ağdaki cihazları birbirine bağlar ve çerçeveyi hedefin MAC adresine göre iletir." },
+    { q: "Evdeki ağı internete (başka bir ağa) bağlayan cihaz hangisidir?", options: ["Router", "Priz", "Fare", "Webcam"], answer: "Router", why: "Router, farklı ağlar arasında paketleri IP adresine göre yönlendirir." },
+    { q: "Ağ kablosunun cihaza takıldığı fiziksel girişe ne denir?", options: ["Protokol", "Paket", "Port", "Profil"], answer: "Port", why: "Port, kablonun takıldığı fiziksel giriştir; (yazılım) portu ile karıştırma." }
+  ];
+
   function dersVerisi() {
     var L = window.PP_LESSONS && window.PP_LESSONS.ccna && window.PP_LESSONS.ccna[1];
     return L && Array.isArray(L.quiz) && L.quiz.length ? L : null;
@@ -157,13 +165,13 @@
       var i = 0, dogru = 0;
       var soru = function () {
         alan.textContent = "";
-        if (i >= L.quiz.length) {
-          alan.appendChild(el("div", { class: "ppg-fb", role: "status", text: "Mini sınav bitti: " + dogru + " / " + L.quiz.length + " doğru. Devamı, tüm dersler, planın ve ilerlemen için hesap oluştur." }));
+        if (i >= DENEME_SORULARI.length) {
+          alan.appendChild(el("div", { class: "ppg-fb", role: "status", text: "Mini sınav bitti: " + dogru + " / " + DENEME_SORULARI.length + " doğru (tanıtım sorusu, kaydedilmez). Devamı, tüm dersler, planın ve ilerlemen için hesap oluştur." }));
           alan.appendChild(altSatir);
           return;
         }
-        var q = L.quiz[i], cevaplandi = false;
-        alan.appendChild(el("div", { style: "font-weight:700", text: "Mini sınav " + (i + 1) + " / " + L.quiz.length + ": " + q.q }));
+        var q = DENEME_SORULARI[i], cevaplandi = false;
+        alan.appendChild(el("div", { style: "font-weight:700", text: "Deneme sorusu " + (i + 1) + " / " + DENEME_SORULARI.length + ": " + q.q }));
         var fb = el("div", { role: "status" });
         var secenekler = q.options.map(function (o) {
           var b = el("button", { class: "ppg-opt", type: "button", text: o, onclick: function () {
@@ -175,7 +183,7 @@
             secenekler.forEach(function (x) { if (x.textContent === q.answer) x.className = "ppg-opt iyi"; x.disabled = true; });
             fb.className = "ppg-fb";
             fb.textContent = (ok ? "Doğru. " : "Doğrusu: " + q.answer + ". ") + (q.why || "");
-            var sonraki = el("button", { class: "ppa-btn", type: "button", text: i + 1 < L.quiz.length ? "Sonraki soru" : "Sonucu gör", onclick: function () { i++; soru(); var h = alan.firstChild; if (h) { h.setAttribute("tabindex", "-1"); h.focus(); } } });
+            var sonraki = el("button", { class: "ppa-btn", type: "button", text: i + 1 < DENEME_SORULARI.length ? "Sonraki soru" : "Sonucu gör", onclick: function () { i++; soru(); var h = alan.firstChild; if (h) { h.setAttribute("tabindex", "-1"); h.focus(); } } });
             alan.appendChild(sonraki);
             sonraki.focus();
           } });

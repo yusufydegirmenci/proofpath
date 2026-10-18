@@ -38,10 +38,10 @@
       { t: "warn", h: "Tuzak", text: "Sadece cezalandırmaya dayalı program, insanları hatalarını saklamaya iter. Bu da olay müdahalesini geciktirir. Raporlamayı güvenli hâle getirmek en değerli kazanımdır." }
     ],
     quiz: [
-      { q: "Etkili bir farkındalık programının özelliği hangisidir?", options: ["Sürekli, kısa ve role özel", "Yılda bir kez uzun sunum", "Sadece BT ekibine yönelik", "Yalnızca ceza"], answer: "Sürekli, kısa ve role özel", why: "Davranış değişimi tekrar ve ilgili içerikle gelir." },
-      { q: "Oltalama simülasyonunun amacı nedir?", options: ["Çalışanların tepkisini ölçmek ve eğitmek", "Çalışanları cezalandırmak", "Ağı yavaşlatmak", "Parolaları toplamak"], answer: "Çalışanların tepkisini ölçmek ve eğitmek", why: "Zararsız sahte maillerle gerçek davranış ölçülür." },
-      { q: "Hangi metrik bildirim kültürünü gösterir?", options: ["Şüpheli maili raporlama oranı ve süresi", "Sunucu uptime'ı", "Disk boyutu", "Yedek sayısı"], answer: "Şüpheli maili raporlama oranı ve süresi", why: "Çok ve hızlı raporlama saldırıyı erken yakalar." },
-      { q: "Yönetici düzeyine hedefli oltalamaya ne denir?", options: ["Whaling", "Smishing", "Tailgating", "Pharming"], answer: "Whaling", why: "Whaling, üst düzey yöneticileri hedefler." }
+      { id: "794e9218", q: "Etkili bir farkındalık programının özelliği hangisidir?", options: ["Sürekli, kısa ve role özel", "Yılda bir kez uzun sunum", "Sadece BT ekibine yönelik", "Yalnızca ceza"] },
+      { id: "88e771f9", q: "Oltalama simülasyonunun amacı nedir?", options: ["Çalışanların tepkisini ölçmek ve eğitmek", "Çalışanları cezalandırmak", "Ağı yavaşlatmak", "Parolaları toplamak"] },
+      { id: "c9895b0d", q: "Hangi metrik bildirim kültürünü gösterir?", options: ["Şüpheli maili raporlama oranı ve süresi", "Sunucu uptime'ı", "Disk boyutu", "Yedek sayısı"] },
+      { id: "64380148", q: "Yönetici düzeyine hedefli oltalamaya ne denir?", options: ["Whaling", "Smishing", "Tailgating", "Pharming"] }
     ],
     interview: [
       { q: "Farkındalık eğitiminin işe yaradığını nasıl ölçersin?", a: "Oltalama simülasyonlarında tıklama oranının düşmesine ve raporlama oranının yükselmesine bakarım. Ayrıca gerçek olay sayısı ve tespit süresi gibi sonuç metriklerini izlerim." },
@@ -95,10 +95,10 @@
       { t: "warn", h: "Tuzak", text: "'Yapay zekâ bunu yazdı, doğrudur' diye kontrolsüz kullanmak risktir. Sorumluluk, çıktıyı kullanan insandadır." }
     ],
     quiz: [
-      { q: "Dış içerikteki gizli talimatlarla bir modelin yönlendirilmesine ne denir?", options: ["Prompt injection", "Phishing", "Tailgating", "Hashing"], answer: "Prompt injection", why: "Girdi içine gizlenmiş talimatlar modelin davranışını değiştirir." },
-      { q: "BT onayı olmadan yapay zekâ araçlarının kullanılmasına ne denir?", options: ["Shadow AI", "Zero Trust", "Failover", "Sandboxing"], answer: "Shadow AI", why: "Gölge BT'nin yapay zekâ karşılığıdır." },
-      { q: "Modelin güvenle yazdığı ama yanlış olan çıktısına ne denir?", options: ["Hallucination", "Encryption", "Replay", "Pivoting"], answer: "Hallucination", why: "Uydurma çıktı, çıktı doğrulamasını gerekli kılar." },
-      { q: "Yapay zekâ ajanı için doğru yetki yaklaşımı hangisidir?", options: ["Sadece gereken araç ve veri", "Tam yönetici", "Tüm veritabanı", "Yetkisiz"], answer: "Sadece gereken araç ve veri", why: "En az yetki ilkesi hasarı sınırlar." }
+      { id: "6b250285", q: "Dış içerikteki gizli talimatlarla bir modelin yönlendirilmesine ne denir?", options: ["Prompt injection", "Phishing", "Tailgating", "Hashing"] },
+      { id: "ab5c0ee0", q: "BT onayı olmadan yapay zekâ araçlarının kullanılmasına ne denir?", options: ["Shadow AI", "Zero Trust", "Failover", "Sandboxing"] },
+      { id: "70a7b9c4", q: "Modelin güvenle yazdığı ama yanlış olan çıktısına ne denir?", options: ["Hallucination", "Encryption", "Replay", "Pivoting"] },
+      { id: "8a1857b3", q: "Yapay zekâ ajanı için doğru yetki yaklaşımı hangisidir?", options: ["Sadece gereken araç ve veri", "Tam yönetici", "Tüm veritabanı", "Yetkisiz"] }
     ],
     interview: [
       { q: "Şirkette yapay zekâ araçlarını nasıl güvenli yönetirdin?", a: "Kabul edilebilir kullanım politikası yazar, onaylı kurumsal araçlar sağlarım. Veri sınıflandırması ve DLP ile gizli verinin çıkışını kontrol eder, çıktıların insan tarafından doğrulanmasını şart koşarım." },
@@ -150,10 +150,10 @@
       { t: "warn", h: "Tuzak", text: "'Zero Trust ürünü aldık, bitti' demek yanlıştır. Kimlik yönetimi, cihaz yönetimi, segmentasyon ve izleme birlikte çalışmalıdır." }
     ],
     quiz: [
-      { q: "Zero Trust'ın temel ilkesi hangisidir?", options: ["Hiçbir isteğe otomatik güvenme, her zaman doğrula", "İç ağdakilere tam güven", "Sadece güvenlik duvarı", "Parola yeterli"], answer: "Hiçbir isteğe otomatik güvenme, her zaman doğrula", why: "Ağ konumu güven sağlamaz; her erişim doğrulanır." },
-      { q: "'Assume breach' ne demektir?", options: ["İhlalin zaten olmuş olabileceğini varsayıp hasarı sınırlamak", "İhlal asla olmaz", "Sadece dışarıyı izlemek", "Logları kapatmak"], answer: "İhlalin zaten olmuş olabileceğini varsayıp hasarı sınırlamak", why: "Segmentasyon ve en az yetki hasarı sınırlar." },
-      { q: "Erişim kararının verildiği Zero Trust bileşeni hangisidir?", options: ["Kontrol düzlemi (politika motoru)", "Veri düzlemi kablosu", "Yazıcı", "Yedek sunucu"], answer: "Kontrol düzlemi (politika motoru)", why: "Karar kontrol düzleminde, uygulama veri düzleminde olur." },
-      { q: "Ağı küçük bölgelere ayırıp bölgeler arası trafiği denetlemeye ne denir?", options: ["Mikro segmentasyon", "Hashing", "Salting", "Tokenization"], answer: "Mikro segmentasyon", why: "Yatay hareketi sınırlar." }
+      { id: "3d585d3b", q: "Zero Trust'ın temel ilkesi hangisidir?", options: ["Hiçbir isteğe otomatik güvenme, her zaman doğrula", "İç ağdakilere tam güven", "Sadece güvenlik duvarı", "Parola yeterli"] },
+      { id: "f31fd4b7", q: "'Assume breach' ne demektir?", options: ["İhlalin zaten olmuş olabileceğini varsayıp hasarı sınırlamak", "İhlal asla olmaz", "Sadece dışarıyı izlemek", "Logları kapatmak"] },
+      { id: "27f72d92", q: "Erişim kararının verildiği Zero Trust bileşeni hangisidir?", options: ["Kontrol düzlemi (politika motoru)", "Veri düzlemi kablosu", "Yazıcı", "Yedek sunucu"] },
+      { id: "2939120e", q: "Ağı küçük bölgelere ayırıp bölgeler arası trafiği denetlemeye ne denir?", options: ["Mikro segmentasyon", "Hashing", "Salting", "Tokenization"] }
     ],
     interview: [
       { q: "Zero Trust nedir ve klasik çevre güvenliğinden farkı?", a: "Ağ konumuna güvenmeden her erişim isteğini kimlik, cihaz ve bağlama göre doğrulama yaklaşımıdır. Klasik modelde içeri giren güvenilir sayılırdı; Zero Trust'ta içeriye giriş hak vermez, her kaynak ayrıca doğrulanır." },
@@ -204,10 +204,10 @@
       { t: "warn", h: "Tuzak", text: "Geri alma planı olmayan değişiklik kumardır. 'Çalışmazsa bakarız' bir plan değildir." }
     ],
     quiz: [
-      { q: "Bir değişikliğin hangi sistemleri etkileyeceğini inceleyen adıma ne denir?", options: ["Etki analizi", "Yedekleme", "Şifreleme", "Hashing"], answer: "Etki analizi", why: "Etki analizi riski ve bağımlılıkları ortaya çıkarır." },
-      { q: "Değişiklik sorun çıkarırsa önceki duruma dönmeye ne denir?", options: ["Rollback", "Failover", "Escalation", "Quarantine"], answer: "Rollback", why: "Geri alma planı her değişiklikte hazır olmalıdır." },
-      { q: "Önceden onaylı, düşük riskli, tekrarlayan değişiklik türü hangisidir?", options: ["Standart değişiklik", "Acil değişiklik", "Kayıtsız değişiklik", "Gizli değişiklik"], answer: "Standart değişiklik", why: "Standart değişiklikler önceden onaylı kalıplardır." },
-      { q: "Değişiklik taleplerini inceleyip onaylayan kurulun adı nedir?", options: ["CAB", "SIEM", "SOC", "NOC"], answer: "CAB", why: "Change Advisory Board değişiklikleri değerlendirir." }
+      { id: "1b0818c3", q: "Bir değişikliğin hangi sistemleri etkileyeceğini inceleyen adıma ne denir?", options: ["Etki analizi", "Yedekleme", "Şifreleme", "Hashing"] },
+      { id: "37e768d5", q: "Değişiklik sorun çıkarırsa önceki duruma dönmeye ne denir?", options: ["Rollback", "Failover", "Escalation", "Quarantine"] },
+      { id: "48efee39", q: "Önceden onaylı, düşük riskli, tekrarlayan değişiklik türü hangisidir?", options: ["Standart değişiklik", "Acil değişiklik", "Kayıtsız değişiklik", "Gizli değişiklik"] },
+      { id: "238ac0f4", q: "Değişiklik taleplerini inceleyip onaylayan kurulun adı nedir?", options: ["CAB", "SIEM", "SOC", "NOC"] }
     ],
     interview: [
       { q: "Güvenlik açısından değişiklik yönetimi neden önemli?", a: "Kayıtsız değişiklikler yanlış yapılandırma ve gizli açıklar yaratır, ayrıca olay incelemesini zorlaştırır. Süreç; etki analizi, onay, test, geri alma planı ve kayıtla hem kesintiyi hem açığı azaltır." },

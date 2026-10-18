@@ -92,7 +92,7 @@ function ntPageEl(pg){
       else if(t==="split"){out.push(ntSticky("Parçala",[b.tr||"",h("div",{class:"pp"},(b.parts||[]).map(function(p){return h("span",{class:"nt-chip"},(p.en||"")+" ",h("small",null,p.tr||""))})),b.result?h("div",{class:"pg"},"→ "+b.result):null]))}
     });
     if((l.vocab||[]).length)out.push(ntSec("Kelimeler","pr",h("div",null,l.vocab.slice(0,12).map(function(v){return h("div",{class:"nt-vo"},h("b",{class:"pr"},v.term||""),h("span",{class:"nt-ar pk"},ntD("arrow")),h("span",{class:"pb"},v.tr||""),v.ex?h("small",{class:"pk"},"“"+v.ex+"”"):null)})),"star"));
-    var qs=(l.quiz||[]).slice(0,3).map(function(q){return {q:q.q,a:q.answer,why:q.why}}).filter(function(x){return x.q&&x.a});
+    var qs=(l.quiz||[]).slice(0,3).map(function(q){var kz=typeof qzAnahtar==="function"?qzAnahtar(l,q):{dogru:q.answer,why:q.why};return {q:q.q,a:kz.dogru,why:kz.why}}).filter(function(x){return x.q&&x.a});
     if(qs.length)out.push(ntQuiz(qs));
     if(l.homework)out.push(ntSec("Ödev","po",l.homework,"star"));
   }

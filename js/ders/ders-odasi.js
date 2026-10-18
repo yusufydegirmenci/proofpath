@@ -3,6 +3,7 @@
 function qzNorm(s){return String(s==null?"":s).toLowerCase().replace(/[^a-z0-9çğıöşü ]+/g," ").replace(/\s+/g," ").trim()}
 function qzCorrect(q){
   var o=Array.isArray(q.options)?q.options:null;if(!o||o.length<2)return -1;
+  var ex=o.indexOf(q.answer);if(ex>=0)return ex;   /* tam eşleşme önce: "A" cevabı şık harfi, noktalama düşüren eşleme yanlış şıkkı doğru gösteriyordu */
   var a=String(q.answer==null?"":q.answer).trim(),m=/^([A-Da-d])(?:[\)\.\:\-]|\s|$)/.exec(a);
   if(m){var li=m[1].toUpperCase().charCodeAt(0)-65;if(li<o.length&&(a.length<=3||qzNorm(o[li]).length&&qzNorm(a).indexOf(qzNorm(o[li]))>=0))return li}
   var na=qzNorm(a),i;
@@ -36,8 +37,83 @@ function lrDogrulama(l){
 }
 /* Faz 12 V4: sonDogrulama boşsa uydurma tarih yok, "doğrulanmadı" etiketi */
 function lrDogrulamaEtiket(l){return lrDogrulama(l)||h("span",{class:"lr-dogr","data-dogrulama":"yok"},"doğrulanmadı"+(l.surum?" · sürüm "+l.surum:""))}
+/* Faz 9 sunucu: soruda id var, answer yok → mini sınav sunucuya bağlı. Seçilen şıklar "Cevapları gönder" ile ogr_deneme_gonder'e gider;
+   puan ve geçti kararı sunucudan gelir, doğru cevap/açıklama yalnız GEÇİLİNCE gelir. Cevap anahtarı istemcide yoktur. */
+function qzSunucuMu(l){try{return !!PP.ogr.ui.sunucuDersi(l)&&!!PP.ogr.ui.sunucuHedefi(l)}catch(e){return false}}
+function qzSrv(l){var L=S.les;L.srv=L.srv||{};return L.srv[l.id]||(L.srv[l.id]={durum:"secim"})}
+function qzSrvSec(l,i,j){var s=qzSrv(l);if(s.durum==="gonderiliyor"||s.durum==="gecti"||s.durum==="kaldi")return;S.les.pick=S.les.pick||{};S.les.pick[l.id+":"+i]=j;if(s.durum==="hata")s.durum="secim";draw()}
+function qzSrvGonder(l){
+  var L=S.les,s=qzSrv(l),qs=l.quiz,picks=qs.map(function(q,i){return L.pick&&L.pick[l.id+":"+i]});
+  var cev=PP.ogr.sunucu.cevaplar(qs,picks);
+  if(!cev){s.durum="hata";s.mesaj=PP.ogr.sunucu.MESAJ.gecersiz;draw();return}
+  s.durum="gonderiliyor";s.mesaj="";draw();
+  PP.ogr.sunucu.gonder({hedef:PP.ogr.ui.sunucuHedefi(l),varyant:"v1",cevaplar:cev}).then(function(r){
+    if(!r.ok){s.durum="hata";s.neden=r.neden;s.mesaj=r.mesaj;draw();return}
+    s.sonuc=r;
+    if(r.gecti){
+      s.durum="gecti";s.anahtar=r.anahtar||{};
+      qs.forEach(function(q,i){
+        var a=s.anahtar[q.id],ok=!!(a&&a.ok),k=l.id+":"+i;L.mark[k]=ok?"ok":"no";
+        if(ok)unnoteMistake(l,i);else noteMistake(l,i,{q:q.q,answer:a?a.dogru:"",why:a?a.why:""});
+      });
+      saveMarks(l);
+    }else s.durum="kaldi";
+    draw();
+  },function(){s.durum="hata";s.mesaj=PP.ogr.sunucu.MESAJ.hata;draw()});
+}
+function lessonQuizSrv(l){
+  var L=S.les,qs=l.quiz,s=qzSrv(l),k0=lessonKey(l);L.pick=L.pick||{};
+  /* Sayfa yenilendi ama sınav daha önce geçilmişse: yerelde saklanan sunucu açıklaması gösterilir (yeni deneme gerekmez) */
+  if(s.durum==="secim"&&!qs.some(function(q,i){return L.pick[l.id+":"+i]!=null})&&lcHas(k0,"q")){
+    var ac=null;try{ac=PP.ogr.sunucu.aciklama(PP.ogr.ui.sunucuHedefi(l))}catch(e){ac=null}
+    if(ac&&qs.every(function(q){return ac[q.id]})){s.durum="gecti";s.anahtar=ac;s.onbellek=true;qs.forEach(function(q,i){L.mark[l.id+":"+i]=ac[q.id].ok?"ok":"no"})}
+  }
+  var bitti=s.durum==="gecti",kilit=bitti||s.durum==="gonderiliyor"||s.durum==="kaldi";
+  var items=qs.map(function(q,i){
+    var k=l.id+":"+i,pk=L.pick[k],a=bitti?(s.anahtar||{})[q.id]:null;
+    var card=h("div",{class:"qz"+(a?(a.ok?" ok":" no"):"")},
+      h("div",{class:"qz-h"},h("span",{class:"qz-n"},String(i+1)),h("span",{class:"qz-q"},q.q||""),a?h("span",{class:"qz-b "+(a.ok?"ok":"no")},a.ok?"Doğru":"Yanlış"):null));
+    card.append(h("div",{class:"qz-os"},q.options.map(function(o,j){
+      var cls="qz-o",st="";
+      if(a){if(o===a.dogru)cls+=" ok";else if(j===pk)cls+=" no";else cls+=" dim"}
+      else if(pk===j)st="box-shadow:inset 0 0 0 2px var(--accent,#4da3ff)";
+      return h("button",{type:"button",class:cls,style:st||null,disabled:kilit,"aria-pressed":pk===j?"true":"false",onclick:function(){qzSrvSec(l,i,j)}},h("b",null,String.fromCharCode(65+j)),h("span",null,o),
+        a&&o===a.dogru?h("i",{"aria-hidden":"true"},"✓"):a&&j===pk&&!a.ok?h("i",{"aria-hidden":"true"},"✗"):(!a&&pk===j?h("i",{"aria-hidden":"true"},"●"):null))})));
+    if(a){
+      var wn=!a.ok&&pk!=null&&a.whyNot&&typeof a.whyNot==="object"?a.whyNot[q.options[pk]]:null;
+      card.append(h("div",{class:"qz-fb "+(a.ok?"ok":"no")},h("b",null,a.ok?"Doğru! ":"Doğrusu: "+a.dogru+". "),a.why||"",
+        wn?h("div",{class:"small","data-whynot":"1",style:"margin-top:6px"},h("b",null,"Seçtiğin cevap neden olmadı: "),wn):null));
+    }
+    return card});
+  var hepsi=qs.every(function(q,i){return L.pick[l.id+":"+i]!=null}),sonuc=null;
+  if(s.durum==="gecti"){
+    var okN=0;qs.forEach(function(q,i){if(L.mark[l.id+":"+i]==="ok")okN++});
+    sonuc=h("div",{class:"qz-sum "+(okN===qs.length?"all":"mid"),role:"status","data-kapi":"gecti","data-sunucu":s.onbellek?"onbellek":"dogrulandi"},h("b",null,okN+" / "+qs.length),
+      h("span",null,(s.onbellek?"Daha önce sunucuda geçtin. ":"Sunucu doğruladı: ")+(okN===qs.length?"hepsi doğru. ":"geçme eşiği geçildi. ")+"Mini sınav adımı tamam."+(okN<qs.length?" Yanlışlar tekrar listene eklendi.":"")));
+  }else if(s.durum==="kaldi"){
+    var r=s.sonuc,dn=r.dogruSayisi!=null?r.dogruSayisi:Math.round(r.oran*qs.length),sr=null;try{sr=PP.ogr.ui.sinavSonucu(l,dn,qs.length,qs.length)}catch(e){sr=null}
+    var es="%"+Math.round((r.esik!=null?r.esik:PP.ogr.ESIK)*100);
+    sonuc=h("div",{class:"qz-res",role:"status","data-kapi":"kaldi","data-sunucu":"dogrulandi"},
+      h("div",{class:"qz-sum low"},h("b",null,dn+" / "+qs.length),h("span",null,"%"+Math.round(r.oran*100)+": geçme eşiği "+es+" altında (sunucu doğruladı). Doğru cevaplar geçince açılır; dersi tekrar okuyup yeniden dene. Sıradaki ders bu kapıyı bekliyor.")),
+      sr&&sr.telafi?h("div",{class:"small",style:"margin-top:8px"},h("b",null,"Telafi önerisi: "),sr.telafi.slice(1,5).map(function(x){return x.metin}).join(" → ")):null,
+      sr&&sr.varyantNotu?h("div",{class:"small mute",style:"margin-top:4px"},sr.varyantNotu):null,
+      h("button",{class:"btn",type:"button",style:"margin-top:8px",onclick:function(){qzRetry(l)}},"Yeniden dene"));
+  }else if(s.durum==="gonderiliyor"){
+    sonuc=h("div",{class:"small mute",role:"status","data-sunucu":"bekliyor"},"Sunucuda puanlanıyor…");
+  }else{
+    sonuc=h("div",null,
+      s.durum==="hata"?h("div",{class:"lbox warn",role:"status","data-sunucu":"hata","data-neden":s.neden||""},h("p",{style:"margin:0"},s.mesaj||PP.ogr.sunucu.MESAJ.hata)):null,
+      h("button",{class:"btn big",type:"button",disabled:!hepsi,onclick:function(){qzSrvGonder(l)},"data-sunucu-gonder":"1"},s.durum==="hata"?"Yeniden gönder":"Cevapları gönder"),
+      h("div",{class:"small mute",style:"margin-top:6px"},hepsi?"Puan sunucuda hesaplanır; doğru cevaplar ve nedenleri geçince açılır.":"Her soruda bir şık seç, sonra gönder."));
+  }
+  return h("div",{class:"panel",id:"ls-sinav","data-sunucu-sinav":"1"},h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:center"},h("h2",null,"Mini sınav"),
+      h("span",{class:"pill"+(bitti?" ok":"")},bitti?"geçildi":qs.length+" soru")),
+    h("div",{class:"small mute"},"Şıkları seç, sonra sunucuya gönder: puanı ve geçti kararını sunucu verir. Çevrimdışıyken ya da hesapsızken bu deneme ustalığa sayılmaz."),
+    h("div",{class:"qz-list"},items),sonuc);
+}
 function lessonQuiz(l){
   var L=S.les,qs=Array.isArray(l.quiz)?l.quiz:[];if(!qs.length)return null;L.pick=L.pick||{};
+  if(qzSunucuMu(l))return lessonQuizSrv(l);
   var done=0,ok=0;qs.forEach(function(q,i){var m=L.mark[l.id+":"+i];if(m){done++;if(m==="ok")ok++}});
   var items=qs.map(function(q,i){
     var k=l.id+":"+i,m=L.mark[k],c=qzCorrect(q),opts=Array.isArray(q.options)&&q.options.length>=2&&c>=0?q.options:null,pk=L.pick[k];
@@ -63,7 +139,13 @@ function lessonQuiz(l){
     done===qs.length?qzResult(l,ok,qs.length):null);
 }
 /* Faz 4: mini sınav %80 kapısı (PP.ogr.kapi.miniSinav), başarısızlıkta telafi önerisi ve yeniden deneme */
-function qzRetry(l){var L=S.les;L.pick=L.pick||{};(Array.isArray(l.quiz)?l.quiz:[]).forEach(function(q,i){var k=l.id+":"+i;delete L.pick[k];delete L.mark[k];delete L.rev[k+":a"]});draw()}
+/* Soru için doğru cevap/açıklama: eski (istemci) sorularda answer/why; sunucuya bağlı derslerde GEÇİLİNCE yerelde saklanan sunucu açıklaması, yoksa boş */
+function qzAnahtar(l,q){
+  if(q.answer!==undefined)return {dogru:String(q.answer==null?"":q.answer),why:q.why||""};
+  var a=null;try{a=PP.ogr.sunucu.aciklama(PP.ogr.ui.sunucuHedefi(l))}catch(e){a=null}
+  var x=a&&a[q.id];return {dogru:x?String(x.dogru):"",why:x&&x.why?x.why:""};
+}
+function qzRetry(l){var L=S.les;L.pick=L.pick||{};if(L.srv)delete L.srv[l.id];(Array.isArray(l.quiz)?l.quiz:[]).forEach(function(q,i){var k=l.id+":"+i;delete L.pick[k];delete L.mark[k];delete L.rev[k+":a"]});draw()}
 function qzResult(l,ok,tot){
   var r=null;try{r=PP.ogr.ui.sinavSonucu(l,ok,tot,tot)}catch(e){r=null}
   var pct=Math.round(ok/tot*100);
@@ -179,7 +261,7 @@ function renderLessonRoom(){
     var tk=[];if(T){tk=T.m.p.slice()}
     body.push(h("div",{class:"panel lr-take"},h("div",{class:"label"},"Aklında kalsın"),
       T?h("ul",{class:"lr-ul"},[h("li",null,h("b",null,"Ana fikir: "),T.m.h),h("li",null,h("b",null,"Sonunda bileceklerin: "),T.m.o)].concat(T.m.u.slice(0,3).map(function(u){return h("li",null,h("b",null,"Nerede? "),u[0]+" → "+u[1])}))):(l.hook?h("p",null,l.hook):null),
-      miss.length?h("div",{class:"lr-miss"},h("div",{class:"label",style:"color:var(--bad)"},"Kaçırdıkların (tekrar listende)"),miss.map(function(q){return h("div",{class:"qz-fb no"},h("b",null,q.q),h("div",null,"Doğru: "+String(q.answer==null?"":q.answer)),q.why?h("div",{class:"small"},q.why):null)})):(qsx.length?h("div",{class:"qz-sum all"},h("b",null,"✓"),h("span",null,"Kaçırdığın soru yok.")):null)));
+      miss.length?h("div",{class:"lr-miss"},h("div",{class:"label",style:"color:var(--bad)"},"Kaçırdıkların (tekrar listende)"),miss.map(function(q){var kz=qzAnahtar(l,q);return h("div",{class:"qz-fb no"},h("b",null,q.q),h("div",null,"Doğru: "+kz.dogru),kz.why?h("div",{class:"small"},kz.why):null)})):(qsx.length?h("div",{class:"qz-sum all"},h("b",null,"✓"),h("span",null,"Kaçırdığın soru yok.")):null)));
     body.push(h("div",{class:"nb"},h("i",{class:"nb-tape"}),ntPageEl({id:"l:"+l.id,grp:"Ders notları",title:l.title||"Ders",kind:"l",d:l})));
     var sn=typeof lrSenaryo==="function"?lrSenaryo(l):null;if(sn)sn.forEach(function(x){body.push(x)});
     var dd=lcDone(k);

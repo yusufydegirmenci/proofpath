@@ -26,7 +26,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   ok(await ev(() => /Henüz öneri çıkaracak kayıt yok/.test(document.querySelector('[data-koc=bos]').textContent)), 'kayıt yokken "veri yok" denir');
 
   // 2) Gerçek kayıttan öneri + kanıt
-  await ev(() => { const l = baseLesson('ccna'); PP.ogr.ui.dersSinavi(l, 1, 5, true); draw(); });
+  await ev(() => { PP.ogr.depo.sunucuEkle({ id: 'sv-test-1', hedef: 'ders:ccna:1:sinav', varyant: 'v1', puan: 1, maks: 5, surum: PP.ogr.ui.graf().surum, kaynak: 'sunucu' }); draw(); });   // ccna-1 artık sunucuya bağlı: başarısız deneme sunucu önbellek kaydı olarak eklenir
   await p.waitForTimeout(300);
   const o = await ev(() => { const e = document.querySelector('#view [data-oneri]'); return e ? { id: e.dataset.oneri, t: e.textContent } : null; });
   ok(o && o.id === 'tekrar:ders:ccna:1:sinav', 'başarısız mini sınavdan telafi önerisi çıktı');

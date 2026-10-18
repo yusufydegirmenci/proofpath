@@ -138,11 +138,11 @@
   VA.sinav0 = {
     id: "va0-sinav", ad: "Seviye 0 değerlendirmesi", esik: 0.8,
     sorular: [
-      { q: "Bir mağaza 'müşteri sadakati düşüyor' diyor. İlk adım ne olmalı?", o: ["Hemen dashboard yapmak", "Sadakati ölçülebilir bir soruya çevirmek (örn. tekrar alışveriş oranı, dönem, kıyas)", "Daha çok veri toplamak", "Yapay zekâ kullanmak"], a: 1, bolum: "va0-1" },
-      { q: "'telefon' sütunu 05321234567 gibi değerler içeriyor. Türü nedir?", o: ["Tam sayı; ortalaması alınır", "Tanımlayıcı/metin; toplanmaz", "Tarih", "Ondalık sayı"], a: 1, bolum: "va0-2" },
-      { q: "Bir CSV'de 'adet' sütununda bazı hücrelerde '2 adet' yazıyor. Sorun nedir?", o: ["Sorun yok", "Sayı sütununda metin var: temizlenmeden toplanamaz", "CSV tarih tutamaz", "Sütun adı yanlış"], a: 1, bolum: "va0-2" },
-      { q: "Anket verisinde yaş sütunu %40 boş. En doğru yaklaşım hangisi?", o: ["Boşları sıfır yaparak ortalama almak", "Eksik oranını ve olası nedenini raporlayıp analizi buna göre sınırlamak", "Tüm veriyi silmek", "Eksikleri rastgele doldurmak"], a: 1, bolum: "va0-3" },
-      { q: "Satışlar kampanya haftasında arttı. Hangi ifade doğrudur?", o: ["Kampanya satışları artırdı", "Artış kampanya dönemiyle çakıştı; nedensellik için karşılaştırma gerekir", "Kampanya işe yaramadı", "Satış her zaman artar"], a: 1, bolum: "va0-3" }
+      { id: "d31bbb90", q: "Bir mağaza 'müşteri sadakati düşüyor' diyor. İlk adım ne olmalı?", o: ["Hemen dashboard yapmak", "Sadakati ölçülebilir bir soruya çevirmek (örn. tekrar alışveriş oranı, dönem, kıyas)", "Daha çok veri toplamak", "Yapay zekâ kullanmak"], bolum: "va0-1" },
+      { id: "98d23d53", q: "'telefon' sütunu 05321234567 gibi değerler içeriyor. Türü nedir?", o: ["Tam sayı; ortalaması alınır", "Tanımlayıcı/metin; toplanmaz", "Tarih", "Ondalık sayı"], bolum: "va0-2" },
+      { id: "2faf3611", q: "Bir CSV'de 'adet' sütununda bazı hücrelerde '2 adet' yazıyor. Sorun nedir?", o: ["Sorun yok", "Sayı sütununda metin var: temizlenmeden toplanamaz", "CSV tarih tutamaz", "Sütun adı yanlış"], bolum: "va0-2" },
+      { id: "8d3de1fb", q: "Anket verisinde yaş sütunu %40 boş. En doğru yaklaşım hangisi?", o: ["Boşları sıfır yaparak ortalama almak", "Eksik oranını ve olası nedenini raporlayıp analizi buna göre sınırlamak", "Tüm veriyi silmek", "Eksikleri rastgele doldurmak"], bolum: "va0-3" },
+      { id: "a01e77bb", q: "Satışlar kampanya haftasında arttı. Hangi ifade doğrudur?", o: ["Kampanya satışları artırdı", "Artış kampanya dönemiyle çakıştı; nedensellik için karşılaştırma gerekir", "Kampanya işe yaramadı", "Satış her zaman artar"], bolum: "va0-3" }
     ]
   };
 })();

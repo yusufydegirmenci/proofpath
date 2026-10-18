@@ -42,6 +42,8 @@
       var L = S.les;
       if (L && L.room && L.rs === "sinav") {
         var l = typeof lrFind === "function" ? lrFind() : null, qs = l && Array.isArray(l.quiz) ? l.quiz : [];
+        var sv = L.srv && l && L.srv[l.id];   /* sunucuya bağlı mini sınav: karar geldiyse sınav açık sayılmaz */
+        if (sv && (sv.durum === "gecti" || sv.durum === "kaldi")) return false;
         var cevaplanan = qs.filter(function (q, i) { return L.mark && L.mark[l.id + ":" + i]; }).length;
         return qs.length > 0 && cevaplanan < qs.length;
       }

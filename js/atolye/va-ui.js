@@ -131,13 +131,24 @@ function vaSinav(st, L) {
     return h("div", { class: "qz", "data-va-sq": L ? L + ":" + i : String(i) }, h("div", { class: "qz-h" }, h("span", { class: "qz-n" }, String(i + 1)), h("span", { class: "qz-q" }, q.q)),
       h("div", { class: "qz-os" }, q.o.map(function (o, j) { return h("button", { type: "button", class: "qz-o" + (sc[i] === j ? " ok" : ""), "aria-pressed": sc[i] === j ? "true" : "false", "data-va-sec": oz(i, j), disabled: !!r, onclick: function () { sc[i] = j; draw(); } }, h("b", null, String.fromCharCode(65 + j)), h("span", null, o)); })));
   });
+  var K0 = L || 0; st.vaBusy = st.vaBusy || {}; st.vaMsg = st.vaMsg || {};
   var sonuc = r ? (r.ok ? h("div", { class: "qz-res", "data-va-sinav": r.gecti ? "gecti" : "kaldi" },
     h("div", { class: "qz-sum " + (r.gecti ? "all" : "low") }, h("b", null, r.puan + " / " + r.maks), h("span", null, r.gecti ? "Geçildi (eşik %" + Math.round(r.esik * 100) + ")." : "Eşik %" + Math.round(r.esik * 100) + " altında: Seviye " + L + " tamamlanmadı.")),
-    r.yanlis.length ? h("div", { class: "small", style: "margin-top:6px" }, h("b", null, "Telafi: "), r.yanlis.map(function (y) { return "Soru " + y.soru + " → «" + y.ders + "» dersini tekrar et: " + y.telafi; }).join(" | ")) : null,
+    r.yanlis.length ? h("div", { class: "small", style: "margin-top:6px" }, h("b", null, "Telafi: "), r.yanlis.map(function (y) { return "Soru " + y.soru + " → «" + y.ders + "» dersini tekrar et: " + y.telafi; }).join(" | ")) : (r.telafiDersler && r.telafiDersler.length ? h("div", { class: "small", style: "margin-top:6px" }, h("b", null, "Telafi: "), "(hangi soruların yanlış olduğu sınavı geçince açılır) " + r.telafiDersler.map(function (d) { return "«" + d.ders + "» dersini tekrar et: " + d.telafi; }).join(" | ")) : null),
     h("div", { class: "small mute" }, r.varyantNotu),
     h("button", { class: "btn", type: "button", "data-va": L ? "yeniden" + L : "yeniden", onclick: function () { if (L) { st.sonL[L] = null; st.scL[L] = []; } else { st.sinavSonuc = null; st.sc = []; } draw(); } }, "Yeniden dene")) : h("div", { class: "small", role: "status" }, "Tüm soruları cevapla.")) : null;
-  return h("div", { class: "panel", "data-va": L ? "sinav" + L : "sinav" }, h("div", { class: "label" }, "Seviye " + L + " değerlendirmesi"), h("div", { class: "small mute" }, "Ders sorularından farklı durum soruları; geçme eşiği %" + Math.round(S0.esik * 100) + "."), sorular,
-    r && r.ok ? sonuc : h("div", null, h("button", { class: "btn", type: "button", "data-va": L ? "sinav-bitir" + L : "sinav-bitir", onclick: function () { var cev = S0.sorular.map(function (q, i) { return sc[i] == null ? -1 : sc[i]; }), x = PP.va.sinav(cev, L); if (L) st.sonL[L] = x; else st.sinavSonuc = x; if (x.ok) PP.va.sinavKaydet(x); draw(); } }, "Bitir ve değerlendir"), sonuc));
+  return h("div", { class: "panel", "data-va": L ? "sinav" + L : "sinav" }, h("div", { class: "label" }, "Seviye " + L + " değerlendirmesi"), h("div", { class: "small mute" }, "Ders sorularından farklı durum soruları; geçme eşiği %" + Math.round(S0.esik * 100) + ". Puanı sunucu hesaplar (çevrimdışı ya da hesapsızken değerlendirilmez)."), sorular,
+    r && r.ok ? sonuc : h("div", null, st.vaMsg[K0] ? h("div", { class: "lbox warn", role: "status", "data-va": "sinav-hata" }, h("p", { style: "margin:0" }, st.vaMsg[K0])) : null,
+      st.vaBusy[K0] ? h("div", { class: "small mute", role: "status" }, "Sunucuda puanlanıyor…") : h("button", { class: "btn", type: "button", "data-va": L ? "sinav-bitir" + L : "sinav-bitir", onclick: function () {
+        var cev = S0.sorular.map(function (q, i) { return sc[i] == null ? -1 : sc[i]; });
+        st.vaBusy[K0] = true; st.vaMsg[K0] = ""; draw();
+        PP.va.sinavGonder(cev, L).then(function (x) {
+          st.vaBusy[K0] = false;
+          if (!x.ok) { st.vaMsg[K0] = x.mesaj || (x.neden === "eksik-cevap" ? "Tüm soruları cevapla." : "Sınav gönderilemedi."); draw(); return; }
+          if (L) st.sonL[L] = x; else st.sinavSonuc = x;
+          PP.va.sinavKaydet(x); draw();
+        });
+      } }, "Bitir ve değerlendir"), sonuc));
 }
 
 /* Faz 8 tur 2: Seviye 0 çekirdek projeleri (10 alanlı tanım); uygulama alanı yalnız gerçekten bağlı olanlar için */

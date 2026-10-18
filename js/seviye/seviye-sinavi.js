@@ -68,48 +68,56 @@ function renderReset(){
     if(R.msg)rb.append(h("div",{class:"lbox"},h("p",{style:"margin:0"},R.msg)))}
   box.push(rb);return box;
 }
-/* seviye sınavı */
+/* seviye sınavı (Faz 9 sunucu): sorular content/sinav/seviye.js (cevapsız); puanı ve doğru sayısını sunucu verir, kademe sunucu oranından hesaplanır. */
 S.pe=null;
+function peKaynak(tr){var X=window.PP_SINAV&&window.PP_SINAV.seviye;return X&&X[tr]&&Array.isArray(X[tr].sorular)&&X[tr].sorular.length>=6?X[tr]:null}
 function peStart(tr){
-  var r=rngf(Date.now()%1e6),by={1:[],2:[],3:[]};
-  QB.forEach(function(q,i){if(q.t===tr&&by[q.d])by[q.d].push(i)});
-  var pick=[],want=[[1,3],[2,4],[3,3]],all=[];
-  want.forEach(function(w){shuf(by[w[0]],r).slice(0,w[1]).forEach(function(i){pick.push(i)})});
-  if(pick.length<6){S.pe={tr:tr,err:"Bu alanda yeterli soru yok."};S.les.view="lv";goTab("ders");return}
-  S.pe={tr:tr,qs:pick.map(function(i){var q=gmQB(i,r,false);q.d=QB[i].d;return q}),i:0,pk:null,ok:0,sc:0,mx:0,done:false};
-  S.pe.qs.forEach(function(q){S.pe.mx+=q.d});
+  var X=peKaynak(tr);
+  if(!X){S.pe={tr:tr,err:"Bu alanda yeterli soru yok."};S.les.view="lv";goTab("ders");return}
+  S.pe={tr:tr,hedef:X.hedef,varyant:X.varyant,qs:X.sorular.map(function(q){return {id:q.id,q:q.q,o:q.o.slice(),d:q.d}}),i:0,ans:[],busy:false,hata:null,res:null,done:false};
   S.les.view="lv";S.les.room=null;goTab("ders");
 }
-function peAnswer(j){
-  var P=S.pe;if(!P||P.pk!=null)return;var q=P.qs[P.i];P.pk=j;if(j===q.a){P.ok++;P.sc+=q.d}
-  try{gsAnswer(q.k,j===q.a)}catch(e){}draw();
-}
-function peNext(){
-  var P=S.pe;P.pk=null;P.i++;
-  if(P.i>=P.qs.length){
-    P.done=true;var l=PP.ogr.ustalik.seviyeSinavDuzeyi(P.sc/P.mx);P.l=l;
+function peAnswer(j){var P=S.pe;if(!P||P.busy||P.done)return;P.ans[P.i]=j;P.hata=null;draw()}
+function peGonder(){
+  var P=S.pe;if(!P||P.busy)return;
+  var cev=PP.ogr.sunucu.cevaplar(P.qs,P.ans,"o");
+  if(!cev){P.hata=PP.ogr.sunucu.MESAJ.gecersiz;draw();return}
+  P.busy=true;P.hata=null;draw();
+  PP.ogr.sunucu.gonder({hedef:P.hedef,varyant:P.varyant,cevaplar:cev}).then(function(r){
+    P.busy=false;
+    if(!r.ok){P.hata=r.mesaj;draw();return}
+    P.res=r;P.done=true;P.ok=r.dogruSayisi!=null?r.dogruSayisi:null;P.sc=r.puan;P.mx=r.maks;
+    var l=PP.ogr.ustalik.seviyeSinavDuzeyi(r.oran);P.l=l;
     var lv=lvLoad();lv[P.tr]={l:l,s:P.sc,m:P.mx,d:today()};lvSave(lv);
     try{GS.sk[P.tr]=PP.ogr.ustalik.SEVIYE_BECERI[l];gsSave()}catch(e){}
-  }
-  draw();window.scrollTo(0,0);
+    draw();window.scrollTo(0,0);
+  },function(){P.busy=false;P.hata=PP.ogr.sunucu.MESAJ.hata;draw()});
+}
+function peNext(){
+  var P=S.pe;if(!P||P.ans[P.i]==null||P.busy)return;
+  if(P.i+1>=P.qs.length){peGonder();return}
+  P.i++;draw();window.scrollTo(0,0);
 }
 function renderPe(){
   var P=S.pe,tn=P?(LV_TR.filter(function(t){return t[0]===P.tr})[0]||[0,P.tr])[1]:"";
   if(!P||P.err)return [h("div",{class:"panel"},h("p",null,P&&P.err||"Sınav bulunamadı."),h("button",{class:"btn",type:"button",onclick:function(){S.pe=null;S.les.view="ders";draw()}},"Geri dön"))];
   if(P.done){
-    return [h("div",{class:"panel pe-res"},h("div",{class:"label"},tn+" seviye sınavı"),h("h2",null,"Kademen: "+LV_NAMES[P.l]),h("div",{class:"pe-st"},[1,2,3].map(function(i){return h("i",{class:i<=P.l?"on":""},"★")})),
-      h("div",{class:"gm-grid"},[["Doğru",P.ok+"/"+P.qs.length],["Puan",P.sc+"/"+P.mx]].map(function(a){return h("div",{class:"kcell"},h("small",{class:"mute"},a[0]),h("b",{class:"mono"},String(a[1])))})),
-      h("p",{class:"small"},P.l===3?"Güçlü bir temel var. Oyunlarda sorular zor başlayacak, derslerde üst konulara bakabilirsin.":P.l===2?"Orta düzeydesin. Oyunlarda sorular orta zorlukta başlar, boşlukları derslerle kapatırız.":"Sıfırdan başlamak gayet iyi. Oyunlarda sorular kolay başlar, dersleri sırayla ilerle."),
-      h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:function(){S.pe=null;S.les.view="ders";draw()}},"Derslere dön"),h("button",{class:"btn ghost",type:"button",onclick:function(){S.pe=null;goTab("ayar")}},"Ayarlar")))];
+    var an=P.res&&P.res.anahtar;
+    return [h("div",{class:"panel pe-res","data-sunucu":"dogrulandi"},h("div",{class:"label"},tn+" seviye sınavı"),h("h2",null,"Kademen: "+LV_NAMES[P.l]),h("div",{class:"pe-st"},[1,2,3].map(function(i){return h("i",{class:i<=P.l?"on":""},"★")})),
+      h("div",{class:"gm-grid"},[["Doğru",(P.ok!=null?P.ok:"?")+"/"+P.qs.length],["Puan (sunucu)",P.sc+"/"+P.mx]].map(function(a){return h("div",{class:"kcell"},h("small",{class:"mute"},a[0]),h("b",{class:"mono"},String(a[1])))})),
+      h("p",{class:"small"},P.l===3?"Güçlü bir temel var. Oyunlarda sorular zor başlayacak, derslerde üst konulara bakabilirsin.":P.l===2?"Orta düzeydesin. Oyunlarda sorular orta zorlukta başlar, boşlukları derslerle kapat.":"Temelden başlıyoruz. Oyunlarda sorular kolay başlar, dersleri sırayla yap."),
+      an?h("details",{class:"small","data-cevap-anahtari":"1"},h("summary",null,"Doğru cevaplar ve nedenleri (sunucu açtı: %80 ve üzeri)"),P.qs.map(function(q,i){var a=an[q.id];return a?h("div",{style:"margin:6px 0"},h("b",null,(i+1)+". "+q.q),h("div",null,"Doğru: "+a.dogru+(a.ok?" ✓":"")),a.why?h("div",{class:"mute"},a.why):null):null})):h("p",{class:"small mute"},"Doğru cevaplar %80 ve üzeri puanda sunucudan açılır; seviye sınavı yeniden girilebilir."),
+      h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:function(){S.pe=null;S.les.view="ders";draw()}},"Derslere dön"),h("button",{class:"btn ghost",type:"button",onclick:function(){S.pe=null;goTab("ayar")}},"Ayarlara dön")))];
   }
-  var q=P.qs[P.i],ok=P.pk===q.a;
+  var q=P.qs[P.i],pk=P.ans[P.i],son=P.i+1>=P.qs.length;
   return [h("div",{class:"lr-head"},h("button",{type:"button",class:"btn ghost",onclick:function(){S.pe=null;S.les.view="ders";draw()}},"‹ Çık"),h("span",{class:"pill"},(P.i+1)+" / "+P.qs.length)),
-    h("div",{class:"panel"},h("div",{class:"label"},tn+" seviye sınavı"),h("div",{class:"xpbar"},h("i",{style:"width:"+(P.i/P.qs.length*100)+"%"})),
-      h("div",{class:"qz"+(P.pk!=null?(ok?" ok":" no"):"")},h("div",{class:"qz-h"},h("span",{class:"qz-n"},String(P.i+1)),h("span",{class:"qz-q"},q.q)),
-        h("div",{class:"qz-os"},q.o.map(function(o,j){if(!o)return null;var cls="qz-o";if(P.pk!=null){if(j===q.a)cls+=" ok";else if(j===P.pk)cls+=" no";else cls+=" dim"}
-          return h("button",{type:"button",class:cls,disabled:P.pk!=null,onclick:function(){peAnswer(j)}},h("b",null,String.fromCharCode(65+j)),h("span",null,o),P.pk!=null&&j===q.a?h("i",{"aria-hidden":"true"},"✓"):P.pk===j?h("i",{"aria-hidden":"true"},"✗"):null)})),
-        P.pk!=null?h("div",{class:"qz-fb "+(ok?"ok":"no")},h("b",null,ok?"Doğru! ":"Doğrusu: "+q.o[q.a]+". "),q.w||""):null),
-      P.pk!=null?h("button",{class:"btn big",type:"button",onclick:peNext},P.i+1>=P.qs.length?"Sonucu gör":"Sıradaki soru"):h("div",{class:"small mute"},"Bilmediğin soruda tahmin et; sınav seviyeni ölçmek için."))];
+    h("div",{class:"panel","data-sunucu-sinav":"seviye"},h("div",{class:"label"},tn+" seviye sınavı"),h("div",{class:"xpbar"},h("i",{style:"width:"+(P.i/P.qs.length*100)+"%"})),
+      h("div",{class:"qz"},h("div",{class:"qz-h"},h("span",{class:"qz-n"},String(P.i+1)),h("span",{class:"qz-q"},q.q)),
+        h("div",{class:"qz-os"},q.o.map(function(o,j){if(!o)return null;
+          return h("button",{type:"button",class:"qz-o",style:pk===j?"box-shadow:inset 0 0 0 2px var(--accent,#4da3ff)":null,"aria-pressed":pk===j?"true":"false",disabled:P.busy,onclick:function(){peAnswer(j)}},h("b",null,String.fromCharCode(65+j)),h("span",null,o),pk===j?h("i",{"aria-hidden":"true"},"●"):null)}))),
+      P.hata?h("div",{class:"lbox warn",role:"status","data-sunucu":"hata"},h("p",{style:"margin:0"},P.hata)):null,
+      P.busy?h("div",{class:"small mute",role:"status"},"Sunucuda puanlanıyor…"):h("button",{class:"btn big",type:"button",disabled:pk==null,onclick:peNext,"data-pe-ileri":"1"},son?(P.hata?"Yeniden gönder":"Bitir ve sunucuya gönder"):"Sıradaki soru"),
+      h("div",{class:"small mute"},"Bilmediğin soruda tahmin et; sınav seviyeni ölçmek için. Cevaplar sonda sunucuda puanlanır (çevrimdışı ya da hesapsızken kademe belirlenmez)."))];
 }
 var GUIDE_M=[
 ["Bugün","Her gün buradan başla",["Alttaki menüden <b>Bugün</b> sekmesine bas.","Büyük düğme sana sıradaki işi söyler. <b>Başla</b>ya bas, bitince bir sonrakine geç.","Hepsi bitince günün XP'si ve serin otomatik yazılır."]],
