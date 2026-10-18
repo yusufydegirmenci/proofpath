@@ -32,7 +32,7 @@
       { t: "steps", h: "Yüz yüze ve fiziksel", items: [
         "Pretexting: inandırıcı bir senaryo ve kimlik uydurma.",
         "Tailgating / piggybacking: yetkili birinin ardından kapıdan içeri girmek.",
-        "Shoulder surfing: omuz üstünden ekrana ya da parola yazışına bakmak.",
+        "Shoulder surfing: omuz üstünden ekrana ya da parola girişine bakmak.",
         "Dumpster diving: çöpten belge ve bilgi toplamak.",
         "Baiting: USB bırakmak gibi merak uyandıran yemler."
       ] },
@@ -49,13 +49,30 @@
         "Rapor etme kültürü: 'şüpheli' butonu ve güvenlik ekibine hızlı bildirim.",
         "MFA, e-posta filtreleme ve düzenli simülasyonlu eğitim."
       ] },
-      { t: "warn", h: "Tuzak", text: "Sosyal mühendisliğin en iyi savunması teknik değil, kültürdür: kimsenin 'çok meşgulüm' diye doğrulamayı atlamadığı bir kurum." }
+      { t: "warn", h: "Tuzak", text: "Teknik önlemler kadar kültür de belirleyicidir: kimsenin 'çok meşgulüm' diye doğrulamayı atlamadığı bir kurum." }
+    ],
+    objectives: [
+      { id: "h1", text: "Phishing, spear phishing, whaling, smishing ve vishing saldırılarını hedef ve kanala göre ayırt edebilirsin." },
+      { id: "h2", text: "Tailgating, shoulder surfing, dumpster diving ve baiting gibi fiziksel teknikleri bir senaryodan tanıyabilirsin." },
+      { id: "h3", text: "Pharming, watering hole ve typosquatting saldırılarını birbirinden ayırt edebilirsin." },
+      { id: "h4", text: "Acil para talebi içeren bir mesajdaki baskı tekniğini bulup doğru savunmayı (ikinci kanaldan doğrulama) seçebilirsin." }
+    ],
+    summary: [
+      "Phishing geniş kitleye, spear phishing belirli kişiye, whaling üst düzey yöneticilere yönelir; smishing SMS, vishing telefon kanalıdır.",
+      "Tailgating, shoulder surfing, dumpster diving ve baiting insanı fiziksel ortamda hedef alır.",
+      "Pharming DNS ile sahte siteye yönlendirir, watering hole hedef grubun sitesini ele geçirir, typosquatting benzer yazımlı alan adı kullanır.",
+      "Aciliyet, otorite, korku ve ödül, düşünmeden harekete geçirmek için kullanılan baskı tekniklerindendir.",
+      "Para, parola ya da kod isteyen talepler ikinci bir kanaldan doğrulanır ve şüpheli mesaj bildirilir."
     ],
     quiz: [
-      { q: "Bir yöneticiyi hedef alan özel hazırlanmış oltalama saldırısı nasıl adlandırılır?", options: ["Whaling", "Smishing", "Pharming", "Baiting"], answer: "Whaling", why: "Whaling, üst düzey yöneticilere yönelik spear phishing'dir." },
-      { q: "Yetkili çalışanın arkasından kapıdan sızmak hangisidir?", options: ["Tailgating", "Vishing", "Typosquatting", "Pharming"], answer: "Tailgating", why: "Tailgating, yetkili birinin ardından fiziksel olarak içeri girmektir." },
-      { q: "Telefonla arayıp 'IT destekten arıyorum, parolanı söyle' demek hangisine girer?", options: ["Vishing / pretexting", "Dumpster diving", "Watering hole", "Smishing"], answer: "Vishing / pretexting", why: "Ses yoluyla, uydurma bir senaryoyla bilgi koparılıyor." },
-      { q: "Gogle.com gibi benzer yazımlı alan adı kaydetmek hangisidir?", options: ["Typosquatting", "Tailgating", "Whaling", "Baiting"], answer: "Typosquatting", why: "Yazım hatasına güvenen sahte alan adıdır." }
+      { q: "Bir yöneticiyi hedef alan özel hazırlanmış oltalama saldırısı nasıl adlandırılır?", options: ["Whaling", "Smishing", "Pharming", "Baiting"], answer: "Whaling", why: "Whaling, üst düzey yöneticilere yönelik spear phishing'dir.", obj: "h1", whyNot: { "Smishing": "Smishing hedefi değil kanalı belirtir: SMS ile yapılan oltalamadır, yöneticiye özel olması gerekmez.", "Pharming": "Pharming kişiye özel e-posta değil, DNS üzerinden kullanıcıyı sahte siteye yönlendirmedir.", "Baiting": "Baiting, USB gibi merak uyandıran bir yem bırakmaktır; hazırlanmış bir oltalama mesajı değildir." } },
+      { q: "Yetkili çalışanın arkasından kapıdan sızmak hangisidir?", options: ["Tailgating", "Vishing", "Typosquatting", "Pharming"], answer: "Tailgating", why: "Tailgating, yetkili birinin ardından fiziksel olarak içeri girmektir.", obj: "h2", whyNot: { "Vishing": "Vishing telefon (ses) üzerinden yapılır; kapıdan fiziksel geçişle ilgisi yoktur.", "Typosquatting": "Typosquatting benzer yazımlı bir alan adı kaydetmektir, bu çevrimiçi bir tekniktir.", "Pharming": "Pharming kullanıcıyı DNS ile sahte siteye yönlendirir; fiziksel giriş değildir." } },
+      { q: "Telefonla arayıp 'IT destekten arıyorum, parolanı söyle' demek hangisine girer?", options: ["Vishing / pretexting", "Dumpster diving", "Watering hole", "Smishing"], answer: "Vishing / pretexting", why: "Ses yoluyla, uydurma bir senaryoyla bilgi koparılıyor.", obj: "h1", whyNot: { "Dumpster diving": "Dumpster diving çöpten belge toplamaktır; burada kimseyle konuşulmaz, oysa senaryoda canlı bir arama var.", "Watering hole": "Watering hole hedef grubun sık ziyaret ettiği web sitesini ele geçirmektir, telefon aramasıyla ilgisi yoktur.", "Smishing": "Smishing de aynı mantıktır ama kanalı SMS'tir; senaryoda mesaj değil telefon araması var." } },
+      { q: "Gogle.com gibi benzer yazımlı alan adı kaydetmek hangisidir?", options: ["Typosquatting", "Tailgating", "Whaling", "Baiting"], answer: "Typosquatting", why: "Yazım hatasına güvenen sahte alan adıdır.", obj: "h3", whyNot: { "Tailgating": "Tailgating fiziksel bir tekniktir: yetkili birinin ardından kapıdan geçmek.", "Whaling": "Whaling üst düzey yöneticileri hedef alan phishing'dir; alan adı kaydıyla ilgili değildir.", "Baiting": "Baiting merak uyandıran bir yem (ör. USB) bırakmaktır, alan adı yazımına dayanmaz." } },
+      { q: "Genel müdürden geldiği söylenen 'acil IBAN değişikliği' e-postası için en doğru ilk adım nedir?", options: ["Tutar küçükse işlemi yapıp sonra bildirmek", "Gönderene yanıt yazıp doğrulamasını istemek", "Telefonla ya da başka bir kanaldan talebi doğrulamak", "E-postayı silip kimseye söylememek"], answer: "Telefonla ya da başka bir kanaldan talebi doğrulamak", why: "Para talepleri ikinci bir kanaldan doğrulanır; aciliyet ve otorite baskısı BEC'in tipik işaretidir.", obj: "h4", whyNot: { "Tutar küçükse işlemi yapıp sonra bildirmek": "Doğrulama atlanırsa saldırı başarılı olur; tutarın küçüklüğü sahte talebi meşru yapmaz.", "Gönderene yanıt yazıp doğrulamasını istemek": "Yanıt aynı (ele geçirilmiş ya da taklit) kanala gider; saldırgan kendini doğrulamış gibi cevap verir.", "E-postayı silip kimseye söylememek": "Güvenlik ekibine bildirmemek diğer çalışanları aynı saldırıya açık bırakır; rapor etme kültürü savunmanın parçasıdır." } },
+      { q: "'Hesabın 1 saat içinde kapatılacak, hemen bağlantıya tıkla!' mesajında ağırlıklı olarak hangi baskı tekniği kullanılıyor?", options: ["Ödül", "Sempati", "Aciliyet ve korku", "Otorite"], answer: "Aciliyet ve korku", why: "Kısa süre sınırı aciliyet, hesabın kapanması tehdidi korku yaratır; amaç düşünmeden tıklatmaktır.", obj: "h4", whyNot: { "Ödül": "Mesaj bir kazanç vaat etmiyor, aksine bir kayıp (hesabın kapanması) ile tehdit ediyor.", "Sempati": "Mesaj yardım isteyip duygusal bağ kurmuyor; zaman baskısı ve tehdit kullanıyor.", "Otorite": "Mesajda bir yönetici ya da kurum yetkilisinin emri yok; baskı süre ve tehditten geliyor." } },
+      { q: "Çalışanların sık ziyaret ettiği bir sektör forumu ele geçirilip siteyi açanlara zararlı yazılım bulaştırılıyor. Bu hangisidir?", options: ["Pharming", "Typosquatting", "Watering hole", "Vishing"], answer: "Watering hole", why: "Watering hole, hedef grubun güvendiği ve sık ziyaret ettiği meşru siteyi ele geçirmektir.", obj: "h3", whyNot: { "Pharming": "Pharming kullanıcıyı DNS ile sahte siteye yönlendirir; meşru sitenin kendisi ele geçirilmez.", "Typosquatting": "Typosquatting benzer yazımlı yeni bir alan adı kaydeder; gerçek site ele geçirilmez.", "Vishing": "Vishing telefon (ses) üzerinden yapılan oltalamadır, bir web sitesini ele geçirmeyi içermez." } },
+      { q: "Ofiste birinin omzunun üzerinden ekrana bakarak parolasını öğrenmek hangisidir?", options: ["Dumpster diving", "Baiting", "Pharming", "Shoulder surfing"], answer: "Shoulder surfing", why: "Shoulder surfing, ekrana ya da klavyeye fiziksel olarak bakarak bilgi edinmektir.", obj: "h2", whyNot: { "Dumpster diving": "Dumpster diving çöpe atılmış belgelerden bilgi toplamaktır; burada canlı bir gözlem var.", "Baiting": "Baiting merak uyandıran bir yem (ör. USB) bırakmaktır; kimse yemlenmiyor, ekrana bakılıyor.", "Pharming": "Pharming DNS üzerinden sahte siteye yönlendirir; fiziksel gözlemle ilgisi yoktur." } }
     ],
     interview: [
       { q: "Phishing e-postasını nasıl anlarsın?", a: "Gönderen adresine ve bağlantının gerçek adresine bakarım, aciliyet ve tehdit dilini ve beklenmedik eki fark ederim. Para ya da parola isteyen talepleri başka bir kanaldan doğrularım ve şüpheliyse güvenlik ekibine bildiririm." },
@@ -116,11 +133,25 @@
       ] },
       { t: "warn", h: "Tuzak", text: "'Virüs' her zararlıya verilen genel isim gibi kullanılır. Sınavda ve işte doğru tür önemlidir: kendi başına yayılıyorsa solucan, faydalı görünüp zarar veriyorsa truva atı." }
     ],
+    objectives: [
+      { id: "h1", text: "Virüs, solucan ve truva atını yayılma biçimine göre ayırt edebilirsin." },
+      { id: "h2", text: "Fidye yazılımı olayında ilk müdahale adımlarını (ağdan ayırma, bildirme, gücü kesmeme) doğru sırayla seçebilirsin." },
+      { id: "h3", text: "3-2-1 yedekleme kuralını açıklayıp fidye yazılımına karşı temiz yedeğin rolünü gösterebilirsin." }
+    ],
+    summary: [
+      "Virüs bir dosyaya bulaşıp çalıştırılınca yayılır, solucan ağ üzerinden kendi başına yayılır, truva atı faydalı görünüp zararlı yük taşır.",
+      "Fidye yazılımı dosyaları şifreler; çift gasp durumunda veriyi çalıp yayımlamakla da tehdit eder.",
+      "Fidye yazılımında cihaz ağdan ayrılır, güç hemen kesilmez, olay bildirilir ve yedeklerin temiz olduğu doğrulanır.",
+      "3-2-1 kuralı 3 kopya, 2 farklı ortam ve 1 çevrimdışı ya da uzak kopya demektir.",
+      "Güncel yama, EDR, en az yetki ve ağ segmentasyonu bulaşma riskini ve etkisini azaltır."
+    ],
     quiz: [
-      { q: "Kullanıcı etkileşimi olmadan ağ üzerinden kendi kendine yayılan zararlı hangisidir?", options: ["Solucan", "Truva atı", "Keylogger", "Mantık bombası"], answer: "Solucan", why: "Solucan kendi başına yayılır." },
-      { q: "Faydalı bir program gibi görünüp içinde zararlı yük taşıyan yazılım hangisidir?", options: ["Truva atı", "Solucan", "Botnet", "Rootkit"], answer: "Truva atı", why: "Meşru görünümü ile kullanıcıyı kandırır." },
-      { q: "Fidye yazılımına karşı en etkili önlem hangisidir?", options: ["Çevrimdışı yedek ve düzenli test", "Parolayı sık değiştirmek", "Ekran koruyucu", "Ağı yavaşlatmak"], answer: "Çevrimdışı yedek ve düzenli test", why: "Temiz yedek, fidye ödemeden geri dönüşü sağlar." },
-      { q: "3-2-1 yedekleme kuralında '1' neyi ifade eder?", options: ["Bir kopya çevrimdışı ya da uzakta", "Bir kullanıcı", "Bir gün", "Bir sunucu"], answer: "Bir kopya çevrimdışı ya da uzakta", why: "3 kopya, 2 farklı ortam, 1 tanesi uzak/çevrimdışı." }
+      { q: "Kullanıcı etkileşimi olmadan ağ üzerinden kendi kendine yayılan zararlı hangisidir?", options: ["Solucan", "Truva atı", "Keylogger", "Mantık bombası"], answer: "Solucan", why: "Solucan kendi başına yayılır.", obj: "h1", whyNot: { "Truva atı": "Truva atı faydalı görünüp kullanıcıya çalıştırtılır; kendi başına yayılmaz.", "Keylogger": "Keylogger tuş vuruşlarını kaydeden bir casus yazılımdır; yayılma biçimini tanımlamaz.", "Mantık bombası": "Mantık bombası belirli bir koşulda (ör. çalışan çıkarılınca) tetiklenir, ağ üzerinden yayılmaz." } },
+      { q: "Faydalı bir program gibi görünüp içinde zararlı yük taşıyan yazılım hangisidir?", options: ["Truva atı", "Solucan", "Botnet", "Rootkit"], answer: "Truva atı", why: "Meşru görünümü ile kullanıcıyı kandırır.", obj: "h1", whyNot: { "Solucan": "Solucan meşru görünmeye çalışmaz; kullanıcıya ihtiyaç duymadan ağda yayılır.", "Botnet": "Botnet bir yazılım türü değil, ele geçirilmiş cihazlardan oluşan ağdır.", "Rootkit": "Rootkit kendini ve başka zararlıyı sistemde gizler; faydalı program kılığına girmesi tanımı değildir." } },
+      { q: "Fidye yazılımına karşı en etkili önlem hangisidir?", options: ["Çevrimdışı yedek ve düzenli test", "Parolayı sık değiştirmek", "Yedeği her zaman ağa bağlı tutmak", "Tüm dosyaları tek paylaşımda toplamak"], answer: "Çevrimdışı yedek ve düzenli test", why: "Temiz yedek, fidye ödemeden geri dönüşü sağlar.", obj: "h3", whyNot: { "Parolayı sık değiştirmek": "Parola yenilemek hesabı korur ama şifrelenmiş dosyaları geri getirmez.", "Yedeği her zaman ağa bağlı tutmak": "Ağa bağlı yedek de fidye yazılımı tarafından şifrelenebilir; temiz kopya çevrimdışı olmalıdır.", "Tüm dosyaları tek paylaşımda toplamak": "Tek paylaşım, tek hamlede tüm verinin şifrelenmesini kolaylaştırır; etkiyi artırır, azaltmaz." } },
+      { q: "3-2-1 yedekleme kuralında '1' neyi ifade eder?", options: ["Bir kopya çevrimdışı ya da uzakta", "Bir kullanıcı", "Bir gün", "Bir sunucu"], answer: "Bir kopya çevrimdışı ya da uzakta", why: "3 kopya, 2 farklı ortam, 1 tanesi uzak/çevrimdışı.", obj: "h3", whyNot: { "Bir kullanıcı": "Kuralın sayıları kullanıcıyla değil kopya sayısı, ortam çeşidi ve konumla ilgilidir.", "Bir gün": "3-2-1 yedekleme sıklığını değil, kopya düzenini anlatır.", "Bir sunucu": "'1' kopyanın nerede durduğunu söyler (çevrimdışı/uzak), tek sunucu kullanmayı değil." } },
+      { q: "Çalışanın ekranında fidye notu çıktı. İlk müdahale hangisidir?", options: ["Cihazın gücünü hemen kesip dosyaları silmek", "Cihazı yeniden başlatıp dosyaları kurtarmayı denemek", "Cihazı ağdan ayırıp güvenlik ekibine bildirmek", "Fidyeyi hemen ödemek"], answer: "Cihazı ağdan ayırıp güvenlik ekibine bildirmek", why: "Ayırma yayılmayı durdurur, bildirim olay müdahale planını başlatır; ödeme kararı yönetim ve hukukla verilir.", obj: "h2", whyNot: { "Cihazın gücünü hemen kesip dosyaları silmek": "Gücü hemen kesmek bellekteki izleri kaybettirebilir, dosyaları silmek de delil ve kurtarma şansını yok eder.", "Cihazı yeniden başlatıp dosyaları kurtarmayı denemek": "Yeniden başlatma bellekteki izleri siler ve şifrelemeyi sürdürebilir; önce cihaz ağdan ayrılmalıdır.", "Fidyeyi hemen ödemek": "Ödeme garanti çözüm değildir; karar yönetim ve hukukla birlikte, olay planı sürerken verilir." } },
+      { q: "Fidye yazılımı olayında aşağıdaki sıralardan hangisi doğrudur?", options: ["Gücü kes, cihazı yeniden başlat, olayı sonra bildir", "Cihazı ağdan ayır, olayı bildir, yedeklerin temiz olduğunu doğrula", "Fidyeyi öde, cihazı ağdan ayır, olayı bildir", "Olayı bildir, cihazı ağda bırak, dosyaları silmeyi dene"], answer: "Cihazı ağdan ayır, olayı bildir, yedeklerin temiz olduğunu doğrula", why: "Önce yayılma durdurulur, sonra olay müdahale planı başlatılır, ardından geri dönüş için temiz yedek doğrulanır.", obj: "h2", whyNot: { "Gücü kes, cihazı yeniden başlat, olayı sonra bildir": "Gücü kesmek bellekteki izleri kaybettirir ve bildirimi geciktirmek müdahaleyi yavaşlatır; ayırma da yok.", "Fidyeyi öde, cihazı ağdan ayır, olayı bildir": "Ödeme ilk adım olamaz ve garanti çözüm değildir; önce yayılma durdurulmalıdır.", "Olayı bildir, cihazı ağda bırak, dosyaları silmeyi dene": "Cihaz ağda kalırsa şifreleme yayılır; dosyaları silmek de delil ve kurtarma şansını yok eder." } }
     ],
     interview: [
       { q: "Virüs ile solucan arasındaki fark nedir?", a: "Virüs bir dosyaya bulaşır ve çalıştırılınca yayılır. Solucan kullanıcı etkileşimi olmadan ağ üzerinden kendi kendine yayılır." },
@@ -162,7 +193,7 @@
       ] },
       { t: "steps", h: "Araya girme ve kimlik taklidi", items: [
         "MITM: trafiği araya girip izler/değiştirir. Savunma: TLS/HTTPS ve sertifika doğrulama.",
-        "ARP spoofing: yerel ağda sahte ARP cevabıyla trafiği kendine çeker. Savunma: DAI, port security.",
+        "ARP spoofing: yerel ağda sahte ARP cevabıyla trafiği kendine çeker. Savunma: DAI (DHCP snooping ile birlikte).",
         "DNS poisoning/spoofing: sahte DNS cevabıyla kullanıcıyı sahte siteye gönderir. Savunma: DNSSEC, güvenilir DNS.",
         "Rogue DHCP: sahte DHCP sunucusu yanlış gateway dağıtır. Savunma: DHCP snooping.",
         "Evil twin: meşru Wi-Fi adının sahte kopyası. Savunma: WPA3/802.1X, sahte AP tespiti."
@@ -177,11 +208,25 @@
       { t: "box", h: "Ayırt etme", text: "Switch'te MAC tablosunu doldurmak (MAC flooding) switch'i hub gibi davranmaya zorlar; port security ile önlenir. VLAN hopping'e karşı kullanılmayan portları kapat, native VLAN'ı değiştir." },
       { t: "warn", h: "Tuzak", text: "Password spraying ile brute force karıştırılır: brute force bir hesaba çok parola dener, spraying çok hesaba az parola dener." }
     ],
+    objectives: [
+      { id: "h1", text: "ARP spoofing, DNS poisoning ve rogue DHCP saldırılarını tanıyıp her birine karşı savunmayı (DAI, DNSSEC, DHCP snooping) eşleştirebilirsin." },
+      { id: "h2", text: "Brute force, password spraying ve credential stuffing saldırılarını deneme biçimine göre ayırt edebilirsin." },
+      { id: "h3", text: "DoS ve DDoS saldırılarını volumetrik, protokol (SYN flood) ve uygulama katmanı olarak sınıflandırabilirsin." }
+    ],
+    summary: [
+      "ARP spoofing yerel ağda sahte ARP cevabıyla trafiği çeker; savunması DAI'dir (DHCP snooping ile birlikte).",
+      "Rogue DHCP yanlış gateway dağıtır ve DHCP snooping ile engellenir; DNS poisoning ise sahte DNS cevabıyla kullanıcıyı sahte siteye gönderir.",
+      "Brute force bir hesaba çok parola dener, spraying çok hesaba az parola dener, credential stuffing sızmış parola ikililerini dener.",
+      "DDoS çok kaynaktan gelir ve volumetrik, protokol (SYN flood) ya da uygulama katmanı olabilir.",
+      "TLS araya girmeye, MFA ve hesap kilitleme parola saldırılarına, CDN ve hız sınırlama DDoS'a karşı kullanılır."
+    ],
     quiz: [
-      { q: "Yerel ağda sahte ARP cevaplarıyla trafiği saldırganın üzerinden geçirmek hangisidir?", options: ["ARP spoofing", "DNS poisoning", "SYN flood", "Replay"], answer: "ARP spoofing", why: "Sahte ARP cevabıyla MAC-IP eşlemesi bozulur." },
-      { q: "Çok sayıda hesapta birkaç yaygın parolayı denemek hangisidir?", options: ["Password spraying", "Brute force", "Replay", "MITM"], answer: "Password spraying", why: "Hesap kilitlemeye takılmadan geniş ölçekte denenir." },
-      { q: "Rogue DHCP sunucusuna karşı switch'te hangi özellik kullanılır?", options: ["DHCP snooping", "STP", "NAT", "PoE"], answer: "DHCP snooping", why: "Sadece güvenilir portlardan DHCP cevaplarına izin verir." },
-      { q: "SYN flood hangi tür saldırıdır?", options: ["Protokol tabanlı DoS", "Parola saldırısı", "Sosyal mühendislik", "MITM"], answer: "Protokol tabanlı DoS", why: "TCP bağlantı tablosunu yarım bağlantılarla doldurur." }
+      { q: "Yerel ağda sahte ARP cevaplarıyla trafiği saldırganın üzerinden geçirmek hangisidir?", options: ["ARP spoofing", "DNS poisoning", "SYN flood", "Replay"], answer: "ARP spoofing", why: "Sahte ARP cevabıyla MAC-IP eşlemesi bozulur.", obj: "h1", whyNot: { "DNS poisoning": "DNS poisoning ad çözümünü bozar (alan adından sahte IP verir); MAC-IP eşlemesi ARP'ta bozulur.", "SYN flood": "SYN flood hizmeti kullanılmaz hale getirir, trafiği saldırganın üzerinden geçirmez.", "Replay": "Replay yakalanan geçerli bir mesajı yeniden göndermektir, sahte ARP cevabı içermez." } },
+      { q: "Çok sayıda hesapta birkaç yaygın parolayı denemek hangisidir?", options: ["Password spraying", "Brute force", "Replay", "MITM"], answer: "Password spraying", why: "Hesap kilitlemeye takılmadan geniş ölçekte denenir.", obj: "h2", whyNot: { "Brute force": "Brute force tek hesaba çok sayıda parola dener; sorudaki yöntem bunun tersidir.", "Replay": "Replay parola tahmini değil, yakalanmış geçerli bir mesajı tekrar göndermektir.", "MITM": "MITM iki taraf arasına girip trafiği izler ya da değiştirir; parola denemesi yapmaz." } },
+      { q: "Rogue DHCP sunucusuna karşı switch'te hangi özellik kullanılır?", options: ["DHCP snooping", "STP", "NAT", "PoE"], answer: "DHCP snooping", why: "Sadece güvenilir portlardan DHCP cevaplarına izin verir.", obj: "h1", whyNot: { "STP": "STP anahtarlar arası döngüyü önler; DHCP cevaplarını süzmez.", "NAT": "NAT adres çevirisi yapar ve switch'te sahte DHCP sunucusunu engellemez.", "PoE": "PoE kablo üzerinden cihaza elektrik verir; güvenlik filtresi değildir." } },
+      { q: "SYN flood hangi tür saldırıdır?", options: ["Protokol tabanlı DoS", "Parola saldırısı", "Sosyal mühendislik", "MITM"], answer: "Protokol tabanlı DoS", why: "TCP bağlantı tablosunu yarım bağlantılarla doldurur.", obj: "h3", whyNot: { "Parola saldırısı": "SYN flood hesapları hedef almaz; TCP bağlantı kurma sürecini suistimal eder.", "Sosyal mühendislik": "Sosyal mühendislik insanı kandırır; SYN flood ise otomatik üretilmiş TCP paketleriyle yapılır.", "MITM": "MITM trafiği izlemek ya da değiştirmek için araya girer; SYN flood hizmeti dolu bağlantı tablosuyla durdurur." } },
+      { q: "Başka bir sitedeki sızıntıdan alınan gerçek kullanıcı adı/parola çiftlerini hedef sitede denemek hangisidir?", options: ["Brute force", "Password spraying", "Credential stuffing", "Replay"], answer: "Credential stuffing", why: "Sızmış gerçek çiftler, parolaları yeniden kullanan hesapları ele geçirmek için başka sitelerde denenir.", obj: "h2", whyNot: { "Brute force": "Brute force parolaları tahmin eder; sızmış gerçek kullanıcı/parola çiftlerini kullanmaz.", "Password spraying": "Spraying az sayıda yaygın parolayı çok hesapta dener; sızıntıdan gelen çiftleri kullanmaz.", "Replay": "Replay yakalanan geçerli bir mesajı yeniden göndermektir, parola denemesi değildir." } },
+      { q: "Sahte DNS cevaplarına karşı kayıtların dijital imzayla doğrulanmasını sağlayan önlem hangisidir?", options: ["DAI", "DHCP snooping", "Port security", "DNSSEC"], answer: "DNSSEC", why: "DNSSEC, DNS cevaplarını imzalayarak sahte cevapların kabul edilmesini önler.", obj: "h1", whyNot: { "DAI": "DAI ARP paketlerini doğrular; DNS cevaplarını imzalamaz.", "DHCP snooping": "DHCP snooping sahte DHCP sunucusunu engeller; DNS kayıtlarını doğrulamaz.", "Port security": "Port security bir portta öğrenilebilecek MAC sayısını sınırlar; DNS ile ilgisi yoktur." } }
     ],
     interview: [
       { q: "DDoS saldırısına karşı ne yaparsın?", a: "Trafiği ve türünü hızla analiz ederim, CDN ya da DDoS koruma servisine yönlendiririm, hız sınırlama ve filtre uygularım ve ISP ile iletişime geçerim. Önceden de kapasite ve olay planı hazır olmalıdır." },
@@ -203,7 +248,7 @@
 
   /* 10 ──────────────────────────────────────────── Uygulama saldırıları */
   L[10] = {
-    hook: "Uygulama saldırılarında saldırgan formdaki bir kutuyu bile komut yazma yerine çevirebilir. Kök neden: girdiye körü körüne güvenmek.",
+    hook: "Uygulama saldırılarında saldırgan formdaki bir kutuyu bile komut girişine çevirebilir. Kök neden: girdiye körü körüne güvenmek.",
     homework: "OWASP Top 10 listesine bak ve her maddeyi tek cümleyle kendi kelimelerinle yaz. En çok merak ettiğin ikisini seç.",
     warmup: {
       recap: [{ point: "Kullanıcıdan gelen veriye güvenilmez.", example: "Form alanı, URL parametresi" }],
@@ -226,7 +271,7 @@
         "Race condition / TOCTOU: kontrol ile kullanım arasındaki zaman farkını suistimal etmek."
       ] },
       { t: "cmd", lang: "text", calistirma: "atla yorum satırlarıyla anlatılan SQL enjeksiyon örneği; çalıştırılacak kod yok", text: "# Savunmasız:   SELECT * FROM users WHERE name = '" + "$girdi" + "'\n# Girdi:         ' OR '1'='1\n# Sonuç:        tüm kullanıcılar döner\n\n# Güvenli (parametreli):\n# SELECT * FROM users WHERE name = ?   -- değer sorgudan ayrı gönderilir" },
-      { t: "box", h: "Ortak kök", text: "Hepsinde veri ile komutun karışması vardır. Çözüm ortak: girdiyi doğrula, çıktıyı encode et, parametreli arayüz kullan, en az yetki ver." },
+      { t: "box", h: "Ortak kök", text: "Enjeksiyon ailesinde (SQLi, XSS, komut enjeksiyonu) veri ile komut karışır; diğerlerinde de kök neden girdiye, oturuma ya da zamanlamaya güvenmektir. Ortak çözüm: girdiyi doğrula, çıktıyı encode et, parametreli arayüz kullan, en az yetki ver." },
       { t: "steps", h: "Güvenli yazılım yöntemleri", items: [
         "Girdi doğrulama (beyaz liste) ve çıktı kodlama.",
         "Statik kod analizi (SAST), dinamik test (DAST), bağımlılık taraması.",
@@ -235,11 +280,24 @@
       ] },
       { t: "warn", h: "Tuzak", text: "WAF, hatalı kodu düzeltmez. Asıl çözüm kodda; WAF geçici ve ek bir korumadır." }
     ],
+    objectives: [
+      { id: "h1", text: "SQL injection girdisini tanıyıp en etkili savunmanın parametreli sorgu olduğunu seçebilirsin." },
+      { id: "h2", text: "XSS, CSRF ve SSRF saldırılarını nerede ve kimin adına çalıştıklarına göre ayırt edebilirsin." },
+      { id: "h3", text: "../../ içeren bir girdiyi path traversal olarak tanıyabilirsin." }
+    ],
+    summary: [
+      "Enjeksiyon saldırılarının ortak kökü, kullanıcı verisinin komut ya da sorgu olarak çalışmasıdır; diğer saldırılar da girdiye ya da oturuma körü körüne güvenmekten doğar.",
+      "SQL injection'a karşı en etkili savunma parametreli sorgudur; girdi doğrulama ve en az yetkili DB hesabı destekler.",
+      "XSS zararlı betiği başka kullanıcının tarayıcısında çalıştırır, CSRF kullanıcının açık oturumuyla istek yaptırır, SSRF sunucuyu iç ağa istek yaptırır.",
+      "Path traversal ../../ ile izinsiz dosyaya erişmeye çalışır; savunması yol doğrulamadır.",
+      "WAF ek bir katmandır ve hatalı kodu düzeltmez; asıl çözüm kodda yapılır."
+    ],
     quiz: [
-      { q: "SQL injection'a karşı en etkili savunma hangisidir?", options: ["Parametreli sorgu", "Sadece WAF", "Parolayı uzatmak", "HTTPS kullanmak"], answer: "Parametreli sorgu", why: "Veri sorgudan ayrı gönderildiği için komut olarak yorumlanmaz." },
-      { q: "Başka kullanıcıların tarayıcısında çalışan zararlı JavaScript hangi saldırıdır?", options: ["XSS", "CSRF", "SSRF", "Buffer overflow"], answer: "XSS", why: "Cross-Site Scripting, zararlı betiği sayfaya yerleştirir." },
-      { q: "Kullanıcının açık oturumunu kullanarak istemeden işlem yaptırma hangisidir?", options: ["CSRF", "XSS", "Path traversal", "Replay"], answer: "CSRF", why: "Cross-Site Request Forgery, oturum çerezine güvenir. CSRF token önler." },
-      { q: "../../etc/passwd gibi bir girdi hangi saldırıya işaret eder?", options: ["Path traversal", "SQL injection", "XSS", "DDoS"], answer: "Path traversal", why: "Dizin atlayarak izinsiz dosyaya erişmeye çalışır." }
+      { q: "SQL injection'a karşı en etkili savunma hangisidir?", options: ["Parametreli sorgu", "Sadece WAF", "Parolayı uzatmak", "HTTPS kullanmak"], answer: "Parametreli sorgu", why: "Veri sorgudan ayrı gönderildiği için komut olarak yorumlanmaz.", obj: "h1", whyNot: { "Sadece WAF": "WAF ek bir katmandır ama hatalı kodu düzeltmez; tek başına yeterli savunma sayılmaz.", "Parolayı uzatmak": "Uzun parola kimlik doğrulamayı güçlendirir; sorguya karışan girdiyi engellemez.", "HTTPS kullanmak": "HTTPS trafiği şifreler ama sunucuya giden zararlı girdi yine sorguya karışır." } },
+      { q: "Başka kullanıcıların tarayıcısında çalışan zararlı JavaScript hangi saldırıdır?", options: ["XSS", "CSRF", "SSRF", "Buffer overflow"], answer: "XSS", why: "Cross-Site Scripting, zararlı betiği sayfaya yerleştirir.", obj: "h2", whyNot: { "CSRF": "CSRF betik çalıştırmaz; kullanıcının açık oturumunu kullanarak istek gönderir.", "SSRF": "SSRF sunucuyu iç ağa istek yaptırır; kurbanın tarayıcısıyla ilgisi yoktur.", "Buffer overflow": "Buffer overflow bellekte sığmayan veriyle bellek bozulması yaratır, web sayfasına betik koymak değildir." } },
+      { q: "Kullanıcının açık oturumunu kullanarak istemeden işlem yaptırma hangisidir?", options: ["CSRF", "XSS", "Path traversal", "Replay"], answer: "CSRF", why: "Cross-Site Request Forgery, oturum çerezine güvenir. CSRF token önler.", obj: "h2", whyNot: { "XSS": "XSS sayfaya zararlı betik yerleştirir; CSRF ise betik gerektirmeden oturumun güvenine yaslanır.", "Path traversal": "Path traversal ../../ ile izinsiz dosya okur, kullanıcı oturumuyla işlem yaptırmaz.", "Replay": "Replay yakalanan mesajı yeniden gönderir; kullanıcının tarayıcısını kullanarak yeni istek yaptırmaz." } },
+      { q: "../../etc/passwd gibi bir girdi hangi saldırıya işaret eder?", options: ["Path traversal", "SQL injection", "XSS", "DDoS"], answer: "Path traversal", why: "Dizin atlayarak izinsiz dosyaya erişmeye çalışır.", obj: "h3", whyNot: { "SQL injection": "SQL injection tırnak ve OR gibi ifadelerle sorguyu bozar; dizin atlama içermez.", "XSS": "XSS girdisi <script> gibi bir betik taşır, dosya yolu değil.", "DDoS": "DDoS çok kaynaktan yük bindirmektir; tek bir girdiyle dosya yolu denemek değildir." } },
+      { q: "Saldırgan bir web uygulamasını, dışarıdan erişilemeyen iç ağdaki bir yönetim servisine istek göndermeye zorluyor. Bu hangisidir?", options: ["XSS", "CSRF", "SSRF", "Buffer overflow"], answer: "SSRF", why: "SSRF'te sunucu, saldırgan adına iç ağdaki kaynaklara istek yapmaya zorlanır.", obj: "h2", whyNot: { "XSS": "XSS zararlı betiği başka kullanıcının tarayıcısında çalıştırır; sunucunun iç ağa istek yapmasıyla ilgili değildir.", "CSRF": "CSRF isteği kullanıcının tarayıcısı ve oturumu üzerinden yaptırır; isteği yapan sunucu değildir.", "Buffer overflow": "Buffer overflow bellek taşmasıdır; sunucuya iç ağ isteği yaptırmak değildir." } }
     ],
     interview: [
       { q: "SQL injection nedir, nasıl önlenir?", a: "Kullanıcı girdisinin SQL sorgusuna komut olarak karışmasıdır. Parametreli sorgularla, girdi doğrulamayla ve veritabanı hesabına en az yetki vererek önlenir." },

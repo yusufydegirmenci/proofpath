@@ -32,7 +32,7 @@
         "Acknowledge: sunucu 'Onaylandı, kiralama süresi şu kadar' der."
       ] },
       { t: "box", h: "Portlar", text: "DHCP sunucusu UDP 67, istemci UDP 68 kullanır. DHCP istemci broadcast ile başladığı için sunucu başka ağdaysa router'a 'ip helper-address' (DHCP relay) yazılır." },
-      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "# Cisco router'ı DHCP sunucusu yapma:\nRouter(config)# ip dhcp excluded-address 192.168.10.1 192.168.10.10\nRouter(config)# ip dhcp pool MUHASEBE\nRouter(dhcp-config)# network 192.168.10.0 255.255.255.0\nRouter(dhcp-config)# default-router 192.168.10.1\nRouter(dhcp-config)# dns-server 8.8.8.8\n\n# DHCP relay (sunucu başka ağda):\nRouter(config-if)# ip helper-address 192.168.1.5\n\nRouter# show ip dhcp binding" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "! Cisco router'ı DHCP sunucusu yapma:\nRouter(config)# ip dhcp excluded-address 192.168.10.1 192.168.10.10\nRouter(config)# ip dhcp pool MUHASEBE\nRouter(dhcp-config)# network 192.168.10.0 255.255.255.0\nRouter(dhcp-config)# default-router 192.168.10.1\nRouter(dhcp-config)# dns-server 8.8.8.8\n\n! DHCP relay (sunucu başka ağda):\nRouter(config-if)# ip helper-address 192.168.1.5\n\nRouter# show ip dhcp binding" },
       { t: "h", text: "DNS: isimden IP'ye" },
       { t: "p", text: "İnsanlar google.com yazar, bilgisayarlar IP ile çalışır. DNS (Domain Name System) isimleri IP adreslerine çevirir. Benzetme: telefon rehberi. İsmi bulursun, numarayı rehber verir. DNS genellikle UDP 53 kullanır." },
       { t: "steps", h: "En çok kullanılan DNS kayıtları", items: [
@@ -42,16 +42,29 @@
         "MX: o alan adının e-posta sunucusu",
         "PTR: IP → isim (ters sorgu)"
       ] },
-      { t: "cmd", lang: "cmd", calistirma: "atla Windows komut satırı (Linux/macOS komutlarıyla karışık olabilir); bu ortamda çalıştırılmaz", text: "# Windows'ta:\nipconfig /release\nipconfig /renew\nipconfig /flushdns\nnslookup google.com\nping 8.8.8.8\nping google.com" },
+      { t: "cmd", lang: "cmd", calistirma: "atla Windows komut satırı (Linux/macOS komutlarıyla karışık olabilir); bu ortamda çalıştırılmaz", text: "REM Windows'ta:\nipconfig /release\nipconfig /renew\nipconfig /flushdns\nnslookup google.com\nping 8.8.8.8\nping google.com" },
       { t: "box", h: "DHCP mi DNS mi? Hızlı ayrım", text: "ping 8.8.8.8 çalışıyor ama ping google.com çalışmıyorsa sorun DNS'tedir. IP hiç yoksa ya da 169.254 görüyorsan sorun DHCP'dedir (ya da DHCP'ye ulaşılamıyor)." },
       { t: "warn", h: "Tuzak", text: "Ağda iki DHCP sunucusu olması (örneğin biri yanlışlıkla bağlanmış bir ev router'ı) yanlış gateway dağıtır ve ağın yarısı internete çıkamaz. 'Rogue DHCP' denir." }
     ],
+    objectives: [
+      { id: "h1", text: "DORA adımlarını doğru sırayla yazabilirsin." },
+      { id: "h2", text: "ping 8.8.8.8 ve ping google.com sonucuna bakarak sorunun DHCP mi DNS mi olduğunu ayırt edebilirsin." },
+      { id: "h3", text: "A, AAAA, CNAME, MX ve PTR kayıtlarından işe uygun olanı seçebilirsin." },
+      { id: "h4", text: "DHCP relay (ip helper-address) ve ipconfig /release /renew komutlarını doğru durumda seçebilirsin." }
+    ],
+    summary: [
+      "DHCP cihaza IP, maske, gateway ve DNS bilgisini otomatik verir ve adresi belli süreliğine kiralar.",
+      "DORA sırası: Discover, Offer, Request, Acknowledge.",
+      "DHCP sunucusu başka ağdaysa router'a ip helper-address yazılır (DHCP relay).",
+      "DNS isimleri IP'ye çevirir: A isim-IPv4, AAAA isim-IPv6, CNAME takma ad, MX e-posta sunucusu, PTR ters sorgu.",
+      "ping 8.8.8.8 çalışıp ping google.com çalışmıyorsa sorun DNS'tedir; IP yoksa ya da 169.254 görünüyorsa DHCP'dedir."
+    ],
     quiz: [
-      { q: "DHCP'nin 4 adımı hangi sırayla ilerler?", options: ["Discover, Offer, Request, Acknowledge", "Request, Offer, Discover, Acknowledge", "Offer, Discover, Acknowledge, Request", "Discover, Request, Offer, Acknowledge"], answer: "Discover, Offer, Request, Acknowledge", why: "DORA: Discover, Offer, Request, Acknowledge." },
-      { q: "ping 8.8.8.8 çalışıyor ama ping google.com çalışmıyor. Sorun nerede?", options: ["DHCP", "DNS", "Kablo", "Switch portu"], answer: "DNS", why: "IP ile erişim var, isim çözülemiyor. Bu DNS sorunudur." },
-      { q: "DNS'de alan adını IPv4 adresine çeviren kayıt türü hangisidir?", options: ["MX", "CNAME", "A", "PTR"], answer: "A", why: "A kaydı isim-IPv4 eşleşmesidir. AAAA ise IPv6 içindir." },
-      { q: "DHCP sunucusu farklı bir ağdaysa router'a hangi komut eklenir?", options: ["ip helper-address", "ip dhcp pool", "ip route", "ip nat inside"], answer: "ip helper-address", why: "DHCP relay, istemcinin broadcast isteğini unicast olarak sunucuya iletir." },
-      { q: "Bir bilgisayarın IP'sini bırakıp yenisini istemek için hangi komutlar kullanılır?", options: ["ipconfig /release ve /renew", "ping ve tracert", "arp -a ve nslookup", "netstat ve route"], answer: "ipconfig /release ve /renew", why: "/release mevcut kiralamayı bırakır, /renew yeniden adres ister." }
+      { q: "DHCP'nin 4 adımı hangi sırayla ilerler?", options: ["Discover, Offer, Request, Acknowledge", "Request, Offer, Discover, Acknowledge", "Offer, Discover, Acknowledge, Request", "Discover, Request, Offer, Acknowledge"], answer: "Discover, Offer, Request, Acknowledge", why: "DORA: Discover, Offer, Request, Acknowledge.", obj: "h1", whyNot: {"Request, Offer, Discover, Acknowledge":"Cihaz henüz teklif görmeden Request gönderemez; süreç her zaman istemcinin Discover broadcast'iyle başlar.","Offer, Discover, Acknowledge, Request":"Offer sunucunun cevabıdır; istemci Discover göndermeden sunucunun teklif edeceği bir şey olmaz. Acknowledge de en sonda gelir.","Discover, Request, Offer, Acknowledge":"Request, sunucunun Offer teklifine verilen cevaptır; teklif gelmeden istemci hangi adresi isteyeceğini bilemez."} },
+      { q: "ping 8.8.8.8 çalışıyor ama ping google.com çalışmıyor. Sorun nerede?", options: ["DHCP", "DNS", "Kablo", "Switch portu"], answer: "DNS", why: "IP ile erişim var, isim çözülemiyor. Bu DNS sorunudur.", obj: "h2", whyNot: {"DHCP":"DHCP sorunu olsaydı bilgisayar IP alamaz (169.254 görünür) ve 8.8.8.8'e ping de gitmezdi.","Kablo":"Kablo ya da bağlantı sorunu olsaydı IP ile yapılan ping de çalışmazdı; burada yalnız isim çözümü bozuk.","Switch portu":"Port arızalı olsaydı bilgisayar hiç dışarı çıkamazdı, 8.8.8.8'e ping de cevapsız kalırdı."} },
+      { q: "DNS'de alan adını IPv4 adresine çeviren kayıt türü hangisidir?", options: ["MX", "CNAME", "A", "PTR"], answer: "A", why: "A kaydı isim-IPv4 eşleşmesidir. AAAA ise IPv6 içindir.", obj: "h3", whyNot: {"MX":"MX kaydı alan adının e-posta sunucusunu gösterir; IPv4 adresi vermez.","CNAME":"CNAME bir ismi başka bir isme yönlendiren takma addır; doğrudan IPv4 adresi değil, başka bir isim döner.","PTR":"PTR ters sorgu kaydıdır: IP adresinden isme gider, tersi yönde çalışır."} },
+      { q: "DHCP sunucusu farklı bir ağdaysa router'a hangi komut eklenir?", options: ["ip helper-address", "ip dhcp pool", "ip route", "ip nat inside"], answer: "ip helper-address", why: "DHCP relay, istemcinin broadcast isteğini unicast olarak sunucuya iletir.", obj: "h4", whyNot: {"ip dhcp pool":"Bu komut router'ın kendisini DHCP sunucusu yapan adres havuzunu tanımlar; istemci isteğini başka ağdaki sunucuya iletmez.","ip route":"Statik yol ekler; DHCP'nin broadcast isteğini unicast olarak iletmez, bu işi helper-address yapar.","ip nat inside":"Arayüzü NAT için iç taraf olarak işaretler; DHCP ile ilgisi yoktur."} },
+      { q: "Bir bilgisayarın IP'sini bırakıp yenisini istemek için hangi komutlar kullanılır?", options: ["ipconfig /release ve /renew", "ping ve tracert", "arp -a ve nslookup", "netstat ve route"], answer: "ipconfig /release ve /renew", why: "/release mevcut kiralamayı bırakır, /renew yeniden adres ister.", obj: "h4", whyNot: {"ping ve tracert":"İkisi de bağlantıyı ve yolu sınar; adres kiralamasını bırakmaz ya da yenilemez.","arp -a ve nslookup":"arp -a ARP tablosunu gösterir, nslookup DNS sorgusu yapar; ikisi de IP kiralamasına dokunmaz.","netstat ve route":"netstat bağlantıları, route yönlendirme tablosunu gösterir; DHCP'den yeni adres istemezler."} }
     ],
     interview: [
       { q: "DHCP nedir, nasıl çalışır?", a: "Cihazlara IP, maske, gateway ve DNS bilgisini otomatik veren servistir. DORA ile çalışır: Discover, Offer, Request, Acknowledge. Adres belli süreliğine kiralanır." },
@@ -105,7 +118,7 @@
         "Outside local: hedefin iç ağdan görünen adresi (çoğu zaman outside global ile aynıdır)."
       ] },
       { t: "h", text: "Yapılandırma (PAT)" },
-      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Router(config)# interface gigabitethernet0/0\nRouter(config-if)# ip nat inside\nRouter(config)# interface gigabitethernet0/1\nRouter(config-if)# ip nat outside\n\n# Hangi iç adresler çevrilsin (wildcard maske: ters maske)\nRouter(config)# access-list 1 permit 192.168.10.0 0.0.0.255\n\n# Dış arayüzün adresine PAT\nRouter(config)# ip nat inside source list 1 interface gigabitethernet0/1 overload\n\nRouter# show ip nat translations\nRouter# show ip nat statistics" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Router(config)# interface gigabitethernet0/0\nRouter(config-if)# ip nat inside\nRouter(config)# interface gigabitethernet0/1\nRouter(config-if)# ip nat outside\n\n! Hangi iç adresler çevrilsin (wildcard maske: ters maske)\nRouter(config)# access-list 1 permit 192.168.10.0 0.0.0.255\n\n! Dış arayüzün adresine PAT\nRouter(config)# ip nat inside source list 1 interface gigabitethernet0/1 overload\n\n! Static NAT (sunucu için bire bir eşleme):\nRouter(config)# ip nat inside source static 192.168.10.5 203.0.113.5\n\nRouter# show ip nat translations\nRouter# show ip nat statistics" },
       { t: "steps", h: "Ne yaptık?", items: [
         "Router'a hangi arayüz içeride (inside), hangisi dışarıda (outside) söyledik.",
         "ACL ile çevrilecek iç adresleri seçtik.",
@@ -115,12 +128,24 @@
       { t: "box", h: "Özet çıktı", text: "show ip nat translations çıktısında 192.168.10.5:50001 gibi bir iç adres-port, 203.0.113.5:50001 gibi bir dış adres-port ile eşleşir. Cevap geldiğinde router tabloya bakıp doğru iç cihaza geri yollar." },
       { t: "warn", h: "Tuzak", text: "inside ve outside yanlış arayüze yazılırsa NAT hiç çalışmaz. ACL'de çevrilecek ağı unutursan o cihaz internete çıkamaz. İlk bakacağın yerler: 'show ip nat statistics' ve ACL." }
     ],
+    objectives: [
+      { id: "h1", text: "Static NAT, dynamic NAT ve PAT'ı verilen senaryoya göre seçebilirsin." },
+      { id: "h2", text: "Inside local ve inside global adresleri örnek adreslerle eşleştirebilirsin." },
+      { id: "h3", text: "PAT için inside/outside arayüzlerini işaretleyip show komutlarıyla çevirileri doğrulayabilirsin." }
+    ],
+    summary: [
+      "NAT, paket router'dan geçerken IP adresini değiştirir; özel adresler internete genel adresle çıkar.",
+      "Static NAT bire bir eşleme yapar (dışarıdan erişilecek sunucu için), dynamic NAT havuzdan sırayla verir, PAT çok iç adresi tek genel adrese port ile eşler.",
+      "Inside local iç cihazın özel adresidir, inside global o cihazın internette görünen adresidir.",
+      "PAT'ta arayüzler ip nat inside/outside ile işaretlenir, ACL çevrilecek ağı seçer, 'overload' eklenir ve show ip nat translations ile doğrulanır."
+    ],
     quiz: [
-      { q: "Birçok iç cihazı tek bir genel IP ile internete çıkaran NAT türü hangisidir?", options: ["Static NAT", "Dynamic NAT", "PAT (overload)", "Reverse NAT"], answer: "PAT (overload)", why: "PAT, port numaralarını kullanarak çok iç adresi tek genel adrese eşler." },
-      { q: "İç ağdaki bir sunucunun dışarıdan erişilebilmesi için hangi NAT uygun olur?", options: ["Static NAT", "PAT ile rastgele port", "Hiçbiri", "DHCP"], answer: "Static NAT", why: "Static NAT sabit bire bir eşleme yapar, dışarıdan her zaman aynı adres ulaşır." },
-      { q: "'Inside global' adres nedir?", options: ["İç cihazın internette görünen adresi", "İç cihazın gerçek özel adresi", "Hedef sunucunun adresi", "Gateway adresi"], answer: "İç cihazın internette görünen adresi", why: "Inside global, iç cihazın dışarıdan görünen (çevrilmiş) adresidir." },
-      { q: "NAT çevirilerini listeleyen komut hangisidir?", options: ["show ip nat translations", "show ip route", "show nat table", "show access-lists"], answer: "show ip nat translations", why: "Bu komut aktif çevirileri iç ve dış adreslerle gösterir." },
-      { q: "NAT yapılandırmasında 'ip nat inside' hangi arayüze yazılır?", options: ["İç ağa bakan arayüze", "İnternete bakan arayüze", "Console'a", "Loopback'e"], answer: "İç ağa bakan arayüze", why: "İç ağa bakan arayüz inside, internete bakan outside olarak işaretlenir." }
+      { q: "Birçok iç cihazı tek bir genel IP ile internete çıkaran NAT türü hangisidir?", options: ["Static NAT", "Dynamic NAT", "PAT (overload)", "Reverse NAT"], answer: "PAT (overload)", why: "PAT, port numaralarını kullanarak çok iç adresi tek genel adrese eşler.", obj: "h1", whyNot: {"Static NAT":"Static NAT bire birdir: her iç adres için ayrı bir genel adres gerekir, tek adreste toplamaz.","Dynamic NAT":"Dynamic NAT iç adresleri bir genel adres havuzundan sırayla eşler; havuz bitince yeni cihaz çıkamaz. Port kullanmaz.","Reverse NAT":"Bu derste anlatılan NAT türleri static, dynamic ve PAT'tır; 'Reverse NAT' bunlardan biri değildir ve çok iç adresi tek adreste toplayan mekanizma PAT'tır."} },
+      { q: "İç ağdaki bir sunucunun dışarıdan erişilebilmesi için hangi NAT uygun olur?", options: ["Static NAT", "PAT ile rastgele port", "Hiçbiri", "DHCP"], answer: "Static NAT", why: "Static NAT sabit bire bir eşleme yapar, dışarıdan her zaman aynı adres ulaşır.", obj: "h1", whyNot: {"PAT ile rastgele port":"PAT içeriden başlayan trafik için çeviri oluşturur; dışarıdaki kullanıcı rastgele bir portu bilemeyeceği için sunucuya sabit bir adresle ulaşamaz.","Hiçbiri":"Dışarıdan erişim için sunucunun adresinin sabit ve bire bir eşlenmesi gerekir; static NAT tam olarak bunu sağladığı için 'hiçbiri' yanlıştır.","DHCP":"DHCP adres dağıtır, adres çevirmez; sunucuyu dışarıya açmaz."} },
+      { q: "'Inside global' adres nedir?", options: ["İç cihazın internette görünen adresi", "İç cihazın gerçek özel adresi", "Hedef sunucunun adresi", "Gateway adresi"], answer: "İç cihazın internette görünen adresi", why: "Inside global, iç cihazın dışarıdan görünen (çevrilmiş) adresidir.", obj: "h2", whyNot: {"İç cihazın gerçek özel adresi":"Bu tanım inside local adrestir; inside global ise çevrilmiş, internette görünen adrestir.","Hedef sunucunun adresi":"Hedefin internetteki gerçek adresi outside global'dir, inside global değil.","Gateway adresi":"Gateway, iç ağın çıkış router'ının adresidir ve NAT adres terimlerinden biri değildir."} },
+      { q: "192.168.10.5 adresli iç cihaz internete 203.0.113.5 adresiyle çıkıyor. 203.0.113.5 hangi adrestir?", options: ["Inside local", "Inside global", "Outside local", "Outside global"], answer: "Inside global", why: "Cihazın özel adresi (192.168.10.5) inside local, internette görünen çevrilmiş adresi (203.0.113.5) inside global'dir.", obj: "h2", whyNot: {"Inside local":"Inside local, iç cihazın gerçek özel adresidir; burada bu 192.168.10.5'tir, 203.0.113.5 değil.","Outside local":"Outside local, internetteki hedefin iç ağdan görünen adresidir; iç cihazın kendi adresiyle ilgisi yoktur.","Outside global":"Outside global, internetteki hedefin gerçek adresidir (örneğin 8.8.8.8); iç cihazın çevrilmiş adresi değildir."} },
+      { q: "NAT çevirilerini listeleyen komut hangisidir?", options: ["show ip nat translations", "show ip route", "show nat table", "show access-lists"], answer: "show ip nat translations", why: "Bu komut aktif çevirileri iç ve dış adreslerle gösterir.", obj: "h3", whyNot: {"show ip route":"Yönlendirme tablosunu gösterir; aktif NAT çevirilerini göstermez.","show nat table":"IOS'ta böyle bir komut yoktur; doğrusu show ip nat translations'tır.","show access-lists":"ACL satırlarını ve eşleşme sayaçlarını gösterir, çeviri tablosunu değil."} },
+      { q: "NAT yapılandırmasında 'ip nat inside' hangi arayüze yazılır?", options: ["İç ağa bakan arayüze", "İnternete bakan arayüze", "Console'a", "Loopback'e"], answer: "İç ağa bakan arayüze", why: "İç ağa bakan arayüz inside, internete bakan outside olarak işaretlenir.", obj: "h3", whyNot: {"İnternete bakan arayüze":"İnternete bakan arayüz 'ip nat outside' ile işaretlenir; tersi yazılırsa NAT çalışmaz.","Console'a":"Console bir hat (line) bağlantısıdır; ip nat inside bir arayüz komutudur.","Loopback'e":"Çevrilecek iç trafik iç ağa bakan fiziksel arayüzden gelir; inside işareti oraya yazılmalıdır, loopback'e değil."} }
     ],
     interview: [
       { q: "NAT neden gerekli?", a: "Özel IP adresleri internette yönlendirilmez ve genel IPv4 adresleri sınırlıdır. NAT, özel adresleri internete çıkarken genel adrese çevirerek binlerce cihazın az sayıda genel IP ile internete erişmesini sağlar." },
@@ -145,7 +170,7 @@
   /* 9 ───────────────────────────────────────────── ACL */
   L[9] = {
     hook: "ACL, bina girişindeki güvenlik görevlisinin listesidir: kimin geçeceğini yukarıdan aşağı sırayla kontrol eder.",
-    homework: "Packet Tracer'da iki ağ kur. Birinden diğerindeki sunucuya yalnızca web (port 80) erişimine izin veren bir extended ACL yaz, diğer her şeyi engelle. 'show access-lists' ile eşleşme sayacına bak.",
+    homework: "Packet Tracer'da iki ağ kur. Birinden diğerindeki sunucuya yalnızca web (port 80) erişimine izin veren bir extended ACL yaz, sunucunun ağına kalan erişimi engelle ve en sona 'permit ip any any' ekleyip internete çıkışı serbest bırak. 'show access-lists' ile eşleşme sayacına bak.",
     warmup: {
       recap: [
         { point: "NAT'ta çevrilecek adresleri seçmek için ACL kullandık.", example: "access-list 1 permit 192.168.10.0 0.0.0.255" },
@@ -170,7 +195,7 @@
       { t: "p", text: "ACL'de alt ağ maskesi yerine wildcard (ters) maske kullanılır. 0 bit 'birebir eşleşmeli', 1 bit 'fark etmez' demektir. /24 ağı için wildcard 0.0.0.255, /26 için 0.0.0.63, tek bir cihaz için 0.0.0.0 (ya da 'host' sözcüğü)." },
       { t: "box", h: "Wildcard nasıl bulunur?", text: "255.255.255.255 eksi alt ağ maskesi. Maske 255.255.255.192 ise wildcard 0.0.0.63." },
       { t: "h", text: "Örnek: sadece web'e izin ver" },
-      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "# 192.168.20.0/24 ağı 192.168.10.5 sunucusunun sadece web'ine (80) erişebilsin\nRouter(config)# ip access-list extended MISAFIR-KURAL\nRouter(config-ext-nacl)# permit tcp 192.168.20.0 0.0.0.255 host 192.168.10.5 eq 80\nRouter(config-ext-nacl)# deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255\nRouter(config-ext-nacl)# permit ip any any\n\n# Arayüze uygula: içeri gelen trafikte\nRouter(config)# interface gigabitethernet0/1\nRouter(config-if)# ip access-group MISAFIR-KURAL in\n\nRouter# show access-lists" },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "! 192.168.20.0/24 ağı 192.168.10.5 sunucusunun sadece web'ine (80) erişebilsin\nRouter(config)# ip access-list extended MISAFIR-KURAL\nRouter(config-ext-nacl)# permit tcp 192.168.20.0 0.0.0.255 host 192.168.10.5 eq 80\nRouter(config-ext-nacl)# deny ip 192.168.20.0 0.0.0.255 192.168.10.0 0.0.0.255\nRouter(config-ext-nacl)# permit ip any any\n\n! Arayüze uygula: içeri gelen trafikte\nRouter(config)# interface gigabitethernet0/1\nRouter(config-if)# ip access-group MISAFIR-KURAL in\n\nRouter# show access-lists" },
       { t: "steps", h: "Sıra neden önemli?", items: [
         "1. satır: misafirler sunucunun web'ine girebilir (permit).",
         "2. satır: misafirlerin 192.168.10.0 ağına kalan her erişimi engellenir (deny).",
@@ -186,12 +211,24 @@
       ] },
       { t: "warn", h: "Tuzak", text: "Listenin sonunda 'permit' yoksa implicit deny yüzünden gerisi engellenir ve ağ bir anda kopar. ACL'i uzaktan SSH ile yazarken kendi bağlantını da engelleyebilirsin. Önce 'permit' kurallarını düşün." }
     ],
+    objectives: [
+      { id: "h1", text: "Bir ACL'de bir paketin hangi kurala uyacağını ve hiçbir kurala uymazsa ne olacağını söyleyebilirsin." },
+      { id: "h2", text: "Alt ağ maskesinden wildcard maskeyi hesaplayabilirsin." },
+      { id: "h3", text: "Standard ve extended ACL'i ayırt edip her birinin nereye konacağını söyleyebilirsin." },
+      { id: "h4", text: "ACL'i arayüze uygulayan komutu seçebilirsin." }
+    ],
+    summary: [
+      "ACL kuralları yukarıdan aşağı okunur, ilk uyan kural uygulanır ve hiçbirine uymayan paket implicit deny ile engellenir.",
+      "Wildcard maske, 255.255.255.255 eksi alt ağ maskesidir; 0 'birebir eşleş', 1 'fark etmez' demektir.",
+      "Standard ACL yalnız kaynak IP'ye bakar ve hedefe yakın konur; extended ACL protokol, port ve hedefe de bakar ve kaynağa yakın konur.",
+      "ACL, arayüzde ip access-group <ad> in|out komutuyla uygulanır."
+    ],
     quiz: [
-      { q: "ACL'de hiçbir kural bir pakete uymazsa ne olur?", options: ["Paket geçer", "Paket implicit deny ile engellenir", "Router yeniden başlar", "Paket loglanır"], answer: "Paket implicit deny ile engellenir", why: "Her ACL'in sonunda görünmeyen bir 'deny any' vardır." },
-      { q: "Wildcard maske 0.0.0.255 hangi alt ağ maskesine denk gelir?", options: ["255.255.255.0", "255.255.0.0", "255.255.255.255", "255.0.0.0"], answer: "255.255.255.0", why: "Wildcard, alt ağ maskesinin tersidir: 255.255.255.255 - 255.255.255.0 = 0.0.0.255." },
-      { q: "Hangi ACL türü yalnızca kaynak IP'ye bakar?", options: ["Standard", "Extended", "Reflexive", "Dynamic"], answer: "Standard", why: "Standard ACL sadece kaynak IP ile filtreler. Extended ACL protokol, port ve hedefi de kullanır." },
-      { q: "Extended ACL genellikle nereye konur?", options: ["Hedefe yakın", "Kaynağa yakın", "Her zaman WAN'a", "Switch'e"], answer: "Kaynağa yakın", why: "Engellenecek trafik ağın içinde boşuna yol almasın diye extended ACL kaynağa yakın uygulanır." },
-      { q: "ACL'i bir arayüze uygulayan komut hangisidir?", options: ["ip access-group", "access-list apply", "ip filter", "permit interface"], answer: "ip access-group", why: "ip access-group <ad> in|out arayüz modunda kullanılır." }
+      { q: "ACL'de hiçbir kural bir pakete uymazsa ne olur?", options: ["Paket geçer", "Paket implicit deny ile engellenir", "Router yeniden başlar", "Paket loglanır"], answer: "Paket implicit deny ile engellenir", why: "Her ACL'in sonunda görünmeyen bir 'deny any' vardır.", obj: "h1", whyNot: {"Paket geçer":"Tersi doğrudur: sonda görünmez bir 'deny any' vardır, bu yüzden uymayan paket geçmez.","Router yeniden başlar":"ACL yalnız bir filtredir; eşleşmeyen paket router'ı etkilemez, yeniden başlatmaz.","Paket loglanır":"Loglama yalnız satıra 'log' yazıldıysa olur; implicit deny paketi kendiliğinden loglamaz, engeller."} },
+      { q: "Wildcard maske 0.0.0.255 hangi alt ağ maskesine denk gelir?", options: ["255.255.255.0", "255.255.0.0", "255.255.255.255", "255.0.0.0"], answer: "255.255.255.0", why: "Wildcard, alt ağ maskesinin tersidir: 255.255.255.255 - 255.255.255.0 = 0.0.0.255.", obj: "h2", whyNot: {"255.255.0.0":"Bu maskenin wildcard karşılığı 0.0.255.255'tir.","255.255.255.255":"Bu maskenin wildcard'ı 0.0.0.0'dır (tek bir cihaz).","255.0.0.0":"Bu maskenin wildcard'ı 0.255.255.255'tir."} },
+      { q: "Hangi ACL türü yalnızca kaynak IP'ye bakar?", options: ["Standard", "Extended", "Reflexive", "Dynamic"], answer: "Standard", why: "Standard ACL sadece kaynak IP ile filtreler. Extended ACL protokol, port ve hedefi de kullanır.", obj: "h3", whyNot: {"Extended":"Extended ACL kaynağın yanında hedef IP, protokol ve port'a da bakar.","Reflexive":"Reflexive ACL giden oturuma bakıp dönüş trafiği için geçici kural üretir; yalnız kaynak IP'ye bakan basit filtre değildir.","Dynamic":"Dynamic ACL kullanıcı kimlik doğrulamasından sonra geçici kural açar; kaynak IP'ye göre filtreleyen tür değildir."} },
+      { q: "Extended ACL genellikle nereye konur?", options: ["Hedefe yakın", "Kaynağa yakın", "Her zaman WAN'a", "Switch'e"], answer: "Kaynağa yakın", why: "Engellenecek trafik ağın içinde boşuna yol almasın diye extended ACL kaynağa yakın uygulanır.", obj: "h3", whyNot: {"Hedefe yakın":"Hedefe yakın yer standard ACL içindir; extended ACL'i oraya koymak engellenecek trafiğin ağda boşuna yol almasına yol açar.","Her zaman WAN'a":"Sabit bir 'WAN' kuralı yoktur; WAN'a koymak trafiği önce tüm ağ boyunca taşır, extended ACL kaynağa yakın uygulanır.","Switch'e":"Bu derste ACL router arayüzlerine uygulanır. Asıl ilke cihaz türü değil, extended ACL'in engellenecek trafiğin kaynağına yakın uygulanmasıdır."} },
+      { q: "ACL'i bir arayüze uygulayan komut hangisidir?", options: ["ip access-group", "access-list apply", "ip filter", "permit interface"], answer: "ip access-group", why: "ip access-group <ad> in|out arayüz modunda kullanılır.", obj: "h4", whyNot: {"access-list apply":"IOS'ta böyle bir komut yoktur; access-list kuralı tanımlar, arayüze bağlamak için ip access-group gerekir.","ip filter":"IOS komutu değildir; filtre arayüzde ip access-group ile uygulanır.","permit interface":"permit ACL içindeki bir kural satırının başıdır; listeyi arayüze bağlamaz."} }
     ],
     interview: [
       { q: "ACL nedir, ne için kullanılır?", a: "Sıralı permit/deny kurallarından oluşan, paketleri IP, protokol ve port'a göre filtreleyen listedir. Güvenlik amacıyla trafik kısıtlamak, NAT için adres seçmek ve QoS için trafik sınıflandırmak gibi işlerde kullanılır." },
@@ -237,7 +274,7 @@
         "Router ID: router'ın OSPF kimliği. Elle verilmezse en yüksek loopback IP'si, o da yoksa en yüksek aktif arayüz IP'si olur.",
         "Neighbor (komşu): aynı bağlantıdaki, hello paketi ile tanışmış OSPF router.",
         "Cost (maliyet): bant genişliği ne kadar yüksekse maliyet o kadar düşük.",
-        "Administrative distance: OSPF için 110."
+        "Administrative distance: OSPF için 110 (connected 0, static 1; sayı küçüldükçe güvenilirlik artar)."
       ] },
       { t: "h", text: "Komşuluk nasıl kurulur?" },
       { t: "steps", h: "Aşamalar (özet)", items: [
@@ -258,12 +295,25 @@
       ] },
       { t: "warn", h: "Tuzak", text: "Komşuluk kurulmuyorsa genellikle şunlardan biridir: farklı area, farklı alt ağ, farklı hello/dead süresi ya da network komutu arayüzü kapsamıyor. 'show ip ospf interface' çıktısını iki tarafta karşılaştır." }
     ],
+    objectives: [
+      { id: "h1", text: "OSPF'in administrative distance değerini static ve connected ile karşılaştırarak söyleyebilirsin." },
+      { id: "h2", text: "Çok alanlı OSPF'te omurga alanının hangisi olduğunu söyleyebilirsin." },
+      { id: "h3", text: "OSPF komşuluk durumlarını ayırt edip Full'ü bulabilir ve komşuları show ip ospf neighbor ile listeleyebilirsin." },
+      { id: "h4", text: "Router ID'nin elle verilmediğinde nasıl seçildiğini söyleyebilirsin." }
+    ],
+    summary: [
+      "OSPF açık standartlı bir link-state protokolüdür: router'lar bağlantı bilgisini paylaşır, herkes aynı LSDB'ye sahip olur ve en kısa yolu SPF ile kendisi hesaplar.",
+      "Metrik cost'tur (bant genişliği yükseldikçe düşer); OSPF'in administrative distance değeri 110'dur.",
+      "Tüm alanlar omurga alanı Area 0'a bağlanır.",
+      "Komşuluk Down, Init, 2-Way, ExStart/Exchange/Loading adımlarından geçip Full'e ulaşır; show ip ospf neighbor ile izlenir.",
+      "Router ID elle verilmezse en yüksek loopback IP, o yoksa en yüksek aktif arayüz IP'si kullanılır."
+    ],
     quiz: [
-      { q: "OSPF'in administrative distance değeri kaçtır?", options: ["1", "90", "110", "120"], answer: "110", why: "OSPF 110, static 1, connected 0'dır." },
-      { q: "Tüm OSPF alanlarının bağlanması gereken omurga alanı hangisidir?", options: ["Area 1", "Area 0", "Area 100", "Area 255"], answer: "Area 0", why: "Çok alanlı OSPF'te tüm alanlar Area 0'a bağlanır." },
-      { q: "OSPF komşuluğunun tamamlanmış hali hangi durumdur?", options: ["Init", "2-Way", "Full", "Down"], answer: "Full", why: "Full durumu iki komşunun veritabanlarının eşitlendiği ve yönlendirmenin başladığı durumdur." },
-      { q: "OSPF komşularını gösteren komut hangisidir?", options: ["show ip ospf neighbor", "show ip route", "show ospf peers", "show interfaces"], answer: "show ip ospf neighbor", why: "Bu komut komşuları, durumlarını ve arayüzlerini listeler." },
-      { q: "Router ID elle verilmezse neye göre seçilir?", options: ["En yüksek loopback IP, yoksa en yüksek aktif arayüz IP", "En küçük MAC adresi", "Rastgele", "Hostname"], answer: "En yüksek loopback IP, yoksa en yüksek aktif arayüz IP", why: "Elle router-id yoksa loopback öncelik alır, o da yoksa en yüksek IP'li aktif arayüz kullanılır." }
+      { q: "OSPF'in administrative distance değeri kaçtır?", options: ["1", "90", "110", "120"], answer: "110", why: "OSPF 110, static 1, connected 0'dır.", obj: "h1", whyNot: {"1":"AD 1 static route'a aittir; OSPF'ten çok daha güvenilir sayılır.","90":"90, EIGRP'nin (dahili) değeridir; OSPF'inki değil.","120":"120, RIP'in administrative distance değeridir."} },
+      { q: "Tüm OSPF alanlarının bağlanması gereken omurga alanı hangisidir?", options: ["Area 1", "Area 0", "Area 100", "Area 255"], answer: "Area 0", why: "Çok alanlı OSPF'te tüm alanlar Area 0'a bağlanır.", obj: "h2", whyNot: {"Area 1":"Area 1 sıradan bir alandır; kendisi de omurgaya bağlanmak zorundadır.","Area 100":"Omurga rolü yalnız Area 0'a aittir; alan numarası büyük diye özel bir anlam kazanmaz.","Area 255":"Numara yüksekliği bir anlam taşımaz; omurga alanı her zaman Area 0'dır."} },
+      { q: "OSPF komşuluğunun tamamlanmış hali hangi durumdur?", options: ["Init", "2-Way", "Full", "Down"], answer: "Full", why: "Full durumu iki komşunun veritabanlarının eşitlendiği ve yönlendirmenin başladığı durumdur.", obj: "h3", whyNot: {"Init":"Init'te hello alınmıştır ama komşu henüz bizi görmemiştir; komşuluk tamamlanmamıştır.","2-Way":"2-Way'de iki taraf birbirini görür ama veritabanı değişimi yapılmamıştır. Yalnız broadcast ağda DR/BDR olmayan iki router arasında 2-Way normal kalır; veritabanı eşitlenmiş tam komşuluk Full'dür.","Down":"Down, hiç hello alınmadığını gösterir; komşuluğun en başı ya da kopmuş halidir."} },
+      { q: "OSPF komşularını gösteren komut hangisidir?", options: ["show ip ospf neighbor", "show ip route", "show ospf peers", "show interfaces"], answer: "show ip ospf neighbor", why: "Bu komut komşuları, durumlarını ve arayüzlerini listeler.", obj: "h3", whyNot: {"show ip route":"Yönlendirme tablosunu gösterir (O satırları dahil) ama komşuları ve durumlarını göstermez.","show ospf peers":"IOS'ta böyle bir komut yoktur; doğrusu show ip ospf neighbor'dır.","show interfaces":"Arayüzlerin fiziksel ve hat durumunu gösterir, OSPF komşularını değil."} },
+      { q: "Router ID elle verilmezse neye göre seçilir?", options: ["En yüksek loopback IP, yoksa en yüksek aktif arayüz IP", "En küçük MAC adresi", "Rastgele", "Hostname"], answer: "En yüksek loopback IP, yoksa en yüksek aktif arayüz IP", why: "Elle router-id yoksa loopback öncelik alır, o da yoksa en yüksek IP'li aktif arayüz kullanılır.", obj: "h4", whyNot: {"En küçük MAC adresi":"MAC adresi router ID seçiminde kullanılmaz; seçim IP adreslerine göredir.","Rastgele":"Seçim rastgele değildir; belirli sıra izlenir: önce loopback, sonra en yüksek aktif arayüz IP'si.","Hostname":"Router ID IP adresi biçiminde bir değerdir; hostname bu seçimde kullanılmaz."} }
     ],
     interview: [
       { q: "OSPF nedir? Static route'tan farkı nedir?", a: "OSPF, router'ların yollarını birbirine otomatik öğrettiği link-state bir dinamik yönlendirme protokolüdür. Static route elle yazılır ve ağ değişince elle güncellenir. OSPF bir bağlantı koparsa kendisi yeni yol hesaplar." },
@@ -292,7 +342,7 @@
     warmup: {
       recap: [
         { point: "VLAN'lar mantıksal ağlar oluşturur; her SSID bir VLAN'a bağlanabilir.", example: "Misafir Wi-Fi'ı ayrı VLAN" },
-        { point: "Switch portu bir access port'tur; AP ise genelde bir switch portuna bağlanır.", example: "AP bir uç cihaz gibi switch'e takılır." }
+        { point: "AP genelde bir switch'in access portuna bağlanır.", example: "AP bir uç cihaz gibi switch'e takılır." }
       ],
       concepts: [
         { term: "SSID", tr: "Wi-Fi ağ adı", summary: "Kullanıcının gördüğü ağ ismi.", example: "OFIS-WIFI" },
@@ -336,12 +386,25 @@
       { t: "box", h: "Elle dene", text: "Telefonunda bir Wi-Fi analiz uygulaması aç. 1, 6, 11 kanallarında kaç ağ var gör. Senin ağın kalabalık kanaldaysa router ayarından en boş kanala al." },
       { t: "warn", h: "Tuzak", text: "'Sinyal çubuğu dolu' demek 'hızlı' demek değildir. Kanal çakışması ya da çok kullanıcı varsa sinyal güçlü olsa da bağlantı yavaş olur. Güç ve çakışma ayrı şeylerdir." }
     ],
+    objectives: [
+      { id: "h1", text: "2.4 GHz bandında çakışmayan kanalları söyleyebilirsin." },
+      { id: "h2", text: "2.4 GHz ile 5 GHz bandını menzil ve hız açısından karşılaştırabilirsin." },
+      { id: "h3", text: "SSID, AP ve WLC'nin rollerini ayırt edebilirsin." },
+      { id: "h4", text: "WEP, WPA2 ve WPA3 arasından en güçlü güvenlik standardını seçebilirsin." }
+    ],
+    summary: [
+      "2.4 GHz'de çakışmayan kanallar 1, 6 ve 11'dir.",
+      "2.4 GHz'in menzili uzun ve duvardan geçişi iyidir ama yavaş ve kalabalıktır; 5 GHz hızlıdır ama menzili kısadır.",
+      "SSID ağın adıdır, AP istemcileri kablolu ağa bağlar, WLC çok sayıda AP'yi merkezden yönetir.",
+      "WEP kırılmıştır; WPA2 AES kullanır; WPA3 SAE ile parola tahminine karşı en dirençli olandır.",
+      "Sinyal çubuğunun dolu olması hızlı olduğu anlamına gelmez; kanal çakışması ve kullanıcı sayısı da etkiler."
+    ],
     quiz: [
-      { q: "2.4 GHz bandında çakışmayan kanallar hangileridir?", options: ["1, 6, 11", "1, 2, 3", "2, 4, 6", "5, 10, 15"], answer: "1, 6, 11", why: "2.4 GHz'de kanallar birbirine yakındır, birbirini bozmayan standart üçlü 1, 6 ve 11'dir." },
-      { q: "Çok sayıda AP'yi merkezden yöneten cihaz hangisidir?", options: ["Switch", "WLC", "Firewall", "Modem"], answer: "WLC", why: "Wireless LAN Controller, lightweight AP'leri merkezden yönetir." },
-      { q: "Hangi güvenlik standardı en güçlü ve günceldir?", options: ["WEP", "WPA", "WPA2", "WPA3"], answer: "WPA3", why: "WPA3 en yeni standarttır ve SAE ile parola tahminine karşı daha dirençlidir." },
-      { q: "5 GHz hakkında hangisi doğrudur?", options: ["Menzili 2.4 GHz'den uzundur", "Daha hızlı ama menzili kısadır", "Sadece 802.11b kullanır", "Duvardan en iyi geçen banttır"], answer: "Daha hızlı ama menzili kısadır", why: "5 GHz yüksek hız ve az parazit sunar, ancak menzili ve duvar geçişi 2.4 GHz'den zayıftır." },
-      { q: "SSID nedir?", options: ["AP'nin MAC adresi", "Kablosuz ağın adı", "Şifreleme türü", "Kanal numarası"], answer: "Kablosuz ağın adı", why: "SSID, kullanıcıların gördüğü Wi-Fi ağ adıdır." }
+      { q: "2.4 GHz bandında çakışmayan kanallar hangileridir?", options: ["1, 6, 11", "1, 2, 3", "2, 4, 6", "5, 10, 15"], answer: "1, 6, 11", why: "2.4 GHz'de kanallar birbirine yakındır, birbirini bozmayan standart üçlü 1, 6 ve 11'dir.", obj: "h1", whyNot: {"1, 2, 3":"Bitişik kanallar birbirine biner; çakışmayan üçlü bunlar değildir.","2, 4, 6":"Kanallar birbirine çok yakın olduğu için ikişer atlamak çakışmayı kaldırmaz.","5, 10, 15":"2.4 GHz bandında 15 numaralı kanal yoktur; çakışmayan standart üçlü 1, 6 ve 11'dir."} },
+      { q: "Çok sayıda AP'yi merkezden yöneten cihaz hangisidir?", options: ["Switch", "WLC", "Firewall", "Modem"], answer: "WLC", why: "Wireless LAN Controller, lightweight AP'leri merkezden yönetir.", obj: "h3", whyNot: {"Switch":"Switch kablolu cihazları aynı ağda bağlar; AP'lerin ayarını, kanalını ve gücünü yönetmez.","Firewall":"Firewall trafiği kurala göre süzer; kablosuz ağı yönetmez.","Modem":"Modem hizmet sağlayıcı hattına bağlanmayı sağlar; AP'leri yönetmez."} },
+      { q: "Hangi güvenlik standardı en güçlü ve günceldir?", options: ["WEP", "WPA", "WPA2", "WPA3"], answer: "WPA3", why: "WPA3 en yeni standarttır ve SAE ile parola tahminine karşı daha dirençlidir.", obj: "h4", whyNot: {"WEP":"WEP eski ve kırılmıştır; kullanılmamalıdır.","WPA":"WPA, WPA2'den önce gelen zayıf bir ara çözümdür; WPA3'ten çok geridedir.","WPA2":"WPA2 AES ile hâlâ yaygın ve güvenlidir ama WPA2-Personal'da yakalanan el sıkışma üzerinde çevrimdışı parola tahmini mümkündür; WPA3'ün SAE el sıkışması bunu önler."} },
+      { q: "5 GHz hakkında hangisi doğrudur?", options: ["Menzili 2.4 GHz'den uzundur", "Daha hızlı ama menzili kısadır", "Sadece 802.11b kullanır", "Duvardan en iyi geçen banttır"], answer: "Daha hızlı ama menzili kısadır", why: "5 GHz yüksek hız ve az parazit sunar, ancak menzili ve duvar geçişi 2.4 GHz'den zayıftır.", obj: "h2", whyNot: {"Menzili 2.4 GHz'den uzundur":"Tersi doğrudur: 5 GHz'in menzili 2.4 GHz'den kısadır.","Sadece 802.11b kullanır":"802.11b yalnız 2.4 GHz'dedir; 5 GHz'i 802.11n, ac ve ax gibi standartlar kullanır.","Duvardan en iyi geçen banttır":"Duvardan en iyi geçen band 2.4 GHz'dir; 5 GHz duvardan kötü geçer."} },
+      { q: "SSID nedir?", options: ["AP'nin MAC adresi", "Kablosuz ağın adı", "Şifreleme türü", "Kanal numarası"], answer: "Kablosuz ağın adı", why: "SSID, kullanıcıların gördüğü Wi-Fi ağ adıdır.", obj: "h3", whyNot: {"AP'nin MAC adresi":"AP radyosunun MAC adresine BSSID denir; SSID ağın adıdır.","Şifreleme türü":"Şifreleme türü WPA2 ya da WPA3 gibi güvenlik ayarıdır; SSID ağ adını verir.","Kanal numarası":"Kanal numarası (1, 6, 11 gibi) frekans ayarıdır; SSID kullanıcıların gördüğü ağ adıdır."} }
     ],
     interview: [
       { q: "2.4 GHz ile 5 GHz farkı nedir?", a: "2.4 GHz'in menzili uzundur ve duvardan iyi geçer ama yavaş ve kalabalıktır. 5 GHz daha hızlı ve az parazitlidir ama menzili kısadır. Cihaz yakındaysa 5 GHz, uzaktaysa 2.4 GHz daha iyi çalışır." },
@@ -414,6 +477,7 @@
         "Porta en çok 2 MAC adresinin bağlanmasına izin verir.",
         "'sticky': öğrenilen MAC'leri otomatik kaydeder.",
         "'violation shutdown': yetkisiz cihaz takılırsa port kapanır (err-disabled).",
+        "violation modları: protect (ihlal paketlerini sessizce atar), restrict (atar, log ve sayaç tutar), shutdown (portu kapatır).",
         "Portu geri açmak için: 'shutdown' ardından 'no shutdown'."
       ] },
       { t: "h", text: "Cihaz yönetim güvenliği" },
@@ -421,12 +485,28 @@
       { t: "box", h: "Telnet yerine SSH", text: "Telnet her şeyi açık metin gönderir, parola da dahil. SSH şifrelidir. Cihaz yönetiminde her zaman SSH kullan. <guclu-sifre> yerine kendi güçlü parolanı yaz; gerçek parolayı asla ders notlarına ya da paylaşılan dosyalara koyma." },
       { t: "warn", h: "Tuzak", text: "'enable password' düz metin tutar, 'enable secret' hash'ler. Her zaman secret kullan. Güvenlik tek bir cihazla değil, katmanlarla sağlanır." }
     ],
+    objectives: [
+      { id: "h1", text: "Saldırıları tanımına göre (phishing, DoS, malware, ortadaki adam) ayırt edebilirsin." },
+      { id: "h2", text: "CIA üçlüsünün harflerini karşılıklarıyla eşleştirebilirsin." },
+      { id: "h3", text: "Switch portunda yetkisiz cihaz takılınca portu kapatan port security ayarını seçebilirsin." },
+      { id: "h4", text: "Cihaz yönetimi ve hesap güvenliği için uygun aracı (SSH, MFA) seçebilirsin." }
+    ],
+    summary: [
+      "CIA üçlüsü gizlilik (şifreleme), bütünlük (hash, imza) ve erişilebilirlik (yedekleme) hedeflerinden oluşur.",
+      "Phishing sahte e-posta ya da siteyle bilgi çalmak, DoS/DDoS hizmeti aşırı yükleyip erişilemez yapmaktır.",
+      "Savunma katmanlıdır: firewall, IPS, VPN, AAA, MFA ve yama yönetimi birlikte kullanılır.",
+      "Port security'de violation shutdown, yetkisiz cihaz takılınca portu err-disabled yapar.",
+      "Yönetimde Telnet yerine SSH kullanılır; enable password yerine enable secret yazılır."
+    ],
     quiz: [
-      { q: "Phishing nedir?", options: ["Ağı aşırı yükleme", "Sahte e-posta ya da siteyle bilgi çalma", "Disk şifreleme", "Port tarama"], answer: "Sahte e-posta ya da siteyle bilgi çalma", why: "Phishing, kullanıcıyı kandırarak parola ya da kart bilgisi gibi verileri ele geçirmeyi amaçlar." },
-      { q: "CIA üçlüsünde 'I' neyi temsil eder?", options: ["Identity", "Integrity", "Internet", "Interface"], answer: "Integrity", why: "Integrity (bütünlük), verinin izinsiz değiştirilmediğini garanti etmektir." },
-      { q: "Yetkisiz bir cihaz takılınca portu kapatan port security ayarı hangisidir?", options: ["violation shutdown", "violation allow", "mode trunk", "storm-control"], answer: "violation shutdown", why: "violation shutdown, ihlalde portu err-disabled durumuna alır." },
-      { q: "Cihaz yönetiminde hangisi önerilir?", options: ["Telnet", "SSH", "HTTP", "FTP"], answer: "SSH", why: "SSH trafiği şifreler. Telnet parolayı bile açık metin gönderir." },
-      { q: "MFA (çok faktörlü doğrulama) ne sağlar?", options: ["Daha hızlı internet", "Parolaya ek ikinci bir doğrulama", "Otomatik yedekleme", "IP adresi atama"], answer: "Parolaya ek ikinci bir doğrulama", why: "MFA, parola çalınsa bile saldırganın ikinci faktör olmadan girmesini zorlaştırır." }
+      { q: "Phishing nedir?", options: ["Ağı aşırı yükleme", "Sahte e-posta ya da siteyle bilgi çalma", "Disk şifreleme", "Port tarama"], answer: "Sahte e-posta ya da siteyle bilgi çalma", why: "Phishing, kullanıcıyı kandırarak parola ya da kart bilgisi gibi verileri ele geçirmeyi amaçlar.", obj: "h1", whyNot: {"Ağı aşırı yükleme":"Bu tanım DoS/DDoS saldırısıdır; phishing hizmeti değil kullanıcıyı hedefler.","Disk şifreleme":"Disk şifreleme gizliliği koruyan bir savunma önlemidir, saldırı türü değildir.","Port tarama":"Port tarama saldırganın açık portları keşfetmesidir; kullanıcıyı sahte içerikle kandırmaz."} },
+      { q: "Saldırgan iki taraf arasına girip trafiği dinliyor ya da değiştiriyorsa bu saldırı hangisidir?", options: ["Phishing", "DoS", "Man-in-the-middle", "Malware"], answer: "Man-in-the-middle", why: "Man-in-the-middle, iki taraf arasına girip trafiği dinleme ya da değiştirmedir.", obj: "h1", whyNot: {"Phishing":"Phishing sahte e-posta ya da siteyle kullanıcıyı kandırır; iletişimin ortasına girip trafiği dinlemez.","DoS":"DoS hizmeti aşırı yükleyip erişilemez yapar; trafiği dinlemek ya da değiştirmek amaçlanmaz.","Malware":"Malware cihaza bulaşan zararlı yazılımdır; iki taraf arasına girip trafiği araya almak bu saldırının tanımıdır."} },
+      { q: "Fidye yazılımı ve trojan hangi saldırı grubuna girer?", options: ["DoS", "Phishing", "Man-in-the-middle", "Malware"], answer: "Malware", why: "Virüs, fidye yazılımı ve trojan zararlı yazılımdır, yani malware'dir.", obj: "h1", whyNot: {"DoS":"DoS bir hizmeti aşırı yükleyerek erişilemez yapar; fidye yazılımı ve trojan zararlı yazılım türleridir.","Phishing":"Phishing kullanıcıyı sahte içerikle kandırma yöntemidir; yazılım türü değildir (yazılımı bulaştırmak için kullanılabilir).","Man-in-the-middle":"Man-in-the-middle trafiği ortadan dinleme ya da değiştirmedir; fidye yazılımı ve trojan zararlı yazılımdır."} },
+      { q: "Bir sunucuyu çok sayıda kaynaktan gelen istekle erişilemez yapma saldırısı hangisidir?", options: ["Phishing", "DDoS", "Malware", "Man-in-the-middle"], answer: "DDoS", why: "DDoS, hizmeti çok kaynaktan gelen yükle erişilemez yapar.", obj: "h1", whyNot: {"Phishing":"Phishing sunucuyu değil kullanıcıyı hedefler ve bilgi çalmayı amaçlar; hizmeti çökertmez.","Malware":"Malware cihaza bulaşan zararlı yazılımdır; sunucuyu çok kaynaklı istekle boğan saldırı DDoS'tur.","Man-in-the-middle":"Man-in-the-middle trafiği dinler ya da değiştirir; hizmeti aşırı yükleyip erişilemez yapmaz."} },
+      { q: "CIA üçlüsünde 'I' neyi temsil eder?", options: ["Identity", "Integrity", "Internet", "Interface"], answer: "Integrity", why: "Integrity (bütünlük), verinin izinsiz değiştirilmediğini garanti etmektir.", obj: "h2", whyNot: {"Identity":"Kimlik doğrulama AAA kavramına aittir; CIA üçlüsünde 'I' kimlik değildir.","Internet":"Internet bir ağın adıdır, güvenlik hedefi değildir.","Interface":"Interface (arayüz) bir ağ terimidir, CIA hedeflerinden biri değildir."} },
+      { q: "Yetkisiz bir cihaz takılınca portu kapatan port security ayarı hangisidir?", options: ["violation shutdown", "violation allow", "mode trunk", "storm-control"], answer: "violation shutdown", why: "violation shutdown, ihlalde portu err-disabled durumuna alır.", obj: "h3", whyNot: {"violation allow":"IOS'ta ihlal modları protect, restrict ve shutdown'dır; 'allow' diye bir mod yoktur ve izin vermek zaten yetkisiz cihazı engellememek olurdu.","mode trunk":"Portu VLAN trunk'ı yapar, MAC adresi kısıtlaması getirmez.","storm-control":"Broadcast, multicast ya da unicast fırtınasını sınırlar; takılan cihazın MAC adresine bakmaz."} },
+      { q: "Cihaz yönetiminde hangisi önerilir?", options: ["Telnet", "SSH", "HTTP", "FTP"], answer: "SSH", why: "SSH trafiği şifreler. Telnet parolayı bile açık metin gönderir.", obj: "h4", whyNot: {"Telnet":"Telnet her şeyi, parola dahil, açık metin gönderir; dinlenebilir.","HTTP":"HTTP şifresiz web trafiğidir; yönetim için en azından HTTPS ya da SSH gerekir.","FTP":"FTP dosya aktarım protokolüdür ve şifresiz çalışır; cihaz yönetimi için uygun değildir."} },
+      { q: "MFA (çok faktörlü doğrulama) ne sağlar?", options: ["Daha hızlı internet", "Parolaya ek ikinci bir doğrulama", "Otomatik yedekleme", "IP adresi atama"], answer: "Parolaya ek ikinci bir doğrulama", why: "MFA, parola çalınsa bile saldırganın ikinci faktör olmadan girmesini zorlaştırır.", obj: "h4", whyNot: {"Daha hızlı internet":"MFA kimlik doğrulamayla ilgilidir; bağlantı hızına etkisi yoktur.","Otomatik yedekleme":"Yedekleme erişilebilirliği korur; MFA ise hesaba girişi sıkılaştırır.","IP adresi atama":"IP adresi atamak DHCP'nin işidir; MFA kimlik doğrulama katmanıdır."} }
     ],
     interview: [
       { q: "CIA üçlüsünü açıkla.", a: "Confidentiality veriyi yalnızca yetkililerin görmesi, Integrity verinin değiştirilmemesi, Availability sistemin gerektiğinde erişilebilir olmasıdır. Güvenlik önlemleri bu üç hedeften en az birini korumak için alınır." },

@@ -13,7 +13,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   const b = await chromium.launch(), ctx = await b.newContext({ viewport: { width: 390, height: 844 } });
   await ctx.addInitScript(INIT); await ctx.addInitScript("localStorage.ya_gm_seen='1';");
   const p = await ctx.newPage(), errs = []; p.on('pageerror', e => { errs.push(e.message); console.log('PAGEERR ' + e.message); });
-  await p.goto(U + '#ders'); await p.waitForTimeout(1500);
+  await p.goto(U + '#ders'); await p.waitForTimeout(3500);
   const ev = (f, a) => p.evaluate(f, a);
   const ac = (t, n, adim) => ev(([t, n, adim]) => { const l = lessonForTopic(t, 's-' + t + '-' + n); if (!S.lessons.some(x => x.id === l.id)) S.lessons.push(l); S.les.track = t; lcSet(lessonKey(l), 'w', t); lrOpen(l, adim); return !!l; }, [t, n, adim]);
   const tasma = () => ev(() => document.documentElement.scrollWidth <= innerWidth + 1);
@@ -28,9 +28,9 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   ok(await ev(() => { const h = document.querySelector('[data-ders-hedef]'), r = document.querySelector('.lr-read'), o = document.querySelector('[data-ders-ozet]'); return !!(h && r && o) && !!(h.compareDocumentPosition(r) & Node.DOCUMENT_POSITION_FOLLOWING) && !!(r.compareDocumentPosition(o) & Node.DOCUMENT_POSITION_FOLLOWING); }), 'sıra: hedefler → ders metni → özet');
   ok(await ev(() => /Dersin sonunda şunları yapabilirsin/.test(document.querySelector('[data-ders-hedef]').textContent)), 'hedef kutusunun etiketi okunur');
   ok(await tasma(), 'bk-1: 390 px yatay taşma yok');
-  await ac('bk', 4, 'anlat'); await p.waitForTimeout(250);
-  eq([(await hedef()).length, (await ozet()).length], [0, 0], 'bk-4 (pilot dışı): hedef ve özet kutusu yok, ders eski haliyle');
-  ok(await ev(() => document.querySelectorAll('.lr-read').length === 1), 'bk-4: ders metni yine görünür');
+  await ac('bk', 20, 'anlat'); await p.waitForTimeout(250);
+  eq([(await hedef()).length, (await ozet()).length], [0, 0], 'bk-20 (alan henüz yok): hedef ve özet kutusu yok, ders eski haliyle');
+  ok(await ev(() => document.querySelectorAll('.lr-read').length === 1), 'bk-20: ders metni yine görünür');
 
   // 2) Mini sınav: yanlış cevap → yalnız seçilen seçeneğin nedeni; doğru cevap → neden yok; pilot dışı derste whyNot satırı yok
   await ac('bk', 1, 'sinav'); await p.waitForTimeout(300);

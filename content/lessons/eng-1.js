@@ -55,7 +55,7 @@
         "B: I work in IT. I look after the network and the computers."
       ] },
       { t: "box", h: "Dikkat: am, is, are", text: "'I' ile 'am', 'he/she/it' ile 'is', 'you/we/they' ile 'are' kullanılır. 'I am from Ankara.' doğru, 'I from Ankara.' yanlıştır. Kısa yazım: I'm, he's, she's, you're." },
-      { t: "warn", h: "Tuzak", text: "'I am 30 years old' diyebilirsin ama 'I have 30 years' diyemezsin. Yaş için 'be' fiili kullanılır. Ayrıca iş için 'I work as...' der, 'I work like...' demezsin." }
+      { t: "warn", h: "Tuzak", text: "'I am 30 years old' diyebilirsin ama 'I have 30 years' diyemezsin. Yaş için 'be' fiili kullanılır. Ayrıca meslek bildirmek için 'I work as...' der, 'like' kullanmazsın (like = gibi)." }
     ],
     story: { title: "Ayşe'nin ilk günü", text: "Ayşe bugün yeni bir şirkette başladı. Masasına oturdu. Yanındaki kişi gülümsedi: 'Hi, I'm Mark. I'm in the finance team. Nice to meet you!' Ayşe de gülümsedi: 'Hi, I'm Ayşe. I work as an IT support specialist. Nice to meet you too.'", question: "Ayşe'nin işi nedir? (İngilizce cevapla)" },
     objectives: [
@@ -66,7 +66,7 @@
     summary: [
       "I → am, he/she/it → is, you/we/they → are; kısa yazımlar: I'm, she's, you're.",
       "Kendini tanıtma formülü: adın (I'm ...), işin (I work as ... at ...), yerin (I'm from ... and I live in ...).",
-      "Meslek için 'I work as ...' denir ('like' değil); yaş için 'be' fiili kullanılır ('I am 30', 'I have 30' değil).",
+      "Meslek bildirmek için 'I work as ...' denir ('like' = gibi); yaş için 'be' fiili kullanılır ('I am 30', 'I have 30' değil).",
       "'Nice to meet you.' cümlesine 'Nice to meet you too.' diye karşılık verilir."
     ],
     quiz: [
@@ -74,7 +74,8 @@
       { q: "'Bir BT yöneticisi olarak çalışıyorum.' cümlesinin İngilizcesi hangisidir?", options: ["I work as an IT administrator.", "I am work as an IT administrator.", "I works like IT administrator.", "I working IT administrator."], answer: "I work as an IT administrator.", why: "Alışkanlık ve meslek için present simple: I work as ...", obj: "h2", whyNot: { "I am work as an IT administrator.": "'am' ile düz 'work' birlikte olmaz; alışkanlık için present simple'da yalnızca 'I work' denir.", "I works like IT administrator.": "'I' ile fiile -s eklenmez ('work', 'works' değil) ve meslek için 'like' değil 'as' kullanılır.", "I working IT administrator.": "'working' yardımcı fiil olmadan kullanılamaz (I am working ...); ayrıca meslek bildiren 'as' eksik." } },
       { q: "Biri 'Nice to meet you.' dedi. Doğal cevap hangisidir?", options: ["Nice to meet you too.", "I am fine, thanks.", "Yes, please.", "See you later."], answer: "Nice to meet you too.", why: "Aynı cümle karşılıklı söylenir: 'Nice to meet you too.'", obj: "h3", whyNot: { "I am fine, thanks.": "Bu 'How are you?' sorusunun cevabıdır; tanışma cümlesine karşılık değildir.", "Yes, please.": "'Yes, please' bir teklifi kabul etmektir; tanışmaya karşılık vermez.", "See you later.": "Vedalaşma cümlesidir; tanışırken söylenmez." } },
       { q: "'Where are you from?' sorusuna hangi cevap uygundur?", options: ["I'm from Turkey.", "I'm fine.", "I'm 30 years old.", "I like pizza."], answer: "I'm from Turkey.", why: "'Where are you from?' nereli olduğunu sorar.", obj: "h3", whyNot: { "I'm fine.": "'How are you?' sorusuna 'I'm fine' denir; 'Where are you from?' bir yer sorusudur, cevabı 'I'm from ...' kalıbıyla başlar.", "I'm 30 years old.": "Yaşı söyler; soru yaşı değil, nereli olduğunu soruyor.", "I like pizza.": "Bir zevki anlatır; sorunun nereli olduğunu sormasıyla ilgisi yok." } },
-      { q: "Hangisi doğru cümledir?", options: ["She is a network engineer.", "She are a network engineer.", "She am a network engineer.", "She be a network engineer."], answer: "She is a network engineer.", why: "'She' ile 'is' kullanılır.", obj: "h1", whyNot: { "She are a network engineer.": "'are' you/we/they ile kullanılır; 'she' için 'is' gerekir.", "She am a network engineer.": "'am' yalnızca 'I' ile kullanılır.", "She be a network engineer.": "'be' yalın fiildir; 'she' ile 'is' (kısaca she's) kullanılır." } }
+      { q: "Hangisi doğru cümledir?", options: ["She is a network engineer.", "She are a network engineer.", "She am a network engineer.", "She be a network engineer."], answer: "She is a network engineer.", why: "'She' ile 'is' kullanılır.", obj: "h1", whyNot: { "She are a network engineer.": "'are' you/we/they ile kullanılır; 'she' için 'is' gerekir.", "She am a network engineer.": "'am' yalnızca 'I' ile kullanılır.", "She be a network engineer.": "'be' yalın fiildir; 'she' ile 'is' (kısaca she's) kullanılır." } },
+      { q: "Kendini tanıtırken yerini söylemek istiyorsun: 'Türkiye'denim ve Ankara'da yaşıyorum.' Hangisi doğrudur?", options: ["I from Turkey and I live in Ankara.","I'm from Turkey and I lives in Ankara.","I'm from Turkey and I live in Ankara.","I'm from Turkey and I am live in Ankara."], answer: "I'm from Turkey and I live in Ankara.", why: "Yer cümlesi 'I'm from ...' ve 'I live in ...' kalıplarıyla kurulur; 'I' ile fiile -s eklenmez.", obj: "h2", whyNot: {"I from Turkey and I live in Ankara.":"'I' ile 'am' (I'm) eksik; 'from' tek başına fiil işlevi görmez.","I'm from Turkey and I lives in Ankara.":"'I' öznesiyle fiile -s eklenmez; 'live' yalın kalır.","I'm from Turkey and I am live in Ankara.":"'am' ile düz 'live' birlikte kullanılmaz; alışkanlık için yalnız 'I live' denir."} }
     ],
     interview: [
       { q: "Can you introduce yourself?", a: "Hello, my name is ___. I work as an IT administrator at a global company. I live in [şehir]. I look after the network, the users and the computers. I'm learning English and networking to improve my career. Nice to meet you." },
@@ -127,8 +128,8 @@
       ] },
       { t: "box", h: "Altın kural", text: "doesn't ve does'tan sonra fiil -s ALMAZ. Doğru: 'She doesn't work.' Yanlış: 'She doesn't works.'" },
       { t: "steps", h: "-s / -es ekleme", items: [
-        "Çoğu fiil: work → works, check → checks (ama check: ch ile bitiyor → checks)",
-        "-s, -sh, -ch, -x, -o ile bitenler: -es. watch → watches, fix → fixes, go → goes",
+        "Çoğu fiil: work → works, check → checks (ck ile biten fiil yalnız -s alır)",
+        "-s, -sh, -ch, -x, -z, -o ile bitenler: -es. watch → watches, fix → fixes, go → goes",
         "Ünsüz + y: y düşer, -ies gelir. study → studies",
         "Düzensiz: have → has"
       ] },
@@ -156,12 +157,24 @@
       { t: "warn", h: "Tuzak", text: "'I am work' yanlıştır, 'I work' doğrudur. 'Be' fiili ile asıl fiili aynı anda koyma. Ayrıca 'He work' yanlış, 'He works' doğru." }
     ],
     story: { title: "Tom'un iş günü", text: "Tom is an IT support specialist. He starts work at 9. He usually checks the tickets first. Then he helps users with their problems. He doesn't work on weekends.", question: "What does Tom do first? (İngilizce cevapla)" },
+    objectives: [
+      { id: "h1", text: "He/she/it öznesiyle present simple olumlu cümlede fiile doğru eki (-s, -es, -ies) ekleyebilirsin." },
+      { id: "h2", text: "does/doesn't ve Does ile olumsuz cümle, soru ve kısa cevap kurabilir, fiili yalın bırakabilirsin." },
+      { id: "h3", text: "always gibi sıklık zarfını cümlede doğru yere koyabilirsin." }
+    ],
+    summary: [
+      "Present simple alışkanlık, rutin ve değişmeyen gerçekleri anlatır.",
+      "He/she/it ile fiile -s/-es gelir: works, fixes, studies; have → has.",
+      "does ve doesn't'tan sonra fiil yalın kalır: 'She doesn't work.'",
+      "Soru Do/Does + özne + fiil ile kurulur ve kısa cevap da aynı yardımcıyla verilir: 'Yes, she does.'",
+      "Sıklık zarfları ana fiilden önce, 'be' fiilinden sonra gelir."
+    ],
     quiz: [
-      { q: "'She ___ the servers every day.' hangisi doğrudur?", options: ["monitor", "monitors", "monitoring", "is monitor"], answer: "monitors", why: "'She' ile present simple'da fiile -s gelir." },
-      { q: "'He doesn't ___ on Sundays.' boşluğa hangisi gelir?", options: ["work", "works", "working", "worked"], answer: "work", why: "'doesn't'tan sonra fiil yalın halde kalır." },
-      { q: "'Does she reset passwords?' sorusunun doğru kısa cevabı hangisidir?", options: ["Yes, she does.", "Yes, she resets.", "Yes, she is.", "Yes, she do."], answer: "Yes, she does.", why: "'Does' ile sorulan soruya 'does/doesn't' ile cevap verilir." },
-      { q: "'always' sıklık zarfı cümlede nerede durur?", options: ["Ana fiilden önce", "Cümlenin sonunda zorunlu", "Ana fiilden sonra", "Fark etmez"], answer: "Ana fiilden önce", why: "I always check ... şeklinde, ana fiilden önce ('be'den sonra) kullanılır." },
-      { q: "'fix' fiilinin 'he' ile hali nedir?", options: ["fixs", "fixes", "fixies", "fixing"], answer: "fixes", why: "-x ile biten fiillere -es gelir." }
+      { q: "'She ___ the servers every day.' hangisi doğrudur?", options: ["monitor", "monitors", "monitoring", "is monitor"], answer: "monitors", why: "'She' ile present simple'da fiile -s gelir.", obj: "h1", whyNot: {"monitor":"Yalın fiil I/you/we/they ile kullanılır; 'she' ile present simple'da fiile -s gelmelidir.","monitoring":"-ing tek başına yardımcı fiilsiz kullanılamaz; 'every day' de şimdiki an değil alışkanlık bildirir.","is monitor":"'is' ile yalın fiil yan yana konmaz; present simple'da be fiili ile asıl fiil birlikte kullanılmaz ('I am work' tuzağı gibi)."} },
+      { q: "'He doesn't ___ on Sundays.' boşluğa hangisi gelir?", options: ["work", "works", "working", "worked"], answer: "work", why: "'doesn't'tan sonra fiil yalın halde kalır.", obj: "h2", whyNot: {"works":"doesn't zaten üçüncü tekil kişi ekini taşır; ondan sonra fiil -s almaz.","working":"doesn't'tan sonra -ing gelmez; olumsuzda yardımcıdan sonra yalın fiil kullanılır.","worked":"Geçmiş biçim 'didn't work' ile kurulurdu; doesn't şimdiki zaman yardımcısıdır ve fiil yalın kalır."} },
+      { q: "'Does she reset passwords?' sorusunun doğru kısa cevabı hangisidir?", options: ["Yes, she does.", "Yes, she resets.", "Yes, she is.", "Yes, she do."], answer: "Yes, she does.", why: "'Does' ile sorulan soruya 'does/doesn't' ile cevap verilir.", obj: "h2", whyNot: {"Yes, she resets.":"Kısa cevap fiili tekrar etmez, sorudaki yardımcıyı (does) kullanır.","Yes, she is.":"'is' be fiilinin biçimidir; 'Does' ile sorulan soruya 'does' ile cevap verilir.","Yes, she do.":"'do' I/you/we/they ile kullanılır; 'she' ile 'does' gerekir."} },
+      { q: "'Ben her zaman e-postaları önce kontrol ederim.' cümlesinin doğru İngilizcesi hangisidir?", options: ["I check always the emails first.", "Always I check the emails first now.", "I always check the emails first.", "I check the emails first always."], answer: "I always check the emails first.", why: "Sıklık zarfı normal fiilden önce, 'be' fiilinden sonra gelir.", obj: "h3", whyNot: {"I check always the emails first.":"Zarf ana fiil 'check'ten sonra konmuş; 'always' fiilin önüne gelmelidir.","Always I check the emails first now.":"Zarf cümle başına atılmış ve 'now' alışkanlık anlamını bozuyor; 'always' özne ile fiil arasında durur.","I check the emails first always.":"Zarf cümle sonuna atılmış; 'always' cümle sonunda doğal değildir, fiilden önce gelir."} },
+      { q: "'fix' fiilinin 'he' ile hali nedir?", options: ["fixs", "fixes", "fixies", "fixing"], answer: "fixes", why: "-x ile biten fiillere -es gelir.", obj: "h1", whyNot: {"fixs":"-s, -sh, -ch, -x, -o ile biten fiillere yalnız -s değil -es gelir.","fixies":"-ies ünsüz + y ile biten fiillere gelir (study → studies); fix y ile bitmez.","fixing":"-ing şimdiki zaman biçimidir, he/she/it için üçüncü tekil kişi eki değildir."} }
     ],
     interview: [
       { q: "What are your daily tasks?", a: "I start work at 9. I usually check the emails and the tickets first. Then I help users with their computers and accounts, and I monitor the systems. I also write short reports at the end of the day." },
@@ -204,7 +217,7 @@
       { t: "p", text: "Geçmişte başlayıp biten olaylar için. Genellikle yanında bir geçmiş zaman ifadesi olur: yesterday (dün), last week (geçen hafta), two days ago (iki gün önce), in 2023 (2023'te)." },
       { t: "h", text: "Düzenli fiiller: -ed ekle" },
       { t: "steps", h: "Örnekler", items: [
-        "work → worked, fix → fixed, install → installed, reset → reset (aynı)",
+        "work → worked, fix → fixed, install → installed (reset düzensizdir: reset → reset, değişmez)",
         "-e ile bitene sadece -d: update → updated",
         "Ünsüz + y: y → ied: study → studied",
         "I fixed the printer yesterday. (Dün yazıcıyı tamir ettim.)"
@@ -239,12 +252,22 @@
       { t: "warn", h: "Tuzak", text: "'I didn't fixed it' yanlıştır. 'didn't' zaten geçmişi taşır, fiil yalın kalır: 'I didn't fix it.' Aynı şekilde 'Did you went?' yanlış, 'Did you go?' doğrudur." }
     ],
     story: { title: "Zor bir gün", text: "Yesterday was a difficult day. Mark came to work at 8. The internet didn't work. He checked the cables and restarted the router. After 20 minutes, he found the problem. The cable was loose. He fixed it and the internet worked again.", question: "What did Mark find? (İngilizce cevapla)" },
+    objectives: [
+      { id: "h1", text: "Düzenli fiillere -ed, düzensiz fiillere ezberlenmiş geçmiş biçimi vererek geçmiş zaman cümlesi kurabilirsin." },
+      { id: "h2", text: "didn't ve Did ile olumsuz ve soru kurarken fiili yalın bırakabilir, kısa cevabı verebilirsin." }
+    ],
+    summary: [
+      "Past simple geçmişte başlayıp biten işleri anlatır; yesterday, last week, ago gibi ifadelerle gelir.",
+      "Düzenli fiillere -ed gelir (fixed, updated, studied); düzensizler ezberlenir: go → went, write → wrote.",
+      "Olumsuz didn't + yalın fiil, soru Did + özne + yalın fiil ile kurulur.",
+      "did ve didn't'tan sonra fiil yalın kalır: 'I didn't go', 'Did you go?'"
+    ],
     quiz: [
-      { q: "'I ___ the printer yesterday.' (tamir etmek)", options: ["fix", "fixed", "fixing", "fixes"], answer: "fixed", why: "Düzenli fiile geçmiş için -ed eklenir." },
-      { q: "'go' fiilinin geçmiş hali nedir?", options: ["goed", "went", "gone", "going"], answer: "went", why: "go - went: düzensiz fiildir." },
-      { q: "Hangisi doğru olumsuz cümledir?", options: ["I didn't fix it.", "I didn't fixed it.", "I not fix it.", "I don't fixed it."], answer: "I didn't fix it.", why: "didn't'tan sonra fiil yalın kalır." },
-      { q: "'Dün bir e-posta yazdım.' cümlesinin doğrusu hangisidir?", options: ["I wrote an email yesterday.", "I writed an email yesterday.", "I write an email yesterday.", "I did wrote an email yesterday."], answer: "I wrote an email yesterday.", why: "write - wrote düzensiz fiildir." },
-      { q: "'Did you restart the PC?' sorusuna doğru kısa olumsuz cevap hangisidir?", options: ["No, I didn't.", "No, I don't.", "No, I wasn't.", "No, I haven't."], answer: "No, I didn't.", why: "'Did' ile sorulan soruya 'did/didn't' ile cevap verilir." }
+      { q: "'I ___ the printer yesterday.' (tamir etmek)", options: ["fix", "fixed", "fixing", "fixes"], answer: "fixed", why: "Düzenli fiile geçmiş için -ed eklenir.", obj: "h1", whyNot: {"fix":"Yalın fiil şimdiki zaman ya da alışkanlık biçimidir; 'yesterday' geçmiş ifadesi olduğu için geçmiş biçim gerekir.","fixing":"-ing tek başına geçmiş zaman yapmaz; 'I fixing the printer' yardımcı fiilsiz kurulmaz.","fixes":"-es üçüncü tekil kişide şimdiki zaman ekidir; 'I' ile kullanılmaz ve geçmiş bildirmez."} },
+      { q: "'go' fiilinin geçmiş hali nedir?", options: ["goed", "went", "gone", "going"], answer: "went", why: "go - went: düzensiz fiildir.", obj: "h1", whyNot: {"goed":"go düzensiz fiildir; -ed eklenerek geçmişi yapılmaz.","gone":"gone üçüncü haldir (have gone gibi); past simple'da 'went' kullanılır.","going":"-ing geçmiş değil, süren eylem biçimidir."} },
+      { q: "Hangisi doğru olumsuz cümledir?", options: ["I didn't fix it.", "I didn't fixed it.", "I not fix it.", "I don't fixed it."], answer: "I didn't fix it.", why: "didn't'tan sonra fiil yalın kalır.", obj: "h2", whyNot: {"I didn't fixed it.":"didn't geçmişi zaten taşır; fiile ayrıca -ed eklenmez, yalın kalır.","I not fix it.":"Past simple olumsuzda 'not' tek başına kullanılmaz; yardımcı fiil (didn't) gerekir.","I don't fixed it.":"don't şimdiki zaman yardımcısıdır ve -ed ile birleşmez; geçmiş için didn't + yalın fiil kullanılır."} },
+      { q: "'Dün bir e-posta yazdım.' cümlesinin doğrusu hangisidir?", options: ["I wrote an email yesterday.", "I writed an email yesterday.", "I write an email yesterday.", "I did wrote an email yesterday."], answer: "I wrote an email yesterday.", why: "write - wrote düzensiz fiildir.", obj: "h1", whyNot: {"I writed an email yesterday.":"write düzensiz fiildir, geçmişi wrote'tur; -ed eklenmez.","I write an email yesterday.":"'yesterday' geçmiş bildirir; yalın fiil şimdiki zaman biçimidir.","I did wrote an email yesterday.":"did'den sonra fiil yalın olmalı ('did write'); zaten olumlu cümlede did gerekmez, wrote geçmişi taşır."} },
+      { q: "'Did you restart the PC?' sorusuna doğru kısa olumsuz cevap hangisidir?", options: ["No, I didn't.", "No, I don't.", "No, I wasn't.", "No, I haven't."], answer: "No, I didn't.", why: "'Did' ile sorulan soruya 'did/didn't' ile cevap verilir.", obj: "h2", whyNot: {"No, I don't.":"Soru geçmişte Did ile sorulmuş; kısa cevap da didn't ile verilir, don't şimdiki zamandır.","No, I wasn't.":"wasn't be fiilinin geçmişidir; soruda be fiili yok, yardımcı Did.","No, I haven't.":"haven't 'Have you ...?' sorusuna verilir; bu soru past simple (Did) ile kurulmuş."} }
     ],
     interview: [
       { q: "What did you do in your last job?", a: "I worked as an IT support specialist. I helped users with their problems, I installed and updated software, and I managed user accounts. I also helped with the network." },
@@ -282,7 +305,7 @@
     },
     blocks: [
       { t: "h", text: "Durum" },
-      { t: "box", h: "Gerçek durum", text: "Baküdeki iş ortağın 'My computer doesn't work.' diyor. Seni yeterli bilgi olmadan işe yaramayan bir mesajla bıraktı. Doğru sorular sorup sorunu daraltman gerekiyor." },
+      { t: "box", h: "Gerçek durum", text: "Bakü'deki iş ortağın 'My computer doesn't work.' diyor. Seni yeterli bilgi olmadan işe yaramayan bir mesajla bıraktı. Doğru sorular sorup sorunu daraltman gerekiyor." },
       { t: "h", text: "Evet/hayır soruları" },
       { t: "steps", h: "Formül", items: [
         "Do + özne + fiil? → Do you have the error message?",
@@ -299,9 +322,9 @@
         "Who: kim? → Who else has the problem?",
         "Why: neden? → Why did you restart it?",
         "How: nasıl? → How do you connect?",
-        "How many / How long: kaç / ne kadar → How long is the problem there?"
+        "How many / How long: kaç / ne kadar → How long have you had this problem?"
       ] },
-      { t: "box", h: "Sıra", text: "Soru kelimesi + do/does/did + özne + fiil. Örnek: 'When did it stop?' Burada 'did' sorudan sonra fiil yalın: 'stop'." },
+      { t: "box", h: "Sıra", text: "Soru kelimesi + do/does/did + özne + fiil. Örnek: 'When did it stop?' Burada 'did' sorudan sonra fiil yalın: 'stop'. İstisna: be fiilinde yardımcı yoktur (Where are you now?) ve özne sorusunda da yoktur (Who has the problem?)." },
       { t: "split", tr: "Hata ne zaman başladı?", parts: [
         { tr: "ne zaman", q: "Zaman sorusu?", en: "When" },
         { tr: "(geçmiş yardımcı)", q: "Soru yardımcısı?", en: "did" },
@@ -321,12 +344,23 @@
       { t: "warn", h: "Tuzak", text: "'You restarted it?' gibi yukarı tonlu soru konuşmada olur ama yazıda ve resmî ortamda 'Did you restart it?' kullan. Ayrıca 'Did you went?' hatalıdır: 'Did you go?'" }
     ],
     story: { title: "Bir destek talebi", text: "Elnur writes: 'My VPN doesn't work.' Ayşe asks: 'When did it start? Do you see an error message? Did you restart your laptop?' Elnur answers: 'It started this morning. I see error 800. Yes, I restarted it.'", question: "What error does Elnur see?" },
+    objectives: [
+      { id: "h1", text: "Do/Does/Did ile evet/hayır sorusu kurabilir ve yardımcıdan sonra fiili yalın bırakabilirsin." },
+      { id: "h2", text: "What, When, Where gibi soru kelimesiyle doğru sırada (soru kelimesi + yardımcı + özne + fiil) soru kurabilirsin." },
+      { id: "h3", text: "Can you ...? ile kullanıcıdan ekran görüntüsü gibi bilgiyi nazikçe isteyebilirsin." }
+    ],
+    summary: [
+      "Evet/hayır sorusu Do/Does/Did + özne + yalın fiil ile kurulur; be fiili ve can başa gelir.",
+      "Wh- sorusunda sıra: soru kelimesi + do/does/did + özne + fiil.",
+      "does ve did'den sonra fiil yalın kalır: 'Does it work?', 'When did it start?'",
+      "Bilgi isterken 'Can you send me a screenshot?' gibi nazik kalıp kullanılır."
+    ],
     quiz: [
-      { q: "'Bilgisayarı yeniden başlattın mı?' hangisidir?", options: ["Did you restart the computer?", "Do you restarted the computer?", "You did restart the computer?", "Have restart the computer?"], answer: "Did you restart the computer?", why: "Geçmiş soru: Did + özne + yalın fiil." },
-      { q: "'When ___ it start?' (geçmiş zamanda) boşluk hangisidir?", options: ["did", "does", "do", "is"], answer: "did", why: "Geçmiş sorular did ile kurulur: When did it start?" },
-      { q: "'Does it work?' sorusundaki 'work' neden -s almaz?", options: ["Çünkü does fiili taşır", "Çünkü it çoğuldur", "Rastgele", "Çünkü geçmiş zamandır"], answer: "Çünkü does fiili taşır", why: "does'tan sonra fiil yalın kalır." },
-      { q: "'Hangi hata mesajını görüyorsun?' hangisidir?", options: ["What error message do you see?", "What error message you see?", "Which you see error message?", "What do you see error message?"], answer: "What error message do you see?", why: "Soru kelimesi + do + özne + fiil sırası." },
-      { q: "Ekran görüntüsü istemek için nazik cümle hangisidir?", options: ["Can you send me a screenshot?", "Send screenshot now.", "You send screenshot?", "I want screenshot."], answer: "Can you send me a screenshot?", why: "'Can you ...?' nazik bir rica kalıbıdır." }
+      { q: "'Bilgisayarı yeniden başlattın mı?' hangisidir?", options: ["Did you restart the computer?", "Do you restarted the computer?", "You did restart the computer?", "Have restart the computer?"], answer: "Did you restart the computer?", why: "Geçmiş soru: Did + özne + yalın fiil.", obj: "h1", whyNot: {"Do you restarted the computer?":"do şimdiki zaman yardımcısıdır ve -ed ile birleşmez; geçmiş soru Did you restart ile kurulur.","You did restart the computer?":"Düz cümle sırasıdır (vurgulu olumlu cümle gibi); soruda yardımcı fiil özneden önce gelmelidir.","Have restart the computer?":"Özne yok ve 'have' üçüncü halle kullanılırdı (Have you restarted ...?); bu past simple soru değildir."} },
+      { q: "'When ___ it start?' (geçmiş zamanda) boşluk hangisidir?", options: ["did", "does", "do", "is"], answer: "did", why: "Geçmiş sorular did ile kurulur: When did it start?", obj: "h2", whyNot: {"does":"does şimdiki zamanda he/she/it ile kullanılır; geçmiş soruda did gerekir.","do":"do şimdiki zaman yardımcısıdır; geçmiş soru did ile kurulur.","is":"is be fiilidir; 'When is it start' ile fiil yalın kalamaz, geçmiş için did gerekir."} },
+      { q: "'Does it work?' sorusundaki 'work' neden -s almaz?", options: ["Çünkü does üçüncü tekil kişi ekini taşır", "Çünkü it çoğuldur", "Çünkü fiil her zaman yalın yazılır", "Çünkü geçmiş zamandır"], answer: "Çünkü does üçüncü tekil kişi ekini taşır", why: "does'tan sonra fiil yalın kalır.", obj: "h1", whyNot: {"Çünkü it çoğuldur":"it tekildir; üçüncü tekil kişi olduğu için does kullanılır ve -s zaten does'ta olduğundan fiile gitmez.","Çünkü fiil her zaman yalın yazılır":"Her zaman değil: ekler yardımcı yokken gelir (She works.); does varken ek yardımcıya geçer ve fiil yalın kalır.","Çünkü geçmiş zamandır":"Does şimdiki zaman yardımcısıdır; geçmiş olsaydı did kullanılırdı."} },
+      { q: "'Hangi hata mesajını görüyorsun?' hangisidir?", options: ["What error message do you see?", "What error message you see?", "Which you see error message?", "What do you see error message?"], answer: "What error message do you see?", why: "Soru kelimesi + do + özne + fiil sırası.", obj: "h2", whyNot: {"What error message you see?":"Yardımcı fiil (do) eksik; Wh- sorusunda soru öbeğinden sonra do/does/did gelir.","Which you see error message?":"Sıra bozuk ve yardımcı fiil yok; 'error message' soru kelimesiyle birlikte başta durmalı.","What do you see error message?":"do var ama 'error message' öbeği soru kelimesinden ayrılmış; 'What error message' birlikte başta kalmalı."} },
+      { q: "Ekran görüntüsü istemek için nazik cümle hangisidir?", options: ["Can you send me a screenshot?", "Send screenshot now.", "You send screenshot?", "I want screenshot."], answer: "Can you send me a screenshot?", why: "'Can you ...?' nazik bir rica kalıbıdır.", obj: "h3", whyNot: {"Send screenshot now.":"Emir cümlesidir; sert durur, nazik rica değildir.","You send screenshot?":"Yukarı tonlu soru konuşmada olur ama rica kalıbı değildir ve yazıda uygun görünmez.","I want screenshot.":"İstek bildirir ama nazik değildir ve 'a screenshot' eksik; 'Can you ...?' rica kalıbı kullanılmalı."} }
     ],
     interview: [
       { q: "A user says 'My computer is slow.' What questions do you ask?", a: "I ask: When did it start? Did you install anything new? What programs are open? Did you restart the computer? Does it happen all the time or only sometimes? Then I check the system." },
@@ -338,7 +372,7 @@
       { term: "Screenshot", tr: "ekran görüntüsü", ex: "Please send a screenshot." },
       { term: "Recently", tr: "yakın zamanda", ex: "Did anything change recently?" },
       { term: "Another", tr: "başka", ex: "Try another computer." },
-      { term: "Since when", tr: "ne zamandan beri", ex: "Since when do you have this problem?" },
+      { term: "Since when", tr: "ne zamandan beri (present perfect ister; ileride işlenecek)", ex: "Since when have you had this problem?" },
       { term: "Happen", tr: "olmak, gerçekleşmek", ex: "When does it happen?" }
     ],
     resources: [
@@ -351,7 +385,7 @@
   /* 5 ───────────────────────────────────────────── Can / could */
   L[5] = {
     hook: "Can ve could, iş yerinde en sık kullanacağın nazik kalıplardır: rica, izin ve yetenek.",
-    homework: "Aşağıdaki durumlar için 'Could you ...?' cümleleri yaz: loğu göndermesini iste, telefona çıkmasını iste, 5 dakika sonra tekrar aramasını iste. Sonra 2 tanesini 'Can you ...?' ile de yaz ve farkı kendine açıkla.",
+    homework: "Aşağıdaki durumlar için 'Could you ...?' cümleleri yaz: log'u göndermesini iste, telefona çıkmasını iste, 5 dakika sonra tekrar aramasını iste. Sonra 2 tanesini 'Can you ...?' ile de yaz ve farkı kendine açıkla.",
     warmup: {
       recap: [
         { point: "Soru: Do/Does/Did + özne + yalın fiil.", example: "Did you restart it?" }
@@ -394,15 +428,26 @@
         "I can fix this in 10 minutes. (Bunu 10 dakikada çözebilirim.)",
         "I'm sorry, I can't do that today. (Üzgünüm, bunu bugün yapamam.)"
       ] },
-      { t: "warn", h: "Tuzak", text: "'Can you to help me?' yanlıştır, 'to' gelmez. 'I could connect yesterday' ise geçmişte yapabildiğini anlatır, nazik rica ile karıştırma: bağlam farkı gösterir." }
+      { t: "warn", h: "Tuzak", text: "'Can you to help me?' yanlıştır, 'to' gelmez. Geçmişte tek bir olayda başardığını söylemek için 'could' değil 'was able to' / 'managed to' kullan: 'I was able to connect yesterday.' 'Could' genel geçmiş yetenek içindir ('I could swim when I was five') ve 'Could you ...?' kalıbında nazik rica olur." }
     ],
     story: { title: "Toplantıda", text: "In the meeting, Elnur says: 'Could you share your screen, please?' Ayşe answers: 'Sure. Can you see it now?' Elnur says: 'Yes, I can. Thank you.'", question: "What does Elnur ask Ayşe to do?" },
+    objectives: [
+      { id: "h1", text: "can/could'tan sonra yalın fiil kullanıp olumsuzunu (can't) ve doğru cümle biçimini kurabilirsin." },
+      { id: "h2", text: "Rica ve izin isteme cümlelerinde can ile could'un nezaket farkını ayırt edebilirsin." }
+    ],
+    summary: [
+      "can/could yetenek, rica ve izin için kullanılır.",
+      "could can'den daha nazik ve resmîdir; müşteri ve yöneticiye 'Could you ...?' denir.",
+      "can/could'tan sonra fiil yalın gelir, 'to' kullanılmaz ve üçüncü tekil kişide -s eklenmez.",
+      "Olumsuzlar can't ve couldn't'tır; 'please' nezaketi artırır."
+    ],
     quiz: [
-      { q: "Daha nazik rica hangisidir?", options: ["Could you help me?", "Help me.", "You help me?", "I want help."], answer: "Could you help me?", why: "'Could you...?' en nazik rica kalıplarından biridir." },
-      { q: "'She ___ configure the router.' (yapabilir)", options: ["can", "cans", "can to", "is can"], answer: "can", why: "can 3. tekil kişide -s almaz ve yalın fiil ister." },
-      { q: "'I ___ connect to the VPN.' (bağlanamıyorum)", options: ["can't", "don't can", "can not to", "am not can"], answer: "can't", why: "can'in olumsuzu can't ya da cannot'tır." },
-      { q: "'Could I ask a question?' ne anlama gelir?", options: ["Bir soru sorabilir miyim?", "Soru sormayı bırak", "Sen soru sordun", "Soru sormam gerekiyor"], answer: "Bir soru sorabilir miyim?", why: "'Could I...?' izin isteme kalıbıdır." },
-      { q: "Doğru cümle hangisidir?", options: ["Can you send me the file?", "Can you to send me the file?", "Can you sending me the file?", "Can you sends me the file?"], answer: "Can you send me the file?", why: "can'den sonra yalın fiil gelir." }
+      { q: "Daha nazik rica hangisidir?", options: ["Could you help me?", "Help me.", "You help me?", "I want help."], answer: "Could you help me?", why: "'Could you...?' en nazik rica kalıplarından biridir.", obj: "h2", whyNot: {"Help me.":"Emir cümlesidir, nazik rica değildir.","You help me?":"Tonlamayla soru olur ama rica kalıbı değildir.","I want help.":"Düz bir istek bildirimidir; 'Could you ...?' gibi nazik kalıp taşımaz."} },
+      { q: "'She ___ configure the router.' (yapabilir)", options: ["can", "cans", "can to", "is can"], answer: "can", why: "can 3. tekil kişide -s almaz ve yalın fiil ister.", obj: "h1", whyNot: {"cans":"can modal fiildir; üçüncü tekil kişide de -s almaz.","can to":"can'den sonra 'to' gelmez, yalın fiil gelir.","is can":"can zaten yardımcı (modal) fiildir; be fiiliyle birlikte kullanılmaz."} },
+      { q: "'I ___ connect to the VPN.' (bağlanamıyorum)", options: ["can't", "don't can", "can not to", "am not can"], answer: "can't", why: "can'in olumsuzu can't ya da cannot'tır.", obj: "h1", whyNot: {"don't can":"Modal fiil do ile olumsuz yapılmaz; can'in olumsuzu can't'tır.","can not to":"can'den sonra 'to' gelmez.","am not can":"be fiili ile modal fiil birleştirilmez; olumsuz can't olur."} },
+      { q: "'Could I ask a question?' ne anlama gelir?", options: ["Bir soru sorabilir miyim?", "Soru sormayı bırak", "Sen soru sordun", "Soru sormam gerekiyor"], answer: "Bir soru sorabilir miyim?", why: "'Could I...?' izin isteme kalıbıdır.", obj: "h2", whyNot: {"Soru sormayı bırak":"Bu bir emirdir; 'Could I ...?' ise izin isteme kalıbıdır.","Sen soru sordun":"Geçmişte olan bir olayı bildirmez; 'Could I ...?' şimdi izin ister.","Soru sormam gerekiyor":"Zorunluluk 'I have to' / 'I must' ile anlatılır; could zorunluluk bildirmez."} },
+      { q: "Doğru cümle hangisidir?", options: ["Can you send me the file?", "Can you to send me the file?", "Can you sending me the file?", "Can you sends me the file?"], answer: "Can you send me the file?", why: "can'den sonra yalın fiil gelir.", obj: "h1", whyNot: {"Can you to send me the file?":"can'den sonra 'to' gelmez.","Can you sending me the file?":"can'den sonra -ing değil yalın fiil gelir.","Can you sends me the file?":"can'den sonra fiil yalın kalır; -s eklenmez."} },
+      { q: "Yeni tanıştığın bir müşteriden, e-postayla log dosyası istiyorsun. Hangi cümle en uygun (nazik ve resmî) olur?", options: ["Can you send the log, mate?", "Send me the log.", "I need the log now.", "Could you please send me the log file?"], answer: "Could you please send me the log file?", why: "Tanımadığın kişiye 'Could you please ...?' en nazik ve resmî rica kalıbıdır; 'Can you ...?' samimi ortama daha uygundur.", obj: "h2", whyNot: {"Can you send the log, mate?":"'Can you' rica olarak doğru, ama 'mate' çok samimi bir hitaptır; yeni tanıştığın müşteri için could ve please daha uygundur.","Send me the log.":"Emir cümlesidir; müşteriye sert durur.","I need the log now.":"İhtiyacı bildirir ama rica değildir ve 'now' baskı yapar."} }
     ],
     interview: [
       { q: "What can you do in networking?", a: "I can configure basic VLANs, assign IP addresses, and troubleshoot simple connection problems. I'm learning more every day, and I can read the documentation and learn new tools quickly." },
@@ -471,12 +516,24 @@
       { t: "warn", h: "Tuzak", text: "Türkçeden birebir çeviri tehlikelidir. 'I wait your reply' yerine 'I look forward to your reply'. 'Please do the needful' gibi kalıplar da bazı kültürlerde garip karşılanır, sade yaz." }
     ],
     story: { title: "Bir e-posta", text: "Subject: Password reset. Hi Elif, I reset your password. Your new temporary password is in the next message. Please change it after you log in. Best regards, [Adın].", question: "What should Elif do after she logs in?" },
+    objectives: [
+      { id: "h1", text: "Kapanış ve selamlamayı resmîlik düzeyine göre seçebilirsin (Best regards, Dear Mr. Smith)." },
+      { id: "h2", text: "Please find ... attached ve I look forward to ... gibi kalıpları doğru kurabilirsin." },
+      { id: "h3", text: "Kısa, net ve içeriği tahmin ettiren bir konu satırı seçebilirsin." }
+    ],
+    summary: [
+      "İş e-postasının altı parçası vardır: konu, selamlama, amaç, ayrıntı, istek, kapanış.",
+      "Resmîde 'Dear Mr. Smith' ve 'Kind/Best regards' kullanılır; samimide 'Hi' ve 'Thanks' olur.",
+      "Kalıplar: 'Please find the file attached', 'I look forward to your reply'.",
+      "Konu satırı kısa ve net olmalıdır; e-posta kısa yazılır ve tek konu içerir."
+    ],
     quiz: [
-      { q: "E-posta kapanışı için hangisi uygundur?", options: ["Best regards,", "See you in the toilet,", "Bye bye boss,", "Answer me,"], answer: "Best regards,", why: "'Best regards' ve 'Kind regards' iş e-postasında yaygın kapanışlardır." },
-      { q: "Ekte dosya gönderirken hangi cümle doğrudur?", options: ["Please find the file attached.", "Please find the file attach.", "Please attached the file find.", "The file is attach."], answer: "Please find the file attached.", why: "'Please find ... attached' ekli dosya için kalıp ifadedir." },
-      { q: "'Cevabınızı bekliyorum.' hangisidir?", options: ["I look forward to your reply.", "I wait your reply.", "I am waiting you.", "I hope reply."], answer: "I look forward to your reply.", why: "Nazik ve doğal kalıp: look forward to + isim." },
-      { q: "Resmî bir e-postaya nasıl başlanır?", options: ["Dear Mr. Smith,", "Hey bro,", "What's up,", "Yo,"], answer: "Dear Mr. Smith,", why: "Resmî selamlama 'Dear' ile başlar." },
-      { q: "Konu satırı için en iyi örnek hangisidir?", options: ["Server maintenance on Saturday 22:00", "Hi", "Important!!!", "Please read"], answer: "Server maintenance on Saturday 22:00", why: "İyi konu satırı kısa, net ve içeriği tahmin ettirir." }
+      { q: "E-posta kapanışı için hangisi uygundur?", options: ["Best regards,", "See you in the toilet,", "Bye bye boss,", "Answer me,"], answer: "Best regards,", why: "'Best regards' ve 'Kind regards' iş e-postasında yaygın kapanışlardır.", obj: "h1", whyNot: {"See you in the toilet,":"İş e-postası için uygunsuz ve şakacıdır.","Bye bye boss,":"Fazla gündelik ve saygısızdır; resmî kapanış Best/Kind regards'tır.","Answer me,":"Emir kipidir; kapanış değil ve nazik durmaz."} },
+      { q: "Ekte dosya gönderirken hangi cümle doğrudur?", options: ["Please find the file attached.", "Please find the file attach.", "Please attached the file find.", "The file is attach."], answer: "Please find the file attached.", why: "'Please find ... attached' ekli dosya için kalıp ifadedir.", obj: "h2", whyNot: {"Please find the file attach.":"'attach' fiildir; 'ekte' anlamı için sıfat olan 'attached' gerekir.","Please attached the file find.":"Sözcük sırası bozuk; kalıp 'Please find the file attached.'","The file is attach.":"is'ten sonra 'attached' (ekli) gerekir; 'attach' yalın fiildir."} },
+      { q: "'Cevabınızı bekliyorum.' hangisidir?", options: ["I look forward to your reply.", "I wait your reply.", "I am waiting you.", "I hope reply."], answer: "I look forward to your reply.", why: "Nazik ve doğal kalıp: look forward to + isim.", obj: "h2", whyNot: {"I wait your reply.":"Türkçeden birebir çeviridir; 'wait' ile 'for' gerekir, doğal kalıp 'look forward to'dur.","I am waiting you.":"'wait' kişi nesnesi için 'for' ister ve cevabı belirtmez; doğal iş kalıbı değil.","I hope reply.":"Cümle bozuk, nesne ve yapı eksik; 'I hope to hear from you' gibi kurulmalıydı."} },
+      { q: "Resmî bir e-postaya nasıl başlanır?", options: ["Dear Mr. Smith,", "Hey bro,", "What's up,", "Yo,"], answer: "Dear Mr. Smith,", why: "Resmî selamlama 'Dear' ile başlar.", obj: "h1", whyNot: {"Hey bro,":"Çok samimi bir hitaptır; resmî e-postada 'Dear' kullanılır.","What's up,":"Gündelik sohbet selamıdır, resmî yazışmaya uymaz.","Yo,":"Argo selamlamadır; iş e-postasında kullanılmaz."} },
+      { q: "Konu satırı için en iyi örnek hangisidir?", options: ["Server maintenance on Saturday 22:00", "Hi", "Important!!!", "Please read"], answer: "Server maintenance on Saturday 22:00", why: "İyi konu satırı kısa, net ve içeriği tahmin ettirir.", obj: "h3", whyNot: {"Hi":"Konuyu hiç söylemez; konu satırı e-postanın içeriğini tahmin ettirmelidir.","Important!!!":"Neyin önemli olduğunu söylemez ve spam gibi görünür.","Please read":"Neyi okumak gerektiği belli değildir; içerik hakkında bilgi vermez."} },
+      { q: "Yöneticine yazdığın resmî e-postada selamlama ve kapanış çifti hangisi olur?", options: ["Hi mate, ... Cheers,", "Dear Ms. Yilmaz, ... Kind regards,", "Hey, ... Bye,", "Yo boss, ... See ya,"], answer: "Dear Ms. Yilmaz, ... Kind regards,", why: "Resmî yazışmada 'Dear + unvan/soyad' ile başlanır, 'Kind/Best regards' ile bitirilir.", obj: "h1", whyNot: {"Hi mate, ... Cheers,":"İkisi de gündelik ve samimi; yöneticiye resmî e-postada uygun değil.","Hey, ... Bye,":"Hitapsız ve çok kısa; resmî düzeyde 'Dear' ve 'regards' gerekir.","Yo boss, ... See ya,":"Argo ve saygısızdır; iş yazışmasında kullanılmaz."} }
     ],
     interview: [
       { q: "How do you write a professional email?", a: "I write a clear subject, a short greeting, and then I explain the purpose in the first sentence. I keep it short, I add a clear request with a deadline, and I close politely. Before sending, I check names, dates and attachments." },

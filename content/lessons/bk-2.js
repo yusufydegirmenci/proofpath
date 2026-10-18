@@ -27,7 +27,7 @@
         "Küresel erişim: bölgeler ve kenar konumları."
       ] },
       { t: "steps", h: "Hizmet modelleri", items: [
-        "IaaS: sanal makine, ağ (EC2). Sistem yönetimi sende.",
+        "IaaS: sanal makine, ağ (EC2, VPC). Sistem yönetimi sende.",
         "PaaS: platform (Elastic Beanstalk). Kodu getirirsin.",
         "SaaS: hazır yazılım (e-posta servisi).",
         "Sunucusuz (serverless): sunucuyu hiç yönetmezsin (Lambda, DynamoDB, S3)."
@@ -42,11 +42,25 @@
       ] },
       { t: "warn", h: "Tuzak", text: "Erişim anahtarını GitHub'a koymak: botlar dakikalar içinde bulup madencilik için kaynak açar ve binlerce dolarlık fatura çıkar. Anahtarları koda gömme." }
     ],
+    objectives: [
+      { id: "h1", text: "Paylaşılan sorumluluk modelinde AWS'nin ve müşterinin sorumluluklarını ayırt edebilirsin." },
+      { id: "h2", text: "Region ile Availability Zone farkını söyleyebilirsin." },
+      { id: "h3", text: "Yeni bir AWS hesabında kök kullanıcı için ilk güvenlik adımını seçebilirsin." },
+      { id: "h4", text: "IaaS, PaaS ve sunucusuz (serverless) modellerini sunucu yönetimi sorumluluğuna göre ayırt edebilirsin." }
+    ],
+    summary: [
+      "AWS bulutun güvenliğinden (donanım, veri merkezi, hipervizör), sen bulut içindeki güvenlikten (IAM, veri, yapılandırma, kod) sorumlusun.",
+      "Region coğrafi bir bölgedir; Availability Zone bu bölgedeki bağımsız veri merkezi gruplarıdır.",
+      "Kök kullanıcıya güçlü parola ve MFA koy, günlük işte kullanma; iş için ayrı yönetici kimliği aç.",
+      "Sunucusuz modelde (Lambda, DynamoDB, S3) sunucuyu hiç yönetmezsin; IaaS'ta sistem yönetimi sendedir.",
+      "Billing > Budgets ile bütçe uyarısı kur; erişim anahtarını koda veya GitHub'a koyma."
+    ],
     quiz: [
-      { q: "Paylaşılan sorumluluk modelinde müşteri neyden sorumludur?", options: ["Bulut İÇİNDEKİ güvenlik (IAM, veri, yapılandırma)", "Fiziksel veri merkezi", "Hipervizör", "Güç ve soğutma"], answer: "Bulut İÇİNDEKİ güvenlik (IAM, veri, yapılandırma)", why: "AWS bulutun güvenliğinden, müşteri bulut içindeki güvenlikten sorumludur." },
-      { q: "Bir bölge içindeki bağımsız veri merkezi gruplarına ne denir?", options: ["Availability Zone", "Edge location", "Bucket", "VPC peering"], answer: "Availability Zone", why: "Çoklu AZ yüksek erişilebilirlik sağlar." },
-      { q: "Kök hesap için ilk yapılması gereken nedir?", options: ["MFA etkinleştirmek ve günlük işte kullanmamak", "Erişim anahtarı oluşturmak", "Herkesle paylaşmak", "Parolayı basit tutmak"], answer: "MFA etkinleştirmek ve günlük işte kullanmamak", why: "Kök hesap sınırsız yetkilidir." },
-      { q: "Sunucuyu hiç yönetmediğin model hangisidir?", options: ["Sunucusuz (serverless)", "IaaS", "Fiziksel sunucu", "Colocation"], answer: "Sunucusuz (serverless)", why: "Lambda gibi servislerde altyapıyı AWS yönetir." }
+      { q: "Paylaşılan sorumluluk modelinde müşteri neyden sorumludur?", options: ["Bulut İÇİNDEKİ güvenlik (IAM, veri, yapılandırma)","Fiziksel veri merkezi","Hipervizör","Güç ve soğutma"], answer: "Bulut İÇİNDEKİ güvenlik (IAM, veri, yapılandırma)", why: "AWS bulutun güvenliğinden, müşteri bulut içindeki güvenlikten sorumludur.", obj: "h1", whyNot: {"Fiziksel veri merkezi": "Veri merkezinin fiziksel güvenliği 'bulutun güvenliği' tarafındadır ve AWS'ye aittir; müşteri bina erişimini yönetmez.", "Hipervizör": "Sanal makineleri çalıştıran hipervizör katmanı AWS'nin altyapısıdır; müşteri onu yamalamaz ya da yapılandırmaz.", "Güç ve soğutma": "Elektrik ve soğutma veri merkezi altyapısıdır ve AWS tarafından sağlanır; müşterinin sorumluluğu bunun üstündeki IAM, veri ve yapılandırmadır."} },
+      { q: "Bir bölge içindeki bağımsız veri merkezi gruplarına ne denir?", options: ["Availability Zone","Edge location","Bucket","VPC peering"], answer: "Availability Zone", why: "Çoklu AZ yüksek erişilebilirlik sağlar.", obj: "h2", whyNot: {"Edge location": "Edge location, içeriği kullanıcıya yaklaştıran küresel kenar konumlarıdır (ör. önbellekleme); bir bölgenin içindeki veri merkezi grubu değildir.", "Bucket": "Bucket bir S3 kovasıdır, yani veri kapsayıcısıdır; fiziksel veri merkezi grubu anlamına gelmez.", "VPC peering": "VPC peering iki sanal ağı birbirine bağlayan ağ özelliğidir; altyapı konumuyla ilgili bir kavram değildir."} },
+      { q: "Kök hesap için ilk yapılması gereken nedir?", options: ["MFA etkinleştirmek ve günlük işte kullanmamak","Erişim anahtarı oluşturmak","Herkesle paylaşmak","Parolayı basit tutmak"], answer: "MFA etkinleştirmek ve günlük işte kullanmamak", why: "Kök hesap sınırsız yetkilidir.", obj: "h3", whyNot: {"Erişim anahtarı oluşturmak": "Sınırsız yetkili kök hesaba uzun ömürlü anahtar üretmek sızıntı riskini büyütür; AWS kök için erişim anahtarı oluşturmamayı önerir.", "Herkesle paylaşmak": "Kök hesap sınırsız yetkilidir; paylaşmak herkese tam kontrol vermek demektir. Ekip için ayrı IAM kimlikleri açılır.", "Parolayı basit tutmak": "Basit parola ele geçirilmeyi kolaylaştırır; kök için güçlü parola ve MFA gerekir."} },
+      { q: "Kodu platforma yükleyip altındaki sunucu ve işletim sistemini platforma bıraktığın model (ör. Elastic Beanstalk) hangisidir?", options: ["IaaS","SaaS","Colocation","PaaS"], answer: "PaaS", why: "PaaS'ta kodu getirirsin, platform altyapıyı yönetir.", obj: "h4", whyNot: {"IaaS": "IaaS'ta (ör. EC2) sanal makine ve işletim sistemi sende kalır; kodu getirip gerisini bırakmazsın.", "SaaS": "SaaS hazır yazılımdır (ör. e-posta servisi); sen kendi kodunu yüklemezsin.", "Colocation": "Colocation yalnız veri merkezinde yer kiralamaktır; bulut hizmet modeli değildir ve sunucu sende kalır."} },
+      { q: "Sunucuyu hiç yönetmediğin model hangisidir?", options: ["Sunucusuz (serverless)","IaaS","Fiziksel sunucu","Colocation"], answer: "Sunucusuz (serverless)", why: "Lambda gibi servislerde altyapıyı AWS yönetir.", obj: "h4", whyNot: {"IaaS": "IaaS'ta (ör. EC2) sanal makineyi ve işletim sistemini sen yönetirsin; sistem yönetimi sendedir.", "Fiziksel sunucu": "Kendi fiziksel sunucunda donanımdan yazılıma her şeyi sen yönetirsin; bulut modeli bile değildir.", "Colocation": "Colocation'da yalnız veri merkezinde yer kiralarsın; sunucuyu hâlâ sen kurar ve yönetirsin."} }
     ],
     interview: [
       { q: "Region ve Availability Zone farkı nedir?", a: "Region coğrafi bir bölgedir (Frankfurt). AZ, o bölge içindeki birbirinden bağımsız veri merkezi gruplarıdır. Yüksek erişilebilirlik için birden fazla AZ'ye dağıtım yapılır." },
@@ -91,18 +105,30 @@
         "Varsayılan: her şey reddedilir (örtük deny).",
         "Açık Allow izin verir.",
         "Açık Deny her şeyi geçersiz kılar.",
-        "Birden çok politika birleşir; en kısıtlayıcı açık Deny kazanır."
+        "Birden çok politika birleşir; herhangi bir açık Deny kazanır."
       ] },
       { t: "box", h: "En az yetki", text: "Sadece görevin gerektirdiği eylemleri ve kaynakları ver. Önce dar başla, AccessDenied aldıkça gerekeni ekle. '*' yetkisi (her şeye izin) üretimde sorun işaretidir." },
       { t: "box", h: "Rol ve güven politikası", text: "Bir rolün iki yönü vardır: izin politikası (ne yapabilir) ve güven politikası (kim üstlenebilir; ör. lambda.amazonaws.com). Geçici kimlik bilgilerini STS verir." },
       { t: "warn", h: "Tuzak", text: "Kodda sabit erişim anahtarı kullanmak. Bunun yerine uygulamanın çalıştığı servise rol ver; SDK kimlik bilgisini otomatik alır." }
     ],
+    objectives: [
+      { id: "h1", text: "Bir isteğin sonucunu örtük deny, açık Allow ve açık Deny kurallarına göre söyleyebilirsin." },
+      { id: "h2", text: "Bir Lambda fonksiyonunun AWS'ye erişimi için kullanıcı anahtarı yerine IAM rolünü seçebilirsin." },
+      { id: "h3", text: "En az yetki ilkesine göre bir kimliğe yalnız gereken izinleri verebilirsin." },
+      { id: "h4", text: "Rolün güven politikası ile izin politikasını ayırt edebilirsin." }
+    ],
+    summary: [
+      "IAM'de varsayılan her şey reddedilir (örtük deny); açık Allow izin verir, açık Deny her şeyi geçersiz kılar.",
+      "Servisler uzun ömürlü anahtar yerine IAM rolü üstlenir; rol geçici kimlik bilgisi verir.",
+      "En az yetki: yalnız görevin gerektirdiği eylemleri ve kaynakları ver, '*' yetkisinden kaçın.",
+      "İzin politikası rolün ne yapabileceğini, güven politikası rolü kimin üstlenebileceğini belirler."
+    ],
     quiz: [
-      { q: "IAM'de varsayılan davranış nedir?", options: ["Her şey reddedilir", "Her şeye izin verilir", "Sadece okuma", "Sadece yazma"], answer: "Her şey reddedilir", why: "Örtük deny: izin verilmediyse yoktur." },
-      { q: "Açık Deny ile açık Allow çakışırsa ne olur?", options: ["Deny kazanır", "Allow kazanır", "İlk gelen kazanır", "Hata verir"], answer: "Deny kazanır", why: "Açık Deny her zaman önceliklidir." },
-      { q: "Bir Lambda fonksiyonu AWS servisine erişmek için neyi kullanmalıdır?", options: ["IAM rolü", "Koda gömülü erişim anahtarı", "Kök hesap parolası", "Genel kova"], answer: "IAM rolü", why: "Rol geçici kimlik sağlar; anahtar sızıntısı riski yoktur." },
-      { q: "En az yetki ilkesi ne demektir?", options: ["Sadece gereken izinleri vermek", "Herkese yönetici yetkisi", "İzinleri hiç vermemek", "Kök hesap kullanmak"], answer: "Sadece gereken izinleri vermek", why: "Hasar alanı daralır." },
-      { q: "Bir rolü kimlerin üstlenebileceğini hangi belge belirler?", options: ["Güven politikası", "S3 kova politikası", "Güvenlik grubu", "KMS anahtarı"], answer: "Güven politikası", why: "Trust policy, Principal'i tanımlar." }
+      { q: "IAM'de varsayılan davranış nedir?", options: ["Her şey reddedilir","Her şeye izin verilir","Sadece okuma","Sadece yazma"], answer: "Her şey reddedilir", why: "Örtük deny: izin verilmediyse yoktur.", obj: "h1", whyNot: {"Her şeye izin verilir": "Varsayılan 'izin ver' olsa bir politika yazmaya gerek kalmazdı; IAM'de izin ancak açık Allow ile doğar.", "Sadece okuma": "Okuma da bir eylemdir ve açık bir Allow olmadan verilmez; varsayılan hiçbir eylemi kapsamaz.", "Sadece yazma": "Yazma izni de varsayılan değildir; bir kimlik hiçbir politika bağlanmadan hiçbir şey yapamaz."} },
+      { q: "Açık Deny ile açık Allow çakışırsa ne olur?", options: ["Allow kazanır","İlk gelen kazanır","Deny kazanır","Hata verir"], answer: "Deny kazanır", why: "Açık Deny her zaman önceliklidir.", obj: "h1", whyNot: {"Allow kazanır": "Allow yalnız Deny yoksa geçerlidir; açık Deny her Allow'u geçersiz kılar.", "İlk gelen kazanır": "Politikalar sırayla okunup ilk eşleşen kazanmaz; hepsi birlikte değerlendirilir ve açık Deny öncelik taşır.", "Hata verir": "Çakışma bir hata değildir; değerlendirme mantığı belirlidir ve sonuç reddedilmiş istektir."} },
+      { q: "Bir Lambda fonksiyonu AWS servisine erişmek için neyi kullanmalıdır?", options: ["Koda gömülü erişim anahtarı","Kök hesap parolası","IAM rolü","Genel kova"], answer: "IAM rolü", why: "Rol geçici kimlik sağlar; anahtar sızıntısı riski yoktur.", obj: "h2", whyNot: {"Koda gömülü erişim anahtarı": "Gömülü anahtar uzun ömürlüdür ve koda ya da repoya sızabilir; anahtar uzun ömürlüdür, rotasyonu zordur ve sızarsa sahibi gibi davranılır.", "Kök hesap parolası": "Kök hesap sınırsız yetkilidir ve günlük işte kullanılmaz; ayrıca bir parola kodun API çağrılarını imzalamasının yolu değildir.", "Genel kova": "Genel (herkese açık) kova bir S3 ayarıdır, bir kimlik değildir; herkese açmak veri sızıntısına yol açar."} },
+      { q: "En az yetki ilkesi ne demektir?", options: ["Herkese yönetici yetkisi","İzinleri hiç vermemek","Sadece gereken izinleri vermek","Kök hesap kullanmak"], answer: "Sadece gereken izinleri vermek", why: "Hasar alanı daralır.", obj: "h3", whyNot: {"Herkese yönetici yetkisi": "Bu ilkenin tam tersidir; geniş yetki bir hesap ele geçirilince hasarı büyütür.", "İzinleri hiç vermemek": "Hiç izin vermemek uygulamayı çalışmaz kılar; ilke, iş için gerekenin verilmesini ister.", "Kök hesap kullanmak": "Kök hesap sınırsızdır, yani en çok yetkidir; en az yetkinin zıddıdır."} },
+      { q: "Bir rolü kimlerin üstlenebileceğini hangi belge belirler?", options: ["S3 kova politikası","Güvenlik grubu","KMS anahtarı","Güven politikası"], answer: "Güven politikası", why: "Trust policy, Principal'i tanımlar.", obj: "h4", whyNot: {"S3 kova politikası": "Kova politikası o kovaya kimin ne yapabileceğini belirleyen bir kaynak politikasıdır; rolü kimin üstleneceğini söylemez.", "Güvenlik grubu": "Güvenlik grubu ağ trafiğini (IP, port) süzer; IAM kimliklerini ya da rol üstlenmeyi yönetmez.", "KMS anahtarı": "KMS anahtarı veriyi şifreler; bir rolü kimin üstleneceğini değil, verinin nasıl korunacağını belirler."} }
     ],
     interview: [
       { q: "IAM kullanıcısı ile rol farkı nedir?", a: "Kullanıcı uzun ömürlü kimlik bilgisi taşıyan bir kimliktir. Rol, üstlenildiğinde geçici kimlik bilgisi veren bir kimliktir ve servisler, diğer hesaplar veya federasyon için tercih edilir." },
@@ -141,18 +167,29 @@
       { t: "steps", h: "Kimlik bilgisi sırası (kısaca)", items: [
         "Koda doğrudan verilen bilgi (kaçın).",
         "Ortam değişkenleri (AWS_ACCESS_KEY_ID...).",
-        "~/.aws/credentials ve config dosyası, profiller.",
-        "Konteyner/EC2/Lambda rolü: SDK otomatik bulur.",
-        "SSO ile oturum (aws sso login): geçici kimlik."
+        "~/.aws/credentials ve config dosyası, profiller; SSO ile oturum (aws sso login) da buradandır, geçici kimlik verir.",
+        "Konteyner/EC2/Lambda rolü: SDK otomatik bulur."
       ] },
       { t: "box", h: "Faydalı bayraklar", text: "--profile: hangi kimlik. --region: hangi bölge. --output json|table|text. --query: JMESPath ile çıktıyı süz. --dry-run: bazı komutlarda gerçekten uygulamadan dene. Sayfalama için --max-items ve --starting-token." },
       { t: "warn", h: "Tuzak", text: "Yanlış profil veya bölgeyle komut çalıştırmak: üretim kaynağını silebilirsin. Komuttan önce aws sts get-caller-identity ve bölgeyi kontrol etme alışkanlığı edin." }
     ],
+    objectives: [
+      { id: "h1", text: "aws sts get-caller-identity ile hangi kimlikle çalıştığını doğrulayabilirsin." },
+      { id: "h2", text: "Python'dan AWS API'lerini çağıran SDK'nın adını (boto3) söyleyebilirsin." },
+      { id: "h3", text: "Lambda gibi bulut içi kodun AWS'ye yetkilenme yolu olarak yürütme rolünü seçebilirsin." },
+      { id: "h4", text: "CLI çıktısını --query bayrağıyla süzebilirsin." }
+    ],
+    summary: [
+      "CLI betik ve hızlı yönetim için, SDK uygulama kodunun AWS'yi çağırması içindir; Python SDK'sı boto3'tür.",
+      "Komuttan önce aws sts get-caller-identity ile kimliği, ayrıca profili ve bölgeyi kontrol et.",
+      "Bulutta çalışan kod anahtar gömmek yerine rolün geçici kimlik bilgisini kullanır; SDK bunu otomatik bulur.",
+      "--query JMESPath ile çıktıdan alan seçer; --profile ve --region hangi kimlik ve bölgeyi belirler."
+    ],
     quiz: [
-      { q: "Kimin adına işlem yaptığını gösteren komut hangisidir?", options: ["aws sts get-caller-identity", "aws s3 ls", "aws configure list-all", "aws iam delete-user"], answer: "aws sts get-caller-identity", why: "Mevcut kimliği ve hesabı gösterir." },
-      { q: "Python için AWS SDK'sının adı nedir?", options: ["boto3", "pandas", "django", "numpy"], answer: "boto3", why: "boto3 Python SDK'sıdır." },
-      { q: "Lambda içindeki kod AWS'ye nasıl yetkilenmelidir?", options: ["Yürütme rolü üzerinden", "Kodda gömülü anahtarla", "Parolayla", "Anonim"], answer: "Yürütme rolü üzerinden", why: "SDK rolün geçici bilgisini otomatik kullanır." },
-      { q: "CLI çıktısını süzmek için hangi bayrak kullanılır?", options: ["--query", "--dry", "--force", "--wait-all"], answer: "--query", why: "JMESPath ile alan seçer." }
+      { q: "Kimin adına işlem yaptığını gösteren komut hangisidir?", options: ["aws s3 ls","aws configure list-all","aws sts get-caller-identity","aws iam delete-user"], answer: "aws sts get-caller-identity", why: "Mevcut kimliği ve hesabı gösterir.", obj: "h1", whyNot: {"aws s3 ls": "Bu komut kovaları listeler; çalışırken hangi kimliğin kullanıldığını göstermez.", "aws configure list-all": "Yapılandırma ayarlarını listeler; AWS'ye sorup şu an hangi hesap ve kimliğin geçerli olduğunu doğrulamaz.", "aws iam delete-user": "Bu komut bir IAM kullanıcısını siler; kimlik sorgulamaz, üstelik yıkıcı bir işlemdir."} },
+      { q: "Python için AWS SDK'sının adı nedir?", options: ["pandas","django","numpy","boto3"], answer: "boto3", why: "boto3 Python SDK'sıdır.", obj: "h2", whyNot: {"pandas": "pandas veri analizi kütüphanesidir; AWS API'lerini çağırmaz.", "django": "Django bir web çatısıdır (framework); AWS servislerine erişim için SDK değildir.", "numpy": "numpy sayısal dizi ve matris hesapları içindir; AWS'ye istek göndermez."} },
+      { q: "Lambda içindeki kod AWS'ye nasıl yetkilenmelidir?", options: ["Kodda gömülü anahtarla","Parolayla","Anonim","Yürütme rolü üzerinden"], answer: "Yürütme rolü üzerinden", why: "SDK rolün geçici bilgisini otomatik kullanır.", obj: "h3", whyNot: {"Kodda gömülü anahtarla": "Gömülü anahtar sızabilir ve uzun ömürlüdür; koda işlenen anahtar repoyla birlikte dağılır ve rotasyonu zordur.", "Parolayla": "AWS API çağrıları parolayla değil imzalı kimlik bilgisiyle yapılır; parola konsol girişi içindir.", "Anonim": "Kimliksiz istek AWS API'lerinde yetkilendirilmez; izin açık Allow ile bir kimliğe bağlanmalıdır."} },
+      { q: "CLI çıktısını süzmek için hangi bayrak kullanılır?", options: ["--dry","--force","--wait-all","--query"], answer: "--query", why: "JMESPath ile alan seçer.", obj: "h4", whyNot: {"--dry": "Böyle bir bayrak yok; komutu uygulamadan denemek için bazı komutlarda --dry-run kullanılır, çıktıyı değiştirmez.", "--force": "Bazı komutlarda onay sormadan zorla uygular (ör. aws s3 rb --force); çıktıdan alan seçmez.", "--wait-all": "AWS CLI'da genel bir bayrak olarak tanımlı değildir; bekleme işleri ayrı wait alt komutlarıyla yapılır."} }
     ],
     interview: [
       { q: "SDK kimlik bilgilerini nereden bulur?", a: "Sırasıyla koda verilenden, ortam değişkenlerinden, paylaşılan kimlik dosyası ve profillerden, sonra konteyner veya örnek rolünden (varsayılan sağlayıcı zinciri). Bulutta çalışırken rol kullanmak en güvenlisidir." },
@@ -210,12 +247,24 @@
       { t: "box", h: "Tutarlılık", text: "S3 artık yeni nesne yazma, üzerine yazma ve silme için güçlü okuma-sonrası-yazma tutarlılığı sağlar." },
       { t: "warn", h: "Tuzak", text: "Kovayı yanlışlıkla herkese açmak yıllardır en sık veri sızıntısı nedenidir. Block Public Access'i kapatma; statik site için CloudFront kullan." }
     ],
+    objectives: [
+      { id: "h1", text: "Kullanıcının dosyayı doğrudan S3'e yüklemesi için presigned URL'yi seçebilirsin." },
+      { id: "h2", text: "Lifecycle kuralı ile sürümleme özelliklerini amaçlarına (maliyet, koruma) göre eşleştirebilirsin." },
+      { id: "h3", text: "S3'te klasörlerin gerçekte anahtar öneki olduğunu söyleyebilirsin." },
+      { id: "h4", text: "Yüklenen nesneye otomatik tepki veren olay tabanlı akışı (S3 olay bildirimi ve Lambda) belirtebilirsin." }
+    ],
+    summary: [
+      "Presigned URL, tek bir nesneye geçici ve sınırlı erişim verir; kovayı herkese açmak sızıntı nedenidir.",
+      "Lifecycle kuralı nesneleri süreye göre IA veya Glacier'a taşır ya da siler; sürümleme yanlışlıkla silmeden korur.",
+      "S3 düz bir anahtar alanıdır; klasör gibi görünenler anahtar önekleridir (prefix).",
+      "Nesne oluşunca S3 bir Lambda, SQS veya SNS'i tetikleyebilir; bu sunucusuz mimarinin klasik kalıbıdır."
+    ],
     quiz: [
-      { q: "Uygulama sunucusunu geçmeden kullanıcıya doğrudan S3'e yükleme izni vermenin yolu nedir?", options: ["Presigned URL", "Kovayı herkese açmak", "Kök anahtar paylaşmak", "FTP"], answer: "Presigned URL", why: "Geçici ve sınırlı izin verir." },
-      { q: "Seyrek erişilen veriyi otomatik taşıyan ve maliyeti düşüren özellik hangisidir?", options: ["Lifecycle kuralı", "CORS", "Presigned URL", "Event bildirimi"], answer: "Lifecycle kuralı", why: "Süreye göre sınıf değiştirir veya siler." },
-      { q: "Yanlışlıkla silmeye veya üzerine yazmaya karşı hangi özellik korur?", options: ["Sürümleme (versioning)", "Transfer Acceleration", "Requester Pays", "CORS"], answer: "Sürümleme (versioning)", why: "Eski sürümler korunur ve geri alınabilir." },
-      { q: "S3'te klasörler gerçekte nedir?", options: ["Anahtar önekleri", "Fiziksel dizinler", "Ayrı kovalar", "Veritabanı tabloları"], answer: "Anahtar önekleri", why: "S3 düz anahtar alanıdır." },
-      { q: "Yüklenen dosyaya otomatik tepki vermek için hangisi kullanılır?", options: ["S3 olay bildirimi ve Lambda", "IAM kullanıcı", "Route 53", "Cron"], answer: "S3 olay bildirimi ve Lambda", why: "Olay tabanlı sunucusuz kalıp." }
+      { q: "Uygulama sunucusunu geçmeden kullanıcıya doğrudan S3'e yükleme izni vermenin yolu nedir?", options: ["Kovayı herkese açmak","Kök anahtar paylaşmak","FTP","Presigned URL"], answer: "Presigned URL", why: "Geçici ve sınırlı izin verir.", obj: "h1", whyNot: {"Kovayı herkese açmak": "Herkese açık kova, kimliği doğrulanmamış herkesin erişmesi demektir ve yıllardır en sık veri sızıntısı nedenidir.", "Kök anahtar paylaşmak": "Kök anahtar sınırsız yetki taşır; kullanıcıya vermek tüm hesabı açmaktır.", "FTP": "S3 doğrudan FTP sunmaz ve geçici, tek nesneye özel imzalı izin vermez; bu iş presigned URL'in görevidir."} },
+      { q: "Seyrek erişilen veriyi otomatik taşıyan ve maliyeti düşüren özellik hangisidir?", options: ["CORS","Presigned URL","Event bildirimi","Lifecycle kuralı"], answer: "Lifecycle kuralı", why: "Süreye göre sınıf değiştirir veya siler.", obj: "h2", whyNot: {"CORS": "CORS tarayıcıdan gelen farklı kökenli isteklere izin veren bir kuraldır; depolama sınıfını ya da maliyeti etkilemez.", "Presigned URL": "Presigned URL geçici erişim verir; nesneleri başka sınıfa taşımaz.", "Event bildirimi": "Olay bildirimi bir nesne oluşunca Lambda gibi hedefleri tetikler; nesneleri taşıyıp maliyeti düşürmez."} },
+      { q: "Yanlışlıkla silmeye veya üzerine yazmaya karşı hangi özellik korur?", options: ["Transfer Acceleration","Sürümleme (versioning)","Requester Pays","CORS"], answer: "Sürümleme (versioning)", why: "Eski sürümler korunur ve geri alınabilir.", obj: "h2", whyNot: {"Transfer Acceleration": "Transfer Acceleration uzak mesafeden yüklemeyi hızlandırır; eski sürümleri saklayıp korumaz.", "Requester Pays": "Requester Pays, veri indirme ve istek ücretini kovanın sahibi yerine isteyene yükler; silmeye karşı koruma sağlamaz.", "CORS": "CORS tarayıcı erişim kuralıdır; nesnelerin silinmesini ya da üzerine yazılmasını engellemez."} },
+      { q: "S3'te klasörler gerçekte nedir?", options: ["Fiziksel dizinler","Anahtar önekleri","Ayrı kovalar","Veritabanı tabloları"], answer: "Anahtar önekleri", why: "S3 düz anahtar alanıdır.", obj: "h3", whyNot: {"Fiziksel dizinler": "S3 dosya sistemi değil nesne depolamadır; dizin hiyerarşisi yoktur, yalnız / ile görünen önekler vardır.", "Ayrı kovalar": "Kova en üst kapsayıcıdır ve küresel benzersiz adı vardır; önek ayrı kova yaratmaz.", "Veritabanı tabloları": "S3 tablo ve satır tutan bir veritabanı değil, anahtarla adreslenen nesneler saklar."} },
+      { q: "Yüklenen dosyaya otomatik tepki vermek için hangisi kullanılır?", options: ["IAM kullanıcı","Route 53","S3 olay bildirimi ve Lambda","Cron"], answer: "S3 olay bildirimi ve Lambda", why: "Olay tabanlı sunucusuz kalıp.", obj: "h4", whyNot: {"IAM kullanıcı": "IAM kullanıcı bir kimliktir; bir yüklemeyi fark edip iş tetiklemez.", "Route 53": "Route 53 bir DNS hizmetidir; nesne olaylarına tepki vermez.", "Cron": "Cron zamana bağlı çalışır ve yüklemeyi ancak yoklayarak fark eder; olay anında tetiklenen tepki sunmaz."} }
     ],
     interview: [
       { q: "S3 depolama sınıflarını nasıl seçersin?", a: "Sık erişim için Standard, seyrek erişim için IA, bilinmeyen örüntü için Intelligent-Tiering, uzun süreli arşiv için Glacier. Lifecycle kurallarıyla geçişi otomatikleştiririm." },
@@ -237,7 +286,7 @@
 
   /* 11 ─────────────────────────────── DynamoDB anahtar tasarımı */
   L[11] = {
-    hook: "DynamoDB'de en önemli karar tablo oluştururken verdiğin: anahtarlar. Sonradan değiştiremezsin.",
+    hook: "DynamoDB'de en önemli karar, tabloyu oluştururken seçtiğin anahtarlardır. Sonradan değiştiremezsin.",
     homework: "'Sipariş' tablosunu düşün: bir müşterinin tüm siparişlerini tarihe göre sıralı getirmek için partition key ve sort key ne olmalı?",
     warmup: {
       recap: [{ point: "NoSQL'de önce erişim kalıbı belirlenir.", example: "Hangi sorgular?" }],
@@ -260,17 +309,30 @@
         "Scan: tüm tabloyu okur. Büyük tabloda yavaş ve pahalı, kaçın.",
         "PutItem, UpdateItem, DeleteItem, BatchWriteItem, TransactWriteItems."
       ] },
-      { t: "cmd", lang: "bash", text: "# Bir müşterinin Ekim 2026 siparişleri\naws dynamodb query --table-name Siparisler \\\n  --key-condition-expression \"MusteriId = :m AND SiparisTarihi BETWEEN :a AND :b\" \\\n  --expression-attribute-values '{\":m\":{\"S\":\"M-17\"},\":a\":{\"S\":\"2026-10-01\"},\":b\":{\"S\":\"2026-10-31\"}}'" },
+      { t: "cmd", lang: "bash", text: "# Bir müşterinin Ekim 2026 siparişleri\naws dynamodb query --table-name Siparisler \\\n  --key-condition-expression \"MusteriId = :m AND SiparisTarihi BETWEEN :a AND :b\" \\\n  --expression-attribute-values '{\":m\":{\"S\":\"M-17\"},\":a\":{\"S\":\"2026-10-01\"},\":b\":{\"S\":\"2026-10-31T23:59:59\"}}'" },
       { t: "box", h: "İyi partition key", text: "Çok sayıda farklı değeri olan ve erişimi eşit dağılan alan seçilir (kullanıcı kimliği, sipariş kimliği). Düşük çeşitlilik (durum, ülke) 'sıcak bölüm'e yol açar." },
       { t: "box", h: "Tek tablo tasarımı", text: "İlgili varlıkları (müşteri, siparişleri) aynı tabloda, PK/SK önekleriyle (PK = CUSTOMER#17, SK = ORDER#2026-10-11) saklayarak tek Query ile birlikte getirebilirsin." },
       { t: "warn", h: "Tuzak", text: "Scan ile filtre yazmak. Filtre okuma sonrası uygulanır; tüm öğeler okunur ve ücretlendirilir. Erişim kalıbı için anahtar veya indeks tasarla." }
     ],
+    objectives: [
+      { id: "h1", text: "Bir erişim kalıbı için GetItem, Query ve Scan işlemlerinden uygun olanı seçebilirsin." },
+      { id: "h2", text: "İyi bir partition key'in niteliklerini (çok farklı değer, eşit dağılım) söyleyebilirsin." },
+      { id: "h3", text: "Bir tablo için partition key ve sort key çiftini erişim kalıbına göre belirleyebilirsin." },
+      { id: "h4", text: "Sıcak bölümün (hot partition) nedenini açıklayabilirsin." }
+    ],
+    summary: [
+      "GetItem tam anahtarla tek öğe getirir, Query bir partition key'in öğelerini sıralı getirir, Scan tüm tabloyu okur ve kaçınılır.",
+      "İyi partition key çok farklı değer içerir ve erişimi eşit dağıtır; durum veya ülke gibi düşük çeşitlilik sorun çıkarır.",
+      "Bileşik anahtar partition key ve sort key'den oluşur; ikisi birlikte benzersiz olmalıdır.",
+      "Trafik tek anahtar değerine yığılınca sıcak bölüm oluşur ve kısıtlanma (throttling) başlar."
+    ],
     quiz: [
-      { q: "Bir bölüm anahtarına ait öğeleri sıralı getirmek için hangi işlem uygundur?", options: ["Query", "Scan", "DeleteTable", "CreateBackup"], answer: "Query", why: "Query partition key ile çalışır, sort key'de koşul destekler." },
-      { q: "İyi bir partition key nasıl olmalıdır?", options: ["Çok farklı değer içeren, eşit dağılan", "Sadece iki değerli", "Sabit", "Tarih"], answer: "Çok farklı değer içeren, eşit dağılan", why: "Yük bölümlere eşit dağılır." },
-      { q: "Tüm tabloyu okuyan ve büyük tablolarda kaçınılan işlem hangisidir?", options: ["Scan", "GetItem", "Query", "PutItem"], answer: "Scan", why: "Tüm öğeler okunur ve ücretlendirilir." },
-      { q: "Birincil anahtar bileşik olduğunda hangi iki parça vardır?", options: ["Partition key ve sort key", "İki sort key", "İki indeks", "Şema ve tablo"], answer: "Partition key ve sort key", why: "Birlikte benzersiz olmalıdır." },
-      { q: "'Sıcak bölüm' neden oluşur?", options: ["Trafiğin tek anahtar değerine yığılması", "Tablo büyüklüğü", "Şifreleme", "Yedekleme"], answer: "Trafiğin tek anahtar değerine yığılması", why: "Bölüm başına kapasite sınırlıdır." }
+      { q: "Bir bölüm anahtarına ait öğeleri sıralı getirmek için hangi işlem uygundur?", options: ["Scan","DeleteTable","Query","CreateBackup"], answer: "Query", why: "Query partition key ile çalışır, sort key'de koşul destekler.", obj: "h1", whyNot: {"Scan": "Scan tüm tabloyu okur; yalnız bir partition key'in öğelerini hedeflemez, büyük tabloda yavaş ve pahalıdır.", "DeleteTable": "Bu bir yönetim işlemidir ve tabloyu yok eder; öğe okumak şöyle dursun veri kaybettirir.", "CreateBackup": "Bu da bir yönetim işlemidir; tablonun yedeğini alır, öğeleri partition key ile sorgulamaz."} },
+      { q: "İyi bir partition key nasıl olmalıdır?", options: ["Sadece iki değerli","Sabit","Tarih","Çok farklı değer içeren, eşit dağılan"], answer: "Çok farklı değer içeren, eşit dağılan", why: "Yük bölümlere eşit dağılır.", obj: "h2", whyNot: {"Sadece iki değerli": "İki değer tüm yükü en fazla iki bölüme yığar; çeşitlilik düşük olduğu için sıcak bölüm oluşur.", "Sabit": "Sabit anahtarla bütün öğeler tek bölüme düşer; dağıtımın hiçbir faydası kalmaz.", "Tarih": "Yazmalar genelde o günün tarihine aittir; hepsi aynı değere yığılır ve o bölüm sıcak olur."} },
+      { q: "Tüm tabloyu okuyan ve büyük tablolarda kaçınılan işlem hangisidir?", options: ["GetItem","Scan","Query","PutItem"], answer: "Scan", why: "Tüm öğeler okunur ve ücretlendirilir.", obj: "h1", whyNot: {"GetItem": "GetItem tam anahtarla tek öğe okur; en hızlı ve en ucuz işlemdir.", "Query": "Query yalnız bir partition key'e ait öğeleri okur, tabloyu baştan sona taramaz.", "PutItem": "PutItem öğe yazar; tabloyu okumaz."} },
+      { q: "Birincil anahtar bileşik olduğunda hangi iki parça vardır?", options: ["İki sort key","İki indeks","Şema ve tablo","Partition key ve sort key"], answer: "Partition key ve sort key", why: "Birlikte benzersiz olmalıdır.", obj: "h3", whyNot: {"İki sort key": "Bileşik anahtarda bir sort key bulunur; iki sort key diye bir yapı yoktur ve partition key olmadan bölüm belirlenmez.", "İki indeks": "İndeks anahtarın parçası değildir; ayrı bir yapıdır ve birincil anahtar indeksten bağımsızdır.", "Şema ve tablo": "Şema ve tablo anahtar parçası değildir; birincil anahtarı oluşturan partition key ve sort key'dir."} },
+      { q: "'Sıcak bölüm' neden oluşur?", options: ["Tablo büyüklüğü","Şifreleme","Trafiğin tek anahtar değerine yığılması","Yedekleme"], answer: "Trafiğin tek anahtar değerine yığılması", why: "Bölüm başına kapasite sınırlıdır.", obj: "h4", whyNot: {"Tablo büyüklüğü": "Büyük tablo veriyi çok bölüme dağıtır; sorun boyut değil, erişimin tek değere yığılmasıdır.", "Şifreleme": "Şifreleme veriyi diskte korur ama isteklerin hangi anahtar değerine gittiğini değiştirmez; sıcak bölüm erişim dağılımından doğar.", "Yedekleme": "Yedekleme okuma ve yazma trafiğinin hangi bölüme gittiğini belirlemez."} },
+      { q: "Bir müşterinin tüm siparişlerini tarihe göre sıralı getirmek için hangi anahtar çifti uygundur?", options: ["Partition key: SiparisTarihi, sort key: MusteriId","Partition key: Durum, sort key: MusteriId","Partition key: MusteriId, sort key: SiparisTarihi","Yalnız partition key: MusteriId"], answer: "Partition key: MusteriId, sort key: SiparisTarihi", why: "MusteriId ile Query yapılır, SiparisTarihi sort key olduğu için sonuç tarihe göre sıralı gelir ve BETWEEN koşulu kullanılabilir.", obj: "h3", whyNot: {"Partition key: SiparisTarihi, sort key: MusteriId": "Bir günün tüm siparişleri tek bölüme düşer (sıcak bölüm) ve müşteriye göre Query yapamazsın; sorgu tarihe göre değil müşteriye göre kurulmalı.", "Partition key: Durum, sort key: MusteriId": "Durum az değerli olduğu için trafik birkaç bölüme yığılır, üstelik tarihe göre sıralama olmaz.", "Yalnız partition key: MusteriId": "Sort key olmayınca müşteri başına tek öğe saklanabilir (birincil anahtar benzersiz olmalı) ve tarih sıralaması yapılamaz."} }
     ],
     interview: [
       { q: "Query ile Scan arasındaki fark nedir?", a: "Query bir partition key'in öğelerini hedefler (sort key koşuluyla), sadece gerekli öğeleri okur. Scan tüm tabloyu okur; büyük tabloda yavaş ve pahalıdır." },
@@ -293,7 +355,7 @@
   /* 12 ─────────────────────────────── DynamoDB indeks ve kapasite */
   L[12] = {
     hook: "Tablo anahtarı tek sorguya yeter. İkinci bir sorgu için ikinci bir yol gerekir: indeks.",
-    homework: "Siparişleri 'durum' alanına göre sorgulamak için bir GSI tasarla: GSI'nın partition ve sort key'i ne olur?",
+    homework: "Tüm müşterilerin 'bekleyen' siparişlerini tarihe göre sorgulamak için bir GSI tasarla: GSI'nın partition ve sort key'i ne olur? Yalnız 'durum' partition key olunca hangi sorun çıkar, nasıl azaltırsın?",
     warmup: {
       recap: [{ point: "Query partition key ister.", example: "MusteriId" }],
       concepts: [
@@ -303,7 +365,7 @@
     },
     blocks: [
       { t: "h", text: "Neden öğreniyoruz?" },
-      { t: "box", h: "Gerçek talep", text: "Tablo MusteriId ile sorgulanıyor ama yönetici paneli 'bekleyen siparişler'i listelemek istiyor. Scan yerine durum alanı üzerine GSI kurarsın." },
+      { t: "box", h: "Gerçek talep", text: "Tablo MusteriId ile sorgulanıyor ama yönetici paneli 'bekleyen siparişler'i listelemek istiyor. Scan yerine Durum partition key, Tarih sort key olan bir GSI kurarsın. Dikkat: az değerli 'durum' GSI'da da sıcak bölüm yapar; çok yoğun yazmada Durum#1..N gibi parçalanmış değerler kullan ve sorguda hepsini oku." },
       { t: "steps", h: "İkincil indeksler", items: [
         "GSI: farklı partition + sort key; sonradan eklenebilir; nihai tutarlı okuma; ayrı kapasite.",
         "LSI: aynı partition key, farklı sort key; sadece tablo oluşturulurken eklenir; güçlü tutarlı okuma destekler; bölüm başına 10 GB sınırı getirir.",
@@ -324,12 +386,27 @@
       ] },
       { t: "warn", h: "Tuzak", text: "Kısıtlanmada yeniden denemeyi hemen ve sürekli yapmak yükü artırır. Üstel geri çekilme (exponential backoff) ve jitter kullan; SDK bunu yapar." }
     ],
+    objectives: [
+      { id: "h1", text: "GSI ile LSI'yi ayırt edebilir ve sorgu ihtiyacına (farklı partition key mi, güçlü tutarlılık mı) göre birini seçebilirsin." },
+      { id: "h2", text: "Bir öğe boyutu ve okuma/yazma sıklığından RCU ve WCU hesaplayabilirsin." },
+      { id: "h3", text: "Yükün öngörülebilirliğine göre on-demand ya da provisioned kapasite modunu seçebilirsin." },
+      { id: "h4", text: "TTL ve DynamoDB Streams'in ne işe yaradığını eşleştirebilirsin." }
+    ],
+    summary: [
+      "GSI farklı partition ve sort key ile sonradan eklenebilir; LSI aynı partition key'i korur ve yalnız tablo oluşturulurken eklenir.",
+      "Kapasite birimi hesabında öğe boyutu yukarı yuvarlanır: okumada 4 KB, yazmada 1 KB dilimi başına birim.",
+      "On-demand öngörülemeyen yük için, provisioned (Auto Scaling ile) öngörülebilir yük için uygundur.",
+      "TTL süresi geçen öğeleri siler, Streams öğe değişikliklerini sırayla yakalayıp Lambda'yı tetikleyebilir.",
+      "Kısıtlanmada hemen yeniden denemek yükü artırır; üstel geri çekilme ve jitter kullan."
+    ],
     quiz: [
-      { q: "Sonradan eklenebilen, farklı partition key ile sorgu sağlayan indeks hangisidir?", options: ["GSI", "LSI", "Primary key", "DAX"], answer: "GSI", why: "GSI istenildiğinde eklenir; LSI yalnızca tablo oluşturulurken." },
-      { q: "6 KB'lık bir öğeyi saniyede 10 kez güçlü tutarlı okumak kaç RCU gerektirir?", options: ["20", "10", "60", "5"], answer: "20", why: "6 KB → 2 birim (4 KB'a yuvarla) × 10 = 20 RCU." },
-      { q: "Süresi dolan öğeleri otomatik silen özellik hangisidir?", options: ["TTL", "Streams", "DAX", "GSI"], answer: "TTL", why: "TTL, süre alanı geçince öğeyi siler." },
-      { q: "Öngörülemeyen, ani dalgalanan yük için hangi kapasite modu uygundur?", options: ["On-demand", "Provisioned sabit", "Reserved", "Yedek mod"], answer: "On-demand", why: "Kapasite planlamadan istek başına öder." },
-      { q: "DynamoDB değişikliklerini yakalayıp Lambda tetiklemek için ne kullanılır?", options: ["DynamoDB Streams", "CloudFront", "Route 53", "Snowball"], answer: "DynamoDB Streams", why: "Değişiklik akışı olayları sıralı sağlar." }
+      { q: "Sonradan eklenebilen, farklı partition key ile sorgu sağlayan indeks hangisidir?", options: ["LSI","Primary key","GSI","DAX"], answer: "GSI", why: "GSI istenildiğinde eklenir; LSI yalnızca tablo oluşturulurken.", obj: "h1", whyNot: {"LSI": "LSI aynı partition key'i korur ve yalnız tablo oluşturulurken eklenebilir; farklı partition key sağlamaz.", "Primary key": "Birincil anahtar tablo oluşturulurken belirlenir ve sonradan değişmez; bir ikincil indeks değildir.", "DAX": "DAX bir bellek içi önbellektir; yeni bir sorgu anahtarı sağlamaz."} },
+      { q: "6 KB'lık bir öğeyi saniyede 10 kez güçlü tutarlı okumak kaç RCU gerektirir?", options: ["10","60","5","20"], answer: "20", why: "6 KB → 2 birim (4 KB'a yuvarla) × 10 = 20 RCU.", obj: "h2", whyNot: {"5": "5, tek dilim ve nihai tutarlı okuma (0,5 RCU) varsayar; soru güçlü tutarlı okuma ve iki dilim ister.", "10": "10 RCU, öğe 4 KB'a sığıyormuş gibi tek birimle hesaplar; 6 KB iki 4 KB'lık dilime çıkar.", "60": "KB sayısı ile okuma sayısını çarpmak yanlıştır; birim KB başına değil 4 KB'lık dilim başınadır."} },
+      { q: "Süresi dolan öğeleri otomatik silen özellik hangisidir?", options: ["Streams","DAX","TTL","GSI"], answer: "TTL", why: "TTL, süre alanı geçince öğeyi siler.", obj: "h4", whyNot: {"Streams": "Streams öğe değişikliklerini yakalar; öğeleri kendisi silmez.", "DAX": "DAX okumaları hızlandıran önbellektir; öğe silmez.", "GSI": "GSI ikincil sorgu yolu sağlar; öğelerin yaşam süresini yönetmez."} },
+      { q: "Öngörülemeyen, ani dalgalanan yük için hangi kapasite modu uygundur?", options: ["Provisioned sabit","On-demand","Reserved","Yedek mod"], answer: "On-demand", why: "Kapasite planlamadan istek başına öder.", obj: "h3", whyNot: {"Provisioned sabit": "Sabit kapasite ani artışta aşılır ve ProvisionedThroughputExceededException ile kısıtlanma başlar; öngörülebilir yük içindir.", "Reserved": "Reserved capacity bir fiyat taahhüdüdür, kapasite modu değildir; derste kapasite modları on-demand ve provisioned olarak geçer.", "Yedek mod": "Böyle bir kapasite modu yoktur; yedekleme ayrı bir özelliktir."} },
+      { q: "DynamoDB değişikliklerini yakalayıp Lambda tetiklemek için ne kullanılır?", options: ["CloudFront","Route 53","Snowball","DynamoDB Streams"], answer: "DynamoDB Streams", why: "Değişiklik akışı olayları sıralı sağlar.", obj: "h4", whyNot: {"CloudFront": "CloudFront içerik dağıtım ağıdır (CDN); tablo değişikliklerini izlemez.", "Route 53": "Route 53 alan adlarını IP adreslerine çözen DNS hizmetidir; tablo değişikliklerini izleyip tetiklemez.", "Snowball": "Snowball büyük veriyi fiziksel cihazla taşıma hizmetidir; değişiklik yakalamaz."} },
+      { q: "Aynı partition key'i koruyup farklı bir sort key ile sorgulamak ve güçlü tutarlı okuma da istemek için hangi indeks gerekir?", options: ["LSI","GSI","DAX önbelleği","Streams"], answer: "LSI", why: "LSI aynı partition key ile farklı sort key sunar ve güçlü tutarlı okumayı destekler; tablo oluşturulurken eklenir.", obj: "h1", whyNot: {"GSI": "GSI farklı partition key kullanabilir ama yalnız nihai tutarlı okuma sunar; güçlü tutarlı okuma gerektiğinde uygun değildir.", "DAX önbelleği": "DAX okumaları önbellekten hızlandırır; yeni bir sorgu anahtarı tanımlamaz.", "Streams": "Streams öğe değişikliklerini yakalar; farklı sort key ile sorgu yolu sağlamaz."} },
+      { q: "3,5 KB'lık bir öğeyi saniyede 100 kez yazmak kaç WCU gerektirir?", options: ["350","100","400","200"], answer: "400", why: "Yazmada 1 KB'a yukarı yuvarlanır: 3,5 KB → 4 birim, 4 × 100 = 400 WCU.", obj: "h2", whyNot: {"100": "100 WCU her yazmayı 1 KB'a kadar sayar; 3,5 KB tek birime sığmaz.", "200": "200, 2 birim varsayar; oysa 3,5 KB yukarı yuvarlanınca 4 birim eder.", "350": "3,5 ile 100'ü doğrudan çarpmak yuvarlamayı atlar; WCU 1 KB'lık tam dilimlerle sayılır, 3,5 KB 4 dilimdir."} }
     ],
     interview: [
       { q: "GSI ve LSI farkı nedir?", a: "GSI farklı partition ve sort key kullanır, sonradan eklenebilir, ayrı kapasiteye ve nihai tutarlılığa sahiptir. LSI aynı partition key'i korur, sadece tablo oluşturulurken eklenir, güçlü tutarlı okuma destekler ve bölüm başına boyut sınırı getirir." },
