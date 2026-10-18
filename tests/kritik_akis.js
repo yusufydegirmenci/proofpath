@@ -2,6 +2,7 @@
 // Başarısızlıkta çıkış kodu 1. Gerekli: tests/page_dbg.html (npm test önce make-dbg.js'i çalıştırır).
 const path = require('path');
 const { INIT, chromium } = require('./stub.js');
+const { SAHTE_INIT } = require('./sunucu_sahte.js');
 const { execFileSync } = require('child_process');
 execFileSync(process.execPath, [path.join(__dirname, 'make-dbg.js')]);
 const U = require('url').pathToFileURL(path.join(__dirname, 'page_dbg.html')).href;
@@ -17,6 +18,7 @@ async function open(b, hash, init) {
   p.on('pageerror', e => p.errs.push(e.message));
   await p.addInitScript('window.__guest=true');
   await p.addInitScript(INIT);
+  await p.addInitScript(SAHTE_INIT);
   await p.addInitScript(PLAN);
   if (init) await p.addInitScript(init);
   await p.goto(U + hash);
@@ -51,28 +53,33 @@ const lc = p => p.evaluate(() => JSON.parse(localStorage.ya_lc || '{}'));
     const rec = (await lc(p))['s-ccna-1'];
     ok(rec && rec.r === 1 && /^\d{4}-\d\d-\d\d$/.test(rec.d || ''), 'ilerleme: okuma kaydı (r=1, tarih dolu)');
 
-    // 3) Sınav puanı: tüm soruları doğru yanıtla
-    const ans = await p.evaluate(() => window.PP_LESSONS.ccna[1].quiz.map(q => q.answer));
+    // 3) Sınav puanı (Faz 9 sunucu): şıklar seçilir, sunucuya gönderilir; hiçbir cevap anahtarı sayfada yok (sentetik sunucu).
+    const ans = await p.evaluate(() => window.PP_LESSONS.ccna[1].quiz.map(q => window.__sentetikDogru(q)));
+    ok(await p.evaluate(() => PP_LESSONS.ccna[1].quiz.every(q => q.answer === undefined && q.why === undefined)), 'sınav: ders içeriğinde answer/why yok');
     for (const [i, a] of ans.entries()) {
       ok(await sec(p, a, i), 'sınav: seçenek bulundu ' + a);
       await p.waitForTimeout(150);
     }
+    ok(await p.locator('#view .qz.ok').count() === 0, 'sınav: gönderilmeden hiçbir kart doğru/yanlış işaretlenmez');
+    await p.locator('[data-sunucu-gonder]').click();
+    await p.waitForTimeout(600);
     const sorular = await p.evaluate(() => window.PP_LESSONS.ccna[1].quiz.length);
     const dogru = await p.locator('#view .qz.ok').count();
-    ok(dogru === sorular, `sınav: ${sorular} doğru cevap → ${dogru} kart 'Doğru' işaretli`);
-    // yanlış cevap yanlış sayılmalı
+    ok(dogru === sorular, `sınav: ${sorular} doğru cevap → ${dogru} kart 'Doğru' işaretli (sunucu geçti dedi)`);
+    ok((await p.evaluate(() => window.__ogrDurum.cagrilar.length)) === 1, 'sınav: sunucuya tam 1 gönderim yapıldı');
+    // yanlış cevap yanlış sayılmalı (sunucu doğrular)
     const p2 = await open(b, '#ders');
     const n2 = await p2.locator('button:text-is("Tamam, anladım")').count();
     for (let i = 0; i < n2; i++) await p2.locator('button:text-is("Tamam, anladım")').first().click();
     await p2.locator('button:has-text("Isınmayı bitirdim")').click();
     await p2.locator('button:text-is("Okudum, mini sınava geç")').click();
     await p2.waitForTimeout(300);
-    const q0 = await p2.evaluate(() => window.PP_LESSONS.ccna[1].quiz[0]);
-    const wrong = q0.options.find(o => o !== q0.answer);
-    await sec(p2, wrong, 0);
-    await p2.waitForTimeout(200);
+    const dizi2 = await p2.evaluate(() => PP_LESSONS.ccna[1].quiz.map(q => [window.__sentetikDogru(q), q.options.find(o => o !== window.__sentetikDogru(q))]));
+    for (const [i, [d, y]] of dizi2.entries()) { await sec(p2, i === 0 ? y : d, i); await p2.waitForTimeout(120); }
+    await p2.locator('[data-sunucu-gonder]').click();
+    await p2.waitForTimeout(600);
     const yanlis = await p2.locator('#view .qz.no').count(), dogru2 = await p2.locator('#view .qz.ok').count();
-    ok(yanlis === 1 && dogru2 === 0, `sınav: yanlış cevap 'Yanlış' işaretli (yanlış=${yanlis}, doğru=${dogru2})`);
+    ok(yanlis === 1 && dogru2 === sorular - 1, `sınav: yanlış cevap 'Yanlış' işaretli (yanlış=${yanlis}, doğru=${dogru2})`);
     ok(p.errs.length === 0 && p2.errs.length === 0, 'ders/sınav akışında sayfa hatası yok ' + JSON.stringify(p.errs.concat(p2.errs)));
     await p.context().close(); await p2.context().close();
   }

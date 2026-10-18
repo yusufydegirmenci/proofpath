@@ -4,6 +4,7 @@
 // Hata → çıkış 1.
 const path = require('path');
 const { INIT, chromium } = require('./stub.js');
+const { SAHTE_INIT } = require('./sunucu_sahte.js');
 const U = require('url').pathToFileURL(path.join(__dirname, '..', 'index.html')).href;
 const PLAN = `try{var o={};['ccna','eng','sec','bk'].forEach(function(t){o[t]={lv:1,n:0,ok:0,d:'2026-10-08',skip:true}});localStorage.ya_pl=JSON.stringify(o)}catch(e){}`;
 
@@ -19,17 +20,19 @@ async function open(ctx, hash) {
   await p.waitForTimeout(1500);
   return p;
 }
-const cevapla = (p, dogru) => p.evaluate(dg => {
-  const q = window.PP_LESSONS.ccna[1].quiz;
-  const kartlar = [...document.querySelectorAll('#view .qz')];
+// Sınav seçeneklerini tıkla + sunucuya gönder (Faz 9 sunucu): dogru=true → sentetik doğru şık, false → yanlış şık
+const cevapla = async (p, dogru) => {
+  const dogruIdx = await p.evaluate(() => window.PP_LESSONS.ccna[1].quiz.map(q => q.options.indexOf(window.__sentetikDogru(q))));
   let t = 0;
-  q.forEach((x, i) => {
-    const bt = [...kartlar[i].querySelectorAll('button')];
-    const hedef = bt.find(b => { const m = b.textContent.replace(/^[A-D]\s*/, '').trim(); return dg ? m === x.answer : m !== x.answer; });
-    if (hedef) { hedef.click(); t++; }
-  });
+  for (const [i, d] of dogruIdx.entries()) {
+    const j = dogru ? d : (d === 0 ? 1 : 0);
+    await p.evaluate(([i, j]) => document.querySelectorAll('#view .qz')[i].querySelectorAll('.qz-o')[j].click(), [i, j]);
+    t++; await p.waitForTimeout(80);
+  }
+  await p.locator('[data-sunucu-gonder]').click();
+  await p.waitForTimeout(600);
   return t;
-}, dogru);
+};
 async function dersOdasi(p) {
   const nn = await p.locator('button:text-is("Tamam, anladım")').count();
   for (let i = 0; i < nn; i++) await p.locator('button:text-is("Tamam, anladım")').first().click();
@@ -44,7 +47,7 @@ const denemeSay = p => p.evaluate(() => ((JSON.parse(localStorage.getItem('ya_pp
   const mk = async (misafir) => {
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } });
     if (misafir !== false) await ctx.addInitScript('window.__guest=true');
-    await ctx.addInitScript(INIT);
+    await ctx.addInitScript(INIT); await ctx.addInitScript(SAHTE_INIT);
     await ctx.addInitScript(PLAN);
     return ctx;
   };

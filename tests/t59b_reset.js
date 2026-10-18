@@ -1,14 +1,16 @@
 const {INIT,chromium}=require('./stub.js');
+const {SAHTE_INIT}=require('./sunucu_sahte.js');
 (async()=>{const b=await chromium.launch();
 for(const [w,m] of [[320,true],[390,true],[1100,false]]){
 const ctx=await b.newContext({viewport:{width:w,height:844},isMobile:m,hasTouch:m,colorScheme:'dark'});const p=await ctx.newPage();const er=[];p.on('pageerror',e=>er.push(e.message));
-await p.addInitScript(INIT);await p.addInitScript("localStorage.ya_gm_seen='1';localStorage.ya_lc=JSON.stringify({'s-ccna-3':{w:1,r:1}});localStorage.ya_nw=JSON.stringify({dns:2})");
+await p.addInitScript(INIT);await p.addInitScript(SAHTE_INIT);await p.addInitScript("localStorage.ya_gm_seen='1';localStorage.ya_lc=JSON.stringify({'s-ccna-3':{w:1,r:1}});localStorage.ya_nw=JSON.stringify({dns:2})");
 await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","tests/page_dbg.html")).href+'#ayar');await p.waitForTimeout(900);
 console.log(w,'lv rows',await p.$$eval('.lv-r',a=>a.length),'ovf',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth));
 await p.evaluate(()=>{[...document.querySelectorAll('.lv-r .btn')][0].click()});await p.waitForTimeout(300);
 console.log(' exam q',await p.$$eval('.qz',a=>a.length),await p.evaluate(()=>__S.pe.qs.length));
-for(let i=0;i<10;i++){await p.evaluate(()=>{const P=__S.pe;document.querySelectorAll('.qz-o')[P.qs[P.i].a].click()});await p.waitForTimeout(60);
+for(let i=0;i<10;i++){await p.evaluate(()=>{const P=__S.pe;const q=P.qs[P.i];document.querySelectorAll('.qz-o')[q.o.indexOf(window.__sentetikDogru({id:q.id,o:q.o}))].click()});await p.waitForTimeout(60);
  await p.evaluate(()=>{[...document.querySelectorAll('.btn.big')].pop().click()});await p.waitForTimeout(60)}
+await p.waitForTimeout(500);
 console.log(' result',await p.$eval('.pe-res h2',e=>e.textContent),'lv',await p.evaluate(()=>localStorage.ya_lv),'sk',await p.evaluate(()=>JSON.stringify(__S&&localStorage.ya_gs&&JSON.parse(localStorage.ya_gs).sk)));
 if(w===390)await p.screenshot({path:'s59-pe.png'});
 await p.goto('about:blank');await p.goto(require("url").pathToFileURL(require("path").join(__dirname,"..","tests/page_dbg.html")).href+'#ayar');await p.waitForTimeout(900);

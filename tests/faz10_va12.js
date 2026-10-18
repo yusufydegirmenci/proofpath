@@ -3,6 +3,7 @@
 // Gerçek çalıştırma jsDelivr'den sql.js/Pyodide indirir; ağ yoksa o bölümler "ATLANDI" yazar (geçti sayılmaz).
 const path = require('path'), fs = require('fs');
 const { INIT, chromium } = require('./stub.js');
+const { SAHTE_INIT } = require('./sunucu_sahte.js');
 const U = require('url').pathToFileURL(path.join(__dirname, '..', 'index.html')).href;
 let fails = 0;
 const ok = (c, m) => { console.log((c ? 'OK    ' : 'HATA  ') + m); if (!c) fails++; };
@@ -11,7 +12,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
 (async () => {
   const b = await chromium.launch();
   const ctx = await b.newContext({ viewport: { width: 390, height: 844 } });
-  await ctx.addInitScript('window.__guest=true'); await ctx.addInitScript(INIT);
+  await ctx.addInitScript('window.__guest=true'); await ctx.addInitScript(INIT); await ctx.addInitScript(SAHTE_INIT);
   const p = await ctx.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
   await p.goto(U + '#atolye'); await p.waitForTimeout(1500);
   const ev = (f, a) => p.evaluate(f, a);
@@ -61,17 +62,20 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(await ev(() => { const k = PP_VA.alanlar.filter(a => /^va2-/.test(a.id)).map(a => a.id); return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13].filter(n => !k.includes('va2-' + n + '-sql')); }), [], 'Seviye 2: her ders için va2-N-sql var');
 
   // 5) Değerlendirmeler
-  const sn = await ev(() => [1, 2].map(L => { const S = PP_VA['sinav' + L], dg = PP_VA.dersler.filter(d => d.seviye === L).map(d => d.id); return { n: S.sorular.length, esik: S.esik, gecerli: S.sorular.every(q => q.o.length === 4 && q.a >= 0 && q.a < 4 && dg.includes(q.bolum)), farkli: new Set(S.sorular.map(q => q.bolum)).size, konum: [...new Set(S.sorular.map(q => q.a))].length, bos: !PP.va.sinav([], L).ok, tam: PP.va.sinav(S.sorular.map(q => q.a), L), yanlis: PP.va.sinav(S.sorular.map(q => (q.a + 1) % 4), L) }; }));
+  await ev(() => { window.__ogrDurum.sinir = 100; });
+  const sn = await ev(async () => { const out = []; for (const L of [1, 2]) { const S = PP_VA['sinav' + L], dg = PP_VA.dersler.filter(d => d.seviye === L).map(d => d.id), dogru = (q) => q.o.indexOf(window.__sentetikDogru(q));
+    out.push({ n: S.sorular.length, esik: S.esik, gecerli: S.sorular.every(q => q.o.length === 4 && /^[0-9a-f]{8}$/.test(q.id) && q.a === undefined && dg.includes(q.bolum)), farkli: new Set(S.sorular.map(q => q.bolum)).size, konum: [...new Set(S.sorular.map(dogru))].length,
+      bos: !(await PP.va.sinavGonder([], L)).ok, tam: await PP.va.sinavGonder(S.sorular.map(dogru), L), yanlis: await PP.va.sinavGonder(S.sorular.map(q => (dogru(q) + 1) % 4), L) }); } return out; });
   ok(sn[0].n === 6 && sn[1].n === 10 && sn.every(x => x.esik === 0.8 && x.gecerli && x.bos && x.konum >= 2), 'sinav1 (6 soru) ve sinav2 (10 soru): geçerli, bölüm eşlemesi doğru, eşik %80');
   ok(sn[1].farkli >= 7, 'sinav2 en az 7 farklı dersi kapsar (' + sn[1].farkli + ')');
-  ok(sn.every(x => x.tam.ok && x.tam.gecti && !x.yanlis.gecti && x.yanlis.yanlis.length === x.yanlis.maks && x.yanlis.yanlis.every(y => y.telafi && y.dersId)), 'değerlendirme: hepsi doğru geçer, hepsi yanlış kalır ve telafi derse bağlanır');
+  ok(sn.every(x => x.tam.ok && x.tam.gecti && x.yanlis.ok && !x.yanlis.gecti && x.yanlis.yanlis.length === 0 && x.yanlis.telafiDersler.length >= 1 && x.yanlis.telafiDersler.every(y => y.telafi && y.dersId)), 'değerlendirme (sunucu): hepsi doğru geçer; hepsi yanlış kalır, yanlış listesi sızmaz, telafi bölümlere verilir');
 
   // 6) İlerleme
   await ev(() => localStorage.removeItem('ya_pp_ogr'));
   eq(await ev(() => { const D = PP.va.durum(); return [D.seviyeler[1].tamam, D.seviyeler[2].tamam, D.seviyeler[1].bekleyen.length, D.seviyeler[2].alanToplam > 10]; }), [false, false, 2, true], 'başlangıç: Seviye 1–2 tamam değil');
   await ev(() => { PP_VA.dersler.filter(d => d.seviye === 1).forEach(d => PP.va.dersOkundu(d.id)); });
   eq(await ev(() => PP.va.durum().seviyeler[1].tamam), false, 'Seviye 1: dersleri okumak tek başına tamamlamaz');
-  await ev(() => PP.va.sinavKaydet(PP.va.sinav(PP_VA.sinav1.sorular.map(q => q.a), 1)));
+  await ev(async () => PP.va.sinavKaydet(await PP.va.sinavGonder(PP_VA.sinav1.sorular.map(q => q.o.indexOf(window.__sentetikDogru(q))), 1)));
   eq(await ev(() => [PP.va.durum().seviyeler[1].tamam, PP.va.durum().seviyeler[1].sinavDenemesi, PP.va.durum().seviyeler[2].tamam, PP.va.durum().sinavDenemesi]), [true, 1, false, 0], 'Seviye 1: ders + değerlendirme → tamam; Seviye 0/2 kaydı ayrı');
   eq(await ev(() => PP.va.alanKaydet('va2-1-sql', false).ok), true, 'Seviye 2 alanı kaydedilir');
   eq(await ev(() => PP.va.durum().seviyeler[2].alanCozulen), 1, 'alan çözüldü sayısı artar ama Seviye 2 tamam saymaz');
@@ -143,12 +147,12 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   }
   ok(await ev(() => /Seviye 0–2 hazır/.test(document.querySelector('[data-va=ozet]').textContent) && !/sertifika(yı)? (aldın|kazandın|hak ettin)/i.test(document.body.innerText)), 'özet Seviye 0–2 hazır der; sertifika kazanıldı iddiası yok');
   ok(await ev(() => /doğrulanmadı/.test(document.querySelector('[data-va=sertifika]').textContent)), 'PL-300 "doğrulanmadı"');
-  await ev(() => PP_VA.sinav2.sorular.forEach((q, i) => document.querySelector('[data-va-sec="2:' + i + ':' + ((q.a + 1) % 4) + '"]').click())); await p.waitForTimeout(200);
-  await ev(() => document.querySelector('[data-va=sinav-bitir2]').click()); await p.waitForTimeout(250);
+  await ev(() => PP_VA.sinav2.sorular.forEach((q, i) => document.querySelector('[data-va-sec="2:' + i + ':' + ((q.o.indexOf(window.__sentetikDogru(q)) + 1) % 4) + '"]').click())); await p.waitForTimeout(200);
+  await ev(() => document.querySelector('[data-va=sinav-bitir2]').click()); await p.waitForTimeout(700);
   ok(await ev(() => document.querySelector('[data-va=sinav2] [data-va-sinav]').dataset.vaSinav === 'kaldi' && /Telafi:/.test(document.querySelector('[data-va=sinav2]').textContent)), 'Seviye 2 değerlendirmesi: yanlışlarda kaldı + telafi');
   await ev(() => document.querySelector('[data-va=yeniden2]').click()); await p.waitForTimeout(200);
-  await ev(() => PP_VA.sinav2.sorular.forEach((q, i) => document.querySelector('[data-va-sec="2:' + i + ':' + q.a + '"]').click())); await p.waitForTimeout(150);
-  await ev(() => document.querySelector('[data-va=sinav-bitir2]').click()); await p.waitForTimeout(250);
+  await ev(() => PP_VA.sinav2.sorular.forEach((q, i) => document.querySelector('[data-va-sec="2:' + i + ':' + q.o.indexOf(window.__sentetikDogru(q)) + '"]').click())); await p.waitForTimeout(150);
+  await ev(() => document.querySelector('[data-va=sinav-bitir2]').click()); await p.waitForTimeout(700);
   ok(await ev(() => document.querySelector('[data-va=sinav2] [data-va-sinav]').dataset.vaSinav === 'gecti' && PP.va.durum().seviyeler[2].sinavGecti), 'Seviye 2 değerlendirmesi: doğrularla geçti ve kaydedildi');
   ok(await ev(() => document.documentElement.scrollWidth <= innerWidth + 1), '390 px: yatay taşma yok');
   ok(errs.length === 0, 'sayfa hatası yok ' + errs.join('|'));

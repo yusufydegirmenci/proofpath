@@ -19,6 +19,17 @@ npm test -- --timeout=90 smoke      # zaman aşımını değiştir / dosya adın
 
 Uygulama artık tek bir sarmalayıcı işlev değil, küresel kapsamda sırayla yüklenen betiklerden oluşur (`index.html` → `js/`). `make-dbg.js`, `index.html`'den `tests/page_dbg.html` üretir (git'e girmez): `<script src>` ve `<link href>` yollarını `../` ile düzeltir ve `</body>` öncesine ayrı bir betik ekler. Bu betik `window.__S` (durum) ve `window.__X` (iç yardımcılar) tanımlar. Eski test adları (`ST`, `QBX`, `tf`, `cl`) yeni sembollere bağlanır (`STARTER`, `QB`, `tmFor`, `cleanLesson`); `NW_RX`, `baseQuiz`, `nwFor`, `nwFuzzy` eklendi. Yapı değişse de hook uygulama betiklerine dokunmaz.
 
+## Faz 9 sunucu testleri
+
+| Dosya | İçerik | Kontrol |
+|---|---|---|
+| `tests/faz9s_arac.js` (yeni) | `tools/cevap-anahtari.js`: sentetik mini projede kimlik, tam eşleşme önceliği (= istemci `qzCorrect`), kuru çalışma, yazma, SQL kaçışı, QB yer tutucusu (dizin kaymaz), tohum birleştirme/artık satır temizliği, hata yolları | 40 |
+| `tests/faz9s_sunucu.js` (yeni) | `PP.ogr.sunucu` (çevrimdışı/misafir/yetenek yok/hata eşleme/varyant/tutarsız yanıt), yerel güven (`denemeEkle` "sunucu" kabul etmez), shim `ogr` yeteneği, ek migration metin denetimi | 51 |
+| `tests/faz9s_tarama.js` (yeni) | içerikte/istemcide sınav cevabı kalmadığı taraması (id'li soruda cevap alanı yok, QB'de seviye sorusu yok, soru metni izinsiz dosyada yok), hedef tohumu = içerik, anahtar tohumu git'te izlenmiyor; gizli tohum varsa açıklama sızıntı taraması | 22 |
+| `tests/sunucu_sahte.js` | tarayıcı testleri için sahte sınav sunucusu; gerçek anahtar repoda olmadığından SENTETİK doğru şık kullanır | — |
+
+Gizli anahtar tohumu (`supabase/seed/*_anahtar.sql`) bu makinede yoksa `tests/ogrenme.js` ve `faz9s_tarama.js` anahtara bağlı denetimleri açıkça "ATLANDI" yazar (sessizce geçmez).
+
 ## Faz 4 testleri
 
 | Dosya | İçerik | Kontrol |

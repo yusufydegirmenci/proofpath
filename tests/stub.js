@@ -36,7 +36,7 @@ const INIT=()=>{
 window.__notify=notify;
  window.claude={use:async n=>({db:{collection:coll,doc},user:{isOwner:()=>!window.__guest,canEdit:()=>!window.__guest,id:async()=>window.__guest?'uGuest':'uOwner',me:async()=>({name:window.__guest?'Arkadaş':'Yusuf'}),profiles:async(ids)=>Object.fromEntries(ids.map(i=>[i,{name:i==='uF1'?'Elif':i==='uF2'?'Mert':'Biri'}]))},
   sample:Object.assign(async()=>({text:'cevap'}),{json:async(p,o)=>{ if(/destek talebi/.test(p)&&/JSON nesnesi/.test(p)) return {subject:'New laptop',from:{name:'Can',role:'HR',country:'TR'},body:'I need a laptop.',goal:'g',keywords:[{w:'laptop',tr:'dizüstü'}],skeleton:'We will ___.',model:'m',category:'onboarding'}; if(/JSON nesnesi/.test(p)) return {title:'Canlı Ders',hook:'h',blocks:[{t:'h',text:'a'},{t:'p',text:'b'},{t:'box',h:'x',text:'y'}],quiz:[{q:'q',answer:'a'}],interview:[],vocab:[],homework:'x',resources:[{title:'Ara',query:'vlan nedir',type:'video',why:'neden'}]}; if(/ÖĞRENCİNİN CEVABI/.test(p)) return {score:80,good:'g',fix:'f',better:'b'}; if(/destek talebi/.test(p)&&/JSON nesnesi/.test(p)) return {subject:'New laptop',from:{name:'Can',role:'HR',country:'TR'},body:'I need a laptop.',goal:'g',keywords:[{w:'laptop',tr:'dizüstü'}],skeleton:'We will ___.',model:'m',category:'onboarding'}; if(/Cevap için 4-6/.test(p)) return {keywords:[{w:'fix',tr:'düzeltmek'}]}; if(/Yusuf bir destek talebine/.test(p)) return {score:82,good:'Net yazdın',fix:'will kullan',better:'I will check it.',words:[{w:'check',tr:'kontrol'}]}; return q}}),
-  mcp:{callTool:async()=>({payload:{}})},downloads:{save:async()=>{}}})[n]||null};
+  mcp:{callTool:async()=>({payload:{}})},downloads:{save:async()=>{}},ogr:window.__ogrSahte||null})[n]||null};
 };
 
 

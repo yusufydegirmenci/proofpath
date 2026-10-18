@@ -186,7 +186,8 @@ function cleanLesson(l){
     r.items=Array.isArray(b.items)?b.items.map(str):[];
     r.parts=objs(b.parts).map(function(p){return pick(p,["tr","q","en"])});
     return r});
-  l.quiz=objs(l.quiz).map(function(q){var r=pick(q,["q","answer","why","obj"]);r.options=Array.isArray(q.options)?q.options.map(str):null;
+  l.quiz=objs(l.quiz).map(function(q){var sv=typeof q.id==="string"&&q.id&&q.answer===undefined;   /* Faz 9 sunucu: cevap anahtarı sunucuda; answer/why boş metne ÇEVRİLMEZ, id korunur */
+    var r=pick(q,sv?["q","obj"]:["q","answer","why","obj"]);if(sv)r.id=q.id;r.options=Array.isArray(q.options)?q.options.map(str):null;
     if(q.whyNot&&typeof q.whyNot==="object"&&!Array.isArray(q.whyNot)){r.whyNot={};Object.keys(q.whyNot).forEach(function(k){if(typeof q.whyNot[k]==="string")r.whyNot[k]=q.whyNot[k]})}
     return r});
   l.interview=objs(l.interview).map(function(x){return pick(x,["q","a"])});

@@ -42,7 +42,7 @@ function gmVocab(){
   return out;
 }
 function gmSmartOrder(pool,r){
-  var q2=[];QB.forEach(function(q,i){var GT0=S.gm.trk||"all";if(GT0!=="all"&&q.t!==GT0)return;q2.push(i)});
+  var q2=[];QB.forEach(function(q,i){var GT0=S.gm.trk||"all";if(q.t==="_")return;if(GT0!=="all"&&q.t!==GT0)return;q2.push(i)});
   if(q2.length)pool=q2;
   var me=myLeague(),ms={};((me&&Array.isArray(me.miss))?me.miss:[]).forEach(function(m){if(m&&typeof m.i==="number")ms[m.i]=1});
   var sc=pool.map(function(i){var it=QB[i],th=GS.sk[it.t]||1.5,box=GS.bx[i],near=Math.exp(-Math.abs(it.d-th)*1.4),w=near*(box==null?1.4:box>=3?.35:box===0?2.2:1.2)*(ms[i]?3:1);return [i,Math.pow(r()||.001,1/Math.max(.05,w))]});
@@ -73,7 +73,7 @@ function gmBuild(mode){
   if(vs.length>=3)shuf(vs,r).slice(0,mode==="boss"?4:3).forEach(function(v){
     var w=shuf(vs.filter(function(x){return x.tr!==v.tr}).map(function(x){return x.tr}),r).slice(0,2);if(w.length<2)return;
     var o=shuf([v.tr].concat(w),r);add({q:"“"+v.term+"” Türkçesi nedir?",o:o,a:o.indexOf(v.tr),w:v.ex||"",k:"v"+v.term,t:"v"})});
-  var qb=[];QB.forEach(function(q,i){var GT0=S.gm.trk||"all";if(GT0!=="all"&&q.t!==GT0&&!(GT0==="sw"&&q.t==="sw"))return;if(mode==="boss"?q.d>=2:q.d<=2)qb.push(i)});
+  var qb=[];QB.forEach(function(q,i){var GT0=S.gm.trk||"all";if(q.t==="_")return;if(GT0!=="all"&&q.t!==GT0&&!(GT0==="sw"&&q.t==="sw"))return;if(mode==="boss"?q.d>=2:q.d<=2)qb.push(i)});
   var qbs=mode==="free"?gmSmartOrder(qb,r):shuf(qb,r);var GT=S.gm.trk||"all",ap=[];if(GT==="all"||GT==="eng"||GT==="sw"){ap=ATLAS_SW.map(function(x){return ["sw",x]}).concat(ATLAS_EN.map(function(x){return ["en",x]}))}if(GT==="all"||GT==="sec")ap=ap.concat(ATLAS_SEC.map(function(x){return ["sec",x]}));if(GT==="all"||GT==="bk")ap=ap.concat(ATLAS_BK.map(function(x){return ["bk",x]}));if(GT==="eng")ap=ATLAS_EN.map(function(x){return ["en",x]});if(GT==="all"||GT==="ccna")ap=ap.concat(ATLAS_CCNA.map(function(x){return ["ccna",x]}));if(GT==="all"||GT==="net")ap=ap.concat(ATLAS_NET.map(function(x){return ["net",x]}));if(GT==="all"||GT==="dev")ap=ap.concat(ATLAS_DEV.map(function(x){return ["dev",x]}));if(GT==="all"||GT==="qa")ap=ap.concat(ATLAS_QA.map(function(x){return ["qa",x]}));
   var ats=shuf(ap,r),a=0,b=0;
   while(out.length<N&&(a<qbs.length||b<ats.length)){

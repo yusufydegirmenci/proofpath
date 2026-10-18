@@ -15,7 +15,7 @@
   ui.durum = function () {
     var depo = O.depo.varsayilan();
     var yeni = O.depo.oku(depo);
-    var eski = O.eski.oku(depo, function (i) { var q = typeof QB !== "undefined" ? QB[i] : null; return q ? q.t : null; });
+    var eski = O.eski.oku(depo, function (i) { var q = typeof QB !== "undefined" ? QB[i] : null; return q && q.t !== "_" ? q.t : null;   /* "_" = sunucuya ayrılan sınav sorusunun yer tutucusu */ });
     /* Yerleştirme ofseti / "built" konular İLERLEME sayılır (ustalık değil): mevcut sıralı kilitle uyum */
     try { TRKS.forEach(function (tr) { starterTopics(tr).forEach(function (t) { if (t.status === "built" && /^s-[a-z]+-\d+$/.test(t.id)) eski.dersTamam[O.eski.dersId(t.id)] = true; }); }); } catch (e) { /* eski küresel yok */ }
     return O.program.durumKur(yeni, eski, typeof S !== "undefined" ? S.projects : [], function (pid) { var pa = typeof pathOf === "function" ? pathOf(pid) : null; return pa ? "proje:" + pa.id + ":" + pid : null; });
@@ -41,8 +41,16 @@
     return r.acik ? null : r.nedenler[0].mesaj;
   };
 
+  /* Faz 9 sunucu: mini sınavı sunucuya bağlı ders (tüm sorularda id var, answer yok) → sunucu hedefi (ders:<yol>:<n>:sinav) ya da null */
+  ui.sunucuDersi = function (l) {
+    var qs = l && Array.isArray(l.quiz) ? l.quiz : [];
+    return qs.length > 0 && qs.every(function (q) { return q && typeof q.id === "string" && q.id && q.answer === undefined; });
+  };
+  ui.sunucuHedefi = function (l) { var d = ui.dersKimligi(l); return d && ui.sunucuDersi(l) ? d + ":sinav" : null; };
+
   /* Mini sınav sonucu: yalnız TÜM sorular cevaplandığında ve sabit dersler için deneme kaydı (aynı gün + aynı puan tekrar yazılmaz). */
   ui.dersSinavi = function (l, ok, toplam, oto) {
+    if (ui.sunucuDersi(l)) return null;   /* sunucuya bağlı mini sınavın kaydı sunucudan gelir (PP.ogr.sunucu.gonder); istemci denemesi yazılmaz */
     var Gr = ui.graf(), did = ui.dersKimligi(l);
     if (!Gr || !did || !Gr.hedefler[did + ":sinav"] || !(toplam > 0)) return null;
     return O.depo.denemeEkle({ id: "dq-" + did + "-" + new Date().toISOString() + "-" + ok + "-" + toplam, hedef: did + ":sinav", varyant: "v1", puan: ok, maks: toplam, tarih: new Date().toISOString(), surum: Gr.surum,
@@ -100,7 +108,7 @@
       return h("div", { class: "small" }, (tamam ? "✓ " : "○ ") + Gr.yetkinlikler[yid].ad, h("span", { class: "mute" }, " · ilerleme: " + (tamam ? "tamam" : "bitmedi") + " · ustalık: " + (u ? ETIKET[u.durum] : "-")));
     };
     var ac = O.kapi.dersAcik(Gr, did, du), us = ac.ustalik, hd = O.deg.hedefDurumu(Gr, did + ":sinav", du.denemeler);
-    var kutu = [h("div", { class: "small mute" }, "Bu ders açık: " + (ac.acik ? "evet" : "hayır") + ". Ustalık ayrı sayılır: " + ETIKET[us.durum] + (us.guven === "istemci" ? " (istemcide kaydedildi, sunucuda doğrulanmadı)" : "") + ".")];
+    var kutu = [h("div", { class: "small mute" }, "Bu ders açık: " + (ac.acik ? "evet" : "hayır") + ". Ustalık ayrı sayılır: " + ETIKET[us.durum] + (us.guven === "istemci" ? " (istemcide kaydedildi, sunucuda doğrulanmadı)" : us.guven === "sunucu" ? " (sunucuda doğrulandı)" : "") + ".")];
     if (!ac.acik) ac.nedenler.forEach(function (n) { kutu.push(h("div", { class: "small" }, "🔒 " + n.mesaj)); });
     if (hd.durum !== "denenmedi") kutu.push(h("div", { class: "small" }, "Mini sınav hedefi: %" + Math.round(hd.oran * 100) + " (gereken %" + Math.round(hd.esik * 100) + ") → " + (hd.durum === "gecti" ? "geçti" : "geçmedi")));
     else if (hd.gecmis.length) kutu.push(h("div", { class: "small mute" }, "Kayıtlı ama sayılmayan deneme: " + hd.gecmis[0].neden));
@@ -123,6 +131,16 @@
       var ra = O.kapi.degerlendir(Gr, altin[0], du);
       kutu.push(h("div", { class: "small", style: "margin-top:6px" }, h("b", null, "Sıradaki kapı: "), Gr.kapilar[altin[0]].ad + (ra.acik ? " (açık)" : " (kilitli)")));
       ra.nedenler.slice(0, 3).forEach(function (n) { kutu.push(h("div", { class: "small mute" }, "🔒 " + n.mesaj)); });
+    }
+    var kapiId = O.sunucu && ui.sunucuDersi(l) ? O.sunucu.dersKapisi(ui.sunucuHedefi(l)) : null;
+    if (kapiId) {
+      var sk = h("div", { class: "small", style: "margin-top:6px", "data-sunucu-kapi": "bekliyor" }, "Sunucu kapı kararı: sorgulanıyor…");
+      kutu.push(sk);
+      O.sunucu.kapi(kapiId).then(function (r) {
+        if (!sk.isConnected && !sk.parentNode) return;
+        sk.setAttribute("data-sunucu-kapi", r.ok ? (r.acik ? "acik" : "kapali") : "yok");
+        sk.textContent = r.ok ? "Sunucu kapı kararı: " + (r.acik ? "ustalık kapısı AÇIK (sunucuda doğrulandı)." : "ustalık kapısı kapalı (sunucuda geçilmiş sınav yok ya da eşik altında).") : "Sunucu kapı kararı alınamadı: " + r.mesaj;
+      });
     }
     kutu.push(h("div", { class: "small mute", style: "margin-top:6px" }, "Not: bu görünüm istemcide hesaplanır; güvenli yetkilendirme değildir. Güvenilir ustalık kaydı sunucu tarafı ister."));
     return h("details", { class: "panel pp-ogr" }, h("summary", null, h("b", null, "Ustalık ve kapılar "), h("span", { class: "small mute" }, "önkoşullar, kilit nedenleri")), kutu);

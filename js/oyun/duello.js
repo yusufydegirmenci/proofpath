@@ -12,7 +12,7 @@ function dzSave(D){try{localStorage.setItem(DZ_KEY,JSON.stringify(D))}catch(e){}
 function duRatingOf(uid){var x=S.league.filter(function(q){return q.id===uid})[0];return x&&x.dz?(num(x.dz.r)||1000):1000}
 function duTitle(r){return r>=1400?"Şampiyon":r>=1250?"Efsane":r>=1100?"Usta":r>=1000?"Rakip":"Çaylak"}
 function duQs(seed,trk,dd){
-  var r=rngf(seed),pool=[];QB.forEach(function(q,i){if(trk==="all"||q.t===trk)pool.push(i)});
+  var r=rngf(seed),pool=[];QB.forEach(function(q,i){if(q.t!=="_"&&(trk==="all"||q.t===trk))pool.push(i)});   /* "_" = sunucuya ayrılan sınav sorusunun yer tutucusu */
   var okd=dd===1?[1]:dd===2?[1,2]:[2,3],f=pool.filter(function(i){return okd.indexOf(QB[i].d)>=0});if(f.length<DU_N+2)f=pool;if(f.length<DU_N)return [];
   return shuf(f,r).slice(0,DU_N).map(function(i){return gmQB(i,r,false)});
 }

@@ -38,11 +38,11 @@
       { t: "warn", h: "Tuzak", text: "Yapılandırmayı her çağrıda doğrudan Parameter Store'dan okumak: kota ve gecikme sorunu. Önbellekle (TTL ile) ve değişiklik gecikmesini kabul et." }
     ],
     quiz: [
-      { q: "Yapılandırmayı doğrulayıp kademeli ve otomatik geri alma ile dağıtan servis hangisidir?", options: ["AppConfig", "Parameter Store", "S3", "SNS"], answer: "AppConfig", why: "Doğrulayıcı, dağıtım stratejisi ve alarm entegrasyonu vardır." },
-      { q: "Özellik bayrağının amacı nedir?", options: ["Özelliği yeniden dağıtmadan açıp kapatmak", "Disk şifrelemek", "DNS çözmek", "Yedek almak"], answer: "Özelliği yeniden dağıtmadan açıp kapatmak", why: "Riski kademeli yönetmeye yarar." },
-      { q: "Parola gibi gizli bilgi için en uygun servis hangisidir?", options: ["Secrets Manager", "AppConfig özellik bayrağı", "S3 genel kova", "Ortam değişkeni açık metin"], answer: "Secrets Manager", why: "Rotasyon ve şifreleme sunar." },
-      { q: "Lambda'da AppConfig'i verimli okumak için ne kullanılır?", options: ["AppConfig Lambda uzantısı (katman)", "Her istekte doğrudan API çağrısı", "Kodu yeniden dağıtmak", "VPC peering"], answer: "AppConfig Lambda uzantısı (katman)", why: "Yapılandırmayı önbelleğe alır ve arka planda yeniler." },
-      { q: "Parameter Store hangisini sağlamaz?", options: ["Kademeli dağıtım ve otomatik geri alma", "Hiyerarşik adlandırma", "SecureString", "Sürüm geçmişi"], answer: "Kademeli dağıtım ve otomatik geri alma", why: "Bu AppConfig'in alanıdır." }
+      { id: "14f84440", q: "Yapılandırmayı doğrulayıp kademeli ve otomatik geri alma ile dağıtan servis hangisidir?", options: ["AppConfig", "Parameter Store", "S3", "SNS"] },
+      { id: "3592499a", q: "Özellik bayrağının amacı nedir?", options: ["Özelliği yeniden dağıtmadan açıp kapatmak", "Disk şifrelemek", "DNS çözmek", "Yedek almak"] },
+      { id: "401baa81", q: "Parola gibi gizli bilgi için en uygun servis hangisidir?", options: ["Secrets Manager", "AppConfig özellik bayrağı", "S3 genel kova", "Ortam değişkeni açık metin"] },
+      { id: "4382e807", q: "Lambda'da AppConfig'i verimli okumak için ne kullanılır?", options: ["AppConfig Lambda uzantısı (katman)", "Her istekte doğrudan API çağrısı", "Kodu yeniden dağıtmak", "VPC peering"] },
+      { id: "740db43b", q: "Parameter Store hangisini sağlamaz?", options: ["Kademeli dağıtım ve otomatik geri alma", "Hiyerarşik adlandırma", "SecureString", "Sürüm geçmişi"] }
     ],
     interview: [
       { q: "Parameter Store ve AppConfig arasında nasıl seçersin?", a: "Basit, nadir değişen ayarlar için Parameter Store yeterli. Doğrulama, kademeli yayın, özellik bayrağı ve alarmla otomatik geri alma gerekiyorsa AppConfig." },
@@ -99,11 +99,11 @@
       { t: "warn", h: "Tuzak", text: "cdk deploy'dan önce cdk diff bakmamak: kaynak değişimi (replacement) veri kaybına yol açabilir; DynamoDB tablosu ve RDS için removalPolicy: RETAIN kullan." }
     ],
     quiz: [
-      { q: "CDK uygulamasının derlenip CloudFormation şablonu ürettiği komut hangisidir?", options: ["cdk synth", "cdk bootstrap", "cdk destroy", "cdk list-only"], answer: "cdk synth", why: "synth şablonu üretir; deploy dağıtır." },
-      { q: "CDK'de bir tablonun Lambda'ya okuma-yazma izni vermesi nasıl yapılır?", options: ["tablo.grantReadWriteData(fn)", "Kök anahtar paylaşmak", "Kovayı açmak", "Elle JSON yazmak zorunlu"], answer: "tablo.grantReadWriteData(fn)", why: "Gerekli IAM politikası otomatik oluşur." },
-      { q: "Dağıtımdan önce değişiklik farkını gösteren komut hangisidir?", options: ["cdk diff", "cdk init", "cdk ls", "cdk docs"], answer: "cdk diff", why: "Replacement gibi riskleri önceden gösterir." },
-      { q: "GraphQL'de bir alanın verisinin nereden geleceğini tanımlayan yapı nedir?", options: ["Resolver", "Stage", "Layer", "Shard"], answer: "Resolver", why: "Çözümleyici DynamoDB, Lambda gibi kaynağa bağlar." },
-      { q: "AppSync'te gerçek zamanlı güncelleme hangi yapıyla sağlanır?", options: ["Subscription", "Query", "Scan", "Trail"], answer: "Subscription", why: "WebSocket üzerinden değişiklikleri iter." }
+      { id: "6230ea38", q: "CDK uygulamasının derlenip CloudFormation şablonu ürettiği komut hangisidir?", options: ["cdk synth", "cdk bootstrap", "cdk destroy", "cdk list-only"] },
+      { id: "5d336f95", q: "CDK'de bir tablonun Lambda'ya okuma-yazma izni vermesi nasıl yapılır?", options: ["tablo.grantReadWriteData(fn)", "Kök anahtar paylaşmak", "Kovayı açmak", "Elle JSON yazmak zorunlu"] },
+      { id: "967f8275", q: "Dağıtımdan önce değişiklik farkını gösteren komut hangisidir?", options: ["cdk diff", "cdk init", "cdk ls", "cdk docs"] },
+      { id: "5379b438", q: "GraphQL'de bir alanın verisinin nereden geleceğini tanımlayan yapı nedir?", options: ["Resolver", "Stage", "Layer", "Shard"] },
+      { id: "21b402bf", q: "AppSync'te gerçek zamanlı güncelleme hangi yapıyla sağlanır?", options: ["Subscription", "Query", "Scan", "Trail"] }
     ],
     interview: [
       { q: "CDK ve CloudFormation ilişkisi nedir?", a: "CDK, programlama diliyle yazılan koddan CloudFormation şablonu üretir ve onu dağıtır. Yani sonuç yine CloudFormation yığınıdır; CDK soyutlama, döngü ve yardımcı metotlar ekler." },

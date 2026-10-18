@@ -773,11 +773,29 @@
     }
   };
 
+  /* Güvenilir sınav yolu: puanı ve kapı kararını sunucu verir (cevap anahtarı istemciye inmez). Yalnız bu üç işlev; tablolara yazma yok.
+     Sonuçlar supabase-js biçimindedir: {data, error}. */
+  var ogrApi = {
+    gonder: function (hedef, varyant, cevaplar, yardim) {
+      return sb.rpc("ogr_deneme_gonder", { p_hedef: hedef, p_varyant: varyant, p_cevaplar: cevaplar, p_yardim: yardim || {} });
+    },
+    kapi: function (kapi) {
+      return sb.rpc("ogr_kapi_degerlendir", { p_kapi: kapi });
+    },
+    denemelerim: function (limit) {
+      return sb.from("ogr_deneme").select("hedef,varyant,puan,maks,surum,olusturma").order("olusturma", { ascending: false }).limit(limit || 200);
+    }
+  };
+
   /* ---------------------------------------------------------------- window.claude */
 
   window.claude = {
     use: function (name) {
       switch (name) {
+        case "ogr":
+          return ensureSession().then(function () {
+            return ogrApi;
+          });
         case "db":
           return ensureSession().then(function () {
             return dbApi;

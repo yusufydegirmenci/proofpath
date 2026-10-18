@@ -163,8 +163,8 @@ const run = (p, body) => p.evaluate(new Function(SIFIR + body));
   eq(await run(p, `var o=plLoad(),r=[];[[1.4,false],[1.5,false],[2.29,false],[2.3,false],[3,true]].forEach(function(x){o.ccna={lv:x[0],n:5,ok:3,d:'x',skip:x[1]};plSave(o);r.push(plOffset('ccna',17))});o.ccna={lv:1,n:0,ok:0,d:'2026-10-08',skip:true};plSave(o);return r`),
     [0, 4, 4, 9, 0], 'plOffset (Faz 4, bant tek tanımdan): <1.5 → 0, <2.3 → N·0.25, diğer → N·0.5 (17 ders: 4, 9); atlanmış yerleştirme 0');
   for (const [sc, beklenen, sk] of [[62, 3, 2.5], [61, 2, 1.8], [32, 2, 1.8], [31, 1, 1.0], [0, 1, 1.0], [100, 3, 2.5]]) {
-    const r = await run(p, `S.pe={tr:'ccna',qs:[{},{}],i:1,pk:0,sc:${sc},mx:100,ok:0,done:false};peNext();return [S.pe.l,lvOf('ccna').l,lvOf('ccna').s,lvOf('ccna').m,GS.sk.ccna]`);
-    eq(r, [beklenen, beklenen, sc, 100, sk], `seviye sınavı: ${sc}/100 → düzey ${beklenen} (${['', 'Çırak', 'Kalfa', 'Usta'][beklenen]}), beceri tahmini ${sk}`);
+    const r = await run(p, `PP.ogr.sunucu.gonder=function(){return Promise.resolve({ok:true,puan:${sc},maks:100,oran:${sc}/100,gecti:${sc}>=80,dogruSayisi:1,soruSayisi:2,anahtar:null})};S.pe={tr:'ccna',hedef:'seviye:ccna',varyant:'v1',qs:[{id:'a1b2c3d4',o:['x','y']},{id:'e5f6a7b8',o:['x','y']}],i:1,ans:[0,0],busy:false,hata:null,res:null,done:false};peGonder();return new Promise(function(res){setTimeout(function(){res([S.pe.l,lvOf('ccna').l,lvOf('ccna').s,lvOf('ccna').m,GS.sk.ccna])},60)})`);
+    eq(r, [beklenen, beklenen, sc, 100, sk], `seviye sınavı (sunucu oranı): ${sc}/100 → düzey ${beklenen} (${['', 'Çırak', 'Kalfa', 'Usta'][beklenen]}), beceri tahmini ${sk}`);
   }
   eq(await run(p, `lvSave({});var a=lvOf('ccna');lvSave({ccna:{l:2,s:5,m:10,d:'x'}});return [a,lvOf('ccna').l,lvOf('net')]`), [null, 2, null], 'lvOf: kayıt yoksa null');
 

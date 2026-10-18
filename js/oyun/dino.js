@@ -4,7 +4,7 @@ var GM_TIER=["Çırak","Kalfa","Usta","Üstat","Efsane"];
 function gmTierOf(n){return Math.min(4,Math.floor(n/8))}
 function gmBuildTier(tier,seen,n){
   var r=rngf(Math.floor(Math.random()*1e9)),GT=S.gm.trk||"all",ds=tier<=0?[1]:tier===1?[1,2]:tier===2?[2]:tier===3?[2,3]:[3],pool=[];
-  QB.forEach(function(q,i){if(ds.indexOf(q.d)<0)return;if(GT!=="all"&&q.t!==GT)return;pool.push(i)});
+  QB.forEach(function(q,i){if(q.t==="_"||ds.indexOf(q.d)<0)return;if(GT!=="all"&&q.t!==GT)return;pool.push(i)});
   var fresh=pool.filter(function(i){return !seen[i]});if(fresh.length<n){pool.forEach(function(i){delete seen[i]});fresh=pool}
   var out=[];shuf(fresh,r).slice(0,n).forEach(function(i){seen[i]=1;var q=gmQB(i,r,r()<.18);if(q&&q.o.length>=3)out.push(q)});
   return out;

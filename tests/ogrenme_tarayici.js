@@ -2,6 +2,7 @@
 // mini sınav deneme olarak kaydedilir ve yenilemede kalır, kilit nedeni görünür, eski hesaplar özetle aynı. Hata → çıkış 1.
 const path = require('path');
 const { INIT, chromium } = require('./stub.js');
+const { SAHTE_INIT } = require('./sunucu_sahte.js');
 const U = require('url').pathToFileURL(path.join(__dirname, '..', 'index.html')).href;
 const PLAN = `try{var o={};['ccna','eng','sec','bk'].forEach(function(t){o[t]={lv:1,n:0,ok:0,d:'2026-10-08',skip:true}});localStorage.ya_pl=JSON.stringify(o)}catch(e){}`;
 
@@ -17,18 +18,19 @@ async function open(ctx, hash, init) {
   await p.waitForTimeout(1500);
   return p;
 }
-// Sınav seçeneklerini tıkla: dogru=true → doğru şık, false → yanlış şık
-const cevapla = (p, dogru) => p.evaluate(dg => {
-  const q = window.PP_LESSONS.ccna[1].quiz;
-  const kartlar = [...document.querySelectorAll('#view .qz')];
+// Sınav seçeneklerini tıkla + sunucuya gönder (Faz 9 sunucu): dogru=true → sentetik doğru şık, false → yanlış şık
+const cevapla = async (p, dogru) => {
+  const dogruIdx = await p.evaluate(() => window.PP_LESSONS.ccna[1].quiz.map(q => q.options.indexOf(window.__sentetikDogru(q))));
   let t = 0;
-  q.forEach((x, i) => {
-    const bt = [...kartlar[i].querySelectorAll('button')];
-    const hedef = bt.find(b => { const m = b.textContent.replace(/^[A-D]\s*/, '').trim(); return dg ? m === x.answer : m !== x.answer; });
-    if (hedef) { hedef.click(); t++; }
-  });
+  for (const [i, d] of dogruIdx.entries()) {
+    const j = dogru ? d : (d === 0 ? 1 : 0);
+    await p.evaluate(([i, j]) => document.querySelectorAll('#view .qz')[i].querySelectorAll('.qz-o')[j].click(), [i, j]);
+    t++; await p.waitForTimeout(80);
+  }
+  await p.locator('[data-sunucu-gonder]').click();
+  await p.waitForTimeout(600);
   return t;
-}, dogru);
+};
 async function dersOdasi(p) {
   const nn = await p.locator('button:text-is("Tamam, anladım")').count();
   for (let i = 0; i < nn; i++) await p.locator('button:text-is("Tamam, anladım")').first().click();
@@ -44,6 +46,7 @@ async function dersOdasi(p) {
     const ctx = await b.newContext({ viewport: { width: 390, height: 844 } });
     await ctx.addInitScript('window.__guest=true');
     await ctx.addInitScript(INIT);
+    await ctx.addInitScript(SAHTE_INIT);
     await ctx.addInitScript(PLAN);
     if (init) await ctx.addInitScript(init);
     return ctx;
@@ -74,7 +77,10 @@ async function dersOdasi(p) {
   // 2) Eski biçimli kayıtlar okunur, depolama anahtarları DEĞİŞMEZ, ilerleme yenilemede kalır
   {
     const eskiLc = { 's-ccna-1': { w: 1, r: 1, q: 1, p: 1, d: '2026-10-08' }, 's-ccna-2': { w: 1, r: 1, d: '2026-10-09' }, _cut: { ccna: { ts: '2026-10-08T10:00:00Z', pn: 0, d: '2026-10-08' } } };
-    const eskiGs = { sk: { ccna: 1.7 }, bx: { 0: 1 }, st: { 0: [2, 3], 1: [3, 3] }, ts: '2026-10-09T10:00:00.000Z' };
+    // QB'de sunucuya ayrılan sınav soruları t:"_" yer tutucudur; eski istatistik yalnız gerçek ccna dizinlerinde aranır, yer tutucu dizinler yoksayılır
+  const qbc = {}; require('vm').createContext(qbc); require('vm').runInContext(require('fs').readFileSync(path.join(__dirname, '..', 'js/veri/soru-bankasi.js'), 'utf8') + ';this.__QB=QB;', qbc);
+  const ccnaIdx = qbc.__QB.map((q, i) => q.t === 'ccna' ? i : -1).filter(i => i >= 0), yerTutucu = qbc.__QB.findIndex(q => q.t === '_');
+  const eskiGs = { sk: { ccna: 1.7 }, bx: { [ccnaIdx[0]]: 1 }, st: { [ccnaIdx[0]]: [2, 3], [ccnaIdx[1]]: [3, 3], [yerTutucu]: [4, 4] }, ts: '2026-10-09T10:00:00.000Z' };
     const eskiLv = { ccna: { l: 2, s: 40, m: 100, d: '2026-10-08' } };
     const ctx = await mk();
     const p0 = await ctx.newPage();
@@ -86,7 +92,7 @@ async function dersOdasi(p) {
     const r = await p.evaluate(() => { const d = PP.ogr.ui.durum(); return { tamam: Object.keys(d.dersTamam), ders2: d.eski.ilerleme['ders:ccna:2'], den: d.denemeler.filter(x => x.kaynak === 'ya_gs').map(x => [x.hedef, x.puan, x.maks]), kan: d.kanitlar.map(k => k.tur) }; });
     eq(r.tamam, ['ders:ccna:1'], 'eski veri: tamamlanan ders okundu');
     eq([r.ders2.w, r.ders2.r, r.ders2.q, r.ders2.tamam], [true, true, false, false], 'eski veri: yarım ders bayrakları korundu');
-    eq(r.den, [['soru-bankasi:ccna', 5, 6]], 'eski veri: soru istatistiği toplu denemeye çevrildi');
+    eq(r.den, [['soru-bankasi:ccna', 5, 6]], 'eski veri: soru istatistiği toplu denemeye çevrildi (sunucuya ayrılan yer tutucu soru yoksayıldı)');
     eq(r.kan, ['tanilama'], 'eski veri: seviye testi tanılama kanıtı oldu');
     const sonra = await p.evaluate(() => ['ya_lc', 'ya_gs', 'ya_lv'].map(k => localStorage.getItem(k)));
     eq(sonra, once, 'eski veri: modelin okuması eski depolama anahtarlarını DEĞİŞTİRMEDİ');
@@ -111,12 +117,12 @@ async function dersOdasi(p) {
     const d1 = await dep();
     ok(d1 && d1.denemeler.length === 1, 'mini sınav: tek deneme kaydı oluştu (ya_pp_ogr)');
     const a = d1.denemeler[0];
-    eq([a.hedef, a.puan, a.maks, a.dogrulama, a.yardim.guvenilir], ['ders:ccna:1:sinav', dogru ? toplam : 0, toplam, 'istemci', false], 'mini sınav: puan/maks, doğrulama "istemci", yardım güvenilmez');
+    eq([a.hedef, a.puan, a.maks, a.dogrulama, a.yardim.guvenilir], ['ders:ccna:1:sinav', dogru ? toplam : 0, toplam, 'sunucu', false], 'mini sınav: puan/maks sunucudan, doğrulama "sunucu", yardım güvenilmez');
     // Faz 4 kararı (%80 kapısı): eskiden "q" yanlış cevaplarla da açılıyordu; artık yalnız kapı geçilince açılır.
     eq(await p.evaluate(() => (JSON.parse(localStorage.ya_lc)['s-ccna-1'] || {}).q || null), dogru ? 1 : null, 'mini sınav kapısı (%80): "q" bayrağı ' + (dogru ? 'geçince açıldı' : 'hepsi yanlışta AÇILMADI'));
     await p.reload(); await p.waitForTimeout(1500);   // yenileme
     const h2 = await p.evaluate(() => { const d = PP.ogr.ui.durum(); const x = PP.ogr.deg.hedefDurumu(PP.ogr.ui.graf(), 'ders:ccna:1:sinav', d.denemeler); return [x.durum, x.guven]; });
-    eq(h2, [dogru ? 'gecti' : 'kaldi', 'istemci'], 'yenileme: ilerleme kalır; hedef ' + (dogru ? 'geçti' : 'kaldı') + ', güven "istemci"');
+    eq(h2, [dogru ? 'gecti' : 'kaldi', 'sunucu'], 'yenileme: ilerleme kalır; hedef ' + (dogru ? 'geçti' : 'kaldı') + ', güven "sunucu"');
     // Panel
     await p.evaluate(() => { S.les.room = null; location.hash = '#ders'; });
     await p.waitForTimeout(500);
@@ -125,7 +131,7 @@ async function dersOdasi(p) {
     ok(/Ustalık ve kapılar/.test(metin) && /ayrı sayılır/.test(metin), 'panel: ders ekranında "Ustalık ve kapılar" görünür');
     if (dogru) ok(/geçti/.test(metin), 'panel: ustalık "geçti" (kanıtla)');
     else ok(/Telafi önerisi/.test(metin) && /geçmedi/.test(metin), 'panel: başarısız hedefte telafi önerisi görünür');
-    ok(/sunucuda doğrulanmadı/.test(metin), 'panel: istemci güveni etiketlenir (sunucuda doğrulanmadı)');
+    ok(/sunucuda doğrulandı/.test(metin) && !/sunucuda doğrulanmadı/.test(metin), 'panel: sunucu güveni etiketlenir (sunucuda doğrulandı)');
     eq(p.errs, [], 'sayfa hatası yok (' + (dogru ? 'doğru' : 'yanlış') + ')');
     await ctx.close();
   }

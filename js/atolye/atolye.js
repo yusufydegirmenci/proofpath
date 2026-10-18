@@ -94,7 +94,7 @@ function recapCard(l,label){
   return h("div",{class:"panel recap"},h("div",{class:"label"},label||"Bir önceki dersten"),h("h2",null,l.title||"Ders"),
     h("div",{class:"small mute"},l.date+(l.hook?" · "+l.hook:"")),
     keys.length?h("ul",{class:"rc-l"},keys.map(function(k){return h("li",null,k)})):null,
-    q?h("div",null,h("div",{class:"label",style:"margin-bottom:6px"},"Hatırla"),h("p",{style:"margin:0 0 8px"},q.q),revBtn("rc:"+l.id,"Cevabı göster",h("p",{style:"margin:0"},String(q.answer==null?"":q.answer)+(q.why?" — "+q.why:"")))):null,
+    q?h("div",null,h("div",{class:"label",style:"margin-bottom:6px"},"Hatırla"),h("p",{style:"margin:0 0 8px"},q.q),(function(){var kz=typeof qzAnahtar==="function"?qzAnahtar(l,q):{dogru:String(q.answer==null?"":q.answer),why:q.why||""};return kz.dogru?revBtn("rc:"+l.id,"Cevabı göster",h("p",{style:"margin:0"},kz.dogru+(kz.why?" — "+kz.why:""))):h("div",{class:"small mute"},"Cevap, mini sınavı sunucuda geçince açılır.")})()):null,
     h("div",{class:"row"},h("button",{class:"btn ghost",type:"button",onclick:function(){S.les.track=l.track;S.les.id=l.id;S.les.view="ders";goTab("ders")}},"Dersi aç")));
 }
 /* program */
