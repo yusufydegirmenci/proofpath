@@ -1,5 +1,5 @@
 "use strict";
-/* ---- Faz 12 V4: geri bildirim, yalnız yerel kuyruk (ya_pp_ogr.geriBildirim). Sunucuya ya da GitHub'a hiçbir şey göndermez.
+/* ---- Faz 12 V4/V5: geri bildirim yerel kuyruğu (ya_pp_ogr.geriBildirim) + onaylı gönderme (yalnız geri_bildirim tablosuna insert; otomatik gönderme yok).
    Kişisel veri toplanmaz: bağlam yalnız sekme, ders/proje kimliği, adım ve (hazır ders/proje için) başlıktır. Saf mantık, DOM yok. ---- */
 (function (g) {
   var O = g.PP.ogr;
@@ -89,9 +89,53 @@
     var t = (TURLER.filter(function (x) { return x[0] === k.tur; })[0] || [0, k.tur])[1];
     return "## [" + t + "] " + k.baslik + "\n- Bağlam: " + baglamMetni(k.baglam) + "\n" + (k.onem ? "- Önem: " + onemEtiket(k.onem) +"\n" : "") + "- Tarih: " + k.olusturma.slice(0, 10) + "\n\n" + k.aciklama + "\n";
   }
+  /* ---- Sunucuya gönderme (yalnız kullanıcı onayıyla; çağıran UI önizleme + onay gösterir). Yerel kopya hiçbir durumda silinmez. ---- */
+  var gidiyor = {};
+  /* Sunucu istemcisi {gonder(satir)} ya da null (Artifact, oturumsuz/misafir, yapılandırma yok) */
+  function istemciAl() {
+    try {
+      var c = g.claude;
+      if (!c || typeof c.use !== "function") return Promise.resolve(null);
+      return Promise.resolve(c.use("geri_bildirim")).then(function (x) { return x && typeof x.gonder === "function" ? x : null; }, function () { return null; });
+    } catch (e) { return Promise.resolve(null); }
+  }
+  /* Tabloda önem sütunu yok: bağlam nesnesinin içinde gider (migration baglam ≤ 1000 bayt) */
+  function satir(k) {
+    var b = baglam(k.baglam);
+    if (k.onem) b.onem = k.onem;
+    return { tur: k.tur, baslik: k.baslik, aciklama: k.aciklama, baglam: b };
+  }
+  function hataMesaji(e) {
+    var m = String((e && (e.message || e.msg)) || e || ""), kod = String((e && e.code) || ""), sonek = " Kaydın bu cihazda duruyor.";
+    if (kod === "P0001" || /g[uü]nl[uü]k s[ıi]n[ıi]r/i.test(m)) return "Günlük gönderme sınırına (10) ulaştın; 24 saat sonra tekrar dene." + sonek;
+    if (kod === "42501" || /row-level security|permission denied/i.test(m)) return "Bu işlem için yetkin yok; çıkış yapıp yeniden giriş yapmayı dene." + sonek;
+    if (kod === "PGRST301" || /jwt|not authenticated/i.test(m)) return "Oturumun süresi dolmuş; yeniden giriş yapıp tekrar dene." + sonek;
+    if (!kod || /fetch|network|ağ|failed|timeout/i.test(m)) return "Bağlantı kurulamadı; internet gelince tekrar dene." + sonek;
+    return "Gönderilemedi (sunucu hatası)." + sonek;
+  }
+  /* Dönüş: {ok:true, kayit[, uyari]} | {ok:false, neden:"kayit-yok"|"zaten"|"mesgul"|"istemci-yok"|"hata", mesaj} */
+  function gonder(kid, istemci, depo) {
+    var d = gb(depo), k = d.kuyruk.filter(function (x) { return x.id === kid; })[0];
+    if (!k) return Promise.resolve({ ok: false, neden: "kayit-yok", mesaj: "Bu kayıt artık yok." });
+    if (k.durum === "gonderildi") return Promise.resolve({ ok: false, neden: "zaten", mesaj: "Bu kayıt zaten gönderildi." });
+    if (!istemci || typeof istemci.gonder !== "function") return Promise.resolve({ ok: false, neden: "istemci-yok", mesaj: "Oturum yok ya da misafirsin: geri bildirim bu cihazda kalır." });
+    if (gidiyor[kid]) return Promise.resolve({ ok: false, neden: "mesgul", mesaj: "Gönderiliyor, bekle." });
+    var kk = kontrol(k);
+    if (!kk.ok) return Promise.resolve({ ok: false, neden: "hata", mesaj: kk.hata.join(" ") });
+    gidiyor[kid] = true;
+    return Promise.resolve().then(function () { return istemci.gonder(satir(k)); }).then(function (r) {
+      delete gidiyor[kid];
+      if (r && r.error) return { ok: false, neden: "hata", mesaj: hataMesaji(r.error) };
+      var d2 = gb(depo), k2 = d2.kuyruk.filter(function (x) { return x.id === kid; })[0];
+      if (!k2) return { ok: true, kayit: k }; // gönderirken silindi; sunucuya ulaştı
+      k2.durum = "gonderildi"; k2.gonderildi = new Date().toISOString();
+      return yaz(d2, depo) ? { ok: true, kayit: k2 } : { ok: true, kayit: k2, uyari: "Gönderildi ama bu cihazdaki işaret yazılamadı; tekrar gönderme." };
+    }, function (e) { delete gidiyor[kid]; return { ok: false, neden: "hata", mesaj: hataMesaji(e) }; });
+  }
+
   function markdownHepsi(l) { return "# Proofpath geri bildirimleri\n\n" + l.map(markdown).join("\n"); }
   function jsonHepsi(l) { return JSON.stringify({ surum: 1, kayitlar: l }, null, 2); }
 
   O.gb = { TURLER: TURLER, ONEMLER: ONEMLER, SINIR: SINIR, SABLON: SABLON, baglam: baglam, anahtar: anahtar, baglamMetni: baglamMetni, onemEtiket: onemEtiket, kontrol: kontrol, liste: liste, kaydet: kaydet, sil: sil,
-    taslakKaydet: taslakKaydet, taslak: taslak, taslakSil: taslakSil, markdown: markdown, markdownHepsi: markdownHepsi, jsonHepsi: jsonHepsi };
+    taslakKaydet: taslakKaydet, taslak: taslak, taslakSil: taslakSil, istemciAl: istemciAl, satir: satir, hataMesaji: hataMesaji, gonder: gonder, markdown: markdown, markdownHepsi: markdownHepsi, jsonHepsi: jsonHepsi };
 })(typeof window !== "undefined" ? window : globalThis);

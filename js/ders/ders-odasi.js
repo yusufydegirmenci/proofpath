@@ -103,8 +103,8 @@ var LR_STEPS=[["isinma","Isınma"],["anlat","Anlatım"],["sinav","Mini sınav"],
 function lrFind(){var L=S.les,list=lessonListFor(L.track).list;return list.filter(function(x){return x.id===L.room})[0]||null}
 function lrOpen(l,step){var L=S.les;L.room=l.id;L.track=l.track;L.rs=step||lrAuto(l);draw();window.scrollTo(0,0)}
 function lrClose(){S.les.room=null;draw();window.scrollTo(0,0)}
-function lrAuto(l){var k=lessonKey(l);if(!lcGrand(l)&&!lcHas(k,"w"))return "isinma";if(!lcGrand(l)&&!lcHas(k,"r"))return "anlat";if(!lcHas(k,"q"))return "sinav";if(!lcHas(k,"p"))return "alis";return "notlar"}
-function lrDone(l,s){var k=lessonKey(l);return s==="isinma"?lcHas(k,"w"):s==="anlat"?lcHas(k,"r"):s==="sinav"?lcHas(k,"q"):s==="alis"?lcHas(k,"p"):lcDone(k)}
+function lrAuto(l){var k=lessonKey(l);if(!lcGrand(l)&&!lcW(k))return "isinma";if(!lcGrand(l)&&!lcHas(k,"r"))return "anlat";if(!lcHas(k,"q"))return "sinav";if(!lcHas(k,"p"))return "alis";return "notlar"}
+function lrDone(l,s){var k=lessonKey(l);return s==="isinma"?lcW(k):s==="anlat"?lcHas(k,"r"):s==="sinav"?lcHas(k,"q"):s==="alis"?lcHas(k,"p"):lcDone(k)}
 function lrSet(l,s){S.les.rs=s;draw();window.scrollTo(0,0)}
 /* Faz 4: açıklama modları (PP.ogr.aciklama); tercih kalıcı, içerik dersin aynı konu haritasından */
 function lrModes(l){
@@ -137,10 +137,11 @@ function renderLessonRoom(){
     var wu=renderWarmup(l);if(wu)body.push(wu);
     var ww=l.warmup||(L.wg[l.id]&&L.wg[l.id].w),its=ww?(tr==="eng"?ww.words:ww.concepts)||[]:[],rdy=0;its.forEach(function(x,i){if(L.wk[l.id+":"+i])rdy++});
     var allr=rdy>=its.length;
-    body.push(h("div",{class:"panel"},h("button",{class:"btn big",type:"button",disabled:!allr&&!lcHas(k,"w"),onclick:function(){lcSet(k,"w",tr);rtToast("Isınma tamam. Anlatım açıldı.");lrSet(l,"anlat")}},lcHas(k,"w")?"Anlatıma geç":"Isınmayı bitirdim, derse gir"),
-      h("div",{class:"small mute",style:"margin-top:6px"},its.length&&!allr&&!lcHas(k,"w")?"Kartlarda 'Hazırım' de, sonra ders açılır. ("+rdy+"/"+its.length+")":"Hazırsın.")));
+    body.push(h("div",{class:"panel"},h("button",{class:"btn big",type:"button",disabled:!allr&&!lcW(k),onclick:function(){lcSet(k,"w",tr);rtToast("Isınma tamam. Anlatım açıldı.");lrSet(l,"anlat")}},lcHas(k,"w")?"Anlatıma geç":"Isınmayı bitirdim, derse gir"),
+      h("div",{class:"small mute",style:"margin-top:6px"},its.length&&!allr&&!lcW(k)?"Kartlarda 'Hazırım' de, sonra ders açılır. ("+rdy+"/"+its.length+")":"Hazırsın."),
+      lcW(k)?null:h("button",{class:"btn ghost",type:"button","data-atla":"1",style:"margin-top:8px",onclick:function(){lcAtla(k,tr);lrSet(l,"anlat")}},"Isınmayı atla")));
   }else if(rs==="anlat"){
-    if(!grand&&!lcHas(k,"w")){body.push(h("div",{class:"panel"},h("div",{class:"label"},"Kilitli"),h("h3",null,"Önce ısınma"),h("div",{class:"small mute"},"Anlatım, ısınmayı bitirince açılır."),nextBtn("Isınmaya git","isinma")))}
+    if(!grand&&!lcW(k)){body.push(h("div",{class:"panel"},h("div",{class:"label"},"Kilitli"),h("h3",null,"Önce ısınma"),h("div",{class:"small mute"},"Anlatım, ısınmayı bitirince açılır."),nextBtn("Isınmaya git","isinma")))}
     else{
       body.push(h("div",{class:"lr-sec"},h("div",{class:"label"},"2 · Anlatım"),h("h3",null,l.title||"Ders")));
       var hdf=lrHedefler(l);if(hdf)body.push(hdf);
@@ -161,6 +162,8 @@ function renderLessonRoom(){
   }else if(rs==="sinav"){
     body.push(h("div",{class:"lr-sec"},h("div",{class:"label"},"3 · Mini sınav"),h("h3",null,"Öğrendiğini dene")));
     var q=lessonQuiz(l);body.push(q||h("div",{class:"panel"},h("div",{class:"small mute"},"Bu derste mini sınav yok.")));
+    var qs0=Array.isArray(l.quiz)?l.quiz:[],mk0=0,ok0=0;qs0.forEach(function(x,i){var m=S.les.mark[l.id+":"+i];if(m){mk0++;if(m==="ok")ok0++}});
+    if(lcHas(k,"w-atla")&&!lcHas(k,"w")&&qs0.length&&mk0>=qs0.length&&!PP.ogr.kapi.miniSinav(ok0,qs0.length,mk0).gecti)body.push(h("div",{class:"panel","data-telafi":"isinma"},h("div",{class:"label"},"Telafi önerisi"),h("div",{class:"small"},"Isınmayı atlamıştın ve mini sınav %"+Math.round(PP.ogr.ESIK*100)+" altında kaldı. 2 dakikalık ısınmayı yap, sonra sınavı tekrar dene. Sınav açık kalır; istediğin zaman yeniden deneyebilirsin."),nextBtn("2 dakikalık ısınmayı yap","isinma")));
     body.push(h("div",{class:"panel"},nextBtn("Alıştırmaya geç","alis")));
   }else if(rs==="alis"){
     var pd=lcHas(k,"p");

@@ -1,7 +1,7 @@
 "use strict";
 /* ---- İlerleme (ders tamam) için TEK tanım (Faz 4) ----
    İlerleme = sayfa/ders açma ve sıra kilidi. Ustalık DEĞİLDİR (ustalık: PP.ogr.kapi.ustalik, kanıt + %80).
-   - Ders tamam (ya_lc kaydı): ısınma (w) + okuma (r) + mini sınav kapısı (q) + alıştırma (p).
+   - Ders tamam (ya_lc kaydı): ısınma (w) ya da ısınma atlama işareti (w-atla) + okuma (r) + mini sınav kapısı (q) + alıştırma (p).
      Faz 4'ten itibaren "q" yalnız mini sınav %80 kapısı geçilince yazılır (PP.ogr.kapi.miniSinav); eski "q" kayıtları geçerli kalır.
    - Konu tamam (db konusu): durum "built".
    - Tamamlanan ders sayısı: iki kaynağın BİRLEŞİMİ (aynı kimlik bir kez sayılır).
@@ -9,8 +9,9 @@
 (function (g) {
   var O = g.PP.ogr;
   var ADIMLAR = ["w", "r", "q", "p"];
+  var ATLA = "w-atla";   /* ısınma atlama işareti: ısınma (w) yerine geçer, mini sınav %80 kapısı (q) yine şart */
 
-  function dersTamam(kayit) { return !!(kayit && typeof kayit === "object" && ADIMLAR.every(function (f) { return !!kayit[f]; })); }
+  function dersTamam(kayit) { return !!(kayit && typeof kayit === "object" && (kayit.w || kayit[ATLA]) && ADIMLAR.slice(1).every(function (f) { return !!kayit[f]; })); }
   function konuTamam(t) { return !!t && t.status === "built"; }
 
   /* lc: ya_lc nesnesi; konular: S.topics. Dönüş: tamamlanan ders sayısı. */
@@ -38,5 +39,5 @@
     return out;
   }
 
-  O.ilerleme = { ADIMLAR: ADIMLAR, dersTamam: dersTamam, konuTamam: konuTamam, tamamSayisi: tamamSayisi, asama: asama, ASAMA_USTALIK: ASAMA_USTALIK, sabitDurumlar: sabitDurumlar };
+  O.ilerleme = { ADIMLAR: ADIMLAR, ATLA: ATLA, dersTamam: dersTamam, konuTamam: konuTamam, tamamSayisi: tamamSayisi, asama: asama, ASAMA_USTALIK: ASAMA_USTALIK, sabitDurumlar: sabitDurumlar };
 })(typeof window !== "undefined" ? window : globalThis);

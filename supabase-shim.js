@@ -766,6 +766,13 @@
     }
   };
 
+  /* Geri bildirim: yalnız insert (RLS: owner = auth.uid(), günlük sınır tetikleyicide). Okuma/güncelleme/silme yok. */
+  var geriBildirimApi = {
+    gonder: function (satir) {
+      return sb.from("geri_bildirim").insert({ tur: satir.tur, baslik: satir.baslik, aciklama: satir.aciklama, baglam: satir.baglam });
+    }
+  };
+
   /* ---------------------------------------------------------------- window.claude */
 
   window.claude = {
@@ -778,6 +785,10 @@
         case "user":
           return ensureSession().then(function () {
             return userApi;
+          });
+        case "geri_bildirim":
+          return ensureSession().then(function () {
+            return geriBildirimApi;
           });
         case "downloads":
           return Promise.resolve(downloadsApi);

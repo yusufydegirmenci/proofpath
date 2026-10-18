@@ -1,4 +1,4 @@
-// Faz 12 V4: "Bu hatalı" düğmesi + geri bildirim formu (yerel kuyruk) + güncel tutma etiketi/sayacı + geri_bildirim migration DOSYASI + aylık kaynak raporu.
+// Faz 12 V4: "Bu hatalı" düğmesi + geri bildirim formu (yerel kuyruk) + güncel tutma etiketi/sayacı + geri_bildirim migration DOSYASI + aylık kaynak raporu (V5 gönderme: faz12c_gonder.js).
 // Beklenenler elle yazıldı. Bölüm 1 Node'da (tarayıcısız), bölüm 2 gerçek sayfada (390 px).
 const fs = require('fs');
 const path = require('path');
@@ -138,14 +138,14 @@ const dersB = { tur: 'ders', sekme: 'ders', id: 'bk-1', baslik: 'HTTP temelleri'
   ok(PP.ogr.gb.SINIR.baslik === 80 && PP.ogr.gb.SINIR.aciklama === 2000, 'istemci sınırları (80 / 2000) SQL ile aynı');
 })();
 
-// ---- İstemci tabloyu ÇAĞIRMAZ; sunucu/GitHub kodu yok ----
+// ---- Tablo adı yalnız gönderme mantığında ve shim'de (V5: onaylı gönderme); arayüz dosyasında ağ/GitHub kodu yok ----
 (function () {
   const dosyalar = [];
   (function gez(d) { fs.readdirSync(path.join(KOK, d), { withFileTypes: true }).forEach(e => { if (e.isDirectory()) gez(d + '/' + e.name); else if (/\.(js|html)$/.test(e.name)) dosyalar.push(d + '/' + e.name); }); })('js');
   ['index.html', 'sw.js', 'config.js', 'supabase-shim.js'].forEach(f => dosyalar.push(f));
-  eq(dosyalar.filter(f => /geri_bildirim/.test(oku(f))), [], 'js/, index.html, sw.js, config.js içinde "geri_bildirim" tablo adı geçmez (istemci çağırmıyor)');
+  eq(dosyalar.filter(f => /geri_bildirim/.test(oku(f))).sort(), ['js/ogrenme/geri-bildirim.js', 'supabase-shim.js'], '"geri_bildirim" tablo adı yalnız gönderme mantığında (js/ogrenme/geri-bildirim.js) ve shim içinde geçer; arayüz, sw.js, config.js, index.html çağırmaz');
   const gb = oku('js/ogrenme/geri-bildirim.js') + oku('js/ders/geri-bildirim-ui.js');
-  eq(gb.match(/\bfetch\s*\(|XMLHttpRequest|sendBeacon|supabase|window\.claude|github\.com|\.from\s*\(/gi), null, 'geri bildirim kodu ağ/Supabase/GitHub çağrısı içermez');
+  eq(gb.match(/\bfetch\s*\(|XMLHttpRequest|sendBeacon|supabase|window\.claude|github\.com|\.from\s*\(/gi), null, 'geri bildirim kodu doğrudan ağ/Supabase/GitHub çağrısı içermez (gönderme yalnız claude.use istemcisiyle)');
 })();
 
 // ---- Aylık kaynak raporu: dönüştürücü ve yol koruması (ağsız) ----

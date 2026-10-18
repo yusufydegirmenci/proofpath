@@ -166,7 +166,7 @@ function routeSteps(){
     var k=lessonKey(l),lockd=!!(act&&act.track!==T&&!lcDone(k)),cls=(T==="ccna"||T==="eng"),pre=RT_TN[T]+": ";
     lcSync(l);
     var go=function(){S.les.track=T;S.les.id=l.id;S.les.view="ders";goTab("ders")},nt=lockd?"Önce "+act.l.title+" dersini bitir":null;
-    steps.push({id:"isi-"+T,xp:5,tr:T,t:pre+"ısınma",d:lcGrand(l)||lcHas(k,"w"),locked:lockd,go:go,b:"Isınmaya git",note:nt||l.title});
+    steps.push({id:"isi-"+T,xp:5,tr:T,t:pre+"ısınma",d:lcGrand(l)||lcW(k),locked:lockd,go:go,b:"Isınmaya git",note:nt||l.title});
     steps.push({id:"ders-"+T,xp:10,tr:T,t:pre+"dersi oku",d:lcGrand(l)?!!P["read_"+T]:lcHas(k,"r"),locked:lockd,go:go,b:"Dersi aç",note:nt});
     if(Array.isArray(l.quiz)&&l.quiz.length)steps.push({id:"quiz-"+T,xp:5,tr:T,t:pre+"mini sınav",d:lcHas(k,"q"),locked:lockd,go:go,b:"Sınava git",note:nt});
     if(cls){var n=S.attempts.filter(function(a){return a.date===td&&a.track===T}).length;
@@ -350,7 +350,7 @@ function lessonGuide(tr,l){
   var P=prog(),L=S.les,qs=(l&&Array.isArray(l.quiz))?l.quiz:[],marked=0;qs.forEach(function(q,i){if(L.mark[l.id+":"+i])marked++});
   var cls=(tr==="ccna"||tr==="eng");
   var gk=l?lessonKey(l):"",st=[
-   {t:"Isınma",d:lcHas(gk,"w")||(l&&lcGrand(l)),h:"Önceki konuyu hatırla, bugünün kavramlarına göz at. Bitirmeden ders açılmaz.",go:function(){var el=document.getElementById("ls-isinma");if(el)el.scrollIntoView({behavior:"smooth"})}},
+   {t:"Isınma",d:lcW(gk)||(l&&lcGrand(l)),h:"Önceki konuyu hatırla, bugünün kavramlarına göz at. Bitirmeden ders açılmaz.",go:function(){var el=document.getElementById("ls-isinma");if(el)el.scrollIntoView({behavior:"smooth"})}},
    {t:"Dersi oku",d:(l&&lcGrand(l))?!!P["read_"+tr]:lcHas(gk,"r"),h:"Isınma, anlatım, sonra en altta 'Dersi okudum'. Ders yoksa aşağıdan üret.",go:function(){var el=document.getElementById("ls-ders");if(el)el.scrollIntoView({behavior:"smooth"})}},
    {t:"Mini sınav",d:(qs.length>0&&marked>=qs.length)||lcHas(gk,"q"),h:"Cevabı önce kendin düşün, sonra aç ve dürüstçe işaretle.",go:function(){var el=document.getElementById("ls-sinav");if(el)el.scrollIntoView({behavior:"smooth"})}},
    cls?{t:"Sınıfta 5 soru çöz",d:lcHas(gk,"p")||S.attempts.filter(function(a){return a.date===today()&&a.track===tr}).length>=5,h:"Öğrendiğini gerçek iş durumlarında dene.",go:function(){S.cls.track=tr;S.cls.topicId=null;S.cls.phase="idle";goTab("sinif")}}:

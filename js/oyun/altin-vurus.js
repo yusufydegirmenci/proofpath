@@ -96,7 +96,7 @@ function syncApply(r){
       }
       if(r.lc&&typeof r.lc==="object"){
         var lc=lcLoad(),lcc=false;
-        Object.keys(r.lc).slice(0,400).forEach(function(k){var v=r.lc[k];if(!v||typeof v!=="object")return;["w","r","q","p"].forEach(function(f){if(v[f]){lc[k]=lc[k]||{};if(!lc[k][f]){lc[k][f]=1;lc[k].d=String(v.d||"").slice(0,10);lcc=true}}})});
+        Object.keys(r.lc).slice(0,400).forEach(function(k){var v=r.lc[k];if(!v||typeof v!=="object")return;["w","w-atla","r","q","p"].forEach(function(f){if(v[f]){lc[k]=lc[k]||{};if(!lc[k][f]){lc[k][f]=1;lc[k].d=String(v.d||"").slice(0,10);lcc=true}}})});
         if(lcc){try{localStorage.setItem(LC_KEY,JSON.stringify(lc))}catch(e){}ch=true}
       }
     }
