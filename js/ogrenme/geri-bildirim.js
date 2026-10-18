@@ -31,7 +31,7 @@
     if (b.length < 3) hata.push("Başlık en az 3 karakter olmalı.");
     if (b.length > SINIR.baslik) hata.push("Başlık en fazla " + SINIR.baslik + " karakter.");
     /* boş şablon (yalnız Problem:/Expected:/Actual:/Steps: etiketleri) açıklama sayılmaz */
-    var govde = a.replace(/(Problem|Expected|Actual|Steps):/g, "").replace(/^\s*1\.\s*$/gm, "").trim();
+    var govde = a.replace(/(Problem|Expected|Actual|Steps):/gi, "").replace(/^\s*\d\.\s*$/gm, "").trim();
     if (govde.length < 10) hata.push("Açıklama en az 10 karakter olmalı.");
     if (a.length > SINIR.aciklama) hata.push("Açıklama en fazla " + SINIR.aciklama + " karakter.");
     if (f.onem && !bilinen(ONEMLER, f.onem)) hata.push("Önem geçersiz.");

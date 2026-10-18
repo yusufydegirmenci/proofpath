@@ -6,7 +6,7 @@ function gbDurum() { return (S.gb = S.gb || { acik: false, baglam: null, f: null
 /* Formu aç. b = bağlam, duzKayit = düzenlenecek kuyruk kaydı (yoksa yeni; bu bağlamın taslağı varsa geri gelir) */
 function gbAc(b, duzKayit) {
   var G = gbDurum(), O = PP.ogr.gb, t = duzKayit ? null : O.taslak(b);
-  G.baglam = O.baglam(duzKayit ? duzKayit.baglam : b); G.duz = duzKayit ? duzKayit.id : null; G.hata = []; G.uyariGoruldu = false;
+  G.baglam = O.baglam(duzKayit ? duzKayit.baglam : b); G.duz = duzKayit ? duzKayit.id : null; G.hata = []; G.uyariGoruldu = false; G.taslakYok = false;
   var k = duzKayit || t || {};
   G.f = { tur: k.tur || "hata", baslik: k.baslik || "", aciklama: k.aciklama || "", onem: k.onem || "" };
   G.acik = true; draw();
@@ -25,7 +25,7 @@ function gbFormYer(yer, id) {
 
 function gbForm() {
   var G = gbDurum(), O = PP.ogr.gb, f = G.f;
-  var sakla = function () { G.uyariGoruldu = false; if (!G.duz) G.taslakYok = !O.taslakKaydet(f, G.baglam); };
+  var sakla = function () { G.uyariGoruldu = false; if (G.duz) return; var yok = !O.taslakKaydet(f, G.baglam); if (yok !== !!G.taslakYok) { G.taslakYok = yok; draw(); } };
   var ti = h("input", { type: "text", maxlength: O.SINIR.baslik, "aria-label": "Başlık", "data-gb": "baslik", placeholder: "Kısa başlık, örn. The Save button does nothing", oninput: function (e) { f.baslik = e.target.value; sakla(); } });
   ti.value = f.baslik;
   var ac = h("textarea", { maxlength: O.SINIR.aciklama, rows: 7, "aria-label": "Açıklama", "data-gb": "aciklama", placeholder: "Ne oldu? Türkçe yazabilirsin; İngilizce denersen iş yazışması pratiği olur.", oninput: function (e) { f.aciklama = e.target.value; sakla(); } });
