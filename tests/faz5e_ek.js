@@ -44,7 +44,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   // Rota/lab bağı bu turda eklenmedi: bk/dev eklerinde lab alanı yok (etiket dürüstlüğü)
   eq(await p.evaluate(() => [...Object.values(PP_EK.bk), ...Object.values(PP_EK.dev)].filter(e => e.lab).length), 0, 'bk/dev eki lab bağlantısı iddia etmez (lab sonraki tura)');
   // Yol çakışması: bk/dev eki sec/net/ccna girdilerini bozmadı
-  eq(await p.evaluate(() => [Object.keys(PP_EK.sec).length, Object.keys(PP_EK.net).length, Object.keys(PP_EK.ccna).length]), [31, 18, 17], 'diğer yolların ek girdileri sağlam');
+  eq(await p.evaluate(() => [Object.keys(PP_EK.sec).length, Object.keys(PP_EK.net).length, Object.keys(PP_EK.ccna).length]), [39, 18, 17], 'diğer yolların ek girdileri sağlam');
 
   // Anlatım ve Alıştırma blokları bk ve dev derste görünür
   for (const [yol, n, bolum, beklenen] of [['bk', 2, 'anlat', ['analoji', 'hatalar', 'gecme']], ['dev', 6, 'alis', ['rehberli', 'bagimsiz', 'telafi']]]) {
