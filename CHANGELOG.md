@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## E1 (dal: faz-e1; migration, canlı DB, gizli anahtar, zamanlanmış iş yok)
+- Alan egzersizlerinde (SQL/Python/JS) düz textarea yerine CodeMirror 6: sözdizimi rengi, satır numarası, otomatik girinti, Ctrl+Enter çalıştırır, Esc odaktan çıkarır, açık/koyu tema (`--cm-*` renkleri `css/son-eklemeler.css`).
+- Tek yerel paket: `vendor/codemirror-6.43.14.js` (476 KB ham, ~167 KB gzip), SHA-384 SRI (`<script integrity>`), tam sabit sürümler, çalışma anında CDN yok. Yalnız ilk alan kurulunca yüklenir (tembel).
+- Derleme: `cd tools/cm && npm ci && node derle.js` (esbuild); çıktı `vendor/` + `codemirror.sri.json` + `LICENSE-codemirror.txt` (MIT). Derlemeden sonra `js/ders/alan.js` içindeki `CM.dosya`/`CM.sri` güncellenir (test uyuşmazlığı yakalar).
+- Geri dönüş: yükleme/SRI/kurulum hatasında düz textarea kalır, çalışma bozulmaz. Uyum katmanı: textarea DOM'da gizli kalır (`data-alan-kod`), `.value` okuma/yazma editöre yönlenir; mevcut testler değişmedi.
+- Test: `tests/e1_editor.js` (SRI sabiti = dosya, üç dil renk, yaz/oku, girinti, Ctrl+Enter, Esc, Sıfırla, 404 ve bozuk-SRI geri dönüşü, 390 px, koyu tema; http sunucusu ile).
+- Bilinen sınır: `file://` açılışında SRI'li betik yüklenemez, textarea kalır; sw.js bu dosyayı kurulumda değil ilk kullanımda önbelleğe alır (çevrimdışı: bir kez çevrimiçi açılmış olmalı).
 ## Faz 12 V5 (dal: faz-12c; migration UYGULANMADI, canlı DB, gizli anahtar, zamanlanmış iş, GitHub otomasyonu, yeni dış kütüphane yok)
 - Geri bildirim gönderme: Ayarlar kuyruğundaki her yerel kayıtta açık "Gönder" düğmesi; önizleme + "bu metin sunucuya gider, başkaları göremez" uyarısı + açık onay (otomatik gönderme YOK). Oturum yok/misafir/Artifact ise "yerel kalır" mesajı. Başarıda kayıt "gönderildi" işaretlenir (düzenlenemez, yeniden gönderilemez); sunucu hatası ve günlük sınır (10) anlaşılır Türkçe mesajla gösterilir; yerel kopya hiçbir durumda silinmez. İstemci yalnız insert yapar: `supabase-shim.js` içinde `claude.use("geri_bildirim")` yalnız `gonder` sunar (anahtar/oturum mantığı değişmedi); önem tabloda sütun olmadığı için `baglam` içinde gider.
 - `supabase/migrations/20261018_guvenlik_sertlestirme.sql` (UYGULANMADI): yalnız `revoke execute` (`handle_new_user`, `rls_auto_enable`) ve `alter function rapor_paylasim_guncelle_kilidi() set search_path = public`; drop/delete/veri yok. `rapor_gor`, `ogr_deneme_gonder`, `ogr_kapi_degerlendir` değişmez (tasarım gereği).
