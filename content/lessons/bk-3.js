@@ -353,7 +353,7 @@
     ],
     interview: [
       { q: "Neden Lambda içinde iç içe Lambda çağırmak yerine Step Functions?", a: "Step Functions durum, yeniden deneme, hata yolu, paralellik ve görsel izleme sağlar; Lambda zincirinde bunları kendin kodlarsın ve bekleme süresi için ücret ödersin." },
-      { q: "Standard ve Express farkı?", a: "Standard uzun süreli (1 yıl), tam olarak bir kez, ayrıntılı geçmişli kritik akışlar içindir. Express kısa (5 dk), yüksek hacimli, en az bir kez çalışan ve daha ucuz akışlar içindir." }
+      { q: "Standard ve Express farkı?", a: "Standard uzun süreli (1 yıl), tam olarak bir kez, ayrıntılı geçmişli kritik akışlar içindir. Express kısa (5 dk), yüksek hacimli, en az bir kez (asenkron Express) çalışan ve daha ucuz akışlar içindir." }
     ],
     vocab: [
       { term: "Workflow", tr: "iş akışı", ex: "Orchestrate the workflow." },
