@@ -292,6 +292,39 @@
     return el;
   }
 
+  /* ---------- Kod editörü (CodeMirror 6; E1) ----------
+     Yerel paket (vendor/), SHA-384 SRI, yalnız ilk kod alanı kurulunca yüklenir. Yüklenemezse/doğrulanamazsa düz textarea kalır.
+     Uyum katmanı: textarea DOM'da kalır (data-alan-kod); .value okuma/yazma editöre yönlenir, böylece eski kod ve testler değişmez.
+     shortcut: yükleme başarısızsa tekrar denenmez (sayfa yenilenene kadar), sonraki alanlar da textarea kalır. */
+  var CM = { dosya: "vendor/codemirror-6.43.14.js", sri: "sha384-W7yte/Ea6VGWkmH2ilUOm4ZrSPaFgHyPIxrQTgcEudlXjCrcPDDC0UhrcgAd/6U1", sozu: null, zamanMs: 15000 };
+  function cmYukle() {
+    if (g.PPCM) return Promise.resolve(g.PPCM);
+    if (CM.sozu) return CM.sozu;
+    CM.sozu = new Promise(function (coz) {
+      var s, bitti = false, bitir = function (v) { if (bitti) return; bitti = true; coz(v); };
+      try {
+        s = g.document.createElement("script");
+        s.src = new URL(CM.dosya, g.document.baseURI).href; s.integrity = CM.sri; s.crossOrigin = "anonymous";
+        s.onload = function () { bitir(g.PPCM || null); }; s.onerror = function () { bitir(null); };
+        g.document.head.appendChild(s); g.setTimeout(function () { bitir(g.PPCM || null); }, CM.zamanMs);
+      } catch (e) { bitir(null); }
+    });
+    return CM.sozu;
+  }
+  var DIL = { sql: "sql", python: "python", js: "js" };
+  function editorEkle(ta, kap, d, calistir) {
+    if (!DIL[d.tur]) return;
+    cmYukle().then(function (M) {
+      if (!M || ta.__cm) return;
+      try {
+        var ev = g.document.createElement("div"), ilk = ta.value;
+        kap.appendChild(ev);
+        var ed = M.kur(ev, { dil: DIL[d.tur], deger: ilk, etiket: "Kod: " + (d.baslik || d.id), calistir: calistir });
+        Object.defineProperty(ta, "value", { configurable: true, get: function () { return ed.oku(); }, set: function (v) { ed.yaz(v); } });
+        ta.style.display = "none"; ta.setAttribute("aria-hidden", "true"); ta.tabIndex = -1; ta.__cm = ed; kap.setAttribute("data-alan-editor", d.id);
+      } catch (e) { /* editör kurulamadı: textarea çalışmaya devam eder */ }
+    });
+  }
   /* ---------- Arayüz ---------- */
   function tabloEl(s) {
     var hh = g.h;
@@ -306,6 +339,7 @@
     var hh = g.h; opts = opts || {};
     var ta = hh("textarea", { class: "mono", rows: d.tur === "sim" ? 4 : 6, spellcheck: "false", autocapitalize: "off", autocomplete: "off", "aria-label": "Kod: " + (d.baslik || d.id), "data-alan-kod": d.id, style: "width:100%;box-sizing:border-box;font-size:13px;tab-size:2" });
     ta.value = d.baslangic;
+    var kap = hh("div", { style: "min-width:0" }, ta);
     var cikis = hh("div", { role: "status", "aria-live": "polite", "data-alan-sonuc": d.id });
     var etiket = hh("div", { class: "lab-et", "data-alan-etiket": d.id }, d.etiket);
     var cid = "alan:" + d.id, mesgul = false, btn, cubuk;
@@ -344,11 +378,13 @@
     btn = hh("button", { class: "btn", type: "button", "data-alan": "calistir", onclick: calistirTikla }, d.tur === "sim" ? "Kontrol et" : "Çalıştır");
     var sfBtn = hh("button", { class: "btn ghost", type: "button", "data-alan": "sifirla", onclick: function () { ta.value = sifirlaMetni(d); cubuk.gizle(); yaz(); } }, "Sıfırla");
     cubuk = PP.cubuk.kur({ id: cid, ipucu: d.ipucu, cozum: function () { return d.cozum; }, birincilEl: btn, sifirlaEl: sfBtn, ipucuAttr: { "data-alan-ipucu": d.id }, ipucuDugmeAttr: { "data-alan": "ipucu" } });
+    ta.addEventListener("keydown", function (e) { if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); calistirTikla(); } });
+    editorEkle(ta, kap, d, calistirTikla);
     var parsons = d.tur === "sql" && PP.parsons ? PP.parsons.panelDers(d.ders) : null;
     if (parsons) parsons = hh("div", { class: "lbox", "data-alan-sira": d.ders, style: "margin-top:10px" }, hh("div", { class: "label" }, "Sıra alıştırması"),
       hh("div", { class: "small mute" }, "Ayrı bir alıştırma: kod yazmazsın, karışık SQL satırlarını doğru sıraya dizersin. Yukarıdaki kod alanıyla aynı dersin parçasıdır; çözüm durumu ikisinde de aynı görünür."), siraDurumSatiri(d.ders, d.id), parsons);
     return hh("div", { class: "lbox", "data-alan": d.id, "data-alan-tur": d.tur }, hh("div", { class: "label" }, "Kodla dene · " + (d.baslik || d.id)), etiket,
-      d.gorev ? hh("p", { class: "small" }, d.gorev) : null, ta,
+      d.gorev ? hh("p", { class: "small" }, d.gorev) : null, kap,
       cubuk, cikis, parsons ? siraDurumSatiri(d.ders, d.id) : null,
       hh("div", { class: "small mute" }, d.tur === "sim" ? "Bu alan kodu çalıştırmaz; yalnız yazdığını kurallarla denetler." : "Kod yalnız bu tarayıcıda çalışır, sunucuya gönderilmez. Zaman sınırı " + Math.round(SINIR.zamanMs / 1000) + " sn; sonsuz döngü kesilir."), parsons);
   }

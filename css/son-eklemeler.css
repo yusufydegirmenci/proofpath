@@ -23,3 +23,9 @@
 .lr-head.lr-dev{background:radial-gradient(circle at 90% 0,rgba(255,255,255,.2),transparent 45%),linear-gradient(160deg,#0f4a2e,#082a1a)}
 .lr-head.lr-qa{background:radial-gradient(circle at 90% 0,rgba(255,255,255,.2),transparent 45%),linear-gradient(160deg,#6a1a3c,#2e0c1b)}
 .seg{flex-wrap:wrap}
+/* E1: kod editörü (CodeMirror 6) renkleri; açık/koyu tema; textarea yedeği değişmez */
+:root{--cm-kw:#6d28d9;--cm-str:#166534;--cm-num:#9a3412;--cm-yorum:#6a655b;--cm-tip:#075985;--cm-fn:#0e7490}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--cm-kw:#c4a8ff;--cm-str:#8fd694;--cm-num:#f0b072;--cm-yorum:#9a9a94;--cm-tip:#7fc4ee;--cm-fn:#6fd3de}}
+:root[data-theme="dark"]{--cm-kw:#c4a8ff;--cm-str:#8fd694;--cm-num:#f0b072;--cm-yorum:#9a9a94;--cm-tip:#7fc4ee;--cm-fn:#6fd3de}
+[data-alan-editor]{max-width:100%;min-width:0}
+[data-alan-editor] .cm-editor{max-width:100%}
