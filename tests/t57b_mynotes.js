@@ -13,7 +13,7 @@ console.log(w,'migrated cards',await p.$$eval('.my-c',a=>a.length));
 for(const [k,txt,pen] of [['Yapışkan','Subnet maskesini tekrar et. Çok uzun bir kelime denemesi aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa','po'],['Dikkat','Trunk portta VLAN unutma!','pr'],['Soru','Router ile switch farkı neydi?','pb']]){
  await p.click('.my-kinds button:text-is("'+k+'")');await p.click('.my-pn.'+pen);await p.fill('.my-new textarea',txt);await p.click('.my-new .btn');}
 console.log('cards',await p.$$eval('.my-c',a=>a.length),'ovf',await p.evaluate(()=>document.documentElement.scrollWidth>innerWidth),'stored',await p.evaluate(()=>JSON.parse(localStorage.ya_nt)['t:ccna:0'].length));
-await p.locator('.nt-my').scrollIntoViewIfNeeded();await goruntu(p,'.nt-my','s57-my-'+w+'.png');
+await goruntu(p,'.nt-my','s57-my-'+w+'.png');
 await p.click('.my-act button >> nth=0');await p.fill('.my-c.ed textarea','düzenlendi');await p.click('.my-c.ed .btn:text-is("Kaydet")');
 await p.click('.my-act button[aria-label="Notu sil"] >> nth=0');
 console.log('after edit/del',await p.$$eval('.my-c',a=>a.length),er);

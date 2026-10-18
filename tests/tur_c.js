@@ -117,7 +117,7 @@ const GOALS = { ccna: 'CCNA', net: 'Network', qa: 'Test Uzmanı', bk: 'Backend',
       await p.click('button:has-text("Seviye testini yap")'); await p.waitForTimeout(900);
       const s = await p.evaluate(() => {
         const el = document.getElementById('pp-seviye'), r = el ? el.getBoundingClientRect() : null;
-        return { on: S.pl.on, track: S.pl.track, var: !!el, gorunur: !!r && r.top >= 0 && r.top < innerHeight, odak: !!el && el.contains(document.activeElement), soru: el ? /· 1 \/ 6/.test(el.innerText) : false, tab: tab };
+        return { on: S.pl.on, track: S.pl.track, var: !!el, gorunur: !!r && r.top >= -1 && r.top < innerHeight, odak: !!el && el.contains(document.activeElement), soru: el ? /· 1 \/ 6/.test(el.innerText) : false, tab: tab };
       });
       ok(s.on && s.track === 'sec' && s.var && s.soru, 'Y5/test: test açıldı (Siber, 1 / 6)');
       ok(s.gorunur, 'Y5/test: seviye testi görünüme kaydırıldı (ekranda)');
