@@ -139,6 +139,7 @@ function renderPjDetail(p){
   var head=[h("button",{class:"btn ghost",type:"button",onclick:function(){P.sel=null;P.err=null;draw()}},"← Projelerim"),
     h("div",{class:"chiprow"},pa?h("span",{class:"pill trkp "+col},pa.name):h("span",{class:"pill"},(PJK.filter(function(x){return x[0]===p.kind})[0]||[0,"Serbest"])[1]),def?h("span",{class:"pill"},LVN[def.lv]+" · ~"+def.weeks+" hafta"):null,h("span",{class:"pill"+(p.status==="bitti"?" ok":"")},p.status==="bitti"?"bitti":"yapılıyor")),
     h("h2",null,p.title),p.why?h("div",{class:"small mute"},p.why):null,
+    typeof gbBtn==="function"?h("div",{class:"row"},gbBtn({tur:"proje",id:p.pid||p.id,baslik:p.pid?p.title:"",sekme:"proje"})):null,
     h("div",{class:"xb big"},h("i",{style:"width:"+Math.max(2,pct)+"%"})),h("div",{class:"small mute"},n+"/"+tot+" adım · "+pjXp(p)+" XP · her adım "+10*p.lv+" XP, bitirince +"+60*p.lv)];
   if(def){
     head.push(h("div",{class:"pj-out"},h("small",null,"Bu projeyi bitirince"),h("ul",null,def.outcome.map(function(x){return h("li",null,x)}))));
@@ -146,6 +147,7 @@ function renderPjDetail(p){
     head.push(h("div",{class:"pj-pitch"},h("small",null,"Mülakatta tek cümle (İngilizce)"),h("i",null,"\""+def.pitch+"\""),S.canWrite?h("button",{class:"btn ghost",type:"button",onclick:function(){speak(def.pitch)}},"Dinle"):null));
   }
   out.push(h("div",{class:"panel pjhead "+col},head));
+  var gbF=typeof gbFormYer==="function"?gbFormYer("proje",p.pid||p.id):null;if(gbF)out.push(gbF);
   if(def)out.push(h("div",{class:"label pjsec"},"Yol haritası"));
   out.push(h("div",{class:"road "+col},p.steps.map(function(s,i){return renderRoadStep(p,def,i)}),
     h("div",{class:"row road-add"},si,h("button",{class:"btn ghost",type:"button",disabled:!S.canWrite,onclick:addStep},"Adım ekle"))));

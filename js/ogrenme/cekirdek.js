@@ -54,6 +54,18 @@
     var gun = O.gun.fark(bugun || O.gun.bugun(), d);
     return { bayat: gun > BAYAT_GUN, gun: gun, etiket: "son doğrulama: " + d };
   }
+  /* L = {yol: {no: ders}} → {toplam, bayat, dogrulanmadi}; tarih alanı boş ya da geçersiz ders "doğrulanmadı" sayılır. */
+  function dogrulamaOzeti(L, bugun) {
+    var o = { toplam: 0, bayat: 0, dogrulanmadi: 0 };
+    Object.keys(L || {}).forEach(function (yol) {
+      Object.keys(L[yol]).forEach(function (no) {
+        var d = dogrulamaDurumu(L[yol][no], bugun);
+        o.toplam++;
+        if (!d) o.dogrulanmadi++; else if (d.bayat) o.bayat++;
+      });
+    });
+    return o;
+  }
   /* Şema denetimi. L = {yol: {no: ders}}, basliklar = {yol: [başlık,…]} (isteğe bağlı; ders no = sıra + 1).
      Dönen: {hata:[metin], eksik:[{yol,no,…}], say:{…}}. hata = bozuk içerik (test düşürür); eksik = yalnız rapor. */
   function denetle(L, basliklar, bugun) {
@@ -123,5 +135,5 @@
     });
     return { hata: hata, eksik: eksik, say: say };
   }
-  O.ders = { BAYAT_GUN: BAYAT_GUN, hedefler: hedefler, secenekNedeni: secenekNedeni, dogrulamaDurumu: dogrulamaDurumu, gecerliTarih: gecerliTarih, denetle: denetle };
+  O.ders = { BAYAT_GUN: BAYAT_GUN, hedefler: hedefler, secenekNedeni: secenekNedeni, dogrulamaDurumu: dogrulamaDurumu, dogrulamaOzeti: dogrulamaOzeti, gecerliTarih: gecerliTarih, denetle: denetle };
 })(typeof window !== "undefined" ? window : globalThis);

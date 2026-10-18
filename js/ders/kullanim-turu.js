@@ -65,7 +65,7 @@ function renderSettings(){
     pfSeg("Özetimi arkadaşlara göster",[[true,"Göster"],[false,"Gizle"]],S.pf.share,function(v){S.pf.share=v;savePf();if(!v)syncLeagueMe()}),
     h("div",{class:"small mute"},"Lig'deki arkadaşların sıranı, XP'ni ve serini görebilir. Gizlersen sadece Lig puanın görünür. Dersin, notların ve projelerin zaten sadece sana aittir."),
     h("div",{class:"small mute"},"Rahat: her ders daha kısa, günde bir yeni kavram, daha çok tekrar. Koçlar dersleri buna göre yazar.")),
-    h("div",{class:"panel"},h("h2",null,"Yardım"),h("div",{class:"row"},h("button",{class:"btn ghost",type:"button",onclick:function(){goTab("rehber")}},"Başlangıç rehberi"),h("button",{class:"btn ghost",type:"button",onclick:function(){goTab("sozluk")}},"Sözlük")))].concat(renderReset()).concat(typeof renderGuven==="function"?[renderGuven()]:[]);
+    h("div",{class:"panel"},h("h2",null,"Yardım"),h("div",{class:"row"},h("button",{class:"btn ghost",type:"button",onclick:function(){goTab("rehber")}},"Başlangıç rehberi"),h("button",{class:"btn ghost",type:"button",onclick:function(){goTab("sozluk")}},"Sözlük")))].concat(renderReset()).concat(typeof renderGuven==="function"?[renderGuven()]:[]).concat(typeof renderGeriBildirim==="function"?[renderGeriBildirim()]:[]);
 }
 function welcomeCard(){
   if(seenWelcome()||S.guest||S.days.length>2)return null;

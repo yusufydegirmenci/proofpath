@@ -82,6 +82,15 @@
     t[ad] = deger; d.tercih = t;
     return yaz(depo, d);
   }
+  /* Geri bildirim (Faz 12 V4, yalnız yerel): ya_pp_ogr.geriBildirim = {kuyruk:[], taslaklar:{anahtar: taslak}}. Argümansız okur, nesne verilirse yazar. */
+  function geriBildirim(yeni, depo) {
+    var d = oku(depo), gb = d.geriBildirim && typeof d.geriBildirim === "object" ? d.geriBildirim : {};
+    gb.kuyruk = Array.isArray(gb.kuyruk) ? gb.kuyruk : [];
+    gb.taslaklar = gb.taslaklar && typeof gb.taslaklar === "object" && !Array.isArray(gb.taslaklar) ? gb.taslaklar : {};
+    if (yeni === undefined) return gb;
+    d.geriBildirim = yeni;
+    return yaz(depo, d);
+  }
   /* Yalnız kullanıcının "Tümünü sıfırla" eylemi çağırır: ya_pp_ogr anahtarını kaldırır (bozuk yedeğe dokunmaz). */
   function sifirla(depo) {
     depo = depo || varsayilanDepo();
@@ -89,5 +98,5 @@
     try { depo.removeItem(KEY); return true; } catch (e) { return false; }
   }
 
-  O.depo = { varsayilan: varsayilanDepo, KEY: KEY, oku: oku, normalle: normalle, denemeEkle: denemeEkle, projeIsaretle: projeIsaretle, kanitEkle: kanitEkle, tercih: tercih, sifirla: sifirla };
+  O.depo = { varsayilan: varsayilanDepo, KEY: KEY, oku: oku, normalle: normalle, denemeEkle: denemeEkle, projeIsaretle: projeIsaretle, kanitEkle: kanitEkle, tercih: tercih, geriBildirim: geriBildirim, sifirla: sifirla };
 })(typeof window !== "undefined" ? window : globalThis);
