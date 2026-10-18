@@ -178,7 +178,7 @@ function renderLessonRoom(){
     var sn=typeof lrSenaryo==="function"?lrSenaryo(l):null;if(sn)sn.forEach(function(x){body.push(x)});
     var dd=lcDone(k);
     body.push(h("div",{class:"panel"},dd?h("div",{class:"qz-sum all"},h("b","✓"),h("span",null,"Ders tamamlandı. Sıradaki konu açıldı.")):h("div",{class:"small mute"},"Eksik adımlar: "+LR_STEPS.slice(0,4).filter(function(x){return !lrDone(l,x[0])}).map(function(x){return x[1]}).join(", ")),
-      h("div",{class:"row",style:"margin-top:8px"},h("button",{class:"btn big",type:"button",onclick:lrClose},"Derslere dön"),
+      h("div",{class:"row",style:"margin-top:8px"},h("button",{class:"btn big",type:"button",onclick:lrClose},"Derslere dön"),(typeof lrAlistir==="function"?lrAlistir(l,function(){lrSet(l,"alis")}):null),
         h("button",{class:"btn ghost",type:"button",onclick:function(){S.les.room=null;S.les.view="not";S.nt.tr=tr;S.nt.pid="l:"+l.id;draw();window.scrollTo(0,0)}},"Defterde aç"))));
   }
   if(idx>0||idx<LR_STEPS.length-1)body.push(h("div",{class:"lr-nav"},idx>0?h("button",{class:"btn ghost",type:"button",onclick:function(){lrSet(l,LR_STEPS[idx-1][0])}},"‹ "+LR_STEPS[idx-1][1]):h("span"),idx<LR_STEPS.length-1?h("button",{class:"btn ghost",type:"button",onclick:function(){lrSet(l,LR_STEPS[idx+1][0])}},LR_STEPS[idx+1][1]+" ›"):h("span")));

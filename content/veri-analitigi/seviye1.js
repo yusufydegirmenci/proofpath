@@ -58,7 +58,7 @@
         { q: "'İstanbul ' (sonda boşluk) düzeltmek için hangi işlev uygun?", o: ["EĞERSAY", "DÜŞEYARA", "KIRP", "AY"], a: 2, why: "KIRP baştaki/sondaki fazla boşlukları siler.", bolum: "terimler" }
       ],
       gecme: { olcut: "Bilgi kontrolünde %80; bağımsız görevde en az 4 dönüşümlük günlük (önce/sonra/formül/neden) ve alanda koşullu formül görevinin kural denetimini geçmek.", kritik: ["Metin sayı ya da boş hücreyi fark etmeden hesaplamak", "Veriyi neden değiştirdiğini açıklamadan düzeltmek"] },
-      kaynaklar: [],
+      kaynaklar: [{ t: "Microsoft: XLOOKUP işlevi", u: "https://support.microsoft.com/en-us/office/xlookup-function-b7fd680e-6d10-43e6-84f9-88eae8bf5929", dogrulama: "2026-10-18", neden: "Anahtarla arama yapan XLOOKUP'ın resmî açıklaması (Excel)." }, { t: "Microsoft: SUMIF işlevi", u: "https://support.microsoft.com/en-us/office/sumif-function-169b8c99-c05c-4483-a712-1697a653039b", dogrulama: "2026-10-18", neden: "Koşullu toplamın (ETOPLA karşılığı) resmî söz dizimi." }, { t: "Google E-Tablolar işlev listesi", u: "https://support.google.com/docs/table/25273", dogrulama: "2026-10-18", neden: "Google E-Tablolar'daki tüm işlevlerin listesi; Excel'siz çalışanlar için." }],
       telafi: "ETOPLA ve EĞERSAY'ı 12 siparişlik tabloda elle bir kez daha hesapla (Kulaklık adedi 9, Ankara siparişi 4); sonra kirli tablodan tek bir hücre seçip önce/sonra/formül/neden dörtlüsünü yaz.",
       sonraki: "Sıradaki ders: sıralama, filtre, tekrar, eksik değer ve doğrulama (temizleme) — aynı kirli tabloyu bütünüyle temizleyeceksin."
     },
@@ -112,7 +112,7 @@
         { q: "Dönüşüm günlüğünün asıl yararı hangisidir?", o: ["Tabloyu küçültmek", "Her değişikliğin nedenini göstererek temizliği denetlenebilir yapmak", "Formülleri hızlandırmak", "Grafik çizmek"], a: 1, why: "Önce/sonra/işlem/neden kaydı temizliği savunulabilir kılar.", bolum: "terimler" }
       ],
       gecme: { olcut: "Bilgi kontrolünde %80; bağımsız görevde temiz tablo, ≥6 dönüşümlük günlük, boş fiyat kararının gerekçesi ve doğrulama kuralları.", kritik: ["Kopya satırı ya da farklı yazımları fark etmeden özet almak", "Boş değeri kararı ve varsayımı yazmadan doldurmak/silmek"] },
-      kaynaklar: [],
+      kaynaklar: [{ t: "Microsoft: TRIM işlevi", u: "https://support.microsoft.com/en-us/office/trim-function-410388fa-c5df-49c6-b16c-9e5630b479f9", dogrulama: "2026-10-18", neden: "Fazla boşlukları temizleyen KIRP/TRIM işlevinin resmî açıklaması." }, { t: "LibreOffice Calc işlev listesi", u: "https://help.libreoffice.org/latest/en-US/text/scalc/01/04060100.html", dogrulama: "2026-10-18", neden: "Ücretsiz Calc'ta aynı işlevlerin sözdizimi; Excel yoksa alternatif." }],
       telafi: "Kirli tablodan yalnız şehir sütununu al: kaç farklı yazım var (birebir metinle 6; Excel özet tablo büyük-küçük harfi ayırmadığı için orada 5 görünebilir, doğrulanmadı: kendi sürümünde dene), temizleyince kaç (3)? Bu sayıyı ve her dönüşümün nedenini günlüğe yaz; sonra kopya satırı say (13 → 12).",
       sonraki: "Sıradaki ders: özet tablo, grafik ve basit rapor — temizlenmiş veriyle şehir/ürün/ay özetleri ve yorum."
     },
@@ -166,7 +166,7 @@
         { q: "Raporda S007'nin boş indirimi için ne yazılmalı?", o: ["Hiçbir şey; küçük ayrıntı", "Boşun 0 sayıldığı varsayımı ve etkisi (≈500)", "Tüm rapor iptal", "Tabloyu silmek"], a: 1, why: "Varsayım ve büyüklüğü açıkça raporlanır.", bolum: "hatalar" }
       ],
       gecme: { olcut: "Bilgi kontrolünde %80; bağımsız görevde temizlenmiş/temizlenmemiş özet karşılaştırması, boş fiyat kararı ve bulgu–varsayım–sınır içeren rapor.", kritik: ["Ölçüyü ve varsayımı belirtmeden ciro yazmak", "Gözleme neden uydurmak"] },
-      kaynaklar: [],
+      kaynaklar: [{ t: "Microsoft: Özet tablo (PivotTable) oluşturma", u: "https://support.microsoft.com/en-us/office/create-a-pivottable-to-analyze-worksheet-data-a9a84538-bfe9-40a9-a8e9-f99134456576", dogrulama: "2026-10-18", neden: "Özet tablonun adım adım resmî anlatımı." }, { t: "Microsoft: Baştan sona grafik oluşturma", u: "https://support.microsoft.com/en-us/office/create-a-chart-from-start-to-finish-0baf399e-dd61-4e18-8a73-b3fd5d5680c2", dogrulama: "2026-10-18", neden: "Grafik türünü seçip oluşturmanın resmî rehberi." }],
       telafi: "Şehir başına net ciroyu üç ETOPLA ile hesapla (6142,5 / 3595 / 6270) ve toplamı 16007,5 ile doğrula; sonra tek cümlelik bulgu, bir varsayım ve bir sınır yaz.",
       sonraki: "Seviye 1 değerlendirmesi ve ardından önerilen proje: temiz veriyle satış raporu. Önerilen sonraki seviye: SQL ile sorgulama (Seviye 2)."
     }

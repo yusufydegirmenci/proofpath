@@ -160,6 +160,58 @@
   }
   function liste(b, items) { return h("ul", { class: "lr-ul" }, items.map(function (x) { return h("li", null, x); })); }
 
+  /* ---- Ders ↔ alıştırma eşleme tablosu (Faz 12 V2, O3) ----
+     Hangi ders hangi alıştırmaya bağlı: yol + konu (PP_EK/TMAP dizini) ya da VA ders kimliği; lab (PP.lab kimliği), alan (PP.alan kimliği), parsons (PP_PARSONS kimliği).
+     Tek doğruluk kaynağı PP_EK / PP_VA.alanlar / PP_PARSONS'tur; tests/faz12_esleme.js tablonun bunlarla birebir tuttuğunu denetler.
+     "Alıştır" bağlantısı (lrAlistir) yalnız tabloda satırı olan oda derslerinde çıkar; VA satırları VA arayüzü için yalnız kayıttır. */
+  LAB.ESLEME = [
+    { yol: "net", konu: 3, lab: ["network-altag"] },
+    { yol: "net", konu: 6, lab: ["net-rota","net-nat","net-ospf"] },
+    { yol: "net", konu: 7, lab: ["net-vlan"] },
+    { yol: "net", konu: 9, lab: ["net-dhcp"] },
+    { yol: "net", konu: 13, lab: ["net-acl"] },
+    { yol: "ccna", konu: 2, lab: ["ccna-altag"] },
+    { yol: "ccna", konu: 4, lab: ["ccna-vlan"], parsons: ["ccna-vlan-komut"] },
+    { yol: "ccna", konu: 5, lab: ["ccna-rota"] },
+    { yol: "ccna", konu: 6, lab: ["ccna-dhcp"] },
+    { yol: "ccna", konu: 7, lab: ["ccna-nat"] },
+    { yol: "ccna", konu: 8, lab: ["ccna-acl"] },
+    { yol: "ccna", konu: 9, lab: ["ccna-ospf"] },
+    { yol: "ccna", konu: 13, lab: ["ccna-vlan"] },
+    { yol: "va", ders: "va0-1", alan: ["va0-1-sql","va0-1-py"] },
+    { yol: "va", ders: "va0-2", alan: ["va0-2-sql","va0-2-py"] },
+    { yol: "va", ders: "va0-3", alan: ["va0-3-sql","va0-3-py"] },
+    { yol: "va", ders: "va1-1", alan: ["va1-1-py","va1-1-sim"] },
+    { yol: "va", ders: "va1-2", alan: ["va1-2-py","va1-2-sql","va1-2-sim"] },
+    { yol: "va", ders: "va1-3", alan: ["va1-3-sql","va1-3-sim"] },
+    { yol: "va", ders: "va2-1", alan: ["va2-1-sql"] },
+    { yol: "va", ders: "va2-2", alan: ["va2-2-sql"], parsons: ["p-va2-2"] },
+    { yol: "va", ders: "va2-3", alan: ["va2-3-sql"] },
+    { yol: "va", ders: "va2-4", alan: ["va2-4-sql","va2-4-py"] },
+    { yol: "va", ders: "va2-5", alan: ["va2-5-sql","va2-5-py"], parsons: ["p-va2-5"] },
+    { yol: "va", ders: "va2-6", alan: ["va2-6-sql"] },
+    { yol: "va", ders: "va2-7", alan: ["va2-7-sql"] },
+    { yol: "va", ders: "va2-8", alan: ["va2-8-sql","va2-8-py"], parsons: ["p-va2-8"] },
+    { yol: "va", ders: "va2-9", alan: ["va2-9-sql"] },
+    { yol: "va", ders: "va2-10", alan: ["va2-10-sql","va2-10-py"] },
+    { yol: "va", ders: "va2-11", alan: ["va2-11-sql","va2-11-py"] },
+    { yol: "va", ders: "va2-12", alan: ["va2-12-sql"] },
+    { yol: "va", ders: "va2-13", alan: ["va2-13-sql"] }
+  ];
+  LAB.eslesme = function (l) {
+    var T; try { T = tmFor(l); } catch (e) { T = null; }
+    if (!T) return null;
+    for (var i = 0; i < LAB.ESLEME.length; i++) { var r = LAB.ESLEME[i]; if (r.yol === l.track && r.konu === T.i) return r; }
+    return null;
+  };
+  /* Ders sonu "Alıştır" düğmesi: yalnız eşleşen derslerde; alıştırma adımına götürür (lab/Parsons orada). */
+  g.lrAlistir = function (l, git) {
+    var r = LAB.eslesme(l);
+    if (!r || !(r.lab || r.parsons)) return null;
+    var tur = [].concat(r.lab ? ["etkileşimli lab"] : [], r.parsons ? ["komut sıralama"] : []).join(" + ");
+    return h("button", { class: "btn", type: "button", "data-alistir": (r.lab || r.parsons || []).join(","), onclick: git }, "Alıştır · " + tur);
+  };
+
   /* bolum "anlat": benzetme+sınır, yaygın hatalar, geçme ölçütü, kaynaklar, sonraki adım · "alis": rehberli, bağımsız, lab, telafi */
   g.lrEk = function (l, bolum) {
     var e = ekBul(l);

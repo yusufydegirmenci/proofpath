@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Faz 12a V2 (dal: faz-12a; migration, canlı DB, sunucu tablosu, gizli anahtar, yeni dış kütüphane yok)
+- Kaynak denetimi: `npm run kaynak` (`tests/kaynak/denetle.js`, AĞ ister, yalnız GET; `npm test` ağsız kalır). Ders, ek, proje, atlas ve VA verisindeki dış adresleri toplar (`tests/kaynak/toplayici.js`), 200 dışını ve başlığı konuyla eşleşmeyenleri listeler; bot engelleyen siteler (401/403/405/429/999) "belirsiz" sayılır. Ağsız karşılığı `tests/kaynak_etiket.js` (npm test içinde): adres biçimi, adressiz sertifika iddiasının "doğrulanmadı" etiketi, VA Seviye 1 kaynakları.
+- VA Seviye 1'in üç dersinin boş kaynak listesi, curl ile 200 doğrulanmış resmî Microsoft/Google/LibreOffice yardım sayfalarıyla dolduruldu.
+- 30 ders (Backend 4–12, CCNA 4–12, Siber 4–10, İngilizce 2–6) `objectives` (2–4), her soruda `obj`, her yanlış seçenek için `whyNot`, `summary` (3–5) ile dolduruldu; her hedef en az bir soruyla ölçülür. V1 pilot derslerindeki açık bulgular düzeltildi (tek soruyla ölçülen hedeflere ikinci soru, bk-1 h1 sorusu, ccna-3 `why`, "İnternet" yazımı, eng-2 -es/-s açıklaması).
+- Ders↔alıştırma eşleme tablosu `PP.lab.ESLEME` (js/ders/ders-eki.js): yol+konu → lab / Parsons, VA ders → alan / Parsons. Ders odasının son adımında "Alıştır" düğmesi (`lrAlistir`) yalnız lab ya da Parsons'u olan derslerde çıkar ve alıştırma adımına götürür. `tests/faz12_esleme.js` tablonun PP_EK / PP_VA / PP_PARSONS ile birebir tuttuğunu ve düğmenin yalnız eşleşen derslerde göründüğünü sınar.
+- `tests/faz12_sema.js`: "alanı henüz olmayan ders" örneği bk-4'ten bk-20'ye taşındı (bk-4 artık alanlı); sayfa açılış bekleme süresi 3,5 sn.
+
 ## Faz 12a V1 (dal: faz-12a; migration, canlı DB, sunucu tablosu, gizli anahtar, yeni dış kütüphane yok)
 - Kod bloklarını çalıştırarak doğrulama (`tests/faz12_kod.js`, ağsız): derslerdeki 46 `cmd` bloğu `lang` etiketi taşır (sql, python, js, bash, yaml, json, dockerfile; çalışması beklenmeyenler `ios`, `cmd`, `text`, `graphql`, `cwli` ve `calistirma: "atla <neden>"` ile açık işaretli). SQL `node:sqlite`te, Python `python -I -X utf8` (zaman sınırlı, ağ soketi kapalı), JS acorn modül ayrıştırması, bash `bash -n`, JSON `JSON.parse`, YAML PyYAML varsa. Etiketsiz ya da gerekçesiz atlanan blok testi düşürür. Veri Analitiği alan çözümleri (`PP_VA.alanCozum` + `tests/va-cozumler-*.json`) PP.alan kontrol/varyant işleviyle çevrimdışı çalıştırılır (doğru çözüm kabul, yanlışlar red).
 - ccna-3'te tek blokta duran JSON ve YAML örneği iki bloğa ayrıldı (içerik aynı).
