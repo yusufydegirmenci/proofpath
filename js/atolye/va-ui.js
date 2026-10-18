@@ -51,7 +51,9 @@ function vaDers(d, st) {
     d.kaynaklar.length ? kp(["Dış kaynaklar (isteğe bağlı)", vaLi(d.kaynaklar.map(function (k) { return h("span", null, h("a", { href: k.u, target: "_blank", rel: "noopener noreferrer" }, k.t), " — " + k.neden + " (son doğrulama: " + k.dogrulama + ")"); }))]) : null,
     kp(["Takıldıysan (telafi)", h("p", null, d.telafi)]),
     h("div", { class: "small mute" }, d.sonraki),
-    h("div", { class: "row" }, h("button", { class: "btn", type: "button", "data-va": "okudum", onclick: function () { PP.va.dersOkundu(d.id); draw(); } }, okundu ? "Okudum (güncelle)" : "Okudum")),
+    h("div", { class: "row" }, h("button", { class: "btn", type: "button", "data-va": "okudum", onclick: function () { PP.va.dersOkundu(d.id); draw(); } }, okundu ? "Okudum (güncelle)" : "Okudum"),
+      typeof gbBtn === "function" ? gbBtn({ tur: "ders", id: d.id, baslik: d.ad, sekme: "ders" }) : null),
+    typeof gbFormYer === "function" ? gbFormYer("ders", d.id) : null,
     window.PP && PP.senaryoUi ? PP.senaryoUi.dersIcin(d.id) : null);
 }
 

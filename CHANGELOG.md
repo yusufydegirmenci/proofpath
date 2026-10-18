@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## Faz 12 V4 (dal: faz-12b; migration UYGULANMADI, canlı DB, sunucu çağrısı, GitHub issue, zamanlanmış iş, gizli anahtar, yeni dış kütüphane yok)
+- "Bu hatalı" düğmesi: her ders odasında (başlıkta), Veri Analitiği ders kartında ve proje ekranında; bağlam (sekme, ders/proje kimliği, adım, hazır ders/proje başlığı) otomatik dolar. Kendi projesinin başlığı bağlama girmez; ad/e-posta hiç eklenmez.
+- Geri bildirim formu (`js/ders/geri-bildirim-ui.js`) ve mantığı (`PP.ogr.gb`, `js/ogrenme/geri-bildirim.js`): tür (hata/istek/şikayet/öneri), başlık (3–80), açıklama (10–2000; "Problem / Expected / Actual / Steps" şablon düğmesi), isteğe bağlı önem. E-posta ya da şifre/anahtar benzeri metinde ilk Kaydet uyarır, ikinci basış kaydeder. Yerel kuyruk `ya_pp_ogr.geriBildirim` altında (en çok 100 kayıt): Ayarlar'da liste, düzenle, iki adımlı sil, kopyala, JSON/Markdown dışa aktarma. Yazılan ama kaydedilmemiş metin bağlam başına taslak olarak saklanır (en çok 20), yenilemede geri gelir. Hiçbir şey gönderilmez.
+- `supabase/migrations/20261018_geri_bildirim.sql`: yalnız YENİ `geri_bildirim` tablosu (id, owner, tür, başlık, açıklama, bağlam, durum, created_at; CHECK kısıtları; RLS: oturum açmış kullanıcı yalnız kendi satırını ekler/görür, anon yok, update/delete politikası yok; sunucuda `created_at`/`durum` zorlanır, kullanıcı başına 24 saatte en çok 10 satır). Dosya olarak hazır, UYGULANMADI; istemci tabloyu çağırmaz (testle sınanır).
+- Güncel tutma: derste `sonDogrulama` boşsa "doğrulanmadı" etiketi (`lrDogrulamaEtiket`; tarih uydurulmaz). Bugün ve Dersler ekranında "İçerik güncelliği" sayacı: toplam / bayat (183 gün+) / doğrulanmadı (`PP.ogr.ders.dogrulamaOzeti`).
+- Aylık kaynak raporu: `npm run kaynak:aylik` (`tests/kaynak/aylik.js`, AĞ ister, elle çalıştırılır) denetim sonucunu `../proofpath-ops/raporlar/kaynak-<tarih>.md` dosyasına yazar; hedef bu reponun içinde olamaz ve oluşturulmaz. `--json=` ile ağsız dönüştürür.
+- Test: `tests/faz12b_geri_bildirim.js` (npm run test:ogrenme içinde).
+
 ## Faz 12a V2 (dal: faz-12a; migration, canlı DB, sunucu tablosu, gizli anahtar, yeni dış kütüphane yok)
 - Kaynak denetimi: `npm run kaynak` (`tests/kaynak/denetle.js`, AĞ ister, yalnız GET; `npm test` ağsız kalır). Ders, ek, proje, atlas ve VA verisindeki dış adresleri toplar (`tests/kaynak/toplayici.js`), 200 dışını ve başlığı konuyla eşleşmeyenleri listeler; bot engelleyen siteler (401/403/405/429/999) "belirsiz" sayılır. Ağsız karşılığı `tests/kaynak_etiket.js` (npm test içinde): adres biçimi, adressiz sertifika iddiasının "doğrulanmadı" etiketi, VA Seviye 1 kaynakları.
 - VA Seviye 1'in üç dersinin boş kaynak listesi, curl ile 200 doğrulanmış resmî Microsoft/Google/LibreOffice yardım sayfalarıyla dolduruldu.

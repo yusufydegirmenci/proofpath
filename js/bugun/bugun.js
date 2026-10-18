@@ -56,6 +56,7 @@ function renderToday(){
   var planP=typeof renderPlan==="function"?renderPlan():null;if(planP)out.push(planP);
   out.push(renderRoute());
   out.push(bgGrid());
+  var gu=typeof gbGuncellik==="function"?gbGuncellik():null;if(gu)out.push(gu);
   var tools=[plOn?null:plPanel(),syncLine()];if(!S.guest)tools.push(m5Panel());
   var wd_=new Date().getDay();if(wd_===0||wd_===1)tools.unshift(wkPanel(wd_===1));
   var tl=tools.filter(function(x){return x});
