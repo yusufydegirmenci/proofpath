@@ -69,7 +69,7 @@ const sorularTum = new Map(); // id -> {q, kaynak}
     w.PP_VA[k].sorular.forEach((q) => sorularTum.set(q.id, { q: q.q, kaynak: 'content/veri-analitigi/' + f + '.js', hedef: w.PP_VA[k].id }));
   }
   for (const y in global.__seviye) global.__seviye[y].sorular.forEach((q) => sorularTum.set(q.id, { q: q.q, kaynak: T.SEVIYE_DOSYA, hedef: 'seviye:' + y }));
-  eq(sorularTum.size, 735, 'taranan sınav sorusu: 644 ders + 21 VA + 70 seviye = 735');
+  eq(sorularTum.size, 746, 'taranan sınav sorusu: 655 ders + 21 VA + 70 seviye = 746');
   let izlenen;
   /* izlenen + henüz eklenmemiş ama .gitignore'a takılmayan (yani commit'e girebilecek) dosyalar */
   try { izlenen = cp.execSync('git ls-files --cached --others --exclude-standard', { cwd: KOK, encoding: 'utf8' }).split('\n').filter(Boolean); } catch (e) { izlenen = null; }
