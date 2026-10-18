@@ -171,14 +171,14 @@ const GOALS = { ccna: 'CCNA', net: 'Network', qa: 'Test Uzmanı', bk: 'Backend',
     await p.click('button:has-text("Hesapsız bir ders dene")'); await p.waitForTimeout(200);
     const demo = await p.evaluate(() => ({ baslik: (document.querySelector('.ppg-demo h2') || {}).textContent, odak: document.activeElement && document.activeElement.tagName, form: document.querySelector('form.ppa-card').hidden }));
     ok(/Deneme dersi/.test(demo.baslik) && demo.form === true, 'Y1: hesapsız deneme açıldı');
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
       await p.click('.ppg-demo .ppg-opt >> nth=0'); await p.waitForTimeout(80);
       const fb = await p.evaluate(() => (document.querySelector('.ppg-demo .ppg-fb') || {}).textContent || '');
       if (i === 0) ok(/^(Doğru\.|Doğrusu:)/.test(fb) && fb.length > 20, 'Y1: deneme sınavı anında açıklamalı geri bildirim verir');
       await p.click('.ppg-demo button.ppa-btn'); await p.waitForTimeout(60);
     }
     const son = await p.evaluate(() => (document.querySelector('.ppg-demo .ppg-fb') || {}).textContent);
-    ok(/Mini sınav bitti: \d \/ 5 doğru/.test(son || ''), 'Y1: deneme sonunda sonuç ve hesap açma çağrısı');
+    ok(/Mini sınav bitti: \d \/ 6 doğru/.test(son || ''), 'Y1: deneme sonunda sonuç ve hesap açma çağrısı');
     const sonra = await p.evaluate(() => ({ sb: window.__sbCalls, ag: window.__ag, ls: Object.keys(localStorage).sort(), ss: Object.keys(sessionStorage).sort() }));
     eq(sonra, once, 'Y1: hesapsız deneme sunucu çağrısı, ağ isteği ve depolama yazımı yapmaz');
     await p.click('.ppg-demo button.ppa-btn:has-text("Hesap oluştur")'); await p.waitForTimeout(200);
