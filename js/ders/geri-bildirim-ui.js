@@ -25,8 +25,8 @@ function gbFormYer(yer, id) {
 
 function gbForm() {
   var G = gbDurum(), O = PP.ogr.gb, f = G.f;
-  var sakla = function () { if (!G.duz) O.taslakKaydet(f, G.baglam); };
-  var ti = h("input", { type: "text", maxlength: O.SINIR.baslik, "aria-label": "Başlık", "data-gb": "baslik", placeholder: "Kısa başlık (İngilizce dene): The Save button does nothing", oninput: function (e) { f.baslik = e.target.value; sakla(); } });
+  var sakla = function () { G.uyariGoruldu = false; if (!G.duz) G.taslakYok = !O.taslakKaydet(f, G.baglam); };
+  var ti = h("input", { type: "text", maxlength: O.SINIR.baslik, "aria-label": "Başlık", "data-gb": "baslik", placeholder: "Kısa başlık, örn. The Save button does nothing", oninput: function (e) { f.baslik = e.target.value; sakla(); } });
   ti.value = f.baslik;
   var ac = h("textarea", { maxlength: O.SINIR.aciklama, rows: 7, "aria-label": "Açıklama", "data-gb": "aciklama", placeholder: "Ne oldu? Türkçe yazabilirsin; İngilizce denersen iş yazışması pratiği olur.", oninput: function (e) { f.aciklama = e.target.value; sakla(); } });
   ac.value = f.aciklama;
@@ -34,7 +34,7 @@ function gbForm() {
     var k = O.kontrol(f);
     if (k.ok && k.uyari.length && !G.uyariGoruldu) { G.uyariGoruldu = true; G.hata = k.uyari.concat(["Sorun yoksa tekrar Kaydet'e bas."]); draw(); return; }
     var r = O.kaydet(f, G.baglam, G.duz);
-    if (!r.ok) { G.hata = r.hata || ["Kaydedilemedi (tarayıcı depolaması dolu olabilir)."]; draw(); return; }
+    if (!r.ok) { G.hata = r.hata || [r.neden === "kayit-yok" ? "Bu kayıt artık yok." : "Kaydedilemedi (tarayıcı depolaması dolu olabilir)."]; draw(); return; }
     G.acik = false; G.f = null; G.duz = null; G.hata = [];
     rtToast("Geri bildirim bu cihazda kuyruğa alındı. Hiçbir yere gönderilmedi."); draw();
   };
@@ -49,11 +49,12 @@ function gbForm() {
     h("div", { class: "chiprow", role: "group", "aria-label": "Önem (isteğe bağlı)" }, h("small", { class: "mute" }, "Önem:"), O.ONEMLER.map(function (o) {
       return h("button", { class: "fchip" + (f.onem === o[0] ? " on" : ""), type: "button", "aria-pressed": f.onem === o[0] ? "true" : "false", onclick: function () { f.onem = o[0]; sakla(); draw(); } }, o[1]);
     })),
+    G.taslakYok ? h("div", { class: "small warnt", role: "alert" }, "Taslak bu cihaza yazılamadı (depolama dolu olabilir); kapatmadan önce kaydet ya da dışa aktar.") : null,
     h("div", { class: "small mute" }, "Kişisel bilgi, şifre ya da anahtar yazma. Bu yazı yalnız bu cihazda durur, kimseye gönderilmez. Kısa kalıplar: \"I expected … but I got …\", \"Steps to reproduce:\"."),
     G.hata.length ? h("div", { class: "small warnt", role: "alert", "data-gb": "hata" }, G.hata.join(" ")) : null,
     h("div", { class: "row" },
       h("button", { class: "btn", type: "button", "data-gb": "kaydet", onclick: kaydet }, G.duz ? "Güncelle" : "Kaydet"),
-      h("button", { class: "btn ghost", type: "button", "data-gb": "vazgec", onclick: function () { G.acik = false; G.hata = []; draw(); } }, G.duz ? "Vazgeç" : "Kapat (taslak kalır)"),
+      h("button", { class: "btn ghost", type: "button", "data-gb": "vazgec", onclick: function () { G.acik = false; G.hata = []; draw(); } }, G.duz ? "Vazgeç" : "Kapat"),
       !G.duz ? h("button", { class: "btn ghost", type: "button", "data-gb": "taslak-sil", onclick: function () { O.taslakSil(G.baglam); G.f = { tur: "hata", baslik: "", aciklama: "", onem: "" }; G.hata = []; draw(); } }, "Taslağı sil") : null));
 }
 
@@ -66,7 +67,7 @@ function gbKopyala(metin) {
   Promise.resolve(p).then(function () { return p ? true : yedek(); }, yedek).then(function (s) { rtToast(s ? "Kopyalandı." : "Kopyalanamadı; dışa aktar düğmesini dene."); });
 }
 function gbIndir(ad, metin, tip) {
-  if (S.dl && S.dl.save) { Promise.resolve(S.dl.save({ filename: ad, data: metin })).catch(function () { }); return; }
+  if (S.dl && S.dl.save) { Promise.resolve(S.dl.save({ filename: ad, data: metin })).then(function () { rtToast("İndirildi."); }, function () { rtToast("İndirilemedi."); }); return; }
   var a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([metin], { type: tip })); a.download = ad; document.body.appendChild(a); a.click();
   setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
 }
@@ -78,13 +79,13 @@ function renderGeriBildirim() {
   var kayit = function (k) {
     var tur = (O.TURLER.filter(function (x) { return x[0] === k.tur; })[0] || [0, k.tur])[1], onay = G.sil === k.id;
     return h("div", { class: "lbox", "data-gb-kayit": k.id },
-      h("div", { class: "chiprow" }, h("span", { class: "pill" }, tur), h("span", { class: "pill" }, "bu cihazda, gönderilmedi"), k.onem ? h("span", { class: "pill" }, "önem: " + k.onem) : null),
-      h("b", null, k.baslik), h("div", { class: "small mute" }, O.baglamMetni(k.baglam) + " · " + k.olusturma.slice(0, 10)),
+      h("div", { class: "chiprow" }, h("span", { class: "pill" }, tur), h("span", { class: "pill" }, "bu cihazda, gönderilmedi"), k.onem ? h("span", { class: "pill" }, "önem: " + O.onemEtiket(k.onem)) : null),
+      h("b", { style: "overflow-wrap:anywhere" }, k.baslik), h("div", { class: "small mute", style: "overflow-wrap:anywhere" }, O.baglamMetni(k.baglam) + " · " + k.olusturma.slice(0, 10)),
       h("div", { class: "small", style: "white-space:pre-wrap;overflow-wrap:anywhere" }, k.aciklama.length > 240 ? k.aciklama.slice(0, 240) + "…" : k.aciklama),
       h("div", { class: "row" },
         h("button", { class: "btn ghost", type: "button", "data-gb": "kopyala", onclick: function () { gbKopyala(O.markdown(k)); } }, "Kopyala"),
         h("button", { class: "btn ghost", type: "button", "data-gb": "duzenle", onclick: function () { gbAc(null, k); } }, "Düzenle"),
-        onay ? [h("button", { class: "btn", type: "button", "data-gb": "sil-evet", onclick: function () { O.sil(k.id); G.sil = null; draw(); } }, "Evet, sil"), h("button", { class: "btn ghost", type: "button", onclick: function () { G.sil = null; draw(); } }, "Vazgeç")]
+        onay ? [h("button", { class: "btn", type: "button", "data-gb": "sil-evet", onclick: function () { if (!O.sil(k.id)) rtToast("Silinemedi."); G.sil = null; draw(); } }, "Evet, sil"), h("button", { class: "btn ghost", type: "button", onclick: function () { G.sil = null; draw(); } }, "Vazgeç")]
           : h("button", { class: "btn ghost", type: "button", "data-gb": "sil", onclick: function () { G.sil = k.id; draw(); } }, "Sil")));
   };
   return h("div", { class: "panel", "data-gb": "panel" },
@@ -105,5 +106,5 @@ function gbGuncellik() {
   var o = null; try { o = PP.ogr.ders.dogrulamaOzeti(window.PP_LESSONS); } catch (e) { o = null; }
   if (!o || !o.toplam) return null;
   return h("div", { class: "small mute", "data-guncellik": "1" }, "İçerik güncelliği: " + o.toplam + " ders · ",
-    h("span", { "data-guncellik-bayat": String(o.bayat), style: o.bayat ? "color:var(--bad)" : null }, o.bayat + " bayat (6 ay+)"), " · " + o.dogrulanmadi + " doğrulanmadı (doğrulama tarihi girilmemiş).");
+    h("span", { "data-guncellik-bayat": String(o.bayat), style: o.bayat ? "color:var(--bad)" : null }, o.bayat + " bayat (6 ay+)"), " · " + o.dogrulanmadi + " doğrulanmadı (doğrulama tarihi yok ya da geçersiz).");
 }

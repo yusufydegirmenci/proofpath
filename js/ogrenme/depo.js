@@ -85,8 +85,9 @@
   /* Geri bildirim (Faz 12 V4, yalnız yerel): ya_pp_ogr.geriBildirim = {kuyruk:[], taslaklar:{anahtar: taslak}}. Argümansız okur, nesne verilirse yazar. */
   function geriBildirim(yeni, depo) {
     var d = oku(depo), gb = d.geriBildirim && typeof d.geriBildirim === "object" ? d.geriBildirim : {};
-    gb.kuyruk = Array.isArray(gb.kuyruk) ? gb.kuyruk : [];
+    gb.kuyruk = Array.isArray(gb.kuyruk) ? gb.kuyruk.filter(function (x) { return x && typeof x === "object" && typeof x.id === "string" && typeof x.olusturma === "string" && typeof x.baslik === "string" && typeof x.aciklama === "string"; }) : [];
     gb.taslaklar = gb.taslaklar && typeof gb.taslaklar === "object" && !Array.isArray(gb.taslaklar) ? gb.taslaklar : {};
+    Object.keys(gb.taslaklar).forEach(function (k) { var t = gb.taslaklar[k]; if (!t || typeof t !== "object" || typeof t.tarih !== "string") delete gb.taslaklar[k]; });
     if (yeni === undefined) return gb;
     d.geriBildirim = yeni;
     return yaz(depo, d);

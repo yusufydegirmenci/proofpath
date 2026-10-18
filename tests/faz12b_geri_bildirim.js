@@ -83,12 +83,20 @@ const dersB = { tur: 'ders', sekme: 'ders', id: 'bk-1', baslik: 'HTTP temelleri'
   mem.ya_pp_ogr = JSON.stringify({ v: 1, denemeler: [], kanitlar: [], projeler: {} });
   const k = G.kaydet({ ...gecerli, onem: 'orta' }, dersB).kayit;
   const md = G.markdown(k);
-  ok(md.startsWith('## [Hata] The Save button does nothing\n- Bağlam: ders bk-1') && /- Önem: orta/.test(md) && /Problem: nothing happens/.test(md), 'markdown: başlık, bağlam, önem, gövde');
+  ok(md.startsWith('## [Hata] The Save button does nothing\n- Bağlam: ders bk-1') && /- Önem: Orta/.test(md) && /Problem: nothing happens/.test(md), 'markdown: başlık, bağlam, önem, gövde');
   ok(!/a@b\.co/.test(md), 'markdown e-posta içermez');
   const js = JSON.parse(G.jsonHepsi(G.liste()));
   ok(js.surum === 1 && js.kayitlar.length === 1 && js.kayitlar[0].id === k.id, 'json: sürüm ve kayıtlar');
   ok(G.markdownHepsi(G.liste()).startsWith('# Proofpath geri bildirimleri'), 'markdownHepsi başlıklı');
 
+  eq(G.kontrol({ ...gecerli, aciklama: G.SABLON }).ok, false, 'boş şablon (yalnız etiketler) açıklama sayılmaz');
+  eq(G.kontrol({ ...gecerli, aciklama: G.SABLON + 'x' }).ok, false, 'şablon + 1 karakter yetmez');
+  eq(G.kontrol({ ...gecerli, aciklama: 'Problem: the button stays disabled.\n\nExpected:\n\nActual:\n\nSteps:\n1. ' }).ok, true, 'şablonun bir alanı doldurulmuşsa kabul');
+  // bozuk elemanlı kuyruk: çökmez, bozuk elemanlar süzülür
+  mem.ya_pp_ogr = JSON.stringify({ v: 1, denemeler: [], kanitlar: [], projeler: {}, geriBildirim: { kuyruk: [null, { id: 'a' }, { id: 'b', baslik: 'x', aciklama: 'y', olusturma: '2026-10-18T10:00:00Z', tur: 'hata', baglam: {} }], taslaklar: { k1: null, k2: { baslik: 'z' } } } });
+  eq(G.liste().map(k => k.id), ['b'], 'bozuk kuyruk elemanları süzülür, liste çökmez');
+  eq(D.geriBildirim().taslaklar, {}, 'bozuk taslaklar süzülür');
+  eq(G.onemEtiket('yuksek'), 'Yüksek', 'önem etiketi Türkçe');
   // bozuk depo çökertmez
   mem.ya_pp_ogr = '{bozuk';
   eq(G.liste(), [], 'bozuk depo: boş kuyruk, hata yok');
@@ -122,7 +130,7 @@ const dersB = { tur: 'ders', sekme: 'ders', id: 'bk-1', baslik: 'HTTP temelleri'
   ok(!/\bto\s+(anon|public)\b/i.test(kod.replace(/revoke[^;]*;/gi, '')), 'anon/public rolüne izin yok (revoke satırları hariç)');
   ok(/revoke all on public\.geri_bildirim from anon/i.test(kod), 'anon erişimi açıkça kaldırılır');
   ok(!/grant[^;]*\b(update|delete|truncate)\b/i.test(kod), 'update/delete/truncate yetkisi verilmez');
-  ok(/check \(tur in \('hata', 'istek', 'sikayet', 'oneri'\)\)/i.test(kod) && /char_length\(baslik\) between 3 and 80/i.test(kod) && /char_length\(aciklama\) between 10 and 2000/i.test(kod), 'tür/başlık/açıklama CHECK kısıtları istemciyle aynı sınırlarda');
+  ok(/check \(tur in \('hata', 'istek', 'sikayet', 'oneri'\)\)/i.test(kod) && /char_length\(btrim\(baslik\)\) between 3 and 80/i.test(kod) && /char_length\(btrim\(aciklama\)\) between 10 and 2000/i.test(kod), 'tür/başlık/açıklama CHECK kısıtları istemciyle aynı sınırlarda');
   ok(/before insert on public\.geri_bildirim/i.test(kod) && />= 10/.test(kod) && /interval '24 hours'/i.test(kod), 'günlük satır sınırı tetikleyicisi (10 / 24 saat)');
   ok(/new\.created_at := now\(\)/i.test(kod), 'created_at sunucuda zorlanır (geçmişe tarihleme ile sınır atlatılamaz)');
   ok(!/\b(email|e_posta|eposta|ad_soyad|telefon)\b/i.test(kod), 'kişisel veri kolonu yok');
