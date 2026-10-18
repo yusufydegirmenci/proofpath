@@ -4,7 +4,7 @@
 (function (g) {
   var O = g.PP.ogr;
   var TURLER = [["hata", "Hata"], ["istek", "İstek"], ["sikayet", "Şikayet"], ["oneri", "Öneri"]];
-  var ONEMLER = [["", "Belirtme"], ["dusuk", "Düşük"], ["orta", "Orta"], ["yuksek", "Yüksek"]];
+  var ONEMLER = [["", "Belirtilmedi"], ["dusuk", "Düşük"], ["orta", "Orta"], ["yuksek", "Yüksek"]];
   var SINIR = { baslik: 80, aciklama: 2000, kuyruk: 100, taslak: 20 };
   var SABLON = "Problem:\n\nExpected:\n\nActual:\n\nSteps:\n1. ";
   /* e-posta ya da "şifre/token/anahtar = değer" biçimi: engellemez, formda uyarı çıkarır */
@@ -30,7 +30,9 @@
     var b = dizge(f.baslik, 1000), a = dizge(f.aciklama, 100000);
     if (b.length < 3) hata.push("Başlık en az 3 karakter olmalı.");
     if (b.length > SINIR.baslik) hata.push("Başlık en fazla " + SINIR.baslik + " karakter.");
-    if (a.length < 10) hata.push("Açıklama en az 10 karakter olmalı.");
+    /* boş şablon (yalnız Problem:/Expected:/Actual:/Steps: etiketleri) açıklama sayılmaz */
+    var govde = a.replace(/(Problem|Expected|Actual|Steps):/g, "").replace(/^\s*1\.\s*$/gm, "").trim();
+    if (govde.length < 10) hata.push("Açıklama en az 10 karakter olmalı.");
     if (a.length > SINIR.aciklama) hata.push("Açıklama en fazla " + SINIR.aciklama + " karakter.");
     if (f.onem && !bilinen(ONEMLER, f.onem)) hata.push("Önem geçersiz.");
     if (GIZLI.test(b + " " + a)) uyari.push("E-posta, şifre ya da anahtar gibi görünen bir şey var; kişisel bilgi yazma.");
@@ -78,17 +80,18 @@
   function taslak(b, depo) { return gb(depo).taslaklar[anahtar(b)] || null; }
   function taslakSil(b, depo) { var d = gb(depo); delete d.taslaklar[anahtar(b)]; return yaz(d, depo); }
 
+  function onemEtiket(v) { return (ONEMLER.filter(function (x) { return x[0] === v; })[0] || [0, v])[1]; }
   function baglamMetni(b) {
     b = baglam(b);
     return (b.tur === "ders" ? "ders" : b.tur === "proje" ? "proje" : "genel") + (b.id ? " " + b.id : "") + (b.baslik ? " (" + b.baslik + ")" : "") + (b.adim ? " · adım: " + b.adim : "") + (b.sekme ? " · sekme: " + b.sekme : "");
   }
   function markdown(k) {
     var t = (TURLER.filter(function (x) { return x[0] === k.tur; })[0] || [0, k.tur])[1];
-    return "## [" + t + "] " + k.baslik + "\n- Bağlam: " + baglamMetni(k.baglam) + "\n" + (k.onem ? "- Önem: " + k.onem + "\n" : "") + "- Tarih: " + k.olusturma.slice(0, 10) + "\n\n" + k.aciklama + "\n";
+    return "## [" + t + "] " + k.baslik + "\n- Bağlam: " + baglamMetni(k.baglam) + "\n" + (k.onem ? "- Önem: " + onemEtiket(k.onem) +"\n" : "") + "- Tarih: " + k.olusturma.slice(0, 10) + "\n\n" + k.aciklama + "\n";
   }
   function markdownHepsi(l) { return "# Proofpath geri bildirimleri\n\n" + l.map(markdown).join("\n"); }
   function jsonHepsi(l) { return JSON.stringify({ surum: 1, kayitlar: l }, null, 2); }
 
-  O.gb = { TURLER: TURLER, ONEMLER: ONEMLER, SINIR: SINIR, SABLON: SABLON, baglam: baglam, anahtar: anahtar, baglamMetni: baglamMetni, kontrol: kontrol, liste: liste, kaydet: kaydet, sil: sil,
+  O.gb = { TURLER: TURLER, ONEMLER: ONEMLER, SINIR: SINIR, SABLON: SABLON, baglam: baglam, anahtar: anahtar, baglamMetni: baglamMetni, onemEtiket: onemEtiket, kontrol: kontrol, liste: liste, kaydet: kaydet, sil: sil,
     taslakKaydet: taslakKaydet, taslak: taslak, taslakSil: taslakSil, markdown: markdown, markdownHepsi: markdownHepsi, jsonHepsi: jsonHepsi };
 })(typeof window !== "undefined" ? window : globalThis);

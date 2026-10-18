@@ -19,8 +19,8 @@ create table if not exists public.geri_bildirim (
   durum       text not null default 'yeni',
   created_at  timestamptz not null default now(),
   constraint geri_bildirim_tur      check (tur in ('hata', 'istek', 'sikayet', 'oneri')),
-  constraint geri_bildirim_baslik   check (char_length(baslik) between 3 and 80),
-  constraint geri_bildirim_aciklama check (char_length(aciklama) between 10 and 2000),
+  constraint geri_bildirim_baslik   check (char_length(btrim(baslik)) between 3 and 80),
+  constraint geri_bildirim_aciklama check (char_length(btrim(aciklama)) between 10 and 2000),
   constraint geri_bildirim_baglam   check (jsonb_typeof(baglam) = 'object' and octet_length(baglam::text) <= 1000),
   constraint geri_bildirim_durum    check (durum in ('yeni', 'okundu', 'kapandi'))
 );
@@ -44,8 +44,9 @@ $$;
 
 -- Eklemeden once: zaman ve durum sunucuda belirlenir (gecmise tarihleyerek siniri atlatma yok); gunluk sinir.
 create or replace function public.geri_bildirim_gunluk_sinir() returns trigger
-language plpgsql as $$
+language plpgsql set search_path = public as $$
 begin
+  perform pg_advisory_xact_lock(hashtext(new.owner::text));   -- eszamanli eklemelerde sayim yarisini onler
   new.created_at := now();
   new.durum := 'yeni';
   if (select count(*) from public.geri_bildirim where owner = new.owner and created_at > now() - interval '24 hours') >= 10 then
