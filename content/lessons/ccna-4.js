@@ -35,7 +35,7 @@
       { t: "steps", h: "Spine-leaf (veri merkezi)", items: [
         "Yaprak (leaf) anahtarlara sunucular bağlanır. Omurga (spine) anahtarlar yalnızca yaprakları birbirine bağlar.",
         "Her yaprak her omurgaya bağlanır; yaprak-yaprak ve omurga-omurga doğrudan bağlantı yoktur.",
-        "İki sunucu arasındaki yol hep yaprak, omurga, yaprak üzerinden geçer; atlama sayısı tahmin edilebilir ve çok sayıda eşit yol vardır.",
+        "Farklı yapraklardaki iki sunucu arasındaki yol hep yaprak, omurga, yaprak üzerinden geçer; atlama sayısı tahmin edilebilir ve çok sayıda eşit yol vardır.",
         "Kapasiteyi artırmak için omurga, port sayısını artırmak için yaprak eklenir."
       ] },
       { t: "box", h: "Doğu-batı ve kuzey-güney trafiği", text: "Kuzey-güney trafiği ağın içi ile dışı arasındaki akıştır (kullanıcı ile sunucu). Doğu-batı trafiği veri merkezi içinde sunucuların birbirleriyle konuşmasıdır. Sanallaştırma ve dağıtık uygulamalar doğu-batı trafiğini artırdı. Üç katmanlı yapıda bu trafik çekirdeğe çıkıp inebilir ve darboğaz yaratabilir; spine-leaf ise yolları eşitler." },
@@ -64,18 +64,18 @@
     summary: [
       "Üç katmanlı kampüs modelinde erişim uç cihazları, dağıtım erişimi toplayıp politika uygular, çekirdek de hızlı omurgadır.",
       "İki katmanlı (daraltılmış çekirdek) modelde dağıtım ve çekirdek birleşir; küçük ve orta ölçekli kampüste maliyeti ve yönetim yükünü azaltır.",
-      "Spine-leaf'te her yaprak her omurgaya bağlıdır, yapraklar birbirine bağlanmaz; yol hep yaprak, omurga, yaprak olduğu için doğu-batı trafiği için tahmin edilebilir ve ölçeklenebilirdir.",
+      "Spine-leaf'te her yaprak her omurgaya bağlıdır, yapraklar birbirine bağlanmaz; farklı yapraklardaki sunucular arasındaki yol hep yaprak, omurga, yaprak olduğu için doğu-batı trafiği için tahmin edilebilir ve ölçeklenebilirdir.",
       "SOHO'da tek kutu birden çok işi yapar; WAN'da kiralık hat ve MPLS VPN sözleşmeli hizmet sunar, internet üzerinden VPN ise ucuzdur ama garantisizdir.",
       "Yıldızda merkez cihaz tek arıza noktasıdır; tam mesh n×(n−1)/2 bağlantı ister, kısmi mesh maliyet ile dayanıklılığı dengeler."
     ],
     quiz: [
       { id: "f18771da", q: "Üç katmanlı kampüs modelinde bilgisayar, telefon ve yazıcıların doğrudan bağlandığı, VLAN üyeliği ve port güvenliğinin uygulandığı katman hangisidir?", options: ["Erişim katmanı","Dağıtım katmanı","Çekirdek katmanı","Omurga (spine) katmanı"], obj: "h1" },
       { id: "46d3f942", q: "Spine-leaf veri merkezinde farklı iki yaprak anahtara bağlı iki sunucu konuşuyor. Normal koşulda paket hangi yoldan gider?", options: ["Yapraktan yaprağa, aradaki doğrudan bağlantıyla","Yaprak, omurga, yaprak sırasıyla","Yaprak, çekirdek, dağıtım, yaprak sırasıyla","Omurgadan omurgaya geçip yaprağa inerek"], obj: "h2" },
-      { id: "906391ab", q: "Tek binalı, birkaç yüz kullanıcılı bir okul ağında maliyeti ve yönetim yükünü azaltmak için dağıtım ve çekirdek görevlerini aynı anahtar çiftine vermek istiyorsun. Bu tasarım hangisidir?", options: ["Üç katmanlı tasarım (ayrı çekirdek)","Spine-leaf tasarım (omurga-yaprak)","İki katmanlı tasarım (daraltılmış çekirdek)","Tam mesh topoloji (herkes herkese)"], obj: "h1" },
+      { id: "633898d7", q: "Tek binalı, birkaç yüz kullanıcılı bir okul ağında en az cihazla çalışacak kampüs anahtar tasarımı isteniyor. Hangisi uygundur?", options: ["Üç katmanlı tasarım (ayrı çekirdek)","Merkez-uç (hub-and-spoke) WAN topolojisi","İki katmanlı tasarım (daraltılmış çekirdek)","Tam mesh topoloji (herkes herkese)"], obj: "h1" },
       { id: "f7af4d1b", q: "Bir veri merkezinde sanallaştırma nedeniyle sunucuların birbirine gönderdiği (doğu-batı) trafik hızla artıyor. Hangi tasarım bu yönde ölçeklenmeye daha uygundur?", options: ["Üç katmanlı, çünkü çekirdek çok hızlıdır","Yıldız topoloji, çünkü tek merkez vardır","Noktadan noktaya, çünkü iki uç doğrudan konuşur","Spine-leaf, çünkü yollar eşit ve çoktur"], obj: "h2" },
       { id: "229b7ca5", q: "Bir şube için ayrılmış bant genişliği ve sözleşmeli hizmet seviyesi aranıyor; maliyet ikinci planda. Hangi WAN seçeneği en uygundur?", options: ["Ev tipi geniş bant internet bağlantısı","Yalnızca internet üzerinden VPN tüneli","Tek başına hücresel veri bağlantısı","Kiralık hat ya da MPLS VPN"], obj: "h3" },
       { id: "3557ad08", q: "Evden çalışan birinin kullandığı modem-router kutusu hem yönlendirme, hem anahtarlama, hem kablosuz erişim, hem de NAT ve DHCP yapıyor. Bu ağ türü hangisidir?", options: ["SOHO (küçük ofis / ev ofisi)","Veri merkezi omurga-yaprak ağı","Üç katmanlı kampüs ağı","MPLS tabanlı sağlayıcı omurgası"], obj: "h3" },
-      { id: "3f076dad", q: "Beş şubenin her biri diğer dört şubeyle doğrudan bağlanacak (tam mesh). Kaç bağlantı gerekir?", options: ["5","8","10","20"], obj: "h4" },
+      { id: "c6391a4f", q: "Beş şubenin her biri diğer dört şubeyle doğrudan bağlanacak (tam mesh). Kaç bağlantı gerekir?", options: ["5","25","10","20"], obj: "h4" },
       { id: "06ce9335", q: "Yıldız topolojide merkezdeki cihaz arızalanırsa ne olur?", options: ["Yalnızca arızalı cihaza bağlı uç etkilenir","Tüm uçlar birbirinden kopar","Trafik otomatik olarak komşu uca aktarılır","Yalnızca yönetim trafiği kesilir"], obj: "h4" }
     ],
     interview: [
@@ -165,9 +165,9 @@
       { id: "b9e3819b", q: "Aynı uygulamanın onlarca özdeş kopyasını saniyeler içinde başlatıp kapatman ve az kaynak harcaman gerekiyor. Hangisi en uygundur?", options: ["Her kopya için ayrı fiziksel sunucu","Her kopya için tam işletim sistemli ayrı VM","Tip 2 hypervisor ile dizüstü bilgisayarda VM","Aynı imajdan çalışan konteynerler"], obj: "h1" },
       { id: "252c7056", q: "Doğrudan sunucu donanımının üzerinde çalışan ve veri merkezlerinde kullanılan hypervisor türü hangisidir?", options: ["Tip 1 (çıplak donanım)","Tip 2 (barındırılan)","Konteyner çalışma zamanı","Sanal anahtar (vSwitch)"], obj: "h2" },
       { id: "4823fba2", q: "VM'lerin sanal ağ kartlarını birbirine ve sunucunun fiziksel ağ kartına bağlayan yazılım bileşeni hangisidir?", options: ["Fiziksel erişim anahtarı","Hypervisor yönetim konsolu","Sanal anahtar (vSwitch)","Yedekli yönlendirici"], obj: "h2" },
-      { id: "9dbb7e6b", q: "Bir şirket e-posta hizmetini tarayıcıdan kullanıyor; sunucu, işletim sistemi ve uygulama güncellemelerini sağlayıcı yönetiyor. Bu hizmet modeli hangisidir?", options: ["IaaS (altyapı hizmeti)","SaaS (yazılım hizmeti)","PaaS (platform hizmeti)","Özel bulut (private cloud)"], obj: "h3" },
-      { id: "44576185", q: "Sağlayıcı donanımı ve sanallaştırmayı verirken işletim sistemini, ara yazılımı ve uygulamayı müşteri kuruyor ve yönetiyor. Bu model hangisidir?", options: ["SaaS (yazılım hizmeti)","PaaS (platform hizmeti)","Karma bulut (hybrid cloud)","IaaS (altyapı hizmeti)"], obj: "h3" },
-      { id: "1f679188", q: "Bir şirket kritik verisini kendi veri merkezindeki özel bulutta tutuyor, ani yük artışlarında ise bir genel bulut sağlayıcısının kaynaklarını kullanıyor. Bu mimari hangisidir?", options: ["Karma bulut (hybrid cloud)","Genel bulut (public cloud)","Özel bulut (private cloud)","Topluluk bulutu (community cloud)"], obj: "h4" },
+      { id: "15d789df", q: "Bir şirket e-posta hizmetini tarayıcıdan kullanıyor; sunucu, işletim sistemi ve uygulama güncellemelerini sağlayıcı yönetiyor. Bu hizmet modeli hangisidir?", options: ["IaaS (altyapı hizmeti)","SaaS (yazılım hizmeti)","PaaS (platform hizmeti)","Şirket içi kurulum (kendi sunucuları)"], obj: "h3" },
+      { id: "b10822ca", q: "Sağlayıcı donanımı ve sanallaştırmayı verirken işletim sistemini, ara yazılımı ve uygulamayı müşteri kuruyor ve yönetiyor. Bu model hangisidir?", options: ["SaaS (yazılım hizmeti)","PaaS (platform hizmeti)","Şirket içi kurulum (kendi sunucuları)","IaaS (altyapı hizmeti)"], obj: "h3" },
+      { id: "8ff37c0e", q: "Bir şirket kritik verisini kendi veri merkezindeki özel bulutta tutuyor, ani yük artışlarında ise bir genel bulut sağlayıcısının kaynaklarını kullanıyor. Bu mimari hangisidir?", options: ["Karma bulut (hybrid cloud)","Genel bulut (public cloud)","Özel bulut (private cloud)","IaaS (altyapı hizmeti)"], obj: "h4" },
       { id: "bbb90ec2", q: "Bir yönlendirici iki müşteriye hizmet veriyor ve ikisi de 10.0.0.0/24 aralığını kullanıyor. Her müşteri için ayrı bir yönlendirme tablosu tutarak çakışmayı önleyen yapı hangisidir?", options: ["NAT aşırı yükleme (NAT overload)","VLAN etiketleme (802.1Q)","VRF (sanal yönlendirme tablosu)","Tip 1 hypervisor"], obj: "h4" }
     ],
     interview: [

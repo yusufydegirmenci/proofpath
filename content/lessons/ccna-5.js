@@ -35,7 +35,7 @@
         "Native VLAN, trunk üzerinde etiketsiz giden VLAN'dır. Varsayılanı VLAN 1'dir ama değiştirilebilir ve iki uçta aynı olmalıdır.",
         "İzinli VLAN listesi (allowed VLAN) trunktan hangi VLAN'ların geçeceğini sınırlar."
       ] },
-      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Switch(config)# interface gigabitethernet0/1\nSwitch(config-if)# switchport mode trunk\nSwitch(config-if)# switchport trunk native vlan 99\nSwitch(config-if)# switchport trunk allowed vlan 10,20,99\nSwitch(config-if)# switchport nonegotiate\n\nSwitch# show interfaces trunk\n\n# Hem eski ISL hem 802.1Q destekleyen modellerde önce 'switchport trunk encapsulation dot1q' gerekir.\n# Yeni anahtarlar yalnız 802.1Q kullanır." },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Switch(config)# interface gigabitethernet0/1\nSwitch(config-if)# switchport trunk encapsulation dot1q\nSwitch(config-if)# switchport mode trunk\nSwitch(config-if)# switchport trunk native vlan 99\nSwitch(config-if)# switchport trunk allowed vlan 10,20,99\nSwitch(config-if)# switchport nonegotiate\n\nSwitch# show interfaces trunk\n\n# 'switchport trunk encapsulation dot1q' satırı yalnız ISL'yi de destekleyen modellerde gerekir ve 'switchport mode trunk'tan önce girilir.\n# Yalnız 802.1Q destekleyen yeni anahtarlar bu komutu kabul etmez." },
       { t: "steps", h: "DTP modları", items: [
         "access: port kalıcı olarak access olur; karşı taraf ne isterse istesin trunk olmaz.",
         "trunk: port kalıcı olarak trunk olur ve karşı tarafı da trunk'a çevirmeye çalışır.",
@@ -51,7 +51,7 @@
       ] },
       { t: "steps", h: "Trunk sorun giderme", items: [
         "'show interfaces trunk': hangi portlar trunk, native VLAN, izinli ve etkin VLAN listesi.",
-        "Native VLAN uyuşmazlığı: iki uçta farklı native VLAN. Cihaz günlükte uyarı verir ve etiketsiz trafik yanlış VLAN'a düşer.",
+        "Native VLAN uyuşmazlığı: iki uçta farklı native VLAN. CDP açıkken cihaz günlükte uyarı verir (CDP kapalıysa uyarı gelmez) ve etiketsiz trafik yanlış VLAN'a düşer.",
         "İzinli listede olmayan VLAN: port trunk görünür ama o VLAN'ın trafiği geçmez. VLAN bir uçta tanımlı değilse de geçmez.",
         "Bir uç trunk, diğer uç access ise bağlantı ayakta görünür ama VLAN trafiği düzgün taşınmaz."
       ] },
@@ -127,7 +127,7 @@
         "Aynı HSRP grubundaki yönlendiricilerden biri aktif (active), biri bekleyen (standby) olur; diğerleri dinleyici durumundadır.",
         "Aktif yönlendirici sanal IP'ye gelen trafiği iletir ve sanal MAC adresiyle ARP isteklerine yanıt verir.",
         "Yönlendiriciler hello mesajlarıyla birbirini izler. Aktif yönlendiriciden belirli süre hello gelmezse bekleyen yönlendirici aktif olur.",
-        "Aktif olan, önceliği (priority) en yüksek yönlendiricidir. Öncelik varsayılan olarak 100'dür. Öncelikler eşitse arayüz IP adresi en yüksek olan kazanır.",
+        "Seçimde önceliği (priority) en yüksek yönlendirici kazanır; ancak preempt kapalıyken zaten aktif olan yönlendirici rolünü korur. Öncelik varsayılan olarak 100'dür. Öncelikler eşitse arayüz IP adresi en yüksek olan kazanır.",
         "Preempt: daha yüksek öncelikli bir yönlendirici ağa dönünce aktif rolü geri alabilir. Preempt varsayılan olarak kapalıdır; kapalıysa aktif olan yönlendirici, düşük öncelikli olsa bile rolü bırakmaz."
       ] },
       { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "R1(config)# interface gigabitethernet0/0\nR1(config-if)# ip address 192.168.10.2 255.255.255.0\nR1(config-if)# standby 1 ip 192.168.10.1\nR1(config-if)# standby 1 priority 110\nR1(config-if)# standby 1 preempt\n\nR2(config)# interface gigabitethernet0/0\nR2(config-if)# ip address 192.168.10.3 255.255.255.0\nR2(config-if)# standby 1 ip 192.168.10.1\n\nR1# show standby brief" },
@@ -157,7 +157,7 @@
       { id: "a7f01e53", q: "İki yönlendiricili bir ağda istemciler yalnızca R1'i varsayılan ağ geçidi olarak biliyor. R1 arızalanınca ne olur?", options: ["İstemciler kendiliğinden R2'yi ağ geçidi yapar","R2 otomatik olarak R1'in IP adresini kopyalar","R2 sağlam olsa da istemciler ağ dışına çıkamaz","R2, DHCP ile istemcilere yeni ağ geçidi adresi dağıtır"], obj: "h1" },
       { id: "43095cbd", q: "FHRP kurulu bir ağda istemcilere varsayılan ağ geçidi olarak hangi adres verilir?", options: ["Gruba ait sanal IP adresi","Aktif yönlendiricinin arayüz IP adresi","Bekleyen yönlendiricinin arayüz IP adresi","Yönlendiriciler arası bağlantının IP adresi"], obj: "h1" },
       { id: "1c96b9bb", q: "R1 önceliği 120, R2 önceliği 100 olan iki yönlendirici HSRP grubuna aynı anda katılıyor. Hangisi aktif olur?", options: ["R2, çünkü düşük öncelik değeri kazanır","İkisi de aynı anda aktif olur","Rastgele biri seçilir","R1, çünkü önceliği daha yüksektir"], obj: "h2" },
-      { id: "1027f1e8", q: "İki yönlendiricinin HSRP önceliği eşit. R1'in arayüz IP adresi 192.168.10.2, R2'ninki 192.168.10.3. Hangisi aktif olur?", options: ["R1, çünkü adresi daha küçüktür","R2, çünkü adresi daha büyüktür","R1, çünkü önce yapılandırılmıştır","Hiçbiri; grup kurulmaz"], obj: "h2" },
+      { id: "c5e4307c", q: "İki yönlendirici aynı anda açılıyor ve HSRP önceliği eşit. R1'in arayüz IP adresi 192.168.10.2, R2'ninki 192.168.10.3. Hangisi aktif olur?", options: ["R1, çünkü adresi daha küçüktür","R2, çünkü adresi daha büyüktür","R1, çünkü önce yapılandırılmıştır","Hiçbiri; grup kurulmaz"], obj: "h2" },
       { id: "59b7f818", q: "R1 (öncelik 110, preempt yapılandırılmamış) arızalandı ve R2 (öncelik 100) aktif oldu. R1 geri geldi. HSRP'de ne olur?", options: ["R2 aktif kalır, preempt olmadığı için","R1 hemen aktif olur, önceliği yüksek olduğu için","İki yönlendirici de bekleyen duruma geçer","Grup silinir ve baştan kurulur"], obj: "h2" },
       { id: "d164a1e4", q: "Hangi komut HSRP grup 1 için sanal IP adresini tanımlar?", options: ["ip default-gateway 192.168.10.1","standby 1 ip 192.168.10.1","ip helper-address 192.168.10.1","ip route 0.0.0.0 0.0.0.0 192.168.10.1"], obj: "h3" },
       { id: "826cac20", q: "Bir arayüzün HSRP rolünü (Active/Standby), önceliğini ve sanal IP adresini özetleyen komut hangisidir?", options: ["show ip interface brief","show ip protocols","show vrrp brief","show standby brief"], obj: "h3" },
@@ -213,14 +213,14 @@
       { t: "steps", h: "IPsec bileşenleri (kavramsal)", items: [
         "IPsec tek bir protokol değil, bir çerçevedir: gizlilik (şifreleme), bütünlük, kaynak kimlik doğrulaması ve tekrar saldırısı koruması sağlar.",
         "ESP (Encapsulating Security Payload): veriyi şifreler ve bütünlüğünü korur; IPsec'te yaygın kullanılandır. AH (Authentication Header): bütünlük ve kimlik doğrulama sağlar ama şifrelemez.",
-        "IKE (Internet Key Exchange): uçların birbirini doğrulayıp anahtarları pazarlık ettiği protokoldür. 1. aşama uçlar arasında güvenli bir yönetim kanalı kurar; 2. aşama asıl veriyi koruyan IPsec bağlantısını kurar.",
+        "IKE (Internet Key Exchange): uçların birbirini doğrulayıp anahtarları pazarlık ettiği protokoldür. IKEv1'de 1. aşama uçlar arasında güvenli bir yönetim kanalı kurar, 2. aşama asıl veriyi koruyan IPsec bağlantısını kurar. IKEv2 aynı amacı iki mesaj çiftinde karşılar.",
         "Tünel modu: özgün IP paketinin tamamı korunur ve yeni bir IP başlığıyla sarılır; site-to-site VPN'de ağ geçitleri arasında yaygındır. Taşıma modu: yalnızca veri kısmı korunur, özgün IP başlığı kalır; uçtan uca iki ana makine arasında kullanılır."
       ] },
       { t: "steps", h: "Uzaktan erişim yöntemleri", items: [
         "İstemci tabanlı (IPsec ya da SSL/TLS tabanlı): cihaza VPN yazılımı kurulur; tüm ağa ya da belirli kaynaklara erişim sağlar.",
         "İstemcisiz (clientless) SSL VPN: kullanıcı tarayıcıdan bir portala bağlanır ve yalnızca portalda yayınlanan uygulamalara erişir; yazılım kurulumu gerekmez. Yönetilmeyen bir bilgisayardan sınırlı erişim için uygundur.",
         "Tam tünel (full tunnel): tüm trafik VPN'e gider; kurumsal güvenlik denetiminden geçer ama internet çıkışı da şirket hattından olur.",
-        "Bölünmüş tünel (split tunneling): yalnız kurumsal ağa giden trafik VPN'e gider, geri kalanı doğrudan internete çıkar. Şirket hattı yük almaz ama cihaz aynı anda hem kurumsal ağa hem açık internete bağlı olur."
+        "Bölünmüş tünel (split tunneling): yalnız kurumsal ağa giden trafik VPN'e gider, geri kalanı doğrudan internete çıkar. Bazı ürünlerde ters biçim (belirli hedefleri tünel dışında bırakma) de yapılandırılabilir. Şirket hattı yük almaz ama cihaz aynı anda hem kurumsal ağa hem açık internete bağlı olur."
       ] },
       { t: "box", h: "Hangisini seç?", text: "Şubeyi merkeze sürekli bağlayacaksan site-to-site, gezen ya da evden çalışan kişi için uzaktan erişim VPN. Yönlendirme protokolü ya da çoklu yayın taşıman gerekiyorsa GRE kullanılabilir ama şifreleme için IPsec eklenir." },
       { t: "warn", h: "Tuzak", text: "'VPN her şeyi güvenli yapar' yanılgısına düşme: VPN yolu şifreler ama uç cihazdaki zararlı yazılımı temizlemez. GRE tüneli şifreli değildir. Bölünmüş tünelde cihaz aynı anda şirket ağına ve açık internete bağlıdır; bu bir risk olabilir." }
@@ -235,17 +235,17 @@
       "Site-to-site VPN iki ağı uçlardaki ağ geçitleriyle bağlar ve kullanıcıya görünmez; uzaktan erişim VPN tek kullanıcının cihazını şirket ağ geçidine bağlar.",
       "GRE birçok protokolü ve yönlendirme trafiğini kapsülleyebilir ama şifrelemez; güvenlik için IPsec ile birlikte kullanılır.",
       "IPsec bir çerçevedir: ESP şifreleme ve bütünlük sağlar, AH yalnız bütünlük ve kimlik doğrulama sağlar, IKE kimlik doğrulama ve anahtar pazarlığı yapar.",
-      "IKE 1. aşamada güvenli bir yönetim kanalı, 2. aşamada veriyi koruyan IPsec bağlantısını kurar; tünel modunda özgün paketin tamamı sarılır.",
+      "IKEv1'de 1. aşama güvenli bir yönetim kanalı, 2. aşama veriyi koruyan IPsec bağlantısını kurar (IKEv2 aynı amacı iki mesaj çiftinde karşılar); tünel modunda özgün paketin tamamı sarılır.",
       "İstemcisiz SSL VPN tarayıcıdan sınırlı erişim verir; tam tünelde tüm trafik VPN'e gider, bölünmüş tünelde yalnız kurumsal trafik gider."
     ],
     quiz: [
       { id: "33cf5a19", q: "Bir şubedeki tüm bilgisayarların, kullanıcılar bir şey yapmadan merkez ağına şifreli ulaşmasını sağlayan ve uçlarında ağ geçidi cihazları bulunan VPN türü hangisidir?", options: ["Uzaktan erişim VPN","Site-to-site VPN","İstemcisiz SSL VPN","Bölünmüş tünelleme"], obj: "h1" },
-      { id: "b1772868", q: "Sık seyahat eden bir satış temsilcisi dizüstü bilgisayarıyla otel ağından şirket ağına bağlanacak. En uygun çözüm hangisidir?", options: ["Şube yönlendiricisinde site-to-site VPN","Kiralık hat siparişi","GRE tüneli (şifresiz)","Uzaktan erişim VPN istemcisi"], obj: "h1" },
+      { id: "24b2affe", q: "Sık seyahat eden bir satış temsilcisi dizüstü bilgisayarıyla otel ağından şirket ağına bağlanacak. En uygun çözüm hangisidir?", options: ["Şube yönlendiricisinde site-to-site VPN","Kiralık hat siparişi","GRE tüneli","Uzaktan erişim VPN istemcisi"], obj: "h1" },
       { id: "950f9b8f", q: "Çoklu yayın ve yönlendirme protokolü trafiğini kapsülleyebilen, ancak kendi başına şifreleme yapmayan tünel protokolü hangisidir?", options: ["GRE","ESP","IKE","AH"], obj: "h2" },
       { id: "292dcfdd", q: "IPsec içinde veri gizliliğini (şifreleme) ve bütünlüğü birlikte sağlayan protokol hangisidir?", options: ["AH","GRE","ESP","IKE"], obj: "h2" },
-      { id: "db5d3d99", q: "IKE'nin 1. aşamasının amacı nedir?", options: ["Kullanıcı verisini doğrudan şifreleyip iletmek","Uçları doğrulayıp güvenli bir yönetim kanalı kurmak","Tünel paketlerine yeni IP başlığı eklemek","Yönlendirme tablosunu uzak uca kopyalamak"], obj: "h3" },
-      { id: "c826ff10", q: "IPsec tünel modu ile taşıma modu arasındaki fark hangisidir?", options: ["Tünel modunda yalnızca veri kısmı korunur","Taşıma modu özgün paketin tamamını sarar","İkisi arasında fark yoktur, adlar eşanlamlıdır","Tünel modunda özgün paketin tamamı sarılır"], obj: "h3" },
-      { id: "4c5d68fa", q: "Kafedeki yönetilmeyen bir bilgisayardan yalnızca şirketin web tabanlı bordro uygulamasına erişilecek ve bilgisayara yazılım kurulmayacak. Hangi yaklaşım uygundur?", options: ["İstemcisiz (tarayıcı tabanlı) SSL VPN","Site-to-site IPsec VPN (ağ geçitleri arası)","Tam tünel VPN istemcisi (yazılımlı)","GRE over IPsec tüneli (uçlar arası)"], obj: "h4" },
+      { id: "9e6db000", q: "IKEv1'de 1. aşamanın amacı nedir?", options: ["Kullanıcı verisini doğrudan şifreleyip iletmek","Uçları doğrulayıp güvenli bir yönetim kanalı kurmak","Tünel paketlerine yeni IP başlığı eklemek","Yönlendirme tablosunu uzak uca kopyalamak"], obj: "h3" },
+      { id: "b30bb273", q: "IPsec tünel modu ile taşıma modu arasındaki fark hangisidir?", options: ["Tünel modu paketi şifreler, taşıma modu şifrelemez","Taşıma modu yalnızca site-to-site VPN'de kullanılır","İkisi arasında fark yoktur, adlar eşanlamlıdır","Tünelde paketin tamamı sarılır, taşımada yalnız veri korunur"], obj: "h3" },
+      { id: "5534f0c4", q: "Kafedeki yönetilmeyen bir bilgisayardan yalnızca şirketin web tabanlı bordro uygulamasına erişilecek ve bilgisayara yazılım kurulmayacak. Hangi yaklaşım uygundur?", options: ["İstemcisiz SSL VPN","Site-to-site IPsec VPN","Tam tünel VPN istemcisi","GRE over IPsec tüneli"], obj: "h4" },
       { id: "ddb0a089", q: "Bölünmüş tünelleme (split tunneling) açıkken kullanıcı cihazının trafiği nasıl yönlendirilir?", options: ["Tüm trafik şirket ağ geçidine gider","Tüm trafik doğrudan internete çıkar","Kurumsal trafik tünelden, kalanı doğrudan çıkar","Yalnızca DNS sorguları tünelden gider"], obj: "h4" }
     ],
     interview: [
