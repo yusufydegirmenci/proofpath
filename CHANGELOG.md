@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Tur 4 (dal: faz-k4; yalnız CSS/aria, davranış değişmedi)
+- 390 px dokunma hedefleri 44 px'e çıkarıldı: `.chip`, `.seg button`, `.my-kinds button`, `.my-pn`, `.nw-chip2`, `.sn`, `.gh-nav button` (`css/son-eklemeler.css`). Ölçüm: 15 sekme × 2 tema, 44 px altı hedef 251 -> 0 (satır içi okuma kelimeleri hariç).
+- Kontrast: koyu temada yardım şeridi "?" simgesi 1.97 -> 8.59:1, açıklama metni 4.44 -> AA; ders filtresi metni `--ink`.
+- Yalnız placeholder ile adlanan 3 alana `aria-label` (okuma notu, proje yeni adım, proje günlük notu).
+
 ## Faz 9 sunucu (dal: faz-9s; migration ve tohum UYGULANMADI, canlı DB, gizli anahtar, zamanlanmış iş, yeni dış kütüphane yok)
 - Ustalığa/kapıya sayılan sınavların cevap anahtarı içerikten ve tarayıcıdan çıkarıldı: ders mini sınavı (587 soru), seviye sınavı (7 alan × 10 soru, soru bankasından ayrıldı; bankada yer tutucu kaldı, dizinler kaymaz) ve Veri Analitiği sınavları (21 soru). Sorularda yalnız metin, seçenek ve `id` kalır; puanı ve geçti kararını sunucu verir (`claude.use("ogr")` → `ogr_deneme_gonder`, kapı: `ogr_kapi_degerlendir`).
 - Doğru cevap ve açıklamalar yalnız sınav GEÇİLİNCE sunucudan gelir; kalınca yalnız puan/doğru sayısı. Çevrimdışı, misafir, oturum, sunucu hazır değil, çok sık deneme için Türkçe mesajlar; bu denemeler ustalığa sayılmaz. Yerel kayıt sunucu yanıtının önbelleğidir (`dogrulama: "sunucu"`, yalnız `PP.ogr.sunucu` yazar).

@@ -149,7 +149,7 @@ function renderReader(){
   out.push(h("div",{class:"panel"},h("h2",null,"Anladın mı?"),
     st.q.map(function(q,i){var k=st.id+":q"+i;return h("div",{class:"lsn",style:"border-top:1px solid var(--line);padding-top:10px"},h("div",null,h("span",{class:"mono mute"},(i+1)+". "),q[0]),
       h("button",{class:"btn ghost",type:"button",onclick:function(){if(!R.qrev[k])setProg({oku_n:num(prog().oku_n)+1});R.qrev[k]=!R.qrev[k];draw()}},R.qrev[k]?"Gizle":"Cevabı göster"),R.qrev[k]?h("div",{class:"fb"},q[1]):null)})));
-  var ta=h("textarea",{id:"rd-note",maxlength:900,placeholder:"Notların: anlamadığın yer, sevdiğin cümle, koçuna sorun",oninput:function(e){R.notes[st.id]=e.target.value}});
+  var ta=h("textarea",{id:"rd-note","aria-label":"Okuma notların",maxlength:900,placeholder:"Notların: anlamadığın yer, sevdiğin cümle, koçuna sorun",oninput:function(e){R.notes[st.id]=e.target.value}});
   ta.value=R.notes[st.id]!=null?R.notes[st.id]:(r&&r.notes)||"";
   var msg=h("span",{class:"small mute"},R.msg||"");
   out.push(h("div",{class:"panel"},h("h2",null,"Notlarım"),ta,

@@ -29,3 +29,9 @@
 :root[data-theme="dark"]{--cm-kw:#c4a8ff;--cm-str:#8fd694;--cm-num:#f0b072;--cm-yorum:#9a9a94;--cm-tip:#7fc4ee;--cm-fn:#6fd3de}
 [data-alan-editor]{max-width:100%;min-width:0}
 [data-alan-editor] .cm-editor{max-width:100%}
+/* Tur 4: 390 px dokunma hedefi >=44 px ve koyu/açık tema kontrastı */
+:root .chip,:root .seg button,:root .my-kinds button,:root .nw-chip2{min-height:44px}:root .my-pn,:root .gh-nav button{min-width:44px;min-height:44px}
+:root .sn{width:44px;height:44px}
+:root .hlp-t p{color:color-mix(in srgb,var(--mute) 75%,var(--ink))}
+:root[data-theme="dark"] .hlp-i{color:#1a1d21}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .hlp-i{color:#1a1d21}}
+:root .nw-chip2:not([aria-pressed=true]){color:var(--ink)}
