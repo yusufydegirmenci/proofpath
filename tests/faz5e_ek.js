@@ -1,4 +1,4 @@
-// Faz 5 tur 5: Backend (38 konu) ve DevOps (18 konu) ders eki: 15 öğe puanı, kaynak denetimi, Anlatım/Alıştırma görünürlüğü, 390 px.
+// Faz 5 tur 5: Backend (46 konu) ve DevOps (18 konu) ders eki: 15 öğe puanı, kaynak denetimi, Anlatım/Alıştırma görünürlüğü, 390 px.
 // Hata → çıkış 1.
 const path = require('path');
 const { INIT, chromium } = require('./stub.js');
@@ -19,7 +19,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   await p.goto(U + '#ders');
   await p.waitForTimeout(1500);
 
-  for (const [yol, n, ad] of [['bk', 38, 'Backend'], ['dev', 18, 'DevOps']]) {
+  for (const [yol, n, ad] of [['bk', 46, 'Backend'], ['dev', 18, 'DevOps']]) {
     const puan = await p.evaluate((yol) => TMAP[yol].map((T, i) => {
       const e = (PP_EK[yol] || {})[i] || {};
       const net = (x) => typeof x === 'string' ? x.trim().length > 20 : !!x;
