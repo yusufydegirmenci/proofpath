@@ -10,7 +10,7 @@
   var K = function (t, u, neden) { return { t: t, u: u, dogrulama: DOG, neden: neden }; };
 
   E[31] = {
-    analoji: { a: "Eski bir kalp pili gibi: değiştirmek için ameliyat gerekir, bu yüzden hastayı ve çevresini korursun, cihazın kendisini kurcalamazsın.", sinir: "Kalp pilinin ağı yoktur; IoT ve ICS cihazları ağa bağlıdır, bu yüzden saldırgan uzaktan da ulaşabilir ve tek bir cihazdan başka sistemlere geçebilir." },
+    analoji: { a: "Eski bir kalp pili gibi: değiştirmek için ameliyat gerekir, bu yüzden hastayı ve çevresini korursun, cihazın kendisini kurcalamazsın.", sinir: "Eski, ağsız bir kalp pilinde uzaktan erişim yoktur; IoT ve ICS cihazları ağa bağlıdır, bu yüzden saldırgan uzaktan da ulaşabilir ve tek bir cihazdan başka sistemlere geçebilir." },
     rehberli: ["Bir küçük fabrikada üç cihaz yaz: PLC, operatör ekranı (HMI) ve akıllı kamera. Her birinin görevini bir cümleyle belirt.", "Bu üç cihazı ofis bilgisayarlarından ayıracak bölgeleri çiz: OT bölgesi, IoT bölgesi, BT bölgesi ve aralarındaki güvenlik duvarı.", "Yamalanamayan PLC için en az üç telafi edici kontrol yaz (ör. segmentasyon, erişim listesi, fiziksel kilit)."],
     bagimsiz: "Evindeki ya da iş yerindeki bir akıllı cihazı seç. Envanter satırı yaz: ne, nerede, kim sahibi, varsayılan parola değişti mi, güncelleme alıyor mu. Sonra riskini ve bir önlemini belirt.",
     hatalar: [["Hava boşluğunu mutlak koruma sanmak", "USB bellek ve bakım dizüstüsü köprü olabilir; izleme ve çıkarılabilir ortam kuralı yine gerekir."], ["OT'yi BT gibi yönetmek", "OT'de erişilebilirlik ve fiziksel güvenlik önceliklidir; plansız yama ya da yeniden başlatma süreci durdurabilir."], ["Sırları şablona veya koda yazmak", "Sürüm geçmişi her şeyi saklar; sızan sır silinmez, yenilenir."]],
