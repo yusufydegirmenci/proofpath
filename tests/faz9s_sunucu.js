@@ -134,6 +134,7 @@ const oku = f => fs.readFileSync(path.join(KOK, f), 'utf8');
   ok(/auth\.uid\(\)/.test(kod) && !/p_user|p_uid|user_id *:=/.test(kod.replace(/insert into public\.ogr_deneme \(user_id/, '')), 'migration: kullanıcı kimliği auth.uid()\'den; istemci kimlik parametresi yok');
   ok(!/create policy|grant (select|insert|update|delete)[^;]* to (anon|authenticated)/i.test(kod), 'migration: ogr_cevap_anahtari için istemci politikası/yetkisi eklenmez');
   ok(/eksik ya da fazla cevap/.test(kod) && /jsonb_object_keys\(p_cevaplar\)/.test(kod), 'migration: cevaplar varyantın tüm sorularını içermeli, fazlası olmamalı (tek soru yoklama engeli)');
+  ok(kod.indexOf("'bu hedef icin soru yok'") < kod.indexOf('eksik ya da fazla cevap'), 'migration: anahtar tohumu yokken tam-küme denetiminden ÖNCE "soru yok" (sunucu hazır değil) dönmeli');
   ok(/in \('yok', 'ipucu', 'ai'\)/.test(kod), 'migration: yardim.tur yalnız izinli değerler');
   ok(/Geri alma/.test(mig) && /UYGULANMADI/.test(mig), 'migration: UYGULANMADI ve geri alma notu başlıkta');
 

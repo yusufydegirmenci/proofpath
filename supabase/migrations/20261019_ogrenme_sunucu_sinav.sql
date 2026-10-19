@@ -39,6 +39,9 @@ begin
   if p_cevaplar is null or jsonb_typeof(p_cevaplar) <> 'object' then raise exception 'cevaplar nesne olmali' using errcode = '22023'; end if;
   if pg_column_size(p_cevaplar) > 65536 then raise exception 'cevaplar cok buyuk' using errcode = '22023'; end if;
 
+  -- Anahtar tohumu henuz yoksa 'eksik ya da fazla cevap' yerine istemcinin 'sunucu hazir degil' diye esledigi hata donsun
+  if not exists (select 1 from public.ogr_cevap_anahtari where hedef = p_hedef) then raise exception 'bu hedef icin soru yok' using errcode = '22023'; end if;
+
   -- Tam küme: cevaplar varyantın TÜM sorularını içermeli, fazlası olmamalı (tek soruyu yoklayarak anahtar çıkarma engellenir)
   if exists (select 1 from public.ogr_cevap_anahtari a where a.hedef = p_hedef and a.varyant = p_varyant and not (p_cevaplar ? a.soru_id))
      or exists (select 1 from jsonb_object_keys(p_cevaplar) k where k not in (select soru_id from public.ogr_cevap_anahtari where hedef = p_hedef and varyant = p_varyant)) then
