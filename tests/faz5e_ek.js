@@ -36,7 +36,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
     console.log('INFO  ' + ad + ' kaynaksız konular: ' + puan.filter(x => x.eksik.length).map(x => x.i + ':' + x.ad).join(', '));
     ok(puan.filter(x => !x.eksik.length).length >= Math.floor(n / 2), ad + ' kaynaklı (15/15) konu sayısı ≥ yarısı (' + puan.filter(x => !x.eksik.length).length + ')');
     eq(await p.evaluate((yol) => Object.keys(PP_EK[yol]).length, yol), n, 'PP_EK.' + yol + ' ' + n + ' girdi');
-    eq(await p.evaluate((yol) => Object.keys(PP_EK[yol]).every(k => (PP_EK[yol][k].kaynaklar || []).every(s => s.t && s.neden && s.dogrulama === '2026-10-12' && /^https:\/\/[a-z0-9.-]+(\/|$)/.test(s.u))), yol), true, ad + ': her kaynakta ad, neden, tarih 2026-10-12, https adresi');
+    eq(await p.evaluate((yol) => Object.keys(PP_EK[yol]).every(k => (PP_EK[yol][k].kaynaklar || []).every(s => s.t && s.neden && ['2026-10-12', '2026-10-19'].includes(s.dogrulama) && /^https:\/\/[a-z0-9.-]+(\/|$)/.test(s.u))), yol), true, ad + ': her kaynakta ad, neden, tarih 2026-10-12 ya da 2026-10-19 (gerçek doğrulama günleri), https adresi');
     eq(await p.evaluate((yol) => { const u = Object.values(PP_EK[yol]).flatMap(e => (e.kaynaklar || []).map(k => k.u)); return u.length - new Set(u).size > u.length; }, yol), false, ad + ': kaynak listesi tutarlı');
     // "sonraki" alanı bir sonraki konu adını anar (son konu hariç)
     eq(await p.evaluate((yol) => TMAP[yol].slice(0, -1).map((T, i) => [i, (PP_EK[yol][i].sonraki || '').indexOf(TMAP[yol][i + 1].k) >= 0]).filter(x => !x[1]).map(x => x[0]), yol), [], ad + ': "sonraki" bir sonraki konuyu anar');

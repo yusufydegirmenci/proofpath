@@ -70,23 +70,23 @@
   "İstek kabul edilir, çünkü kullanıcı kendi hesabında çalışıyor",
   "Yalnızca kök kullanıcı için reddedilir, diğer kimlikler silebilir"
 ], obj: "h1" },
-      { id: "d75892a4", q: "Bir hesapta SCP her eyleme izin veriyor. Hesaptaki yeni bir IAM kullanıcısına hiçbir politika bağlanmadı. Kullanıcı S3 kovalarını listeleyebilir mi?", options: [
+      { id: "b288bbdb", q: "Bir hesapta SCP her eyleme izin veriyor. Hesaptaki yeni bir IAM kullanıcısına hiçbir politika bağlanmadı. Kullanıcı S3 kovalarını listeleyebilir mi?", options: [
   "Evet; SCP'deki geniş izin kullanıcıya geçer",
   "Evet, ama yalnızca okuma eylemleri için",
-  "Hayır; SCP izin vermez, yalnız tavan çizer. Kullanıcıya ayrıca bir izin politikası gerekir",
+  "Hayır; SCP yalnızca tavan çizer, kullanıcıya izin vermez",
   "Hayır, çünkü SCP yalnızca kök kullanıcıya uygulanır"
 ], obj: "h2" },
-      { id: "4f127e66", q: "Bir kullanıcıya AdministratorAccess politikası bağlı, ama izin sınırı yalnızca S3 ve EC2 eylemlerine izin veriyor. Kullanıcı bir DynamoDB tablosu oluşturabilir mi?", options: [
+      { id: "ef53ec4b", q: "Bir kullanıcıya AdministratorAccess politikası bağlı, ama izin sınırı yalnızca S3 ve EC2 eylemlerine izin veriyor. Kullanıcı bir DynamoDB tablosu oluşturabilir mi?", options: [
   "Evet; AdministratorAccess her sınırı aşar",
-  "Hayır; etkin yetki kimlik politikası ile sınırın kesişimidir ve DynamoDB sınırın dışındadır",
+  "Hayır; etkin yetki politika ile sınırın kesişimidir",
   "Evet; izin sınırı yalnızca konsol girişini etkiler",
   "Hayır, ama yalnızca kullanıcı bir gruba üye değilse"
 ], obj: "h2" },
-      { id: "72f7a6af", q: "Aşağıdakilerden hangisi bir SCP'den etkilenmez?", options: [
-  "Üye hesaptaki IAM rolleri",
-  "Üye hesabın kök kullanıcısı",
-  "Üye hesaptaki federe kullanıcılar",
-  "Organizations yönetim (management) hesabındaki kimlikler"
+      { id: "f4c699f1", q: "Aşağıdakilerden hangisi bir SCP'den etkilenmez?", options: [
+  "Bir üye hesaptaki uygulama rolleri ve kullanıcıları",
+  "Üye hesabı yöneten kök kullanıcı ve yöneticiler",
+  "Üye hesapta federasyonla giriş yapan kullanıcılar",
+  "Yönetim (management) hesabındaki kimlikler"
 ], obj: "h2" },
       { id: "a71bb0c0", q: "Hesap A'daki bir rolün kimlik politikasında s3:GetObject izni var. Hesap B'deki kovanın politikasında ise hesap A'ya hiç izin verilmemiş. Rol doğrudan kovadan nesne okumayı denerse ne olur?", options: [
   "Kabul edilir; isteği yapanın kimlik politikası yeterlidir",
@@ -101,8 +101,8 @@
   "Her hesap için ayrı IAM kullanıcısı açıp erişim anahtarlarını dağıtırsın"
 ], obj: "h3" },
       { id: "2b1e96dd", q: "Bir şirket, çalışanların tek bir kurumsal oturumla birden çok AWS hesabına rol bazlı erişmesini ve kalıcı erişim anahtarı kullanmamasını istiyor. Hangi hizmet bu iş için tasarlanmıştır?", options: ["AWS Secrets Manager", "Amazon Cognito kimlik havuzu", "AWS IAM Identity Center", "Yalnızca AWS STS"], obj: "h4" },
-      { id: "b89386f4", q: "Geliştiricilerin kendi uygulamaları için IAM rolü oluşturabilmesini, ancak oluşturdukları rollerin kendi yetkilerinden fazlasını alamamasını istiyorsun. Hangi yaklaşım uygundur?", options: [
-  "Geliştiricilerin politikasına, yeni rollerde belirli bir izin sınırının zorunlu tutulması koşulunu eklemek",
+      { id: "3e4f096f", q: "Geliştiricilerin kendi uygulamaları için IAM rolü oluşturabilmesini, ancak oluşturdukları rollerin kendi yetkilerinden fazlasını alamamasını istiyorsun. Hangi yaklaşım uygundur?", options: [
+  "Rol oluşturma iznine, belirli bir izin sınırı koşulunu eklemek",
   "Geliştiricilere IAM yönetici erişimi verip CloudTrail'i izlemek",
   "Rol oluşturmayı yalnızca kök kullanıcıya bırakmak",
   "Her role geniş bir kaynak tabanlı politika bağlamak"
@@ -165,7 +165,7 @@
         "Sürekli tespit: GuardDuty, Inspector ve Config bulgularını Security Hub'da topla; EventBridge ile müdahale otomasyonuna bağla.",
         "Organizasyon: Firewall Manager ve SCP ile aynı koruma tüm hesaplarda yaygınlaşır."
       ] },
-      { t: "warn", h: "Tuzak", text: "Tespit hizmetlerini koruma sanmak. GuardDuty, Inspector ve Macie bulgu üretir, trafiği kendileri kesmez; engelleme için WAF, güvenlik grubu ya da otomatik müdahale kurman gerekir. Ayrıca hizmetlerin ücretsiz deneme süresi ve fiyatı değişebilir; güncel bilgiyi resmî belgeden doğrula." }
+      { t: "warn", h: "Tuzak", text: "Tespit hizmetlerini koruma sanmak. GuardDuty, Inspector ve Macie bulgu üretir, trafiği kendileri kesmez; engelleme için WAF, güvenlik grubu ya da otomatik müdahale kurman gerekir. Ayrıca hizmetlerin ücretsiz deneme süresi ve fiyatı değişebilir; Security Hub ve QuickSight gibi hizmetler için ad ve paketleme değişmiş olabilir. Güncel adı ve bilgiyi resmî belgeden kontrol et." }
     ],
     objectives: [
       { id: "h1", text: "WAF, Shield ve Network Firewall'u koruduğu katmana göre ayırt edebilirsin." },
@@ -188,7 +188,7 @@
   "Amazon Inspector",
   "AWS Shield Standard"
 ], obj: "h1" },
-      { id: "d8b04fe7", q: "Ele geçirilmiş olabilecek bir EC2 örneğinin bilinen kötü niyetli bir adrese DNS sorgusu attığını, ajan kurmadan tespit etmek istiyorsun. Hangi hizmet bunu yapar?", options: ["Amazon GuardDuty", "Amazon Inspector", "AWS WAF", "Amazon Macie"], obj: "h2" },
+      { id: "8e670b67", q: "Ele geçirilmiş olabilecek bir EC2 örneğinin bilinen kötü niyetli bir adrese DNS sorgusu attığını tespit etmek istiyorsun. Hangi hizmet bunu yapar?", options: ["Amazon GuardDuty", "Amazon Inspector", "AWS WAF", "Amazon Macie"], obj: "h2" },
       { id: "15c808ab", q: "S3 kovalarında kişisel veri gibi hassas içeriğin bulunup bulunmadığını otomatik taramak ve yanlış açılmış kovaları raporlamak istiyorsun. Hangi hizmet kullanılır?", options: ["Amazon Inspector", "AWS Shield Advanced", "Amazon Macie", "AWS Network Firewall"], obj: "h2" },
       { id: "aaaac9ae", q: "Sunucuların ve konteyner imajlarının bilinen yazılım açıklarını (CVE) sürekli taratmak istiyorsun. Hangi hizmet uygundur?", options: ["Amazon Inspector", "Amazon GuardDuty", "AWS Config", "AWS CloudTrail"], obj: "h2" },
       { id: "1a56d144", q: "Güvenlik ekibi, 'hiçbir güvenlik grubu 22 numaralı portu herkese (0.0.0.0/0) açmasın' kuralına uymayan kaynakları listelemek ve yapılandırma geçmişini görmek istiyor. Hangi hizmet kullanılır?", options: ["Amazon GuardDuty", "AWS WAF", "AWS Config", "Amazon Macie"], obj: "h3" },
@@ -281,8 +281,8 @@
   "Yalnızca ikinci AZ'ye bir NAT Gateway konur",
   "NAT yerine her sunucuya Elastic IP bağlanır"
 ], obj: "h1" },
-      { id: "d11b13db", q: "Özel alt ağdaki kaynaklar S3'e çok büyük veri yazıyor ve NAT Gateway veri işleme masrafı yükseliyor. Trafiği internete çıkarmadan ve ek hizmet masrafı olmadan S3'e taşımak için ne yapılmalı?", options: [
-  "S3 için interface endpoint açıp saatlik ücret ödemek",
+      { id: "de4fc993", q: "Özel alt ağdaki kaynaklar S3'e çok büyük veri yazıyor ve NAT Gateway veri işleme masrafı yükseliyor. Trafiği internete çıkarmadan ve ek hizmet masrafı olmadan S3'e taşımak için ne yapılmalı?", options: [
+  "S3 için interface endpoint açıp saatlik ve veri ücreti ödemek",
   "S3 için bir gateway endpoint eklemek ve yönlendirme tablosunu güncellemek",
   "Daha büyük bir NAT Gateway kurmak",
   "Kovayı herkese açıp internetten yazmak"
@@ -293,9 +293,9 @@
   "Tüm müşterileri tek bir güvenlik grubuna almak",
   "AWS PrivateLink ile NLB'nin arkasında bir endpoint servisi"
 ], obj: "h2" },
-      { id: "68ba0dce", q: "VPC A, VPC B ile; VPC B de VPC C ile peering yapmış. VPC A'daki bir sunucu VPC C'deki sunucuya ulaşabilir mi?", options: [
+      { id: "f55b666f", q: "VPC A, VPC B ile; VPC B de VPC C ile peering yapmış. VPC A'daki bir sunucu VPC C'deki sunucuya ulaşabilir mi?", options: [
   "Evet, B üzerinden otomatik yönlendirilir",
-  "Hayır; peering geçişli değildir. A ile C için ayrı peering ya da Transit Gateway gerekir",
+  "Hayır; peering geçişli değildir, A-C için ayrı yol gerekir",
   "Evet, ama yalnızca güvenlik grupları izin verirse",
   "Hayır, ancak VPC'ler aynı AZ'de ise"
 ], obj: "h3" },
@@ -340,15 +340,15 @@
       { t: "h", text: "Neden öğreniyoruz?" },
       { t: "box", h: "Gerçek talep", text: "Bir üretim şirketi uygulamalarının bir kısmını AWS'ye taşırken eski sistemlerini veri merkezinde tutuyor. Bunlar sürekli konuşmak zorunda. Ayrıca yüzlerce terabaytlık arşiv S3'e taşınacak. Bağlantı yolunu ve veri taşıma yöntemini seçmek mimarın en sık sorulan kararlarındandır." },
       { t: "steps", h: "Şirket ağını AWS'ye bağlamak", items: [
-        "Site-to-Site VPN: internet üzerinden IPsec tüneli. Hızla (birkaç gün, çoğu zaman saatler içinde) kurulur, şifrelidir, ama gecikme ve verim internetin durumuna bağlıdır. Dayanıklılık için bağlantı iki tünelle gelir.",
-        "Direct Connect: bir Direct Connect konumundaki ayrılmış fiziksel hat. Gecikme tutarlıdır, verim yüksektir; ama sipariş ve kurulum haftalar sürebilir. Varsayılan olarak şifreli değildir: gizlilik için üstüne VPN ya da hat şifrelemesi eklenir.",
+        "Site-to-Site VPN: internet üzerinden IPsec tüneli. Hızla devreye alınır, şifrelidir, ama gecikme ve verim internetin durumuna bağlıdır. Dayanıklılık için bağlantı iki tünelle gelir.",
+        "Direct Connect: bir Direct Connect konumundaki ayrılmış fiziksel hat. Gecikme tutarlıdır, verim yüksektir; ama sipariş ve kurulum tipik olarak daha uzun sürer (güncel süre için resmî belgeye bak). Varsayılan olarak şifreli değildir: gizlilik için üstüne VPN ya da hat şifrelemesi eklenir.",
         "Dayanıklı tasarım: kritik bağlantılarda farklı konumlarda birden çok Direct Connect hattı, yedek olarak da Site-to-Site VPN kurulur. Direct Connect düşünce trafik VPN'e geçer.",
         "Client VPN: tek tek çalışanların cihazlarını VPC'ye bağlayan yönetilen uzaktan erişim VPN'idir; ağdan ağa bağlantı değildir.",
         "Birden çok VPC ve şirket ağı varsa hepsi Transit Gateway üzerinde toplanır (önceki derste)."
       ] },
       { t: "steps", h: "Veriyi buluta taşımak", items: [
         "DataSync: çevrimiçi, ağ üzerinden, zamanlanabilir ve doğrulamalı taşıma. Şirket içi NFS/SMB paylaşımlarından S3, EFS ve FSx'e sürekli eşitleme için uygundur.",
-        "Snow ailesi (Snowball gibi): fiziksel cihaz postayla gelir, veriyi içine kopyalarsın, geri gönderirsin, AWS S3'e yükler. Çok büyük veri ve düşük ya da pahalı bant genişliği için; uzak yerlerde bağlantısız çalışma (uç işlem) için de kullanılır. Hangi cihazların güncel sunulduğu için resmî belgeye bak.",
+        "Snow ailesi (Snowball gibi): fiziksel cihaz postayla gelir, veriyi içine kopyalarsın, geri gönderirsin, AWS S3'e yükler. Çok büyük veri ve düşük ya da pahalı bant genişliği için; uzak yerlerde bağlantısız çalışma (uç işlem) için de kullanılır. Snow cihaz ailesi yeni müşterilere kapanmış olabilir; sınav kapsamında anlatılır ama güncel durumu resmî AWS belgesinden doğrula.",
         "Storage Gateway: şirket içi uygulamaların bulut depolamayı yerel depolama gibi kullanmasını sağlayan hibrit ağ geçididir. Dosya (S3 File Gateway), birim (Volume Gateway) ve bant (Tape Gateway) arayüzleri vardır; yerel önbellek tutar.",
         "AWS Transfer Family: SFTP, FTPS ve FTP protokolleriyle doğrudan S3 ya da EFS'ye dosya aktarımı; sunucu yönetimi yok, ortaklar mevcut istemcilerini kullanır.",
         "S3 Transfer Acceleration: uzak istemcilerin S3'e yükleme hızını kenar konumları üzerinden artırır."
@@ -374,17 +374,17 @@
       "DMS veritabanını çalışırken sürekli kopyalar; farklı motora geçişte SCT şemayı dönüştürür."
     ],
     quiz: [
-      { id: "f85289bb", q: "Bir şirket, veri merkeziyle AWS arasında şifreli bir bağlantıyı birkaç gün içinde kurmak istiyor. İnternet üzerinden gitmesi kabul edilebilir. Hangi seçenek uygundur?", options: [
+      { id: "787fc2eb", q: "Bir şirket, veri merkeziyle AWS arasında şifreli bir bağlantıyı hızla devreye almak istiyor ve ayrılmış bir hatta ihtiyaç duymuyor. Hangi seçenek uygundur?", options: [
   "AWS Direct Connect, yeni bir hat siparişiyle",
   "AWS Snowball Edge cihazı",
   "Amazon CloudFront",
   "AWS Site-to-Site VPN"
 ], obj: "h1" },
       { id: "3ed9d3a8", q: "Bir şirket, veri merkezi ile AWS arasında tutarlı gecikmeli, yüksek verimli özel bir bağlantı istiyor. Hangi hizmet uygundur?", options: ["AWS Direct Connect", "Yalnızca bir Site-to-Site VPN", "Amazon Route 53", "AWS Transfer Family"], obj: "h1" },
-      { id: "da75fae7", q: "Direct Connect bağlantısı arızalanırsa iş sürekliliği için en uygun ek önlem aşağıdakilerden hangisidir?", options: [
+      { id: "38ce924e", q: "Direct Connect bağlantısı arızalanırsa iş sürekliliği için en uygun ek önlem aşağıdakilerden hangisidir?", options: [
   "Hatta daha yüksek bant genişliği sipariş etmek",
   "Güvenlik grubu kurallarını gevşetmek",
-  "Aynı VPC'ye giden bir Site-to-Site VPN'i yedek yol olarak kurmak",
+  "Yedek yol olarak bir Site-to-Site VPN kurmak",
   "Aynı hatta ikinci bir sanal arayüz açmak"
 ], obj: "h2" },
       { id: "d569dde3", q: "Birkaç yüz terabaytlık arşiv verisi, sınırlı bant genişliği olan bir ofisten S3'e taşınacak ve ağ üzerinden aktarmak aylar sürecek. Hangi yöntem uygundur?", options: [
