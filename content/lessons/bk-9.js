@@ -64,14 +64,19 @@
   "EC2 instance store, kalıcı veri deposu olarak",
   "S3 Standard-IA"
 ], obj: "h1" },
-      { id: "e5287519", q: "Bir EBS birimindeki verinin başka bir AZ'deki EC2 örneğinde de kullanılması gerekiyor. Ne yaparsın?", options: [
+      { id: "5d4b1318", q: "Bir EBS birimindeki verinin başka bir AZ'deki EC2 örneğinde de kullanılması gerekiyor. Ne yaparsın?", options: [
   "EBS birimini doğrudan diğer AZ'deki örneğe bağlarsın",
   "Önyükleme diski HDD türüne çevrilir",
   "Instance store üzerine kopyalarsın",
-  "Birimin anlık görüntüsünü alıp diğer AZ'de bu anlık görüntüden yeni bir birim oluşturursun"
+  "Anlık görüntü alıp diğer AZ'de ondan yeni birim oluşturursun"
 ], obj: "h2" },
       { id: "45ff160a", q: "Farklı AZ'lerdeki çok sayıda Linux sunucu aynı dosya klasörünü aynı anda okuyup yazacak ve kapasiteyi önceden belirlemek istemiyorsun. Hangi hizmet uygundur?", options: ["Amazon EBS", "EC2 instance store", "Amazon EFS", "S3 Glacier Deep Archive"], obj: "h3" },
-      { id: "dec8a5b4", q: "Active Directory ile bütünleşen, SMB protokolüyle çalışan bir Windows dosya paylaşımı istiyorsun. Hangi hizmet doğrudur?", options: ["Amazon EFS", "Amazon FSx for Windows File Server", "Amazon FSx for Lustre", "EBS soğuk HDD birimi"], obj: "h3" },
+      { id: "f743f346", q: "Active Directory ile bütünleşen, SMB protokolüyle çalışan bir Windows dosya paylaşımı istiyorsun. Hangi hizmet doğrudur?", options: [
+  "Amazon EFS (NFS dosya sistemi)",
+  "Amazon FSx for Windows File Server",
+  "Amazon FSx for Lustre (HPC dosya sistemi)",
+  "Amazon EBS soğuk HDD birimi"
+], obj: "h3" },
       { id: "e20d73d3", q: "Makine öğrenmesi eğitim işi, S3'teki veri setini çok yüksek verimle paralel okumak zorunda. Hangi hizmet bu iş yükü için uygundur?", options: [
   "Amazon FSx for Windows File Server",
   "Amazon FSx for Lustre",
@@ -84,18 +89,13 @@
   "S3 Object Lock (WORM) ve sürümleme",
   "Yalnızca kova politikasında GetObject izni"
 ], obj: "h4" },
-      { id: "e08fc2de", q: "Bir kovadaki nesnelerin başka bir bölgedeki kovaya otomatik kopyalanması için ilk koşul nedir?", options: [
-  "Hedef kovanın aynı bölgede olması",
+      { id: "392ba13e", q: "Bir kovadaki nesnelerin başka bir bölgedeki kovaya otomatik kopyalanması için ilk koşul nedir?", options: [
+  "Kaynak kovada Transfer Acceleration'ın açık olması",
   "Kovanın herkese açık olması",
   "Her nesnenin Glacier sınıfında olması",
   "Kaynak ve hedef kovalarda sürümlemenin açık olması"
 ], obj: "h4" },
-      { id: "dadcbc6a", q: "Beş yıl saklanması gereken ama yılda en fazla bir kez, saatler içinde ulaşılabilmesi yeterli olan büyük bir arşiv için en düşük maliyetli S3 seçeneği hangisidir?", options: [
-  "S3 Glacier Deep Archive sınıfı",
-  "S3 Standard",
-  "S3 Intelligent-Tiering'in sık erişim katmanı",
-  "EBS genel amaçlı SSD"
-], obj: "h4" }
+      { id: "6f47eca3", q: "Beş yıl saklanması gereken ama yılda en fazla bir kez, saatler içinde ulaşılabilmesi yeterli olan büyük bir arşiv için en düşük maliyetli S3 seçeneği hangisidir?", options: ["S3 Glacier Deep Archive sınıfı", "S3 Standard", "S3 Standard-IA", "S3 Glacier Flexible Retrieval"], obj: "h4" }
     ],
     interview: [
       { q: "EBS ile EFS arasındaki fark nedir?", a: "EBS tek AZ'deki tek örneğe bağlanan blok depolamadır (disk gibi). EFS ise birden çok AZ'deki çok sayıda örneğin aynı anda bağlayabildiği yönetilen NFS dosya sistemidir." },
@@ -191,10 +191,10 @@
   "Yanlışlıkla silinen verinin geri getirilmesine",
   "Uygulama kodundaki bir hataya"
 ], obj: "h4" },
-      { id: "c30761b2", q: "Bir şirket, yedeklerinin geri yüklenebildiğinden emin olmak istiyor. En doğru yaklaşım hangisidir?", options: [
+      { id: "f6da3f36", q: "Bir şirket, yedeklerinin geri yüklenebildiğinden emin olmak istiyor. En doğru yaklaşım hangisidir?", options: [
   "Yedek işinin 'başarılı' durumunu yeterli saymak",
   "Yedekleri sıkıştırarak boyutunu küçültmek",
-  "Geri yükleme senaryosunu belirli aralıklarla gerçekten deneyip süresini ölçmek",
+  "Geri yüklemeyi düzenli aralıklarla deneyip süresini ölçmek",
   "Yalnızca yedeklerin sayısını artırmak"
 ], obj: "h4" }
     ],
@@ -287,20 +287,20 @@
       { id: "8dec2367", q: "Aşağıdakilerden hangisi AWS Well-Architected Framework'ün altı direğinden biri DEĞİLDİR?", options: ["Güvenilirlik", "Taşınabilirlik", "Performans verimliliği", "Sürdürülebilirlik"], obj: "h1" },
       { id: "e2aec4d5", q: "Geçen aylardaki harcamayı hizmete göre görselleştirmek ve önümüzdeki aylar için tahmin görmek istiyorsun. Hangi araç kullanılır?", options: ["AWS Cost Explorer", "AWS Config", "Amazon Inspector", "AWS CloudTrail"], obj: "h2" },
       { id: "144e2793", q: "Aylık harcama tahmini bir eşiği aşacak gibi olduğunda e-posta ile uyarılmak istiyorsun. Hangi hizmet uygundur?", options: ["AWS Trusted Advisor'ın güvenlik kontrolleri", "Amazon Macie", "AWS Shield Standard", "AWS Budgets"], obj: "h2" },
-      { id: "69a40a5f", q: "Birden çok takım aynı hesabı kullanıyor ve harcamayı takım bazında ayırmak istiyorsun. Ne yapmalısın?", options: [
-  "Her takımın EC2 örnek adını değiştirmek",
-  "Yalnızca CloudTrail günlüklerini incelemek",
-  "Kaynaklara takım etiketi koyup bunu maliyet ayırma etiketi olarak etkinleştirmek",
-  "Her takıma ayrı bir VPC açmak"
+      { id: "57afaa88", q: "Birden çok takım aynı hesabı kullanıyor ve harcamayı takım bazında ayırmak istiyorsun. Ne yapmalısın?", options: [
+  "Her takımın EC2 örneklerine ayrı bir ad kuralı vermek",
+  "Yalnızca CloudTrail günlüklerini takım bazında incelemek",
+  "Takım etiketi koyup maliyet ayırma etiketi olarak etkinleştirmek",
+  "Her takıma ayrı bir VPC açıp ağları ayırmak"
 ], obj: "h2" },
       { id: "f17c68aa", q: "Çalışan bir EC2 filosunun çoğu örneği düşük CPU ve bellek kullanıyor. Boyut küçültme önerisi almak için hangi hizmet kullanılır?", options: ["AWS Budgets", "AWS Organizations", "AWS Compute Optimizer", "Amazon Route 53"], obj: "h2" },
-      { id: "06333fc1", q: "Yıl boyunca sürekli çalışan, öngörülebilir taban yük için indirim almak ve zaman içinde örnek ailesini ya da hizmetini (EC2, Fargate, Lambda) değiştirebilmek istiyorsun. Hangi seçenek uygundur?", options: ["Spot örnekleri", "Yalnızca On-Demand", "Yalnızca S3 Intelligent-Tiering", "Compute Savings Plans"], obj: "h3" },
+      { id: "444ff004", q: "Yıl boyunca sürekli çalışan, öngörülebilir taban yük için indirim almak ve zaman içinde örnek ailesini ya da hizmetini (EC2, Fargate, Lambda) değiştirebilmek istiyorsun. Hangi seçenek uygundur?", options: ["Spot örnekleri", "EC2 Instance Savings Plans", "Reserved Instances", "Compute Savings Plans"], obj: "h3" },
       { id: "403969fa", q: "Kesintiye dayanıklı, durumsuz ve esnek zamanlı bir toplu işleme işini en düşük maliyetle çalıştırmak istiyorsun. Hangi seçenek uygundur?", options: ["Spot örnekleri", "Reserved örnekleri, üç yıl taahhütle", "Dedicated Host", "Yalnızca On-Demand"], obj: "h3" },
-      { id: "f9702b12", q: "Organizasyondaki on hesabın toplam kullanımının hacimli fiyat indirimlerine birlikte sayılmasını istiyorsun. Hangi özellik bunu sağlar?", options: [
-  "Her hesapta ayrı bütçe oluşturmak",
+      { id: "900d5396", q: "Organizasyondaki on hesabın toplam kullanımının hacimli fiyat indirimlerine birlikte sayılmasını istiyorsun. Hangi özellik bunu sağlar?", options: [
+  "Her hesapta AWS Budgets eşiği tanımlamak",
   "Organizations birleşik faturalama",
-  "Her hesapta Compute Optimizer açmak",
-  "Hesapları farklı bölgelere dağıtmak"
+  "Cost Explorer'da hesapları tek raporda görüntülemek",
+  "Organizations'ta yalnızca bir SCP uygulamak"
 ], obj: "h4" }
     ],
     interview: [
@@ -365,7 +365,7 @@
         "Pano: QuickSight.",
         "Anlık (gerçek zamanlıya yakın) analiz: önce Kinesis ile akışı yakala, işlemeyi akış işleme hizmetiyle yap; ayrıntı için resmî belgeye bak."
       ] },
-      { t: "warn", h: "Tuzak", text: "Athena'yı sıkıştırılmamış, bölümlenmemiş büyük CSV üzerinde çalıştırmak: her sorgu tüm veriyi tarar ve faturayı şişirir. Veriyi sütunlu biçime çevir ve bölümle. Bir de her analitik soruya Redshift kümesi açmak: ara sıra yapılan sorgu için Athena yeter. Fiyat ve özellikler için resmî belgeden doğrula." }
+      { t: "warn", h: "Tuzak", text: "Athena'yı sıkıştırılmamış, bölümlenmemiş büyük CSV üzerinde çalıştırmak: her sorgu tüm veriyi tarar ve faturayı şişirir. Veriyi sütunlu biçime çevir ve bölümle. Bir de her analitik soruya Redshift kümesi açmak: ara sıra yapılan sorgu için Athena yeter. Fiyat ve özellikler için resmî belgeden doğrula; Security Hub ve QuickSight gibi hizmetler için ad ve paketleme değişmiş olabilir, güncel adı resmî belgeden kontrol et." }
     ],
     objectives: [
       { id: "h1", text: "Veri gölü kavramını ve toplama, depolama, dönüştürme, sorgulama, görselleştirme akışını açıklayabilirsin." },
@@ -381,11 +381,11 @@
       "QuickSight pano ve rapor sunar; Lake Formation veri gölünde tablo ve sütun düzeyinde merkezi yetki yönetir."
     ],
     quiz: [
-      { id: "4c83bc32", q: "S3'teki CSV ve Parquet dosyalarını sunucu kurmadan, standart SQL ile ara sıra sorgulamak istiyorsun. Hangi hizmet uygundur?", options: ["Amazon ElastiCache", "Amazon OpenSearch Service", "AWS Backup", "Amazon Athena"], obj: "h2" },
-      { id: "d3bf3f85", q: "Athena sorgu maliyetini ve süresini düşürmek için S3'teki büyük CSV veri setine ne yapılmalıdır?", options: [
+      { id: "f1d17901", q: "S3'teki CSV ve Parquet dosyalarını sunucu kurmadan, standart SQL ile ara sıra sorgulamak istiyorsun. Hangi hizmet uygundur?", options: ["Amazon EMR", "Amazon OpenSearch Service", "AWS Glue", "Amazon Athena"], obj: "h2" },
+      { id: "a4d7f8f2", q: "Athena sorgu maliyetini ve süresini düşürmek için S3'teki büyük CSV veri setine ne yapılmalıdır?", options: [
   "Her sorguda tüm veriyi taramak",
   "Veriyi tek bir büyük sıkıştırılmamış dosyaya birleştirmek",
-  "Sütunlu biçime (ör. Parquet) çevirmek, sıkıştırmak ve tarih gibi alanlara göre bölümlemek",
+  "Parquet gibi sütunlu biçime çevirip sıkıştırmak ve bölümlemek",
   "Veriyi Athena'dan önce ElastiCache'e kopyalamak"
 ], obj: "h2" },
       { id: "93618bd8", q: "Çok sayıda analist, petabayt ölçeğine varan yapılandırılmış veri üzerinde karmaşık birleştirme ve toplama sorgularını sürekli ve hızlı çalıştıracak. Hangi hizmet daha uygundur?", options: [
@@ -394,11 +394,11 @@
   "Amazon SQS",
   "AWS Secrets Manager"
 ], obj: "h2" },
-      { id: "fa92627e", q: "Veri gölündeki tabloların şemasını otomatik keşfetmek, katalog tutmak ve CSV'yi Parquet'e dönüştüren sunucusuz bir ETL işi çalıştırmak istiyorsun. Hangi hizmet kullanılır?", options: ["AWS Glue", "Amazon QuickSight", "AWS WAF", "Amazon Route 53"], obj: "h1" },
+      { id: "66ea6fcd", q: "Veri gölündeki tabloların şemasını otomatik keşfetmek, katalog tutmak ve CSV'yi Parquet'e dönüştüren sunucusuz bir ETL işi çalıştırmak istiyorsun. Hangi hizmet kullanılır?", options: ["AWS Glue", "Amazon Athena", "Amazon Redshift", "AWS Lake Formation"], obj: "h1" },
       { id: "2109e4f5", q: "Ekip, mevcut özel Spark kodunu yönetilen bir kümede çalıştırarak çok büyük bir veri kümesini işlemek istiyor. Hangi hizmet doğrudan uygundur?", options: ["Amazon EMR", "Amazon Athena", "Amazon QuickSight", "AWS Shield"], obj: "h3" },
-      { id: "ba5f2c01", q: "Uygulama günlüklerinde tam metin arama yapmak ve gösterge panelleriyle olay analizi görmek istiyorsun. Hangi hizmet uygundur?", options: ["Amazon Redshift", "Amazon OpenSearch Service", "AWS Lake Formation", "Amazon Cognito"], obj: "h3" },
-      { id: "cb06310c", q: "Yöneticilerin iş verisini etkileşimli panolarla ve raporlarla görmesi isteniyor. Hangi hizmet bu iş içindir?", options: ["AWS Glue Data Catalog", "AWS Backup", "Amazon QuickSight", "Amazon SNS"], obj: "h4" },
-      { id: "6fbdf79e", q: "Veri gölünde farklı ekiplerin hangi tablo ve sütunlara erişebileceğini merkezi olarak yönetmek istiyorsun. Hangi hizmet bu işe uygundur?", options: ["AWS Shield Advanced", "Amazon EBS", "Amazon CloudFront", "AWS Lake Formation"], obj: "h4" }
+      { id: "d1fefa1d", q: "Uygulama günlüklerinde tam metin arama yapmak ve gösterge panelleriyle olay analizi görmek istiyorsun. Hangi hizmet uygundur?", options: ["Amazon Redshift (veri ambarı)", "Amazon OpenSearch Service", "AWS Lake Formation", "Amazon Athena"], obj: "h3" },
+      { id: "64984095", q: "Yöneticilerin iş verisini etkileşimli panolarla ve raporlarla görmesi isteniyor. Hangi hizmet bu iş içindir?", options: ["AWS Glue Data Catalog", "Amazon Athena", "Amazon QuickSight", "Amazon Redshift"], obj: "h4" },
+      { id: "c14f6c98", q: "Veri gölünde farklı ekiplerin hangi tablo ve sütunlara erişebileceğini merkezi olarak yönetmek istiyorsun. Hangi hizmet bu işe uygundur?", options: ["AWS Glue", "Amazon Athena", "AWS IAM Identity Center", "AWS Lake Formation"], obj: "h4" }
     ],
     interview: [
       { q: "Athena ile Redshift arasında nasıl seçersin?", a: "Ara sıra, ad hoc ve sunucu yönetmek istemediğim sorgular için Athena. Çok kullanıcılı, sürekli ve karmaşık analitik iş yüklerinde, performans öngörülebilirliği isterken Redshift veri ambarı." },

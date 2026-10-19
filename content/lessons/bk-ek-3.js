@@ -4,7 +4,7 @@
    Dış kaynak: yalnız HTTP 200 dönenler (curl, 2026-10-19). */
 (function () {
   var E = ((window.PP_EK = window.PP_EK || {}).bk = (window.PP_EK.bk || {}));
-  var DOG = "2026-10-12";
+  var DOG = "2026-10-19";
   var A = function (yol, t, neden) { return { t: t, u: "https://docs.aws.amazon.com/" + yol, dogrulama: DOG, neden: neden }; };
 
   E[38] = {
