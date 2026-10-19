@@ -1,7 +1,7 @@
 # CHANGELOG
 
 ## Tur 4 (dal: faz-k4; yalnız CSS/aria, davranış değişmedi)
-- 390 px dokunma hedefleri 44 px'e çıkarıldı: `.chip`, `.seg button`, `.my-kinds button`, `.my-pn`, `.nw-chip2`, `.sn`, `.gh-nav button` (`css/son-eklemeler.css`). Ölçüm: 15 sekme × 2 tema, 44 px altı hedef 251 -> 0 (satır içi okuma kelimeleri hariç).
+- 390 px dokunma hedefleri 44 px'e çıkarıldı: `.chip`, `.seg button`, `.my-kinds button`, `.my-pn`, `.nw-chip2`, `.sn`, `.gh-nav button` (`css/son-eklemeler.css`; medya sorgusuz, tüm genişliklerde geçerli). 390 px ölçümü: 153 durum × 2 tema = 306 durum, 44 px altı hedef 251 -> 0 (satır içi okuma kelimeleri hariç).
 - Kontrast: koyu temada yardım şeridi "?" simgesi 1.97 -> 8.59:1, açıklama metni 4.44 -> AA; ders filtresi metni `--ink`.
 - Yalnız placeholder ile adlanan 3 alana `aria-label` (okuma notu, proje yeni adım, proje günlük notu).
 

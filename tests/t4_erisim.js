@@ -11,7 +11,7 @@ const {INIT,chromium}=require('./stub.js');
     await p.addInitScript("try{localStorage.setItem('ya_seen','1')}catch(e){}");
     await p.addInitScript(INIT);
     await p.goto('file://'+path.resolve(__dirname,'../index.html')+'#ayar');
-    await p.waitForTimeout(1200);
+    await p.waitForSelector('.seg button',{timeout:15000});
     const r=await p.evaluate(()=>{
       const v=document.getElementById('view');
       const mk=(tag,cls,wrap)=>{const w=document.createElement('div');if(wrap)w.className=wrap;const e=document.createElement(tag);e.className=cls;e.type='button';e.textContent='x';w.appendChild(e);v.appendChild(w);return e};
@@ -26,6 +26,7 @@ const {INIT,chromium}=require('./stub.js');
     for(const k in r.sizes)ok(r.sizes[k][1]>=44,scheme+' '+k+' yükseklik '+Math.round(r.sizes[k][1]));
     ok(r.sizes.pn[0]>=44&&r.sizes.sn[0]>=44&&r.sizes.gh[0]>=44,scheme+' genişlik pn/sn/gh >= 44');
     ok(r.seg.length>0&&r.seg.every(h=>h>=44),scheme+' ayar .seg düğmeleri >= 44 ('+r.seg.length+')');
+    ok(r.icon!=null,'hlp-i bulundu');
     if(r.icon!=null)ok(r.icon>=4.5,scheme+' yardım "?" simgesi kontrast '+r.icon.toFixed(2));
     await ctx.close();
   }

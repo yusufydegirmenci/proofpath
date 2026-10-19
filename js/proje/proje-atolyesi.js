@@ -132,7 +132,7 @@ function renderRoadStep(p,def,i){
 }
 function renderPjDetail(p){
   var P=S.pj,n=pjDone(p),tot=p.steps.length,pct=tot?Math.round(n/tot*100):0,out=[],def=p.pid?pathProj(p.pid):null,pa=p.pid?pathOf(p.pid):null,col=pa?pa.col:"";
-  var si=h("input",{type:"text","aria-label":"Yeni adım",maxlength:160,placeholder:"Yeni adım ekle",oninput:function(e){P.nstep=e.target.value}});si.value=P.nstep;
+  var si=h("input",{type:"text","aria-label":"Yeni adım ekle",maxlength:160,placeholder:"Yeni adım ekle",oninput:function(e){P.nstep=e.target.value}});si.value=P.nstep;
   var addStep=function(){var t=str(P.nstep).trim();if(!t||!S.canWrite)return;p.steps.push({t:t.slice(0,160),done:false,ts:"",note:""});if(p.status==="bitti"){p.status="yapılıyor";p.finished=""}P.nstep="";pjSave(p);draw()};
   si.addEventListener("keydown",function(e){if(e.key==="Enter")addStep()});
   var ni=h("textarea",{"aria-label":"Günlük notu",maxlength:600,placeholder:"Bugün ne yaptın, nerede takıldın?",oninput:function(e){P.nnote=e.target.value}});ni.value=P.nnote;
