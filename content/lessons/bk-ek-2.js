@@ -245,6 +245,6 @@
       A("appsync/latest/devguide/what-is-appsync.html", "AWS Belgesi: AWS AppSync nedir", "GraphQL API ve çözücü kavramlarının resmi tanımı.")
     ],
     telafi: "Takıldıysan iki kutuya böl: CDK altyapıyı koda döker, AppSync veriyi istemcinin istediği biçimde sunar.",
-    sonraki: "Backend yolunun son konusunu bitirdin; şimdi elindeki konuları bir projede birleştirebilirsin."
+    sonraki: "Sıradaki konu: IAM politika değerlendirmesi, Organizations ve SCP."
   };
 })();
