@@ -208,13 +208,14 @@ const oku = f => fs.readFileSync(path.join(KOK, f), 'utf8');
   // 4) CDN yoksa: dürüst mesaj, çökme yok
   const E = await ac(390, async c => { await c.route(/cdn\.jsdelivr\.net/, r => r.abort()); });
   await E.p.evaluate(() => document.querySelector('[data-va-ders="va0-1"]').click()); await E.p.waitForTimeout(300);
-  await E.p.evaluate(() => { window.pending = true; });   // askıdaki yeniden çizim (focusout +150 ms) sonuçtan sonra odağı çalmamalı: yarışı kalıcı kılar
   await E.p.click('[data-alan="va0-1-py"] [data-alan=adimla]');
   await E.p.waitForSelector('[data-alan-izle="va0-1-py"] [data-izle-durum=kullanilamiyor]', { timeout: 130000 });
-  await E.p.waitForTimeout(500);
   const em = await E.p.evaluate(() => document.querySelector('[data-alan-izle="va0-1-py"]').textContent);
   ok(/Adım adım gösterim şu an kullanılamıyor/.test(em) && /tekrar dene/.test(em) && !/Gerçek çalıştırma/.test(em), 'CDN engelli: "Adım adım gösterim şu an kullanılamıyor" (Türkçe, yeniden dene yönlendirmesi) ' + em);
   ok(await E.p.evaluate(() => document.activeElement === document.querySelector('[data-alan="va0-1-py"] [data-alan=adimla]') && !document.querySelector('[data-alan="va0-1-py"] [data-alan=adimla]').disabled), 'CDN engelli: düğme yeniden etkin, odak düğmede');
+  // askıdaki yeniden çizim (pending + focusout) tam şimdi tetiklenirse odak düğmede kalmalı (draw önbellekli düğmeyi yeniden takar)
+  await E.p.evaluate(() => { window.pending = true; view.dispatchEvent(new FocusEvent('focusout', { bubbles: true })); }); await E.p.waitForTimeout(500);
+  ok(await E.p.evaluate(() => document.activeElement === document.querySelector('[data-alan="va0-1-py"] [data-alan=adimla]')), 'CDN engelli: askıdaki yeniden çizimden sonra da odak düğmede');
   ok(E.errs.length === 0, 'CDN engelliyken sayfa hatası yok ' + E.errs.join('|'));
   await E.ctx.close();
 
