@@ -137,4 +137,4 @@ Birimler çıkarılırken her birimden sonra: `smoke`, `kritik_akis` ve birimle 
 - `package.json`taki `test:ogrenme` zincirine bu iki yeni dosya eklenmedi (dosya kapsam dışıydı); `npm test` her `tests/*.js` dosyasını çalıştırdığı için ikisini de kapsar.
 
 ## Tur 4
-- `tests/t4_erisim.js`: 390 px'te chip/seg/not/nw-chip2/sn/gh-nav en az 44 px ve yardım şeridi "?" simgesi kontrastı >= 4.5 (açık ve koyu tema); eski CSS ile 17 madde kalır, yeni CSS ile geçer. Hızlı (~10 sn), kararlı.
+- `tests/t4_erisim.js`: 390 px'te chip/seg/not/nw-chip2/sn/gh-nav en az 44 px ve yardım şeridi "?" simgesi kontrastı >= 4.5 (açık ve koyu tema; kurallar tüm genişliklerde geçerli, test 390 px'te ölçer); eski CSS ile maddeler KALIR, yeni CSS ile geçer. Hızlı (~5 sn), kararlı.
