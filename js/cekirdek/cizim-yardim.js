@@ -121,6 +121,7 @@ function draw(){
   if(tab==="oku"){var rs=STORIES.filter(function(x){return x.id===S.rd.id})[0];if(rs&&S.rd.pop)box.append(wordSheet(rs))}
   box.append(h("div",{class:"afoot"},h("span",null,"Proofpath"),h("span",null,brandLine()+" · "+termWeek())));
   view.replaceChildren(box);
+  if(a&&a!==document.body&&a.isConnected&&document.activeElement!==a)try{a.focus({preventScroll:true})}catch(e){}   /* önbellekli öğe (alan paneli düğmesi) yeniden takılınca odak kaybolmasın */
   var rsd=routeSteps().every(function(x){return x.d});
   if(S._rd===false&&rsd&&Date.now()-(S._t0||0)>5000)burst();
   S._rd=rsd;
