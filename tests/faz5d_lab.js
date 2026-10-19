@@ -136,15 +136,15 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
       ['13 lab/sonraki bağ', net(e.sonraki)], ['14 kaynak (koşullu)', !!(e.kaynaklar && e.kaynaklar.length)], ['15 telafi+sonraki', net(e.telafi) && net(e.sonraki)]];
     return { i, ad: T.k, eksik: m.filter(x => !x[1]).map(x => x[0]) };
   }));
-  eq(puan.length, 31, 'Siber yolu 31 konu');
-  eq(puan.map(x => ({ i: x.i, eksik: x.eksik.filter(k => !/kaynak/.test(k)) })).filter(x => x.eksik.length), [], 'Siber 31 konu: 14 çekirdek öğe tam (kaynak koşullu)');
+  eq(puan.length, 39, 'Siber yolu 39 konu');
+  eq(puan.map(x => ({ i: x.i, eksik: x.eksik.filter(k => !/kaynak/.test(k)) })).filter(x => x.eksik.length), [], 'Siber 39 konu: 14 çekirdek öğe tam (kaynak koşullu)');
   console.log('INFO  siber kaynaksız konular: ' + puan.filter(x => x.eksik.length).map(x => x.i + ':' + x.ad).join(', '));
   ok(puan.filter(x => !x.eksik.length).length >= 15, 'kaynaklı (15/15) siber konu sayısı ≥ 15 (' + puan.filter(x => !x.eksik.length).length + ')');
   const bad = await p.evaluate(() => Object.values(PP_EK.sec).flatMap(e => (e.kaynaklar || []).map(k => k.u + '|' + k.dogrulama))
     .filter(s => !/^https:\/\/(www\.rfc-editor\.org\/rfc\/rfc\d+|csrc\.nist\.gov\/pubs\/(sp\/800|fips\/180-4|ai\/100)\/[0-9a-z\/-]+\/final|owasp\.org\/www-(project|community)[0-9A-Za-z\/_-]*)\|2026-10-12$/.test(s)));
   eq(bad, [], 'siber kaynaklar: yalnız doğrulanmış alanlar ve doğrulama tarihi 2026-10-12');
   eq(await p.evaluate(() => Object.keys(PP_EK.sec).every(k => !(PP_EK.sec[k].kaynaklar || []).some(s => !s.neden || !s.t))), true, 'siber: her kaynakta ad ve neden var');
-  eq(await p.evaluate(() => Object.keys(PP_EK.sec).length), 31, 'PP_EK.sec 31 girdi');
+  eq(await p.evaluate(() => Object.keys(PP_EK.sec).length), 39, 'PP_EK.sec 39 girdi');
   // Anlatım ve Alıştırma blokları siber derste görünür
   await p.evaluate(() => { const l = { id: 'x-sec', date: '2026-10-09', track: 'sec', kind: 'ders', title: 'CIA üçlüsü', topicId: 's-sec-2', hook: 'x', blocks: [{ t: 'p', text: 'Deneme.', items: [], parts: [] }], quiz: [] }; S.lessons.push(l); });
   await p.evaluate(() => { const l = lessonsOf('sec').filter(x => x.topicId === 's-sec-2')[0]; S.les.track = 'sec'; lcSet(lessonKey(l), 'w', 'sec'); lrOpen(l, 'anlat'); });
