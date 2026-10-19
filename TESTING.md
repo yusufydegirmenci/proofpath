@@ -135,3 +135,6 @@ Birimler çıkarılırken her birimden sonra: `smoke`, `kritik_akis` ve birimle 
 - `node tests/faz12c_gonder.js` (Node + Playwright 390 px): onaylı geri bildirim gönderme (sahte Supabase istemcisi: başarı, hata, günlük sınır, istemci yok, çift tık), shim yalnız insert, güvenlik sertleştirme migration dosyası (tam 3 deyim: 2 revoke + 1 alter), ısınma atlama (`w-atla`) ve telafi önerisi.
 - `node tests/ogrenme.js` ek bölümü: `PP.ogr.ders` birim testleri (geçerli ve 17 bozuk alan örneği) ve `content/lessons` gerçek şema denetimi (100 ders, 455 soru).
 - `package.json`taki `test:ogrenme` zincirine bu iki yeni dosya eklenmedi (dosya kapsam dışıydı); `npm test` her `tests/*.js` dosyasını çalıştırdığı için ikisini de kapsar.
+
+## Tur 4
+- `tests/t4_erisim.js`: 390 px'te chip/seg/not/nw-chip2/sn/gh-nav en az 44 px ve yardım şeridi "?" simgesi kontrastı >= 4.5 (açık ve koyu tema); eski CSS ile 17 madde kalır, yeni CSS ile geçer. Hızlı (~10 sn), kararlı.
