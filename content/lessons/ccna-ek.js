@@ -1,4 +1,4 @@
-/* CCNA yolu · Faz 5 tur 2: konu başına ders eki (anahtar = TMAP.ccna dizini, 0–16).
+/* CCNA yolu · Faz 5 tur 2: konu başına ders eki (anahtar = TMAP.ccna dizini, 0–22; 17-22 Tur 2 ile eklendi, ders no = anahtar + 1).
    M§7 listesinden TMAP'te bulunmayan öğeler: benzetme + sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar,
    geçme ölçütü + kritik yanlış anlama, dış kaynak (son doğrulama tarihiyle), telafi/sonraki adım, lab bağlantısı.
    Dış kaynak: yalnız HTTP 200 dönenler (curl, 2026-10-12); IEEE/Cisco sayfaları doğrulanamadığı için eklenmedi. */
@@ -193,7 +193,67 @@
     hatalar: [["Değişikliği önce sınamadan tüm cihazlara göndermek", "Önce bir test cihazında ya da küçük grupta dene; sonra genişlet."], ["Sırları betiğin içine yazmak", "Parola ve anahtarları kod yerine ortam değişkeni ya da gizli kasada tut."], ["JSON'daki tür farkını göz ardı etmek", "Sayı, metin ve boolean farklıdır; \"1\" ile 1 aynı değildir."]],
     gecme: { olcut: "Mini sınavda %80 ve REST, JSON ve NETCONF/YANG'ın rollerini ayırt edebilmek.", kritik: ["Otomasyonun hatayı da çoğalttığını bilmemek", "REST ile NETCONF'u aynı protokol sanmak"] },
     telafi: "Takıldıysan önce yalnız bir JSON nesnesini okumayı çalış; sonra aynı veriyi bir REST yanıtında bul.",
-    sonraki: "Sıradaki: CCNA yolundaki konuları tekrar edip deneme sınavına geç.",
+    sonraki: "Sıradaki konu: Ağ topolojileri ve mimarileri.",
     kaynaklar: [R("8259", "The JavaScript Object Notation (JSON) Data Interchange Format", "JSON'un resmî tanımı."), R("6241", "Network Configuration Protocol (NETCONF)", "NETCONF'un resmî tanımı."), R("8040", "RESTCONF Protocol", "YANG verisine REST üzerinden erişimin tanımı.")]
+  };
+
+  E[17] = {
+    analoji: {"a":"Şehir planı: sokaklar mahalle içini, ana caddeler mahalleleri, çevre yolu şehirleri bağlar; her yolun görevi farklıdır.","sinir":"Şehirde yollar bir kez döşenir ve trafik akışı çok değişmez; ağda trafik yönü (kullanıcıdan sunucuya ya da sunucudan sunucuya) zamanla değişir ve tasarım ona göre seçilir."},
+    rehberli: ["Üç katmanlı bir kampüs çiz: üç kat anahtarı, iki bina dağıtım anahtarı ve bir çekirdek. Her katmanın görevini bir cümleyle yaz.","Aynı ağı iki katmanlı (daraltılmış çekirdek) olarak yeniden çiz; hangi cihaz azaldı, ne kaybettin, yaz.","Dört yaprak ve iki omurgalı bir spine-leaf çiz. İki farklı yaprak arasındaki yolu işaretle ve kaç atlama olduğunu say."],
+    bagimsiz: "Okulunun ya da işyerinin ağını bir mimari türüne (iki ya da üç katmanlı, SOHO) benzet. Neden o türe uyduğunu ve bir arıza anında neyin duracağını üç cümleyle yaz.",
+    hatalar: [["Küçük ofise üç katmanlı tasarım kurmak","Gereksiz cihaz ve yönetim yükü getirir; iki katmanlı ya da tek kutu yeterlidir."],["Spine-leaf'te yaprakları birbirine bağlamak","Spine-leaf'te her yaprak yalnızca omurgalara bağlanır; yapraklar arası doğrudan bağlantı tasarımın mantığını bozar."],["Tam mesh bağlantı sayısını n×(n−1) sanmak","Her bağlantının iki ucu vardır; doğru sayı n×(n−1)/2'dir."]],
+    gecme: {"olcut":"Mini sınavda %80 ve bir senaryo için kampüs, veri merkezi ya da WAN mimarisini gerekçesiyle seçebilmek.","kritik":["Spine-leaf'te yaprakların birbirine bağlandığını sanmak","Çekirdek katmanın kullanıcı cihazı bağladığını sanmak"]},
+    telafi: "Takıldıysan yalnız bir soruya dön: 'Bu ağın trafiği kullanıcıdan sunucuya mı, sunucudan sunucuya mı akıyor?' Sonra katman çizimini yeniden yap.",
+    sonraki: "Sıradaki konu: Sanallaştırma, konteyner ve bulut kavramları."
+  };
+
+  E[18] = {
+    analoji: {"a":"Apartman ve pansiyon: apartmanda her dairenin kendi mutfağı vardır (sanal makine), pansiyonda odalar ortak mutfağı paylaşır (konteyner).","sinir":"Daireler ve odalar fiziksel mekândır; sanal makine ve konteynerler yazılımla saniyeler içinde çoğaltılır, silinir ve ağ üzerinden taşınır."},
+    rehberli: ["Bir fiziksel sunucuya üç VM yerleştir. Her VM'in sanal ağ kartının hangi sanal anahtara ve hangi VLAN'a bağlanacağını çiz.","Aynı sunucuda üç konteyner çalıştır; hangi unsurların ortak (çekirdek) olduğunu işaretle.","Bir e-posta hizmeti, bir sanal sunucu kiralama ve bir uygulama platformu için IaaS, PaaS ve SaaS'ı eşleştir; her birinde işletim sistemini kimin yönettiğini yaz."],
+    bagimsiz: "Bir uygulamayı (ör. küçük bir web sitesi) fiziksel sunucu, VM, konteyner ve SaaS olarak çalıştırmanın artı ve eksilerini dört satırlık bir tabloda karşılaştır. Gerçek bir sunucuya dokunma, kâğıt üzerinde çalış.",
+    hatalar: [["Konteyneri küçük bir VM sanmak","Konteyner ana makinenin çekirdeğini paylaşır; yalıtımı VM kadar güçlü değildir."],["Bulutta her şeyin sağlayıcı sorumluluğunda olduğunu sanmak","IaaS'ta işletim sistemi, her modelde veri ve erişim yönetimi müşteridedir."],["Karma bulutu iki ayrı genel bulut sanmak","Karma bulut, özel altyapı ile genel bulutun birlikte ve bağlı kullanılmasıdır."]],
+    gecme: {"olcut":"Mini sınavda %80 ve IaaS, PaaS ve SaaS'ı bir senaryoda sorumluluk paylaşımına göre ayırt edebilmek.","kritik":["Konteynerin kendi işletim sistemini taşıdığını sanmak","SaaS'ta işletim sistemini müşterinin yönettiğini sanmak"]},
+    telafi: "Takıldıysan 'kim neyi yönetiyor?' sorusuyla bir tablo çiz: donanım, sanallaştırma, işletim sistemi, uygulama, veri. IaaS, PaaS ve SaaS'ta işaretle.",
+    sonraki: "Sıradaki konu: TCP ve UDP."
+  };
+
+  E[19] = {
+    analoji: {"a":"Kargo ve kartpostal: taahhütlü kargoda her koli numaralanır, teslim onayı alınır, kaybolana yenisi gönderilir (TCP). Kartpostal atılır, ulaştı mı bakılmaz (UDP).","sinir":"Kargoda eksik koliyi insan fark edip yeniden yollar; TCP'de bunu protokol kendiliğinden yapar. UDP'de ise uygulama isterse kendi önlemini alır."},
+    rehberli: ["Üçlü el sıkışmayı SYN, SYN/ACK ve ACK olarak istemci ile sunucu arasında ok çizimiyle göster; hangi adımda bağlantının kurulduğunu işaretle.","Bir web isteği için kaynak ve hedef soketi yaz: istemci IP ve geçici port, sunucu IP ve 443.","Bir dosya aktarımı ve bir görüntülü görüşme için TCP ya da UDP seçimini gerekçelendir."],
+    bagimsiz: "Bilgisayarında 'netstat -an' komutuyla açık bağlantıları listele. En az iki bağlantı için protokolü, yerel ve uzak portu ve hangi hizmete ait olabileceğini tabloya yaz. Hiçbir bağlantıyı kesme.",
+    hatalar: [["UDP'yi 'kötü' ya da 'yanlış' protokol sanmak","UDP güvenilirliği uygulamaya bırakır; gecikmeye duyarlı uygulamalar için doğru seçimdir."],["İstemci kaynak portunun 443 olduğunu sanmak","443 hizmetin portudur; istemci yüksek numaralı geçici bir port seçer."],["FIN ile RST'yi aynı sanmak","FIN düzgün kapanışı, RST bağlantının aniden kesilmesini anlatır."]],
+    gecme: {"olcut":"Mini sınavda %80 ve bir uygulama için TCP ya da UDP seçimini ve üçlü el sıkışmayı anlatabilmek.","kritik":["UDP'nin sıra numarası ve onay taşıdığını sanmak","Üçlü el sıkışmanın sırasını karıştırmak"]},
+    telafi: "Takıldıysan önce yalnız üçlü el sıkışmayı kâğıda üç ok olarak çiz; sonra TCP ile UDP'yi iki sütunlu tabloda karşılaştır.",
+    sonraki: "Sıradaki konu: CDP, LLDP, DTP ve trunk ayrıntısı."
+  };
+
+  E[20] = {
+    analoji: {"a":"Apartmandaki isim tabelası ve ortak koridor: komşular kapıdaki tabelayla kendini tanıtır (CDP ve LLDP), ortak koridor birden çok katın trafiğini taşır (trunk).","sinir":"Tabela herkesin görebildiği bir bilgidir; ağda aynı bilgi saldırgana harita verir, bu yüzden kullanıcıya bakan portlarda kapatılır. Koridor da kendiliğinden kat eklemez; izinli VLAN listesi hangi katların geçeceğini sınırlar."},
+    rehberli: ["Üç anahtarlı bir ağ çiz ve 'show cdp neighbors' çıktısında her anahtarın hangi komşuyu göstereceğini yaz (komşu adı, yerel port, uzak port).","Dört DTP birleşimi için (auto-auto, auto-desirable, desirable-desirable, access-trunk) trunk kurulup kurulmadığını tabloya işle.","Anahtarlar arası bir bağlantı için trunk, native VLAN 99 ve izinli VLAN 10,20,99 yapılandırmasını kâğıda yaz."],
+    bagimsiz: "Packet Tracer'da ya da kâğıt üzerinde iki anahtar kur; bir uçta native VLAN'ı 99, diğer uçta 1 yap ve ne beklediğini yaz. Sonra uyuşmazlığı düzelt ve 'show interfaces trunk' çıktısında neyin değişeceğini belirt. Gerçek ağda deneme yapma.",
+    hatalar: [["İki uç dynamic auto bırakıp trunk beklemek","İkisi de pazarlığı başlatmaz; trunk kurulmaz, bağlantı access kalır."],["Native VLAN'ı iki uçta farklı bırakmak","Etiketsiz trafik yanlış VLAN'a düşer ve günlükte uyarı çıkar."],["Kullanıcı portlarını dynamic modda bırakmak","İstenmeyen trunk pazarlığına izin verir; 'switchport mode access' kullanılır."]],
+    gecme: {"olcut":"Mini sınavda %80 ve DTP birleşimlerinden hangisinin trunk kurduğunu söyleyebilmek.","kritik":["DTP'nin standart olduğunu sanmak","Native VLAN'ın değiştirilemeyeceğini sanmak"]},
+    telafi: "Takıldıysan DTP için 4x4'lük bir tablo çiz (access, trunk, auto, desirable) ve her hücreye sonucu yaz; sonra iki uçlu bir trunk çizip native VLAN'ı işaretle.",
+    sonraki: "Sıradaki konu: FHRP ve HSRP (ilk atlama yedekliliği)."
+  };
+
+  E[21] = {
+    analoji: {"a":"İki kapıcılı bina: ziyaretçiler hep 'kapı numarası 1'i ararlar. O gün hangi kapıcı nöbetteyse o karşılar; nöbetçi değişse de ziyaretçi adresi değiştirmez.","sinir":"Kapıcı değişimi vardiya düzenidir; HSRP'de ise bekleyen yönlendirici hello mesajlarıyla aktifi sürekli izler ve arıza anında kendiliğinden devralır."},
+    rehberli: ["Bir VLAN, iki yönlendirici (R1 ve R2) ve internet çiz. R1'in önceliği 110, R2'nin 100 olduğunda hangisinin aktif olacağını yaz.","R1 arızalanınca devralmanın adımlarını yaz: R2 ne yapar, istemci neyi fark eder?","R1'de preempt kapalıyken R1 geri geldiğinde ne olacağını açıkla; ardından preempt açıkken aynı olayı yeniden yaz."],
+    bagimsiz: "Packet Tracer'da ya da kâğıt üzerinde bir HSRP grubu tasarla: sanal IP, iki yönlendiricinin gerçek IP'leri ve öncelikleri. 'standby' komutlarını ve 'show standby brief' çıktısından ne bekleyeceğini yaz.",
+    hatalar: [["İstemciye gerçek yönlendirici IP'sini ağ geçidi vermek","O yönlendirici bozulunca yedeklilik işe yaramaz; istemciye sanal IP verilir."],["Preempt'i varsayılan olarak açık sanmak","HSRP'de preempt varsayılan olarak kapalıdır; yüksek öncelikli yönlendirici dönse bile rolü geri almaz."],["HSRP'nin her zaman yük paylaştırdığını sanmak","Bir grupta yalnız aktif yönlendirici iletir; yük paylaşımı için GLBP ya da VLAN başına farklı grup kullanılır."]],
+    gecme: {"olcut":"Mini sınavda %80 ve bir senaryoda hangi yönlendiricinin aktif olacağını önceliğe ve IP adresine göre söyleyebilmek.","kritik":["İstemciye gerçek yönlendirici IP'sini ağ geçidi vermenin yeterli olduğunu sanmak","HSRP'nin Cisco'ya özgü olmadığını sanmak"]},
+    telafi: "Takıldıysan önce yalnız 'kim aktif olur?' sorusuna odaklan: önce öncelik, eşitse IP adresi. Sonra preempt'i ekleyerek aynı senaryoyu yeniden çöz.",
+    sonraki: "Sıradaki konu: VPN ve uzaktan erişim."
+  };
+
+  E[22] = {
+    analoji: {"a":"Kalabalık yolda zırhlı geçit: araçlarını yolun herkese açık kısmında değil, kapalı ve korumalı bir koridorda götürürsün.","sinir":"Zırhlı geçit yalnızca yolu korur; aracın içindeki bir kusur ya da zararlı yazılım geçitle temizlenmez. VPN de uç cihazı temiz hale getirmez."},
+    rehberli: ["Bir merkez ve iki şubeyi site-to-site VPN ile bağlayan bir çizim yap. Tünelin hangi cihazlar arasında kurulduğunu ve kullanıcıların farkında olup olmadığını yaz.","Evden çalışan bir kullanıcı için uzaktan erişim senaryosunu üç adımda yaz ve tam tünel ile bölünmüş tünel arasındaki farkı belirt.","Bir GRE tünelinin neden şifrelemediğini ve IPsec ile nasıl korunabileceğini iki cümleyle yaz."],
+    bagimsiz: "Kendin için bir VPN ihtiyacı uydur (ör. iki şube ya da evden çalışan 10 kişi). Hangi VPN türünü ve hangi tünel yöntemini seçeceğini, neyi şifreleyeceğini ve riskini kâğıda üç satırda yaz. Gerçek VPN kurma.",
+    hatalar: [["GRE'nin şifreleme yaptığını sanmak","GRE yalnızca kapsüller; gizlilik için IPsec gerekir."],["VPN'in uç cihazı da güvenli yaptığını sanmak","VPN yolu korur; uç cihazdaki zararlı yazılım yine kurumsal ağa ulaşabilir."],["Tünel ve taşıma modunu karıştırmak","Tünel modu özgün paketin tamamını sarar; taşıma modu yalnızca veriyi korur."]],
+    gecme: {"olcut":"Mini sınavda %80 ve site-to-site ile uzaktan erişim VPN'ini, GRE ile IPsec farkını söyleyebilmek.","kritik":["GRE'nin şifreleme sağladığını sanmak","Uzaktan erişim VPN'in iki ağı birbirine bağladığını sanmak"]},
+    telafi: "Takıldıysan önce 'kim kime bağlanıyor?' sorusunu çöz: ağ-ağ ise site-to-site, kullanıcı-ağ ise uzaktan erişim. Sonra GRE ve IPsec'i yan yana bir tabloda karşılaştır.",
+    sonraki: "Sıradaki: CCNA yolundaki konuları tekrar edip deneme sınavına geç."
   };
 })();
