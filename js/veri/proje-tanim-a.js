@@ -332,7 +332,7 @@
   K.tanim["qa4"] = {
     onkosul: [
       "qa3 (Kalite Stratejisi): risk bazlı strateji, API testi ve CI kalite kapısı deneyimi gerekir.",
-      "qa2 (Playwright ile E2E): otomasyon temeli gerekir; kapstonda Playwright TypeScript ile kullanılır, bu yüzden temel JavaScript/TypeScript okuyabilmen gerekir.",
+      "qa2 (Playwright ile E2E): Playwright (Python) ve pytest ile yazdığın otomasyon deneyimi gerekir; kapstonda aynı aracı Python ile kullanırsın.",
       "Bilgisayarında Docker çalıştırabilmen ve Git/GitHub kullanabilmen gerekir."
     ],
     gereksinim: [

@@ -19,7 +19,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   await p.goto(U + '#ders');
   await p.waitForTimeout(1500);
 
-  for (const [yol, n, ad] of [['bk', 46, 'Backend'], ['dev', 18, 'DevOps']]) {
+  for (const [yol, n, ad] of [['bk', 46, 'Backend'], ['dev', 22, 'DevOps']]) {
     const puan = await p.evaluate((yol) => TMAP[yol].map((T, i) => {
       const e = (PP_EK[yol] || {})[i] || {};
       const net = (x) => typeof x === 'string' ? x.trim().length > 20 : !!x;

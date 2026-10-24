@@ -201,6 +201,6 @@
     gecme: { olcut: "Mini sınavda %80 ve verilen SLO'dan hata bütçesini hesaplayabilmek.", kritik: ["SLO'nun yalnız ölçüm olduğunu, hedef ve karar aracı olmadığını sanmak", "Hata bütçesi bitince yayına devam etmenin normal olduğunu sanmak"] },
     kaynaklar: [K("Google SRE Kitabı: Service Level Objectives", "https://sre.google/sre-book/service-level-objectives/", "SLI, SLO ve hata bütçesi kavramlarının kaynak bölümü."), K("Google SRE Kitabı: Postmortem kültürü", "https://sre.google/sre-book/postmortem-culture/", "Suçlamasız postmortem yazmanın resmî rehberi."), K("Google SRE Kitabı: Embracing Risk", "https://sre.google/sre-book/embracing-risk/", "Güvenilirliğin maliyetini ve ölçülü risk fikrini açıklar.")],
     telafi: "Takıldıysan tek bir hizmet seç ve sor: Ölçtüğüm sayı ne (SLI), hedefim ne (SLO), ne kadar hata hakkım var (bütçe)?",
-    sonraki: "DevOps yolunu tamamladın. Şimdi yerel bir proje seçip derle, test et, paketle ve izle; öğrendiklerini uçtan uca birleştir."
+    sonraki: "Sıradaki konu: Kubernetes iş yükü türleri ve zamanlama."
   };
 })();
