@@ -227,6 +227,7 @@ function renderLessonRoom(){
     else{
       body.push(h("div",{class:"lr-sec"},h("div",{class:"label"},"2 · Anlatım"),h("h3",null,l.title||"Ders")));
       var hdf=lrHedefler(l);if(hdf)body.push(hdf);
+      var din=typeof lrDinle==="function"?lrDinle(l):null;if(din)body.push(din);
       var am=lrModes(l);if(am)body.push(am);
       if(T)body.push(h("div",{class:"panel"},renderAnim(T.m)));
       var nsc=l&&/^(eng|ing)/i.test(String(l.track||l.tr||""))?null:nwFor(l);if(nsc)body.push(h("div",{class:"panel"},h("div",{class:"label"},"Hareketli anlatım"),h("h3",null,nsc.t),nwPlayer(nsc)));
