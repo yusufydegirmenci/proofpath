@@ -126,6 +126,6 @@
     hatalar: [["Hazırlanmadan girmek", "Kısa bir iskelet bile kekelemeyi azaltır; önceden sesli çalış."], ["Özgeçmişi baştan sona okumak", "Dört cümlede şimdi, geçmiş, hedef ve nedeni söyle; ayrıntıyı sorulursa ver."], ["Zaman karıştırmak", "Bitmiş eğitim için past simple ('I studied ...'), şimdi için present ('I work ...', 'I'm looking for ...') kullan."]],
     gecme: { olcut: "Mini sınavda %80 ve şimdi, geçmiş, hedef ve nedeni içeren dört cümlelik bir kendini tanıtma cevabını doğru zamanlarla söyleyip yazabilmek.", kritik: ["Hedefi nedenini söylemeden vermek", "Cevabı kelime kelime ezberleyip esnek söyleyememek"] },
     telafi: "Takıldıysan yalnız ilk iki cümleyi (şimdi, geçmiş) bir hafta sesli tekrar et; sonra hedef ve nedeni ekle.",
-    sonraki: "Yolun sonu: İngilizce yolunu bitirdin. Şimdi stand-up'ı ve kendini tanıtmayı bir hafta boyunca sesli tekrar et ve gerçek bir ödev ya da proje hatası için İngilizce bir rapor yaz."
+    sonraki: "Sıradaki konu: PR yorumları. Mülakattaki net ve kısa anlatma becerini, kod incelemesinde kibar ve gerekçeli yazılı yorum yazarken kullanacaksın."
   };
 })();

@@ -188,7 +188,7 @@
         { tr: "bağlanmak", q: "Ne yapamıyor?", en: "connect" },
         { tr: "ağa", q: "Nereye?", en: "to the network" }
       ], result: "The user can't connect to the network." },
-      { t: "warn", h: "Sık karışan çiftler", text: "update (küçük yama) ≠ upgrade (büyük sürüm). install = kurmak, setup = hazırlayıp çalışır hale getirmek. log in (fiil, iki kelime) ≠ login (isim: giriş ekranı)." }
+      { t: "warn", h: "Sık karışan çiftler", text: "update (küçük yama) ≠ upgrade (büyük sürüm). install = kurmak, set up (fiil, iki kelime) = hazırlayıp çalışır hale getirmek; setup (tek kelime) = kurulum (isim). log in (fiil, iki kelime) ≠ login (isim: giriş ekranı)." }
     ],
     story: { title: "Yavaş laptop", text: "A user says: 'My laptop is very slow and it freezes when I open Excel.' Ahmet checks the settings, finds an old update and installs it. Then he restarts the laptop. The problem is resolved.", question: "What did Ahmet do first? (İngilizce cevapla)" },
     objectives: [
