@@ -129,7 +129,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(await p.evaluate((du) => { const r = PP.ogr.oneri.sonrakiLab(PP.ogr.ui.graf(), 'net', du); return r && r.lab; }, { ...du0, dersTamam: tam('net', 10), kanitlar: lk('net-rota', 4).concat(lk('net-nat', 4), lk('net-ospf', 4), lk('net-vlan', 4)) }), 'net-dhcp', 'graf: net 10 tamam, DHCP lab eksik → öneri');
 
   // 7) QA (18) ve teknik İngilizce (11) ders eki: 15 öğe puanı
-  for (const [yol, n, ad, kaynaksizBeklenen] of [['qa', 21, 'QA', []], ['eng', 13, 'İngilizce', [0, 9, 10]]]) {
+  for (const [yol, n, ad, kaynaksizBeklenen] of [['qa', 22, 'QA', []], ['eng', 15, 'İngilizce', [0, 9, 10]]]) {
     const puan = await p.evaluate((yol) => TMAP[yol].map((T, i) => {
       const e = (PP_EK[yol] || {})[i] || {};
       const net = (x) => typeof x === 'string' ? x.trim().length > 20 : !!x;
