@@ -54,7 +54,9 @@
   if (typeof document === "undefined" || typeof g.h !== "function") return;
 
   /* ---------------- Arayüz ---------------- */
-  var D = { id: null, parts: [], i: 0, durum: "dur", hiz: 1, jeton: 0, ui: null };
+  var HIZ_ANAHTAR = "ya_ses_hiz";
+  function hizOku() { try { return hizSinir(g.localStorage.getItem(HIZ_ANAHTAR)); } catch (e) { return 1; } }
+  var D = { id: null, parts: [], i: 0, durum: "dur", hiz: hizOku(), jeton: 0, ui: null, odak: null, tab: 0 };
   var syn = function () { return g.speechSynthesis || null; };
   var sesler = function () { try { return syn() ? syn().getVoices() : []; } catch (e) { return []; } };
 
@@ -113,27 +115,43 @@
 
   /* Sayfa gizlenince/kapanınca konuşma durur (Android arka planda zaten keser; durum "oynuyor" kalmasın). */
   try { g.addEventListener("pagehide", function () { dur(false); }); g.document.addEventListener("visibilitychange", function () { if (g.document.hidden && D.durum === "oyn") dur(false); }); } catch (e) {}
+  /* draw() paneli baştan kurar; odaktaki düğme (data-k) yeni panelde yeniden odaklanır. */
+  function odakDondur(kok) {
+    var k = D.odak; if (!k) return;
+    g.setTimeout(function () {
+      var a = g.document.activeElement; if (!kok.isConnected || (a && a !== g.document.body)) return;
+      var e = kok.querySelector && kok.querySelector('[data-k="' + k + '"]'); if (e && e.focus) e.focus();
+    }, 0);
+  }
+  function listeOk(ev) {
+    var n = D.parts.length, d = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[ev.key], k = D.tab;
+    if (d) k += d; else if (ev.key === "Home") k = 0; else if (ev.key === "End") k = n - 1; else return;
+    ev.preventDefault(); k = Math.min(n - 1, Math.max(0, k)); tabYap(k);
+    var b = D.ui.liste.children[k].children[0]; if (b && b.focus) b.focus();
+  }
+  function tabYap(k) { D.tab = k; Array.prototype.forEach.call(D.ui.liste.children, function (li, j) { li.children[0].setAttribute("tabindex", j === k ? "0" : "-1"); }); }
   g.lrDinle = function (l) {
     var h = g.h, s = syn();
     var parts = parcala(l);
     if (!parts.length) return null;
-    if (D.id !== l.id) { iptal(); D.id = l.id; D.i = 0; D.durum = "dur"; }
+    if (D.id !== l.id) { iptal(); D.id = l.id; D.i = 0; D.durum = "dur"; D.odak = null; }
     D.parts = parts;
     var ui = D.ui = {};
-    ui.oynat = h("button", { type: "button", class: "btn ses-b", onclick: function () {
+    ui.oynat = h("button", { type: "button", class: "btn ses-b", "data-k": "oynat", onclick: function () {
       if (D.durum === "oyn") dur(false); else oku(D.durum === "bitti" ? 0 : D.i);
     } });
-    ui.durdur = h("button", { type: "button", class: "btn ghost ses-b", "aria-label": "Durdur ve başa sar", onclick: function () { dur(true); } }, "Durdur");
-    var geri = h("button", { type: "button", class: "btn ghost ses-b", "aria-label": "Önceki cümle", onclick: function () { oku(Math.max(0, D.i - 1)); } }, "‹");
-    var ileri = h("button", { type: "button", class: "btn ghost ses-b", "aria-label": "Sonraki cümle", onclick: function () { oku(Math.min(parts.length - 1, D.i + 1)); } }, "›");
+    ui.durdur = h("button", { type: "button", class: "btn ghost ses-b", "data-k": "durdur", "aria-label": "Durdur ve başa sar", onclick: function () { dur(true); } }, "Durdur");
+    var geri = h("button", { type: "button", class: "btn ghost ses-b", "data-k": "geri", "aria-label": "Önceki cümle", onclick: function () { oku(Math.max(0, D.i - 1)); } }, "‹");
+    var ileri = h("button", { type: "button", class: "btn ghost ses-b", "data-k": "ileri", "aria-label": "Sonraki cümle", onclick: function () { oku(Math.min(parts.length - 1, D.i + 1)); } }, "›");
     ui.say = h("span", { class: "small mute", "aria-live": "off" });
     ui.hizEt = h("label", { class: "small", for: "ses-hiz" });
-    ui.hiz = h("input", { type: "range", id: "ses-hiz", min: String(HIZ_MIN), max: String(HIZ_MAX), step: "0.05", value: String(D.hiz), "aria-label": "Okuma hızı", "aria-valuetext": D.hiz + " kat",
-      oninput: function () { D.hiz = hizSinir(this.value); this.setAttribute("aria-valuetext", D.hiz + " kat"); boya(); },
+    ui.hiz = h("input", { type: "range", id: "ses-hiz", "data-k": "hiz", min: String(HIZ_MIN), max: String(HIZ_MAX), step: "0.05", value: String(D.hiz), "aria-label": "Okuma hızı", "aria-valuetext": D.hiz + " kat",
+      oninput: function () { D.hiz = hizSinir(this.value); try { g.localStorage.setItem(HIZ_ANAHTAR, String(D.hiz)); } catch (e) {} this.setAttribute("aria-valuetext", D.hiz + " kat"); boya(); },
       onchange: function () { if (D.durum === "oyn") oku(D.i); } });
     ui.bar = h("i", { style: "width:0%" });
-    ui.liste = h("ol", { class: "ses-ls" }, parts.map(function (p, k) {
-      return h("li", { lang: p.dil.slice(0, 2) }, h("button", { type: "button", class: "ses-c", onclick: function () { oku(k); } }, p.kod ? "[kod bloğu]" : p.t));
+    D.tab = Math.min(D.tab, parts.length - 1);
+    ui.liste = h("ol", { class: "ses-ls", onkeydown: listeOk }, parts.map(function (p, k) {
+      return h("li", { lang: p.dil.slice(0, 2) }, h("button", { type: "button", class: "ses-c", "data-k": "c" + k, tabindex: k === D.tab ? "0" : "-1", onfocus: function () { D.tab = k; }, onclick: function () { oku(k); } }, p.kod ? "[kod bloğu]" : p.t));
     }));
     ui.det = h("details", { class: "ses-det", open: D.acik ? true : null, ontoggle: function () { D.acik = this.open; } }, h("summary", null, "Metni göster"), ui.liste);
     var nx = sonraki(l);
@@ -151,7 +169,8 @@
       h("div", { class: "ses-satir" }, ui.hizEt, ui.hiz),
       h("div", { class: "lr-bar" }, ui.bar), ui.say, uyari, trUyari, ui.det, ui.bitti);
     if (uyari) { ui.oynat.disabled = true; ui.hiz.disabled = true; }
-    medya(l); boya();
+    ui.kok.addEventListener && ui.kok.addEventListener("focusin", function (ev) { var k = ev.target && ev.target.getAttribute && ev.target.getAttribute("data-k"); if (k) D.odak = k; });
+    medya(l); boya(); odakDondur(ui.kok);
     return ui.kok;
   };
 })(typeof window !== "undefined" ? window : globalThis);
