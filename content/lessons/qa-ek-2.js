@@ -1,4 +1,4 @@
-/* QA yolu · ISTQB CTFL v4.0.1 kapsam turu: konu başına ders eki, ikinci parça (anahtar = TMAP.qa dizini, 18–20; ders no = anahtar + 1).
+/* QA yolu · ISTQB CTFL v4.0.1 kapsam turu: konu başına ders eki, ikinci parça (anahtar = TMAP.qa dizini, 18–21; ders no = anahtar + 1).
    Kapsam: işbirliğine dayalı test (kullanıcı hikâyesi, kabul ölçütü, ATDD), test yönetimi ayrıntısı (giriş/çıkış ölçütü, tahmin, önceliklendirme, piramit, çeyrekler),
    roller, bağımsızlık, bakım testi ve konfigürasyon yönetimi.
    Alanlar: benzetme + sınırı, rehberli alıştırma, bağımsız görev, yaygın hatalar, geçme ölçütü + kritik yanlış anlama, dış kaynak (son doğrulama tarihiyle), telafi/sonraki adım.
@@ -91,6 +91,34 @@
       CTFL
     ],
     telafi: "Takıldıysan önce 'neyi değiştirdik?' diye sor ve etkilenen alanı bir cümleyle yaz. Sonra yeniden koşulacak testleri ve sürüm kaydını sırayla ekle.",
-    sonraki: "Yolun sonu: QA yolunu bitirdin. Şimdi soru bankasıyla tekrar et ve proje atölyesinde kendi test planı ile hata raporu örneğini hazırla."
+    sonraki: "Sıradaki konu: Kök neden analizi ve retrospektif. Bir kusurun neden doğduğunu ve bir sonraki iterasyonda nasıl önleneceğini orada çalışacaksın."
+  };
+
+  E[21] = {
+    analoji: { a: "Sızdıran musluğun altına kova koymak belirtiyi geçici durdurur; kök neden contanın yıpranmasıdır ve onu değiştirmeden sorun döner. Haftalık ev toplantısında 'bu hafta ne iyi gitti, neyi değiştireceğiz?' diye konuşup birine 'conta' görevi vermek retrospektiftir.", sinir: "Musluğun tek bir fiziksel nedeni vardır; yazılım kusurunda birden çok neden iç içe olabilir ve '5 Neden' tek zincir gibi görünse de dal verebilir. Ayrıca retrospektif suçlu aramaz, süreci düzeltir." },
+    rehberli: [
+      "Bir kusur seç: 'Sepette kargo ücreti 0 TL görünüyor.' Beş kez art arda 'neden?' sor ve her yanıtı kanıta (kural, hikâye, kod, veri) bağla. Sonuncu yanıt bir kişi değil bir süreç ya da gereksinim olmalı.",
+      "Kök nedene karşı iki önlem yaz: biri bu kusuru önleyen (ör. kabul ölçütünde hangi toplamın kullanılacağını yazmak), biri erken yakalayan (ör. eşik değerinde sınır değer testi).",
+      "Bir iterasyon için üç sütunlu retrospektif tablosu çiz: İyi giden, Geliştirilecek, Eylem. Eylem maddelerine sahip ve tarih ekle."
+    ],
+    bagimsiz: "Kâğıt üzerinde (simülasyon) bir kusur raporunu al, '5 Neden' zincirini yaz, kök nedeni belirle ve iki eylem maddesi çıkar. Hata ayıklama görevi: şu zinciri düzelt: 'Neden 1: Test başarısız oldu. Neden 2: Ali kodu yanlış yazdı. Kök neden: Ali dikkatsiz.' Hangi adımlarda kanıt eksik, nerede kişi kök neden yapılmış, bulup süreç temelli bir köke çevir.",
+    hatalar: [
+      ["İlk nedende durmak", "İlk yanıt çoğu zaman belirtinin yakınıdır. Kanıtla en az üç kez daha 'neden?' sor ve süreç ya da gereksinime ulaş."],
+      ["Kişiyi kök neden yapmak ('dikkatsizdi')", "İnsan hatası bir kök neden değildir; hatayı mümkün kılan süreç boşluğunu ara (belirsiz hikâye, eksik inceleme, test eksikliği)."],
+      ["Eylem maddesini sahipsiz ve tarihsiz bırakmak", "Her eylemin bir sahibi, bir tarihi ve bir ölçüsü olsun; yoksa sonraki retrospektifte aynı konu döner."]
+    ],
+    gecme: { olcut: "Mini sınavda %80 ve verilen bir kusur için kanıtlı bir 'neden' zinciri, süreç temelli kök neden ve sahibi ile tarihi olan iki eylem maddesini yazabilmek.", kritik: [
+      "Kök nedenin bir kişi olduğunu sanmak",
+      "Retrospektifin sorunu yalnızca tartışıp eylem maddesi çıkarmadan bitirilebileceğini sanmak"
+    ] },
+    kaynaklar: [
+      K("Atlassian: 5 Whys (5 Neden) oyun planı", "https://www.atlassian.com/team-playbook/plays/5-whys", "Neden zincirini adım adım nasıl yürüteceğin."),
+      K("Atlassian: Kök neden analizi", "https://www.atlassian.com/work-management/project-management/root-cause-analysis", "Belirti ile kök neden farkı ve yöntemler."),
+      K("Atlassian: Retrospektifler", "https://www.atlassian.com/agile/scrum/retrospectives", "Retrospektif akışı ve eylem maddeleri."),
+      SOZLUK,
+      CTFL
+    ],
+    telafi: "Takıldıysan önce kusuru tek cümleyle yaz ve 'bu neden oldu?' sorusunu sadece bir kez yanıtla. Sonra yanıtın yanına kanıtı yaz; kanıt yoksa o adımı 'varsayım' diye işaretle.",
+    sonraki: "Yolun sonu: QA yolunu bitirdin. Şimdi soru bankasıyla tekrar et ve proje atölyesinde kendi test planı, hata raporu ve bir kusur için kök neden notu hazırla."
   };
 })();
