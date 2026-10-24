@@ -93,5 +93,5 @@
 .ses-ls{margin:0;padding-left:0;list-style:none;max-height:260px;overflow:auto}
 .ses-c{all:unset;display:block;box-sizing:border-box;width:100%;min-height:44px;padding:8px 6px;cursor:pointer;border-top:1px solid var(--line)}
 .ses-c:focus-visible{outline:2px solid currentColor;outline-offset:-2px}
-.ses-ls li.on .ses-c{font-weight:700;background:rgba(255,208,0,.28)}
+.ses-ls li.on .ses-c{font-weight:700;color:var(--ink);background:rgba(255,208,0,.28)}
 .ses-bitti{margin-top:8px;display:grid;gap:8px}

@@ -72,4 +72,36 @@ const bitti = kok.children[kok.children.length - 1];
 ok(bitti.hidden === false && bitti.children.some(c => c.tag === 'button' && c.children[0].startsWith('Sonraki ders')), 'ders bitince "sonraki ders" önerisi çıkar');
 bitti.children.find(c => c.tag === 'button').a.onclick();
 ok(ctx.acildi && ctx.acildi.id === 'b', 'öneri sonraki dersi açar');
+
+/* ---- faz-k8: kalıcı hız, roving tabindex, odak dönüşü, koyu tema kontrastı ---- */
+const depo = {}; const ses2 = {}; const ctx2 = Object.assign({}, ctx, { window: ses2, localStorage: { getItem: k => (k in depo ? depo[k] : null), setItem: (k, v) => { depo[k] = v; } } });
+Object.assign(ses2, ctx2); ses2.h = h; ses2.window = ses2; ctx2.globalThis = ses2;
+vm.runInNewContext(kaynak, ctx2);
+const l2 = { id: 'z', track: 'x', title: 'T', blocks: [{ t: 'p', text: 'Bir. İki.' }] };
+const k2 = ctx2.window.lrDinle(l2);
+const hiz = (function g(e) { return e.tag === 'input' ? e : e.children.map(c => c.children && g(c)).filter(Boolean)[0]; })(k2);
+hiz.a.oninput.call({ value: '1.3', setAttribute() {} });
+ok(depo.ya_ses_hiz === '1.3', 'hız localStorage içine yazılır');
+ses2.lrDinle = undefined; vm.runInNewContext(kaynak, ctx2);
+const k3 = ctx2.window.lrDinle(l2);
+ok((function g(e) { return e.tag === 'input' ? e : e.children.map(c => c.children && g(c)).filter(Boolean)[0]; })(k3).a.value === '1.3', 'hız yeniden açılışta geri gelir');
+ctx2.localStorage.getItem = () => { throw new Error('kapalı'); }; ctx2.localStorage.setItem = () => { throw new Error('kapalı'); };
+ok((() => { try { hiz.a.oninput.call({ value: '1', setAttribute() {} }); vm.runInNewContext(kaynak, ctx2); return true; } catch (e) { return false; } })(), 'localStorage kapalıyken hata atmaz');
+
+const btns = []; (function g(e) { if (e.a && /ses-c/.test(e.a.class || '')) btns.push(e); e.children.forEach(c => c.children && g(c)); })(k3);
+ok(btns.length === 3 && btns.filter(b => b.a.tabindex === '0').length === 1, 'cümle listesinde tek Tab durağı');
+const ol = (function g(e) { return /ses-ls/.test(e.a.class || '') ? e : e.children.map(c => c.children && g(c)).filter(Boolean)[0]; })(k3);
+let odak = null; btns.forEach((b, i) => { b.focus = () => { odak = i; }; });
+const tus = key => { let eng = false; ol.a.onkeydown({ key, preventDefault() { eng = true; } }); return eng; };
+tus('ArrowDown'); ok(odak === 1 && btns[1].a.tabindex === '0' && btns[0].a.tabindex === '-1', 'ArrowDown: sonraki cümleye geçer, tabindex taşınır');
+tus('End'); tus('ArrowDown'); ok(odak === 2, 'End sona gider, taşmaz');
+tus('Home'); ok(odak === 0 && !tus('Tab'), 'Home başa gider, diğer tuşa karışmaz');
+
+const css = fs.readFileSync(path.join(KOK, 'css/ders-odasi.css'), 'utf8'), idx = fs.readFileSync(path.join(KOK, 'index.html'), 'utf8');
+const hex = x => [1, 3, 5].map(i => parseInt(x.slice(i, i + 2), 16)), lum = c => { const f = x => (x /= 255) <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); return 0.2126 * f(c[0]) + 0.7152 * f(c[1]) + 0.0722 * f(c[2]); };
+const koyu = idx.match(/:root\[data-theme="dark"\]\{[^}]*\}/)[0], jeton = n => hex(koyu.match(new RegExp('--' + n + ':(#[0-9a-f]{6})', 'i'))[1]);
+const vur = css.match(/\.ses-ls li\.on \.ses-c\{[^}]*rgba\((\d+),(\d+),(\d+),([\d.]+)\)/), al = +vur[4], pan = jeton('panel'), ink = jeton('ink');
+const zemin = [0, 1, 2].map(i => Math.round(+vur[i + 1] * al + pan[i] * (1 - al))), La = lum(ink), Lb = lum(zemin);
+const oran = (Math.max(La, Lb) + 0.05) / (Math.min(La, Lb) + 0.05);
+ok(oran >= 4.5 && /li\.on \.ses-c\{[^}]*color:var\(--ink\)/.test(css), 'koyu tema vurgu kontrastı ' + oran.toFixed(2) + ':1 (en az 4.5)');
 if (fails) { console.log(fails + ' HATA / ' + n); process.exit(1); } else console.log('\nTAMAM ' + n);
