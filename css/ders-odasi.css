@@ -86,3 +86,12 @@
 .izle-satir{white-space:pre-wrap;overflow-wrap:anywhere;padding:4px 6px;border-left:3px solid var(--gold,#d99a00);background:#f5b50022;margin:4px 0}
 .izle-tablo{overflow:auto;max-width:100%;margin:6px 0}.izle-tablo table{border-collapse:collapse}.izle-tablo th,.izle-tablo td{padding:2px 6px;text-align:left;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
 .izle-tablo tr.izle-yeni td{font-weight:700}.izle-cikti{white-space:pre-wrap;overflow-wrap:anywhere;margin:4px 0}.izle-satir-kap{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:6px 0}
+.ses-satir{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:6px 0}
+.ses-b{min-height:44px;min-width:44px}
+.ses input[type=range]{flex:1;min-width:140px;min-height:44px}
+.ses-det summary{min-height:44px;padding:10px 0;box-sizing:border-box;cursor:pointer}
+.ses-ls{margin:0;padding-left:0;list-style:none;max-height:260px;overflow:auto}
+.ses-c{all:unset;display:block;box-sizing:border-box;width:100%;min-height:44px;padding:8px 6px;cursor:pointer;border-top:1px solid var(--line)}
+.ses-c:focus-visible{outline:2px solid currentColor;outline-offset:-2px}
+.ses-ls li.on .ses-c{font-weight:700;background:rgba(255,208,0,.28)}
+.ses-bitti{margin-top:8px;display:grid;gap:8px}
