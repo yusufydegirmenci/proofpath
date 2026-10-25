@@ -3,6 +3,7 @@
    Kişisel veri toplanmaz: bağlam yalnız sekme, ders/proje kimliği, adım ve (hazır ders/proje için) başlıktır. Saf mantık, DOM yok. ---- */
 (function (g) {
   var O = g.PP.ogr;
+  var MARKA = g.PP_MARKA || require("../../marka.js");   /* Node testleri marka.js'i ayrıca yüklemez */
   var TURLER = [["hata", "Hata"], ["istek", "İstek"], ["sikayet", "Şikayet"], ["oneri", "Öneri"]];
   var ONEMLER = [["", "Belirtilmedi"], ["dusuk", "Düşük"], ["orta", "Orta"], ["yuksek", "Yüksek"]];
   var SINIR = { baslik: 80, aciklama: 2000, kuyruk: 100, taslak: 20 };
@@ -133,7 +134,7 @@
     }, function (e) { delete gidiyor[kid]; return { ok: false, neden: "hata", mesaj: hataMesaji(e) }; });
   }
 
-  function markdownHepsi(l) { return "# Proofpath geri bildirimleri\n\n" + l.map(markdown).join("\n"); }
+  function markdownHepsi(l) { return "# " + MARKA.ad + " geri bildirimleri\n\n" + l.map(markdown).join("\n"); }
   function jsonHepsi(l) { return JSON.stringify({ surum: 1, kayitlar: l }, null, 2); }
 
   O.gb = { TURLER: TURLER, ONEMLER: ONEMLER, SINIR: SINIR, SABLON: SABLON, baglam: baglam, anahtar: anahtar, baglamMetni: baglamMetni, onemEtiket: onemEtiket, kontrol: kontrol, liste: liste, kaydet: kaydet, sil: sil,

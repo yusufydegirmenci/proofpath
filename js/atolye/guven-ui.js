@@ -31,7 +31,7 @@ function senkronRozet() {
 
 function gvnDisaAktar() {
   var uid = null; try { uid = S.me; } catch (e) { uid = null; }
-  var metin = PP.guven.disaAktar(null, uid), ad = "proofpath-yedek-" + new Date().toISOString().slice(0, 10) + ".json";
+  var metin = PP.guven.disaAktar(null, uid), ad = PP_MARKA.dosya + "-yedek-" + new Date().toISOString().slice(0, 10) + ".json";
   S.gvn.yedekAlindi = true;
   if (S.dl && S.dl.save) { Promise.resolve(S.dl.save({ filename: ad, data: metin })).catch(function () {}); }
   else {

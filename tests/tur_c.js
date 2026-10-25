@@ -31,7 +31,7 @@ const GOALS = { ccna: 'CCNA', net: 'Network', qa: 'Test Uzmanı', bk: 'Backend',
     if (/yusuf|degirmenci|yyd251|@gmail\.com/i.test(s)) sizan.push(f);
   });
   eq(sizan, [], 'Y3: yüklenen kodda/içerikte sahip adı, kullanıcı adı, e-posta yok (izinli: kurucu dalı)');
-  ok(/proofpath-kimlik\.png/.test(fs.readFileSync(path.join(kok, 'js/arayuz/cila-kimlik.js'), 'utf8')), 'Y3: kimlik dosyası adı proofpath-kimlik.png');
+  ok(/PP_MARKA\.dosya\+"-kimlik\.png"/.test(fs.readFileSync(path.join(kok, 'js/arayuz/cila-kimlik.js'), 'utf8')), 'Y3: kimlik dosyası adı <marka>-kimlik.png');
 
   const b = await chromium.launch();
   const yeni = async (w, ek, onsoz) => {

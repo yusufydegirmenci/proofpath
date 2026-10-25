@@ -30,7 +30,7 @@ function rsApplyRemote(r){
 function rsRun(scope){
   var R=S.rs;R.busy=true;R.msg="Yedek hazırlanıyor…";draw();
   var now=new Date().toISOString(),bk={uyari:"Bu dosya geri bildirim metinlerini de içerir; paylaşmadan önce kontrol et.",at:now,scope:scope,progress:S.progress,days:S.days,attempts:S.attempts.slice(0,400),mistakes:S.mistakes,badges:S.badges,lc:lcLoad(),gs:GS,lv:lvLoad(),fk:fkLoad(),nw:nwLoad(),ogr:(function(){try{return PP.ogr.depo.oku()}catch(e){return null}})()};
-  try{if(S.dl)S.dl.save({filename:"proofpath-yedek-"+today()+".json",data:new Blob([JSON.stringify(bk)],{type:"application/json"})}).catch(function(){})}catch(e){}
+  try{if(S.dl)S.dl.save({filename:PP_MARKA.dosya+"-yedek-"+today()+".json",data:new Blob([JSON.stringify(bk)],{type:"application/json"})}).catch(function(){})}catch(e){}
   var jobs=[];
   if(S.db&&S.canWrite){
     if(scope==="all"){
