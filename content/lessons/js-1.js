@@ -91,15 +91,15 @@
     surum: "2026-10-v1",
     quiz: [
       {
-        id: "9b602bb7",
+        id: "a356c359",
         q: "Hangisi geçerli bir değişken adıdır?",
-        options: ["2adet", "toplam_tutar", "toplam-tutar", "let"],
+        options: ["5kalem","_kalem2","kalem adi","const"],
         obj: "h1"
       },
       {
-        id: "821775ee",
-        q: "const sayi = 5; satırından sonra sayi = 7; yazıldı. Ne olur?",
-        options: ["sayi 7 olur", "sayi 12 olur", "ReferenceError verir", "TypeError verir"],
+        id: "9ffb8a49",
+        q: "const toplam = 0; satırından sonra toplam += 5; yazıldı. Ne olur?",
+        options: ["toplam 5 olur","toplam 0 kalır, hata yok","SyntaxError verir","TypeError verir"],
         obj: "h1"
       },
       {
@@ -109,9 +109,9 @@
         obj: "h2"
       },
       {
-        id: "9f022185",
-        q: "typeof \"42\" ifadesi ne döndürür?",
-        options: ["\"string\"", "\"number\"", "\"bigint\"", "\"boolean\""],
+        id: "df5db930",
+        q: "typeof \"true\" ifadesi ne döndürür? (tırnaklı yazılmış)",
+        options: ["\"string\"","\"boolean\"","\"number\"","\"object\""],
         obj: "h2"
       },
       {
@@ -250,9 +250,9 @@
         obj: "h1"
       },
       {
-        id: "5fce6d0a",
-        q: "const t = 9; console.log(\"T: ${t}\"); (çift tırnaklı) ne yazar?",
-        options: ["T: 9", "T: ${t}", "T: t", "Hata verir"],
+        id: "554f21da",
+        q: "const fiyat = 4; console.log('Fiyat: ${fiyat * 2} TL'); (tek tırnaklı) ne yazar?",
+        options: ["Fiyat: 8 TL","Fiyat: ${fiyat * 2} TL","Fiyat: fiyat * 2 TL","Fiyat: undefined * 2 TL"],
         obj: "h1"
       },
       {
@@ -286,9 +286,9 @@
         obj: "h4"
       },
       {
-        id: "3028fcae",
-        q: "'Ali\\'nin'.length ifadesi kaçtır? (kaçışlı tek tırnak içeren metin)",
-        options: ["8", "7", "6", "Hata verir"],
+        id: "027f061d",
+        q: "\"x\\\\y\\nz\".length ifadesi kaçtır? (kaynak kodda ters bölü iki kez yazılmış, ardından \\n var)",
+        options: ["5","4","6","Hata verir"],
         obj: "h4"
       }
     ],
@@ -420,15 +420,15 @@
         obj: "h2"
       },
       {
-        id: "f7eb2e86",
-        q: "7 == \"7\" ve 7 === \"7\" ifadeleri sırasıyla ne verir?",
-        options: ["true ve true", "false ve false", "false ve true", "true ve false"],
+        id: "0dcaa50d",
+        q: "9 == \"9.0\" ve 9 === \"9.0\" ifadeleri sırasıyla ne verir?",
+        options: ["true ve true","false ve false","false ve true","true ve false"],
         obj: "h3"
       },
       {
-        id: "6da01e30",
-        q: "\"\" == 0 ifadesi (boş metin ve sıfır) ne verir?",
-        options: ["true", "false", "undefined", "Hata verir"],
+        id: "10495227",
+        q: "\"0\" == false ifadesi (metin sıfır ve false) ne verir?",
+        options: ["true","false","undefined","Hata verir"],
         obj: "h3"
       },
       {
@@ -438,9 +438,9 @@
         obj: "h4"
       },
       {
-        id: "f14e5e33",
-        q: "0.1 * 3 ifadesinin sonucu nedir?",
-        options: ["0.3", "0.30000000000000004", "0.31", "3"],
+        id: "bdf4862f",
+        q: "0.1 + 0.7 ifadesinin sonucu nedir?",
+        options: ["0.8","0.7999999999999999","0.8000000000000001","0.71"],
         obj: "h4"
       }
     ],
@@ -566,9 +566,9 @@
         obj: "h2"
       },
       {
-        id: "2596890f",
-        q: "x = 3 iken if (x > 5) console.log(\"a\"); console.log(\"b\"); (süslü parantezsiz, iki satır) ne yazar?",
-        options: ["Yalnız b", "a ve b", "Yalnız a", "Hiçbir şey yazmaz"],
+        id: "bc33689d",
+        q: "k = 10 iken if (k < 5) { console.log(\"p\"); console.log(\"q\"); } console.log(\"r\"); ne yazar?",
+        options: ["Yalnız r","q ve r","p, q ve r","Hiçbir şey yazmaz"],
         obj: "h2"
       },
       {
@@ -578,21 +578,21 @@
         obj: "h3"
       },
       {
-        id: "d9d35f04",
-        q: "if ([]) { console.log(\"A\"); } else { console.log(\"B\"); } ne yazar?",
-        options: ["B", "Hata verir", "A", "Hiçbir şey"],
+        id: "390c58e5",
+        q: "if (-1) { console.log(\"A\"); } else { console.log(\"B\"); } ne yazar?",
+        options: ["B","Hata verir","A","Hiçbir şey"],
         obj: "h3"
       },
       {
-        id: "411d7f78",
-        q: "yas = 30 iken if (yas >= 13) { r = \"genç\"; } else if (yas >= 18) { r = \"yetişkin\"; } else { r = \"çocuk\"; } sonunda r nedir?",
-        options: ["genç", "yetişkin", "çocuk", "Hata verir"],
+        id: "37104e23",
+        q: "s = 120 iken if (s > 10) { e = \"az\"; } else if (s > 100) { e = \"çok\"; } else { e = \"yok\"; } sonunda e nedir?",
+        options: ["az","çok","yok","Hata verir"],
         obj: "h4"
       },
       {
-        id: "0a63dbab",
-        q: "let n = 2; if (n = 7) { ... } satırında koşul ne yapar?",
-        options: ["n 7'ye eşit mi diye bakar", "SyntaxError verir", "n'ye 7 atar ve koşul doğru sayılır", "n değişmez, koşul yanlıştır"],
+        id: "441951d3",
+        q: "let s = 4; if (s = 0) { ... } satırında koşul ne yapar?",
+        options: ["s 0'a eşit mi diye bakar, 4 olduğu için yanlıştır","SyntaxError verir","s'ye 0 atar ve koşul yanlış sayılır","s'ye 0 atar ve koşul doğru sayılır"],
         obj: "h4"
       }
     ],
