@@ -15,7 +15,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
 (async () => {
   // ---- Bölüm 1: statik ----
   const seed = oku('supabase/seed/20261025_lig_soru_tohumu.sql');
-  ok(seed === T.uret(), 'tohum QB ile güncel (node tools/lig-anahtar.js)');
+  ok(seed.replace(/\r\n/g, '\n') === T.uret(), 'tohum QB ile güncel (node tools/lig-anahtar.js)');
   const QB = T.qbKur(), beklenen = QB.filter((q) => q.t === 'ccna' || q.t === 'eng').length;
   eq([(seed.match(/^  \(\d+, '(ccna|eng)', [123], [0-5]\)/gm) || []).length, beklenen > 100], [beklenen, true], 'tohum: her ccna/eng sorusu için tam bir satır (' + beklenen + ')');
   // elle seçilmiş bir soru: QB'deki gerçek zorluk/doğru şık tohumda aynı
