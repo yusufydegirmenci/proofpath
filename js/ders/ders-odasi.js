@@ -231,6 +231,7 @@ function renderLessonRoom(){
       var am=lrModes(l);if(am)body.push(am);
       if(T)body.push(h("div",{class:"panel"},renderAnim(T.m)));
       var nsc=l&&/^(eng|ing)/i.test(String(l.track||l.tr||""))?null:nwFor(l);if(nsc)body.push(h("div",{class:"panel"},h("div",{class:"label"},"Hareketli anlatım"),h("h3",null,nsc.t),nwPlayer(nsc)));
+      var dgm=window.PP_DIYAGRAM&&PP_DIYAGRAM.ders(l);if(dgm)body.push(dgm);
       var blocks=(Array.isArray(l.blocks)?l.blocks:[]).map(lblock).filter(Boolean);
       body.push(h("div",{class:"panel lr-read"},h("div",{class:"lsn"},blocks),l.homework?h("div",{class:"lbox warn"},h("div",{class:"label"},"Bugünün görevi"),h("p",null,l.homework)):null));
       var ozt=lrOzet(l);if(ozt)body.push(ozt);
