@@ -54,7 +54,7 @@ function rsRun(scope){
 }
 S.rs=S.rs||{confirm:null,busy:false,msg:""};
 function renderReset(){
-  var R=S.rs,tracks=LV_TR.filter(function(t){return t[0]!=="py"});
+  var R=S.rs,tracks=LV_TR.filter(function(t){return t[0]!=="py"&&t[0]!=="js"});
   var lvRows=tracks.map(function(t){var v=lvOf(t[0]);return h("div",{class:"lv-r"},h("div",null,h("b",null,t[1]),h("small",null,v?"Kademe: "+LV_NAMES[v.l]+" · sınav "+v.s+"/"+v.m+" · "+v.d:"Seviye sınavı yapılmadı")),
     h("button",{class:"btn ghost",type:"button",onclick:function(){peStart(t[0])}},v?"Yeniden gir":"Sınava gir"))});
   var box=[h("div",{class:"panel"},h("div",{class:"label"},"Kademe"),h("h2",null,"Seviye sınavı"),h("div",{class:"small mute"},"Bir alanda 10 soruluk sınava gir. Sonuç kademeni belirler: Çırak, Kalfa ya da Usta. Oyundaki soru zorluğu da buna göre başlar."),lvRows)];

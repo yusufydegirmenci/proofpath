@@ -63,7 +63,7 @@ async function dersOdasi(p) {
     });
     ok(r.var && !r.hata, 'uygulama: grafik içerikten kuruldu' + (r.hata ? ' (' + r.hata + ')' : ''));
     eq([r.ok, r.hataSay], [true, 0], 'uygulama: grafik tutarlı (döngü/bilinmeyen önkoşul/kopya proje yok)');
-    eq(r.yollar, ['ccna', 'net', 'eng', 'sec', 'bk', 'dev', 'qa', 'py'], 'uygulama: 8 öğrenme yolu (py = Python, faz-k10)');
+    eq(r.yollar, ['ccna', 'net', 'eng', 'sec', 'bk', 'dev', 'qa', 'py', 'js'], 'uygulama: 9 öğrenme yolu (py = Python faz-k10, js = JavaScript faz-k12)');
     eq(r.ders, r.beklenen, 'uygulama: ders sayısı = STARTER ders sayısı (' + r.beklenen + ')');
     const beklKapi = await p.evaluate(() => PATHS.reduce((a, pa) => a + [1, 2, 3].filter(lv => pa.projects.some(j => j.lv === lv)).length, 0));
     eq(r.kapilar.length, beklKapi, 'uygulama: her proje yolu × kademe için bir Altın Vuruş kapısı (' + beklKapi + ')');
