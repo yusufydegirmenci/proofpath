@@ -35,6 +35,6 @@ module.exports = { uret, qbKur, HEDEF };
 if (require.main === module) {
   const s = uret();
   if (process.argv.includes('--yaz')) { fs.writeFileSync(HEDEF, s); console.log('yazıldı: ' + HEDEF + ' (' + (s.match(/^  \(/gm) || []).length + ' soru)'); }
-  else if (!fs.existsSync(HEDEF) || fs.readFileSync(HEDEF, 'utf8') !== s) { console.error('tohum güncel değil: node tools/lig-anahtar.js --yaz'); process.exit(1); }
+  else if (!fs.existsSync(HEDEF) || fs.readFileSync(HEDEF, 'utf8').replace(/\r\n/g, '\n') !== s) { console.error('tohum güncel değil: node tools/lig-anahtar.js --yaz'); process.exit(1); }
   else console.log('tohum güncel');
 }
