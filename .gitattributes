@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# SRI hash bayt-bayt tutmali: CRLF cevirisi yapilmasin
+vendor/* -text
