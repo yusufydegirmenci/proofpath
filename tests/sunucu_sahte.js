@@ -37,6 +37,25 @@ const SAHTE_INIT = () => {
       }
       return { data: { puan, maks, oran: Math.round((puan / maks) * 10000) / 10000, gecti, dogru_sayisi: dogruN, soru_sayisi: S.length, esik: 0.8, surum: '2026-10-v1', anahtar }, error: null };
     },
+    // Lig (Faz 13): ogr_lig_gonder'in JS yansıması. Doğru şık = QB'deki gerçek şık (durum.ligZorlaYanlis: sunucu hep yanlış der → puanı istemcinin değil sunucunun belirlediğini sınar). Puan kuralı SQL ile aynı (10/15/20, tam doğruya +5).
+    ligGonder: async (gun, sira, secenek, sorular, tekrar, seviye) => {
+      durum.ligCagrilari = durum.ligCagrilari || [];
+      durum.ligCagrilari.push({ gun, sira, secenek, sorular: sorular && sorular.slice(), tekrar, seviye });
+      if (durum.cevrimdisi) throw new TypeError('Failed to fetch');
+      if (durum.hata) return { data: null, error: durum.hata };
+      const L = durum.lig = durum.lig || {};
+      let g = L[gun];
+      if (!g || !g.qs) {
+        if (!Array.isArray(sorular) || !sorular.length || sorular.length > 10 || new Set(sorular).size !== sorular.length) return { data: null, error: { code: '22023', message: 'soru listesi gecersiz' } };
+        g = L[gun] = { ok: 0, tot: 0, w: 0, wok: 0, pts: 0, a: [], v: 2, qs: sorular.slice(), rv: (tekrar || []).filter((x) => sorular.includes(x)), n: sorular.length, lv: seviye || 0 };
+      }
+      if (!(sira >= 0 && sira < g.n) || g.a[sira] != null) return { data: null, error: { code: '23505', message: 'bu soru zaten cevaplandi' } };
+      const soru = g.qs[sira], dogru = durum.ligZorlaYanlis ? -1 : window.QB[soru].a, zor = window.QB[soru].d, c = [0, 1, 1.5, 2][zor];
+      g.a[sira] = secenek; g.tot++; g.w += c;
+      if (secenek === dogru) { g.ok++; g.wok += c; g.pts += Math.round(10 * c); }
+      if (g.tot === g.n && g.ok === g.tot) g.pts += 5;
+      return { data: { gun: JSON.parse(JSON.stringify(g)), dogru: secenek === dogru, dogru_secenek: dogru, tarih: gun }, error: null };
+    },
     kapi: async (kapi) => {
       durum.kapiCagrilari.push(kapi);
       if (durum.cevrimdisi) throw new TypeError('Failed to fetch');

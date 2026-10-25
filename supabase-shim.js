@@ -775,11 +775,14 @@
     }
   };
 
-  /* Güvenilir sınav yolu: puanı ve kapı kararını sunucu verir (cevap anahtarı istemciye inmez). Yalnız bu üç işlev; tablolara yazma yok.
+  /* Güvenilir sınav yolu: puanı ve kapı kararını sunucu verir (cevap anahtarı istemciye inmez). Yalnız bu dört işlev (lig puanı: ligGonder); tablolara yazma yok.
      Sonuçlar supabase-js biçimindedir: {data, error}. */
   var ogrApi = {
     gonder: function (hedef, varyant, cevaplar, yardim) {
       return sb.rpc("ogr_deneme_gonder", { p_hedef: hedef, p_varyant: varyant, p_cevaplar: cevaplar, p_yardim: yardim || {} });
+    },
+    ligGonder: function (gun, sira, secenek, sorular, tekrar, seviye) {
+      return sb.rpc("ogr_lig_gonder", { p_gun: gun, p_sira: sira, p_secenek: secenek, p_sorular: sorular, p_tekrar: tekrar || [], p_seviye: seviye || 0 });
     },
     kapi: function (kapi) {
       return sb.rpc("ogr_kapi_degerlendir", { p_kapi: kapi });

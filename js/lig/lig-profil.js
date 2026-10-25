@@ -245,13 +245,14 @@ function resolveNames(){
 }
 function acadSnap(){var s=idStats();return {rank:s.rank,xp:s.xp,streak:s.streak,ccna:s.ccna,eng:s.eng}}
 function saveMe(patch){
-  if(!S.db||!S.me||!S.canWrite)return;
+  if(!S.db||!S.me||!S.canWrite)return Promise.resolve();
   var me=myLeague()||{id:S.me},doc=Object.assign({},me);delete doc.id;
   for(var k in patch)doc[k]=patch[k];
   if(!doc.since)doc.since=today();
   doc.ts=new Date().toISOString();
-  S.db.doc("league/"+S.me).set(doc).catch(function(){});
+  var p=Promise.resolve(S.db.doc("league/"+S.me).set(doc)).catch(function(){});
   S.league=S.league.filter(function(x){return x.id!==S.me}).concat([Object.assign({id:S.me},doc)]);
+  return p;
 }
 function syncLeagueMe(){
   if(!S.db||!S.me||!S.canWrite||S.guest||!S.lgLoaded||!S.ready2)return;
@@ -261,25 +262,47 @@ function syncLeagueMe(){
   saveMe({acad:a});
 }
 function myTier(){var me=myLeague(),s=lgStats(me),d=me&&me.d&&me.d[today()];return (d&&typeof d.lv==="number")?d.lv:s.lv}
+/* Faz 13: günlük lig puanı SUNUCUDA hesaplanır (ogr_lig_gonder). İstemci ham puan yazmaz; league/<uid>.d alanını yalnız sunucu değiştirir
+   (docs_lig_koru tetikleyicisi). Sunucu yoksa / çevrimdışıysa cevap kaydedilmez ve soru açık kalır. */
+var LIG_MSG={yetenek:"Lig puanı sunucuda hesaplanır; bu ortamda sunucu yok, cevap kaydedilmedi.",cevrimdisi:"Çevrimdışısın. Lig puanı sunucuda hesaplanır; bağlantı gelince yeniden dene. Cevap kaydedilmedi.",oturum:"Oturumun doğrulanamadı. Çıkış yapıp yeniden giriş yap; cevap kaydedilmedi.",hazir:"Lig sunucusu henüz hazır değil; cevap kaydedilmedi. Daha sonra yeniden dene.",cakisma:"Bu soru başka bir yerde zaten cevaplanmış. Sayfayı yenile.",hata:"Sunucuya ulaşılamadı; cevap kaydedilmedi. Yeniden dene."};
+function ligNeden(e){
+  var kod=e&&(e.code!=null?e.code:e.status),m=String((e&&(e.message||e.details))||e||"");
+  if(e&&e.neden)return e.neden;
+  if(kod==="28000"||kod===401||/oturum gerekli|JWT/i.test(m))return "oturum";
+  if(kod==="23505"||/zaten cevaplandi|tur bitti/.test(m))return "cakisma";
+  if(kod==="PGRST202"||kod==="42883"||kod===404||/sunucu hazir degil|Could not find the function|does not exist/i.test(m))return "hazir";
+  if((typeof TypeError!=="undefined"&&e instanceof TypeError)||/Failed to fetch|NetworkError|network|timeout/i.test(m))return "cevrimdisi";
+  return "hata";
+}
+function ligSunucu(){
+  if(typeof navigator!=="undefined"&&navigator.onLine===false)return Promise.reject({neden:"cevrimdisi"});
+  var c=null;try{c=window.claude&&typeof window.claude.use==="function"?window.claude.use("ogr"):null}catch(e){c=null}
+  return Promise.resolve(c).then(function(x){if(!x||typeof x.ligGonder!=="function")throw {neden:"yetenek"};return x});
+}
 function answerQ(i,choice){
-  if(!S.db||!S.me||!S.canWrite)return;
-  var me=myLeague()||{id:S.me},tier=myTier(),qs=qsFor(today(),tier),q=qs[i];if(!q)return;
-  var d=Object.assign({},me.d||{}),day=Object.assign({ok:0,tot:0,w:0,wok:0,pts:0,a:[],lv:tier},d[today()]||{});
-  day.a=(day.a||[]).slice();if(day.a[i]!=null)return;
-  if(!day.v&&!day.a.length){day.v=2;day.qs=qs.map(function(x){return x._i});day.rv=qs.filter(function(x){return x._rv}).map(function(x){return x._i});day.n=qs.length}
-  var c=COEF[q.d]||1,n=num(day.n)||5;day.a[i]=choice;day.tot=num(day.tot)+1;day.w=num(day.w)+c;
-  var right=choice===q.a;
-  if(right){day.ok=num(day.ok)+1;day.wok=num(day.wok)+c;day.pts=num(day.pts)+Math.round(10*c)}
-  if(day.tot===n&&day.ok===day.tot)day.pts=num(day.pts)+5;
-  d[today()]=day;
-  var ks=Object.keys(d).sort();ks.slice(0,Math.max(0,ks.length-60)).forEach(function(k){delete d[k]});
-  var miss=(Array.isArray(me.miss)?me.miss:[]).filter(function(m){return m&&typeof m.i==="number"&&m.i!==q._i});
-  if(!right)miss.push({i:q._i,d:today()});
-  var patch={d:d,miss:miss.slice(-20)};if(!S.guest&&!me.acad&&S.pf.share)patch.acad=acadSnap();
-  saveMe(patch);
-  S.lg.front[i]=false;
-  if(day.tot===n&&day.ok===n)burst();
-  draw();
+  if(!S.db||!S.me||!S.canWrite||S.lg.busy)return;
+  var me=myLeague(),tier=myTier(),qs=qsFor(today(),tier),q=qs[i];if(!q)return;
+  var d0=me&&me.d&&me.d[today()];if(d0&&Array.isArray(d0.a)&&d0.a[i]!=null)return;
+  var first=!(d0&&Array.isArray(d0.qs)&&d0.qs.length);
+  S.lg.busy=true;S.lg.err=null;draw();
+  /* belge yoksa önce yarat: sunucu yazımı ile istemcinin ilk yazımı çakışmasın */
+  (me?Promise.resolve():saveMe({since:today()})).then(ligSunucu).then(function(api){
+    return api.ligGonder(today(),i,choice,first?qs.map(function(x){return x._i}):null,first?qs.filter(function(x){return x._rv}).map(function(x){return x._i}):[],tier);
+  }).then(function(r){
+    if(r&&r.error)throw r.error;
+    var res=r&&r.data;if(!res||typeof res.dogru!=="boolean"||!res.gun||typeof res.gun!=="object"||!Array.isArray(res.gun.a))throw new Error("yanit");
+    return res;
+  }).then(function(res){
+    var m2=myLeague()||{id:S.me},day=res.gun,n=num(day.n)||5,d=Object.assign({},m2.d||{});d[today()]=day;
+    var miss=(Array.isArray(m2.miss)?m2.miss:[]).filter(function(m){return m&&typeof m.i==="number"&&m.i!==q._i});
+    if(!res.dogru)miss.push({i:q._i,d:today()});
+    var patch={d:d,miss:miss.slice(-20)};if(!S.guest&&!m2.acad&&S.pf.share)patch.acad=acadSnap();
+    S.lg.busy=false;
+    saveMe(patch);   /* d sunucuda korunur (tetikleyici); yerel görünüm için yazılır */
+    S.lg.front[i]=false;
+    if(day.tot===n&&day.ok===n)burst();
+    draw();
+  }).catch(function(e){S.lg.busy=false;S.lg.err=LIG_MSG[ligNeden(e)]||LIG_MSG.hata;draw()});
 }
 function autoNote(s){
   if(s.days===0)return "Henüz başlamadın. İlk tur 5 soru, yaklaşık 2 dakika; puan değil alışkanlık kuruyorsun.";
@@ -325,6 +348,7 @@ function renderChallenge(){
   var out=[h("div",{class:"panel lgc"},h("div",{class:"label"},"Günün meydan okuması"),h("h2",null,N?(N+" soru, "+Math.max(3,Math.round(N*0.4))+" dakika"):"Sorular hazırlanıyor"),
     h("div",{class:"small mute"},"Sorular işlediğin konulardan ve seviyenden ("+BANDS[bandOf(tier)][0]+") seçilir; önceki yanlışların birkaç gün sonra tekrar gelir. Zor sorular daha çok puan verir: kolay ×1, orta ×1,5, zor ×2. Hepsini doğru yaparsan +5 bonus."),
     h("div",{class:"qdots","aria-label":"ilerleme"},qs.map(function(q,i){var a=ans[i];return h("i",{class:a==null?"":(a===q.a?"ok":"bad")})})))];
+  if(S.lg.err)out.push(h("div",{class:"fb bad",role:"alert"},S.lg.err));
   if(!S.me)return out.concat(h("div",{class:"empty"},"Lig bu görünümde kullanılamıyor (oturum bilgisi yok)."));
   qs.forEach(function(q,i){
     var a=ans[i],done=a!=null,wrong=done&&a!==q.a,showBack=wrong&&S.lg.front[i]!==true,tn=q.k!=null?topicNameOf(q.t,q.k):null;
@@ -333,7 +357,7 @@ function renderChallenge(){
       showBack?null:h("b",{class:"qq"},q.q),
       showBack?null:h("div",{class:"qopts"},q.o.map(function(o,k){
         var cls="qo"+(done?(k===q.a?" ok":(k===a?" bad":" dim")):"");
-        return h("button",{class:cls,type:"button",disabled:done||!S.canWrite,onclick:function(){answerQ(i,k)}},h("span",null,String.fromCharCode(65+k)),o)})),
+        return h("button",{class:cls,type:"button",disabled:done||!S.canWrite||S.lg.busy,onclick:function(){answerQ(i,k)}},h("span",null,String.fromCharCode(65+k)),o)})),
       done?qBack(q,a,i):null));
   });
   if(N&&num(t.tot)>=N)out.push(h("div",{class:"panel lgdone"},h("h2",null,t.ok===N?"Mükemmel gün":"Bugünkü tur bitti"),
