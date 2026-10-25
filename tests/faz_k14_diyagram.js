@@ -40,6 +40,8 @@ const thr = f => { try { f(); return null; } catch (e) { return e.message; } };
   ok(/yinelenen/.test(thr(() => D.ciz([{ id: 'a' }, { id: 'a' }], []))), 'yinelenen id hata verir');
   ok(/eksik/.test(thr(() => D.ciz([{}], []))), 'id yoksa hata verir');
   ok(/tanımsız düğüm/.test(thr(() => D.ciz([{ id: 'a' }], [{ kimden: 'a', kime: 'z' }]))), 'olmayan düğüme ok hata verir');
+  ok(/çakışması/.test(thr(() => D.ciz([{ id: 'a', sut: 0, satir: 0 }, { id: 'b', sut: 0, satir: 0 }], []))), 'aynı hücreye iki düğüm hata verir');
+  ok(/birlikte/.test(thr(() => D.ciz([{ id: 'a', sut: 1 }], []))), 'yalnız sut verilirse hata verir');
   ok(D.ciz().includes('<svg'), 'argümansız çağrı boş svg döner');
 }
 { // ders kaydı: tüm kayıtlar geçerli çizilir
