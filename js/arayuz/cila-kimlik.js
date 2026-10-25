@@ -76,9 +76,7 @@ function idPng(){
   for(var i=0;i<70;i++){x.fillStyle="rgba(255,255,255,"+(0.15+((i*37)%10)/25)+")";x.fillRect((i*149)%W,(i*263)%620,2+(i%3),2+(i%3))}
   var gl=x.createRadialGradient(W*.8,170,10,W*.8,170,260);gl.addColorStop(0,"rgba(255,215,120,.35)");gl.addColorStop(1,"rgba(255,215,120,0)");x.fillStyle=gl;x.fillRect(0,0,W,520);
   x.strokeStyle="rgba(240,200,110,.9)";x.lineWidth=6;x.strokeRect(30,30,W-60,H-60);
-  x.save();x.translate(80,90);x.scale(3.6,3.6);var P=new Path2D("M20 2 36 8v14c0 11-7 19-16 22C11 41 4 33 4 22V8z");x.fillStyle="rgba(240,200,110,.15)";x.fill(P);x.strokeStyle="#f0c86e";x.lineWidth=2.2;x.stroke(P);
-  x.beginPath();x.moveTo(20,15);x.lineTo(12.5,28);x.moveTo(20,15);x.lineTo(27.5,28);x.moveTo(12.5,28);x.lineTo(27.5,28);x.lineWidth=1.4;x.stroke();
-  [["#f0c86e",20,15],["#35d0c0",12.5,28],["#ffb86b",27.5,28]].forEach(function(d){x.beginPath();x.arc(d[1],d[2],2.8,0,7);x.fillStyle=d[0];x.fill()});x.restore();
+  x.save();x.translate(92,86);x.scale(1.12,1.12);x.lineJoin="round";x.lineWidth=2;PP_MARKA.amblem.forEach(function(p){var g=p[1],k=x.createLinearGradient(g[0],g[1],g[2],g[3]),P=new Path2D("M"+p[0]+"Z");k.addColorStop(0,g[4]);k.addColorStop(1,g[5]);x.fillStyle=x.strokeStyle=k;x.fill(P);x.stroke(P)});x.restore();
   var SERIF="Fraunces, Georgia, 'Times New Roman', serif",SANS="'Familjen Grotesk', 'Segoe UI', Arial, sans-serif",MONO="'JetBrains Mono', Consolas, monospace";
   x.fillStyle="#f4f1e8";x.font="700 44px "+SANS;x.fillText(PP_MARKA.buyuk,250,125);
   x.fillStyle="#f0c86e";x.font="600 26px "+MONO;x.fillText("AKADEMİ KİMLİĞİ",250,170);
