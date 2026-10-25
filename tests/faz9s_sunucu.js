@@ -112,7 +112,7 @@ const oku = f => fs.readFileSync(path.join(KOK, f), 'utf8');
   const ctx = vm.createContext({ window: win, document: doc, location: win.location, navigator: { onLine: true }, console, setInterval: () => 0, setTimeout, clearTimeout, Promise, JSON, Object, Array, String, Number, Date, Math, Error, Blob: function () {}, URL: { createObjectURL() {}, revokeObjectURL() {} }, localStorage: globalThis.localStorage, crypto: {} });
   vm.runInContext(oku('supabase-shim.js'), ctx);
   const api = await win.claude.use('ogr');
-  eq(Object.keys(api).sort(), ['denemelerim', 'gonder', 'kapi'], 'shim: ogr yeteneği yalnız gonder, kapi, denemelerim sunar (tablo yazma/silme yok)');
+  eq(Object.keys(api).sort(), ['denemelerim', 'gonder', 'kapi', 'ligGonder'], 'shim: ogr yeteneği yalnız gonder, kapi, denemelerim, ligGonder (Faz 13) sunar (tablo yazma/silme yok)');
   await api.gonder('ders:ccna:1:sinav', 'v1', { aaaaaaaa: 'b' }, { tur: 'yok' });
   await api.kapi('ders-ustalik:ccna:1');
   await api.denemelerim(50);
