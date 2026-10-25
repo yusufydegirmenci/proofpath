@@ -106,7 +106,7 @@ function plBand(lv){
     :["İleri başlangıç","Zor sorulara ağırlık ver, yol projesini GitHub'a yükle ve İşe hazırlık sekmesinden CV'ni çıkar."];
 }
 function plShare(track,lv){
-  var nm=(GM_TN[track]||track),t="Proofpath seviye testi: "+nm+" "+lv.toFixed(1)+" / 3."+(ARTIFACT_URL?" Sen de dene: "+ARTIFACT_URL:"");
+  var nm=(GM_TN[track]||track),t=PP_MARKA.ad+" seviye testi: "+nm+" "+lv.toFixed(1)+" / 3."+(ARTIFACT_URL?" Sen de dene: "+ARTIFACT_URL:"");
   try{navigator.clipboard.writeText(t).then(function(){S.pl.msg="Kopyalandı.";draw()},function(){S.pl.msg=t;draw()})}catch(e){S.pl.msg=t;draw()}
 }
 function plFocus(){plOdak();setTimeout(plOdak,150);setTimeout(plOdak,500)}

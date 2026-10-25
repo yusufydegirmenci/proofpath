@@ -56,7 +56,7 @@ function cvDoc(){
   if(C.skills.trim())sec.push([T.sk,[C.skills.trim()]]);
   if(C.exp.trim())sec.push([T.ex,C.exp.trim().split(/\n+/)]);
   if(P.length)sec.push([T.pj,P.map(function(p){return (en?p.en:p.tr)+(p.done?"":(en?" (in progress)":" (devam ediyor)"))+(p.link?" — "+p.link:"")})]);
-  if(C.ev!==false){var EVL=evLines(en);if(EVL.length)sec.push([en?"Learning evidence (Proofpath)":"Öğrenme kanıtları (Proofpath)",EVL])}
+  if(C.ev!==false){var EVL=evLines(en);if(EVL.length)sec.push([en?"Learning evidence ("+PP_MARKA.ad+")":"Öğrenme kanıtları ("+PP_MARKA.ad+")",EVL])}
   if(C.edu.trim())sec.push([T.ed,C.edu.trim().split(/\n+/)]);
   if(C.certs.trim())sec.push([T.ce,C.certs.trim().split(/\n+/)]);
   if(C.langs.trim())sec.push([T.lg,[C.langs.trim()]]);
@@ -76,7 +76,7 @@ function cvPortfolio(){
   var C=S.cv,en=C.lang==="en",R=JR.filter(function(r){return r.id===C.role})[0]||JR[0],P=cvProjects();
   function E(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
   function url(u){u=String(u||"").trim();if(!u)return "";if(!/^https?:\/\//i.test(u))u="https://"+u;return /^https:\/\/[^\s"'<>]+$/i.test(u)?u:""}
-  var T=en?{pj:"Projects",sk:"Skills",ct:"Contact",pr:"in progress",ln:"Code on GitHub",sub:"Built with Proofpath"}:{pj:"Projeler",sk:"Beceriler",ct:"İletişim",pr:"devam ediyor",ln:"GitHub'da kod",sub:"Proofpath ile hazırlandı"};
+  var T=en?{pj:"Projects",sk:"Skills",ct:"Contact",pr:"in progress",ln:"Code on GitHub",sub:"Built with "+PP_MARKA.ad}:{pj:"Projeler",sk:"Beceriler",ct:"İletişim",pr:"devam ediyor",ln:"GitHub'da kod",sub:PP_MARKA.ad+" ile hazırlandı"};
   var nm=C.name.trim()||(en?"Your Name":"Adın Soyadın"),sum=C.summary.trim()||(en?R.en1:R.tr1);
   var sk=C.skills.trim()?C.skills.split(/[,\n;]+/).map(function(x){return x.trim()}).filter(Boolean):R.sk;
   var links=[];if(url(C.github))links.push('<a href="'+E(url(C.github))+'">GitHub</a>');if(url(C.linkedin))links.push('<a href="'+E(url(C.linkedin))+'">LinkedIn</a>');

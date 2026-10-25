@@ -85,7 +85,7 @@
   function medya(l) {
     var ms = g.navigator && g.navigator.mediaSession; if (!ms) return;
     try {
-      if (g.MediaMetadata) ms.metadata = new g.MediaMetadata({ title: l.title || "Ders", artist: "ProofPath · Dinle" });
+      if (g.MediaMetadata) ms.metadata = new g.MediaMetadata({ title: l.title || "Ders", artist: g.PP_MARKA.ad + " · Dinle" });
       ms.setActionHandler("play", function () { if (D.durum !== "oyn") oku(D.durum === "bitti" ? 0 : D.i); });
       ms.setActionHandler("pause", function () { dur(false); });
       ms.setActionHandler("stop", function () { dur(true); });

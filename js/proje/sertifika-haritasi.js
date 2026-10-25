@@ -36,7 +36,7 @@ function pjReadme(p,def){
   L.push("## Klasörler","");((def.repo&&def.repo.folders)||["docs/","src/","evidence/"]).forEach(function(f){L.push("- `"+f+"`")});L.push("");
   L.push("## Nasıl çalıştırılır","","Buraya projeyi çalıştırma adımlarını yaz (kurulum, komutlar, beklenen çıktı).","");
   L.push("## Güvenlik notu","","Bu repoda parola, API anahtarı, AWS gizli anahtarı, kişisel veri ya da gerçek müşteri verisi YOKTUR. Tüm denemeler kendi izole ortamımda yapıldı.","");
-  L.push("---","Bu proje Proofpath ile adım adım yapılmıştır.");
+  L.push("---","Bu proje "+PP_MARKA.ad+" ile adım adım yapılmıştır.");
   return L.join("\n");
 }
 function pjGitignore(){return "# Gizli bilgiler asla repoya girmesin\n.env\n*.pem\n*.key\n*.pfx\n.aws/\ncredentials\nsecrets.*\n\n# Derleme ve geçici dosyalar\nbin/\nobj/\nnode_modules/\n__pycache__/\n*.pyc\n.venv/\n.vscode/\n.idea/\n*.log\n*.vdi\n*.ova\n.DS_Store\nThumbs.db\n"}
