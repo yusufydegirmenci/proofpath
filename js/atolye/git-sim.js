@@ -2,6 +2,7 @@
 /* ---- Git simülatörü: bellekte obje modeli, sunucusuz. Gerçek git değil; sadeleştirmeler her komutun yanında. ---- */
 (function (root) {
   function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return ("0000000" + h.toString(16)).slice(-7); }
+  var BNAME = /^[\w][\w\/.-]*$/;
   function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function tok(line) { // tırnaklı argümanları tek parça yapar
     var a = [], re = /"([^"]*)"|'([^']*)'|(\S+)/g, m;
@@ -22,15 +23,15 @@
     while (j < y.length) out.push("+" + y[j++]);
     return out;
   }
-  function same(a, b) { return JSON.stringify(a) === JSON.stringify(b); }
+  function same(a, b) { return !names(a).concat(names(b)).some(function (f) { return a[f] !== b[f]; }); }
   function names(o) { return Object.keys(o).sort(); }
 
   function create() {
     var S = null; // null = henüz git init yapılmadı
-    var work = {}; // çalışma dizini: ad → içerik (git'ten bağımsız, kabuk komutlarıyla değişir)
+    var work = Object.create(null); // çalışma dizini: ad → içerik (git'ten bağımsız, kabuk komutlarıyla değişir)
     var NOREPO = "fatal: not a git repository (or any of the parent directories): .git";
 
-    function tree(id) { return id ? S.commits[id].tree : {}; }
+    function tree(id) { return id ? S.commits[id].tree : Object.create(null); }
     function headId() { return S.head.branch ? S.branches[S.head.branch] || null : S.head.id; }
     function ancestors(id) { var seen = {}, q = id ? [id] : []; while (q.length) { var c = q.pop(); if (seen[c]) continue; seen[c] = 1; S.commits[c].parents.forEach(function (p) { q.push(p); }); } return seen; }
     function mergeBase(a, b) { // iki ucun ortak atalarından en yeni olanı
@@ -58,14 +59,14 @@
       var bad = dirty(cur, t).filter(function (f) { return S.index[f] !== cur[f] || work[f] !== cur[f]; });
       if (bad.length) return "error: Your local changes to the following files would be overwritten by checkout:\n\t" + bad.join("\n\t") + "\nPlease commit your changes or stash them before you switch branches.\nAborting";
       dirty(cur, t).forEach(function (f) { if (f in t) work[f] = t[f]; else delete work[f]; });
-      S.index = Object.assign({}, t);
+      dirty(cur, t).forEach(function (f) { if (f in t) S.index[f] = t[f]; else delete S.index[f]; });
       return null;
     }
 
     var G = {
       init: function () {
         if (S) return "Reinitialized existing Git repository in .git/";
-        S = { commits: {}, branches: {}, head: { branch: "main", id: null }, index: {}, seq: 0 };
+        S = { commits: Object.create(null), branches: Object.create(null), head: { branch: "main", id: null }, index: Object.create(null), seq: 0 };
         return "Initialized empty Git repository in .git/";
       },
       add: function (a) {
@@ -80,12 +81,13 @@
         return "";
       },
       commit: function (a) {
-        var i = a.indexOf("-m"), msg = i >= 0 ? a[i + 1] : null;
-        if (i >= 0 && !msg) return "error: switch `m' requires a value";
+        var i = a.indexOf("-m"), am = a.indexOf("-am"), msg = i >= 0 ? a[i + 1] : am >= 0 ? a[am + 1] : null;
+        if ((i >= 0 || am >= 0) && msg === undefined) return "error: switch `m' requires a value";
+        if (am >= 0 || a.indexOf("-a") >= 0) names(S.index).forEach(function (f) { if (f in work) S.index[f] = work[f]; else delete S.index[f]; });
         var cur = headId();
         if (same(S.index, tree(cur)) && (cur || !names(S.index).length)) return "On branch " + (S.head.branch || "HEAD") + "\n" + (cur ? "nothing to commit, working tree clean" : "nothing to commit (create/copy files and use \"git add\" to track)");
         if (!msg) return "Aborting commit due to empty commit message.";
-        var old = tree(cur), id = newCommit(msg, cur ? [cur] : [], Object.assign({}, S.index));
+        var old = tree(cur), id = newCommit(msg, cur ? [cur] : [], Object.assign(Object.create(null), S.index));
         advance(id);
         var ch = dirty(old, S.index).length;
         return "[" + (S.head.branch || "detached HEAD") + (cur ? " " : " (root-commit) ") + id + "] " + msg + "\n " + ch + " file" + (ch === 1 ? "" : "s") + " changed";
@@ -123,7 +125,7 @@
           var was = S.branches[arg]; delete S.branches[arg];
           return "Deleted branch " + arg + " (was " + was + ").";
         }
-        if (!/^[\w][\w\/.-]*$/.test(arg)) return "fatal: '" + arg + "' is not a valid branch name";
+        if (!BNAME.test(arg) || /\.\./.test(arg)) return "fatal: '" + arg + "' is not a valid branch name";
         if (arg in S.branches) return "fatal: a branch named '" + arg + "' already exists";
         if (!headId()) return "fatal: not a valid object name: '" + (S.head.branch || "HEAD") + "'";
         S.branches[arg] = headId();
@@ -133,9 +135,10 @@
         var nb = a.indexOf("-b") >= 0, arg = a.filter(function (x) { return x[0] !== "-"; })[0];
         if (!arg) return nb ? "fatal: switch `b' requires a value" : "error: you must specify a branch or commit";
         if (nb) {
+          if (!BNAME.test(arg) || /\.\./.test(arg)) return "fatal: '" + arg + "' is not a valid branch name";
           if (arg in S.branches) return "fatal: a branch named '" + arg + "' already exists";
-          if (!headId()) return "fatal: not a valid object name: '" + (S.head.branch || "HEAD") + "'";
-          S.branches[arg] = headId(); S.head = { branch: arg, id: null };
+          if (headId()) S.branches[arg] = headId();
+          S.head = { branch: arg, id: null };
           return "Switched to a new branch '" + arg + "'";
         }
         if (arg in S.branches) {
@@ -166,11 +169,11 @@
         var to = tree(t);
         if (ancestors(t)[cur] && a.indexOf("--no-ff") < 0) { // ileri sarma
           dirty(tree(cur), to).forEach(function (f) { if (f in to) work[f] = to[f]; else delete work[f]; });
-          S.index = Object.assign({}, to); advance(t);
+          dirty(tree(cur), to).forEach(function (f) { if (f in to) S.index[f] = to[f]; else delete S.index[f]; }); advance(t);
           return "Updating " + cur + ".." + t + "\nFast-forward";
         }
         var base = tree(mergeBase(cur, t)), mine = tree(cur), out = {}, bad = [];
-        names(Object.assign({}, base, mine, to)).forEach(function (f) {
+        names(Object.assign(Object.create(null), base, mine, to)).forEach(function (f) {
           var b = base[f], m = mine[f], o = to[f], v;
           if (m === o) v = m; else if (m === b) v = o; else if (o === b) v = m; else { bad.push(f); return; }
           if (v !== undefined) out[f] = v;
@@ -178,13 +181,14 @@
         // sadeleştirme: gerçek git çatışma işaretleri bırakır; burada birleştirme iptal edilir, dizin değişmez
         if (bad.length) return bad.map(function (f) { return "CONFLICT (content): Merge conflict in " + f; }).join("\n") + "\nAutomatic merge failed; merge aborted (simulator leaves your files unchanged). Change the file on one branch, commit, and try again.";
         var id = newCommit("Merge branch '" + arg + "'", [cur, t], out);
-        advance(id); S.index = Object.assign({}, out); work = Object.assign({}, out);
+        advance(id);
+        dirty(mine, out).forEach(function (f) { if (f in out) { S.index[f] = out[f]; work[f] = out[f]; } else { delete S.index[f]; delete work[f]; } });
         return "Merge made by the 'ort' strategy.";
       },
       diff: function (a) {
         var staged = a.indexOf("--staged") >= 0 || a.indexOf("--cached") >= 0;
         var from = staged ? tree(headId()) : S.index, to = staged ? S.index : work, o = [];
-        names(Object.assign({}, from, to)).forEach(function (f) {
+        names(Object.assign(Object.create(null), from, to)).forEach(function (f) {
           if (from[f] === to[f]) return;
           if (!staged && !(f in S.index)) return; // izlenmeyen dosya diff'te görünmez
           o.push("diff --git a/" + f + " b/" + f + (!(f in from) ? "\nnew file" : !(f in to) ? "\ndeleted file" : "") + "\n--- a/" + f + "\n+++ b/" + f);
@@ -250,7 +254,7 @@
       return p.join("") + "</svg>";
     }
 
-    return { run: run, graph: graph, svg: svg, files: function () { return Object.assign({}, work); }, state: function () { return S; } };
+    return { run: run, graph: graph, svg: svg, files: function () { return Object.assign(Object.create(null), work); }, state: function () { return S; } };
   }
 
   // Sayfaya bağlama: tek giriş kutusu, çıktı ve ağaç. Dışarıdan veri HTML olarak yorumlanmaz (çıktı textContent, SVG kaçışlı).

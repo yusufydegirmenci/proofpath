@@ -73,4 +73,26 @@ const mk = () => { const s = create(); return { s, r: l => s.run(l), o: l => s.r
   r('echo 2 > f'); r('git add f'); r('git commit -m c2');
   ok(/detached HEAD/.test(o('git checkout ' + id)) && s.files().f === '1' && /HEAD detached at/.test(o('git status')), 'commit kimliğiyle checkout: detached HEAD, dosya eski hali');
 }
+{ // tarama düzeltmeleri
+  const base = () => { const t = mk(); ['git init', 'echo a > a', 'git add .', 'git commit -m one'].forEach(t.r); return t; };
+  { const { s, r, o } = base();
+    ['git checkout -b f', 'echo f > f', 'git add f', 'git commit -m f', 'git checkout main', 'echo m > m', 'git add m', 'git commit -m m', 'echo precious > untracked', 'echo dirty > a'].forEach(r);
+    r('git merge f'); ok(s.files().untracked === 'precious' && s.files().a === 'dirty' && s.files().f === 'f', 'birleştirme izlenmeyen dosyayı ve kirli düzenlemeyi korur'); }
+  { const { r, o } = base();
+    ok(!r('git checkout toString').ok && /pathspec/.test(o('git checkout toString')) && /not something/.test(o('git merge constructor')), 'prototip adları (toString, constructor) çökmez');
+    ok(o('git branch constructor') === '' && /not found/.test(o('git branch -d toString')), 'constructor adlı dal oluşturulabilir');
+    ok(/No such file/.test(o('rm toString')) && /did not match/.test(o('git add toString')), 'rm/add prototip adlarında hata verir');
+    r('echo x > __proto__'); ok(o('cat __proto__') === 'x', '__proto__ adlı dosya düz dosya gibi çalışır'); }
+  { const { s, r, o } = base();
+    ['git checkout -b f', 'git checkout main', 'echo z > z', 'git add z', 'git checkout f'].forEach(r);
+    ok(/Changes to be committed:\n\tnew file:   z/.test(o('git status')), 'checkout aşamalı değişikliği korur'); }
+  { const { r, o } = mk(); ['git init', 'echo 1 > a', 'echo 2 > b', 'git add a b', 'git commit -m one', 'rm a', 'git add a', 'echo 1 > a', 'git add a'].forEach(r);
+    ok(/nothing to commit/.test(o('git commit -m two')), 'anahtar sırası değişse de boş commit yapılmaz'); }
+  { const { s, r, o } = base(); r('echo b > a');
+    ok(/^\[main [0-9a-f]{7}\] two/.test(o('git commit -am two')) && s.graph().nodes.length === 2, 'commit -am izlenen değişikliği commit eder');
+    r('echo c > a'); ok(/^\[main [0-9a-f]{7}\] three/.test(o('git commit -a -m three')), 'commit -a -m');
+    ok(/empty commit message/.test((r('echo d > a'), r('git add a'), o('git commit -m ""'))), 'boş mesaj: Aborting'); }
+  { const { r, o } = base(); ok(/not a valid branch name/.test(o('git checkout -b "a b"')) && /not a valid branch name/.test(o('git checkout -b ..')), 'checkout -b geçersiz adı reddeder');
+    const t = mk(); t.r('git init'); ok(/Switched to a new branch 'x'/.test(t.o('git checkout -b x')), 'ilk commit öncesi checkout -b çalışır'); }
+}
 console.log(`\n${n - fails}/${n} geçti`); process.exit(fails ? 1 : 0);
