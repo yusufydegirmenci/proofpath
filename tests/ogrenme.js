@@ -487,7 +487,8 @@ function kapiOrnek() {
     anahtarDosyalari.forEach(f => require('../tools/cevap-anahtari.js').anahtarSqlOku(fs.readFileSync(path.join(seedDir, f), 'utf8')).forEach(r => harita.set(r[0] + '|' + r[1] + '|' + r[2], { dogru: r[3], aciklama: r[5] || {} })));
     cozucu = (yol, no, id) => harita.get('ders:' + yol + ':' + no + ':sinav|v1|' + id) || null;
   }
-  const g = OD.denetle(win.PP_LESSONS, basliklar, bugun, cozucu);
+  /* gerçek içerik gerçek bugüne göre denetlenir (sabit `bugun` yalnız yukarıdaki sahte örnekler içindir); aksi halde yeni yazılan dersin sonDogrulama tarihi "gelecekte" sayılırdı */
+  const g = OD.denetle(win.PP_LESSONS, basliklar, O.gun.bugun(), cozucu);
   eq(g.hata, [], 'ders içeriği (content/lessons): ' + g.say.ders + ' ders, ' + g.say.soru + ' soru; zorunlu alanlar, soru/cevap, whyNot/obj/summary/prereq geçerliliği, önkoşul döngüsü ve kopya başlık yok');
   ok(g.say.sunucuSoru === g.say.soru, 'tüm ders sınavı soruları sunucuya ayrılmış (içerikte answer/why yok, id var): ' + g.say.sunucuSoru + '/' + g.say.soru);
   if (cozucu) ok(g.say.anahtarDenetimiAtlandi === 0, 'cevap anahtarı denetimi (yerel gizli tohum): ' + g.say.sunucuSoru + ' sorunun hepsi answer/why/whyNot kurallarıyla denetlendi');

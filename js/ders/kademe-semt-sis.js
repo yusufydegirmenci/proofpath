@@ -182,7 +182,7 @@ function cleanLesson(l){
   l.date=str(l.date);l.track=TRK[l.track]?l.track:"ccna";
   ["title","hook","homework","coachNote","kind"].forEach(function(k){l[k]=str(l[k])});
   l.blocks=objs(l.blocks).map(function(b){
-    var r=pick(b,["t","text","h","tr","result"]);
+    var r=pick(b,["t","text","h","tr","result"]);if(b.t==="alan")r.id=str(b.id);   /* Python hattı: alan bloğu PP_PY.alanlar kimliğiyle bağlanır */
     r.items=Array.isArray(b.items)?b.items.map(str):[];
     r.parts=objs(b.parts).map(function(p){return pick(p,["tr","q","en"])});
     return r});

@@ -89,8 +89,8 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(await p.evaluate(() => { const L = PP.ogr.oneri.LAB, T = PP.lab.tanimlar; return Object.keys(L).every(k => L[k].every(x => T[x.id] || x.id === 'net-altag')); }), true, 'oneri.LAB tüm lab\'lar tanımlı');
   eq(await p.evaluate(() => { const L = PP.ogr.oneri.LAB; return [L['ders:net:7'][0].toplam === PP.lab.karar.ROTA.length, L['ders:net:14'][0].toplam === PP.lab.karar.ACL_SEN.length]; }), [true, true], 'oneri.LAB senaryo sayıları lab tanımıyla aynı');
 
-  // 6) Önkoşul sırası denetimi (dev, net, qa): STARTER sırası = TMAP sırası; grafik zinciri doğrusal
-  const sira = await p.evaluate(() => ['net', 'dev', 'qa'].map(tr => {
+  // 6) Önkoşul sırası denetimi (dev, net, qa, py): STARTER sırası = TMAP sırası; grafik zinciri doğrusal
+  const sira = await p.evaluate(() => ['net', 'dev', 'qa', 'py'].map(tr => {
     const norm = x => String(x || '').toLowerCase().replace(/[^a-zçğıöşü0-9]+/g, ' ').trim();
     const sorun = STARTER[tr].map((r, k) => { const i = TMAP[tr].findIndex(e => e.n.some(x => norm(x) === norm(r[0]))); return i === k ? null : [k, r[0], i]; }).filter(Boolean);
     const G = PP.ogr.ui.graf(); let zincir = true, n = 0;
@@ -101,7 +101,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
     });
     return { tr, starter: STARTER[tr].length, tmap: TMAP[tr].length, ders: n, sorun, zincir };
   }));
-  eq(sira, [{ tr: 'net', starter: 18, tmap: 18, ders: 18, sorun: [], zincir: true }, { tr: 'dev', starter: 22, tmap: 22, ders: 22, sorun: [], zincir: true }, { tr: 'qa', starter: 22, tmap: 22, ders: 22, sorun: [], zincir: true }], 'önkoşul sırası: STARTER=TMAP, ders ve yetkinlik zinciri doğrusal (net, dev, qa)');
+  eq(sira, [{ tr: 'net', starter: 18, tmap: 18, ders: 18, sorun: [], zincir: true }, { tr: 'dev', starter: 22, tmap: 22, ders: 22, sorun: [], zincir: true }, { tr: 'qa', starter: 22, tmap: 22, ders: 22, sorun: [], zincir: true }, { tr: 'py', starter: 8, tmap: 8, ders: 8, sorun: [], zincir: true }], 'önkoşul sırası: STARTER=TMAP, ders ve yetkinlik zinciri doğrusal (net, dev, qa, py)');
   eq(await p.evaluate(() => PP.ogr.graf.dogrula(PP.ogr.ui.graf()).hata), [], 'müfredat grafiği: tutarlılık hatası yok');
 
   ok(errs.length === 0, 'sayfa hatası yok ' + errs.join('|'));

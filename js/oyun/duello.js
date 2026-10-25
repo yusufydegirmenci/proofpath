@@ -2,7 +2,7 @@
 /* ---- v49: Meydan oku (bilgisayara ve arkadaşa karşı düello) ---- */
 var DU_N=8,DU_LIM=15,DZ_KEY="ya_dz";
 var DU_DIFF={k:{n:"Kolay",bot:"Çaylak Bot",ini:"Ç",p:.5,t:[5,12],dd:1,xp:4,r:900,c:"#2fe08a"},o:{n:"Orta",bot:"Kıdemli Bot",ini:"K",p:.72,t:[3.5,9],dd:2,xp:8,r:1100,c:"#ffc233"},z:{n:"Zor",bot:"Usta Bot",ini:"U",p:.9,t:[2.2,6],dd:3,xp:14,r:1300,c:"#ff5d7d"}};
-var DU_TR=[["all","Karışık"]].concat(TRK_LIST);
+var DU_TR=[["all","Karışık"]].concat(trkSorulu());
 S.du={run:null,trk:"all",fdd:2,to:"*",msg:"",iv:null};
 function dzLocal(){try{var o=JSON.parse(localStorage.getItem(DZ_KEY)||"null");return o&&typeof o==="object"?o:{}}catch(e){return {}}}
 function dzNorm(o){o=o||{};return {r:num(o.r)||1000,w:num(o.w),l:num(o.l),d:num(o.d),st:num(o.st),cpu:(o.cpu&&typeof o.cpu==="object")?o.cpu:{},ch:(o.ch&&typeof o.ch==="object")?o.ch:{},re:(o.re&&typeof o.re==="object")?o.re:{},set:(o.set&&typeof o.set==="object")?o.set:{}}}

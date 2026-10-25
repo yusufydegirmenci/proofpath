@@ -77,8 +77,17 @@ function renderRouteOld(){
 /* ---- Ders ---- */
 function lessonsOf(track){return S.lessons.filter(function(l){return l.track===track}).sort(function(a,b){return String(b.date).localeCompare(String(a.date))})}
 function safeUrl(u){return typeof u==="string"&&/^https:\/\//.test(u)?u:null}
+/* Python hattı: dersin "alan" bloğu PP_PY.alanlar tanımını PP.alan paneline çevirir; panel önbelleklenir (yeniden çizimde yazılan kod kaybolmaz) */
+var PY_EL={};
+function pyAlan(id){
+  var a=window.PP_PY&&PP_PY.alanlar.filter(function(x){return x.id===id})[0];
+  if(!a||!window.PP||!PP.alan)return h("div",{class:"lbox warn"},"Uygulama alanı yüklenemedi; kod örneklerini kendi bilgisayarında dene.");
+  if(!PY_EL[id]){var t=PP.alan.tanimla(Object.assign({},a,{veri:PP_PY.veri}));if(!t.ok)return h("div",{class:"lbox warn"},"Alan tanımı geçersiz: "+t.neden);PY_EL[id]=PP.alan.kur(t.alan,{})}
+  return PY_EL[id];
+}
 function lblock(b){
   if(!b||typeof b!=="object")return null;
+  if(b.t==="alan")return pyAlan(b.id);
   var t=b.t,txt=typeof b.text==="string"?b.text:"",items=Array.isArray(b.items)?b.items:[];
   if(t==="h")return h("h3",null,txt);
   if(t==="p")return h("p",null,fnText(txt));

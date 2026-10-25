@@ -33,7 +33,7 @@ function jokerCard(){
   return h("div",{class:"alert warn"},h("b",null,"Dün kaçtı. "),"Haftalık 1 seri dondurma hakkın var; kullanırsan serin kopmaz. ",h("button",{class:"btn",type:"button",onclick:function(){jokerUse(y)}},"Dünü koru"));
 }
 /* 5 dakika */
-var M5_AT={ccna:"ccna",net:"net",eng:"en",sec:"sec",bk:"bk",dev:"dev",qa:"qa"};
+var M5_AT={ccna:"ccna",net:"net",eng:"en",sec:"sec",bk:"bk",dev:"dev",qa:"qa",py:"py"};
 S.m5={on:false,step:0,qs:[],ans:null,ok:0,fin:false,track:"ccna",c:null};
 function m5Start(){
   var M=S.m5,r=rngf(Date.now()%1e9),pool=[];
@@ -58,7 +58,7 @@ function m5Next(){
 function m5Panel(){
   var M=S.m5,done=num(prog().mini5)>0;
   if(!M.on){
-    var seg=h("div",{class:"seg",role:"group","aria-label":"Alan"},TRK_LIST.map(function(o){return h("button",{type:"button","aria-pressed":M.track===o[0]?"true":"false",onclick:function(){M.track=o[0];draw()}},o[1])}));
+    var seg=h("div",{class:"seg",role:"group","aria-label":"Alan"},trkSorulu().map(function(o){return h("button",{type:"button","aria-pressed":M.track===o[0]?"true":"false",onclick:function(){M.track=o[0];draw()}},o[1])}));
     return h("div",{class:"panel"},h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:center;flex-wrap:wrap"},h("div",null,h("div",{class:"label"},"Yorgun musun?"),h("h2",null,"Sadece 5 dakika")),done?h("span",{class:"pill ok"},"bugün tamam"):null),
       h("div",{class:"small mute"},"1 kavram ve 3 soru. Bitirirsen bugün seri için sayılır."),seg,h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:m5Start},done?"Bir tur daha":"5 dakikayı başlat")));
   }
@@ -115,7 +115,7 @@ function plPanel(){var el=plPanelIc();if(el&&el.setAttribute)el.setAttribute("id
 function plPanelIc(){
   var P=S.pl,saved=plLoad(),has=Object.keys(saved).some(function(k){return saved[k]&&!saved[k].skip});
   if(!P.on){
-    var seg=h("div",{class:"seg",role:"group","aria-label":"Alan"},TRK_LIST.map(function(o){return h("button",{type:"button","aria-pressed":P.track===o[0]?"true":"false",onclick:function(){P.track=o[0];P.msg="";draw()}},o[1])}));
+    var seg=h("div",{class:"seg",role:"group","aria-label":"Alan"},trkSorulu().map(function(o){return h("button",{type:"button","aria-pressed":P.track===o[0]?"true":"false",onclick:function(){P.track=o[0];P.msg="";draw()}},o[1])}));
     var rows=has?TRK_LIST.filter(function(o){return saved[o[0]]&&!saved[o[0]].skip}).map(function(o){var s=saved[o[0]];return h("span",{class:"pill"},o[1]+" "+s.lv.toFixed(1)+"/3")}):[];
     return h("div",{class:"panel"},h("div",{class:"label"},has?"Seviyen":"Yeni misin?"),h("h2",null,has?"Seviye testini tekrarla":"Seviyeni belirle"),
       h("div",{class:"small mute"},"6 kısa soru. Sonuca göre nereden başlayacağını söylerim; bilmediğin soruda tahmin etmen yeter."),

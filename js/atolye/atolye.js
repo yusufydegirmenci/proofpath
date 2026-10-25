@@ -170,7 +170,7 @@ function prNext(){
 }
 function atPractice(){
   var P=S.pr,out=[];
-  var seg=h("div",{class:"seg",role:"group","aria-label":"Alan"},TRK_LIST.map(function(o){return h("button",{type:"button","aria-pressed":P.track===o[0]?"true":"false",onclick:function(){P.track=o[0];P.qs=[];P.res=null;draw()}},o[1])}));
+  var seg=h("div",{class:"seg",role:"group","aria-label":"Alan"},trkSorulu().map(function(o){return h("button",{type:"button","aria-pressed":P.track===o[0]?"true":"false",onclick:function(){P.track=o[0];P.qs=[];P.res=null;draw()}},o[1])}));
   seg.insertBefore(h("button",{type:"button","aria-pressed":P.track==="mix"?"true":"false",onclick:function(){P.track="mix";P.qs=[];P.res=null;draw()}},"Karışık"),seg.firstChild);
   seg.insertBefore(h("button",{type:"button","aria-pressed":P.track==="weak"?"true":"false",onclick:function(){P.track="weak";P.qs=[];P.res=null;draw()}},"Zayıflarım"),seg.firstChild);
   out.push(h("div",{class:"panel"},h("div",{class:"label"},"Serbest alıştırma"),h("h2",null,"5 soruluk mini tur"),h("div",{class:"small mute"},"Her cevaptan sonra nedenini görürsün. Yanlışların Lig'de ve oyunda tekrar karşına çıkar. Karışık: alanlar iç içe gelir, seviyene ve zayıf sorularına göre seçilir; öğrenmeyi daha kalıcı yapar."),seg,

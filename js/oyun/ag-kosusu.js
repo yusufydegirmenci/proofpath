@@ -3,7 +3,7 @@
 S.gm={mode:"daily",skin:"run",speed:null,run:null,stage:null,mute:false,loop:0,trk:"all",sk:{run:"stj",drive:"std"},ps:{}};
 try{var _g=JSON.parse(localStorage.getItem("ya_gm")||"null");if(_g){if(["all"].concat(TRKS).indexOf(_g.trk)>=0)S.gm.trk=_g.trk;S.gm.mute=!!_g.mute;if(_g.sk&&typeof _g.sk==="object"){["run","drive"].forEach(function(k){if(typeof _g.sk[k]==="string")S.gm.sk[k]=_g.sk[k].slice(0,12)})}if(_g.ps&&typeof _g.ps==="object"){["tc","runs","kr","boss","S"].forEach(function(k){S.gm.ps[k]=Math.max(0,Math.min(99999,_g.ps[k]|0))})}}}catch(e){}
 function gmSave(){try{localStorage.setItem("ya_gm",JSON.stringify({trk:S.gm.trk,mute:S.gm.mute,sk:S.gm.sk,ps:S.gm.ps}))}catch(e){}try{syncPush()}catch(e){}}
-var GM_TRK=[["all","Karışık"]].concat(TRK_LIST);
+var GM_TRK=[["all","Karışık"]].concat(trkSorulu());
 function gmMissions(p){return [{t:"8 doğru cevap ver",have:num(p.g_ok),need:8},{t:"25 altın topla",have:num(p.g_coins),need:25},{t:"2 tur oyna",have:num(p.g_runs),need:2}]}
 function gmMDone(p){return gmMissions(p).filter(function(m){return m.have>=m.need}).length}
 var GM_CAP=40;

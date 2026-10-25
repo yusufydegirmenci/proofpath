@@ -145,7 +145,7 @@ function rtToast(msg){var d=document.createElement("div");d.className="rt-toast"
 var RT_KEY="ya_rt",RT_ALL=TRKS.slice(),RT_TN=TRN;
 function rtTracks(){
   try{var a=JSON.parse(localStorage.getItem(RT_KEY)||"null");if(Array.isArray(a)){a=a.filter(function(x){return RT_ALL.indexOf(x)>=0});if(a.length)return a}}catch(e){}
-  var m={ccna:["ccna","eng"],net:["net","eng"],dev:["dev","eng"],qa:["qa","bk","eng"],bk:["bk","eng"],sec:["sec","eng"],eng:["eng"]},g=S.onb&&S.onb.goal;
+  var m={ccna:["ccna","eng"],net:["net","eng"],dev:["dev","eng"],qa:["qa","bk","eng"],py:["py","eng"],bk:["bk","eng"],sec:["sec","eng"],eng:["eng"]},g=S.onb&&S.onb.goal;
   return (S.nonOwner&&m[g])?m[g]:RT_ALL.slice();
 }
 function rtTrackSet(T,on){
