@@ -75,7 +75,7 @@
       {
         t: "warn",
         h: "Sık hata",
-        text: "Yazım hatasıyla yeni bir değişken yaratmak: toplam yerine toplm yazarsan Python atarken itiraz etmez, eski toplam değişmez; toplm'yi sonradan okursan NameError alırsın. Ad seçerken kısa ama okunur ol."
+        text: "Yazım hatasıyla yeni bir değişken yaratmak: toplam yerine toplm yazarsan Python atarken itiraz etmez, eski toplam değişmez; toplm'ye atadıysan toplam eski değerinde kalır; hiç atamadığın yanlış adı okursan NameError alırsın. Ad seçerken kısa ama okunur ol."
       }
     ],
     objectives: [

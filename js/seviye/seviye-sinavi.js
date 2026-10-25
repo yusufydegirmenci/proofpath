@@ -7,6 +7,7 @@ function lvSave(o){try{localStorage.setItem(LV_KEY,JSON.stringify(o))}catch(e){}
 function lvOf(tr){var o=lvLoad()[tr];return o&&o.l?o:null}
 var RS_LS=["ya_atlas","ya_cards","ya_gq","ya_gs","ya_lc","ya_nt","ya_nw","ya_pl","ya_vd","ya_fk","ya_gm","ya_lv"];
 function rsWipe(scope){
+  PY_EL={};
   try{
     if(scope==="all"){
       RS_LS.forEach(function(k){try{localStorage.removeItem(k)}catch(e){}});
@@ -53,7 +54,7 @@ function rsRun(scope){
 }
 S.rs=S.rs||{confirm:null,busy:false,msg:""};
 function renderReset(){
-  var R=S.rs,tracks=LV_TR;
+  var R=S.rs,tracks=LV_TR.filter(function(t){return t[0]!=="py"});
   var lvRows=tracks.map(function(t){var v=lvOf(t[0]);return h("div",{class:"lv-r"},h("div",null,h("b",null,t[1]),h("small",null,v?"Kademe: "+LV_NAMES[v.l]+" · sınav "+v.s+"/"+v.m+" · "+v.d:"Seviye sınavı yapılmadı")),
     h("button",{class:"btn ghost",type:"button",onclick:function(){peStart(t[0])}},v?"Yeniden gir":"Sınava gir"))});
   var box=[h("div",{class:"panel"},h("div",{class:"label"},"Kademe"),h("h2",null,"Seviye sınavı"),h("div",{class:"small mute"},"Bir alanda 10 soruluk sınava gir. Sonuç kademeni belirler: Çırak, Kalfa ya da Usta. Oyundaki soru zorluğu da buna göre başlar."),lvRows)];
