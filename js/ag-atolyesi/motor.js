@@ -1,8 +1,8 @@
 "use strict";
 /* ---- v60: Animasyon Atölyesi motoru (nw2) ---- */
 var NW_W=360,NW_H=400;
-var NW_ACC={ccna:"#0b8f80",net:"#b9770e",eng:"#d97706",sec:"#6a50c8",bk:"#2f6db0",dev:"#2e8b57",qa:"#b23a68"};
-var NW_TRN={ccna:"CCNA",net:"Network",eng:"İngilizce",sec:"Siber",bk:"Backend",dev:"DevOps",qa:"Test Uzmanı"};
+var NW_ACC={ccna:"#0b8f80",net:"#b9770e",eng:"#d97706",sec:"#6a50c8",bk:"#2f6db0",dev:"#2e8b57",qa:"#b23a68",py:"#c79a1d"};
+var NW_TRN={ccna:"CCNA",net:"Network",eng:"İngilizce",sec:"Siber",bk:"Backend",dev:"DevOps",qa:"Test Uzmanı",py:"Python"};
 function nwSvg(tag,at,tx){var e=document.createElementNS("http://www.w3.org/2000/svg",tag);for(var k in at)e.setAttribute(k,at[k]);if(tx!=null)e.textContent=tx;return e}
 var NW_D="#2d3b52",NW_M="#8fa3bd",NW_B="#3d7be0",NW_G="#22a06b",NW_R="#d6453d",NW_Y="#f2b01e";
 function nwR(x,y,w,hh,f,rx,ex){var o={x:x,y:y,width:w,height:hh,fill:f};if(rx)o.rx=rx;if(ex)for(var k in ex)o[k]=ex[k];return ["rect",o]}

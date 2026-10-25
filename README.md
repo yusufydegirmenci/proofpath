@@ -1,6 +1,6 @@
 # Proofpath
 
-Yedi derslik, oyunlaştırılmış kişisel öğrenme uygulaması: **CCNA, Network, İngilizce, Siber güvenlik, Backend, DevOps, Test Uzmanı**. Claude Artifact olarak çalışan, `index.html` + `css/` + `js/` yapısında bir uygulamadır; günlük dersleri zamanlanmış "koç" görevleri üretir, veriler artifact veritabanında tutulur.
+Sekiz derslik, oyunlaştırılmış kişisel öğrenme uygulaması: **CCNA, Network, İngilizce, Siber güvenlik, Backend, DevOps, Test Uzmanı, Python**. Claude Artifact olarak çalışan, `index.html` + `css/` + `js/` yapısında bir uygulamadır; günlük dersleri zamanlanmış "koç" görevleri üretir, veriler artifact veritabanında tutulur.
 
 ![Bugün ekranı](docs/ekran/bugun-masaustu.png)
 

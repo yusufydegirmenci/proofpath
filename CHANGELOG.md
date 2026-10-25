@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## Faz K10 (dal: faz-k10; migration, canlı DB, gizli anahtar, zamanlanmış iş, yeni bağımlılık yok)
+- Yeni hat `py` (Python, PCEP düzeyi, ders 1-8): değişkenler ve türler, giriş-çıkış, operatörler, koşullar, döngüler, liste ve demet, sözlük ve küme, fonksiyonlar (`content/lessons/py-1.js`, `py-2.js`). Kapsam herkese açık PCEP müfredat özetinden; metinler özgün.
+- Her ders: anlatım, 2+ çalıştırılabilir kod örneği (CPython 3.12 ile doğrulandı), bozuk kodu düzeltme görevi, 4 ölçülebilir hedef, hedefe bağlı 8 soru (answer/why/whyNot sunucu tohumunda), uygulama alanı (PP.alan, Pyodide) alıştırması. Kontrol veriden hesaplanır ve değişmiş veriyle yeniden çalışır (`content/lessons/py-alan.js`).
+- Yeni `alan` ders bloğu (`rota-ders.js` lblock, `cleanLesson` blok kimliği korur). Soru bankası olmayan hat için soru tabanlı seçiciler (oyun, alıştırma, seviye testi) `trkSorulu()` ile yalnız bankası olan hatları listeler.
+- Sunucu tohumu: hedef metadata `supabase/seed/20261018_1_ogr_hedefler.sql` (+24 satır); cevap anahtarı yalnız özel depoda (`kayitlar/seed/ek-k6.sql`). UYGULANMADI.
+- Test: `tests/faz_k10_py.js` (139); sayılar güncellendi: `faz9s_tarama` (954 soru), `ogrenme_tarayici` (8 yol), `faz12b_geri_bildirim` (8 tarihli ders), `ogrenme` (gerçek içerik gerçek bugüne göre).
+
 ## Tur 4 (dal: faz-k4; yalnız CSS/aria, davranış değişmedi)
 - 390 px dokunma hedefleri 44 px'e çıkarıldı: `.chip`, `.seg button`, `.my-kinds button`, `.my-pn`, `.nw-chip2`, `.sn`, `.gh-nav button` (`css/son-eklemeler.css`; medya sorgusuz, tüm genişliklerde geçerli). 390 px ölçümü: 153 durum × 2 tema = 306 durum, 44 px altı hedef 251 -> 0 (satır içi okuma kelimeleri hariç).
 - Kontrast: koyu temada yardım şeridi "?" simgesi 1.97 -> 8.59:1, açıklama metni 4.44 -> AA; ders filtresi metni `--ink`.
