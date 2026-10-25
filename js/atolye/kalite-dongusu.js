@@ -33,7 +33,7 @@ function jokerCard(){
   return h("div",{class:"alert warn"},h("b",null,"Dün kaçtı. "),"Haftalık 1 seri dondurma hakkın var; kullanırsan serin kopmaz. ",h("button",{class:"btn",type:"button",onclick:function(){jokerUse(y)}},"Dünü koru"));
 }
 /* 5 dakika */
-var M5_AT={ccna:"ccna",net:"net",eng:"en",sec:"sec",bk:"bk",dev:"dev",qa:"qa",py:"py"};
+var M5_AT={ccna:"ccna",net:"net",eng:"en",sec:"sec",bk:"bk",dev:"dev",qa:"qa",py:"py",js:"js"};
 S.m5={on:false,step:0,qs:[],ans:null,ok:0,fin:false,track:"ccna",c:null};
 function m5Start(){
   var M=S.m5,r=rngf(Date.now()%1e9),pool=[];
