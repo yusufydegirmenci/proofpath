@@ -196,7 +196,9 @@
           var ev_ = email.value.trim(),
             pv = pass.value;
           if (m !== "recovery" && !/^\S+@\S+\.\S+$/.test(ev_)) return say("Geçerli bir e-posta yaz.");
-          if ((m === "signup" || m === "recovery") && pv.length < 8) return say("Şifre en az 8 karakter olmalı.");
+          if ((m === "signup" || m === "recovery") && pv.length < 10) return say("Şifre en az 10 karakter olmalı.");
+          if ((m === "signup" || m === "recovery") && /^\d+$/.test(pv)) return say("Şifre yalnızca sayılardan oluşmasın.");
+          if ((m === "signup" || m === "recovery") && pv.toLowerCase() === ev_.toLowerCase().split("@")[0]) return say("Şifre e-posta adınla aynı olmasın.");
           if (m === "login" && !pv) return say("Şifreni yaz.");
           go.disabled = true;
           var p;
