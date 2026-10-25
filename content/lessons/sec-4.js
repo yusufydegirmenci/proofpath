@@ -186,11 +186,24 @@
       ] },
       { t: "warn", h: "Tuzak", text: "Alarm yorgunluğu: çok fazla düşük kaliteli alarm, gerçek olayın gözden kaçmasına yol açar. Kuralları sürekli ayarla." }
     ],
+    objectives: [
+      { id: "h1", text: "İşletim sistemi, ağ cihazı, uygulama ve kimlik sistemi gibi log kaynaklarını sayabilirsin." },
+      { id: "h2", text: "SIEM'in toplama, normalleştirme ve ilişkilendirme işlevlerini örnekle açıklayabilirsin." },
+      { id: "h3", text: "SOAR ile UEBA'nın ne yaptığını birbirinden ayırabilirsin." },
+      { id: "h4", text: "NTP ile saat senkronizasyonu gibi iyi log pratiklerini uygulayabilirsin." }
+    ],
+    summary: [
+      "Loglar olaydan sonra ne olduğunu anlamanın temel kaynağıdır; SIEM bunları toplar, normalleştirir ve ilişkilendirir.",
+      "İlişkilendirme ayrı olayları birleştirir: 10 başarısız giriş + 1 başarılı giriş şüphelidir.",
+      "SOAR alarm sonrası müdahaleyi otomatikleştirir; UEBA davranışın normalden sapmasını bulur.",
+      "Saatler NTP ile senkronize edilmeli, loglar merkezi sunucuya yazılıp korunmalıdır.",
+      "Alarm yorgunluğu gerçek olayı gizler; kurallar sürekli ayarlanmalıdır."
+    ],
     quiz: [
-      { id: "b99d4e98", q: "Farklı kaynaklardan gelen olayları birleştirip şüpheli desen bulmaya ne denir?", options: ["İlişkilendirme (correlation)", "Yedekleme", "Şifreleme", "Maskeleme"] },
-      { id: "464995b3", q: "Log analizinde zaman damgalarının doğru olması için hangi servis önemlidir?", options: ["NTP", "DHCP", "SMTP", "FTP"] },
-      { id: "316ca665", q: "Alarmdan sonra müdahaleyi otomatikleştiren çözüm hangisidir?", options: ["SOAR", "DLP", "NAT", "CDN"] },
-      { id: "231137df", q: "Başarısız oturum açma olayı hangi Windows olay numarasıdır?", options: ["4625", "4624", "1102", "7045"] }
+      { id: "b99d4e98", q: "Farklı kaynaklardan gelen olayları birleştirip şüpheli desen bulmaya ne denir?", options: ["İlişkilendirme (correlation)", "Yedekleme", "Şifreleme", "Maskeleme"], obj: "h2" },
+      { id: "464995b3", q: "Log analizinde zaman damgalarının doğru olması için hangi servis önemlidir?", options: ["NTP", "DHCP", "SMTP", "FTP"], obj: "h4" },
+      { id: "316ca665", q: "Alarmdan sonra müdahaleyi otomatikleştiren çözüm hangisidir?", options: ["SOAR", "DLP", "NAT", "CDN"], obj: "h3" },
+      { id: "231137df", q: "Başarısız oturum açma olayı hangi Windows olay numarasıdır?", options: ["4625", "4624", "1102", "7045"], obj: "h1" }
     ],
     interview: [
       { q: "SIEM nedir?", a: "Çeşitli kaynaklardan logları toplayan, normalleştiren, ilişkilendiren ve alarm üreten merkezi sistemdir. Olay tespitini, araştırmayı ve uyum raporlamasını destekler." },
@@ -248,11 +261,23 @@
       { t: "box", h: "İlkeler", text: "En az yetki (least privilege), görev ayrımı (separation of duties), 'bilmesi gereken kadar' (need to know). Çalışan görev değiştirince ya da ayrılınca yetkiler güncellenmeli (joiner-mover-leaver)." },
       { t: "warn", h: "Tuzak", text: "SMS kodu MFA'dır ama en zayıf biçimlerindendir (SIM swap). Mümkünse uygulama tabanlı kod ya da donanım anahtarı (FIDO2) kullan." }
     ],
+    objectives: [
+      { id: "h1", text: "Bildiğin, sahip olduğun ve olduğun faktör türlerini ayırıp MFA'yı doğru tanımlayabilirsin." },
+      { id: "h2", text: "DAC, MAC, RBAC ve ABAC modellerini ayırt edebilirsin." },
+      { id: "h3", text: "En az yetki ve görev ayrımı gibi ilkeleri bir örneğe uygulayabilirsin." }
+    ],
+    summary: [
+      "MFA farklı faktör türlerini birleştirir: bildiğin, sahip olduğun, olduğun.",
+      "İki parola birden MFA değildir; aynı faktör türü iki kez kullanılmış olur.",
+      "RBAC izinleri role bağlar ve en yaygın kurumsal yöntemdir; DAC, MAC, ABAC ve kural tabanlı modeller de vardır.",
+      "SSO, federasyon, dizin hizmeti ve PAM kimlik yönetiminin temel teknolojileridir.",
+      "SMS kodu MFA'dır ama zayıftır (SIM swap); uygulama kodu ya da FIDO2 anahtarı tercih edilir."
+    ],
     quiz: [
-      { id: "2a683325", q: "Parola + telefondaki uygulama kodu hangi faktör türlerini birleştirir?", options: ["Bildiğin + sahip olduğun", "Bildiğin + bildiğin", "Olduğun + olduğun", "Hepsi aynı"] },
-      { id: "acf1bbbe", q: "İzinleri kişiye değil role bağlayan model hangisidir?", options: ["RBAC", "DAC", "MAC", "NAT"] },
-      { id: "56c40315", q: "Parola ve güvenlik sorusu birlikte kullanılırsa bu MFA midir?", options: ["Hayır, ikisi de 'bildiğin' faktörü", "Evet", "Sadece bankalarda", "Sadece mobilde"] },
-      { id: "82350d58", q: "Bir kullanıcının kendi görevini yapmak için gereken minimum yetkiye sahip olması hangi ilkedir?", options: ["En az yetki (least privilege)", "Görev ayrımı", "Tek oturum açma", "Federasyon"] }
+      { id: "2a683325", q: "Parola + telefondaki uygulama kodu hangi faktör türlerini birleştirir?", options: ["Bildiğin + sahip olduğun", "Bildiğin + bildiğin", "Olduğun + olduğun", "Hepsi aynı"], obj: "h1" },
+      { id: "acf1bbbe", q: "İzinleri kişiye değil role bağlayan model hangisidir?", options: ["RBAC", "DAC", "MAC", "NAT"], obj: "h2" },
+      { id: "56c40315", q: "Parola ve güvenlik sorusu birlikte kullanılırsa bu MFA midir?", options: ["Hayır, ikisi de 'bildiğin' faktörü", "Evet", "Sadece bankalarda", "Sadece mobilde"], obj: "h1" },
+      { id: "82350d58", q: "Bir kullanıcının kendi görevini yapmak için gereken minimum yetkiye sahip olması hangi ilkedir?", options: ["En az yetki (least privilege)", "Görev ayrımı", "Tek oturum açma", "Federasyon"], obj: "h3" }
     ],
     interview: [
       { q: "MFA neden önemlidir?", a: "Parola çalınsa ya da tahmin edilse bile saldırganın ikinci bir faktöre ihtiyacı olur. Kimlik tabanlı saldırıların çoğunu engeller. Tercihen uygulama tabanlı kod ya da FIDO2 anahtar kullanılır." },
@@ -308,11 +333,24 @@
       { t: "box", h: "Araç örnekleri", text: "Betikleme (PowerShell, Python, Bash), yapılandırma yönetimi (Ansible), IaC (Terraform), API'ler ve webhook'lar, SOAR platformları." },
       { t: "warn", h: "Tuzak", text: "Otomasyon yetkisi geniş tutulursa saldırganın en iyi hedefi olur. Otomasyon hesaplarına en az yetki ver, sırları kasada tut, değişiklikleri sürüm kontrolünde incele." }
     ],
+    objectives: [
+      { id: "h1", text: "Güvenlikte otomasyonun kullanım alanlarını ve faydalarını sayabilirsin." },
+      { id: "h2", text: "IaC, Ansible, betikleme ve SOAR gibi araç örneklerini tanıyabilirsin." },
+      { id: "h3", text: "Otomasyonun risklerini (toplu hasar, tek hata noktası, teknik borç) açıklayabilirsin." },
+      { id: "h4", text: "Otomasyon hesapları için en az yetki ve sırları kasada tutma yaklaşımını uygulayabilirsin." }
+    ],
+    summary: [
+      "Otomasyon hesap yönetimi, yama, güvenlik duvarı kuralları ve olay müdahalesi gibi işleri tutarlı yapar.",
+      "Faydaları hız, ölçeklenebilirlik, insan hatasını azaltma ve denetlenebilir kayıttır.",
+      "Riskleri: yanlış betikle kitlesel hasar, çalınan otomasyon hesabı, teknik borç ve maliyet.",
+      "Araçlar: PowerShell, Python, Bash, Ansible, Terraform (IaC), API ve webhook, SOAR.",
+      "Otomasyon hesaplarına en az yetki ver, sırları kasada tut, değişiklikleri sürüm kontrolünde incele."
+    ],
     quiz: [
-      { id: "c195b94c", q: "Otomasyonun güvenlik açısından temel faydası nedir?", options: ["Tutarlılık ve hız, insan hatasını azaltma", "Parolaları kaldırmak", "Ağı kapatmak", "Log tutmamak"] },
-      { id: "a9781c87", q: "Altyapıyı kodla tanımlayıp tekrar edilebilir kurmaya ne denir?", options: ["IaC", "SIEM", "DLP", "RAID"] },
-      { id: "a92107b2", q: "Otomasyonun bir riski hangisidir?", options: ["Hatalı betiğin toplu hasar vermesi", "Ağın yavaşlaması", "Daha çok parola", "Sertifika süresi"] },
-      { id: "ef57b5fe", q: "Otomasyon hesapları için en doğru yaklaşım nedir?", options: ["En az yetki ve sırların kasada tutulması", "Domain admin yetkisi", "Parolayı betiğe yazmak", "Ortak kullanıcı"] }
+      { id: "c195b94c", q: "Otomasyonun güvenlik açısından temel faydası nedir?", options: ["Tutarlılık ve hız, insan hatasını azaltma", "Parolaları kaldırmak", "Ağı kapatmak", "Log tutmamak"], obj: "h1" },
+      { id: "a9781c87", q: "Altyapıyı kodla tanımlayıp tekrar edilebilir kurmaya ne denir?", options: ["IaC", "SIEM", "DLP", "RAID"], obj: "h2" },
+      { id: "a92107b2", q: "Otomasyonun bir riski hangisidir?", options: ["Hatalı betiğin toplu hasar vermesi", "Ağın yavaşlaması", "Daha çok parola", "Sertifika süresi"], obj: "h3" },
+      { id: "ef57b5fe", q: "Otomasyon hesapları için en doğru yaklaşım nedir?", options: ["En az yetki ve sırların kasada tutulması", "Domain admin yetkisi", "Parolayı betiğe yazmak", "Ortak kullanıcı"], obj: "h4" }
     ],
     interview: [
       { q: "Güvenlikte otomasyon nerede kullanılır?", a: "Kullanıcı yaşam döngüsü, yama ve yapılandırma uyumu, alarm sonrası müdahale (SOAR), zafiyet tarama ve ticket akışı, CI/CD'de güvenlik testleri." },
@@ -365,11 +403,24 @@
       ] },
       { t: "warn", h: "Tuzak", text: "Sınavda sıralama sorulur: Hazırlık, Tespit ve Analiz, Sınırlama, Yok etme, Kurtarma, Ders çıkarma. Sınırlama, yok etmeden önce gelir; önce yayılmayı durdurursun." }
     ],
+    objectives: [
+      { id: "h1", text: "Olay müdahalesinin altı aşamasını doğru sırayla sıralayabilirsin." },
+      { id: "h2", text: "Sınırlama, yok etme ve kurtarma aşamalarını birbirinden ayırabilirsin." },
+      { id: "h3", text: "Olay sonrası ders çıkarma toplantısının amacını açıklayabilirsin." },
+      { id: "h4", text: "Şüpheli bir cihazda ilk anda yapılacak adımları (kaydet, kanıtı koru, bildir) uygulayabilirsin." }
+    ],
+    summary: [
+      "Aşamalar: hazırlık, tespit ve analiz, sınırlama, yok etme, kurtarma, ders çıkarma.",
+      "Sınırlama yok etmeden önce gelir; önce yayılma durdurulur.",
+      "İlk anda olay kaydedilir, kanıt korunur, doğru kişilere haber verilir, önem düzeyi atanır.",
+      "Roller: olay yöneticisi, teknik analist, iletişim, hukuk/KVKK ve yönetim temsilcisi.",
+      "Kanıt toplamadan temizlik yapılmaz; aksi halde kök neden kaybolur."
+    ],
     quiz: [
-      { id: "1d446777", q: "Olay müdahalesinde ilk aşama hangisidir?", options: ["Hazırlık", "Sınırlama", "Yok etme", "Kurtarma"] },
-      { id: "0173ae17", q: "Yayılmayı durdurmak (örn. cihazı ağdan ayırmak) hangi aşamadır?", options: ["Sınırlama (containment)", "Kurtarma", "Ders çıkarma", "Hazırlık"] },
-      { id: "e40f1fb4", q: "Olay kapandıktan sonra yapılan toplantıya ne ad verilir?", options: ["Ders çıkarma (lessons learned)", "Sınırlama", "Tespit", "Hazırlık"] },
-      { id: "34031ac9", q: "Şüpheli bilgisayarda ilk yapılması gereken doğru adım hangisidir?", options: ["Ağdan ayırıp güvenlik ekibine bildirmek", "Diski formatlamak", "Sessizce kullanmaya devam etmek", "Parolayı e-postayla göndermek"] }
+      { id: "1d446777", q: "Olay müdahalesinde ilk aşama hangisidir?", options: ["Hazırlık", "Sınırlama", "Yok etme", "Kurtarma"], obj: "h1" },
+      { id: "0173ae17", q: "Yayılmayı durdurmak (örn. cihazı ağdan ayırmak) hangi aşamadır?", options: ["Sınırlama (containment)", "Kurtarma", "Ders çıkarma", "Hazırlık"], obj: "h2" },
+      { id: "e40f1fb4", q: "Olay kapandıktan sonra yapılan toplantıya ne ad verilir?", options: ["Ders çıkarma (lessons learned)", "Sınırlama", "Tespit", "Hazırlık"], obj: "h3" },
+      { id: "34031ac9", q: "Şüpheli bilgisayarda ilk yapılması gereken doğru adım hangisidir?", options: ["Ağdan ayırıp güvenlik ekibine bildirmek", "Diski formatlamak", "Sessizce kullanmaya devam etmek", "Parolayı e-postayla göndermek"], obj: "h4" }
     ],
     interview: [
       { q: "Olay müdahale aşamalarını say.", a: "Hazırlık, tespit ve analiz, sınırlama, yok etme, kurtarma ve ders çıkarma. Önce yayılmayı durdurur, sonra kök nedeni temizler, sistemi güvenli şekilde geri getirir ve süreci iyileştiririm." },
