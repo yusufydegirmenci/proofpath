@@ -366,7 +366,7 @@
       {
         t: "cmd",
         lang: "python",
-        text: "print(7 / 2)        # 3.5   (her zaman float)\nprint(7 // 2)       # 3     (tam bölme, aşağı yuvarlar)\nprint(-7 // 2)      # -4    (aşağı: eksi sonsuza doğru)\nprint(7 % 2)        # 1     (kalan)\nprint(2 ** 3)       # 8     (üs)\nprint(2 ** 3 ** 2)  # 512   (üs sağdan sola: 2 ** 9)\nprint(10 - 2 * 3)   # 4     (çarpma önce)\nprint((10 - 2) * 3) # 24    (parantez önce)"
+        text: "print(9 / 2)        # 4.5   (her zaman float)\nprint(9 // 2)       # 4     (tam bölme, aşağı yuvarlar)\nprint(-9 // 2)      # -5    (aşağı: eksi sonsuza doğru)\nprint(9 % 2)        # 1     (kalan)\nprint(2 ** 4)       # 16    (üs)\nprint(2 ** 2 ** 3)  # 256   (üs sağdan sola: 2 ** 8)\nprint(10 - 2 * 4)   # 2     (çarpma önce)\nprint((10 - 2) * 4) # 32    (parantez önce)"
       },
       {
         t: "steps",
@@ -399,7 +399,7 @@
       { id: "h3", text: "==, !=, <, >, <=, >= ile and, or, not'u birleştiren bir ifadenin True ya da False olduğunu söyleyebilirsin." },
       { id: "h4", text: "+=, -=, *= atamalarını ve metinlerde + ile * davranışını kullanıp sonucunu tahmin edebilirsin." }
     ],
-    summary: ["/ her zaman float verir; // aşağı yuvarlayan tam bölmedir (-7 // 2 sonucu -4); % kalanı verir; ** üstür.", "Öncelik: parantez, **, * / // %, + -, karşılaştırma, not, and, or. ** sağdan sola çalışır.", "= atama, == karşılaştırmadır. Karşılaştırmalar bool döndürür; 1 < x < 10 zincirlenebilir.", "and ve or kısa devre yapar. not tersini alır.", "x += 2 işlemi x = x + 2 demektir. Metinde + birleştirir, * tekrarlar."],
+    summary: ["/ her zaman float verir; // aşağı yuvarlayan tam bölmedir (negatifte eksi sonsuza doğru yuvarlar); % kalanı verir; ** üstür.", "Öncelik: parantez, **, * / // %, + -, karşılaştırma, not, and, or. ** sağdan sola çalışır.", "= atama, == karşılaştırmadır. Karşılaştırmalar bool döndürür; 1 < x < 10 zincirlenebilir.", "and ve or kısa devre yapar. not tersini alır.", "x += 2 işlemi x = x + 2 demektir. Metinde + birleştirir, * tekrarlar."],
     prereq: [2],
     minutes: 30,
     sonDogrulama: "2026-10-24",
@@ -457,7 +457,7 @@
     interview: [
       {
         q: "/ ile // arasındaki fark nedir?",
-        a: "/ gerçek bölmedir ve her zaman float verir (7 / 2 = 3.5). // tam bölmedir ve aşağı yuvarlar (7 // 2 = 3, -7 // 2 = -4)."
+        a: "/ gerçek bölmedir ve her zaman float verir (9 / 2 = 4.5). // tam bölmedir ve aşağı yuvarlar (9 // 2 = 4, -9 // 2 = -5)."
       },
       {
         q: "= ile == arasındaki fark nedir?",
