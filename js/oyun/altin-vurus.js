@@ -248,7 +248,7 @@ function wmPanel(){
 }
 
 /* kanıt cüzdanı */
-var EV_TN={py:["Python","Python"],ccna:["Ağ (CCNA)","Networking (CCNA)"],eng:["İş İngilizcesi","Workplace English"],sec:["Siber güvenlik","Cybersecurity"],bk:["Backend / yazılım","Backend / software"],net:["Ağ (Network+)","Networking (Network+)"],dev:["DevOps","DevOps"],qa:["Yazılım testi","Software testing"]};
+var EV_TN={py:["Python","Python"],js:["JavaScript","JavaScript"],ccna:["Ağ (CCNA)","Networking (CCNA)"],eng:["İş İngilizcesi","Workplace English"],sec:["Siber güvenlik","Cybersecurity"],bk:["Backend / yazılım","Backend / software"],net:["Ağ (Network+)","Networking (Network+)"],dev:["DevOps","DevOps"],qa:["Yazılım testi","Software testing"]};
 function evSolid(t){var M=mastLevels()[t];return M?M[2]+M[3]:0}
 function evLines(en){
   var M=mastLevels(),out=[],PL=plLoad();

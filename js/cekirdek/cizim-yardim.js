@@ -51,7 +51,7 @@ var NAV={bugun:["Bugün","M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 7a5 5 0 1 0 0
 var HELPKEY="ya_help";
 var TABHELP={
  bugun:["Günün başlangıç noktası","Bugün yapılacak işler sırayla burada. En üstteki büyük düğme sıradaki işi açar.","Büyük düğmeye bas. İş bitince bir sonrakine geç."],
- ders:["Dersin okunduğu yer","Sekiz dersin hepsi burada: CCNA, Network, İngilizce, Siber, Backend, DevOps, Test Uzmanı, Python. Sırası: Isınma, Anlatım, Mini sınav.","Üstten dersini seç, dersi baştan sona oku, en altta 'Dersi okudum'a bas. Üstteki 'Kavram Atlası'nda yazılım ve İngilizce kavramlarını benzetme, örnek ve mini soruyla öğrenirsin."],
+ ders:["Dersin okunduğu yer","Dokuz dersin hepsi burada: CCNA, Network, İngilizce, Siber, Backend, DevOps, Test Uzmanı, Python, JavaScript. Sırası: Isınma, Anlatım, Mini sınav.","Üstten dersini seç, dersi baştan sona oku, en altta 'Dersi okudum'a bas. Üstteki 'Kavram Atlası'nda yazılım ve İngilizce kavramlarını benzetme, örnek ve mini soruyla öğrenirsin."],
  sinif:["Canlı soru çözme","Gerçek iş durumlarından sorular gelir. Cevabını yazarsın ya da şık seçersin; hemen değerlendirilir.","Dersini seç, 'Dersi başlat'a bas, 5 soruyu çöz."],
  atolye:["Günlük program ve alıştırma","Ders gelene kadar boş kalmazsın: kelime, kavram, alıştırma, defter ve kaynaklar burada.","Üstten bir bölüm seç. Program sıradaki işi söyler; 'Şimdi yap'a bas."],
  oyun:["Koş, sür, öğren","Üç şeritli yolda koşarsın ya da araba sürersin. Kapılarda soru çıkar; doğru cevabın şeridine geçersin.","Başla'ya bas, sola/sağa kaydır, doğru şeritte kal. Günlük koşu ve haftalık Patron var."],
