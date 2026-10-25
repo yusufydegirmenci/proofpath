@@ -25,7 +25,7 @@ function gsAnswer(k,ok){
   var th=GS.sk[it.t];if(typeof th==="number")GS.sk[it.t]=PP.ogr.ustalik.beceriAdim(th,it.d,ok);
   gsSave();
 }
-var GM_TN={ccna:"CCNA",net:"Network",eng:"İngilizce",sec:"Siber",bk:"Backend",dev:"DevOps",qa:"Test Uzmanı",py:"Python",sw:"Yazılım",en:"İngilizce",v:"Kelime"};
+var GM_TN={ccna:"CCNA",net:"Network",eng:"İngilizce",sec:"Siber",bk:"Backend",dev:"DevOps",qa:"Test Uzmanı",py:"Python",js:"JavaScript",sw:"Yazılım",en:"İngilizce",v:"Kelime"};
 function gmQB(i,r,tf){
   var it=QB[i],cor=it.o[it.a];
   if(tf){var good=r()<.5,wr=shuf(it.o.filter(function(_,j){return j!==it.a}),r)[0],shown=good?cor:wr;

@@ -98,6 +98,27 @@
         var t = tutarlar(v), i = t.indexOf(Math.max.apply(null, t));
         return bak(s, [t[i], v.satirlar[i][0]], "[en yüksek tutar, o siparişin ürün adı] biçiminde ver; fonksiyon return ile değer döndürmeli.");
       },
-      varyant: function (v) { return degistir(v, 4, 1, 2); } }
+      varyant: function (v) { return degistir(v, 4, 1, 2); } },
+    { id: "py-9-hatali", ders: "py-9", tur: "python", baslik: "Python · hatalı girdileri yakala",
+      gorev: "`girdiler` listesi siparişlerin adetlerini metin olarak ve iki ek değeri (\"on\" ile \"7\") tutar. Her değeri int() ile sayıya çevir; çevrilemeyenleri try/except ile yakala. `sonuc` değişkenine [geçerli_sayıların_toplamı, hatalı_değer_sayısı] ata.",
+      baslangic: "girdiler = [str(s['adet']) for s in siparisler] + [\"on\", \"7\"]\ntoplam = 0\nhatali = 0\nfor g in girdiler:\n    pass\nsonuc = None",
+      ipucu: ["Döngüde int(g) çağrısı bazı değerlerde hata fırlatır; çağrıyı try bloğuna al.", "int(\"on\") ValueError verir. except ValueError: bloğunda hatalı sayacını artır, try içinde toplamı artır.", "try: toplam += int(g) ; except ValueError: hatali += 1 ; sonra sonuc = [toplam, ____] ; boşluğa hatalıları sayan değişkenin adını yaz."],
+      adimla: "Döngüde \"on\" değerine gelince akışın try'dan except'e nasıl atladığını izle.",
+      cozum: "girdiler = [str(s['adet']) for s in siparisler] + [\"on\", \"7\"]\ntoplam = 0\nhatali = 0\nfor g in girdiler:\n    try:\n        toplam += int(g)\n    except ValueError:\n        hatali += 1\nsonuc = [toplam, hatali]\n\nNeden: int(\"on\") ValueError fırlatır; except onu yakalayınca döngü kesilmez ve diğer değerler toplanmaya devam eder.",
+      kontrol: function (s, v) {
+        return bak(s, [toplamAdet(v) + 7, 1], "[toplam, hatalı sayısı] biçiminde ver; toplam yalnız çevrilebilen değerleri içermeli, \"on\" hatalı sayılmalı.");
+      },
+      varyant: function (v) { return degistir(v, 0, 1, 20); } },
+    { id: "py-10-satir", ders: "py-10", tur: "python", baslik: "Python · ham satırları ayrıştır",
+      gorev: "`ham` listesi her siparişi ' URUN ; adet ; fiyat ' biçiminde bir metin satırı olarak tutar. Her satırı strip ve split ile parçala, ürün adını küçük harfe çevir. `sonuc` değişkenine [ürün_adları_listesi, tüm_siparişlerin_toplam_tutarı] ata (tutar = adet çarpı fiyat).",
+      baslangic: "ham = [\" \" + s['urun'].upper() + \" ; \" + str(s['adet']) + \" ; \" + str(s['fiyat']) + \" \" for s in siparisler]\nurunler = []\ntoplam = 0\nfor satir in ham:\n    pass\nsonuc = None",
+      ipucu: ["Her satırı ayraçtan parçala: satir.split(';') üç parça verir; parçaların başındaki ve sonundaki boşluğu strip ile at.", "ad, adet, fiyat = [p.strip() for p in satir.split(';')] ; adı lower() ile küçült; adet ve fiyat hâlâ metindir, int() ve float() ile çevir.", "urunler.append(ad.lower()) ; toplam += int(adet) * float(____) ; boşluğa fiyat parçasının adını yaz."],
+      adimla: "Bir satırın strip, split ve lower adımlarından geçerken nasıl değiştiğini izle.",
+      cozum: "ham = [\" \" + s['urun'].upper() + \" ; \" + str(s['adet']) + \" ; \" + str(s['fiyat']) + \" \" for s in siparisler]\nurunler = []\ntoplam = 0\nfor satir in ham:\n    ad, adet, fiyat = [p.strip() for p in satir.split(';')]\n    urunler.append(ad.lower())\n    toplam += int(adet) * float(fiyat)\nsonuc = [urunler, toplam]\n\nNeden: split metni parçalara ayırır, strip kenar boşluklarını atar, lower küçük harfe çevirir; adet ve fiyat metin olduğu için hesaptan önce int() ve float() ile sayıya çevrilir.",
+      kontrol: function (s, v) {
+        var t = tutarlar(v), top = t.reduce(function (a, b) { return a + b; }, 0);
+        return bak(s, [v.satirlar.map(function (r) { return r[0].toLowerCase(); }), top], "[ad listesi, toplam tutar] biçiminde ver; adlar küçük harfli, toplam adet çarpı fiyatların toplamı olmalı.");
+      },
+      varyant: function (v) { return degistir(degistir(v, 3, 2, 9), 0, 0, "Kurşun"); } }
   ];
 })();
