@@ -100,7 +100,7 @@
     var lab = pass.parentNode;
     var ipucu = null;
     if (kayit) {
-      ipucu = el("div", { class: "ppg-ip", id: "ppg-ip", text: "En az 8 karakter." });
+      ipucu = el("div", { class: "ppg-ip", id: "ppg-ip", text: "En az 10 karakter, yalnızca sayı olmasın." });
       pass.setAttribute("aria-describedby", "ppg-ip");
     }
     var goster = el("button", { class: "ppa-link", type: "button", "aria-pressed": "false", text: "Şifreyi göster", onclick: function () {
