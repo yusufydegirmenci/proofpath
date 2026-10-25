@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## Faz K11 (dal: faz-k11; migration, canlı DB, gizli anahtar, zamanlanmış iş, yeni bağımlılık yok)
+- Python hattına 2 ders: 9 `try/except` (ValueError, TypeError, ZeroDivisionError, finally) ve 10 dize yöntemleri (split, join, strip, replace, find, upper/lower, format) (`content/lessons/py-3.js`). Her ders 8 soru, 4 hedef, 2 çalıştırılabilir örnek (CPython 3.12 ile doğrulandı), bozuk kodu düzeltme görevi, PP.alan alıştırması (`py-9-hatali`, `py-10-satir`; kontrol veriden hesaplanır, varyantla yeniden çalışır).
+- Ders metnindeki örnek kodlar sınav sorularıyla aynı değer/ifadeyi kullanmaz (faz-k10'daki sızıntı tekrarlanmadı).
+- STARTER.py ve TMAP.py 10 konuya çıktı. Sunucu tohumu: hedef metadata `supabase/seed/20261018_1_ogr_hedefler.sql` (+6 satır); cevap anahtarı yalnız özel depoda (`kayitlar/seed/ek-k7.sql`, hedef `ek-k7-hedef.sql`). UYGULANMADI.
+- Test: `tests/faz_k10_py.js` 10 derse genişledi (171); sayılar güncellendi: `faz9s_tarama` (970 soru), `faz12b_geri_bildirim` (10 tarihli ders), `faz5c_net` (py 10 konu).
+
 ## Faz K10 (dal: faz-k10; migration, canlı DB, gizli anahtar, zamanlanmış iş, yeni bağımlılık yok)
 - Yeni hat `py` (Python, PCEP düzeyi, ders 1-8): değişkenler ve türler, giriş-çıkış, operatörler, koşullar, döngüler, liste ve demet, sözlük ve küme, fonksiyonlar (`content/lessons/py-1.js`, `py-2.js`). Kapsam herkese açık PCEP müfredat özetinden; metinler özgün.
 - Her ders: anlatım, 2+ çalıştırılabilir kod örneği (CPython 3.12 ile doğrulandı), bozuk kodu düzeltme görevi, 4 ölçülebilir hedef, hedefe bağlı 8 soru (answer/why/whyNot sunucu tohumunda), uygulama alanı (PP.alan, Pyodide) alıştırması. Kontrol veriden hesaplanır ve değişmiş veriyle yeniden çalışır (`content/lessons/py-alan.js`).
