@@ -1,0 +1,42 @@
+/* FORNEX marka paleti — index.html'deki tüm stillerden SONRA yüklenir, renk değişkenlerini ezer.
+   Koyu tema varsayılan; açık tema yalnız Ayarlar > Tema > Açık (ya da Otomatik + açık sistem) ile.
+   Ana renkler: Azure #3B82F6, Violet #8B5CF6, Charcoal #0F1117, Mist #E5E7EB.
+   İz renkleri (--net, --eng, --sec, --qa, --bk, --tnet, --tdev) veri rengi olduğu için ayrışık kalır. */
+:root:not([data-theme="light"]){
+  color-scheme:dark; --f-disp:"Familjen Grotesk",system-ui,sans-serif;
+  --bg:#0F1117; --panel:#161A23; --panel2:#1D2230; --ink:#E5E7EB; --mute:#9CA3AF; --line:#2A3142;
+  --gold:#A5B4FC; --gold-soft:#252A4A;
+  --brand:#2563EB; --brand2:#7C3AED; --brand-ink:#60A5FA; --brand-soft:#1A2540; --on-brand:#FFFFFF; --focus:#60A5FA;
+  --net:#5EC2B4; --net-soft:#17332F; --on-net:#0B1A18; --eng:#E2AE62; --eng-soft:#33291A;
+  --rust:#FB923C; --rust-soft:#3A2418; --ok:#34D399; --warn:#FBBF24; --bad:#F87171; --info:#60A5FA;
+  --heat0:#1D2230; --heat1:#1E3358; --heat2:#2B4F95; --heat3:#3B82F6; --heat4:#93C5FD;
+  --sky1:#121628; --sky2:#232A4D; --orb:#E5E7EB; --orbglow:rgba(139,92,246,.30); --star:1;
+  --bld:#151A26; --bld2:#232B3D; --dark-win:rgba(147,197,253,.12);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.32);
+  --sec:#B3A0F0; --sec-soft:#2C2848; --qa:#EB92B2; --qa-soft:#3A2530; --bk:#7FB4E6; --bk-soft:#1F3248;
+  --tnet:#E0A64A; --tnet-soft:#3A2C14; --tdev:#6CCB94; --tdev-soft:#183A28;
+  --net-ink:var(--net); --eng-ink:var(--eng); --on-bar:#0B1A18;
+  --cm-kw:#C4A8FF; --cm-str:#8FD694; --cm-num:#F0B072; --cm-yorum:#9CA3AF; --cm-tip:#7FC4EE; --cm-fn:#6FD3DE;
+}
+:root:not([data-theme="light"]) .seg button[aria-pressed="true"]{color:#0B1A18}
+:root:not([data-theme="light"]) .hlp-i{color:#0F1117}
+:root[data-theme="light"]{
+  color-scheme:light; --f-disp:"Familjen Grotesk",system-ui,sans-serif;
+  --bg:#F5F6FA; --panel:#FFFFFF; --panel2:#EEF0F6; --ink:#0F1117; --mute:#4B5563; --line:#DDE1EA;
+  --gold:#4F46E5; --gold-soft:#E0E7FF;
+  --brand:#2563EB; --brand2:#7C3AED; --brand-ink:#1D4ED8; --brand-soft:#DBEAFE; --on-brand:#FFFFFF; --focus:#2563EB;
+  --rust:#C2410C; --rust-soft:#FFEDD5; --ok:#15803D; --warn:#B45309; --bad:#B91C1C; --info:#1D4ED8;
+  --heat0:#E5E7EB; --heat1:#DBEAFE; --heat2:#93C5FD; --heat3:#3B82F6; --heat4:#1D4ED8;
+  --sky1:#E0E7FF; --sky2:#DBEAFE; --orbglow:rgba(59,130,246,.35);
+  --shadow:0 1px 2px rgba(15,17,23,.06),0 6px 18px rgba(15,17,23,.07);
+}
+body{background:var(--bg);color:var(--ink)}
+/* Ana eylem: marka mavisi; en önemli eylem (büyük düğme): mavi→mor gradyan. Beyaz yazı her iki uçta 5:1'in üstünde. */
+.btn{background:var(--brand);border-color:var(--brand);color:var(--on-brand);box-shadow:0 6px 18px -6px color-mix(in srgb,var(--brand) 55%,transparent)}
+.btn.big{background:linear-gradient(135deg,var(--brand),var(--brand2))}
+.btn.ghost{background:none;border:1px solid color-mix(in srgb,var(--brand-ink) 55%,var(--line));color:var(--brand-ink);box-shadow:none}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.abar .awm b,.idc-top b{letter-spacing:.32em;font-family:var(--f-body)}
+/* Seçili sekme: marka rengi (iz rengi değil) */
+.tab[aria-selected="true"]{color:var(--brand-ink);background:color-mix(in srgb,var(--brand-ink) 13%,transparent)}
+.tab[aria-selected="true"]::after{background:linear-gradient(90deg,var(--brand),var(--brand2))}
