@@ -93,9 +93,9 @@
     surum: "2026-10-v1",
     quiz: [
       {
-        id: "8552bd3e",
-        q: "for (let i = 0; i < 4; i++) console.log(i) hangi sayıları yazdırır?",
-        options: ["1, 2, 3, 4", "0, 1, 2, 3", "0, 1, 2, 3, 4", "4"],
+        id: "9511bda4",
+        q: "for (let i = 2; i < 7; i += 2) console.log(i) hangi sayıları yazdırır?",
+        options: ["2, 4, 6, 8","2, 4, 6","4, 6","2, 4"],
         obj: "h1"
       },
       {
@@ -111,9 +111,9 @@
         obj: "h2"
       },
       {
-        id: "cf519f83",
-        q: "let n = 1; while (n <= 5) { console.log(n); } döngüsünün gövdesinde n hiç değiştirilmezse ne olur?",
-        options: ["Hemen biter", "Bir kez çalışıp biter", "ReferenceError verir", "Sonsuz döngüye girer"],
+        id: "cbe477d4",
+        q: "let k = 3; while (k > 0) { k++; } döngüsü ne yapar?",
+        options: ["3 tur döner ve biter","k sıfıra inene kadar döner","Hiç çalışmaz","Sonsuz döngüye girer"],
         obj: "h2"
       },
       {
@@ -123,21 +123,21 @@
         obj: "h3"
       },
       {
-        id: "7fd7bc55",
-        q: "break ile continue arasındaki fark nedir?",
-        options: ["continue döngüyü tümden bitirir, break sıradaki ture geçer", "break döngüyü bitirir, continue sıradaki ture geçer", "İkisi de aynı işi yapar", "break yalnız while içinde çalışır"],
+        id: "5bed82d6",
+        q: "1'den 5'e giden iki ayrı döngüde, i === 3 iken (a) break, (b) continue çalıştırılıp console.log(i) bu denetimden SONRA yazılırsa çıktılar sırasıyla nedir?",
+        options: ["1, 2, 4, 5 ve 1, 2","1, 2 ve 1, 2, 4, 5","1, 2 ve 1, 2","1, 2, 3 ve 1, 2, 4, 5"],
         obj: "h3"
       },
       {
-        id: "3e8fa125",
-        q: "for (const k in ['x', 'y']) console.log(k) ne yazdırır?",
-        options: ["0 ve 1, ikisi de metin (string)", "x ve y", "0 ve 1, ikisi de sayı", "undefined, undefined"],
+        id: "42820e6b",
+        q: "for (const i in [5, 6, 7]) console.log(i + 1) ne yazdırır?",
+        options: ["01, 11, 21","1, 2, 3; sıra numaraları sayıdır","6, 7, 8; elemanlar artırılır","5, 6, 7; elemanlar yazılır"],
         obj: "h4"
       },
       {
-        id: "98f47ac4",
-        q: "const dizi = ['a', 'b', 'c']; for (let i = 0; i <= dizi.length; i++) console.log(dizi[i]) kodunda sorun nedir?",
-        options: ["Hiçbir sorun yok", "RangeError verir", "Döngü hiç çalışmaz", "Son turda dizi[i] undefined olur; koşul < olmalıdır"],
+        id: "709e5d47",
+        q: "const w = ['p', 'q', 'r']; for (let i = 1; i < w.length; i++) console.log(w[i]) kodu hangi elemanları yazdırır?",
+        options: ["p, q, r; tüm elemanlar gezilir","p, q; son eleman atlanır","q, r, undefined; sınır bir fazladır","q, r; ilk eleman atlanır"],
         obj: "h4"
       }
     ],
@@ -252,9 +252,9 @@
         obj: "h1"
       },
       {
-        id: "0377616c",
-        q: "const a = [1, 2]; const b = a.map((x) => x * 10); satırlarından sonra a nedir?",
-        options: ["[10, 20]", "undefined", "[1, 2]", "[1, 2, 10, 20]"],
+        id: "60f2dce8",
+        q: "const m = [4, 9]; m.map((n) => n - 1); (sonuç bir değişkene atanmadı) satırlarından sonra m nedir?",
+        options: ["[3, 8]","undefined","[4, 9]","[]"],
         obj: "h1"
       },
       {
@@ -270,15 +270,15 @@
         obj: "h2"
       },
       {
-        id: "73374765",
-        q: "const r = [1, 2].forEach((x) => x * 2); satırından sonra r nedir?",
-        options: ["[2, 4]", "[1, 2]", "undefined", "6"],
+        id: "3e29917b",
+        q: "console.log([5].forEach((x) => { return x + 1; })) ne yazar?",
+        options: ["6 (callback sonucu)","[6] (yeni dizi)","undefined","5 (eleman aynen)"],
         obj: "h3"
       },
       {
-        id: "78a65a21",
-        q: "[1, 2, 3].forEach((x) => { if (x === 2) break; }) çalıştırılırsa ne olur?",
-        options: ["İlk elemandan sonra durur, hata vermez", "İkinci elemanda döngü biter, hata vermez", "SyntaxError verir", "Sonsuz döngüye girer"],
+        id: "5c74aea9",
+        q: "[1, 2, 3].forEach((x) => { if (x === 2) continue; console.log(x); }) çalıştırılırsa ne olur?",
+        options: ["1 ve 3 yazılır","1 yazılır, sonra durur","SyntaxError verir","1, 2 ve 3 yazılır"],
         obj: "h3"
       },
       {
@@ -288,9 +288,9 @@
         obj: "h4"
       },
       {
-        id: "e327e709",
-        q: "[1, 2, 3].map((x) => { x * 2 }) ifadesi neye eşittir?",
-        options: ["[2, 4, 6]", "[undefined, undefined, undefined]", "SyntaxError verir", "[1, 2, 3]"],
+        id: "bf5cdb94",
+        q: "['a', 'b'].map((s) => { s.toUpperCase(); }) ifadesi neye eşittir?",
+        options: ["['A', 'B'] (büyük harfli dizi)","[undefined, undefined]","['a', 'b'] (asıl dizi aynen)","SyntaxError verir"],
         obj: "h4"
       }
     ],
@@ -370,7 +370,7 @@
       {
         t: "cmd",
         lang: "javascript",
-        text: "const a = { n: 1, ic: { x: 1 } };\nconst b = a;                 // aynı nesneye ikinci ad\nconst c = { ...a };          // yeni nesne (yüzeysel kopya)\nb.n = 7;\nc.ic.x = 9;\nconsole.log(a.n, c.n, a.ic.x);   // Çıktı: 7 1 9\n\nconst sabit = { puan: 3 };\nsabit.puan = 4;              // hata yok: nesnenin İÇİ değişiyor\nconsole.log(sabit);          // Çıktı: { puan: 4 }\n\nconst bos = {};\nconsole.log(bos.adres?.sehir);   // Çıktı: undefined\ntry { console.log(bos.adres.sehir); } catch (e) { console.log(e.name + \": \" + e.message); }\n// Çıktı: TypeError: Cannot read properties of undefined (reading 'sehir')"
+        text: "const a = { n: 1, ic: { x: 1 } };\nconst b = a;                 // aynı nesneye ikinci ad\nconst c = { ...a };          // yeni nesne (yüzeysel kopya)\nb.n = 7;\nc.ic.x = 9;\nconsole.log(a.n, c.n, a.ic.x);   // Çıktı: 7 1 9\n\nconst sabit = { puan: 3 };\nsabit.puan = 4;              // hata yok: nesnenin İÇİ değişiyor\nconsole.log(sabit);          // Çıktı: { puan: 4 }\n\nconst bos = {};\nconsole.log(bos.adres?.sehir);   // Çıktı: undefined\ntry { console.log(bos.adres.sehir); } catch (e) { console.log(e.name + \": \" + e.message); }\n// Çıktı: TypeError: Cannot read properties of undefined (reading 'sehir') (mesaj tarayıcıya göre değişir)"
       },
       {
         t: "box",
@@ -399,15 +399,15 @@
     surum: "2026-10-v1",
     quiz: [
       {
-        id: "38a16ff4",
-        q: "const o = { ad: 'Ada' }; o.yas = 30; satırlarından sonra Object.keys(o).length kaçtır?",
-        options: ["1", "30", "Hata verir", "2"],
+        id: "0b18296f",
+        q: "const s = { a: 1, b: 2 }; s.c = 3; s.a = 9; satırlarından sonra Object.keys(s).length kaçtır?",
+        options: ["4","9","Hata verir","3"],
         obj: "h1"
       },
       {
-        id: "c35918e6",
-        q: "const k = 'renk'; const o = { renk: 'mavi', k: 'kırmızı' }; ise o[k] nedir?",
-        options: ["mavi", "kırmızı", "undefined", "renk"],
+        id: "4a5646cc",
+        q: "const f = 'ad'; const p = { ad: 'Efe', f: 'Zeynep' }; ise p.f nedir?",
+        options: ["Zeynep","Efe","undefined","ad"],
         obj: "h1"
       },
       {
@@ -417,40 +417,40 @@
         obj: "h2"
       },
       {
-        id: "5b1256b7",
-        q: "'adet' in { adet: 5 } ve 5 in { adet: 5 } sonuçları sırasıyla nedir?",
-        options: ["true, true", "false, true", "false, false", "true, false"],
+        id: "3bb388e5",
+        q: "\"b\" in { a: \"b\" } ve \"a\" in { a: \"b\" } sonuçları sırasıyla nedir?",
+        options: ["true, true","true, false","false, false","false, true"],
         obj: "h2"
       },
       {
-        id: "1aa7d0c8",
-        q: "const o = { n: 1 }; o.n = 2; satırı çalıştırılırsa ne olur?",
-        options: ["TypeError: Assignment to constant variable", "SyntaxError verir", "n 1 olarak kalır", "n 2 olur, hata yok"],
+        id: "9d4b5b47",
+        q: "const k = { liste: [1] }; k.liste.push(2); satırı çalıştırılırsa ne olur?",
+        options: ["TypeError: Assignment to constant variable","k.liste değişmez, 1 elemanlı kalır","SyntaxError verir","k.liste 2 elemanlı olur, hata yok"],
         obj: "h3"
       },
       {
-        id: "a5108981",
-        q: "const a = { n: 2 }; const b = a; b.n = 5; satırlarından sonra a.n nedir?",
-        options: ["2", "undefined", "5", "Hata verir"],
+        id: "91b19011",
+        q: "const x = { v: 3 }; const y = x; const z = { ...x }; x.v = 8; satırlarından sonra y.v ve z.v sırasıyla nedir?",
+        options: ["3 ve 3","8 ve 8","8 ve 3","3 ve 8"],
         obj: "h3"
       },
       {
-        id: "8e25951f",
-        q: "const o = {}; o.a.b ifadesi ne yapar?",
-        options: ["undefined döndürür", "TypeError verir", "null döndürür", "Boş bir nesne kurar"],
+        id: "9acfc62a",
+        q: "const o = { a: null }; o.a.b ifadesi ne yapar?",
+        options: ["null döndürür","TypeError verir","undefined döndürür","ReferenceError verir"],
         obj: "h4"
       },
       {
-        id: "9eb59d8f",
-        q: "const o = { a: 1 }; o.b nedir?",
-        options: ["ReferenceError verir", "null", "0", "undefined"],
+        id: "8d203321",
+        q: "const m = { x: 5 }; m.y + 1 nedir?",
+        options: ["1","ReferenceError verir","TypeError verir","NaN"],
         obj: "h4"
       }
     ],
     interview: [
       {
         q: "const ile tanımlı nesnenin alanını neden değiştirebiliyorum?",
-        a: "const adın başka bir değere bağlanmasını engeller, nesnenin içindekini dondurmaz. Alanı değiştirmek aynı nesne üzerinde olur. İçini de korumak istersem Object.freeze kullanırım."
+        a: "const adın başka bir değere bağlanmasını engeller, nesnenin içindekini dondurmaz. Alanı değiştirmek aynı nesne üzerinde olur. İçini de korumak istersem Object.freeze (yüzeysel) kullanırım."
       },
       {
         q: "Bir nesneyi nasıl kopyalarım ve neye dikkat ederim?",
@@ -551,21 +551,21 @@
     surum: "2026-10-v1",
     quiz: [
       {
-        id: "ee72e4aa",
-        q: "function topla(a, b = 5) { return a + b; } tanımı için topla(3) ne döndürür?",
-        options: ["3", "NaN", "8", "Hata verir"],
+        id: "5af31dc1",
+        q: "function say(n, adim = 2) { return n + adim; } tanımı için say(10, 5) ne döndürür?",
+        options: ["12","10","15","NaN"],
         obj: "h1"
       },
       {
-        id: "21c87c5f",
-        q: "const kare = (x) => x * x; ise kare(5) ne döndürür?",
-        options: ["10", "25", "undefined", "(x) => x * x"],
+        id: "08ddc8ab",
+        q: "const yarim = (n) => n / 2; ise yarim(9) ne döndürür?",
+        options: ["4","4.5","18","(n) => n / 2"],
         obj: "h1"
       },
       {
-        id: "25e9fb9e",
-        q: "function yaz(m) { console.log(m); } tanımı için const s = yaz('a'); sonrasında s nedir?",
-        options: ["'a'", "undefined", "null", "0"],
+        id: "842af8ec",
+        q: "function f(x) { if (x > 0) { return 'poz'; } } tanımı için f(-3) ne döndürür?",
+        options: ["'poz' (koşul yok sayılır)","undefined","null (değer yok anlamında)","'neg' (varsayılan sonuç)"],
         obj: "h2"
       },
       {
@@ -575,27 +575,27 @@
         obj: "h2"
       },
       {
-        id: "768743dd",
-        q: "let puan = 20; function f() { let puan = 4; puan += 2; return puan; } ise console.log(f(), puan) ne yazar?",
-        options: ["6 6", "24 20", "6 20", "Hata verir"],
+        id: "4c422e7b",
+        q: "let say = 1; function g() { say = 5; return say; } ise console.log(g(), say) ne yazar?",
+        options: ["5 1","1 5","5 5","Hata verir"],
         obj: "h3"
       },
       {
-        id: "10d4c08f",
-        q: "function g() { const yerel = 5; } tanımından sonra g()'yi çağırıp console.log(yerel) yazılırsa ne olur?",
-        options: ["5 yazılır", "undefined yazılır", "ReferenceError verir", "null yazılır"],
+        id: "7bc133d8",
+        q: "function h(p) { return p; } tanımından sonra h(3) çağrılıp console.log(p) yazılırsa ne olur?",
+        options: ["3 yazılır","undefined yazılır, hata yok","ReferenceError verir","null yazılır"],
         obj: "h3"
       },
       {
-        id: "10c05906",
-        q: "karsila('Ada'); satırından SONRA const karsila = (ad) => console.log(ad); yazılırsa ne olur?",
-        options: ["'Ada' yazılır", "undefined döner, hata vermez", "TypeError verir", "ReferenceError verir"],
+        id: "db464afd",
+        q: "bak(2); satırından SONRA function bak(n) { console.log(n + 1); } yazılırsa ne olur?",
+        options: ["ReferenceError verir","TypeError verir","undefined yazılır, hata yok","3 yazılır"],
         obj: "h4"
       },
       {
-        id: "9298a576",
-        q: "function carp(a, b) { return a * b; } tanımı için carp(3) ne döndürür?",
-        options: ["3", "0", "Hata verir", "NaN"],
+        id: "0921ce67",
+        q: "function sar(ad, son) { return ad + son; } tanımı için sar('Ay') ne döndürür?",
+        options: ["'Ay'","'Ay undefined'","Hata verir (eksik argüman)","'Ayundefined'"],
         obj: "h4"
       }
     ],
