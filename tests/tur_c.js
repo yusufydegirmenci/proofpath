@@ -165,7 +165,7 @@ const GOALS = { ccna: 'CCNA', net: 'Network', qa: 'Test Uzmanı', bk: 'Backend',
     eq(sifre, ['text', 'password'], 'Y1: şifre göster/gizle çalışır');
     await p.click('button:has-text("Hesabım yok, kayıt ol")'); await p.waitForTimeout(200);
     const kayit = await p.evaluate(() => ({ ip: (document.getElementById('ppg-ip') || {}).textContent, vp: document.querySelectorAll('.ppg-vp li').length, desc: document.querySelector('input[type=password]').getAttribute('aria-describedby') }));
-    eq(kayit, { ip: 'En az 8 karakter.', vp: 3, desc: 'ppg-ip' }, 'Y1: kayıt formunda "en az 8 karakter" ipucu (aria-describedby) ve değer önerisi');
+    eq(kayit, { ip: 'En az 10 karakter, yalnızca sayı olmasın.', vp: 3, desc: 'ppg-ip' }, 'Y1: kayıt formunda şifre ipucu (aria-describedby) ve değer önerisi');
     // Hesapsız deneme: yerel, kayıtsız, sunucuya gitmez
     const once = await p.evaluate(() => ({ sb: window.__sbCalls, ag: window.__ag, ls: Object.keys(localStorage).sort(), ss: Object.keys(sessionStorage).sort() }));
     await p.click('button:has-text("Hesapsız bir ders dene")'); await p.waitForTimeout(200);

@@ -43,7 +43,7 @@
       {
         t: "cmd",
         lang: "python",
-        text: "for i in range(3):\n    print(i)            # 0, 1, 2\nfor i in range(2, 10, 3):\n    print(i)            # 2, 5, 8\nfor harf in \"abc\":\n    print(harf)         # a, b, c\nprint(list(range(1, 6)))   # [1, 2, 3, 4, 5]"
+        text: "for i in range(3):\n    print(i)            # 0, 1, 2\nfor i in range(1, 9, 2):\n    print(i)            # 1, 3, 5, 7\nfor harf in \"abc\":\n    print(harf)         # a, b, c\nprint(list(range(1, 6)))   # [1, 2, 3, 4, 5]"
       },
       {
         t: "steps",
