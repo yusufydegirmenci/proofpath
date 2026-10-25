@@ -4,7 +4,7 @@ var TT={bugun:["Bugün","Günlük rota"],ders:["Ders","Bugünün dersi"],sinif:[
 var PRIMARY={bugun:1,ders:1,sinif:1,oyun:1,atolye:1};
 S.more=false;
 function miniHero(){
-  if(S.guest){var gs=lgStats(myLeague());hero.replaceChildren(h("div",{class:"aurora","aria-hidden":"true"},h("i"),h("i")),h("div",{class:"hero-in mini-in"},h("span",{class:"crestbtn"},crest()),h("div",{class:"mt"},h("b",null,"Akademi Ligi"),h("span",null,"Proofpath · misafir")),h("div",{class:"mchips"},h("span",{class:"hchip"},"Lv"+(gs.lv+1)+" "+gs.lvName),h("span",{class:"hchip"},mi(FLAME,gs.streak>0?"var(--rust)":"var(--mute)"),gs.streak))));return}
+  if(S.guest){var gs=lgStats(myLeague());hero.replaceChildren(h("div",{class:"aurora","aria-hidden":"true"},h("i"),h("i")),h("div",{class:"hero-in mini-in"},h("span",{class:"crestbtn"},crest()),h("div",{class:"mt"},h("b",null,"Akademi Ligi"),h("span",null,PP_MARKA.ad+" · misafir")),h("div",{class:"mchips"},h("span",{class:"hchip"},"Lv"+(gs.lv+1)+" "+gs.lvName),h("span",{class:"hchip"},mi(FLAME,gs.streak>0?"var(--rust)":"var(--mute)"),gs.streak))));return}
   var R=rankInfo(),st=streakInfo(),tt=TT[tab]||[tab,""],pct=R.nxt?Math.max(0,Math.min(100,(R.xp-R.cur.xp)/(R.nxt.xp-R.cur.xp)*100)):100;
   hero.replaceChildren(h("div",{class:"aurora","aria-hidden":"true"},h("i"),h("i")),
     h("div",{class:"hero-in mini-in"},
@@ -57,7 +57,7 @@ function renderIdCard(){
   function cell(v,l){return h("div",{class:"idcell"},h("b",null,String(v)),h("small",null,l))}
   var card=h("div",{class:"idc"},
     h("div",{class:"idc-in"},
-      h("div",{class:"idc-top"},crest(),h("div",null,h("b",null,"PROOFPATH"),h("span",null,"AKADEMİ KİMLİĞİ"))),
+      h("div",{class:"idc-top"},crest(),h("div",null,h("b",null,PP_MARKA.buyuk),h("span",null,"AKADEMİ KİMLİĞİ"))),
       h("div",{class:"idc-name"},MYN()||"Öğrenci"),h("div",{class:"idc-rank"},s.rank),
       h("div",{class:"idc-grid"},cell(s.xp,"XP"),cell(s.streak,"gün seri"),cell(s.ccna+"/"+s.ccnaT,s.ge?"İng. basamak":s.gn+" bina"),cell(s.ge?"–":s.eng+"/"+s.engT,s.ge?"seviye":"İng. basamak"),cell(s.tickets,"ticket"),cell(s.csat==null?"–":s.csat,"memnuniyet")),
       h("div",{class:"idc-sky","aria-hidden":"true"},s.bars.map(function(v){return h("i",{style:"height:"+Math.round(10+v*38)+"px;opacity:"+(.35+v*.65)})})),
@@ -80,7 +80,7 @@ function idPng(){
   x.beginPath();x.moveTo(20,15);x.lineTo(12.5,28);x.moveTo(20,15);x.lineTo(27.5,28);x.moveTo(12.5,28);x.lineTo(27.5,28);x.lineWidth=1.4;x.stroke();
   [["#f0c86e",20,15],["#35d0c0",12.5,28],["#ffb86b",27.5,28]].forEach(function(d){x.beginPath();x.arc(d[1],d[2],2.8,0,7);x.fillStyle=d[0];x.fill()});x.restore();
   var SERIF="Fraunces, Georgia, 'Times New Roman', serif",SANS="'Familjen Grotesk', 'Segoe UI', Arial, sans-serif",MONO="'JetBrains Mono', Consolas, monospace";
-  x.fillStyle="#f4f1e8";x.font="700 44px "+SANS;x.fillText("PROOFPATH",250,125);
+  x.fillStyle="#f4f1e8";x.font="700 44px "+SANS;x.fillText(PP_MARKA.buyuk,250,125);
   x.fillStyle="#f0c86e";x.font="600 26px "+MONO;x.fillText("AKADEMİ KİMLİĞİ",250,170);
   x.fillStyle="#fff";x.font="600 150px "+SERIF;x.fillText(MYN()||"Öğrenci",80,420);
   x.fillStyle="#35d0c0";x.font="700 60px "+SANS;x.fillText(s.rank,84,505);
@@ -94,7 +94,7 @@ function idPng(){
 }
 function saveIdCard(){
   var IC=S.idc;if(!S.dl||IC.busy)return;IC.busy=true;IC.msg="";draw();
-  Promise.resolve(document.fonts&&document.fonts.ready).catch(function(){}).then(idPng).then(function(b){return S.dl.save({filename:"proofpath-kimlik.png",data:b})})
+  Promise.resolve(document.fonts&&document.fonts.ready).catch(function(){}).then(idPng).then(function(b){return S.dl.save({filename:PP_MARKA.dosya+"-kimlik.png",data:b})})
     .then(function(){IC.msg="Kaydedildi."}).catch(function(e){IC.msg=e&&e.code==="declined"?"Kaydetmeyi reddettin.":"Kaydedilemedi, tekrar dene."}).then(function(){IC.busy=false;draw()});
 }
 

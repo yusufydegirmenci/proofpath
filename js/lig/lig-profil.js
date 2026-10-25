@@ -529,7 +529,7 @@ function renderLeague(){
   var L=S.lg,out=[];
   if(S.guest&&!L._g){L._g=1}
   out.push(seg([["bugun","Bugün"],["sira","Sıralama"],["arkadas","Arkadaşlar"],["ilan","İlanlar"],["gazete","Gazete"],["profil","Profilim"]],L.view,function(v){L.view=v;L.cmp=null}));
-  if(S.guest&&L.view==="bugun"&&!(myLeague()))out.push(h("div",{class:"panel"},h("div",{class:"label"},"Misafir"),h("h2",null,"Proofpath Ligi'ne hoş geldin"),
+  if(S.guest&&L.view==="bugun"&&!(myLeague()))out.push(h("div",{class:"panel"},h("div",{class:"label"},"Misafir"),h("h2",null,PP_MARKA.ad+" Ligi'ne hoş geldin"),
     h("div",{class:"small mute"},"Önce Profilim'den başlangıç seviyeni ve haftalık hedefini seç, sonra günün 5 sorusunu çöz. Puanlar herkes için adil hesaplanır.")));
   if(L.view==="bugun")out=out.concat(renderChallenge());
   else if(L.view==="sira"){out=out.concat(renderBoard());var iv=renderInvite();if(iv)out.push(iv)}

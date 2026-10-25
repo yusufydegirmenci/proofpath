@@ -130,8 +130,8 @@ function renderGeriBildirim() {
     gbFormYer("ayar"),
     l.length ? [h("div", { class: "small mute", "data-gb": "sayi" }, l.length + " kayıt")].concat(l.map(kayit), [
       h("div", { class: "row" },
-        h("button", { class: "btn ghost", type: "button", "data-gb": "json", onclick: function () { gbIndir("proofpath-geri-bildirim-" + tarih + ".json", O.jsonHepsi(l), "application/json"); } }, "JSON indir"),
-        h("button", { class: "btn ghost", type: "button", "data-gb": "md", onclick: function () { gbIndir("proofpath-geri-bildirim-" + tarih + ".md", O.markdownHepsi(l), "text/markdown"); } }, "Markdown indir"),
+        h("button", { class: "btn ghost", type: "button", "data-gb": "json", onclick: function () { gbIndir(PP_MARKA.dosya + "-geri-bildirim-" + tarih + ".json", O.jsonHepsi(l), "application/json"); } }, "JSON indir"),
+        h("button", { class: "btn ghost", type: "button", "data-gb": "md", onclick: function () { gbIndir(PP_MARKA.dosya + "-geri-bildirim-" + tarih + ".md", O.markdownHepsi(l), "text/markdown"); } }, "Markdown indir"),
         h("button", { class: "btn ghost", type: "button", "data-gb": "hepsini-kopyala", onclick: function () { gbKopyala(O.markdownHepsi(l)); } }, "Hepsini kopyala"))])
       : h("div", { class: "small mute", "data-gb": "bos" }, "Henüz kayıt yok."));
 }

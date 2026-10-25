@@ -74,7 +74,7 @@ function termWeek(){
 }
 function academyBar(){
   return h("div",{class:"abar"},crest(),
-    h("div",{class:"awm"},h("b",null,"PROOFPATH"),h("span",null,brandLine())),
+    h("div",{class:"awm"},h("b",null,PP_MARKA.buyuk),h("span",null,brandLine())),
     h("div",{class:"ameta mono"},termWeek()));
 }
 function karne(){

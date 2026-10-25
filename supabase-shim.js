@@ -149,7 +149,7 @@
           lead = "Yeni şifreni belirle (en az 8 karakter).";
           go.textContent = "Şifreyi kaydet";
         } else {
-          title = "Proofpath'e giriş";
+          title = PP_MARKA.ad + " girişi";
           lead = "E-posta ve şifrenle gir.";
           go.textContent = "Giriş yap";
         }

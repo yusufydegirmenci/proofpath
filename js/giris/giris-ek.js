@@ -39,7 +39,7 @@
       var b = document.createElement("div");
       b.id = "ppg-bekle";
       b.setAttribute("role", "status");
-      b.textContent = "Proofpath açılıyor…";
+      b.textContent = PP_MARKA.ad + " açılıyor…";
       document.body.appendChild(b);
     }
   }
@@ -114,7 +114,7 @@
   }
 
   function degerOnerisi(lead) {
-    return el("ul", { class: "ppg-vp", "aria-label": "Proofpath ne sunar" }, [
+    return el("ul", { class: "ppg-vp", "aria-label": PP_MARKA.ad + " ne sunar" }, [
       el("li", { text: "Hedefini seç: ağ, siber güvenlik, yazılım, test, DevOps ya da iş İngilizcesi." }),
       el("li", { text: "Her ders dört adım: ısınma, anlatım, mini sınav, alıştırma. Haftada 3, 5 ya da 8 saatlik plan." }),
       el("li", { text: "İlerlemen, notların ve projelerin yalnız senin hesabında durur." })
