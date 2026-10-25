@@ -55,20 +55,25 @@
         "İzinli listede olmayan VLAN: port trunk görünür ama o VLAN'ın trafiği geçmez. VLAN bir uçta tanımlı değilse de geçmez.",
         "Bir uç trunk, diğer uç access ise bağlantı ayakta görünür ama VLAN trafiği düzgün taşınmaz."
       ] },
+      { t: "steps", h: "VLAN hopping saldırıları", items: [
+        "Switch spoofing: saldırgan DTP ile trunk pazarlığı başlatıp kullanıcı portunu trunk yaptırır ve birçok VLAN'a erişir. Önlem: kullanıcı portlarında 'switchport mode access' ve 'switchport nonegotiate'.",
+        "Double tagging: saldırgan çerçeveye iki 802.1Q etiketi koyar; dış etiket trunkın native VLAN'ıyla aynıysa ilk switch onu söker ve iç etiket çerçeveyi başka bir VLAN'a taşır. Saldırganın portu native VLAN'da olmalıdır ve trafik tek yönlüdür.",
+        "Double tagging önlemi: native VLAN'ı kullanıcı bulunmayan, kullanılmayan bir VLAN yapmak ve kullanıcı portlarını o VLAN'a koymamak."
+      ] },
       { t: "warn", h: "Tuzak", text: "'Native VLAN her zaman VLAN 1'dir' ve 'DTP standarttır' yanlışlarına düşme: native VLAN değiştirilebilir, DTP ise Cisco'ya özgüdür; standart olan LLDP'dir. Native VLAN'ı kullanıcı trafiği taşıyan bir VLAN'la aynı bırakmak da risklidir; kullanılmayan bir VLAN seçmek yaygın iyi uygulamadır." }
     ],
     objectives: [
       { id: "h1", text: "CDP ile LLDP'yi (Cisco'ya özgü ve standart) ayırt edip komşu bilgisini ilgili komutla okuyabilirsin." },
-      { id: "h2", text: "DTP modlarının (access, trunk, dynamic auto, dynamic desirable) hangi birleşimlerde trunk kurduğunu yorumlayabilirsin." },
+      { id: "h2", text: "DTP modlarının (access, trunk, dynamic auto, dynamic desirable) hangi birleşimlerde trunk kurduğunu ve DTP'siz statik trunk için hangi komutların gerektiğini yorumlayabilirsin." },
       { id: "h3", text: "802.1Q etiketini, native VLAN'ı ve izinli VLAN listesini açıklayabilirsin." },
-      { id: "h4", text: "Bir trunk sorununu belirtisine göre teşhis edip kullanıcı portlarında istenmeyen trunk'ı önleyebilirsin." }
+      { id: "h4", text: "Bir trunk sorununu belirtisine göre teşhis edip kullanıcı portlarında istenmeyen trunk'ı önleyebilir ve VLAN hopping (switch spoofing, double tagging) saldırılarına karşı önlem sayabilirsin." }
     ],
     summary: [
       "CDP Cisco'ya özgü, LLDP IEEE standardı olan katman 2 komşu keşif protokolüdür; ikisi de yalnız doğrudan bağlı komşuyu gösterir.",
       "Keşif protokolleri kullanıcıya ya da dış ağa bakan portlarda kapatılmalıdır, çünkü ağ haritasını açığa çıkarır.",
       "DTP Cisco'ya özgüdür: desirable aktif ister, auto yalnızca karşıdan gelen isteğe uyar; auto ile auto trunk kurmaz.",
       "802.1Q etiketinde 12 bitlik VLAN kimliği taşınır; native VLAN etiketsiz gider ve iki uçta aynı olmalıdır.",
-      "Kullanıcı portlarında 'switchport mode access', anahtarlar arasında statik trunk ve 'switchport nonegotiate' kullanılır; sorun giderirken 'show interfaces trunk' bakılır."
+      "Kullanıcı portlarında 'switchport mode access', anahtarlar arasında statik trunk ve 'switchport nonegotiate' kullanılır; native VLAN kullanılmayan bir VLAN yapılarak VLAN hopping (switch spoofing, double tagging) engellenir; sorun giderirken 'show interfaces trunk' bakılır."
     ],
     quiz: [
       { id: "41ca0898", q: "Farklı üreticilerin cihazlarının bulunduğu ağda doğrudan bağlı komşu bilgisini paylaşmak için hangi protokol kullanılır?", options: ["CDP (Cisco'ya özgü)","DTP (trunk pazarlığı)","STP (döngü önleme)","LLDP (IEEE standardı)"], obj: "h1" },
@@ -78,7 +83,12 @@
       { id: "11bf9ab2", q: "802.1Q etiketinde VLAN kimliği kaç bit ile gösterilir?", options: ["12 bit","8 bit","10 bit","16 bit"], obj: "h3" },
       { id: "53533984", q: "Trunk üzerinde etiketsiz olarak taşınan trafik hangi VLAN'a aittir?", options: ["Her zaman VLAN 1'e","İzinli listedeki en küçük VLAN'a","Yönetim VLAN'ına","Native VLAN'a"], obj: "h3" },
       { id: "2d048335", q: "Trunk bağlantısı ayakta ve diğer VLAN'lar çalışıyor, ama VLAN 30'daki kullanıcılar karşı anahtardaki VLAN 30'a ulaşamıyor. İlk nereye bakarsın?", options: ["CDP komşu tablosu ve cihaz adları","İzinli VLAN listesi ve VLAN tanımı","Native VLAN numarasının 1 olması","Port hızı ve dupleks ayarı"], obj: "h4" },
-      { id: "10f07db1", q: "Kullanıcı bilgisayarlarının bağlandığı bir portta istemeden trunk oluşmasını önlemek için en doğru yapılandırma hangisidir?", options: ["switchport mode dynamic desirable","switchport mode dynamic auto","switchport mode access","switchport trunk allowed vlan all"], obj: "h4" }
+      { id: "10f07db1", q: "Kullanıcı bilgisayarlarının bağlandığı bir portta istemeden trunk oluşmasını önlemek için en doğru yapılandırma hangisidir?", options: ["switchport mode dynamic desirable","switchport mode dynamic auto","switchport mode access","switchport trunk allowed vlan all"], obj: "h4" },
+      { id: "106299a2", q: "Saldırgan çerçeveye iki 802.1Q etiketi koyarak trunk üzerinden başka bir VLAN'a trafik sızdırıyor. Bu saldırının adı nedir?", options: ["MAC flooding", "DHCP starvation", "VLAN hopping (double tagging)", "ARP zehirlenmesi"], obj: "h4" },
+      { id: "4cbbf207", q: "Double tagging saldırısının işe yaraması için saldırganın bağlı olduğu portun hangi koşulu sağlaması gerekir?", options: ["Portun VLAN'ı, trunk bağlantısının native VLAN'ı ile aynı olmalı", "Port dynamic desirable modunda olmalı", "Port err-disabled durumunda olmalı", "Trunktaki izinli VLAN listesi boş olmalı"], obj: "h4" },
+      { id: "99cd5d34", q: "Double tagging ile VLAN hopping'i engellemek için en etkili adım hangisidir?", options: ["Tüm portlarda dynamic auto kullanmak", "Native VLAN'ı kullanıcı bulunmayan, kullanılmayan bir VLAN yapmak", "CDP'yi tüm portlarda açmak", "İzinli VLAN listesini 'all' bırakmak"], obj: "h4" },
+      { id: "762c3dd3", q: "Saldırgan DTP çerçeveleri göndererek kullanıcı portunu trunk'a çeviriyor ve birçok VLAN'ın trafiğine erişiyor. Bu yönteme ne ad verilir?", options: ["Switch spoofing", "Double tagging", "BPDU flooding", "Root bridge ele geçirme"], obj: "h4" },
+      { id: "f349e349", q: "İki anahtar arasındaki bağlantıda DTP çerçevesi gönderilmeden trunk kurulması için her iki uçta hangi komut çifti yazılır?", options: ["switchport mode access ve switchport trunk native vlan 99", "switchport mode dynamic auto ve switchport nonegotiate", "switchport mode dynamic desirable ve switchport trunk allowed vlan all", "switchport mode trunk ve switchport nonegotiate"], obj: "h2" }
     ],
     interview: [
       { q: "CDP ile LLDP arasındaki fark nedir?", a: "CDP Cisco'ya özgü, LLDP ise IEEE 802.1AB standardıdır. İkisi de doğrudan bağlı komşuya adını, modelini ve portunu duyurur. Farklı üreticilerin bulunduğu ağda LLDP tercih edilir." },
