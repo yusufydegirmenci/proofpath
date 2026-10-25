@@ -3,6 +3,8 @@
 const fs = require('fs');
 const path = require('path');
 const KOK = path.join(__dirname, '..');
+const MARKA = require(path.join(KOK, 'marka.js'));   // ad ve dosya ön eki tek yerden
+const GB_BASLIK = '# ' + MARKA.ad + ' geri bildirimleri';
 let fails = 0;
 const ok = (c, m) => { console.log((c ? 'OK    ' : 'HATA  ') + m); if (!c) fails++; };
 const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(s, m + (s ? '' : '  → beklenen ' + JSON.stringify(b) + ', gelen ' + JSON.stringify(a))); };
@@ -87,7 +89,7 @@ const dersB = { tur: 'ders', sekme: 'ders', id: 'bk-1', baslik: 'HTTP temelleri'
   ok(!/a@b\.co/.test(md), 'markdown e-posta içermez');
   const js = JSON.parse(G.jsonHepsi(G.liste()));
   ok(js.surum === 1 && js.kayitlar.length === 1 && js.kayitlar[0].id === k.id, 'json: sürüm ve kayıtlar');
-  ok(G.markdownHepsi(G.liste()).startsWith('# Proofpath geri bildirimleri'), 'markdownHepsi başlıklı');
+  ok(G.markdownHepsi(G.liste()).startsWith(GB_BASLIK), 'markdownHepsi başlıklı');
 
   eq(G.kontrol({ ...gecerli, aciklama: G.SABLON }).ok, false, 'boş şablon (yalnız etiketler) açıklama sayılmaz');
   eq(G.kontrol({ ...gecerli, aciklama: G.SABLON + 'x' }).ok, false, 'şablon + 1 karakter yetmez');
@@ -242,18 +244,18 @@ const dersB = { tur: 'ders', sekme: 'ders', id: 'bk-1', baslik: 'HTTP temelleri'
   await ev(() => { window.__dl = []; S.dl = { save: async (o) => { window.__dl.push(o); } }; });
   await p.click('[data-gb=json]'); await p.click('[data-gb=md]'); await p.waitForTimeout(200);
   const dl = await ev(() => window.__dl);
-  ok(dl.length === 2 && /^proofpath-geri-bildirim-\d{4}-\d{2}-\d{2}\.json$/.test(dl[0].filename) && JSON.parse(dl[0].data).kayitlar.length === 2, 'JSON dışa aktarma: dosya adı ve 2 kayıt');
-  ok(/\.md$/.test(dl[1].filename) && dl[1].data.startsWith('# Proofpath geri bildirimleri') && (dl[1].data.match(/^## \[/gm) || []).length === 2, 'Markdown dışa aktarma: 2 başlık');
+  ok(dl.length === 2 && new RegExp('^' + MARKA.dosya + '-geri-bildirim-\\d{4}-\\d{2}-\\d{2}\\.json$').test(dl[0].filename) && JSON.parse(dl[0].data).kayitlar.length === 2, 'JSON dışa aktarma: dosya adı ve 2 kayıt');
+  ok(/\.md$/.test(dl[1].filename) && dl[1].data.startsWith(GB_BASLIK) && (dl[1].data.match(/^## \[/gm) || []).length === 2, 'Markdown dışa aktarma: 2 başlık');
   // S.dl yokken bağlantı ile indirme
   await ev(() => { S.dl = null; });
   const [indirme] = await Promise.all([p.waitForEvent('download', { timeout: 5000 }), p.click('[data-gb=md]')]);
-  ok(/^proofpath-geri-bildirim-.*\.md$/.test(indirme.suggestedFilename()), 'S.dl yoksa tarayıcı indirmesi çalışır');
+  ok(new RegExp('^' + MARKA.dosya + '-geri-bildirim-.*\\.md$').test(indirme.suggestedFilename()), 'S.dl yoksa tarayıcı indirmesi çalışır');
   // kopyala: pano yoksa yedek yol hata vermez
   await ev(() => { window.__kop = null; Object.defineProperty(navigator, 'clipboard', { value: { writeText: async (t) => { window.__kop = t; } }, configurable: true }); });
   await p.click('[data-gb-kayit] [data-gb=kopyala]'); await p.waitForTimeout(250);
   ok(await ev(() => typeof window.__kop === 'string' && window.__kop.startsWith('## [')), 'Kopyala: kaydın markdown metni panoya gider');
   await p.click('[data-gb=hepsini-kopyala]'); await p.waitForTimeout(250);
-  ok(await ev(() => window.__kop.startsWith('# Proofpath geri bildirimleri')), 'Hepsini kopyala: toplu markdown');
+  ok(await ev(() => window.__kop.startsWith('# ' + PP_MARKA.ad + ' geri bildirimleri')), 'Hepsini kopyala: toplu markdown');
   // sil: iki adım
   await p.click('[data-gb-kayit] [data-gb=sil]'); await p.waitForTimeout(150);
   eq(await ev(() => PP.ogr.gb.liste().length), 2, 'Sil ilk basışta silmez (onay ister)');

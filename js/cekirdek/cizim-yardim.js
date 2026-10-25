@@ -8,7 +8,7 @@ function calendarBlock(){
     var tm=time.value||"21:30",d=new Date();d.setDate(d.getDate()+1);
     var day=iso(d),p=tm.split(":"),eh=(+p[0]+1)%24,end=pad(eh)+":"+p[1];
     msg.textContent="Ekleniyor";btn.disabled=true;
-    S.mcp.callTool("Google Calendar","create_event",{summary:"Proofpath: günlük çalışma",startTime:day+"T"+tm+":00",endTime:(eh<+p[0]?(function(){var n=new Date(d);n.setDate(n.getDate()+1);return iso(n)})():day)+"T"+end+":00",timeZone:"Europe/Istanbul",
+    S.mcp.callTool("Google Calendar","create_event",{summary:PP_MARKA.ad+": günlük çalışma",startTime:day+"T"+tm+":00",endTime:(eh<+p[0]?(function(){var n=new Date(d);n.setDate(n.getDate()+1);return iso(n)})():day)+"T"+end+":00",timeZone:"Europe/Istanbul",
       recurrenceData:["RRULE:FREQ=DAILY"],description:"Panoyu aç, Sınıf sekmesinde dersi çöz, 3 satırlık raporu doldur: "+ARTIFACT_URL,useDefaultReminders:false,overrideReminders:[{method:"popup",minutes:10}]})
     .then(function(){msg.textContent="Takvime eklendi.";if(S.db)S.db.doc("profile/main").update({calendar:{created:true,time:tm,ts:new Date().toISOString()}}).catch(function(){})})
     .catch(function(e){btn.disabled=false;var c=e&&e.code;msg.textContent=(c==="not_in_manifest"||c==="approval_required")?"Takvim izni verilmedi.":(c==="server_not_connected"||c==="needs_reauth")?"Google Takvim bağlı değil. claude.ai Ayarlar > Bağlayıcılar bölümünden bağla.":"Eklenemedi, tekrar dene."});
@@ -119,7 +119,7 @@ function draw(){
   if(S.more)box.append(moreSheet());
   if(S._rtOpen&&tab==="bugun")box.append(rtOverlay());
   if(tab==="oku"){var rs=STORIES.filter(function(x){return x.id===S.rd.id})[0];if(rs&&S.rd.pop)box.append(wordSheet(rs))}
-  box.append(h("div",{class:"afoot"},h("span",null,"Proofpath"),h("span",null,brandLine()+" · "+termWeek())));
+  box.append(h("div",{class:"afoot"},h("span",null,PP_MARKA.ad),h("span",null,brandLine()+" · "+termWeek())));
   view.replaceChildren(box);
   if(a&&a!==document.body&&a.isConnected&&document.activeElement!==a)try{a.focus({preventScroll:true})}catch(e){}   /* önbellekli öğe (alan paneli düğmesi) yeniden takılınca odak kaybolmasın */
   var rsd=routeSteps().every(function(x){return x.d});

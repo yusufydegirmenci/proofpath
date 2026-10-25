@@ -62,10 +62,11 @@ function teaserChip(){
   return h("button",{class:"hchip teaser",type:"button",title:"Sıradaki semt, ilerledikçe açılır",onclick:function(){goTab("sehir")}},mi("M3 11l9-8 9 8v9H3z"),"Sıradaki semt: ",maskName(nx.name,ac?ac.avg:0));
 }
 function crest(){
-  return sv("svg",{viewBox:"0 0 40 46",class:"crest","aria-hidden":"true"},
-    sv("path",{d:"M20 2 36 8v14c0 11-7 19-16 22C11 41 4 33 4 22V8z",fill:"color-mix(in srgb,var(--gold) 14%,transparent)",stroke:"var(--gold)","stroke-width":2.2,"stroke-linejoin":"round"}),
-    sv("path",{d:"M20 15 12.5 28M20 15 27.5 28M12.5 28h15",stroke:"var(--gold)","stroke-width":1.4,fill:"none"}),
-    sv("circle",{cx:20,cy:15,r:2.8,fill:"var(--gold)"}),sv("circle",{cx:12.5,cy:28,r:2.8,fill:"var(--net)"}),sv("circle",{cx:27.5,cy:28,r:2.8,fill:"var(--eng)"}));
+  var id="amb"+(crest.n=(crest.n||0)+1),A=PP_MARKA.amblem;
+  return sv("svg",{viewBox:"-2 -2 104 150",class:"crest","aria-hidden":"true"},
+    sv.apply(null,["defs",null].concat(A.map(function(p,i){var g=p[1];
+      return sv("linearGradient",{id:id+i,x1:g[0],y1:g[1],x2:g[2],y2:g[3],gradientUnits:"userSpaceOnUse"},sv("stop",{offset:0,"stop-color":g[4]}),sv("stop",{offset:1,"stop-color":g[5]}))}))),
+    sv.apply(null,["g",{"stroke-linejoin":"round","stroke-width":2}].concat(A.map(function(p,i){return sv("polygon",{points:p[0],fill:"url(#"+id+i+")",stroke:"url(#"+id+i+")"})}))));
 }
 function termWeek(){
   var ds=S.days.map(function(d){return d.date}).filter(Boolean).sort();
@@ -74,7 +75,7 @@ function termWeek(){
 }
 function academyBar(){
   return h("div",{class:"abar"},crest(),
-    h("div",{class:"awm"},h("b",null,"PROOFPATH"),h("span",null,brandLine())),
+    h("div",{class:"awm"},h("b",null,PP_MARKA.buyuk),h("span",null,brandLine())),
     h("div",{class:"ameta mono"},termWeek()));
 }
 function karne(){

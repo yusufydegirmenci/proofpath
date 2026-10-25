@@ -325,11 +325,11 @@ function gateAuto(g){var L=gateList(g);return L.length>0&&L.every(function(x){re
 function gateOk(g){return (S.profile&&S.profile.gates||{})[g]===true||gateAuto(g)}
 function gateReq(g){return gateList(g).map(function(x){return x.t+" (şimdi: "+x.have+")"}).join("; ")}
 /* tema */
-function themeGet(){try{return localStorage.getItem("ya_theme")||"auto"}catch(e){return "auto"}}
+function themeGet(){try{return localStorage.getItem("ya_theme")||"dark"}catch(e){return "dark"}}   /* FORNEX: koyu tema varsayılan */
 function themeApply(){
   var t=themeGet(),r=document.documentElement;
   if(S._hostTheme===undefined)S._hostTheme=r.getAttribute("data-theme");
-  if(t==="auto"){if(S._hostTheme)r.setAttribute("data-theme",S._hostTheme);else r.removeAttribute("data-theme")}else r.setAttribute("data-theme",t);
+  if(t==="auto"){r.setAttribute("data-theme",S._hostTheme||(window.matchMedia&&matchMedia("(prefers-color-scheme: light)").matches?"light":"dark"))}else r.setAttribute("data-theme",t);
 }
 function themeSet(t){try{localStorage.setItem("ya_theme",t)}catch(e){}themeApply();draw()}
 function themeCycle(){var o=["auto","light","dark"],t=themeGet();themeSet(o[(o.indexOf(t)+1)%3])}
