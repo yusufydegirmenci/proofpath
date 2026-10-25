@@ -289,7 +289,7 @@
       { t: "steps", h: "Ethernet gibi çok erişimli ağda", items: [
         "224.0.0.5 (AllSPFRouters): tüm OSPF router'larının dinlediği adres; hello'lar ve DR'nin dağıttığı güncellemeler buraya gider.",
         "224.0.0.6 (AllDRouters): yalnızca DR ve BDR'nin dinlediği adres; DROther router'lar link durumu güncellemesini bununla DR/BDR'ye yollar.",
-        "DR/BDR yalnızca çok erişimli (broadcast) ağlarda seçilir; noktadan noktaya bağlantıda seçilmez, iki router doğrudan Full komşu olur.",
+        "DR/BDR yalnızca ağ tipi broadcast (ya da non-broadcast) olan arayüzlerde seçilir; ağ tipi point-to-point olan bağlantıda (ör. seri PPP ya da 'ip ospf network point-to-point') seçilmez, iki router doğrudan Full komşu olur. Ethernet arayüz varsayılan olarak broadcast tipindedir, iki router'ı bağlasa bile seçim yapar.",
         "Seçim ölçütü: önce en yüksek arayüz önceliği (varsayılan 1, 'ip ospf priority' ile değişir), eşitse en yüksek router ID. Öncelik 0 olan router hiçbir zaman DR ya da BDR olamaz.",
         "Seçim önleyici (preemptive) değildir: DR seçildikten sonra daha yüksek öncelikli router gelse bile mevcut DR kalır; değişim DR düşünce ya da OSPF süreci sıfırlanınca olur."
       ] },
