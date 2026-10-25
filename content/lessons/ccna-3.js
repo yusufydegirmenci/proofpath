@@ -142,7 +142,7 @@
         "LACP (802.3ad): açık standart. Modlar: active (teklif eder), passive (teklif bekler).",
         "PAgP: Cisco'ya özel. Modlar: desirable, auto.",
         "On: protokol yok, elle zorla. Karşı taraf da 'on' olmalı.",
-        "Sınır: bir demette en çok 8 link aktif olur; LACP aynı demet için 8 yedek (standby) link daha tutabilir ve aktif link düşünce yedek devreye girer."
+        "Sınır: CCNA düzeyinde bir demette en çok 8 link aktif olur; LACP destekleyen platformlarda aynı demet için 8 yedek (standby) link daha tutulabilir ve aktif link düşünce yedek devreye girer. Kesin sınır platforma göre değişebilir."
       ] },
       { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Switch(config)# interface range gigabitethernet0/1-2\nSwitch(config-if-range)# channel-group 1 mode active\nSwitch(config)# interface port-channel 1\nSwitch(config-if)# switchport mode trunk\n\nSwitch# show etherchannel summary" },
       { t: "warn", h: "Tuzak", text: "EtherChannel'da bağlanan portların hız, duplex, VLAN ve trunk ayarları aynı olmalıdır. Biri farklıysa kanal oluşmaz. Ayrıca iki taraf 'passive-passive' ya da 'auto-auto' kalırsa kimse teklif etmez ve kanal kurulmaz." }
