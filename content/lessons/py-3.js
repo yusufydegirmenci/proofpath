@@ -66,7 +66,7 @@
       {
         t: "steps",
         h: "Kurallar",
-        items: ["Birden çok except yazabilirsin; Python yukarıdan aşağı bakar ve uyan ilkini çalıştırır.", "İki türü aynı blokta yakalamak için demet kullanılır: except (ValueError, TypeError):", "else yalnız hata çıkmadığında, finally ise her durumda çalışır; return ile çıkılsa bile finally yine çalışır."]
+        items: ["Birden çok except yazabilirsin; Python yukarıdan aşağı bakar ve uyan ilkini çalıştırır.", "İki türü aynı blokta yakalamak için demet kullanılır: except (KeyError, IndexError):", "else yalnız hata çıkmadığında, finally ise her durumda çalışır; return ile çıkılsa bile finally yine çalışır."]
       },
       {
         t: "box",
@@ -242,7 +242,7 @@
       {
         t: "steps",
         h: "Bozuk → düzeltilmiş",
-        items: ["metin.strip() tek başına yazılmış, sonra metin kullanılıyor → metin değişmedi. metin = metin.strip() yaz.", "\"-\".join([1, 2, 3]) → TypeError (sayılar metin değil). \"-\".join([\"1\", \"2\", \"3\"]) ya da map(str, ...) kullan.", "print(\"Adet: \" + 12) → TypeError. print(\"Adet: \" + str(12)) ya da f\"Adet: {12}\" yaz.", "metin.find(\"x\") sonucu doğrudan koşulda (if metin.find(\"x\"):) → bulunamayınca -1 doğru sayılır, başta bulununca 0 yanlış sayılır. if \"x\" in metin: yaz."]
+        items: ["metin.strip() tek başına yazılmış, sonra metin kullanılıyor → metin değişmedi. metin = metin.strip() yaz.", "\",\".join([10, 20]) → TypeError (sayılar metin değil). \",\".join([\"10\", \"20\"]) ya da map(str, ...) kullan.", "print(\"Kalan: \" + 3.5) → TypeError. print(\"Kalan: \" + str(3.5)) ya da f\"Kalan: {3.5}\" yaz.", "metin.find(\"x\") sonucu doğrudan koşulda (if metin.find(\"x\"):) → bulunamayınca -1 doğru sayılır, başta bulununca 0 yanlış sayılır. if \"x\" in metin: yaz."]
       }
     ],
     objectives: [
