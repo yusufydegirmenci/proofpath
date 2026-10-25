@@ -31,7 +31,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
     ok(d.objectives.length === 4 && d.quiz.every(q => hid.indexOf(q.obj) >= 0) && hid.every(h => d.quiz.filter(q => q.obj === h).length === 2), k + ': 4 ölçülebilir hedef, her hedefe tam 2 soru');
     ok(d.objectives.every(o => /(bilirsin|edebilirsin|yazabilirsin|bulabilirsin|söyleyebilirsin|ayırt edebilirsin|izleyebilirsin|açıklayabilirsin|kullanabilirsin|düzeltebilirsin|yapabilirsin|kurabilirsin|tanıyıp|belirleyebilirsin)/.test(o.text)), k + ': hedefler "... yapabilirsin" fiiliyle biter');
     eq(d.prereq, no === 1 ? [] : [no - 1], k + ': önkoşul bir önceki ders (doğrusal zincir)');
-    const kod = d.blocks.filter(b => b.t === 'cmd' && b.lang === 'javascript' && !b.calistirma);
+    const kod = d.blocks.filter(b => b.t === 'cmd' && (b.lang === 'javascript' || b.lang === 'js') && !b.calistirma);
     ok(kod.length >= 2, k + ': en az 2 çalıştırılabilir JavaScript örneği (' + kod.length + ')');
     const alan = d.blocks.filter(b => b.t === 'alan');
     ok(alan.length === 1 && alanId.has(alan[0].id) && alan[0].id.indexOf(k + '-') === 0, k + ': tek "alan" bloğu ve tanımı var (' + (alan[0] && alan[0].id) + ')');
