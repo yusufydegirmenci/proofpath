@@ -46,7 +46,7 @@
       { t: "h", text: "Temel türler ve typeof" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "const ad = \"Defne\";\nlet yas = 29;\nconst boy = 1.68;\nlet ogrenciMi = true;\nlet notDefteri;\nconsole.log(ad, typeof ad);\nconsole.log(yas, typeof yas);\nconsole.log(boy, typeof boy);\nconsole.log(ogrenciMi, typeof ogrenciMi);\nconsole.log(notDefteri, typeof notDefteri);\n\n// Çıktı:\n// Defne string\n// 29 number\n// 1.68 number\n// true boolean\n// undefined undefined"
       },
       {
@@ -57,7 +57,7 @@
       { t: "h", text: "Tür dönüşümü ve sessiz hatalar" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "let sayac = 100;\nsayac = sayac + 15;\nconsole.log(sayac);\nconsole.log(\"40\" + 2);\nconsole.log(Number(\"40\") + 2);\nconsole.log(\"40\" - 2);\nconsole.log(Number(\"kırk\"));\nconsole.log(parseInt(\"3.9\"));\nconsole.log(String(42) + \" adet\");\n\n// Çıktı:\n// 115\n// 402\n// 42\n// 38\n// NaN\n// 3\n// 42 adet"
       },
       {
@@ -203,7 +203,7 @@
       { t: "h", text: "Şablon dizesi ve kaçış karakterleri" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "const musteri = \"Ada\";\nconst adet = 3;\nconst birim = 12.5;\nconsole.log(`Merhaba ${musteri}`);\nconsole.log(`Toplam: ${(adet * birim).toFixed(2)} TL`);\nconsole.log(\"Satir1\\nSatir2\");\nconsole.log('Tek tirnak: \"ic\"');\nconsole.log(\"Ada\" + \" \" + \"Kaya\");\n\n// Çıktı:\n// Merhaba Ada\n// Toplam: 37.50 TL\n// Satir1\n// Satir2\n// Tek tirnak: \"ic\"\n// Ada Kaya"
       },
       {
@@ -214,7 +214,7 @@
       { t: "h", text: "Metin yöntemleri" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "const s = \"  Kırtasiye Fişi  \";\nconsole.log(s.length);\nconsole.log(s.trim().length);\nconsole.log(s.trim().toUpperCase());\nconsole.log(s.trim().slice(0, 4));\nconsole.log(s.includes(\"Fiş\"));\nconsole.log(\"a,b,c\".split(\",\"));\nconsole.log(\"kalem\"[0], \"kalem\".indexOf(\"l\"));\n\n// Çıktı:\n// 18\n// 14\n// KIRTASIYE FIŞI\n// Kırt\n// true\n// [ 'a', 'b', 'c' ]\n// k 2"
       },
       {
@@ -355,7 +355,7 @@
       { t: "h", text: "Aritmetik" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "console.log(9 / 2);\nconsole.log(Math.floor(9 / 2));\nconsole.log(9 % 2);\nconsole.log(2 ** 4);\nconsole.log(2 ** 3 ** 2);\nconsole.log(10 - 2 * 4);\nconsole.log((10 - 2) * 4);\n\n// Çıktı:\n// 4.5\n// 4\n// 1\n// 16\n// 512\n// 2\n// 32"
       },
       {
@@ -366,7 +366,7 @@
       { t: "h", text: "Karşılaştırma, == tuzağı ve sessiz sonuçlar" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "console.log(1 == \"1\", 1 === \"1\");\nconsole.log(0 == false);\nconsole.log(null == undefined, null === undefined);\nconsole.log(0.1 + 0.2);\nconsole.log(0.1 + 0.2 === 0.3);\nconsole.log(NaN === NaN);\nconsole.log(\"5\" - 2, \"5\" + 2);\nlet say = 10;\nsay += 5;\nsay *= 2;\nconsole.log(say);\n\n// Çıktı:\n// true false\n// true\n// true false\n// 0.30000000000000004\n// false\n// false\n// 3 52\n// 30"
       },
       {
@@ -507,7 +507,7 @@
       { t: "h", text: "if, else if, else" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "const sicaklik = 24;\nlet etiket;\nif (sicaklik >= 30) {\n  etiket = \"sıcak\";\n} else if (sicaklik >= 20) {\n  etiket = \"ılık\";\n} else if (sicaklik >= 10) {\n  etiket = \"serin\";\n} else {\n  etiket = \"soğuk\";\n}\nconsole.log(etiket);\n\n// Çıktı:\n// ılık"
       },
       {
@@ -518,7 +518,7 @@
       { t: "h", text: "İç içe koşul, doğruluk değeri ve üçlü işleç" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "console.log(Boolean(0), Boolean(\"\"), Boolean(undefined));\nconsole.log(Boolean({}), Boolean(\"0\"));\nconst stok = 0;\nconsole.log(stok ? \"var\" : \"yok\");\nlet x = 15;\nif (x > 10) {\n  if (x % 2 === 0) console.log(\"büyük çift\");\n  else console.log(\"büyük tek\");\n}\nconsole.log(\"bitti\");\n\n// Çıktı:\n// false false false\n// true true\n// yok\n// büyük tek\n// bitti"
       },
       {

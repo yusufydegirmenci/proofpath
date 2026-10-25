@@ -42,7 +42,7 @@
       { t: "h", text: "for ve for...of" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "for (let i = 0; i < 3; i++) {\n  console.log(i);               // Çıktı: 0, sonra 1, sonra 2\n}\nfor (let i = 1; i <= 9; i += 4) {\n  console.log(i);               // Çıktı: 1, sonra 5, sonra 9\n}\nfor (const harf of \"abc\") {\n  console.log(harf);            // Çıktı: a, sonra b, sonra c\n}\nconsole.log(Array.from({ length: 5 }, (_, k) => k + 1));   // Çıktı: [ 1, 2, 3, 4, 5 ]"
       },
       {
@@ -53,7 +53,7 @@
       { t: "h", text: "while, break, continue ve do...while" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "let toplam = 0;\nlet n = 1;\nwhile (n <= 4) {\n  toplam += n;\n  n++;\n}\nconsole.log(toplam);            // Çıktı: 10\n\nfor (let sayi = 1; sayi <= 8; sayi++) {\n  if (sayi % 2 === 0) continue;   // çiftleri atla\n  if (sayi > 6) break;            // 6'dan büyükte döngüyü bitir\n  console.log(sayi);              // Çıktı: 1, sonra 3, sonra 5\n}\n\nlet k = 0;\ndo {\n  k++;\n} while (k < 3);\nconsole.log(k);                 // Çıktı: 3"
       },
       {
@@ -63,7 +63,7 @@
       { t: "h", text: "İç içe döngü, for...of ve for...in" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "for (let satir = 1; satir <= 3; satir++) {\n  let metin = \"\";\n  for (let sutun = 1; sutun <= 3; sutun++) metin += satir * sutun + \" \";\n  console.log(metin.trim());     // Çıktı: 1 2 3, sonra 2 4 6, sonra 3 6 9\n}\n\nconst renkler = [\"kırmızı\", \"mavi\", \"yeşil\"];\nfor (const r of renkler) console.log(r);       // Çıktı: kırmızı, mavi, yeşil\nfor (const i in renkler) console.log(i, typeof i);   // Çıktı: 0 string, 1 string, 2 string"
       },
       {
@@ -205,7 +205,7 @@
       { t: "h", text: "map, filter ve forEach" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "const fiyatlar = [5, 12, 8, 20];\nconst ikiKati = fiyatlar.map((f) => f * 2);\nconsole.log(ikiKati);            // Çıktı: [ 10, 24, 16, 40 ]\nconsole.log(fiyatlar);           // Çıktı: [ 5, 12, 8, 20 ]\nconsole.log(fiyatlar.filter((f) => f >= 10));   // Çıktı: [ 12, 20 ]\nfiyatlar.forEach((f, sira) => console.log(sira, f));   // Çıktı: 0 5, sonra 1 12, sonra 2 8, sonra 3 20\nconst sonuc = fiyatlar.forEach((f) => f);\nconsole.log(sonuc);              // Çıktı: undefined"
       },
       {
@@ -216,7 +216,7 @@
       { t: "h", text: "Zincirleme ve toplama" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "const fiyatlar = [5, 12, 8, 20];\nconsole.log(fiyatlar.filter((f) => f > 6).map((f) => f + 1));   // Çıktı: [ 13, 9, 21 ]\nconsole.log(fiyatlar.reduce((t, f) => t + f, 0));              // Çıktı: 45\n\nconsole.log([5, 6].map((x) => { x + 1 }));   // Çıktı: [ undefined, undefined ]\nconsole.log([5, 6].map((x) => x + 1));       // Çıktı: [ 6, 7 ]"
       },
       {
@@ -358,7 +358,7 @@
       { t: "h", text: "Okumak, eklemek, silmek" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "const urun = { ad: \"boya\", stok: 9 };\nurun.fiyat = 14.5;\nurun.stok += 3;\nconsole.log(urun);                 // Çıktı: { ad: 'boya', stok: 12, fiyat: 14.5 }\nconsole.log(urun.ad, urun[\"stok\"]);   // Çıktı: boya 12\nconst alan = \"fiyat\";\nconsole.log(urun[alan], urun.alan);   // Çıktı: 14.5 undefined\nconsole.log(urun.renk);            // Çıktı: undefined\ndelete urun.fiyat;\nconsole.log(Object.keys(urun));    // Çıktı: [ 'ad', 'stok' ]\nconsole.log(Object.values(urun));  // Çıktı: [ 'boya', 12 ]\nfor (const [anahtar, deger] of Object.entries(urun)) {\n  console.log(anahtar, deger);     // Çıktı: ad boya, sonra stok 12\n}\nconsole.log(\"ad\" in urun, \"boya\" in urun);   // Çıktı: true false"
       },
       {
@@ -369,7 +369,7 @@
       { t: "h", text: "const, referans ve kopya" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "const a = { n: 1, ic: { x: 1 } };\nconst b = a;                 // aynı nesneye ikinci ad\nconst c = { ...a };          // yeni nesne (yüzeysel kopya)\nb.n = 7;\nc.ic.x = 9;\nconsole.log(a.n, c.n, a.ic.x);   // Çıktı: 7 1 9\n\nconst sabit = { puan: 3 };\nsabit.puan = 4;              // hata yok: nesnenin İÇİ değişiyor\nconsole.log(sabit);          // Çıktı: { puan: 4 }\n\nconst bos = {};\nconsole.log(bos.adres?.sehir);   // Çıktı: undefined\ntry { console.log(bos.adres.sehir); } catch (e) { console.log(e.name + \": \" + e.message); }\n// Çıktı: TypeError: Cannot read properties of undefined (reading 'sehir') (mesaj tarayıcıya göre değişir)"
       },
       {
@@ -510,7 +510,7 @@
       { t: "h", text: "Tanımlamak ve çağırmak" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "function tutar(adet, fiyat = 10) {\n  return adet * fiyat;\n}\nconsole.log(tutar(3));         // Çıktı: 30\nconsole.log(tutar(3, 2.5));    // Çıktı: 7.5\n\nconst kare = (x) => x * x;\nconst topla = (a, b) => {\n  return a + b;\n};\nconsole.log(kare(6), topla(2, 3));   // Çıktı: 36 5\n\nfunction selamla(ad) {\n  console.log('Merhaba', ad);   // Çıktı: Merhaba Ada\n}\nconst s = selamla('Ada');\nconsole.log(s);                // Çıktı: undefined"
       },
       {
@@ -521,7 +521,7 @@
       { t: "h", text: "Erken return ve kapsam" },
       {
         t: "cmd",
-        lang: "javascript",
+        lang: "js",
         text: "function erken(x) {\n  if (x < 0) return 'negatif';\n  return 'sıfır ya da pozitif';\n}\nconsole.log(erken(-1), erken(5));   // Çıktı: negatif sıfır ya da pozitif\n\nlet sayac = 10;\nfunction artir() {\n  let sayac = 1;      // yerel ad, dıştaki sayac değişmez\n  sayac++;\n  return sayac;\n}\nconsole.log(artir(), sayac);   // Çıktı: 2 10\n\nfunction disari() {\n  const yerel = 5;\n  return yerel;\n}\ntry { console.log(yerel); } catch (e) { console.log(e.name + ': ' + e.message); }\n// Çıktı: ReferenceError: yerel is not defined\n\nconst kare = (x) => x * x;\nconsole.log(kare());           // Çıktı: NaN"
       },
       {
