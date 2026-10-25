@@ -16,7 +16,8 @@
       var id = String(d && d.id);
       if (id === "undefined" || id === "" || pos[id]) throw new Error("diyagram: eksik ya da yinelenen düğüm kimliği: " + id);
       var s, r;
-      if (d.sut !== undefined && d.satir !== undefined) { s = sayi(d.sut, 0); r = sayi(d.satir, 0); }
+      if ((d.sut === undefined) !== (d.satir === undefined)) throw new Error("diyagram: sut ve satir birlikte verilmeli: " + id);
+      if (d.sut !== undefined) { s = sayi(d.sut, 0); r = sayi(d.satir, 0); if (dolu[s + "," + r]) throw new Error("diyagram: hücre çakışması: " + id); }
       else { while (dolu[(sira % kol) + "," + Math.floor(sira / kol)]) sira++; s = sira % kol; r = Math.floor(sira / kol); }
       dolu[s + "," + r] = 1;
       pos[id] = { d: d, cx: KENAR + s * (GEN + ARA_X) + GEN / 2, cy: KENAR + r * (YUK + ARA_Y) + YUK / 2 };
@@ -59,7 +60,8 @@
     var el = document.createElement("div");
     el.className = "panel"; el.innerHTML = '<div class="label">Şema</div><h3></h3><div class="pp-diyagram" style="overflow-x:auto;color:inherit"></div>';
     el.querySelector("h3").textContent = s.baslik || "";
-    el.querySelector(".pp-diyagram").innerHTML = ciz(s.dugumler, s.oklar, { baslik: s.baslik, sut: s.sut });
+    try { el.querySelector(".pp-diyagram").innerHTML = ciz(s.dugumler, s.oklar, { baslik: s.baslik, sut: s.sut }); }
+    catch (e) { return null; } // bozuk kayıt ders ekranını bozmasın
     return el;
   }
 
