@@ -285,6 +285,15 @@
         "Full: veritabanları eşit, komşuluk tamam. Yönlendirme bu noktada başlar."
       ] },
       { t: "box", h: "Hello ve dead süresi", text: "Broadcast ağlarda hello 10 saniye, dead 40 saniyedir. Komşuluğun kurulması için iki tarafta area, hello/dead süreleri ve alt ağ eşleşmelidir." },
+      { t: "h", text: "Çoklu yayın adresleri ve DR/BDR seçimi" },
+      { t: "steps", h: "Ethernet gibi çok erişimli ağda", items: [
+        "224.0.0.5 (AllSPFRouters): tüm OSPF router'larının dinlediği adres; hello'lar ve DR'nin dağıttığı güncellemeler buraya gider.",
+        "224.0.0.6 (AllDRouters): yalnızca DR ve BDR'nin dinlediği adres; DROther router'lar link durumu güncellemesini bununla DR/BDR'ye yollar.",
+        "DR/BDR yalnızca çok erişimli (broadcast) ağlarda seçilir; noktadan noktaya bağlantıda seçilmez, iki router doğrudan Full komşu olur.",
+        "Seçim ölçütü: önce en yüksek arayüz önceliği (varsayılan 1, 'ip ospf priority' ile değişir), eşitse en yüksek router ID. Öncelik 0 olan router hiçbir zaman DR ya da BDR olamaz.",
+        "Seçim önleyici (preemptive) değildir: DR seçildikten sonra daha yüksek öncelikli router gelse bile mevcut DR kalır; değişim DR düşünce ya da OSPF süreci sıfırlanınca olur."
+      ] },
+      { t: "box", h: "Wildcard maske", text: "Wildcard = 255.255.255.255 eksi alt ağ maskesi. /30 → 0.0.0.3, /28 (255.255.255.240) → 0.0.0.15, /27 (255.255.255.224) → 0.0.0.31, /24 → 0.0.0.255. Wildcard, blok büyüklüğünün bir eksiğidir." },
       { t: "h", text: "Yapılandırma" },
       { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Router(config)# router ospf 1\nRouter(config-router)# router-id 1.1.1.1\nRouter(config-router)# network 10.0.0.0 0.0.0.3 area 0\nRouter(config-router)# network 192.168.10.0 0.0.0.255 area 0\nRouter(config-router)# passive-interface gigabitethernet0/1\n\nRouter# show ip ospf neighbor\nRouter# show ip route ospf\nRouter# show ip ospf interface brief" },
       { t: "steps", h: "Satır satır", items: [
@@ -297,23 +306,30 @@
     ],
     objectives: [
       { id: "h1", text: "OSPF'in administrative distance değerini static ve connected ile karşılaştırarak söyleyebilirsin." },
-      { id: "h2", text: "Çok alanlı OSPF'te omurga alanının hangisi olduğunu söyleyebilirsin." },
-      { id: "h3", text: "OSPF komşuluk durumlarını ayırt edip Full'ü bulabilir ve komşuları show ip ospf neighbor ile listeleyebilirsin." },
-      { id: "h4", text: "Router ID'nin elle verilmediğinde nasıl seçildiğini söyleyebilirsin." }
+      { id: "h2", text: "Çok alanlı OSPF'te omurga alanının hangisi olduğunu söyleyebilir ve network komutunda alt ağ maskesinden wildcard maskeyi (ör. /27 için 0.0.0.31) yazabilirsin." },
+      { id: "h3", text: "OSPF komşuluk durumlarını ayırt edip Full'ü bulabilir, komşuları show ip ospf neighbor ile listeleyebilir ve OSPF çoklu yayın adreslerini (224.0.0.5 tüm OSPF router'ları, 224.0.0.6 DR ve BDR) söyleyebilirsin." },
+      { id: "h4", text: "Router ID'nin elle verilmediğinde nasıl seçildiğini ve çok erişimli ağda DR/BDR'nin öncelik ve router ID'ye göre nasıl seçildiğini söyleyebilirsin." }
     ],
     summary: [
       "OSPF açık standartlı bir link-state protokolüdür: router'lar bağlantı bilgisini paylaşır, herkes aynı LSDB'ye sahip olur ve en kısa yolu SPF ile kendisi hesaplar.",
       "Metrik cost'tur (bant genişliği yükseldikçe düşer); OSPF'in administrative distance değeri 110'dur.",
       "Tüm alanlar omurga alanı Area 0'a bağlanır.",
-      "Komşuluk Down, Init, 2-Way, ExStart/Exchange/Loading adımlarından geçip Full'e ulaşır; show ip ospf neighbor ile izlenir.",
-      "Router ID elle verilmezse en yüksek loopback IP, o yoksa en yüksek aktif arayüz IP'si kullanılır."
+      "Komşuluk Down, Init, 2-Way, ExStart/Exchange/Loading adımlarından geçip Full'e ulaşır; show ip ospf neighbor ile izlenir. Hello'lar 224.0.0.5'e, DROther'ların DR/BDR'ye güncellemesi 224.0.0.6'ya gider.",
+      "Router ID elle verilmezse en yüksek loopback IP, o yoksa en yüksek aktif arayüz IP'si kullanılır. Çok erişimli ağda DR en yüksek önceliğe, eşitlikte en yüksek router ID'ye sahip router olur; seçim önleyici değildir."
     ],
     quiz: [
       { id: "adab419b", q: "OSPF'in administrative distance değeri kaçtır?", options: ["1", "90", "110", "120"], obj: "h1" },
       { id: "a26dad6b", q: "Tüm OSPF alanlarının bağlanması gereken omurga alanı hangisidir?", options: ["Area 1", "Area 0", "Area 100", "Area 255"], obj: "h2" },
       { id: "ffeb29f2", q: "OSPF komşuluğunun tamamlanmış hali hangi durumdur?", options: ["Init", "2-Way", "Full", "Down"], obj: "h3" },
       { id: "e148b700", q: "OSPF komşularını gösteren komut hangisidir?", options: ["show ip ospf neighbor", "show ip route", "show ospf peers", "show interfaces"], obj: "h3" },
-      { id: "2a9de062", q: "Router ID elle verilmezse neye göre seçilir?", options: ["En yüksek loopback IP, yoksa en yüksek aktif arayüz IP", "En küçük MAC adresi", "Rastgele", "Hostname"], obj: "h4" }
+      { id: "2a9de062", q: "Router ID elle verilmezse neye göre seçilir?", options: ["En yüksek loopback IP, yoksa en yüksek aktif arayüz IP", "En küçük MAC adresi", "Rastgele", "Hostname"], obj: "h4" },
+      { id: "6333a3db", q: "Ethernet gibi çok erişimli bir bağlantıda OSPF router'ları hello paketlerini hangi çoklu yayın adresine gönderir?", options: ["224.0.0.5", "224.0.0.6", "224.0.0.9", "224.0.0.10"], obj: "h3" },
+      { id: "66f84e5a", q: "DR ya da BDR olmayan bir OSPF router'ı, link durumu güncellemesini DR'ye iletmek için hangi adrese gönderir?", options: ["224.0.0.5", "224.0.0.2", "224.0.0.6", "224.0.0.9"], obj: "h3" },
+      { id: "c8dfd510", q: "Bir Ethernet segmentindeki tüm OSPF router'larının arayüz önceliği varsayılan değerde. DR seçiminde hangi ölçüt belirleyici olur?", options: ["En düşük router ID", "En yüksek router ID", "En küçük MAC adresi", "En kısa hello süresi"], obj: "h4" },
+      { id: "08028ff4", q: "Bir arayüzde 'ip ospf priority 0' yazıldı. O arayüzün bağlı olduğu Ethernet segmentinde bu router için ne olur?", options: ["Otomatik olarak DR olur", "Yalnızca BDR olabilir", "OSPF komşulukları kurulamaz", "DR ya da BDR seçimine katılmaz, hiçbir zaman DR/BDR olamaz"], obj: "h4" },
+      { id: "885e78f0", q: "Segmentte R1 (öncelik 1, router ID 3.3.3.3) DR olarak seçildi. Sonradan segmente öncelik 200 olan R2 bağlanırsa DR ne olur?", options: ["R2 hemen DR olur ve R1 DROther'a düşer", "R1 DR olarak kalır; DR seçimi önleyici (preemptive) değildir", "Router ID'si küçük olan DR seçilir", "Her hello'da seçim yeniden yapılır ve R2 kazanır"], obj: "h4" },
+      { id: "5a1c0275", q: "İki router'ı doğrudan birbirine bağlayan noktadan noktaya (point-to-point) bir OSPF bağlantısında DR/BDR seçimi hakkında hangisi doğrudur?", options: ["DR/BDR seçilmez; iki router doğrudan Full komşuluk kurar", "Router ID'si büyük olan DR, küçük olan BDR olur", "Yalnızca DR seçilir, BDR seçilmez", "Seçim yalnızca öncelik 0 ise yapılır"], obj: "h4" },
+      { id: "976b9727", q: "OSPF'e 10.4.8.32/27 ağını dahil eden network komutunda hangi wildcard maske kullanılır?", options: ["0.0.0.32", "0.0.0.15", "0.0.0.224", "0.0.0.31"], obj: "h2" }
     ],
     interview: [
       { q: "OSPF nedir? Static route'tan farkı nedir?", a: "OSPF, router'ların yollarını birbirine otomatik öğrettiği link-state bir dinamik yönlendirme protokolüdür. Static route elle yazılır ve ağ değişince elle güncellenir. OSPF bir bağlantı koparsa kendisi yeni yol hesaplar." },
@@ -373,7 +389,7 @@
       ] },
       { t: "h", text: "Güvenlik" },
       { t: "steps", h: "Hangisini kullan?", items: [
-        "WEP: eski ve kırılmış. Kullanma.",
+        "WEP: eski ve kırılmış. RC4 ve kısa (24 bit) başlatma vektörü (IV) kullandığı için dakikalar içinde kırılabilir; en az güvenli seçenektir, kullanma.",
         "WPA2: AES şifrelemesi (CCMP). Kişisel (ortak parola, PSK) ya da kurumsal (802.1X, kullanıcı adı ve şifre) olur.",
         "WPA3: daha güçlü, parola tahminine karşı SAE el sıkışması kullanır. Mümkünse bunu seç."
       ] },
@@ -390,13 +406,13 @@
       { id: "h1", text: "2.4 GHz bandında çakışmayan kanalları söyleyebilirsin." },
       { id: "h2", text: "2.4 GHz ile 5 GHz bandını menzil ve hız açısından karşılaştırabilirsin." },
       { id: "h3", text: "SSID, AP ve WLC'nin rollerini ayırt edebilirsin." },
-      { id: "h4", text: "WEP, WPA2 ve WPA3 arasından en güçlü güvenlik standardını seçebilirsin." }
+      { id: "h4", text: "WEP, WPA2 ve WPA3 arasından en güçlü güvenlik standardını seçebilir ve WEP'in neden en zayıf olduğunu söyleyebilirsin." }
     ],
     summary: [
       "2.4 GHz'de çakışmayan kanallar 1, 6 ve 11'dir.",
       "2.4 GHz'in menzili uzun ve duvardan geçişi iyidir ama yavaş ve kalabalıktır; 5 GHz hızlıdır ama menzili kısadır.",
       "SSID ağın adıdır, AP istemcileri kablolu ağa bağlar, WLC çok sayıda AP'yi merkezden yönetir.",
-      "WEP kırılmıştır; WPA2 AES kullanır; WPA3 SAE ile parola tahminine karşı en dirençli olandır.",
+      "WEP RC4 ve kısa IV yüzünden kırılmıştır, en az güvenli seçenektir; WPA2 AES kullanır; WPA3 SAE ile parola tahminine karşı en dirençli olandır.",
       "Sinyal çubuğunun dolu olması hızlı olduğu anlamına gelmez; kanal çakışması ve kullanıcı sayısı da etkiler."
     ],
     quiz: [
@@ -404,7 +420,9 @@
       { id: "b98dd11a", q: "Çok sayıda AP'yi merkezden yöneten cihaz hangisidir?", options: ["Switch", "WLC", "Firewall", "Modem"], obj: "h3" },
       { id: "467dc618", q: "Hangi güvenlik standardı en güçlü ve günceldir?", options: ["WEP", "WPA", "WPA2", "WPA3"], obj: "h4" },
       { id: "3dfc2422", q: "5 GHz hakkında hangisi doğrudur?", options: ["Menzili 2.4 GHz'den uzundur", "Daha hızlı ama menzili kısadır", "Sadece 802.11b kullanır", "Duvardan en iyi geçen banttır"], obj: "h2" },
-      { id: "b17b03d4", q: "SSID nedir?", options: ["AP'nin MAC adresi", "Kablosuz ağın adı", "Şifreleme türü", "Kanal numarası"], obj: "h3" }
+      { id: "b17b03d4", q: "SSID nedir?", options: ["AP'nin MAC adresi", "Kablosuz ağın adı", "Şifreleme türü", "Kanal numarası"], obj: "h3" },
+      { id: "06556373", q: "Aşağıdaki kablosuz güvenlik seçeneklerinden hangisi en az güvenli kabul edilir?", options: ["WPA2-Personal (AES)", "WPA3-Personal (SAE)", "WEP", "WPA2-Enterprise (802.1X)"], obj: "h4" },
+      { id: "f3358eb3", q: "WEP'in pratikte kırılabilir olmasının temel nedeni hangisidir?", options: ["RC4'ü kısa (24 bit) ve tekrar eden bir başlatma vektörüyle (IV) kullanması", "802.1X sunucusu gerektirmesi", "AES-CCMP şifrelemesinin eski olması", "SAE el sıkışmasının çevrimdışı sözlük saldırısına açık olması"], obj: "h4" }
     ],
     interview: [
       { q: "2.4 GHz ile 5 GHz farkı nedir?", a: "2.4 GHz'in menzili uzundur ve duvardan iyi geçer ama yavaş ve kalabalıktır. 5 GHz daha hızlı ve az parazitlidir ama menzili kısadır. Cihaz yakındaysa 5 GHz, uzaktaysa 2.4 GHz daha iyi çalışır." },
