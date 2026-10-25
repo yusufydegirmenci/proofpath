@@ -30,7 +30,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   ok(await ev(() => /Dersin sonunda şunları yapabilirsin/.test(document.querySelector('[data-ders-hedef]').textContent)), 'hedef kutusunun etiketi okunur');
   ok(await tasma(), 'bk-1: 390 px yatay taşma yok');
   await ac('bk', 30, 'anlat'); await p.waitForTimeout(250);
-  eq([(await hedef()).length, (await ozet()).length], [0, 0], 'bk-30 (alan henüz yok): hedef ve özet kutusu yok, ders eski haliyle');
+  eq([(await hedef()).length, (await ozet()).length], [4, 5], 'bk-30 (Faz 14 ile alanlandı): 4 hedef, 5 maddelik özet görünür');
   ok(await ev(() => document.querySelectorAll('.lr-read').length === 1), 'bk-30: ders metni yine görünür');
 
   // 2) Mini sınav (Faz 9 sunucu): cevap anahtarı istemcide yok; şıklar seçilir, sunucuya gönderilir. Sunucu GEÇİNCE doğru cevabı ve whyNot'u açar,
