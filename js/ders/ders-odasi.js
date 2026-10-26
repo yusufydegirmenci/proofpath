@@ -41,7 +41,17 @@ function lrDogrulamaEtiket(l){return lrDogrulama(l)||h("span",{class:"lr-dogr","
    puan ve geçti kararı sunucudan gelir, doğru cevap/açıklama yalnız GEÇİLİNCE gelir. Cevap anahtarı istemcide yoktur. */
 function qzSunucuMu(l){try{return !!PP.ogr.ui.sunucuDersi(l)&&!!PP.ogr.ui.sunucuHedefi(l)}catch(e){return false}}
 function qzSrv(l){var L=S.les;L.srv=L.srv||{};return L.srv[l.id]||(L.srv[l.id]={durum:"secim"})}
-function qzSrvSec(l,i,j){var s=qzSrv(l);if(s.durum==="gonderiliyor"||s.durum==="gecti"||s.durum==="kaldi")return;S.les.pick=S.les.pick||{};S.les.pick[l.id+":"+i]=j;if(s.durum==="hata")s.durum="secim";draw()}
+/* Faz 22: çoklu seçim (q.multi=N): pick bir indeks DİZİSİdir; dokunuş işaretler/kaldırır, N'den fazlası işaretlenmez. Tek cevaplı soru eskisi gibi tek indeks. */
+function qzSecildi(q,pk){return q.multi!==undefined?Array.isArray(pk)&&pk.length===q.multi:pk!=null}
+function qzSrvSec(l,i,j){
+  var s=qzSrv(l);if(s.durum==="gonderiliyor"||s.durum==="gecti"||s.durum==="kaldi")return;
+  var L=S.les,q=l.quiz[i],k=l.id+":"+i;L.pick=L.pick||{};
+  if(q&&q.multi!==undefined){var a=Array.isArray(L.pick[k])?L.pick[k].slice():[],x=a.indexOf(j);if(x>=0)a.splice(x,1);else if(a.length<q.multi)a.push(j);L.pick[k]=a}
+  else L.pick[k]=j;
+  if(s.durum==="hata")s.durum="secim";draw();
+}
+/* Anahtar metni (çoklu ise JSON dizisi) → okunur metin: "A + B" */
+function qzDogruMetin(d){try{return PP.ogr.sunucu.dogruListesi(d).join(" + ")}catch(e){return String(d==null?"":d)}}
 function qzSrvGonder(l){
   var L=S.les,s=qzSrv(l),qs=l.quiz,picks=qs.map(function(q,i){return L.pick&&L.pick[l.id+":"+i]});
   var cev=PP.ogr.sunucu.cevaplar(qs,picks);
@@ -54,7 +64,7 @@ function qzSrvGonder(l){
       s.durum="gecti";s.anahtar=r.anahtar||{};
       qs.forEach(function(q,i){
         var a=s.anahtar[q.id],ok=!!(a&&a.ok),k=l.id+":"+i;L.mark[k]=ok?"ok":"no";
-        if(ok)unnoteMistake(l,i);else noteMistake(l,i,{q:q.q,answer:a?a.dogru:"",why:a?a.why:""});
+        if(ok)unnoteMistake(l,i);else noteMistake(l,i,{q:q.q,answer:a?qzDogruMetin(a.dogru):"",why:a?a.why:""});
       });
       saveMarks(l);
     }else s.durum="kaldi";
@@ -70,22 +80,24 @@ function lessonQuizSrv(l){
   }
   var bitti=s.durum==="gecti",kilit=bitti||s.durum==="gonderiliyor"||s.durum==="kaldi";
   var items=qs.map(function(q,i){
-    var k=l.id+":"+i,pk=L.pick[k],a=bitti?(s.anahtar||{})[q.id]:null;
-    var card=h("div",{class:"qz"+(a?(a.ok?" ok":" no"):"")},
+    var k=l.id+":"+i,pk=L.pick[k],a=bitti?(s.anahtar||{})[q.id]:null,cok=q.multi!==undefined;
+    var dg=a?PP.ogr.sunucu.dogruListesi(a.dogru):[],sc=cok?(Array.isArray(pk)?pk:[]):(pk!=null?[pk]:[]);   /* dg: doğru seçenek metinleri, sc: seçilen indeksler */
+    var card=h("div",{class:"qz"+(a?(a.ok?" ok":" no"):""),"data-coklu":cok?String(q.multi):null},
       h("div",{class:"qz-h"},h("span",{class:"qz-n"},String(i+1)),h("span",{class:"qz-q"},q.q||""),a?h("span",{class:"qz-b "+(a.ok?"ok":"no")},a.ok?"Doğru":"Yanlış"):null));
+    if(cok)card.append(h("div",{class:"small mute","data-coklu-ipucu":"1"},q.multi+" şık seçin ("+sc.length+"/"+q.multi+"). Hepsi doğruysa doğru sayılır; kısmi puan yok."));
     card.append(h("div",{class:"qz-os"},q.options.map(function(o,j){
-      var cls="qz-o",st="";
-      if(a){if(o===a.dogru)cls+=" ok";else if(j===pk)cls+=" no";else cls+=" dim"}
-      else if(pk===j)st="box-shadow:inset 0 0 0 2px var(--accent,#4da3ff)";
-      return h("button",{type:"button",class:cls,style:st||null,disabled:kilit,"aria-pressed":pk===j?"true":"false",onclick:function(){qzSrvSec(l,i,j)}},h("b",null,String.fromCharCode(65+j)),h("span",null,o),
-        a&&o===a.dogru?h("i",{"aria-hidden":"true"},"✓"):a&&j===pk&&!a.ok?h("i",{"aria-hidden":"true"},"✗"):(!a&&pk===j?h("i",{"aria-hidden":"true"},"●"):null))})));
+      var cls="qz-o",st="",on=sc.indexOf(j)>=0,dogruSik=dg.indexOf(o)>=0;
+      if(a){if(dogruSik)cls+=" ok";else if(on)cls+=" no";else cls+=" dim"}
+      else if(on)st="box-shadow:inset 0 0 0 2px var(--accent,#4da3ff)";
+      return h("button",{type:"button",class:cls,style:st||null,disabled:kilit,"aria-pressed":on?"true":"false",role:cok?"checkbox":null,"aria-checked":cok?(on?"true":"false"):null,onclick:function(){qzSrvSec(l,i,j)}},h("b",null,String.fromCharCode(65+j)),h("span",null,o),
+        a&&dogruSik?h("i",{"aria-hidden":"true"},"✓"):a&&on&&!dogruSik?h("i",{"aria-hidden":"true"},"✗"):(!a&&on?h("i",{"aria-hidden":"true"},"●"):null))})));
     if(a){
-      var wn=!a.ok&&pk!=null&&a.whyNot&&typeof a.whyNot==="object"?a.whyNot[q.options[pk]]:null;
-      card.append(h("div",{class:"qz-fb "+(a.ok?"ok":"no")},h("b",null,a.ok?"Doğru! ":"Doğrusu: "+a.dogru+". "),a.why||"",
-        wn?h("div",{class:"small","data-whynot":"1",style:"margin-top:6px"},h("b",null,"Seçtiğin cevap neden olmadı: "),wn):null));
+      var yanlisSec=sc.map(function(j){return q.options[j]}).filter(function(o){return dg.indexOf(o)<0});
+      var wnl=!a.ok&&a.whyNot&&typeof a.whyNot==="object"?yanlisSec.filter(function(o){return a.whyNot[o]}).map(function(o){return h("div",{class:"small","data-whynot":"1",style:"margin-top:6px"},h("b",null,cok?"Seçtiğin “"+o+"” neden olmadı: ":"Seçtiğin cevap neden olmadı: "),a.whyNot[o])}):[];
+      card.append(h("div",{class:"qz-fb "+(a.ok?"ok":"no")},h("b",null,a.ok?"Doğru! ":"Doğrusu: "+qzDogruMetin(a.dogru)+". "),a.why||"",wnl))
     }
     return card});
-  var hepsi=qs.every(function(q,i){return L.pick[l.id+":"+i]!=null}),sonuc=null;
+  var hepsi=qs.every(function(q,i){return qzSecildi(q,L.pick[l.id+":"+i])}),sonuc=null;
   if(s.durum==="gecti"){
     var okN=0;qs.forEach(function(q,i){if(L.mark[l.id+":"+i]==="ok")okN++});
     sonuc=h("div",{class:"qz-sum "+(okN===qs.length?"all":"mid"),role:"status","data-kapi":"gecti","data-sunucu":s.onbellek?"onbellek":"dogrulandi"},h("b",null,okN+" / "+qs.length),
@@ -178,7 +190,7 @@ function lessonBilgi(l){
 function qzAnahtar(l,q){
   if(q.answer!==undefined)return {dogru:String(q.answer==null?"":q.answer),why:q.why||""};
   var a=null;try{a=PP.ogr.sunucu.aciklama(PP.ogr.ui.sunucuHedefi(l))}catch(e){a=null}
-  var x=a&&a[q.id];return {dogru:x?String(x.dogru):"",why:x&&x.why?x.why:""};
+  var x=a&&a[q.id];return {dogru:x?qzDogruMetin(x.dogru):"",why:x&&x.why?x.why:""};
 }
 function qzRetry(l){var L=S.les;L.pick=L.pick||{};if(L.srv)delete L.srv[l.id];(Array.isArray(l.quiz)?l.quiz:[]).forEach(function(q,i){var k=l.id+":"+i;delete L.pick[k];delete L.mark[k];delete L.rev[k+":a"]});draw()}
 function qzResult(l,ok,tot){

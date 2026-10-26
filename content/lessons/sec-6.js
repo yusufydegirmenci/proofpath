@@ -60,7 +60,8 @@
       { id: "88e771f9", q: "Oltalama simülasyonunun amacı nedir?", options: ["Çalışanların tepkisini ölçmek ve eğitmek", "Çalışanları cezalandırmak", "Ağı yavaşlatmak", "Parolaları toplamak"], obj: "h2" },
       { id: "c9895b0d", q: "Hangi metrik bildirim kültürünü gösterir?", options: ["Şüpheli maili raporlama oranı ve süresi", "Sunucu uptime'ı", "Disk boyutu", "Yedek sayısı"], obj: "h3" },
       { id: "64380148", q: "Yönetici düzeyine hedefli oltalamaya ne denir?", options: ["Whaling", "Smishing", "Tailgating", "Pharming"], obj: "h4" },
-      { id: "dfd50255", q: "Oltalama simülasyonunda bağlantıya tıklayan çalışana, o olaya özel kısa bir eğitim atanıyor. Bu eğitim türü nedir?", options: ["Başlangıç (onboarding) eğitimi", "Düzeltici (corrective) eğitim", "Sürekli (ongoing) eğitim", "Hedefli (targeted) eğitim"], obj: "h1" }
+      { id: "dfd50255", q: "Oltalama simülasyonunda bağlantıya tıklayan çalışana, o olaya özel kısa bir eğitim atanıyor. Bu eğitim türü nedir?", options: ["Başlangıç (onboarding) eğitimi", "Düzeltici (corrective) eğitim", "Sürekli (ongoing) eğitim", "Hedefli (targeted) eğitim"], obj: "h1" },
+      { id: "d20cc644", q: "Bildirim kültürünün güçlendiğini gösteren hangi İKİ metrik izlenmelidir?", options: ["Katılımcıların salonda geçirdiği süre", "Oltalama e-postalarını bildirme oranı", "Bildirime kadar geçen süre", "Eğitmen sayısı ve unvanları", "Eğitim videosunun toplam süresi"], multi: 2, obj: "h3" }
     ],
     interview: [
       { q: "Farkındalık eğitiminin işe yaradığını nasıl ölçersin?", a: "Oltalama simülasyonlarında tıklama oranının düşmesine ve raporlama oranının yükselmesine bakarım. Ayrıca gerçek olay sayısı ve tespit süresi gibi sonuç metriklerini izlerim." },

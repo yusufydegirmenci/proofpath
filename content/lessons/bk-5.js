@@ -422,7 +422,8 @@
       { id: "935474bc", q: "Olay geçmişi (Event history) ne kadar geriyi gösterir?", options: ["90 gün", "7 gün", "10 yıl", "24 saat"], obj: "h3" },
       { id: "b64be3fc", q: "Varsayılan olarak KAPALI olan olay türü hangisidir?", options: ["Veri olayları", "Yönetim olayları", "Konsol girişi", "IAM değişikliği"], obj: "h2" },
       { id: "ce82817e", q: "Kayıt dosyalarının değiştirilmediğini kanıtlayan özellik nedir?", options: ["Log dosyası bütünlük doğrulaması", "Presigned URL", "Lifecycle", "Read replica"], obj: "h4" },
-      { id: "348e3399", q: "CloudTrail kayıtlarında 'kim' bilgisi hangi alandadır?", options: ["userIdentity", "eventTime", "awsRegion", "eventVersion"], obj: "h4" }
+      { id: "348e3399", q: "CloudTrail kayıtlarında 'kim' bilgisi hangi alandadır?", options: ["userIdentity", "eventTime", "awsRegion", "eventVersion"], obj: "h4" },
+      { id: "81a2852e", q: "CloudTrail olay geçmişinin 90 günlük sınırını aşıp kayıtları uzun süre saklamak için hangi İKİ adım gerekir?", options: ["GuardDuty bulgularını açmak", "Olay geçmişi saklama süresini 365 güne çıkarmak", "Bir trail oluşturmak", "Konsolda her hafta sayfayı kaydetmek", "Kayıtları bir S3 bucket'ına teslim etmek"], multi: 2, obj: "h3" }
     ],
     interview: [
       { q: "CloudTrail ile CloudWatch farkı?", a: "CloudTrail hesapta kim hangi API'yi çağırdı kaydıdır (denetim). CloudWatch metrik, log ve alarmla performans ve uygulama izlemedir." },
