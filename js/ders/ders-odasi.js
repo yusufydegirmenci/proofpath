@@ -175,8 +175,9 @@ function lessonBilgi(l){
       return h("button",{type:"button",class:cls,disabled:!!(r||d.bekle[q.id]),"aria-pressed":pk===j?"true":"false",onclick:function(){bilgiSec(bo,q,j)}},h("b",null,String.fromCharCode(65+j)),h("span",null,o),
         r&&o===r.dogru?h("i",{"aria-hidden":"true"},"✓"):(r&&j===pk&&!r.dogruMu?h("i",{"aria-hidden":"true"},"✗"):null))})));
     if(r){var wn=!r.dogruMu&&r.whyNot&&pk!=null?r.whyNot[q.options[pk]]:null;
-      card.append(h("div",{class:"qz-fb "+(r.dogruMu?"ok":"no")},h("b",null,r.dogruMu?"Doğru! ":"Doğrusu: "+r.dogru+". "),r.why||"",
-        wn?h("div",{class:"small",style:"margin-top:6px"},h("b",null,"Seçtiğin cevap neden olmadı: "),wn):null))}
+      card.append(h("div",{class:"qz-fb "+(r.dogruMu?"ok":"no")},h("b",null,r.dogruMu?"Doğru! ":"Yanlış. "),r.why||"",
+        wn?h("div",{class:"small",style:"margin-top:6px"},h("b",null,"Seçtiğin cevap neden olmadı: "),wn):null,
+        r.dogruMu?null:h("button",{class:"btn ghost",type:"button",style:"margin-top:8px","data-bilgi-tekrar":"1",onclick:function(){delete d.sonuc[q.id];delete d.sec[q.id];draw()}},"Tekrar dene")))}
     return card});
   return h("div",{class:"panel","data-bilgi-testi":bo.hedef},h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:center"},h("h2",null,"Bölüm sonu bilgi testi"),
       h("span",{class:"pill"},say?dogru+"/"+say+" doğru":qs.length+" soru")),

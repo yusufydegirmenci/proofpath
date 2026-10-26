@@ -68,7 +68,7 @@ const SAHTE_INIT = () => {
       const m = /^bolum:([a-z]+):(\d+):bilgi$/.exec(hedef), b = m && ((window.PP_BILGI || {})[m[1]] || {})[m[2]], q = b && b.sorular.find((x) => x.id === soruId);
       if (!q) return { data: null, error: { code: '22023', message: 'bu hedef icin soru yok' } };
       const dogru = q.options[kimlikSayisi(q.id) % q.options.length], yanlisIlk = q.options.find((x) => x !== dogru);
-      return { data: { ok: cevap === dogru, dogru, why: 'sentetik açıklama ' + q.id, whyNot: { [yanlisIlk]: 'sentetik neden ' + q.id } }, error: null };
+      return { data: cevap === dogru ? { ok: true, dogru, why: 'sentetik açıklama ' + q.id } : { ok: false, whyNot: { [cevap]: 'sentetik neden ' + q.id } }, error: null };
     },
     kapi: async (kapi) => {
       durum.kapiCagrilari.push(kapi);
