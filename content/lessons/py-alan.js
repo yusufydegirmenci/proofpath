@@ -1,4 +1,4 @@
-/* Python yolu · uygulama alanları (PP.alan, tür "python"): her derste 1 alıştırma. Dersin "alan" bloğu bu tanıma id ile bağlanır (rota-ders.js lblock).
+/* Python yolu · uygulama alanları (PP.alan, tür "python"): her derste 1 alıştırma (ders 1-16). Dersin "alan" bloğu bu tanıma id ile bağlanır (rota-ders.js lblock).
    Veri: 5 satırlık sentetik sipariş listesi; Python tarafında `siparisler` (sözlük listesi) ve `sutunlar` hazırdır. input() bu alanda çalışmaz.
    Kontrol işlevleri sabit cevap metni TUTMAZ: beklenen değer verilen veriden hesaplanır; varyant ile veri değiştirilip kod ikinci kez çalıştırılır (sabit değer yazan çözüm geçmez).
    Dürüstlük: çalıştırma Pyodide'a bağlıdır; ulaşılamazsa alan bunu açıkça söyler (PP.alan). */
@@ -119,6 +119,58 @@
         var t = tutarlar(v), top = t.reduce(function (a, b) { return a + b; }, 0);
         return bak(s, [v.satirlar.map(function (r) { return r[0].toLowerCase(); }), top], "[ad listesi, toplam tutar] biçiminde ver; adlar küçük harfli, toplam adet çarpı fiyatların toplamı olmalı.");
       },
-      varyant: function (v) { return degistir(degistir(v, 3, 2, 9), 0, 0, "Kurşun"); } }
+      varyant: function (v) { return degistir(degistir(v, 3, 2, 9), 0, 0, "Kurşun"); } },
+    { id: "py-11-tur", ders: "py-11", tur: "python", baslik: "Python · alanların türleri",
+      gorev: "İlk siparişin adet, fiyat ve ürün alanlarının türlerini `type(...).__name__` ile bu sırayla bir listeye koyup `sonuc` değişkenine ata.",
+      baslangic: "ilk = siparisler[0]\nprint(ilk)\nsonuc = None",
+      ipucu: ["Bir değerin türünü type() verir; type(x).__name__ tür adını metin olarak (örneğin 'int') döndürür.", "Üç değeri sırayla bir listeye koy: önce adet, sonra fiyat, sonra urun alanının türü.", "sonuc = [type(ilk['adet']).__name__, type(ilk['fiyat']).__name__, type(ilk['____']).__name__] ; boşluğa ürün adı anahtarını yaz."],
+      adimla: "Önce ilk sözlüğü yazdır, sonra her alanın type() sonucunu ayrı ayrı yazdırıp izle.",
+      cozum: "ilk = siparisler[0]\nsonuc = [type(ilk['adet']).__name__, type(ilk['fiyat']).__name__, type(ilk['urun']).__name__]\n\nNeden: type() değerin türünü, __name__ ise tür adını verir; sayı tam ise int, ondalıklı ise float, tırnaklı metin ise str çıkar.",
+      kontrol: function (s, v) { var r = v.satirlar[0]; function tur(x) { return typeof x === "string" ? "str" : Number.isInteger(x) ? "int" : "float"; } return bak(s, [tur(r[1]), tur(r[2]), tur(r[0])], "Üç tür adını [adet, fiyat, ürün] sırasıyla, 'int', 'float', 'str' gibi metin olarak ver."); },
+      varyant: function (v) { return degistir(degistir(v, 0, 1, 12.5), 0, 2, 8); } },
+    { id: "py-12-bit", ders: "py-12", tur: "python", baslik: "Python · tek ve çift adetler (bit ile)",
+      gorev: "Her siparişin adedine `adet & 1` ile bakarak çift ve tek adetli sipariş sayısını bul. `sonuc` değişkenine [çift_sayısı, tek_sayısı] ata.",
+      baslangic: "cift = 0\ntek = 0\nfor s in siparisler:\n    pass\nsonuc = [cift, tek]",
+      ipucu: ["Bir sayının en düşük biti 1 ise sayı tektir; adet & 1 bu biti verir (1 ya da 0).", "Her turda adet & 1 doğruysa tek'i, yanlışsa cift'i artır.", "if s['adet'] & ____: tek += 1 ; boşluğa en düşük biti seçen maskeyi yaz ve else dalında cift += 1 yap."],
+      adimla: "Döngüde adet & 1 değerinin her sipariş için 0 mı 1 mi çıktığını izle.",
+      cozum: "cift = 0\ntek = 0\nfor s in siparisler:\n    if s['adet'] & 1:\n        tek += 1\n    else:\n        cift += 1\nsonuc = [cift, tek]\n\nNeden: ikilik düzende tek sayıların en düşük biti 1'dir; & 1 yalnız bu biti bırakır, sonuç 0 ise sayı çifttir.",
+      kontrol: function (s, v) { var tek = v.satirlar.filter(function (r) { return r[1] % 2 === 1; }).length; return bak(s, [v.satirlar.length - tek, tek], "[çift_sayısı, tek_sayısı] sırasıyla iki sayı ver; her adet için adet & 1 sonucuna bak."); },
+      varyant: function (v) { return degistir(v, 0, 1, 13); } },
+    { id: "py-13-sirala", ders: "py-13", tur: "python", baslik: "Python · kabarcık sıralama",
+      gorev: "Siparişlerin adetlerini kabarcık sıralamayla küçükten büyüğe sırala ve yaptığın takas sayısını say. `sonuc` değişkenine [sıralı_adetler, takas_sayısı] ata. sorted() kullanma.",
+      baslangic: "a = [s['adet'] for s in siparisler]\ntakas = 0\n# komşuları karşılaştır, yanlış sıradaysa yer değiştir ve takas'ı artır\nsonuc = None",
+      ipucu: ["İç içe iki döngü kur: dıştaki tur sayısını, içteki komşu çiftleri gezer.", "a[i] > a[i + 1] ise yer değiştir: a[i], a[i + 1] = a[i + 1], a[i] ve takas += 1.", "for tur in range(len(a) - 1): for i in range(len(a) - 1 - tur): ... ; en sonda sonuc = [a, ____] ; boşluğa takas sayacını yaz."],
+      adimla: "Her takastan sonra a listesinin nasıl değiştiğini izle.",
+      cozum: "a = [s['adet'] for s in siparisler]\ntakas = 0\nfor tur in range(len(a) - 1):\n    for i in range(len(a) - 1 - tur):\n        if a[i] > a[i + 1]:\n            a[i], a[i + 1] = a[i + 1], a[i]\n            takas += 1\nsonuc = [a, takas]\n\nNeden: her tur en büyük elemanı sona taşır; her takas tek bir ters çifti düzeltir, bu yüzden takas sayısı listedeki ters çiftlerin sayısına eşittir.",
+      kontrol: function (s, v) {
+        var a = v.satirlar.map(function (r) { return r[1]; }), t = 0;
+        for (var i = 0; i < a.length; i++) for (var j = i + 1; j < a.length; j++) if (a[i] > a[j]) t++;
+        return bak(s, [a.slice().sort(function (x, y) { return x - y; }), t], "[sıralı adetler, takas sayısı] biçiminde ver; liste küçükten büyüğe sıralı, takas sayısı yapılan yer değiştirmelerin adedi olmalı.");
+      },
+      varyant: function (v) { return degistir(v, 0, 1, 1); } },
+    { id: "py-14-tablo", ders: "py-14", tur: "python", baslik: "Python · kavrayışla sipariş tablosu",
+      gorev: "Liste kavrayışıyla adedi 6 ve üzeri olan siparişleri [ürün, tutar] çiftleri olarak (sipariş sırasıyla) bir iç içe listeye koy. Tutar adet çarpı fiyattır. Sonucu `sonuc` değişkenine ata.",
+      baslangic: "# [[urun, tutar], ...] biçiminde bir liste kavrayışı yaz\nsonuc = None",
+      ipucu: ["Kavrayış kalıbı: [ifade for s in siparisler if koşul]. Koşul adedin 6 ve üzeri olmasıdır.", "İfade iki elemanlı bir liste olmalı: [s['urun'], s['adet'] * s['fiyat']].", "sonuc = [[s['urun'], s['adet'] * s['fiyat']] for s in siparisler if s['adet'] >= ____] ; boşluğa eşik değerini yaz."],
+      adimla: "Önce yalnız süzgeçle uyan siparişleri listele, sonra ifadeyi çift haline getir.",
+      cozum: "sonuc = [[s['urun'], s['adet'] * s['fiyat']] for s in siparisler if s['adet'] >= 6]\n\nNeden: for ile sipariş sırası korunur, if yalnız eşiği geçenleri bırakır, baştaki köşeli ifade her siparişi [ürün, tutar] çiftine çevirir.",
+      kontrol: function (s, v) { return bak(s, v.satirlar.filter(function (r) { return r[1] >= 6; }).map(function (r) { return [r[0], r[1] * r[2]]; }), "[[ürün, tutar], ...] biçiminde ver; yalnız adedi 6 ve üzeri olan siparişler, sipariş sırasıyla olmalı."); },
+      varyant: function (v) { return degistir(v, 1, 1, 8); } },
+    { id: "py-15-ozyin", ders: "py-15", tur: "python", baslik: "Python · özyineleme ve üreteç",
+      gorev: "Özyinelemeli topla(liste) işlevini (boş liste 0) ve her siparişin tutarını sırayla veren tutarlar() üretecini yaz. `sonuc` değişkenine [adetlerin_toplamı, ilk_tutar, ikinci_tutar] ata; tutarlar için next() kullan.",
+      baslangic: "adetler = [s['adet'] for s in siparisler]\n\ndef topla(liste):\n    pass\n\ndef tutarlar():\n    pass\n\ng = tutarlar()\nsonuc = None",
+      ipucu: ["topla'da taban durumu boş listedir (0 döner); diğer durumda ilk eleman ile kalanın toplamını topla.", "tutarlar() içinde bir döngü kur ve return yerine yield kullan: yield s['adet'] * s['fiyat'].", "return liste[0] + topla(liste[1:]) ; sonuc = [topla(adetler), next(g), ____] ; boşluğa ikinci tutarı verecek çağrıyı yaz."],
+      adimla: "topla çağrılarının her seferinde listeyi nasıl kısalttığını ve next'in üreteci nasıl ilerlettiğini izle.",
+      cozum: "adetler = [s['adet'] for s in siparisler]\n\ndef topla(liste):\n    if not liste:\n        return 0\n    return liste[0] + topla(liste[1:])\n\ndef tutarlar():\n    for s in siparisler:\n        yield s['adet'] * s['fiyat']\n\ng = tutarlar()\nsonuc = [topla(adetler), next(g), next(g)]\n\nNeden: topla her çağrıda listeyi kısaltır ve boş listede durur (taban durumu); yield işlevi duraklatır, her next bir sonraki tutarı verir.",
+      kontrol: function (s, v) { var r = v.satirlar; return bak(s, [toplamAdet(v), r[0][1] * r[0][2], r[1][1] * r[1][2]], "[adet toplamı, ilk tutar, ikinci tutar] biçiminde üç sayı ver; topla özyinelemeli, tutarlar ise yield ile üreteç olmalı."); },
+      varyant: function (v) { return degistir(degistir(v, 0, 1, 5), 1, 1, 10); } },
+    { id: "py-16-ortalama", ders: "py-16", tur: "python", baslik: "Python · hatalı ortalamayı ayıkla",
+      gorev: "Aşağıdaki ortalama() işlevi bozuk: sonuç yanlış çıkıyor. Hatayı bul ve düzelt, sonra `sonuc` değişkenine adetlerin ortalamasını ata.",
+      baslangic: "adetler = [s['adet'] for s in siparisler]\n\ndef ortalama(liste):\n    toplam = 0\n    for i in range(1, len(liste)):\n        toplam += liste[i]\n    return toplam / len(liste)\n\nsonuc = ortalama(adetler)",
+      ipucu: ["Önce toplam ve eleman sayısını print ile yazdır; toplamı elle hesaplanan değerle karşılaştır.", "range(1, len(liste)) 0. sıradaki elemanı atlar; liste sıra numarası 0'dan başlar.", "for i in range(____, len(liste)) ; boşluğa ilk sıra numarasını yaz (ya da doğrudan for x in liste kullan)."],
+      adimla: "Döngünün hangi sıra numaralarını gezdiğini ve toplamın neden eksik kaldığını izle.",
+      cozum: "adetler = [s['adet'] for s in siparisler]\n\ndef ortalama(liste):\n    toplam = 0\n    for x in liste:\n        toplam += x\n    return toplam / len(liste)\n\nsonuc = ortalama(adetler)\n\nNeden: hata, ilk elemanı atlayan range(1, ...) idi. Doğrudan elemanları gezmek (for x in liste) bu tür sıra numarası hatalarından korur.",
+      kontrol: function (s, v) { return bak(s, toplamAdet(v) / v.satirlar.length, "Ortalama bütün adetleri içermeli: adetlerin toplamı bölü sipariş sayısı. Döngünün ilk elemanı da gezdiğinden emin ol."); },
+      varyant: function (v) { return degistir(v, 0, 1, 17); } }
   ];
 })();
