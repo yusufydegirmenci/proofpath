@@ -223,6 +223,13 @@
       if (e.gecme) out.push(h("div", { class: "lbox", "data-ek": "gecme" }, h("div", { class: "label" }, "Geçme ölçütü ve kritik yanlış anlamalar"), h("p", null, e.gecme.olcut), liste(null, e.gecme.kritik)));
       if (e.kaynaklar && e.kaynaklar.length) out.push(h("div", { class: "lbox", "data-ek": "kaynaklar" }, h("div", { class: "label" }, "Dış kaynaklar (isteğe bağlı; bu ders tek başına yeter)"),
         h("ul", { class: "lr-ul" }, e.kaynaklar.map(function (k) { return h("li", null, h("a", { href: k.u, target: "_blank", rel: "noopener noreferrer" }, k.t), " — " + k.neden + " (son doğrulama: " + k.dogrulama + ")"); }))));
+      if (e.mulakat) {
+        var mu = e.mulakat, ms = mu.sorular || [], my = mu.yanilgi || [], mk = mu.kaynaklar || [];
+        if (ms.length || my.length || mk.length) out.push(h("div", { class: "lbox", "data-ek": "mulakat" }, h("div", { class: "label" }, "Mülakatta böyle sorulur (sınavdan ayrı)"),
+          ms.length ? liste(null, ms) : null,
+          my.length ? h("p", { class: "small mute" }, h("b", null, "Sık yanılgı: "), my.join(" ")) : null,
+          mk.length ? h("ul", { class: "lr-ul" }, mk.map(function (k) { return h("li", null, h("a", { href: k.u, target: "_blank", rel: "noopener noreferrer" }, k.t), " — " + k.neden + " (son doğrulama: " + k.dogrulama + ")"); })) : null));
+      }
       if (e.sonraki) out.push(h("div", { class: "small mute", "data-ek": "sonraki" }, e.sonraki));
     } else if (bolum === "alis") {
       if (e.rehberli) out.push(h("div", { class: "panel", "data-ek": "rehberli" }, h("div", { class: "label" }, "Rehberli alıştırma"), h("ol", { class: "lr-ul" }, e.rehberli.map(function (x) { return h("li", null, x); }))));
