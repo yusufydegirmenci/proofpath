@@ -28,11 +28,11 @@
       { t: "cmd", lang: "python", text: "print(\"birinci satır\")\nprint(10 / 2)\n# print(10 / 0)   # başındaki # kalkarsa ZeroDivisionError oluşur\nprint(\"son satır\")\n\n# Çıktı:\n# birinci satır\n# 5.0\n# son satır" },
       { t: "h", text: "CPython, PyPy ve sürümler" },
       { t: "p", text: "Python bir dildir; onu çalıştıran programlara gerçekleme (implementation) denir. En yaygını C ile yazılmış CPython'dur: python.org'dan indirdiğin budur. PyPy gibi başka gerçeklemeler de aynı dili çalıştırır." },
-      { t: "steps", h: "Sürümleri okumak", items: ["Sürüm numarası ana.ikincil.yama biçimindedir: 3.12.4 gibi. Örnekler bu derslerde Python 3.12 ile çalıştırıldı.","Python 2 ve Python 3 uyumsuz iki ailedir. Python 2'nin desteği 1 Ocak 2020'de bitti; yeni kod Python 3 ile yazılır.","Kullandığın sürümü terminalde python --version ile görürsün. Bazı sistemlerde komut python3 ya da py olabilir."] },
+      { t: "steps", h: "Sürümleri okumak", items: ["Sürüm numarası ana.ikincil.yama biçimindedir: 3.12.4 gibi. Örnekler bu derslerde Python 3.12 ile çalıştırıldı.","Python 2 ve Python 3 uyumsuz iki ailedir. Python 2'nin desteği 1 Ocak 2020'de bitti; yeni kod Python 3 ile yazılır.","Kullandığın sürümü terminalde aşağıdaki sürüm komutuyla görürsün. Bazı sistemlerde komut python3 ya da py olabilir."] },
       { t: "cmd", lang: "bash", text: "python --version\n# örnek çıktı: Python 3.12.10   (senin sürümün farklı olabilir)" },
       { t: "cmd", lang: "python", text: "import sys\nprint(sys.version_info.major)         # 3\nprint(sys.version_info >= (3, 8))     # True" },
       { t: "h", text: "Kodu çalıştırmanın yolları" },
-      { t: "steps", h: "Üç yol", items: ["Etkileşimli kabuk (REPL): terminalde python yazınca >>> görünür. Yazdığın ifade hemen hesaplanır ve sonucu otomatik gösterilir; print gerekmez.","Betik: kodu merhaba.py gibi bir dosyaya yazar, terminalden python merhaba.py ile çalıştırırsın. Dosyada ekrana bir şey yazmak için print gerekir.","IDLE: Python ile gelen basit geliştirme ortamıdır; hem kabuğu hem dosya düzenleyiciyi içerir. İstersen başka bir editör de kullanırsın."] },
+      { t: "steps", h: "Üç yol", items: ["Etkileşimli kabuk (REPL): terminalde python yazınca >>> görünür. Yazdığın ifade hemen hesaplanır ve sonucu otomatik gösterilir; print gerekmez.","Betik: kodu merhaba.py gibi bir dosyaya yazar, terminalden aşağıdaki komutla çalıştırırsın. Dosyada ekrana bir şey yazmak için print gerekir.","IDLE: Python ile gelen basit geliştirme ortamıdır; hem kabuğu hem dosya düzenleyiciyi içerir. İstersen başka bir editör de kullanırsın."] },
       { t: "cmd", lang: "python", calistirma: "atla etkileşimli kabuk dökümüdür; >>> işaretleri dosyaya yazılmaz, kendi bilgisayarında yaz ve dene", text: ">>> 2 + 3\n5\n>>> adet = 4\n>>> adet * 2.5\n10.0\n>>> print(\"selam\")\nselam" },
       { t: "cmd", lang: "bash", text: "python merhaba.py" },
       { t: "h", text: "Sözdizimi, anlam, girinti ve hata türleri" },
@@ -42,7 +42,7 @@
       { t: "h", text: "Kendin dene" },
       { t: "alan", id: "py-11-tur" },
       { t: "h", text: "Bozuk kodu bul ve düzelt" },
-      { t: "steps", h: "Bozuk → düzeltilmiş", items: ["print(\"selam\" → SyntaxError (parantez kapanmamış). print(\"selam\") yaz.","Print(\"selam\") → NameError: Python büyük küçük harfi ayırır, yerleşik işlev print küçük harfle yazılır. print(\"selam\") yaz.","if adet > 2: satırından sonra girintisiz print(\"çok\") → IndentationError. Bloğun içindeki satırı dört boşlukla girintile.","python merhaba komutu → dosya bulunamaz, çünkü uzantı yok. python merhaba.py yaz."] }
+      { t: "steps", h: "Bozuk → düzeltilmiş", items: ["print(\"selam\" → SyntaxError (parantez kapanmamış). print(\"selam\") yaz.","Print(\"selam\") → NameError: Python büyük küçük harfi ayırır, yerleşik işlev print küçük harfle yazılır. print(\"selam\") yaz.","if adet > 2: satırından sonra girintisiz print(\"çok\") → IndentationError. Bloğun içindeki satırı dört boşlukla girintile.","python merhaba komutu → dosya bulunamaz, çünkü uzantı yok. Dosya adını .py uzantısıyla yaz."] }
     ],
     objectives: [
       { id: "h1", text: "Derleyici ile yorumlayıcı arasındaki farkı söyleyip Python programının bir yorumlayıcıyla çalıştığını açıklayabilirsin." },
