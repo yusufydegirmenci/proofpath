@@ -787,6 +787,10 @@
     kapi: function (kapi) {
       return sb.rpc("ogr_kapi_degerlendir", { p_kapi: kapi });
     },
+    /* Bolum sonu bilgi testi (Faz 21): puansiz anlik geri bildirim; deneme/ustalik kaydi yok */
+    bilgi: function (hedef, soruId, cevap) {
+      return sb.rpc("ogr_bilgi_kontrol", { p_hedef: hedef, p_soru_id: soruId, p_cevap: cevap });
+    },
     denemelerim: function (limit) {
       return sb.from("ogr_deneme").select("hedef,varyant,puan,maks,surum,olusturma").order("olusturma", { ascending: false }).limit(limit || 200);
     }

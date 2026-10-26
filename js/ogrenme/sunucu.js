@@ -117,5 +117,22 @@
     return o;
   }
 
-  O.sunucu = { MESAJ: MESAJ, yapilandir: yapilandir, gonder: gonder, kapi: kapi, dersKapisi: dersKapisi, aciklama: aciklama, cevaplar: cevaplar, eslestir: eslestir, cevrimici: cevrimici, oturumVar: oturumVar };
+  /* Bölüm sonu bilgi testi (Faz 21): tek soru, anlık geri bildirim; puansız, deneme/ustalık kaydı YOK (depo.sunucuEkle çağrılmaz).
+     Dönüş (söz): {ok:true, dogruMu, dogru, why, whyNot} ya da {ok:false, neden, mesaj} */
+  function bilgi(hedef, soruId, cevap) {
+    if (!/^bolum:[a-z]+:\d+:bilgi$/.test(hedef || "") || typeof soruId !== "string" || !soruId || typeof cevap !== "string") return Promise.resolve(hata("gecersiz"));
+    if (!cevrimici()) return Promise.resolve(hata("cevrimdisi"));
+    if (!oturumVar()) return Promise.resolve(hata("misafir"));
+    return istemciAl().then(function (api) {
+      if (!api || typeof api.bilgi !== "function") return hata("yetenek-yok");
+      return Promise.resolve(api.bilgi(hedef, soruId, cevap)).then(function (r) {
+        if (r && r.error) return eslestir(r.error);
+        var d = r && r.data;
+        if (!d || typeof d.ok !== "boolean" || typeof d.dogru !== "string") return hata("hata");
+        return { ok: true, dogruMu: d.ok, dogru: d.dogru, why: typeof d.why === "string" ? d.why : "", whyNot: d.whyNot && typeof d.whyNot === "object" ? d.whyNot : null };
+      }, eslestir);
+    });
+  }
+
+  O.sunucu = { MESAJ: MESAJ, yapilandir: yapilandir, gonder: gonder, kapi: kapi, bilgi: bilgi, dersKapisi: dersKapisi, aciklama: aciklama, cevaplar: cevaplar, eslestir: eslestir, cevrimici: cevrimici, oturumVar: oturumVar };
 })(typeof window !== "undefined" ? window : globalThis);

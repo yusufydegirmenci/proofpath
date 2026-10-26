@@ -56,6 +56,15 @@ const SAHTE_INIT = () => {
       if (g.tot === g.n && g.ok === g.tot) g.pts += 5;
       return { data: { gun: JSON.parse(JSON.stringify(g)), dogru: secenek === dogru, dogru_secenek: dogru, tarih: gun }, error: null };
     },
+    // Bölüm sonu bilgi testi (Faz 21): ogr_bilgi_kontrol'ün yansıması; deneme sayacına dokunmaz. Doğru şık = kimlikten türeyen sentetik şık.
+    bilgi: async (hedef, soruId, cevap) => {
+      (durum.bilgiCagrilari = durum.bilgiCagrilari || []).push({ hedef, soruId, cevap });
+      if (durum.cevrimdisi) throw new TypeError('Failed to fetch');
+      const m = /^bolum:([a-z]+):(\d+):bilgi$/.exec(hedef), b = m && ((window.PP_BILGI || {})[m[1]] || {})[m[2]], q = b && b.sorular.find((x) => x.id === soruId);
+      if (!q) return { data: null, error: { code: '22023', message: 'bu hedef icin soru yok' } };
+      const dogru = q.options[kimlikSayisi(q.id) % q.options.length], yanlisIlk = q.options.find((x) => x !== dogru);
+      return { data: { ok: cevap === dogru, dogru, why: 'sentetik açıklama ' + q.id, whyNot: { [yanlisIlk]: 'sentetik neden ' + q.id } }, error: null };
+    },
     kapi: async (kapi) => {
       durum.kapiCagrilari.push(kapi);
       if (durum.cevrimdisi) throw new TypeError('Failed to fetch');
