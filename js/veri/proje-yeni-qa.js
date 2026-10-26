@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Proje Atölyesi, Test Uzmanı (qa) yolu çekirdek projeleri. NE YAPAR: PP_PROJ.yeni dizisine yol:"qa" olan 9 yeni proje iter (id, lv kademe, başlık ve steps: başlık, anlatım, yap, kanıt, İngilizce, soru).
+   SORUN OLURSA: proje-birlestir.js bunları PATHS qa yoluna ekler (cekirdek:true); aynı id varsa atlanır. İlerleme anahtarı path-<proje id> (proje-atolyesi.js); id değişirse ilerleme kopar. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni proje bu dosyada K.yeni.push; kademe sayıları tests/faz8_proje.js içinde denetlenir. */
 (function (g) {
   var K = g.PP_PROJ = g.PP_PROJ || { tanim: {}, yeni: [], va: [] };
 

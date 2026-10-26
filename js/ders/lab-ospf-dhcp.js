@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > CCNA/ağ, OSPF ve DHCP karar lab'ları. NE YAPAR: Maliyet, yol toplamı, komşuluk ayarı, DR seçimi, havuz kapasitesi, aktarma ulaşımı ve adres sınıfı sorularını saf hesapla üretir; yerel simülasyon, gerçek cihaz yok.
+   SORUN OLURSA: Arayüz ve kanıt lab-karar.js'te (tip 'genel'), PP.lab.altag çağrı anında ders-eki.js'ten okunur; cevap sabiti elle yazılmaz; lab-karar.js'ten SONRA yüklenir.
+   YENİ ÖZELLİK: Yeni soru hesap fonksiyonu olarak buraya eklenip genel tipe kaydedilir; tests/faz5f_lab.js (OSPF/DHCP) güncellenir. */
 /* ---- Faz 5 tur 6: OSPF ve DHCP karar lab'ları (M§8.2) ----
    Form tabanlı karar lab'ı; tarayıcıda yerel simülasyon, gerçek router/DHCP sunucusu yok. Kanıt kapı değildir (istemci doğrulaması).
    Doğru cevaplar saf hesaptan (maliyet, yol toplamı, komşuluk ayarı karşılaştırması, DR seçimi, havuz kapasitesi, aktarma ulaşımı, adres sınıfı) çıkar;

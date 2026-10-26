@@ -1,3 +1,6 @@
+/* ALAN: Sonradan eklenen stiller: Dino, Fetih ek kuralları, kod editörü, dokunma hedefleri, koyu/açık düzeltmeleri. NE YAPAR: Dino (.dn-*), Fetih günlük kartları, Arena/oyun geri bildirimi, CodeMirror renkleri ve 44 px dokunma hedefi ile tema kontrast düzeltmelerini içerir.
+   SORUN OLURSA: Bağlanma sırası index.html dosyasındadır (marka.css en son); sonraki dosya önceki kuralı ezer. Koyu tema kuralları hem prefers-color-scheme hem :root[data-theme] ile yazılıdır; ikisini birlikte güncelleyin.
+   YENİ ÖZELLİK: Yeni küçük düzeltme buraya, kalıcı bileşen kendi dosyasına. Testler: tests/touch.js, tests/touch2.js, tests/h85.js. */
 .dn-hero{border-radius:20px;padding:16px;display:grid;gap:6px;color:#fff;background:linear-gradient(160deg,#1f7a57,#0d2f3a);border:1px solid rgba(255,255,255,.2);margin-bottom:10px}.dn-hero h2{margin:0}.dn-hero .small{color:#d6f5e8}
 .dn-cv{display:block;width:100%;border-radius:12px;border:2px solid var(--line);touch-action:manipulation;background:var(--panel2)}
 .dn-p{display:grid;gap:8px}.dn-ctl{display:grid;grid-template-columns:2fr 1fr;gap:8px}.dn-ctl .btn{min-height:54px;touch-action:manipulation;user-select:none;-webkit-user-select:none}

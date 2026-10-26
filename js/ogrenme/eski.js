@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Eski verinin yeni modele çevrilmesi (PP.ogr.eski), salt okuma.
+   NE YAPAR: ya_lc, ya_gs, ya_lv, ya_pl kayıtlarını deneme/kanıt modeline çevirir; eski anahtarlara asla yazmaz; niteliği korunur (ilerleme ustalık değildir, güven istemci).
+   SORUN OLURSA: SURUM sabiti eski-1 ve sunucu tohumundaki ESKI_SURUM ile aynı olmalı (tests/faz9s_tarama.js denetler); ya_gs/ya_lc biçimi değişirse buradaki okuma bozulur.
+   YENİ ÖZELLİK: Yeni eski-anahtar okuyucusu buraya; tests/faz5b_ccna.js ve tests/ogrenme.js güncellenir. */
 /* ---- Geriye uyumlu OKUMA dönüştürücüsü (M§17.1) ----
    Eski depolama anahtarlarını (ya_lc, ya_gs, ya_lv, ya_pl) yeni modele çevirir. Eski anahtarlara ASLA yazmaz, silmez, biçimini değiştirmez.
    Eski kayıtların niteliği korunur:

@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > tüm alıştırma türleri (PP.cubuk, ortak alıştırma çubuğu). NE YAPAR: Çalıştır/Kontrol · İpucu (3 kademe) · Çözümü gör · Sıfırla düğmelerini tek çubukta toplar; çözüm görülen alıştırmayı kanıt saymaz (kanitSayilir).
+   SORUN OLURSA: İpucu kademesi ve deneme durumu ya_pp_ogr.tercih.cubuk[id] içinde saklanır; PP.ogr (js/ogrenme/depo.js) ÖNCE yüklenmiş olmalı, çağıranlar: alan.js, parsons.js, ders-eki.js, lab-karar.js.
+   YENİ ÖZELLİK: Yeni alıştırma türü kendi panelinde PP.cubuk çubuğunu çağırır, ESIK ve ipucu mantığı burada kalır; tests/faz10d.js (ve kanıt için tests/faz_w1.js) güncellenir. */
 /* ---- PP.cubuk: ortak alıştırma çubuğu (Faz 10 tur 4) ----
    Sıra her alıştırma türünde aynıdır: Çalıştır/Kontrol · İpucu · Çözümü gör (+ Sıfırla). Mevcut düğmeler çoğaltılmaz; çubuk onların yerine geçer.
    - İpucu 3 kademelidir (1 yön, 2 daha belirgin, 3 neredeyse çözüm); her kademe kayıtlıdır (ya_pp_ogr.tercih.cubuk[id].ip).

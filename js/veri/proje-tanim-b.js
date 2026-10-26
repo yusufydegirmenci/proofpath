@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Proje Atölyesi, ba/sup/gold yollarındaki mevcut projelerin ek tanım alanları. NE YAPAR: PP_PROJ.tanim[projeId] altına ba1-3, gold1 ve sup1-4 için onkosul, gereksinim, kabul, rubrik, savunma, yetkinlikler, telafi, sonraki alanlarını yazar.
+   SORUN OLURSA: proje-birlestir.js bunları PATHS projelerine kopyalar; yollar.js sonrası, birleştirmeden önce yüklenmeli. Proje id'si yollar.js ile uyuşmazsa tanım sessizce kaybolur. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni proje için yollar.js + burada K.tanim girdisi. Test: tests/faz8_proje.js. */
 (function (g) {
   var K = g.PP_PROJ = g.PP_PROJ || { tanim: {}, yeni: [], va: [] };
 

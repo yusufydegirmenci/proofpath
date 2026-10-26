@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Atölye sekmesi, Git bölümü (Git simülatörü). NE YAPAR: Bellekte obje modeliyle sunucusuz git simülatörü: create() komutları çalıştırır (sim.run), SVG commit ağacını çizer (sim.svg), mount() terminal arayüzünü bir elemana bağlar.
+   SORUN OLURSA: Gerçek git değildir; sadeleştirmeler komutların yanında yazılıdır. IIFE olarak window.PP_GIT'e, Node'da module.exports'a bağlanır; atolye.js renderGitSim onu PP_GIT.mount ile açar. Durumu kalıcı değildir. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni komut sim.run içine. Test: tests/faz_k13_git.js (komutlar, hata iletileri, birleştirme, ağaç çizimi). */
 /* ---- Git simülatörü: bellekte obje modeli, sunucusuz. Gerçek git değil; sadeleştirmeler her komutun yanında. ---- */
 (function (root) {
   function hash(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return ("0000000" + h.toString(16)).slice(-7); }

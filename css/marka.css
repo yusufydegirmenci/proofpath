@@ -1,3 +1,6 @@
+/* ALAN: Marka paleti ve tema değişkenleri (başlıktaki açıklamaya ek). NE YAPAR: Başlıktaki işlemi tamamlar: renk değişkenlerini (--bg, --brand, --ink vb.) ezer; Koyu varsayılan, :root[data-theme] ve prefers-color-scheme ile açık tema.
+   SORUN OLURSA: Ad ve logo ayrıca js/marka.js içinde; iz renkleri (--net, --eng, --sec, --qa, --bk) veri rengi olduğu için ayrışık kalır. Tema seçimi dino.js themeSet (ya_theme) ile data-theme'e yazılır. Bu dosya en son bağlanır.
+   YENİ ÖZELLİK: Yeni renk jetonu burada tanımlanır. Testler: tests/marka.js, tests/faz_ses.js (tema). */
 /* FORNEX marka paleti — index.html'deki tüm stillerden SONRA yüklenir, renk değişkenlerini ezer.
    Koyu tema varsayılan; açık tema yalnız Ayarlar > Tema > Açık (ya da Otomatik + açık sistem) ile.
    Ana renkler: Azure #3B82F6, Violet #8B5CF6, Charcoal #0F1117, Mist #E5E7EB.

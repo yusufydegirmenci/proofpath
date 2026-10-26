@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Okuma sekmesi (oku), çocuk öyküleri, dokun-öğren. NE YAPAR: STORIES listesindeki İngilizce öyküleri cümle cümle Türkçe karşılığıyla gösterir, kelimeye dokununca kelime sayfası açıp kelime bankasına kaydetmeyi sağlar (renderReader, wordSheet, saveWord).
+   SORUN OLURSA: Durum S.rd ({id, fs, tr, show, pop...}); wordSheet draw() içinde (cizim-yardim.js) tab=oku iken eklenir; kelime/okuma kaydı S.db ve S.canWrite ister; seslendirme speak() tarayıcı sesine bağlı.
+   YENİ ÖZELLİK: Yeni öykü STORIES dizisine eklenir; özel test yok, tests/faz_ses.js ve tests/run-all.js çalıştırılır. */
 /* ---- Okuma köşesi: çocuk öyküleri, dokun-öğren ---- */
 var STORIES=[
 {id:"fox-moon",title:"The Little Fox and the Moon",tr:"Küçük Tilki ve Ay",level:"A1",

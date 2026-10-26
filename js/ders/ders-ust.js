@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders sekmesi üst çerçevesi (Dersler / Animasyon / Atlas / Notlar bölüm düğmeleri). NE YAPAR: S.les.view değerine göre ilgili görünümü seçer (oda açıksa renderLessonRoom), küçük renkli geçit şeridini (miniTiles) çizer.
+   SORUN OLURSA: Sekme dağıtımı cizim-yardim.js draw() içindeki gövde tablosundan (ders: renderLessonTop) gelir; renderLessonRoom ders-odasi.js'te, renderPe js/seviye/seviye-sinavi.js'te tanımlıdır (çağrı anında aranır); S.les.view ortaktır.
+   YENİ ÖZELLİK: Yeni ders bölümü bölüm düğmesi listesine ve view eşlemesine eklenir; özel test yok, tests/t58a_ders_odasi.js ve tests/t60d_lv.js yoklanır. */
 /* ---- v54: küçük renkli geçit şeridi ---- */
 function miniTiles(list){
   return h("div",{class:"bg-grid mini"},list.map(function(x){return h("button",{type:"button",class:"bg-t "+x.c,onclick:x.go},h("small",null,x.k),h("b",null,x.t),h("span",null,x.s))}));

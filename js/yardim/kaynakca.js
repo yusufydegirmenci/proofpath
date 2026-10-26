@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Kaynakça sekmesi (#kaynakca, renderKaynakca). NE YAPAR: content/kaynakca.js içindeki PP_KAYNAKCA verisini iz başlıkları altında gruplayıp yalnız künyeyi (bağlantı, ad, kullanım, kontrol tarihi) gösterir.
+   SORUN OLURSA: Veri window.PP_KAYNAKCA yoksa boş iskelet çizilir (script sırası content/kaynakca.js ÖNCE); misafir modunda bu sekme açık kalır (draw()'daki istisna); PP.ogr.gb kullanır.
+   YENİ ÖZELLİK: Yeni kaynak content/kaynakca.js'e eklenir, kod değişmez; tests/faz_17c_kaynakca.js güncellenir. */
 /* ---- Kaynakça sayfası (#kaynakca): veri content/kaynakca.js (PP_KAYNAKCA). Yalnız künye gösterilir: bağlantı, kaynak adı, kullanım, kontrol tarihi. ---- */
 function renderKaynakca(){
   var K=window.PP_KAYNAKCA||{izler:[],kayitlar:[],tarih:""},ad=PP_MARKA.ad;

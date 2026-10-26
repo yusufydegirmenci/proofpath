@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > hata defteri (Leitner), tekrar kuyruğu, anlat-öğren, odak sayacı. NE YAPAR: Yanlış cevapları 'mistakes' koleksiyonuna kutu ve vade günüyle yazar, vadesi gelenleri tekrar ettirir; günün sorusu havuzunu da bu kuyruktan besler.
+   SORUN OLURSA: Aralıklar tek yerde PP.ogr.tekrar.ARALIK (1,3,7,14,30 gün); yazma S.db ve S.canWrite yoksa sessizce atlanır; durum S.mistakes, S.mrev, S.focus; PP.gunSorusu bu dosyadan çağrılır.
+   YENİ ÖZELLİK: Yeni tekrar kaynağı noteMistake/mistakesDue'ya eklenir; tests/hesaplar.js ve tests/faz10d.js güncellenir. */
 /* ---- hata defteri (Leitner), tekrar kuyruğu, anlat-öğren, odak ---- */
 var LEIT=PP.ogr.tekrar.ARALIK;   /* tek aralık tanımı: 1, 3, 7, 14, 30 gün */
 function addDays(s,n){var d=parse(s);d.setDate(d.getDate()+n);return iso(d)}

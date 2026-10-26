@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Kanıta dayalı yetkinlik raporu, proje kanıt raporu ve işveren görünümü (PP.rapor).
+   NE YAPAR: Saf hesapla iddiaları kanıta bağlar (doğrulandı/öz-beyan/doğrulanmamış), 8 kademeli durum verir; özel notlar işveren görünümüne girmez; iş/maaş vaadi yok.
+   SORUN OLURSA: Depoya yazmaz; kanıtlar ya_pp_ogr.kanitlar'dan gelir. Arayüz js/proje/rapor-ui.js ve js/ders/senaryo-ui.js.
+   YENİ ÖZELLİK: Yeni iddia/durum rapor.js'e eklenir, rapor-ui.js'te gösterilir; tests/faz8_proje.js, faz8_kariyer.js, faz_w1.js güncellenir. */
 /* ---- Kanıta dayalı yetkinlik raporu (M§12, M§12.1, M§12.2) — saf hesap, depolamaya yazmaz ----
    İlkeler: her iddia kanıta bağlıdır ya da açıkça "doğrulanmamış"tır; adım işaretleme öz-beyandır (bağımsızlık/çıktı doğrulaması sayılmaz);
    8 kademeli durum yalnız kanıt türü varsa verilir; işveren görünümü yalnız doğrulanabilir/etiketli iddiaları taşır, özel notları taşımaz;

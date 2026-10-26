@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Sınıf sekmesi; karakterler, canlı ders, soru akışı, başlangıç konuları.
+   NE YAPAR: Karakter çizimleri (figure), konu seçimi (starterTopics/topicChoices), soru sorma ve yanıt işleme (renderClass, answerMcq, answerOpen); denemeler S.db attempts koleksiyonuna yazılır.
+   SORUN OLURSA: STARTER değişkeni (konu başlıkları, 1. sütun) tests/ogrenme.js, faz_k10_py.js ve faz_k12_js.js tarafından bu dosyanın METNİ olarak okunur: STARTER tanımından hemen sonraki starterTopics işlevine kadarki bölüm değişmemeli ve başlıklar TMAP ile aynı kalmalı. js/ogrenme/program.js STARTER'dan grafik kurar.
+   YENİ ÖZELLİK: Yeni konu STARTER'a eklenir; tests/faz_k10_py.js, faz_k12_js.js (TMAP eşlemesi) ve tests/ogrenme.js güncellenir. */
 /* ---- Sınıf: karakterler gelir, canlı ders ---- */
 function figure(id,mood){
   var c=CH[id]||CH.kocag,ink="#2a1f1a";

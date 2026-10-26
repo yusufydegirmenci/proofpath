@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Ders odası, açıklama modu seçimi (8 görünüm).
+   NE YAPAR: Aynı dersin var olan alanlarından mod başına bir görünüm seçer ve düzenler; içerik üretmez, alan yoksa içerik yok der.
+   SORUN OLURSA: PP.ogr (cekirdek.js) önce yüklenmiş olmalı; tercih ya_pp_ogr.tercih.aciklama içinde tutulur; çağıran js/ders/ders-odasi.js.
+   YENİ ÖZELLİK: Yeni mod MODLAR listesine eklenir; tests/ogrenme.js (aciklama.js orada yüklenir) güncellenir. */
 /* ---- Açıklama modları (M§8.5): aynı dersin AYNI teknik kaynağından (konu haritası + ders) 8 farklı görünüm ----
    Mod içerik üretmez/uydurmaz: yalnız var olan alanları seçer ve düzenler; alan yoksa "bu ders için içerik yok" der.
    Tercih kalıcıdır: ya_pp_ogr.tercih.aciklama (PP.ogr.depo.tercih). */

@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Rehber ve Sözlük sekmeleri, rahat okuma/sade mod/yüksek karşıtlık tercihleri (S.pf). NE YAPAR: Tercihleri body sınıflarına uygular (applyPf), yeni kullanıcı rehberini ve ders terimlerinden birleşik sözlüğü (glAll, renderGlossary) çizer.
+   SORUN OLURSA: Tercih localStorage ya_pf, görüldü bayrakları ya_seen; S.pf bu dosyada tanımlanır, kullanim-turu.js ona bağlıdır; birleşik liste sozluk-birlestir.js'ten gelir (ÖNCE yüklenmeli), ders verisi gelince _glAll sıfırlanır (baslat.js).
+   YENİ ÖZELLİK: Yeni terim GLOS'a veya content/sozluk-ek.js'e eklenir; tests/sozluk.js güncellenir. */
 /* ---- v22: Rahat okuma, Sade mod, Rehber, Sözlük ---- */
 var PFKEY="ya_pf";
 S.pf={fs:0,simple:false,hc:false,pace:"normal",share:true};

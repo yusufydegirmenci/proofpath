@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Sınav Haritası (CCNA alan ağırlıkları) ve Mülakat Antrenmanı sekmesi.
+   NE YAPAR: CCNA konularını alan ağırlığına göre hazırlık yüzdesine çevirir (examMap/renderExamMap) ve mülakat antrenmanı ekranını çizer (renderInterview).
+   SORUN OLURSA: Küresel S (S.iv, S.interview), topicsOf ve PP.ogr.ilerleme.konuTamam yüklenmiş olmalı; DOMW alan ağırlıkları elle yazılı. renderExamMap'i js/bugun/sayilar.js çağırır. Rubrik paneli js/proje/rapor-ui.js ve PP.mulakat ile ayrıdır.
+   YENİ ÖZELLİK: Yeni alan DOMW'a eklenir; bu dosyaya özel test yok, tests/faz8_kariyer.js rubrik tarafını kapsar. */
 /* ---- v18: Sınav Haritası + Mülakat Antrenmanı ---- */
 var DOMW=[["Network Fundamentals","Ağ Temelleri",20],["Network Access","Ağ Erişimi",20],["IP Connectivity","IP Bağlantısı",25],["IP Services","IP Servisleri",10],["Security Fundamentals","Güvenlik Temelleri",15],["Automation and Programmability","Otomasyon",10]];
 function examMap(){

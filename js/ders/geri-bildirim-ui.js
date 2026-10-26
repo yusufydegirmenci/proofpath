@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > 'Bu hatalı' düğmesi, geri bildirim formu, Ayarlar'daki yerel kuyruk, içerik güncelliği satırı. NE YAPAR: Bildirim yalnız yerel kuyruğa yazılır; sunucuya ancak önizleme ve açık onaydan sonra PP.ogr.gb.gonder ile gider.
+   SORUN OLURSA: Mantık ve saklama js/ogrenme/geri-bildirim.js'tedir (PP.ogr.gb), bu dosya yalnız arayüzdür; durum S.gb (gbDurum); bu dosya ders betiklerinin en sonunda yüklenir.
+   YENİ ÖZELLİK: Yeni bildirim alanı gbForm'a, bağlam türü gbAc'a eklenir; tests/faz12b_geri_bildirim.js ve tests/faz12c_gonder.js güncellenir. */
 /* ---- Faz 12 V4/V5 arayüz: "Bu hatalı" düğmesi, geri bildirim formu, yerel kuyruk (Ayarlar), onaylı "Gönder" ve içerik güncelliği satırı.
    Kaydetmek yalnız yerel kuyruğa yazar; sunucuya yalnız önizleme + açık onay sonrası (PP.ogr.gb.gonder) gider. ---- */
 function gbDurum() { return (S.gb = S.gb || { acik: false, baglam: null, f: null, duz: null, hata: [], uyariGoruldu: false, sil: null, gonder: null, gonderiyor: false, gonderMesaj: {} }); }

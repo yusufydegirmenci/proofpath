@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Atölye sekmesi CV bölümü ve Proje Atölyesi kavram bağlantıları. NE YAPAR: cptAll Atlas kavramlarını önbelleğe alıp projelerle eşler (cptChips/cptOpen proje adımlarında görünür); atCv CV ve portfolyo formunu, cvDownload/cvPortDownload indirmeyi sağlar.
+   SORUN OLURSA: CV verisi S.cv alanlarında, prefs/cv belgesine S.db ile yazılır (cvSave; misafir/okuma modunda yazmaz). ATLAS_* dizilerine (js/veri/atlas-*.js) bağlıdır; atlas-2.js sonrası yüklenmeli. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni CV alanı: cvLoad alan listesi + atCv formu. Özel test yok; tests/smoke.js sekmeyi açar. */
 /* ---- v33: kavram-proje bağlantısı, CV oluşturucu ---- */
 var _cptCache=null;
 function cptAll(){

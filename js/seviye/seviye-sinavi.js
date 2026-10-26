@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Seviye sınavı (yerleştirme), tüm veri sıfırlama ve kılavuz.
+   NE YAPAR: Çırak/Kalfa/Usta seviyesini belirler ve saklar; sıfırlama kapsam seçimiyle yerel anahtarları siler; kılavuz el kitabını çizer.
+   SORUN OLURSA: localStorage ya_lv, ya_rs; RS_LS listesindeki ya_* anahtarları sıfırlamada silinir; sınav sonucu PP.ogr.sunucu üzerinden; TRK_LIST ve syncPush küresel olarak önceden yüklenmiş olmalı (index.html'de son betiklerden).
+   YENİ ÖZELLİK: Yeni yerel anahtar RS_LS'e eklenir (sıfırlama kapsamı); tests/t60d_lv.js, t59b_reset.js, hesaplar.js, ogrenme.js güncellenir. */
 /* ---- v59: seviye sınavı, sıfırlama, kılavuz ---- */
 var RS_KEY="ya_rs",LV_KEY="ya_lv",LV_NAMES=["Henüz belli değil","Çırak","Kalfa","Usta"],LV_TR=TRK_LIST;
 function rsLoad(){try{var o=JSON.parse(localStorage.getItem(RS_KEY)||"null");return o&&typeof o==="object"?o:{}}catch(e){return {}}}

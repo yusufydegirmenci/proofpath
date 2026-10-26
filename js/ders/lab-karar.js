@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > CCNA karar lab'ları, rota seçimi (en uzun önek) ve ACL değerlendirme; ortak lab arayüzü PP.lab.kararPanel. NE YAPAR: Saf hesap PP.lab.karar ile cevabı hesaplar, paneli çizer, kanıtı PP.ogr.depo.kanitEkle ile 'lab' türünde ekler (kapı kanıtı değil, istemci doğrulaması).
+   SORUN OLURSA: Alt ağ hesabı ders-eki.js'ten (PP.lab.altag) gelir, o ÖNCE yüklenmeli; lab-vlan-nat, lab-ospf-dhcp ve lab-evag bu panele 'genel' tipiyle bağlanır.
+   YENİ ÖZELLİK: Yeni lab türü karar tablosuna ve panel çizimine eklenir; tests/faz5c_net.js, tests/faz5d_lab.js güncellenir. */
 /* ---- Faz 5 tur 2: CCNA karar lab'ları (M§8.2): rota seçimi (en uzun önek) ve ACL değerlendirme ----
    Tarayıcıda yerel simülasyon; gerçek cihaz/ağ yok. Saf hesap PP.lab.karar, arayüz PP.lab.kararPanel.
    Kanıt: PP.ogr.depo.kanitEkle (tur "lab", kapı kanıtı değildir; istemci doğrulaması). Alt ağ hesabı ders-eki.js'ten (PP.lab.altag) gelir. */

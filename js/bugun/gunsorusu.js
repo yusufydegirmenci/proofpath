@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Bugün, günün sorusu (PP.gunSorusu). NE YAPAR: Mevcut soru havuzundan yerel tarihe bağlı deterministik tek soru seçer; aynı gün ve aynı havuz aynı soruyu verir, yanlış cevap mevcut tekrar kuyruğuna girer, cezasızdır.
+   SORUN OLURSA: Cevap ya_pp_ogr.tercih.gunsorusu içinde {gun, k, cevap} olarak durur; hata-defteri.js havuzu (gunSorusuHavuz) kurup bu modülü çağırır; PP.ogr.depo ÖNCE yüklenmeli.
+   YENİ ÖZELLİK: Yeni seçim kuralı sec()'e eklenir; tests/faz10d.js güncellenir. */
 /* ---- Günün sorusu (Faz 10 tur 4): mevcut soru havuzundan (QB) yerel tarihe bağlı, deterministik seçim ----
    Aynı gün + aynı havuz = aynı soru (rastgelelik yok). Cevap ya_pp_ogr.tercih.gunsorusu içinde saklanır: {gun, k, cevap}.
    Yanlış cevap mevcut oyun tekrar kuyruğuna (gqMark, 1-3-7-14 gün) girer; ayrı bir tekrar sistemi yoktur. Cezasızdır: seri/XP/ustalık değişmez. */

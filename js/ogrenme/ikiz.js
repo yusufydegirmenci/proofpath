@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Öğrenme ikizi, kanıta dayalı durum özeti (PP.ikiz).
+   NE YAPAR: Deneme kayıtlarından ve verilen ölçülen değerlerden saf hesapla madde + kanıt listesi üretir; tek veya doğrulanmamış deneme belirsizdir; olasılık/tarih vermez.
+   SORUN OLURSA: PP.ogr.deg.hedefDurumu kurallarına bağlıdır (degerlendirme.js önce yüklenmeli); arayüz js/atolye/plan-ui.js.
+   YENİ ÖZELLİK: Yeni madde ikiz.js'te kanıtıyla üretilir, plan-ui.js'te gösterilir; tests/faz7_plan.js güncellenir. */
 /* ---- Öğrenme ikizi (M§8.8): kanıta dayalı durum özeti — karar desteği, bilimsel kopya DEĞİL. Saf hesap, depolamaya yazmaz. ----
    Yalnız deneme kayıtlarını (PP.ogr.deg.hedefDurumu kuralları: öz-beyan sayılmaz, eski sürüm sayılmaz) ve verilen ölçülen değerleri kullanır.
    Her madde kanıtını taşır; tek deneme ya da doğrulanmamış kayıt "belirsiz"dir. Olasılık/kesin tarih üretmez. */

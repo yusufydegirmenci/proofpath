@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Proje Atölyesi, Yetkinlik Yolları (PATHS) ve sertifika bilgisi. NE YAPAR: PATHS_RAW ile iz başına yolları (sec, qa, bk, sup, ba, gold) ve projeleri (id, lv, başlık, hafta, araçlar, steps) tanımlar; PATHS adım dizilerini {t,learn,doit,proof,en,q,g} nesnelerine çevirir. CERT_FACTS sertifika notlarıdır.
+   SORUN OLURSA: Okuyanlar: proje/proje-atolyesi.js (pathProj), ogrenme/program.js, atolye/kisisel-plan.js. İlerleme anahtarı path-<proje id>; id değişirse ilerleme kopar. Eklemeler proje-tanim ve proje-yeni dosyalarıyla proje-birlestir.js üzerinden birleşir. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni yol/proje burada; ek alanlar proje-tanim-*.js'e. Testler: tests/faz8_proje.js, tests/ogrenme.js, tests/faz4_entegrasyon.js. */
 /* ---- v21: Proje Atölyesi + Yetkinlik Yolları ---- */
 var PJK=[["ag","Ağ lab"],["ing","İngilizce"],["kariyer","Kariyer"],["kod","Kodlama"],["serbest","Serbest"]];
 var LVN=["","Başlangıç","Orta","Zor"];

@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Değişiklik kuyruğu ve senkron motoru (PP.sync), arka uçtan bağımsız.
+   NE YAPAR: Yazmaları kalıcı kuyruğa alır, sırayla gönderir; çakışmada sessiz üzerine yazma yoktur, iki sürüm saklanır ve kullanıcı seçer; kesilen istek tekrar denenir.
+   SORUN OLURSA: localStorage anahtarları pp_kuyruk:<uid> ve pp_senkron (cihaz.js aynı kuyruk adını kullanır). Arka uç adaptörü oku/yaz verir. Arayüz js/atolye/guven-ui.js.
+   YENİ ÖZELLİK: Yeni adaptör Motor'a verilir; tests/faz9_senkron.js ve tests/sunucu_sahte.js güncellenir. */
 /* ---- Değişiklik kuyruğu ve senkron (M§8.9) — arka uçtan bağımsız motor ----
    - Yazma kuyruğa alınır, kalıcıdır (kullanıcı kimliğine göre ayrı anahtar), sırayla gönderilir.
    - Durumlar: bekliyor (çevrimdışı/ağ hatası), çakışma (sunucu bizden sonra değişmiş), hata (sunucu reddetti), başarılı.

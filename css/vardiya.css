@@ -1,3 +1,6 @@
+/* ALAN: Masa sekmesi, Vardiya (.vd-*) stilleri. NE YAPAR: Vardiya sohbet ekranının yüz, ilerleme çubuğu, sohbet balonu ve seçenek stillerini tanımlar.
+   SORUN OLURSA: Bağlanma sırası index.html dosyasındadır (marka.css en son); sonraki dosya önceki kuralı ezer. .vd-* sınıfları oyun/vardiya.js içinde üretilir; yeniden adlandırınca orayı da güncelleyin.
+   YENİ ÖZELLİK: Yeni Vardiya öğesi: sınıf burada, üretim oyun/vardiya.js. Test: tests/t57d_vardiya.js. */
 .vd-face{display:block;flex:none;width:64px;height:64px}
 .vd-top{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:center}
 .vd-who{display:grid;min-width:0}.vd-who small{opacity:.7}.vd-bn{font-weight:800;font-size:13px}

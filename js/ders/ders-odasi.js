@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > ders odası (tıklanır mini sınav, adım adım animasyon, bilgi bölümü). NE YAPAR: Dersi oda görünümünde açar, sınav seçimini işler, sunucu doğrulaması varsa onu kullanır, yoksa istemci qzCorrect ile denetler.
+   SORUN OLURSA: qzCorrect/qzNorm şık eşleme mantığı sunucu tarafıyla eş tutulmalı; tests/faz9s_arac.js ve tests/faz_ses.js dosya kaynağını doğrudan okur, işlev adlarını/yerleşimini değiştirme; durum S.les, S.an.
+   YENİ ÖZELLİK: Yeni oda kipi LR_STEPS/lrModes ve renderLessonRoom'a eklenir; tests/t58a_ders_odasi.js ve tests/faz12_sema.js güncellenir. */
 /* ---- v58: ders odası, tıklanır sınav, adım adım animasyon ---- */
 function qzNorm(s){return String(s==null?"":s).toLowerCase().replace(/[^a-z0-9çğıöşü ]+/g," ").replace(/\s+/g," ").trim()}
 function qzCorrect(q){

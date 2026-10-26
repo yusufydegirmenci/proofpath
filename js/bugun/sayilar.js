@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Sayılar sekmesi (renderNumbers), sınav ve çalışma istatistikleri. NE YAPAR: S.exams kayıtlarını (mock, gate, boss) tarihe göre sıralayıp grafik/özet olarak çizer; günlük kayıtlı dakikaları toplar.
+   SORUN OLURSA: loggedDates, goalTrack temel.js'ten gelir; sınav türleri 'mock', 'gate', 'boss' dizgileriyle süzülür; adını değiştirirsen sayılar boşalır.
+   YENİ ÖZELLİK: Yeni grafik/özet renderNumbers çıktısına eklenir; tests/tur_c.js güncellenir. */
 /* ---- Sayılar ---- */
 function renderNumbers(){
   var ex=S.exams.slice().sort(function(a,b){return String(a.date).localeCompare(String(b.date))});

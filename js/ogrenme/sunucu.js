@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Güvenilir sınav yolu; ders mini sınavı, seviye sınavı, Veri Analitiği sınavları (PP.ogr.sunucu).
+   NE YAPAR: Cevapları claude.use(ogr) üzerinden RPC ogr_deneme_gonder'e yollar, kapı kararı ogr_kapi_degerlendir; puanı ve geçti kararını sunucu verir, yerel kayıt önbellektir.
+   SORUN OLURSA: İstemcide cevap anahtarı yoktur, eklenmemeli. Yerel kayıt ya_pp_ogr (doğrulama sunucu); durum kodları MESAJ'da. Çağıranlar js/ders/ders-odasi.js, js/seviye/seviye-sinavi.js.
+   YENİ ÖZELLİK: Yeni sınav türü burada RPC ile eklenir; tests/faz9s_sunucu.js, faz21_bilgi.js, faz22_coklu.js (sahte sunucu tests/sunucu_sahte.js) güncellenir. */
 /* ---- Güvenilir sınav yolu (Faz 9 sunucu) ----
    Ustalığa/kapıya sayılan sınavlarda (ders mini sınavı, seviye sınavı, Veri Analitiği sınavları) cevap anahtarı bu dosyada da içerikte de YOK:
    istemci yalnız cevaplarını claude.use("ogr") → ogr_deneme_gonder'e yollar; puanı ve geçti kararını sunucu verir. Kapı kararı: ogr_kapi_degerlendir.

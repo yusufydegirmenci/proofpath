@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > 'Dinle' modu (PP.ses). NE YAPAR: Ders metnini tarayıcı sesiyle (speechSynthesis) cümle cümle okur; dil ve ses seçimi cümleden anlaşılır, hız 0.8-1.5 arası sınırlıdır. Sunucu, ücretli API ve ses dosyası yoktur.
+   SORUN OLURSA: Hız tercihi localStorage ya_ses_hiz anahtarında; saf kısım (parcala, dilBul, sesBul, hizSinir) Node'da test edilir ve tests/faz_ses.js ders-odasi.js kaynağını da okur; tarayıcıda ses yoksa sessizce kapanır.
+   YENİ ÖZELLİK: Yeni ayar PP.ses'e eklenir, arayüz düğmesi ders-odasi.js'tedir; tests/faz_ses.js güncellenir. */
 /* ---- faz-k7: "Dinle" modu. Tarayıcı sesi (speechSynthesis) ile ders metnini cümle cümle okur.
    Sunucu, ücretli API, dış ses dosyası yok. Saf kısım (parcala/dilBul/sesBul/hizSinir) Node'da test edilir (tests/faz_ses.js). ---- */
 (function (g) {

@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Oyun sekmesi, Görevler bölümü, haftalık sezon yolu. NE YAPAR: gmSeasonPts haftalık puanı doğru cevap, oynanan gün, patron galibiyeti ve yeni kartlardan hesaplar; gmSeasonEl unvan basamaklarını (GM_SEASON) ilerleme çubuğuyla çizer.
+   SORUN OLURSA: Kendi deposu yok; gmWeek (ag-kosusu.js) ve gmCards (bilgi-kartlari.js) verisini okur, ikisinden sonra yüklenmeli. Panel oyun-merkezi.js gorev sekmesinden çağrılır. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni basamak: GM_SEASON eşik/unvan çifti; puan formülü gmSeasonPts. Özel test yok; tests/hesaplar.js gmWeek hesabını kapsar, formül değişirse oraya ekleyin. */
 /* ---- v55 haftalık sezon yolu ---- */
 var GM_SEASON=[[25,"Çaylak Kurye"],[60,"Hat Teknisyeni"],[110,"Ağ Operatörü"],[170,"Güvenlik Bekçisi"],[240,"Haftanın Kuryesi"]];
 function gmSeasonPts(){

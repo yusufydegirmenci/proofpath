@@ -1,3 +1,6 @@
+/* ALAN: Seviye sınavı ve rütbe/yeniden sıfırlama ekranlarının (.lv-*, .pe-*, .rs-*, .gd-*) stilleri. NE YAPAR: Seviye sınavı satırları, sıfırlama düğmeleri ve yıldız göstergesi gibi küçük bileşenlerin stilini tanımlar.
+   SORUN OLURSA: Bağlanma sırası index.html dosyasındadır (marka.css en son); sonraki dosya önceki kuralı ezer. Sınıflar js/seviye/seviye-sinavi.js ve oyun/altin-vurus.js içinde üretilir.
+   YENİ ÖZELLİK: Yeni sınav öğesi: sınıf burada, üretim js/seviye/seviye-sinavi.js. Test: tests/t60d_lv.js, tests/t59b_reset.js. */
 .lv-r{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 0;border-top:1px solid var(--line)}.lv-r small{display:block;color:var(--mute);font-size:12px}
 .btn.rs-go{background:#c0392b!important;color:#fff!important;border-color:#c0392b!important}.rs-all{color:#c0392b;border-color:#c0392b}
 .pe-st{display:flex;gap:4px;font-size:30px}.pe-st i{font-style:normal;color:var(--line)}.pe-st i.on{color:#ffb020}

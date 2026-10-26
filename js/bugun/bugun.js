@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Bugün sekmesi (renderToday), şehir kartı, seri satırı, günlük rapor formu. NE YAPAR: Günün hedefini, şehir ilerlemesini, serisini ve raporunu tek ekranda toplar.
+   SORUN OLURSA: goalTrack/goalCity/cityTopics temel.js'ten, PP.ogr.ilerleme/seri/depo js/ogrenme/*'ten gelir, ÖNCE yüklenmeli; durum S.profile, S.reports, S.guest, S.pl; sekme dağıtımı cizim-yardim.js draw() gövde tablosundadır.
+   YENİ ÖZELLİK: Yeni kart renderToday listesine eklenir; özel test yok, tests/tur_c.js ve tests/kritik_akis.js güncellenir. */
 /* ---- Bugün ---- */
 function cityCard(){
   var T=cityTopics(goalTrack());if(!T.length)return null;

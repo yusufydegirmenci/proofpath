@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Müfredat grafiğinin mevcut içerikten kurulması (PP.ogr.program).
+   NE YAPAR: STARTER (js/sinif/sinif.js), PATHS ve TRK_LIST/TRN'den yol-kademe-ders grafiğini ilk kullanımda kurar; ikinci bir müfredat modeli yoktur.
+   SORUN OLURSA: Yükleme anında eski küresellere dokunmaz, çağrı anında okur; tohum sürümü tests/faz9s_tarama.js ile aynı olmalı (surum alanı). STARTER başlık/sırası değişirse grafik ve sunucu tohumu kayar.
+   YENİ ÖZELLİK: Yeni yol/kademe burada eşlenir; tests/faz5b_ccna.js ve tests/faz9s_tarama.js güncellenir. */
 /* ---- Müfredat grafiğini mevcut içerikten kurar (ayrı bir ikinci müfredat modeli YOK) ----
    Kaynaklar: STARTER (yol → ders listesi), PATHS (proje yolları), TRK_LIST/TRN (yol adları). Grafik ilk kullanımda ve tembel kurulur;
    yükleme anında hiçbir eski küresele dokunmaz. */

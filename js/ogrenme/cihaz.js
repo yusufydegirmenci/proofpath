@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Paylaşılan cihaz, kullanıcılar arası yerel veri yalıtımı (PP.cihaz).
+   NE YAPAR: Hesap değişince önceki kullanıcının ya_* verisini pp_stash:<uid> alanına alır, yeni kullanıcı yalnız kendi saklasını görür; sahipsiz ilk veri ilk girene atanır.
+   SORUN OLURSA: localStorage anahtarları pp_stash, pp_aktif_uid, pp_paylasilan_cihaz, pp_kuyruk (kullanıcı başına); senkron.js ile aynı kuyruk adını paylaşır. Arayüz js/atolye/guven-ui.js.
+   YENİ ÖZELLİK: Yalıtılacak yeni ya_* anahtarı ilgili mantığa eklenir; tests/faz9_senkron.js güncellenir. */
 /* ---- Paylaşılan cihaz: kullanıcılar arası yerel veri yalıtımı (M§8.9, P1-7) ----
    Uygulamanın yerel verisi (ya_* anahtarları) tek bir tarayıcı deposundadır. Hesap değişince önceki kullanıcının verisi SİLİNMEZ ama
    aktif alandan çıkarılıp o kullanıcının kimliğiyle ayrı bir sakla alanına (pp_stash:<uid>) alınır; yeni kullanıcı yalnız kendi saklasını görür.

@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Veri Analitiği yolu, seviye 0-2 doğrulama, değerlendirme, telafi, ilerleme (PP.va).
+   NE YAPAR: PP_VA içeriği (content/veri-analitigi/*.js) üzerinde kural tabanlı istemci doğrulaması yapar; bağımsızlık veya ustalık kanıtı değildir; güvenilir sınav sunucu.js üzerinden gider.
+   SORUN OLURSA: Kayıt ya_pp_ogr.tercih.va ve lab kanıtları (tur lab). İçerik dosyaları bu dosyadan önce yüklenir (index.html). Arayüz js/atolye/va-ui.js.
+   YENİ ÖZELLİK: Yeni görev/doğrulayıcı burada, içerik content/veri-analitigi/'ya eklenir; tests/faz10_va.js, faz10_va12.js, faz10_alan.js güncellenir. */
 /* ---- Veri Analitiği yolu (Faz 10 tur 1: Seviye 0) — doğrulama, değerlendirme, telafi, ilerleme ----
    Veri/içerik: content/veri-analitigi/*.js (PP_VA). Kayıt: ya_pp_ogr.tercih.va (ders okundu, lab görevleri, sınav denemeleri) + lab kanıtları (tur "lab").
    Tüm doğrulamalar istemcide ve kural tabanlıdır (simülasyon); bağımsızlık ya da ustalık kanıtı DEĞİLDİR. */

@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Yetkinlik grafiği, yol/kademe/modül/ders, önkoşul ve kapı tanımları (PP.ogr.graf).
+   NE YAPAR: Boş grafik üretir; yol, kademe, modül, ders ve kapı düğümlerini ekleyen/doğrulayan yardımcıları verir.
+   SORUN OLURSA: degerlendirme.js ve kapi.js bu yapıyı kullanır; program.js grafiği mevcut içerikten kurar. İçerik sürümü (surum alanı) değişirse eski denemeler eski sürüm sayılabilir.
+   YENİ ÖZELLİK: Düğüm türü graf.js'e eklenir, program.js'te doldurulur; tests/ogrenme.js (graf bölümü) güncellenir. */
 /* ---- Yetkinlik grafiği (M§6): yol/kademe/modül/ders, yetkinlik + önkoşul, hedef, kapı tanımları ---- */
 (function (g) {
   var O = g.PP.ogr;

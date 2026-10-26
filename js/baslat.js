@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Tüm uygulama başlatma; en son yüklenen betik. NE YAPAR: Oturum/db hazır olunca koleksiyonları ve belgeleri dinleyip S'ye yazar (listen), ilk draw()'u yapar, x-lazy ders içeriği betiklerini sırayla yükler ve çevrimdışı uyarısını gösterir.
+   SORUN OLURSA: Yeni koleksiyon listen() satırı eklenmezse S'de hiç dolmaz; cleanLesson/cleanTicket ve ppGate dosya sırasına bağlı; lazy yükleme bitince window.PP_DERS_HAZIR=true olur ve _glAll sıfırlanır; nonOwner için yol öneki data/users/uid/pp/.
+   YENİ ÖZELLİK: Yeni veri akışı burada listen/onSnapshot ile bağlanır; tests/stub.js sahte db'si kopyalanır, tests/faz9_cevrimdisi.js ve tests/e1_editor.js yoklanır. */
 /* ---- veri ---- */
 function listen(db,name,key){
   db.collection(name).onSnapshot(function(s){

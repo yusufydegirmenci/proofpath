@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Proje Atölyesi veri birleştirme (başlıkta anlatılan işleme ek not). NE YAPAR: Başlıktaki işlemi tamamlar: K.tanim alanları projelere, K.yeni projeleri yollara kopyalanır, PATHS kademe sırasına dizilir, K.kademeSayilari denetim yardımcısı eklenir.
+   SORUN OLURSA: PATHS tanımsızsa (yollar.js yüklenmediyse) sessizce çıkar; proje-tanim ve proje-yeni dosyaları bundan ÖNCE yüklenmeli. Aynı id'li yeni proje atlanır. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni alan: ALAN listesine ad + proje-tanim dosyasına değer. Test: tests/faz8_proje.js, tests/faz10_va12.js (PP_PROJ). */
 /* ---- Faz 8 tur 2: proje tanımlarını (M§8.6, 10 alan) ve kademe başına çekirdek projeleri yollara birleştirir ----
    Veri: js/veri/proje-tanim-*.js (mevcut projelere 8 ek alan) ve js/veri/proje-yeni-*.js (yeni çekirdek projeler, VA Seviye 0 ayrı liste).
    yollar.js'ten SONRA, proje-atolyesi.js'ten ÖNCE yüklenir. Kayıtlı ilerleme anahtarı değişmez (path-<proje id>); mevcut proje id'leri korunur.

@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Proje detayında kanıt raporu paneli ve Mülakat sekmesinde rubrik paneli.
+   NE YAPAR: PP.rapor.olustur çıktısını iddia listesi olarak çizer; PP.mulakat rubrik formunu çizer ve ivRubrikKaydet ile kaydeder.
+   SORUN OLURSA: PP.rapor, PP.mulakat, PP.koc ve PP.ogr yüklenmiş olmalı (yoksa panel null döner); index.html'de proje ve mülakat dosyalarından sonra yüklenir. Kayıt ya_pp_ogr.
+   YENİ ÖZELLİK: Yeni panel buraya, hesap js/ogrenme/rapor.js'e; tests/faz8_proje.js ve faz8_kariyer.js güncellenir. */
 /* ---- Faz 8 arayüz: proje kanıt raporu (Proje detayı) ve mülakat rubrik paneli (Mülakat sekmesi) ---- */
 function renderRaporPaneli(p, def) {
   if (!window.PP || !PP.rapor || !def) return null;

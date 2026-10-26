@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Atölye sekmesi iskeleti: Program, Alıştırma, Kelimeler, Kütüphane, Defterim, Analiz, İşe hazırlık, CV, Veri Analitiği, Git. NE YAPAR: renderAtolye bölüm çubuğunu çizip her bölümün işlevine (atProgram, atPractice, atWords, atLib, atNotes, atAnalysis) yönlendirir; WORDS kelime listesi ve alıştırma akışı (pr*) burada.
+   SORUN OLURSA: Defter prefs/notes belgesine S.db ile yazılır (pnSave; misafir/okuma modunda yazmaz). atJobs kisisel-plan.js, atCv cv-kavram-proje.js, renderVeriAnalitigi va-ui.js içindedir; yalnız çağrı anında kullanılır. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni bölüm: renderAtolye secs listesi + eşleme. Atölyeye özel test yok; tests/smoke.js sekmeleri açar. */
 /* ---- v27 Atölye: program, alıştırma, kelimeler, kütüphane, defter, analiz ---- */
 var WORDS=[
 ["bug","yazılım hatası","bağ","I found a bug in the login page.","Giriş sayfasında bir hata buldum."],

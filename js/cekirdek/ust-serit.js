@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Üst şerit (hero): gökyüzü silueti, ilerleme halkası, selamlama, XP animasyonu, akademi çubuğu, karne, koç balonu. NE YAPAR: renderHero her çizimde üstteki görünümü hedef yola, ustalığa ve S.pf tercihlerine göre kurar.
+   SORUN OLURSA: draw() (cizim-yardim.js) her çizimde çağırır; S._xpShown sayaç animasyonunun tekrarını önler; S.kimlik oturum çözülmeden gizliliği belirler; PP.ogr.ilerleme ve temel.js ÖNCE yüklenmeli.
+   YENİ ÖZELLİK: Yeni üst öğe renderHero'ya eklenir; tests/tur_c.js güncellenir. */
 /* ---- üst şerit ---- */
 function skyline(){
   var G=goalTrack(),C=topicsOf(G),E=G==="eng"?[]:topicsOf("eng"),items=[];

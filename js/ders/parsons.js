@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > Parsons soruları (PP.parsons), karışık satırları doğru sıraya dizme. NE YAPAR: window.PP_PARSONS (content/parsons.js, parsons-net.js) verisinden paneli çizer; Ekle/Yukarı/Aşağı/Çıkar düğmeleriyle klavyeyle de çözülür, kontrol ve ipucu PP.cubuk çubuğundan gelir.
+   SORUN OLURSA: cubuk.js ÖNCE yüklenmeli; çözümü gören alıştırma kanıt sayılmaz (PP.cubuk.kanitSayilir); panelDers ders-eki.js'ten çağrılır.
+   YENİ ÖZELLİK: Yeni soru content/parsons*.js verisine eklenir, kod değişmez; tests/faz10d.js ve tests/faz_w1.js güncellenir. */
 /* ---- PP.parsons: Parsons soruları (Faz 10 tur 4) — karışık satırları doğru sıraya dizme ----
    Veri: window.PP_PARSONS (content/parsons.js): {id, ders, baslik, gorev, dogru:[doğru sırayla satırlar], yanlis:[en çok 2 yanlış satır], ipucu:[3 kademe], aciklama}.
    Satır kimliği "l"+i: i < dogru.length doğru sıradaki satırdır; sonrakiler yanlış (oyalayıcı) satırlardır. Ekranda kimlik gösterilmez.

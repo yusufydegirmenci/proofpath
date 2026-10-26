@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Giriş kartı ve oturum çözülene kadar uygulama kabuğunun gizlenmesi (window.ppGate). NE YAPAR: supabase-shim.js giriş kartını DOM'da tamamlar (değer önerisi, şifre göster, gizlilik notu) ve 'Hesapsız bir ders dene' bellek içi örnek dersi sunar.
+   SORUN OLURSA: Kabuk ppg-kapali sınıfıyla gizli kalır, baslat.js ppGate.ac()/hata() çağırır; örnek ders ağ, Supabase ve localStorage KULLANMAZ; shim'e dokunmaz, onun DOM'una bağlıdır.
+   YENİ ÖZELLİK: Yeni giriş öğesi bu dosyadaki DOM eklerine konur; tests/tur_c.js güncellenir. */
 /* ---- Giriş eki (Faz C, Y1) ----
    supabase-shim.js'in giriş kartını DOM'da tamamlar; shim'e dokunmaz.
    - Oturum çözülene kadar uygulama kabuğu gizli ve inert (sahibin görünümü/adı kimseye sızmaz).

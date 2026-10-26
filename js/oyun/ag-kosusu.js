@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Oyun sekmesi, Ağ Koşusu/Sürüşü durumu ve soru havuzu. NE YAPAR: S.gm oyun durumunu, haftalık görev/XP/seri hesaplarını (gmWeek, gmMissions, gameXp) ve soru seti kurucusunu (gmBuild: kaçırılan sorular + kelimeler + Atlas) tanımlar.
+   SORUN OLURSA: Dosya yüklenirken localStorage ya_gm (tercihler) ve ya_gs (soru başına beceri/kutu, GS) okunur; altin-vurus.js syncOut bunları buluta taşır. trkSorulu, weekStart gibi önceki betiklere bağlıdır. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni görev/hesap bu dosyaya; ekran duello.js renderGame ve joker-skin.js. tests/hesaplar.js (gmWeek, görevler) güncellenir. */
 /* ---- v27 Oyun Salonu: Ağ Koşusu / Ağ Sürüşü ---- */
 S.gm={mode:"daily",skin:"run",speed:null,run:null,stage:null,mute:false,loop:0,trk:"all",sk:{run:"stj",drive:"std"},ps:{}};
 try{var _g=JSON.parse(localStorage.getItem("ya_gm")||"null");if(_g){if(["all"].concat(trkSorulu().map(function(o){return o[0]})).indexOf(_g.trk)>=0)S.gm.trk=_g.trk;S.gm.mute=!!_g.mute;if(_g.sk&&typeof _g.sk==="object"){["run","drive"].forEach(function(k){if(typeof _g.sk[k]==="string")S.gm.sk[k]=_g.sk[k].slice(0,12)})}if(_g.ps&&typeof _g.ps==="object"){["tc","runs","kr","boss","S"].forEach(function(k){S.gm.ps[k]=Math.max(0,Math.min(99999,_g.ps[k]|0))})}}}catch(e){}

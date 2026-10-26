@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Bugün sekmesi, oyundan gelen tekrar kuyruğu (Leitner). NE YAPAR: Oyunda yanlış yapılan soruyu ertesi güne, doğru bilineni 1-3-7-14 gün aralıklarla ileri taşır (gqMark); vadesi gelen soruları Bugün sekmesinde gqPanel olarak sorar.
+   SORUN OLURSA: localStorage ya_gq ({qb<indeks>: {s,due,t}}); anahtar soru bankası dizisinin İNDEKSİDİR (soru-bankasi.js yalnız sona eklenmeli) ve syncOut ile eşitlenir. gqPanel bugun/bugun.js içinden çağrılır. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Aralıklar GQ_STEPS. Testler: tests/h83.js (eşitleme), tests/h84.js (kuyruk paneli), tests/faz10d.js. */
 /* ---- v55 oyundan tekrar kuyruğu (Leitner) ---- */
 var GQ_KEY="ya_gq",GQ_STEPS=[1,3,7,14];
 function gqLoad(){try{var o=JSON.parse(localStorage.getItem(GQ_KEY)||"null");return o&&typeof o==="object"?o:{}}catch(e){return {}}}

@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Ayarlar > Güven merkezi, veri envanteri, dışa aktarma ve yerel silme (PP.guven).
+   NE YAPAR: Hangi verinin nerede, neden saklandığını listeler; silme yalnız açık onayla ve yalnız bu cihazın yerel verisini kapsar.
+   SORUN OLURSA: Envanter anahtar önekleri üzerinden çalışır (ya_gm, ya_gs, ya_lc, ya_nt, ya_pl, ya_pp_ogr, pp_kuyruk); yeni yerel anahtar burada listelenmezse dışa aktarma/silme onu atlar. Arayüz js/atolye/guven-ui.js.
+   YENİ ÖZELLİK: Yeni anahtar ENVANTER'e eklenir; tests/faz9_senkron.js güncellenir. */
 /* ---- Güven merkezi (M§8.10): neyin nerede saklandığı, neden, nasıl dışa aktarılır/silinir ----
    Vaat edilemeyecek garanti yazılmaz (şifreleme, "tamamen güvenli", "kimse göremez" yok). Silme yalnız açık onay + dışa aktarma önerisi görüldükten sonra;
    yalnız bu cihazın yerel verisini kapsar (sunucu/hesap silme bu sürümde YOK ve öyle söylenir). */

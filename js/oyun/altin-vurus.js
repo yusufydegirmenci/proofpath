@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Rütbe kapıları, bulut eşitleme, ilk karşılama, zayıf konudan mülakat, kanıt cüzdanı. NE YAPAR: gateEval/gateBox proje kapılarını, syncOut/syncPush/syncApply cihazlar arası ilerleme eşitlemesini (prefs/sync belgesi), renderOnboarding karşılama akışını, wm* zayıf konu mülakatını, ev* kanıt cüzdanını içerir.
+   SORUN OLURSA: syncOut oyun, Atlas, seviye testi, kartlar, Vardiya, Fetih, Ağ Atölyesi verilerini toplar; yeni bir ya_* anahtarı eşitlenecekse buraya eklenmeli (400000 karakter üst sınırı, misafir/okuma modunda yazılmaz). Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni eşitlenen veri: syncOut + syncApply çifti; tests/h83.js (bulut eşitleme) ve tests/tur_c.js (karşılama) güncellenir. */
 /* ---- v34: kilitli aşamalar (Altın Vuruş) ---- */
 var GATE_AT={ba:"Başlangıç",sw:"Yazılım & Test",en:"İngilizce",sec:"Siber",bk:"Backend",ccna:"CCNA",net:"Network",dev:"DevOps",qa:"Test Uzmanı"};
 function gateEval(g){

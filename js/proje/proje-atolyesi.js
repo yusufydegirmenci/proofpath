@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Proje Atölyesi ve yol (track) ekranları.
+   NE YAPAR: S.projects durumunu temizler/kaydeder; proje başlatma, adım işaretleme, Claude'a sorma ve yol/proje ekranlarını (renderTrack, renderProject, renderPjDetail) çizer.
+   SORUN OLURSA: Küresel S, PATHS, str/num, h gerekir; proje verisi js/veri/proje-*.js dosyalarından sonra yüklenmeli; kanıt PP.ogr.depo.kanitEkle ile ya_pp_ogr'a gider. Eski küresel pathOf buradan gelir.
+   YENİ ÖZELLİK: Yeni proje alanı cleanProject'te eklenir; tests/faz8_proje.js, faz4_entegrasyon.js, hesaplar.js, tur_c.js güncellenir. */
 function pathProj(pid){var r=null;PATHS.forEach(function(p){p.projects.forEach(function(j){if(j.id===pid)r=j})});return r}
 function pathOf(pid){var r=null;PATHS.forEach(function(p){p.projects.forEach(function(j){if(j.id===pid)r=p})});return r}
 S.projects=[];S.pj={sel:null,form:null,busy:false,err:null,nstep:"",nnote:"",open:{},snote:{},confirmDel:null};

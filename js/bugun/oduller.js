@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ödüller sekmesi (renderRewards) ve terfi dosyası paneli (promoPanel). NE YAPAR: Rütbe, terfi koşulları, deneme süresi ve kıdem uyarılarını gösterir; claim ile S.db üzerine yazar.
+   SORUN OLURSA: Rütbe hesabı temel.js rankInfo/RANKS içindedir (burada hesaplanmaz); yazma S.db ve S.canWrite ister; durum S.rewards, S.badges.
+   YENİ ÖZELLİK: Yeni ödül satırı renderRewards'a eklenir, rütbe kuralı temel.js'te değişir; özel test yok, tests/hesaplar.js (rütbe/XP) ve tests/tur_c.js güncellenir. */
 /* ---- Ödüller ---- */
 function promoPanel(){
   var R=rankInfo(),n=R.nxt;

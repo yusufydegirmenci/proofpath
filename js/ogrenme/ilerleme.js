@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: İlerleme, ders/konu tamam tanımı ve sıra kilidi (PP.ogr.ilerleme).
+   NE YAPAR: Ders tamam (ya_lc kaydı) ve konu tamam (db konusu built) için tek tanım; tamamlanan sayısı iki kaynağın birleşimidir; yerleştirme ofseti dersleri atlandı sayılır.
+   SORUN OLURSA: İlerleme ustalık değildir (ustalık: kapi.js). Eski kayıt anahtarı ya_lc; çağıranlar çok (js/bugun, js/atolye, js/mulakat/sinav-haritasi.js konuTamam, js/sinif/sinif.js sabitDurumlar).
+   YENİ ÖZELLİK: Yeni adım türü ADIMLAR'a eklenir; tests/ogrenme.js (ilerleme bölümü) güncellenir. */
 /* ---- İlerleme (ders tamam) için TEK tanım (Faz 4) ----
    İlerleme = sayfa/ders açma ve sıra kilidi. Ustalık DEĞİLDİR (ustalık: PP.ogr.kapi.ustalik, kanıt + %80).
    - Ders tamam (ya_lc kaydı): ısınma (w) ya da ısınma atlama işareti (w-atla) + okuma (r) + mini sınav kapısı (q) + alıştırma (p).

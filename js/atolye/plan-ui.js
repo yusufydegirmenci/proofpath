@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Bugün sekmesi, uyarlanabilir plan ve öğrenme ikizi paneli (Faz 7). NE YAPAR: PP.plan ve PP.ikiz (js/ogrenme/plan.js, ikiz.js) için planGirdi ile girdiyi toplar, renderPlan arayüzü çizer, planTercihYaz tercihi kaydeder.
+   SORUN OLURSA: Tercih PP.ogr.depo.tercih("plan") üzerinden saklanır (doğrudan localStorage anahtarı yazılmaz). Koç panelinin altında görünür; renderPlan bugun.js içinden çağrılır. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni plan tercihi: plan.js tercihDogrula + planTercihYaz. Test: tests/faz7_plan.js. */
 /* ---- Plan ve öğrenme ikizi paneli (Faz 7): PP.plan / PP.ikiz üzerinde arayüz. Bugün sekmesinde Koç'un altında. ---- */
 function planGirdi() {
   var bugun = PP.ogr.gun.bugun(), tc = PP.plan.tercihDogrula(PP.ogr.depo.tercih("plan"));

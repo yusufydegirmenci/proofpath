@@ -18,7 +18,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(Object.keys(P).map(Number), [1, 2, 3, 4, 5, 6, 7, 8], 'js hattı: 8 ders (1-8)');
   const baslik = vm.runInNewContext('(function(){' + fs.readFileSync(path.join(KOK, 'js/sinif/sinif.js'), 'utf8').match(/var STARTER=[\s\S]*?(?=\nfunction starterTopics)/)[0] + ';return STARTER.js})()');
   eq(baslik.map(x => x[0]), ['Değişkenler ve veri türleri (let/const)', 'Metin ve şablon dizesi', 'Operatörler ve karşılaştırma (== ve ===)', 'Koşullar: if, else if, else', 'Döngüler: for, while, for...of', 'Dizi yöntemleri: map, filter, forEach', 'Nesneler', 'Fonksiyonlar ve ok fonksiyonları'], 'STARTER.js: 8 konu, sırası belirli');
-  const tm = vm.runInNewContext(fs.readFileSync(path.join(KOK, 'js/veri/tmap.js'), 'utf8').replace('"use strict";', '') + ';TMAP').js;
+  const tm = vm.runInNewContext(['tmap.js', 'tmap-js.js'].map(f => fs.readFileSync(path.join(KOK, 'js/veri', f), 'utf8').replace('"use strict";', '')).join(';') + ';TMAP').js;
   eq(tm.map(e => e.n[0]), baslik.map(x => x[0]), 'TMAP.js başlıkları STARTER.js ile birebir (ders 1-8 eşlemesi)');
   ok(tm.length === 8 && tm.every(e => e.m.length === 4 && e.f.length === 2 && e.u.length === 3 && e.p.length === 3 && e.u.every(u => u.length === 4)), 'TMAP.js: her konuda 4 terim, 2 hata satırı, 3 hızlı soru, 3 hedef');
 

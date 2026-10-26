@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Aralıklı tekrar planı (PP.ogr.tekrar), hata defteri ve telafi.
+   NE YAPAR: İkinci depo olmadan deneme kayıtlarından tekrar kuyruğunu türetir (kaldı, kritik, düşük oran, eski vade); aralık 1,3,7,14,30 gün; her öğe neden bugün metni taşır.
+   SORUN OLURSA: Kalıcılık ya_pp_ogr denemeleridir; deg.telafi/varyantSec'e bağlıdır (degerlendirme.js). Tekrar kaçırmak seri/XP düşürmez. Çağıran js/ders/hata-defteri.js.
+   YENİ ÖZELLİK: ARALIK ve öncelik kuralı burada genişletilir; tests/ogrenme.js (tekrar) ve tests/faz4_entegrasyon.js güncellenir. */
 /* ---- Aralıklı tekrar planı (M§8.4) — PP.ogr deneme kayıtlarından TÜRETİLİR (ikinci bir depo yok) ----
    - Kaldı hedef: bugün vadeli; telafi + (varsa) farklı varyantla yeniden sınav (PP.ogr.deg.telafi / varyantSec).
    - Geçti hedef: sondan art arda geçiş sayısına göre aralık 1, 3, 7, 14, 30 gün (hata defteri Leitner aralıklarıyla aynı).

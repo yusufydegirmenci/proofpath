@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > Notlar sekmesi (el yazısı defter, S.nt). NE YAPAR: Ders sayfalarını not kartlarına çevirir; öğrencinin kendi notları ders başına en çok 30 kayıt olarak tutulur ve eşitlenir.
+   SORUN OLURSA: Notlar localStorage ya_nt anahtarında (ntMine/ntSaveNotes); eski düz-metin biçim göç edilir, biçimi bozma; S.nt = {tr, pid, dir} ortak durumdur, ntSyncPack eşitleme paketini üretir.
+   YENİ ÖZELLİK: Yeni kart türü NT_KINDS/NT_SVG ve ntPageEl'e eklenir; tests/t57b_mynotes.js (göç, 320/390/1100 px) güncellenir. */
 /* ---- v55 Ders Notları: el yazısı defter ---- */
 var NT_SVG={
 star:'<svg viewBox="0 0 24 24"><path d="M12 2.5l2.8 6.4 6.9.6-5.2 4.5 1.6 6.8-6.1-3.7-6.1 3.7 1.6-6.8L2.3 9.5l6.9-.6z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/></svg>',

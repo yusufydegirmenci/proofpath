@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Atölye sekmesi, Veri Analitiği yolu (Seviye 0-2) arayüzü. NE YAPAR: Müfredat, uygulama alanı laboratuvarı (vaLab), kontrol, sınav (vaSinav) ve proje (vaProjeler) ekranlarını çizer; renderVeriAnalitigi bölümün girişidir. Mantık js/ogrenme/veri-analitigi.js ve content/veri-analitigi/ altında.
+   SORUN OLURSA: Projeler window.PP_PROJ.va listesinden okunur (js/veri/proje-yeni-va*.js). Çözümler tests/va-cozumler-*.json içindedir, repoda cevap tutulmaz. renderVeriAnalitigi atolye.js içinden çağrılır. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni seviye/ders: content/veri-analitigi dosyaları + burada ekran. Testler: tests/faz10_va.js, tests/faz10_va12.js. */
 /* ---- Veri Analitiği yolu arayüzü (Faz 10 tur 1: Seviye 0) — Atölye > "Veri Analitiği" ---- */
 function vaLi(items) { return h("ul", { class: "lr-ul" }, items.map(function (x) { return h("li", null, x); })); }
 

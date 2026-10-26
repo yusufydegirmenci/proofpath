@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Bugün sekmesi, Koç paneli (Faz 6). NE YAPAR: PP.koc (js/ogrenme/koc.js) çıktısını okuyup öneri listesi ve özet olarak çizer (kocDurum, renderKoc); "Sana özel" planın altında görünür.
+   SORUN OLURSA: Veri yoksa panel "veri-yok" durumuna düşer. renderKoc bugun/bugun.js ve plan-ui.js içinden çağrılır; PP.koc önce yüklenmiş olmalı. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni öneri türü koc.js'de üretilir, burada kocDurum/renderKoc gösterir. Test: tests/faz6_koc.js. */
 /* ---- Koç paneli (Faz 6): PP.koc üzerinde arayüz. Bugün sekmesinde "Sana özel" planın altında. ---- */
 function kocDurum() {
   var durum = { oneriler: { liste: [], bos: "veri-yok" }, ozet: null };

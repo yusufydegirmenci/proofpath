@@ -1,3 +1,6 @@
+/* ALAN: Giriş, oturum ve veri katmanı (Artifact dışında window.claude db/user/downloads bağdaştırıcısı, __ppShim). NE YAPAR: Supabase üzerinde e-posta/şifre girişi sağlar, db.collection/doc çağrılarını docs tablosuna çevirir, okuma önbelleği tutar; Artifact içinde veya config.js boşken kapalıdır.
+   SORUN OLURSA: window.PP_CONFIG (config.js) ve supabase-js ÖNCE yüklenmeli; PP.cihaz/PP.sync (js/ogrenme/cihaz.js, senkron.js) sonradan yüklenir, çağrı anında aranır; ortak koleksiyonlar league, cheers, league_notes, jobpool, gazete; önbellek anahtarı pp_onbellek:uid:koleksiyon.
+   YENİ ÖZELLİK: Yeni ortak koleksiyon SHARED_READ ve baslat.js SHD listesine eklenir; tests/faz9s_sunucu.js, faz9_cevrimdisi.js, faz13_lig.js güncellenir. */
 /* Proofpath · Supabase bağdaştırıcısı
  *
  * Uygulama, Claude Artifact ortamındaki `window.claude` katmanına yazılmıştır

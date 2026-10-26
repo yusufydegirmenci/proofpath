@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Sözlük sekmesi veri hazırlığı (Faz 31). NE YAPAR: Elle yazılmış GLOS, ders kavram kartları ve content/sozluk-ek.js satırlarını tek, tekrarsız, alfabetik listeye çevirir; saf işlev, DOM/S'ye dokunmaz.
+   SORUN OLURSA: Aynı terim iki kaynakta varsa ilk kaynak kazanır (GLOS, ders kartı, ek); anahtar küçük harf ve harf/rakam dışı atılarak karşılaştırılır; rehber-sozluk.js'ten ÖNCE yüklenir.
+   YENİ ÖZELLİK: Yeni kaynak için ekle() çağrısı çoğaltılır, çıktı alanları {ad, ara[], tx, ders, en}; tests/sozluk.js güncellenir. */
 /* Sözlük birleştirici (Faz 31). NE YAPAR: elle yazılmış GLOS + derslerin kavram kartları (warmup.concepts) + content/sozluk-ek.js satırlarını tek, tekrarsız,
    alfabetik listeye çevirir. Saf işlev: DOM/S'ye dokunmaz, node testinde (tests/sozluk.js) çalışır.
    SORUN: aynı terim iki kaynakta varsa ilk kaynak kazanır (GLOS > ders kartı > ek); anahtar, küçük harf + harf/rakam dışını atarak karşılaştırılır.

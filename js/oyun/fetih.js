@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Oyun sekmesi, Fetih sekmesi (tarihî toprak fethi stratejisi). NE YAPAR: FK_SC senaryolarını, harita üretimini (fkMap), yapay zekâ saldırı döngüsünü (fkTick/fkAI), soru-kapılı satın alma/saldırıyı ve günlük meydan okumayı (fkDaily) içerir; ekranlar oyun-merkezi.js içinden açılır.
+   SORUN OLURSA: localStorage ya_fk (en iyi sonuçlar) ve ya_fkd (günlük) tutulur; ya_fk altin-vurus.js syncOut ile eşitlenir. Denge sayıları FK_DF/FK_BL/FK_KD; tests/make-dbg.js bu adları __X ile açar, ad değişirse oraya da yansıtın. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni senaryo FK_SC; saldırı/ekonomi fkStepAttack/fkBuy. Testler: tests/t57f_fetih_balance.js, t57g_fetih_ui.js, t58g_fetih2.js, t59d_fk3.js, t59g.js. */
 /* ---- v57: FETİH, tarihî toprak fethi stratejisi ---- */
 var FK_KEY="ya_fk",FK_W=36,FK_H=26,FK_SPD=.55;
 var FK_SC=[

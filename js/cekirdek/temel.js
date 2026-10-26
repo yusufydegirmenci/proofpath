@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Tüm uygulama, çekirdek durum ve yardımcılar (TABS, CH, TRK, S, h, num, today, iso, rankInfo, streakInfo, weekInfo, cityTopics). NE YAPAR: Sekme listesini, karakterleri, hedef yolu, global durum nesnesi S'yi ve XP/rütbe/seri/hafta hesaplarını tanımlar.
+   SORUN OLURSA: Her dosya buraya bağlıdır, ÖNCE yüklenmeli (marka.js, config.js, ogrenme/* sonrası); S alanları dağınık dosyalarda eklenir; hesap değişirse tests/hesaplar.js (bağımsız elle hesaplı) bozulur; PP.ogr.seri/ilerleme'ye dayanır.
+   YENİ ÖZELLİK: Yeni sekme TABS'a (+ cizim-yardim.js draw ve cila-kimlik.js TT), yeni global durum S'ye eklenir; tests/hesaplar.js ve tests/tur_c.js güncellenir. */
 var TABS=[["bugun","Bugün"],["ders","Ders"],["sinif","Sınıf"],["sehir","Ağ Şehri"],["oyun","Oyun"],["atolye","Atölye"],["ofis","Ofis"],["oku","Okuma"],["masa","Masa"],["lig","Lig"],["gazete","Gazete"],["mul","Mülakat"],["proje","Proje"],["sozluk","Sözlük"],["rehber","Rehber"],["kaynakca","Kaynakça"],["ayar","Ayarlar"],["sayilar","Sayılar"],["oduller","Ödüller"]];
 var CH={
  ayse:{n:"Ayşe",role:"Muhasebe. Teknik bilmez, acelecidir.",skin:"#e8b48f",hair:"#3b2a22",top:"#c2547a"},
