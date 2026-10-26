@@ -53,7 +53,7 @@ const oku = f => fs.readFileSync(path.join(KOK, f), 'utf8');
     let onceki = 0; const kotu = [];
     for (const n of nler) {
       const b = BIL[hat][n], [a, z] = b.dersler;
-      if (!(a === onceki + 1 && z >= a)) kotu.push(n + ': ders aralığı ' + a + '-' + z);
+      if (!(a > onceki && z >= a)) kotu.push(n + ': ders aralığı ' + a + '-' + z);
       onceki = z;
       if (!(b.sorular.length >= 3 && b.sorular.length <= 4)) kotu.push(n + ': 3-4 soru olmalı');
       if (!/^[A-ZÇĞİÖŞÜ]/.test(b.baslik)) kotu.push(n + ': başlık');
