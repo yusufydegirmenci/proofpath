@@ -45,7 +45,7 @@ function downloadBlock(){
 /* ---- çizim ---- */
 var pending=false,raf=0;
 function sched(){if(raf)return;raf=requestAnimationFrame(function(){raf=0;draw()})}
-var NAV={bugun:["Bugün","M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z M12 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"],ders:["Ders","M5 4h13v15H7a2 2 0 0 0-2 2z M9 8h6 M9 12h6"],sinif:["Sınıf","M4 5h16v11H10l-5 4v-4H4z"],atolye:["Atölye","M14 4l6 6-9 9H5v-6z M13 5l6 6 M4 21h16"],oyun:["Oyun","M6 8h12a4 4 0 0 1 4 4v2a3 3 0 0 1-5.2 2L15 14H9l-1.8 2A3 3 0 0 1 2 14v-2a4 4 0 0 1 4-4z M7 11v3 M5.5 12.5h3 M16 11.5h.01 M18 13h.01"],sehir:["Şehir","M4 21V10h6v11 M10 21V4h7v17 M3 21h18 M13 8h1 M13 12h1 M13 16h1"],ofis:["Ofis","M3 8h18v12H3z M9 8V5h6v3 M3 13h18"],sozluk:["Sözlük","M4 5h13a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z M8 9h8 M8 13h5"],rehber:["Rehber","M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 8v.01 M11 12h1v5h1"],ayar:["Ayarlar","M4 7h10 M18 7h2 M4 17h2 M10 17h10 M16 5v4 M8 15v4"],proje:["Proje","M3 7h7l2 2h9v10H3z M12 12v4 M10 14h4"],mul:["Mülakat","M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z M5 11a7 7 0 0 0 14 0 M12 18v3"],gazete:["Gazete","M4 5h13v14H6a2 2 0 0 1-2-2z M17 8h3v9a2 2 0 0 1-2 2 M7 9h7 M7 13h7"],lig:["Lig","M3 21h18 M5 21v-9h4v9 M10 21V6h4v15 M15 21v-6h4v6"],masa:["Masa","M3 9a2 2 0 0 0 0 6v3h18v-3a2 2 0 0 1 0-6V6H3z M14 6v12"],oku:["Okuma","M3 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H3z M21 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"],sayilar:["Sayılar","M4 20h16 M7 20v-7 M12 20V6 M17 20v-10"],oduller:["Ödüller","M7 4h10v5a5 5 0 0 1-10 0z M7 6H4v2a3 3 0 0 0 3 3 M17 6h3v2a3 3 0 0 1-3 3 M12 14v4 M8 20h8"]};
+var NAV={bugun:["Bugün","M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10z M12 11a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"],ders:["Ders","M5 4h13v15H7a2 2 0 0 0-2 2z M9 8h6 M9 12h6"],sinif:["Sınıf","M4 5h16v11H10l-5 4v-4H4z"],atolye:["Atölye","M14 4l6 6-9 9H5v-6z M13 5l6 6 M4 21h16"],oyun:["Oyun","M6 8h12a4 4 0 0 1 4 4v2a3 3 0 0 1-5.2 2L15 14H9l-1.8 2A3 3 0 0 1 2 14v-2a4 4 0 0 1 4-4z M7 11v3 M5.5 12.5h3 M16 11.5h.01 M18 13h.01"],sehir:["Şehir","M4 21V10h6v11 M10 21V4h7v17 M3 21h18 M13 8h1 M13 12h1 M13 16h1"],ofis:["Ofis","M3 8h18v12H3z M9 8V5h6v3 M3 13h18"],sozluk:["Sözlük","M4 5h13a3 3 0 0 1 3 3v11H7a3 3 0 0 1-3-3z M8 9h8 M8 13h5"],kaynakca:["Kaynakça","M6 3h9l4 4v14H6z M14 3v5h5 M9 12h6 M9 16h6"],rehber:["Rehber","M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z M12 8v.01 M11 12h1v5h1"],ayar:["Ayarlar","M4 7h10 M18 7h2 M4 17h2 M10 17h10 M16 5v4 M8 15v4"],proje:["Proje","M3 7h7l2 2h9v10H3z M12 12v4 M10 14h4"],mul:["Mülakat","M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z M5 11a7 7 0 0 0 14 0 M12 18v3"],gazete:["Gazete","M4 5h13v14H6a2 2 0 0 1-2-2z M17 8h3v9a2 2 0 0 1-2 2 M7 9h7 M7 13h7"],lig:["Lig","M3 21h18 M5 21v-9h4v9 M10 21V6h4v15 M15 21v-6h4v6"],masa:["Masa","M3 9a2 2 0 0 0 0 6v3h18v-3a2 2 0 0 1 0-6V6H3z M14 6v12"],oku:["Okuma","M3 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H3z M21 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"],sayilar:["Sayılar","M4 20h16 M7 20v-7 M12 20V6 M17 20v-10"],oduller:["Ödüller","M7 4h10v5a5 5 0 0 1-10 0z M7 6H4v2a3 3 0 0 0 3 3 M17 6h3v2a3 3 0 0 1-3 3 M12 14v4 M8 20h8"]};
 
 /* ---- v24: ekran yardımı, açık düğme adları ---- */
 var HELPKEY="ya_help";
@@ -63,6 +63,7 @@ var TABHELP={
  lig:["Arkadaş yarışması (isteğe bağlı)","Günde 8 soru çözülür. Yanlışta kartın arkasında doğru cevap ve nedeni çıkar.","Soruyu çöz. Yarışmak istemezsen sadece kendi gelişimine bak; girmek zorunda değilsin."],
  mul:["Mülakat antrenmanı","Gerçek mülakatta sorulabilecek sorular. Süre tutarak cevap prova edersin.","Bir soru seç, '60 sn başlat'a bas, sesli cevap ver, sonra model cevaba bak."],
  proje:["Proje atölyesi","Bir alan seç (siber güvenlik, test, backend) ve adım adım proje yap. Her adım: öğren, yap, kanıtla.","Seviyene uygun yolu aç, ilk adımı oku, yapınca işaretle."],
+ kaynakca:["Kaynakça","Derslerde, sorularda ve mülakat kutularında anılan kaynaklar; telif ve marka notu.","Konuya tıkla, bağlantıları aç."],
  sozluk:["Terim sözlüğü","Derste ve ekranlarda geçen terimlerin sade açıklamaları.","Arama kutusuna kelimeyi yaz."],
  rehber:["Kullanım rehberi","Burada bugünü adım adım yapabilir, saatleri ve sık sorulanları görebilirsin.","Üstteki 'Bugünü adım adım yap' listesinden başla."],
  ayar:["Ekran ayarları","Yazı boyutu, sade mod, yüksek kontrast ve öğrenme temposu.","Bir seçeneğe bas; hemen uygulanır, ayrıca kaydetmen gerekmez."],
@@ -98,7 +99,7 @@ function enhanceButtons(){
   });
 }
 function draw(){
-  if(S.guest&&tab!=="lig")tab="lig";
+  if(S.guest&&tab!=="lig"&&tab!=="kaynakca")tab="lig";
   document.body.classList.toggle("guest",!!S.guest);
   var a=document.activeElement;
   if(a&&view.contains(a)&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)){pending=true;renderHero();return}
@@ -109,7 +110,7 @@ function draw(){
     var nv=NAV[t[0]]||[t[1],""];
     return h("button",{class:"tab"+(PRIMARY[t[0]]?"":" sec"),"data-t":t[0],role:"tab","aria-selected":t[0]===tab?"true":"false",onclick:function(){S.more=false;tab=t[0];try{history.replaceState(null,"","#"+tab)}catch(e){}draw();window.scrollTo(0,0)}},mi(nv[1]),h("span",null,nv[0]))}).concat([
     h("button",{class:"tab moreb",type:"button","aria-label":"Daha fazla sekme","aria-expanded":S.more?"true":"false","aria-selected":moreOn?"true":"false",onclick:function(){S.more=!S.more;draw()}},mi("M5 12h.01 M12 12h.01 M19 12h.01"),h("span",null,moreOn?(TT[tab]||["Daha"])[0]:"Daha"),pendingProposals()>0?h("i",{class:"ndot"}):null)]));
-  var body={bugun:renderToday,ders:renderLessonTop,sinif:renderClass,sehir:renderCity,oyun:renderGame,atolye:renderAtolye,ofis:renderOffice,oku:renderReader,masa:renderDesk,lig:renderLeague,gazete:renderGazete,mul:renderInterview,proje:renderProject,sozluk:renderGlossary,rehber:renderGuide,ayar:renderSettings,sayilar:renderNumbers,oduller:renderRewards}[tab]();
+  var body={bugun:renderToday,ders:renderLessonTop,sinif:renderClass,sehir:renderCity,oyun:renderGame,atolye:renderAtolye,ofis:renderOffice,oku:renderReader,masa:renderDesk,lig:renderLeague,gazete:renderGazete,mul:renderInterview,proje:renderProject,sozluk:renderGlossary,rehber:renderGuide,kaynakca:renderKaynakca,ayar:renderSettings,sayilar:renderNumbers,oduller:renderRewards}[tab]();
   var _on=onbNeeded();if(_on)body=renderOnboarding();tabsEl.hidden=_on;hero.hidden=_on;
   var firstVisit=S._lastTab!==tab;
   var box=h("div",{style:"display:flex;flex-direction:column;gap:16px",class:S._lastTab!==tab?"enter":""},body);

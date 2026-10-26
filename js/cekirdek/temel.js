@@ -1,5 +1,5 @@
 "use strict";
-var TABS=[["bugun","Bugün"],["ders","Ders"],["sinif","Sınıf"],["sehir","Ağ Şehri"],["oyun","Oyun"],["atolye","Atölye"],["ofis","Ofis"],["oku","Okuma"],["masa","Masa"],["lig","Lig"],["gazete","Gazete"],["mul","Mülakat"],["proje","Proje"],["sozluk","Sözlük"],["rehber","Rehber"],["ayar","Ayarlar"],["sayilar","Sayılar"],["oduller","Ödüller"]];
+var TABS=[["bugun","Bugün"],["ders","Ders"],["sinif","Sınıf"],["sehir","Ağ Şehri"],["oyun","Oyun"],["atolye","Atölye"],["ofis","Ofis"],["oku","Okuma"],["masa","Masa"],["lig","Lig"],["gazete","Gazete"],["mul","Mülakat"],["proje","Proje"],["sozluk","Sözlük"],["rehber","Rehber"],["kaynakca","Kaynakça"],["ayar","Ayarlar"],["sayilar","Sayılar"],["oduller","Ödüller"]];
 var CH={
  ayse:{n:"Ayşe",role:"Muhasebe. Teknik bilmez, acelecidir.",skin:"#e8b48f",hair:"#3b2a22",top:"#c2547a"},
  demir:{n:"Bay Demir",role:"Bölüm müdürü. Kısa konuşur, 'neden' diye sorar.",skin:"#d9a07c",hair:"#8c8c92",top:"#34506b"},
