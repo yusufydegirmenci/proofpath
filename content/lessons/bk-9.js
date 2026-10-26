@@ -46,19 +46,17 @@
       {t:"steps",h:"EBS türleri ve S3 arşiv seçimi (SAA-C03)",items:["gp3 (genel amaçlı SSD): boyuttan bağımsız 3.000 IOPS ve 125 MiB/sn taban verir; IOPS ve aktarım hızı ayrı ayrı artırılabilir (en fazla 16.000 IOPS). gp2'den genelde daha ucuzdur. gp2'de performans boyuta bağlıdır (GiB başına 3 IOPS).","io2 / io2 Block Express (sağlanmış IOPS SSD): 16.000 IOPS üstü, %99,999 dayanıklılık ve çok düşük gecikme gereken kritik veritabanları için; io1/io2 aynı AZ'de Multi-Attach destekler.","st1 (verim odaklı HDD) büyük sıralı iş yükleri, sc1 (soğuk HDD) seyrek erişim içindir; ikisi de önyükleme diski olamaz.","S3 Glacier Instant Retrieval: yılda birkaç kez erişilen ama erişildiğinde milisaniyede gelmesi gereken veriler için ucuz arşiv sınıfıdır. Flexible Retrieval dakika–saat, Deep Archive saatler sürer."]}
     ],
     objectives: [
-      { id: "h1", text: "EBS birim türlerini (SSD ve HDD aileleri) iş yüküne göre seçebilir, instance store'un geçici olduğunu bilirsin." },
+      { id: "h1", text: "EBS birim türlerini (gp3, io2, SSD ve HDD aileleri) iş yüküne göre seçebilir, instance store'un geçici olduğunu bilirsin." },
       { id: "h2", text: "EBS'in AZ sınırını ve anlık görüntüyle başka AZ ya da bölgeye taşımayı açıklayabilirsin." },
       { id: "h3", text: "EFS ile FSx çeşitlerini (Windows, Lustre) iş yüküne göre ayırt edebilirsin." },
-      { id: "h4", text: "S3 çoğaltma, Object Lock ve arşiv sınıflarını gereksinime göre eşleştirebilirsin." },
-      { id: "h5", text: "gp3, io2 ve HDD EBS türlerini ve S3 Glacier Instant Retrieval sınıfını gereksinime göre seçebilirsin." }
+      { id: "h4", text: "S3 çoğaltma, Object Lock ve arşiv sınıflarını (Glacier Instant Retrieval dahil) gereksinime göre eşleştirebilirsin." }
     ],
     summary: [
       "EBS tek AZ'deki blok depolamadır; veritabanı için sağlanmış IOPS SSD, büyük sıralı iş için HDD türleri seçilir. HDD önyükleme diski olamaz.",
       "EBS'i başka AZ ya da bölgeye taşımak için anlık görüntü alınıp orada geri yüklenir ya da kopyalanır.",
       "Instance store çok hızlı ama geçicidir; durdurma ya da konak arızasında veri gider.",
       "EFS çok sunuculu Linux paylaşımı, FSx for Windows SMB/AD, FSx for Lustre HPC içindir.",
-      "S3 çoğaltma sürümleme ister; Object Lock WORM saklama sağlar; arşiv sınıfları seyrek ulaşılan veriyi ucuza saklar.",
-      "gp3 boyuttan bağımsız taban performans verir ve gp2'den ucuzdur; io2 16.000 IOPS üstü kritik iş yükleri içindir; Glacier Instant Retrieval seyrek ama milisaniyelik erişim içindir."
+      "S3 çoğaltma sürümleme ister; Object Lock WORM saklama sağlar; arşiv sınıfları seyrek ulaşılan veriyi ucuza saklar. gp3 boyuttan bağımsız taban performans verir ve gp2'den ucuzdur; io2 16.000 IOPS üstü kritik iş yükleri içindir; Glacier Instant Retrieval seyrek ama milisaniyelik erişim içindir."
     ],
     quiz: [
       { id: "118a4232", q: "Gecikmeye duyarlı bir ilişkisel veritabanı EC2'de çalışacak ve tutarlı yüksek disk performansı gerekiyor. Hangi depolama uygundur?", options: [
@@ -99,9 +97,9 @@
   "Kaynak ve hedef kovalarda sürümlemenin açık olması"
 ], obj: "h4" },
       { id: "6f47eca3", q: "Beş yıl saklanması gereken ama yılda en fazla bir kez, saatler içinde ulaşılabilmesi yeterli olan büyük bir arşiv için en düşük maliyetli S3 seçeneği hangisidir?", options: ["S3 Glacier Deep Archive sınıfı", "S3 Standard", "S3 Standard-IA", "S3 Glacier Flexible Retrieval"], obj: "h4" },
-      { id: "fe0dafe3", q: "Küçük (100 GB) bir veritabanı diskinde tutarlı 3.000 IOPS yeterli ve hedef en düşük maliyet. Hangi EBS seçimi uygundur?", options: ["gp2 birimini 1 TB'a büyütmek","gp3 birimi","io2 Block Express birimi","st1 (verim odaklı HDD) birimi"], obj: "h5" },
-      { id: "07535fe2", q: "Kritik bir veritabanı tek birimde 16.000 IOPS'tan fazla ve %99,999 dayanıklılık gerektiriyor. Hangi EBS türü seçilmelidir?", options: ["gp3","sc1 (soğuk HDD)","io2 (sağlanmış IOPS SSD)","st1 (verim odaklı HDD, sıralı iş yükleri)"], obj: "h5" },
-      { id: "a9050319", q: "Üç ayda bir erişilen ama erişildiğinde milisaniyeler içinde okunması gereken arşiv verisi için en düşük maliyetli S3 sınıfı hangisidir?", options: ["S3 Standard","S3 Glacier Instant Retrieval","S3 Glacier Flexible Retrieval","S3 Glacier Deep Archive"], obj: "h5" }
+      { id: "fe0dafe3", q: "Küçük (100 GB) bir veritabanı diskinde tutarlı 3.000 IOPS yeterli ve hedef en düşük maliyet. Hangi EBS seçimi uygundur?", options: ["gp2 birimini 1 TB'a büyütmek","gp3 birimi","io2 Block Express birimi","st1 (verim odaklı HDD) birimi"], obj: "h1" },
+      { id: "07535fe2", q: "Kritik bir veritabanı tek birimde 16.000 IOPS'tan fazla ve %99,999 dayanıklılık gerektiriyor. Hangi EBS türü seçilmelidir?", options: ["gp3","sc1 (soğuk HDD)","io2 (sağlanmış IOPS SSD)","st1 (verim odaklı HDD, sıralı iş yükleri)"], obj: "h1" },
+      { id: "a9050319", q: "Üç ayda bir erişilen ama erişildiğinde milisaniyeler içinde okunması gereken arşiv verisi için en düşük maliyetli S3 sınıfı hangisidir?", options: ["S3 Standard","S3 Glacier Instant Retrieval","S3 Glacier Flexible Retrieval","S3 Glacier Deep Archive"], obj: "h1" }
     ],
     interview: [
       { q: "EBS ile EFS arasındaki fark nedir?", a: "EBS tek AZ'deki tek örneğe bağlanan blok depolamadır (disk gibi). EFS ise birden çok AZ'deki çok sayıda örneğin aynı anda bağlayabildiği yönetilen NFS dosya sistemidir." },
@@ -166,16 +164,14 @@
       { id: "h1", text: "RPO ve RTO'yu tanımlayıp senaryodaki bir ihtiyaca uygulayabilirsin." },
       { id: "h2", text: "Dört felaket kurtarma stratejisini maliyet ve süre dengesine göre sıralayabilirsin." },
       { id: "h3", text: "AWS Backup, bölgeler arası çoğaltma ve Route 53 failover'ın kurtarmadaki rolünü eşleştirebilirsin." },
-      { id: "h4", text: "Yüksek erişilebilirlik ile felaket kurtarma arasındaki farkı ve yedeğin neden sınanması gerektiğini açıklayabilirsin." },
-      { id: "h5", text: "Pilot light'ın felaket anında ne gerektirdiğini ve Elastic Disaster Recovery'nin ne işe yaradığını açıklayabilirsin." }
+      { id: "h4", text: "Yüksek erişilebilirlik ile felaket kurtarma arasındaki farkı, yedeğin neden sınanması gerektiğini, pilot light'ın felaket anında ne gerektirdiğini ve Elastic Disaster Recovery'nin ne işe yaradığını açıklayabilirsin." }
     ],
     summary: [
       "RPO kabul edilen veri kaybı, RTO kabul edilen kesinti süresidir; ikisi sıkılaştıkça maliyet artar.",
       "Strateji sırası ucuzdan pahalıya: yedekle ve geri yükle, pilot ışığı, sıcak yedek, etkin-etkin.",
       "AWS Backup yedekleme politikalarını, başka bölge ve hesaba kopyayı ve Vault Lock'u merkezden yönetir.",
       "Bölgeler arası çoğaltma (S3 CRR, Aurora Global Database, DynamoDB global tabloları) ve Route 53 failover kurtarmanın yapı taşlarıdır.",
-      "Multi-AZ bir HA çözümüdür; felaket kurtarma için farklı bölgede kopya gerekir ve yedek düzenli sınanmalıdır.",
-      "Pilot light felakette uygulama katmanını açıp ölçekler; Elastic Disaster Recovery sunucuları AWS'ye sürekli çoğaltıp hızlı başlatır."
+      "Multi-AZ bir HA çözümüdür; felaket kurtarma için farklı bölgede kopya gerekir ve yedek düzenli sınanmalıdır. Pilot light felakette uygulama katmanını açıp ölçekler; Elastic Disaster Recovery sunucuları AWS'ye sürekli çoğaltıp hızlı başlatır."
     ],
     quiz: [
       { id: "30b10e5c", q: "Bir şirket, felaket anında en fazla 15 dakikalık veri kaybını kabul edebiliyor. Bu hedef hangi ölçüttür?", options: [
@@ -206,8 +202,8 @@
   "Geri yüklemeyi düzenli aralıklarla deneyip süresini ölçmek",
   "Yalnızca yedeklerin sayısını artırmak"
 ], obj: "h4" },
-      { id: "714a4c2b", q: "Pilot light stratejisinde ikinci bölgeye çekirdek veri sürekli çoğaltılıyor. Felaket ilan edildiğinde hangi adımlar gerekir?", options: ["Uygulama katmanını hazır AMI ile başlatıp ölçeklemek ve DNS'i ikinci bölgeye yönlendirmek","Veritabanını sıfırdan en son yedekten geri yükleyip uygulamayı elle kurmak, ardından DNS'i çevirmek","Hiçbir şey; ikinci bölge kendiliğinden tam kapasiteyle zaten çalışıyor","Birincil bölgenin geri gelmesini beklemek"], obj: "h5" },
-      { id: "d2e6efaa", q: "Bir şirket, şirket içi fiziksel ve sanal sunucularını AWS'ye sürekli blok düzeyinde çoğaltıp felakette dakikalar içinde AWS'de başlatmak istiyor. Hangi hizmet kullanılmalıdır?", options: ["Yalnızca günlük yedek planıyla AWS Backup","AWS Elastic Disaster Recovery","AWS DataSync","AWS Snowball Edge"], obj: "h5" },
+      { id: "714a4c2b", q: "Pilot light stratejisinde ikinci bölgeye çekirdek veri sürekli çoğaltılıyor. Felaket ilan edildiğinde hangi adımlar gerekir?", options: ["Uygulama katmanını hazır AMI ile başlatıp ölçeklemek ve DNS'i ikinci bölgeye yönlendirmek","Veritabanını sıfırdan en son yedekten geri yükleyip uygulamayı elle kurmak, ardından DNS'i çevirmek","Hiçbir şey; ikinci bölge kendiliğinden tam kapasiteyle zaten çalışıyor","Birincil bölgenin geri gelmesini beklemek"], obj: "h4" },
+      { id: "d2e6efaa", q: "Bir şirket, şirket içi fiziksel ve sanal sunucularını AWS'ye sürekli blok düzeyinde çoğaltıp felakette dakikalar içinde AWS'de başlatmak istiyor. Hangi hizmet kullanılmalıdır?", options: ["Yalnızca günlük yedek planıyla AWS Backup","AWS Elastic Disaster Recovery","AWS DataSync","AWS Snowball Edge"], obj: "h4" },
       { id: "eb136ae5", q: "Hangi İKİ felaket kurtarma stratejisi, pilot light stratejisinden daha kısa kurtarma süresi (RTO) sağlar?", options: ["Backup and restore", "Yalnızca günlük anlık görüntü almak", "Yedekleri kasete yazıp saklamak", "Warm standby", "Multi-site active/active"], multi: 2, obj: "h2" }
     ],
     interview: [
@@ -384,16 +380,14 @@
       { id: "h1", text: "Veri gölü kavramını ve toplama, depolama, dönüştürme, sorgulama, görselleştirme akışını açıklayabilirsin." },
       { id: "h2", text: "Athena ile Redshift'in ne zaman seçileceğini ve Athena maliyetini düşüren yöntemleri açıklayabilirsin." },
       { id: "h3", text: "Glue, EMR ve OpenSearch'ün rollerini senaryoya göre ayırt edebilirsin." },
-      { id: "h4", text: "QuickSight ve Lake Formation'ın pano ve yetkilendirme rolünü eşleştirebilirsin." },
-      { id: "h5", text: "Hassas veriyi bulmak (Macie) ile maskelemek (DataBrew) arasındaki farkı söyleyebilirsin." }
+      { id: "h4", text: "QuickSight ve Lake Formation'ın pano ve yetkilendirme rolünü eşleştirip hassas veriyi bulmak (Macie) ile maskelemek (DataBrew) arasındaki farkı söyleyebilirsin." }
     ],
     summary: [
       "Veri gölü genellikle S3 üzerinde ham ve işlenmiş veriyi tek yerde tutar; çok sayıda araç aynı veriyi sorgulayabilir.",
       "Athena sunucusuz ve taranan veriye göre ücretlidir; Parquet gibi sütunlu biçim, sıkıştırma ve bölümleme maliyeti düşürür.",
       "Redshift çok kullanıcılı karmaşık analitik için veri ambarıdır; Spectrum S3'teki veriyi de sorgular.",
       "Glue ETL ve veri kataloğu sağlar; EMR Spark/Hadoop işleri, OpenSearch tam metin ve günlük analizi içindir.",
-      "QuickSight pano ve rapor sunar; Lake Formation veri gölünde tablo ve sütun düzeyinde merkezi yetki yönetir.",
-      "Macie hassas veriyi bulur, Glue DataBrew ise kodsuz dönüşümlerle maskeler."
+      "QuickSight pano ve rapor sunar; Lake Formation veri gölünde tablo ve sütun düzeyinde merkezi yetki yönetir. Macie hassas veriyi bulur, Glue DataBrew ise kodsuz dönüşümlerle maskeler."
     ],
     quiz: [
       { id: "f1d17901", q: "S3'teki CSV ve Parquet dosyalarını sunucu kurmadan, standart SQL ile ara sıra sorgulamak istiyorsun. Hangi hizmet uygundur?", options: ["Amazon EMR", "Amazon OpenSearch Service", "AWS Glue", "Amazon Athena"], obj: "h2" },
@@ -414,7 +408,7 @@
       { id: "d1fefa1d", q: "Uygulama günlüklerinde tam metin arama yapmak ve gösterge panelleriyle olay analizi görmek istiyorsun. Hangi hizmet uygundur?", options: ["Amazon Redshift (veri ambarı)", "Amazon OpenSearch Service", "AWS Lake Formation", "Amazon Athena"], obj: "h3" },
       { id: "64984095", q: "Yöneticilerin iş verisini etkileşimli panolarla ve raporlarla görmesi isteniyor. Hangi hizmet bu iş içindir?", options: ["AWS Glue Data Catalog", "Amazon Athena", "Amazon QuickSight", "Amazon Redshift"], obj: "h4" },
       { id: "c14f6c98", q: "Veri gölünde farklı ekiplerin hangi tablo ve sütunlara erişebileceğini merkezi olarak yönetmek istiyorsun. Hangi hizmet bu işe uygundur?", options: ["AWS Glue", "Amazon Athena", "AWS IAM Identity Center", "AWS Lake Formation"], obj: "h4" },
-      { id: "e6e07daa", q: "Bir ekip RDS'teki müşteri verisinde kişisel alanları analizden önce kod yazmadan, görsel arayüzle maskelemek istiyor. Hangi hizmet bu işi yapar?", options: ["AWS Glue DataBrew","Amazon Macie","Amazon Athena (S3 üzerinde SQL sorguları)","Amazon Textract"], obj: "h5" }
+      { id: "e6e07daa", q: "Bir ekip RDS'teki müşteri verisinde kişisel alanları analizden önce kod yazmadan, görsel arayüzle maskelemek istiyor. Hangi hizmet bu işi yapar?", options: ["AWS Glue DataBrew","Amazon Macie","Amazon Athena (S3 üzerinde SQL sorguları)","Amazon Textract"], obj: "h4" }
     ],
     interview: [
       { q: "Athena ile Redshift arasında nasıl seçersin?", a: "Ara sıra, ad hoc ve sunucu yönetmek istemediğim sorgular için Athena. Çok kullanıcılı, sürekli ve karmaşık analitik iş yüklerinde, performans öngörülebilirliği isterken Redshift veri ambarı." },

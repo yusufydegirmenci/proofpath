@@ -109,9 +109,7 @@
       "Kusursuzluk yanılgısı: kusurları düzeltmek başarıyı güvenceye almaz.",
       "Kabul testi geçerleme odaklıdır; statik testler ikisine de hizmet edebilir."
     ],
-    "prereq": [
-      1
-    ],
+    "prereq": [],
     "minutes": 20,
     "sonDogrulama": "2026-10-26",
     "surum": "2026-10-v1",
@@ -363,7 +361,7 @@
       "Bu bağ kapsamı, artık riski ve değişikliğin etkisini görünür kılar."
     ],
     "prereq": [
-      2
+      23
     ],
     "minutes": 20,
     "sonDogrulama": "2026-10-26",
@@ -639,7 +637,7 @@
       "Erken test ve bağlam, çabayı nereye harcayacağını belirler."
     ],
     "prereq": [
-      2
+      24
     ],
     "minutes": 20,
     "sonDogrulama": "2026-10-26",
@@ -904,9 +902,7 @@
       "Kâtip anomalileri, kararları ve yeni bulguları kaydeder.",
       "Başarı: net amaç, küçük parçalar, yeterli hazırlık süresi, yönetim desteği, kişi değerlendirmemek."
     ],
-    "prereq": [
-      5
-    ],
+    "prereq": [],
     "minutes": 20,
     "sonDogrulama": "2026-10-26",
     "surum": "2026-10-v1",
@@ -1167,7 +1163,7 @@
       "Tür seçimi amaca, riske, olgunluğa ve denetim ihtiyacına bağlıdır."
     ],
     "prereq": [
-      5
+      26
     ],
     "minutes": 20,
     "sonDogrulama": "2026-10-26",
@@ -1429,9 +1425,7 @@
       "E = (a + 4m + b) / 6 ve SD = (b - a) / 6.",
       "Planning Poker, Wideband Delphi'nin çevik bir türüdür; tahmin her zaman hata payı taşır."
     ],
-    "prereq": [
-      13
-    ],
+    "prereq": [],
     "minutes": 25,
     "sonDogrulama": "2026-10-26",
     "surum": "2026-10-v1",
@@ -1681,7 +1675,7 @@
       "Süre ya da bütçenin bitmesi, risk paydaşlarca kabul edilirse geçerli çıkış sayılabilir."
     ],
     "prereq": [
-      13
+      28
     ],
     "minutes": 20,
     "sonDogrulama": "2026-10-26",
@@ -1963,9 +1957,7 @@
       "2 değerli SDA'da 18-65 için 17, 18, 65, 66 test edilir.",
       "3 değerli SDA'da 17, 18, 19, 64, 65, 66 test edilir ve daha titizdir."
     ],
-    "prereq": [
-      7
-    ],
+    "prereq": [],
     "minutes": 25,
     "sonDogrulama": "2026-10-26",
     "surum": "2026-10-v1",
@@ -2216,7 +2208,7 @@
       "Aynı sonuçlu ve bir koşulu etkisiz sütunlar birleştirilebilir."
     ],
     "prereq": [
-      9
+      30
     ],
     "minutes": 25,
     "sonDogrulama": "2026-10-26",
@@ -2468,7 +2460,7 @@
       "Bir test durumunda tek geçersiz geçiş denenir; böylece kusur maskeleme önlenir."
     ],
     "prereq": [
-      10
+      31
     ],
     "minutes": 25,
     "sonDogrulama": "2026-10-26",
@@ -2720,7 +2712,7 @@
       "Beyaz kutu eksik gereksinim kusurlarını bulamayabilir."
     ],
     "prereq": [
-      11
+      32
     ],
     "minutes": 25,
     "sonDogrulama": "2026-10-26",
@@ -2972,7 +2964,7 @@
       "Regresyon takımları büyüdüğü için otomasyona uygundur."
     ],
     "prereq": [
-      13
+      29
     ],
     "minutes": 25,
     "sonDogrulama": "2026-10-26",

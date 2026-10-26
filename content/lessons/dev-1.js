@@ -111,9 +111,7 @@
       "Her servis kendi verisinin sahibi olmalıdır.",
       "Monoliti parçalamak için boğucu incir gibi kademeli yol seçilir."
     ],
-    "prereq": [
-      7
-    ],
+    "prereq": [],
     "minutes": 25,
     "sonDogrulama": "2026-10-26",
     "surum": "2026-10-v1",
@@ -435,9 +433,7 @@
       "Anonim istek varsayılan olarak kabul edilir ama yetki verilmedikçe reddedilir.",
       "ResourceQuota admission control aşamasında uygulanır."
     ],
-    "prereq": [
-      9
-    ],
+    "prereq": [],
     "minutes": 25,
     "sonDogrulama": "2026-10-26",
     "surum": "2026-10-v1",
@@ -736,9 +732,7 @@
       "ExternalName yalnız DNS CNAME döner, proxy yapmaz.",
       "Türü erişim kapsamı ve güvenlik ihtiyacına göre seç."
     ],
-    "prereq": [
-      11
-    ],
+    "prereq": [],
     "minutes": 25,
     "sonDogrulama": "2026-10-26",
     "surum": "2026-10-v1",
@@ -1061,7 +1055,7 @@
       "Yüzde değerlerinde maxSurge yukarı, maxUnavailable aşağı yuvarlanır."
     ],
     "prereq": [
-      10
+      25
     ],
     "minutes": 25,
     "sonDogrulama": "2026-10-26",
@@ -1385,7 +1379,7 @@
       "Deployment ek olarak ReplicaSet ve denetleyici katmanı ekler."
     ],
     "prereq": [
-      9
+      26
     ],
     "minutes": 25,
     "sonDogrulama": "2026-10-26",
@@ -1698,7 +1692,7 @@
       "CRD yeni kaynak türüdür, Operator onu yöneten denetleyicidir."
     ],
     "prereq": [
-      9
+      27
     ],
     "minutes": 25,
     "sonDogrulama": "2026-10-26",
@@ -2311,9 +2305,7 @@
       "Rate = sayaç farkı / süre; hata bütçesi = pencere x (1 - SLO).",
       "CNCF aşamaları: Sandbox, Incubating, Graduated; Kubernetes SIG ve KEP ile geliştirilir."
     ],
-    "prereq": [
-      15
-    ],
+    "prereq": [],
     "minutes": 25,
     "sonDogrulama": "2026-10-26",
     "surum": "2026-10-v1",

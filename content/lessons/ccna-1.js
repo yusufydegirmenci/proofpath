@@ -334,14 +334,10 @@
       { t: "warn", h: "Tuzak", text: "Switch IP adresine bakmaz, MAC adresine bakar (katman 2). IP'ye göre yol seçen router'dır (katman 3). Karıştırırsan mülakatta puan kaybedersin." }
     ],
     objectives: [
-      { id: "h1", text: "Switch'in MAC tablosunu nasıl öğrendiğini ve hedef MAC tabloda varken ya da yokken çerçeveyi ne yaptığını açıklayabilirsin." },
+      { id: "h1", text: "Switch'in MAC tablosunu nasıl öğrendiğini, yayın davranışını ve Ethernet çerçevesinin alanlarını (hedef/kaynak MAC, tür, veri, FCS) açıklayabilir; hedef MAC tabloda varken ya da yokken çerçeveyi ne yaptığını söyleyebilirsin." },
       { id: "h2", text: "ARP'nin ne işe yaradığını söyleyip IP adresi ile MAC adresi arasındaki farkı ayırt edebilirsin." },
       { id: "h3", text: "Switch portu ve router arayüzü için collision domain ile broadcast domain sayısını ayırt edebilirsin." },
-      { id: "h4", text: "Switch'te MAC tablosunu gösteren komutu (show mac address-table) bulabilirsin." },
-      {
-  id: "h5",
-  text: "Ethernet çerçevesinin alanlarını (hedef/kaynak MAC, tür, veri, FCS) ve MAC tablosunun öğrenme ile yayın davranışını açıklayabilirsin."
-}
+      { id: "h4", text: "Switch'te MAC tablosunu gösteren komutu (show mac address-table) bulabilirsin." }
     ],
     summary: [
       "MAC adresi ağ kartına üretici tarafından verilen 48 bitlik fiziksel adrestir; switch IP'ye değil MAC'e bakar (katman 2).",
@@ -358,11 +354,11 @@
       { id: "b1f21db2", q: "VLAN tanımlanmamış tek bir switch'in 8 portunun hepsi kullanılıyor. Kaç collision domain ve kaç broadcast domain vardır?", options: ["1 collision, 8 broadcast", "8 collision, 8 broadcast", "1 collision, 1 broadcast", "8 collision, 1 broadcast"], obj: "h3" },
       { id: "86f37e99", q: "Bir router'ın iki arayüzüne birer switch bağlı ve hiçbirinde VLAN yok. Toplam kaç broadcast domain vardır?", options: ["1", "2", "3", "4"], obj: "h3" },
       { id: "c3266e63", q: "Cisco switch'te MAC tablosunu hangi komut gösterir?", options: ["show ip route", "show mac address-table", "show vlan brief", "show running-config"], obj: "h4" },
-      { id: "90524eb3", q: "Ethernet çerçevesinde hata denetimi için kullanılan ve çerçevenin sonunda bulunan alan hangisidir?", options: ["Preamble","Tür/uzunluk","Hedef MAC","FCS"], obj: "h5" },
-      { id: "744c128b", q: "Switch MAC tablosunu doldururken hangi alana bakar?", options: ["Gelen çerçevenin hedef MAC adresine","Paketin hedef IP adresine","Gelen çerçevenin kaynak MAC adresine","Tür/uzunluk alanına"], obj: "h5" },
-      { id: "007423a8", q: "Bir çerçevenin hedef MAC adresi FF:FF:FF:FF:FF:FF. Switch ne yapar?", options: ["Çerçeveyi düşürür","Geldiği port hariç tüm portlara gönderir","Tablodaki ilk porta gönderir","Çerçeveyi yalnız router portuna gönderir"], obj: "h5" },
-      { id: "8d4a4d18", q: "Standart Ethernet çerçevesinin (ön söz hariç, etiketsiz) boyutu kaç bayt aralığındadır?", options: ["64-1518","32-512","1500-9000","46-1500"], obj: "h5" },
-      { id: "7c22dd5c", q: "MAC tablosunda kaydı olmayan bir hedefe çerçeve geldiğinde switch sonuç olarak neyi öğrenir?", options: ["Hedef MAC adresinin hangi portta olduğunu","Hedef IP adresini","Hiçbir şey öğrenmez","Çerçevenin kaynak MAC adresini ve giriş portunu"], obj: "h5" }
+      { id: "90524eb3", q: "Ethernet çerçevesinde hata denetimi için kullanılan ve çerçevenin sonunda bulunan alan hangisidir?", options: ["Preamble","Tür/uzunluk","Hedef MAC","FCS"], obj: "h1" },
+      { id: "744c128b", q: "Switch MAC tablosunu doldururken hangi alana bakar?", options: ["Gelen çerçevenin hedef MAC adresine","Paketin hedef IP adresine","Gelen çerçevenin kaynak MAC adresine","Tür/uzunluk alanına"], obj: "h1" },
+      { id: "007423a8", q: "Bir çerçevenin hedef MAC adresi FF:FF:FF:FF:FF:FF. Switch ne yapar?", options: ["Çerçeveyi düşürür","Geldiği port hariç tüm portlara gönderir","Tablodaki ilk porta gönderir","Çerçeveyi yalnız router portuna gönderir"], obj: "h1" },
+      { id: "8d4a4d18", q: "Standart Ethernet çerçevesinin (ön söz hariç, etiketsiz) boyutu kaç bayt aralığındadır?", options: ["64-1518","32-512","1500-9000","46-1500"], obj: "h1" },
+      { id: "7c22dd5c", q: "MAC tablosunda kaydı olmayan bir hedefe çerçeve geldiğinde switch sonuç olarak neyi öğrenir?", options: ["Hedef MAC adresinin hangi portta olduğunu","Hedef IP adresini","Hiçbir şey öğrenmez","Çerçevenin kaynak MAC adresini ve giriş portunu"], obj: "h1" }
     ],
     interview: [
       { q: "Switch nasıl karar verir?", a: "Gelen çerçevenin kaynak MAC adresini porta bağlayıp MAC tablosuna yazar. Hedef MAC tabloda varsa yalnızca o porta, yoksa ya da broadcast ise geldiği port hariç tüm portlara gönderir." },
