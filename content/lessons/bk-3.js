@@ -34,20 +34,23 @@
       ] },
       { t: "box", h: "Lambda ile bağlantı", text: "Lambda çok sayıda eşzamanlı çağrıda veritabanı bağlantılarını tüketebilir. RDS Proxy bağlantıları havuzlar ve kimlik bilgisini Secrets Manager'dan yönetir." },
       { t: "box", h: "Ne zaman RDS, ne zaman DynamoDB?", text: "Karmaşık sorgu, JOIN, raporlama, işlem bütünlüğü: RDS. Çok yüksek ölçek, tek basamaklı milisaniye, basit erişim kalıpları: DynamoDB." },
-      { t: "warn", h: "Tuzak", text: "Veritabanını herkese açık (public) yapmak veya güvenlik grubunda 0.0.0.0/0 ile 5432/3306 portunu açmak. Sadece uygulamanın güvenlik grubuna izin ver." }
+      { t: "warn", h: "Tuzak", text: "Veritabanını herkese açık (public) yapmak veya güvenlik grubunda 0.0.0.0/0 ile 5432/3306 portunu açmak. Sadece uygulamanın güvenlik grubuna izin ver." },
+      {t:"steps",h:"Aurora Serverless v2 (SAA-C03)",items:["Aurora Serverless v2, Aurora küme kapasitesini Aurora kapasite birimi (ACU) cinsinden yüke göre küçük adımlarla kendiliğinden artırıp azaltır; öngörülemeyen, değişken ya da seyrek kullanılan veritabanları için uygundur.","Kapasiteyi elle seçmek yerine en az ve en çok ACU aralığı verirsin; Multi-AZ ve okuma kopyaları desteklenir. Faturalama kullanılan kapasiteye göredir.","Sabit ve öngörülebilir yoğun yükte sağlanmış (provisioned) Aurora örnekleri, özellikle taahhütli indirimle, çoğu zaman daha ucuzdur.","Serverless v1 ömrünü doldurmuştur; yeni işlerde v2 anılır. Güncel durum için resmî belgeyi oku."]}
     ],
     objectives: [
       { id: "h1", text: "Multi-AZ ile Read Replica'yı amacına göre (arıza geçişi mi, okuma ölçeği mi) ayırt edebilirsin." },
       { id: "h2", text: "Otomatik yedek (1-35 gün, PITR) ile manuel snapshot'ı ayırt edip geri yüklemenin yeni bir örnek ürettiğini açıklayabilirsin." },
       { id: "h3", text: "Lambda kaynaklı bağlantı yığılmasına RDS Proxy'yi, ağ güvenliği için özel alt ağ ve güvenlik grubunu seçebilirsin." },
-      { id: "h4", text: "Bir iş yükü için RDS mi DynamoDB mi uygun olduğunu sorgu ve ölçek ihtiyacına göre belirleyebilirsin." }
+      { id: "h4", text: "Bir iş yükü için RDS mi DynamoDB mi uygun olduğunu sorgu ve ölçek ihtiyacına göre belirleyebilirsin." },
+      { id: "h5", text: "Aurora Serverless v2'nin ne zaman (değişken, öngörülemeyen yük) sağlanmış Aurora'ya tercih edildiğini söyleyebilirsin." }
     ],
     summary: [
       "Multi-AZ eşzamanlı bekleme örneğiyle otomatik failover sağlar ama Multi-AZ örnek dağıtımında bekleme okuma ölçeklemez (Multi-AZ DB cluster'da okunabilir bekleme örnekleri vardır); Read Replica eşzamansız kopyayla okuma yükünü dağıtır ve failover amaçlı değildir.",
       "Aurora 6 kopyalı dağıtık depolama kullanır ve 15 kopyaya kadar okuma sunar.",
       "Otomatik yedekler 1-35 gün saklanır ve belirli zamana geri dönüşe izin verir; manuel snapshot silinene dek kalır; her geri yükleme yeni bir örnek ve yeni uç nokta oluşturur.",
       "Çok sayıda eşzamanlı Lambda çağrısı bağlantıları tüketir; RDS Proxy bağlantıları havuzlar ve kimlik bilgisini Secrets Manager'dan yönetir.",
-      "Veritabanı özel alt ağda durur ve güvenlik grubu yalnızca uygulamanın grubuna izin verir; 0.0.0.0/0 ile 5432/3306 açmak tipik tuzaktır."
+      "Veritabanı özel alt ağda durur ve güvenlik grubu yalnızca uygulamanın grubuna izin verir; 0.0.0.0/0 ile 5432/3306 açmak tipik tuzaktır.",
+      "Aurora Serverless v2 kapasiteyi ACU adımlarıyla yüke göre otomatik ölçekler; değişken yükte işletme yükünü ve boşta maliyeti düşürür."
     ],
     quiz: [
       { id: "c70f3ff5", q: "Okuma trafiğini dağıtmak için hangisi kullanılır?", options: ["Read Replica", "Multi-AZ örnek dağıtımının bekleme örneği", "Snapshot", "Parameter group"], obj: "h1" },
@@ -56,7 +59,8 @@
       { id: "264e0087", q: "Bir snapshot'tan geri yükleme ne üretir?", options: ["Yeni bir veritabanı örneği", "Mevcut örneği değiştirir", "Hiçbir şey", "Yeni bir kova"], obj: "h2" },
       { id: "c66428c8", q: "Veritabanı örneği nerede olmalıdır?", options: ["Özel alt ağda", "Herkese açık alt ağda", "S3'te", "Lambda içinde"], obj: "h3" },
       { id: "77d651db", q: "Muhasebe kayıtları gibi JOIN'li raporlama ve işlem (transaction) bütünlüğü isteyen ilişkisel veri için hangisi daha uygundur?", options: ["RDS PostgreSQL","DynamoDB ile tek tablo","ElastiCache Memcached","S3 Standard"], obj: "h4" },
-      { id: "7af78afb", q: "Otomatik yedekler ile manuel snapshot arasındaki saklama farkı hangisidir?", options: ["Otomatik yedek 1-35 gün saklanır; manuel snapshot siz silene dek kalır","Her ikisi de 35 gün sonra kendiliğinden silinir","Manuel snapshot 1 gün sonra silinir, otomatik yedek sonsuza kadar kalır","Otomatik yedek saklanmaz, yalnız snapshot vardır"], obj: "h2" }
+      { id: "7af78afb", q: "Otomatik yedekler ile manuel snapshot arasındaki saklama farkı hangisidir?", options: ["Otomatik yedek 1-35 gün saklanır; manuel snapshot siz silene dek kalır","Her ikisi de 35 gün sonra kendiliğinden silinir","Manuel snapshot 1 gün sonra silinir, otomatik yedek sonsuza kadar kalır","Otomatik yedek saklanmaz, yalnız snapshot vardır"], obj: "h2" },
+      { id: "ad10cea4", q: "Gün boyu öngörülemez biçimde değişen, bazı saatlerde neredeyse hiç kullanılmayan bir uygulama MySQL uyumlu veritabanı istiyor. Kapasiteyi elle yönetmek ve tepe yüke göre sabit örnek ödemek istemiyorlar. Hangi seçenek uygundur?", options: ["En büyük örnek türünde sağlanmış tek bir RDS örneği","Aurora Global Database","Aurora Serverless v2","Amazon S3 üzerinde Athena sorguları"], obj: "h5" }
     ],
     interview: [
       { q: "Multi-AZ ile Read Replica farkı nedir?", a: "Multi-AZ yüksek erişilebilirlik içindir: eşzamanlı yedek, otomatik failover; Multi-AZ örnek dağıtımında bekleme okuma ölçeklemez (Multi-AZ DB cluster'da okunabilir bekleme örnekleri vardır). Read Replica ölçek içindir: eşzamansız kopya, okuma trafiğini dağıtır ve manuel terfi gerekir." },
