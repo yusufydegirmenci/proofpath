@@ -22,6 +22,7 @@
     blocks: [
       { t: "h", text: "Neden öğreniyoruz?" },
       { t: "box", h: "Gerçek talep", text: "Yönetici sorar: 'Fidye yazılımı bize ne yapabilir?' Cevap tek cümlede CIA ile verilir: dosyaları şifreleyip erişilebilirliği, çaldığı verileri sızdırıp gizliliği bozar. Güvenlikte her olayı bu üç gözlükle okursun." },
+      { t: "box", h: "Sürüm notu: SY0-701 ve SY0-801 (V8)", text: "Bu hat SY0-801 (V8) hedeflerine göre yazıldı. V8 sınavı en fazla 90 soru, 90 dakika, geçme puanı 750/900; alan ağırlıkları 16/24/19/27/14 (SY0-701: 12/22/18/28/20). Yürürlük tarihi CompTIA sayfasında yaklaşık 17 Kasım 2026 olarak geçiyor; SY0-701 bir süre daha girilebilir, ayrıntı için resmî sayfaya bak. Derslerdeki (V8) etiketli maddeler V8 hedef belgesinde adıyla geçer; sınav hazırlığında iki sürümde de geçerli temel kavramlar aynıdır." },
       { t: "h", text: "CIA Üçlüsü" },
       { t: "steps", h: "Üç hedef", items: [
         "Gizlilik (Confidentiality): bilgiyi yetkisizlerden saklamak. Araçlar: şifreleme, erişim kontrolü, MFA.",

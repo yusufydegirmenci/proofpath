@@ -193,7 +193,7 @@
         "Saklama süresi ve gizlilik (loglarda parola, kişisel veri olmasın).",
         "Syslog (ağ cihazları), NetFlow (akış verisi), paket yakalama (pcap)."
       ] },
-      { t: "warn", h: "Tuzak", text: "Alarm yorgunluğu: çok fazla düşük kaliteli alarm, gerçek olayın gözden kaçmasına yol açar. Kuralları sürekli ayarla." },
+      { t: "warn", h: "Tuzak", text: "Alarm yorgunluğu: çok fazla düşük kaliteli alarm, gerçek olayın gözden kaçmasına yol açar. Kuralları sürekli ayarla: eşikleri ve istisnaları gözden geçirmeye uyarı ayarı (alert tuning) denir." },
       { t: "steps", h: "Veri kaynakları, protokoller ve göstergeler (V8)", items: [
         "NetFlow/IPFIX: paket içeriğini değil bağlantı özetini (kim kime, hangi port, ne kadar veri) taşır; beklenmeyen bağlantı ve büyük hacimli çıkışı görmek için hafif bir yoldur. IPFIX, NetFlow'un IETF standardı karşılığıdır.",
         "syslog: cihazlardan merkezi log toplama. SNMP: cihaz durumunu izleme ve yönetme. Paket yakalama tam içerik verir ama çok depolama ister; port mirroring switch trafiğini analizöre kopyalar.",
@@ -205,7 +205,8 @@
       { id: "h1", text: "İşletim sistemi, ağ cihazı, uygulama ve kimlik sistemi gibi log kaynaklarını ve NetFlow/IPFIX, syslog, SNMP gibi veri toplama yöntemlerini sayabilirsin." },
       { id: "h2", text: "SIEM'in toplama, normalleştirme ve ilişkilendirme işlevlerini örnekle açıklayabilirsin." },
       { id: "h3", text: "SOAR ile UEBA'nın ne yaptığını birbirinden ayırabilirsin." },
-      { id: "h4", text: "NTP ile saat senkronizasyonu gibi iyi log pratiklerini uygulayabilirsin." }
+      { id: "h4", text: "NTP ile saat senkronizasyonu gibi iyi log pratiklerini uygulayabilirsin." },
+      { id: "h5", text: "Çok sayıda düşük değerli uyarıyı uyarı ayarı (alert tuning) ile azaltma yaklaşımını seçebilirsin." }
     ],
     summary: [
       "Loglar olaydan sonra ne olduğunu anlamanın temel kaynağıdır; SIEM bunları toplar, normalleştirir ve ilişkilendirir.",
@@ -215,6 +216,7 @@
       "Alarm yorgunluğu gerçek olayı gizler; kurallar sürekli ayarlanmalıdır."
     ],
     quiz: [
+      { id: "e5a07b36", q: "SOC'ye günde yüzlerce düşük değerli uyarı geliyor ve analistler gerçek olayları gözden kaçırıyor. En uygun iyileştirme hangisidir?", options: ["Eşik ve istisnaları gözden geçirip uyarı kurallarını ayarlamak", "Tüm uyarıları kapatıp yalnızca haftalık rapora güvenmek ve beklemek", "Günlük kaynaklarının yarısını SIEM'e göndermeyi durdurup beklemek", "Analist sayısını artırıp kuralları hiç değiştirmemek ve izlemek"], obj: "h5" },
       { id: "b99d4e98", q: "Farklı kaynaklardan gelen olayları birleştirip şüpheli desen bulmaya ne denir?", options: ["İlişkilendirme (correlation)", "Yedekleme", "Şifreleme", "Maskeleme"], obj: "h2" },
       { id: "464995b3", q: "Log analizinde zaman damgalarının doğru olması için hangi servis önemlidir?", options: ["NTP", "DHCP", "SMTP", "FTP"], obj: "h4" },
       { id: "316ca665", q: "Alarmdan sonra müdahaleyi otomatikleştiren çözüm hangisidir?", options: ["SOAR", "DLP", "NAT", "CDN"], obj: "h3" },
@@ -346,6 +348,11 @@
         "Zafiyet tarama ve ticket oluşturma.",
         "CI/CD hattına güvenlik testi eklemek (SAST, bağımlılık taraması)."
       ] },
+      { t: "steps", h: "Runbook ve playbook (V8)", items: [
+        "Runbook: rutin bir operasyonun (yama dağıtımı, hesap kapatma, yedek geri yükleme) adım adım yazılı prosedürüdür; tutarlıdır ve çoğu zaman otomasyona dönüştürülür.",
+        "Playbook: belirli bir olay türünde (ör. fidye yazılımı) kimin neyi hangi sırayla yapacağını anlatan müdahale senaryosudur; SOAR bu senaryoları otomatik çalıştırabilir.",
+        "İkisi de çalışan kişiden bağımsız tekrarlanabilir sonuç sağlar; değişiklik olunca güncellenmeli ve tatbikatla denenmelidir."
+      ] },
       { t: "steps", h: "Faydalar", items: [
         "Hız ve ölçeklenebilirlik, insan hatasını azaltma.",
         "Tutarlı uygulama ve denetlenebilir kayıt.",
@@ -369,7 +376,8 @@
       { id: "h1", text: "Güvenlikte otomasyonun kullanım alanlarını, yapay zekâ destekli örneklerini (taban çizgisi, ajan, sohbet botu) ve faydalarını sayabilirsin." },
       { id: "h2", text: "IaC, Ansible, betikleme ve SOAR gibi araç örneklerini tanıyabilirsin." },
       { id: "h3", text: "Otomasyonun risklerini (toplu hasar, tek hata noktası, teknik borç) açıklayabilirsin." },
-      { id: "h4", text: "Otomasyon hesapları için en az yetki ve sırları kasada tutma yaklaşımını uygulayabilirsin." }
+      { id: "h4", text: "Otomasyon hesapları için en az yetki ve sırları kasada tutma yaklaşımını uygulayabilirsin." },
+      { id: "h5", text: "Runbook ile playbook'u amaçlarına göre ayırt edebilirsin." }
     ],
     summary: [
       "Otomasyon hesap yönetimi, yama, güvenlik duvarı kuralları ve olay müdahalesi gibi işleri tutarlı yapar.",
@@ -379,6 +387,7 @@
       "Otomasyon hesaplarına en az yetki ver, sırları kasada tut, değişiklikleri sürüm kontrolünde incele."
     ],
     quiz: [
+      { id: "d94b5a13", q: "Ekip, bir sunucuyu yamalama işini her seferinde aynı adımlarla yapmak için adım adım yazılı bir rutin prosedür hazırlıyor ve sonra otomasyona dönüştürmeyi planlıyor. Bu belge hangisidir?", options: ["Runbook", "Olay sonrası raporu (PIR)", "Risk kaydı (risk register)", "İş kapsamı belgesi (SOW)"], obj: "h5" },
       { id: "c195b94c", q: "Otomasyonun güvenlik açısından temel faydası nedir?", options: ["Tutarlılık ve hız, insan hatasını azaltma", "Parolaları kaldırmak", "Ağı kapatmak", "Log tutmamak"], obj: "h1" },
       { id: "a9781c87", q: "Altyapıyı kodla tanımlayıp tekrar edilebilir kurmaya ne denir?", options: ["IaC", "SIEM", "DLP", "RAID"], obj: "h2" },
       { id: "a92107b2", q: "Otomasyonun bir riski hangisidir?", options: ["Hatalı betiğin toplu hasar vermesi", "Ağın yavaşlaması", "Daha çok parola", "Sertifika süresi"], obj: "h3" },
