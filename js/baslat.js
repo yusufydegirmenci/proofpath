@@ -46,7 +46,7 @@ if(window.claude&&window.claude.use){
 /* Ders içeriği (content/lessons, ~2,2 MB) ilk açılışı bloklamasın diye type="text/x-lazy" ile bekletilir; bütün betikler paralel iner, SIRAYLA çalışır (async=false), bitince ekran yenilenir. Testler index.html'den src listesini okur. */
 (function(){
   var l=[].slice.call(document.querySelectorAll('script[type="text/x-lazy"]')),kalan=l.length;
-  function bitti(){if(--kalan>0)return;window.PP_DERS_HAZIR=true;try{draw()}catch(e){}}
+  function bitti(){if(--kalan>0)return;window.PP_DERS_HAZIR=true;try{_glAll=null}catch(e){}try{draw()}catch(e){}}
   if(!kalan){window.PP_DERS_HAZIR=true;return}
   l.forEach(function(o){var s=document.createElement("script");s.async=false;s.onload=s.onerror=bitti;s.src=o.getAttribute("src");document.head.appendChild(s)});
 })();
