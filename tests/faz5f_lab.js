@@ -155,7 +155,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   }
   // İngilizce: sınav ya da seviye iddiası yok; QA'da sertifika iddiası yalnız sayfa bağlantısı
   eq(await p.evaluate(() => /IELTS|TOEFL|CEFR|\bPTE\b|\b[ABC][12]\b|sınav puanı|sertifika puanı/.test(JSON.stringify(PP_EK.eng))), false, 'İngilizce eki sınav/seviye/puan iddiası içermez');
-  eq(await p.evaluate(() => [Object.keys(PP_EK.sec).length, Object.keys(PP_EK.net).length, Object.keys(PP_EK.ccna).length, Object.keys(PP_EK.bk).length, Object.keys(PP_EK.dev).length]), [39, 18, 23, 46, 22], 'diğer yolların ek girdileri sağlam');
+  eq(await p.evaluate(() => [Object.keys(PP_EK.sec).length, Object.keys(PP_EK.net).length, Object.keys(PP_EK.ccna).length, Object.keys(PP_EK.bk).length, Object.keys(PP_EK.dev).length]), [39, 18, 23, 51, 22], 'diğer yolların ek girdileri sağlam');
 
   // Anlatım ve Alıştırma blokları qa ve eng derste görünür
   for (const [yol, n, bolum, beklenen] of [['qa', 3, 'anlat', ['analoji', 'hatalar', 'gecme', 'kaynaklar']], ['qa', 18, 'alis', ['rehberli', 'bagimsiz', 'telafi']], ['eng', 2, 'anlat', ['analoji', 'hatalar', 'gecme', 'kaynaklar', 'sonraki']], ['eng', 11, 'alis', ['rehberli', 'bagimsiz', 'telafi']]]) {
