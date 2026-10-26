@@ -69,7 +69,7 @@ const sorularTum = new Map(); // id -> {q, kaynak}
     w.PP_VA[k].sorular.forEach((q) => sorularTum.set(q.id, { q: q.q, kaynak: 'content/veri-analitigi/' + f + '.js', hedef: w.PP_VA[k].id }));
   }
   for (const y in global.__seviye) global.__seviye[y].sorular.forEach((q) => sorularTum.set(q.id, { q: q.q, kaynak: T.SEVIYE_DOSYA, hedef: 'seviye:' + y }));
-  eq(sorularTum.size, 1057, 'taranan sınav sorusu: 966 ders (Faz 15: +23 CCNA) + 21 VA + 70 seviye = 1057');
+  eq(sorularTum.size, 1109, 'taranan sınav sorusu: 1018 ders (Faz 16: +52 Security+ V8) + 21 VA + 70 seviye = 1109');
   let izlenen;
   /* izlenen + henüz eklenmemiş ama .gitignore'a takılmayan (yani commit'e girebilecek) dosyalar */
   try { izlenen = cp.execSync('git ls-files --cached --others --exclude-standard', { cwd: KOK, encoding: 'utf8' }).split('\n').filter(Boolean); } catch (e) { izlenen = null; }

@@ -1,8 +1,8 @@
-/* Siber güvenlik (Security+ SY0-701 temelli) · sabit dersler 13-18 */
+/* Siber güvenlik (Security+ SY0-801 (V8) temelli) · sabit dersler 13-18 */
 (function () {
   var L = ((window.PP_LESSONS = window.PP_LESSONS || {}).sec = (window.PP_LESSONS.sec || {}));
-  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-701)", url: "https://www.comptia.org/certifications/security" };
-  var PM = { title: "Professor Messer: Security+ SY0-701 (ücretsiz video kursu)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
+  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-801, V8)", url: "https://www.comptia.org/certifications/security" };
+  var PM = { title: "Professor Messer: Security+ (ücretsiz video kursu, SY0-701 sürümü)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
   var NISTG = { title: "NIST Cybersecurity Framework", url: "https://www.nist.gov/cyberframework", type: "doc", level: "orta", lang: "EN" };
   function res(a, why) { var o = {}; for (var k in a) o[k] = a[k]; o.why = why; return o; }
 
@@ -185,12 +185,18 @@
         "VM sprawl: kontrolsüz çoğalan sanal makineler, yamasız kalan sistemler.",
         "Konteynerlerde: güvensiz imaj, aşırı yetkili konteyner."
       ] },
-      { t: "warn", h: "Tuzak", text: "'Bulutta olduğu için güvenli' yanlıştır. Bulut sağlayıcısı veri merkezini korur ama senin yanlış yapılandırmanı düzeltmez." }
+      { t: "warn", h: "Tuzak", text: "'Bulutta olduğu için güvenli' yanlıştır. Bulut sağlayıcısı veri merkezini korur ama senin yanlış yapılandırmanı düzeltmez." },
+      { t: "steps", h: "Sunucusuz, çoklu bulut ve dağıtım modelleri (V8)", items: [
+        "Sunucusuz (serverless, ör. fonksiyon hizmeti): sunucu, işletim sistemi ve çalışma zamanı sağlayıcıya aittir; müşteri kodu, yapılandırmayı, izinleri ve veriyi yönetir. Riskler: aşırı geniş izinli fonksiyon rolü, kodda gömülü sır, bağımlılık zafiyeti.",
+        "Çoklu bulut (multicloud): birden çok sağlayıcı kullanmak bağımlılığı ve tek sağlayıcı kesintisi riskini azaltır, ama her sağlayıcıda farklı ayar ve kimlik modeli yanlış yapılandırma ve görünürlük boşluğu riskini artırır.",
+        "Dağıtım modelleri: kamu (public), özel (private), hibrit (hybrid) ve topluluk (community: ortak amaçlı kurumların paylaştığı bulut). Kod olarak altyapı (IaC) ortamı tekrarlanabilir kılar ve kodla birlikte gözden geçirilir."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "IaaS, PaaS ve SaaS'ta sağlayıcı ile müşterinin sorumluluk sınırını ayırt edebilirsin." },
       { id: "h2", text: "Bulut veri sızıntılarının en yaygın nedenini bulup uygun önlemi seçebilirsin." },
-      { id: "h3", text: "VM sprawl ile VM escape riskini birbirinden ayırt edebilirsin." }
+      { id: "h3", text: "VM sprawl ile VM escape riskini birbirinden ayırt edebilirsin." },
+      { id: "h4", text: "Sunucusuz, çoklu bulut ve bulut dağıtım modellerinin (public, private, hybrid, community) güvenlik sonuçlarını ayırt edebilirsin." }
     ],
     summary: [
       "Paylaşılan sorumlulukta sağlayıcı veri merkezini, donanımı ve sanallaştırma katmanını korur; kimlik, erişim ve veri her modelde müşteridedir.",
@@ -206,7 +212,8 @@
       { id: "e10d6b64", q: "Bulut ortamında en yaygın veri sızıntısı nedeni hangisidir?", options: ["Yanlış yapılandırma", "Zero-day", "Fiziksel hırsızlık", "DDoS"], obj: "h2" },
       { id: "7441b330", q: "PaaS modelinde müşterinin yönetmeye devam ettiği şey hangisidir?", options: ["Uygulama ve veri", "İşletim sistemi yaması ve hypervisor", "Fiziksel veri merkezi güvenliği", "Ağ donanımı ve sunucu rafları"], obj: "h1" },
       { id: "26b3197a", q: "Bir geliştirici veritabanı yedeğini herkese açık bulut depolama kovasına koydu. İlk önlem hangisi olmalıdır?", options: ["Kovada herkese açık erişimi kapatıp erişimi en az yetkiyle sınırlamak", "Hypervisor'u yamalamak", "Sanal makine sayısını azaltmak", "Sağlayıcıdan veri merkezini yeniden kurmasını istemek"], obj: "h2" },
-      { id: "3c0ef1a6", q: "Bir sanal makineyi ele geçiren saldırganın hypervisor'a ve komşu sanal makinelere ulaşması hangi riskle anılır?", options: ["VM escape", "VM sprawl", "Tokenizasyon", "Split tunnel"], obj: "h3" }
+      { id: "3c0ef1a6", q: "Bir sanal makineyi ele geçiren saldırganın hypervisor'a ve komşu sanal makinelere ulaşması hangi riskle anılır?", options: ["VM escape", "VM sprawl", "Tokenizasyon", "Split tunnel"], obj: "h3" },
+      { id: "945bd74d", q: "Bir ekip olay işleyen kodunu sunucusuz bir fonksiyon hizmetinde çalıştırıyor. Sorumluluk dağılımında hangisi müşteriye aittir?", options: ["Fonksiyonun çalıştığı fiziksel sunucunun yamalanması", "Fonksiyon kodu, fonksiyonun izinleri ve yapılandırması", "Altta yatan işletim sistemi ve çalışma zamanı ortamının güvenliği", "Veri merkezinin fiziksel erişim denetimi"], obj: "h4" }
     ],
     interview: [
       { q: "Paylaşılan sorumluluk modeli nedir?", a: "Bulut sağlayıcısı altyapıyı (donanım, veri merkezi, sanallaştırma) korur. Müşteri kimlik/erişim, veri, yapılandırma ve IaaS'ta işletim sistemi güvenliğinden sorumludur. Hizmet modeline göre sınır kayar." },
@@ -259,12 +266,18 @@
         "Veri saklama ve imha politikaları: gerekmeyen veriyi güvenli sil."
       ] },
       { t: "box", h: "Egemenlik ve konum", text: "Verinin hangi ülkede saklandığı hukuki sorumluluğu etkiler (veri egemenliği). Kişisel veriler için KVKK ve GDPR gibi düzenlemeler uygulanır." },
-      { t: "warn", h: "Tuzak", text: "Maskeleme ve şifreleme aynı şey değildir. Maskeleme veriyi sadece görünümde gizler; şifreleme veriyi anahtarla korur. Tokenizasyonda orijinal veri ayrı güvenli bir kasada tutulur." }
+      { t: "warn", h: "Tuzak", text: "Maskeleme ve şifreleme aynı şey değildir. Maskeleme veriyi sadece görünümde gizler; şifreleme veriyi anahtarla korur. Tokenizasyonda orijinal veri ayrı güvenli bir kasada tutulur." },
+      { t: "steps", h: "Veri rolleri ve yaşam döngüsü (V8)", items: [
+        "Veri sahibi (owner): veriden iş olarak sorumlu yönetici; sınıflandırmayı ve erişim kararını verir. Koruyucu (custodian): veriyi teknik olarak saklar ve korur (yedek, şifreleme, erişim uygulaması).",
+        "Veri görevlisi (steward): veri kalitesi, tanımlar ve doğru kullanımı için sorumludur. Operatör: veriyi günlük işlemlerde işleyen kişi.",
+        "Veri sorumlusu (controller): verinin neden ve nasıl işleneceğine karar verir. İşleyen (processor): onun adına işler. Alt işleyen (subprocessor): işleyenin yardım aldığı üçüncü taraf. Verisi işlenen kişiye veri öznesi denir.",
+        "Yaşam döngüsü: oluşturma, yönetim, dağıtım, saklama (retention), imha. Saklama süresi dolan veri güvenli imha edilir; yapılandırılmış (tablo) ve yapılandırılmamış (belge, e-posta) veri farklı araçlarla korunur."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "Verinin hangi halde (at rest, in transit, in use) olduğunu tanıyıp uygun korumayı eşleştirebilirsin." },
       { id: "h2", text: "Tokenizasyon, maskeleme ve DLP'yi ne yaptıklarına göre ayırt edebilirsin." },
-      { id: "h3", text: "Veri sahibi (owner) ile veri koruyucu (custodian) rollerini ayırt edebilirsin." }
+      { id: "h3", text: "Veri sahibi, koruyucu, görevlisi (steward), sorumlusu (controller), işleyen (processor) ve alt işleyen rollerini ayırt edebilirsin." }
     ],
     summary: [
       "Veri üç halde korunur: beklerken disk ve veritabanı şifrelemesiyle, aktarılırken TLS ve VPN ile, kullanımdayken erişim kontrolüyle.",
@@ -280,7 +293,9 @@
       { id: "69bbab61", q: "Verinin önem düzeyini ve erişimini belirleyen rol hangisidir?", options: ["Veri sahibi (owner)", "Veri koruyucu (custodian)", "Kullanıcı", "Ağ yöneticisi"], obj: "h3" },
       { id: "a1835a2b", q: "Veritabanı dosyalarını diskte AES ile şifrelemek verinin hangi halini korur?", options: ["Beklerken (at rest)", "Aktarılırken (in transit)", "Kullanımda (in use)", "Hiçbirini"], obj: "h1" },
       { id: "67926482", q: "Ekranda bir kart numarasının yalnızca son dört hanesinin görünüp geri kalanının yıldız olarak gösterilmesi hangisidir?", options: ["Maskeleme", "Şifreleme", "Tokenizasyon", "Hashing"], obj: "h2" },
-      { id: "9c3a05aa", q: "Müşteri veritabanını teknik olarak saklayan, yedekleyen ve altyapısını işleten BT ekibi hangi rolü üstlenmiştir?", options: ["Veri koruyucu (custodian)", "Veri sahibi (owner)", "Son kullanıcı", "Denetçi"], obj: "h3" }
+      { id: "9c3a05aa", q: "Müşteri veritabanını teknik olarak saklayan, yedekleyen ve altyapısını işleten BT ekibi hangi rolü üstlenmiştir?", options: ["Veri koruyucu (custodian)", "Veri sahibi (owner)", "Son kullanıcı", "Denetçi"], obj: "h3" },
+      { id: "88ac5cbf", q: "Bir kurumun veri sözlüğünü tutan, alan tanımlarının ve kalite kurallarının tutarlı olmasını sağlayan kişi hangi rolü üstlenir?", options: ["Veri sahibi (data owner)", "Veri koruyucu (data custodian)", "Veri görevlisi (data steward)", "Veri işleyen (data processor)"], obj: "h3" },
+      { id: "e2531ed0", q: "Bir perakendeci müşteri verilerini bir bulut CRM sağlayıcısına işletiyor; sağlayıcı da e-posta gönderimi için üçüncü bir şirketten hizmet alıyor. Bu üçüncü şirketin rolü nedir?", options: ["Alt işleyen (subprocessor)", "Veri sorumlusu (controller)", "Veri öznesi", "Veri koruyucu (custodian)"], obj: "h3" }
     ],
     interview: [
       { q: "Veri sınıflandırma neden önemlidir?", a: "Hangi verinin ne kadar korunması gerektiğini belirler. Böylece şifreleme, erişim ve DLP kuralları riske göre uygulanır, kaynaklar kritik verilere yönlendirilir." },
@@ -331,12 +346,18 @@
         "Yürüyüş (walkthrough) ve simülasyon, tam geçiş (failover) testi.",
         "Paralel test: ana sistem çalışırken yedeği de çalıştırıp doğrulamak."
       ] },
-      { t: "warn", h: "Tuzak", text: "RAID yedekleme değildir. Dosyayı yanlışlıkla silersen ya da fidye yazılımı şifrelerse RAID bu değişikliği de aynalar." }
+      { t: "warn", h: "Tuzak", text: "RAID yedekleme değildir. Dosyayı yanlışlıkla silersen ya da fidye yazılımı şifrelerse RAID bu değişikliği de aynalar." },
+      { t: "steps", h: "Dayanıklılık ayrıntıları (V8)", items: [
+        "Yük dengeleme trafiği birden çok sunucuya dağıtır. Otomatik ölçekleme (autoscaling) yüke göre sunucu sayısını kendiliğinden artırıp azaltır. Kümeleme (clustering): birden çok düğüm tek hizmet gibi çalışır; biri düşerse diğeri devralır.",
+        "Güç yedekliliği: UPS kısa kesintiyi karşılar, jeneratör uzun kesintide devreye girer, yedekli güç kaynağı (RPS) cihazın bir kaynağı bozulsa da çalışmasını sürdürür, aşırı gerilim koruyucu ani yükselmeden korur.",
+        "Kapasite planlama: gelecekteki kullanıcı, depolama, işlem gücü ve ağ ihtiyacını önceden hesaplayıp yetersizlik yüzünden kesinti yaşamamak.",
+        "Platform çeşitliliği: tek satıcı, tek donanım ya da tek sanallaştırma ürününe bağımlı olmamak. Yedek testleri: geri yükleme testi (yedek gerçekten açılıyor mu), failover ve simülasyon."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "RTO ile RPO'yu ayırt edip bir ifadenin hangisini tanımladığını bulabilirsin." },
       { id: "h2", text: "Tam, artımlı ve fark yedeklerini geri dönüşte gereken zincire göre ayırt edebilirsin." },
-      { id: "h3", text: "Hot, warm ve cold site seçeneklerini hız ve maliyetlerine göre sıralayabilirsin." },
+      { id: "h3", text: "Hot, warm ve cold site seçeneklerini hız ve maliyetlerine göre sıralayıp yük dengeleme, otomatik ölçekleme ve güç yedekliliği çözümlerini ayırt edebilirsin." },
       { id: "h4", text: "RAID'in yedek olmadığını ve fidye yazılımına karşı 3-2-1 kuralını açıklayan seçeneği bulabilirsin." }
     ],
     summary: [
@@ -354,7 +375,9 @@
       { id: "20b5dfdf", q: "Bir sistemin kesintiden sonra en geç 4 saat içinde tekrar çalışır hale getirilmesi gerektiği belirtiliyor. Bu hangi metriktir?", options: ["RTO", "RPO", "BIA", "Failover"], obj: "h1" },
       { id: "7110cbc2", q: "Geri dönüşte son tam yedeğin yanı sıra o günden itibaren alınan tüm yedeklerin sırayla uygulanması gereken tür hangisidir?", options: ["Artımlı (incremental)", "Fark (differential)", "Tam (full)", "RAID"], obj: "h2" },
       { id: "80c4f2c7", q: "3-2-1 yedekleme kuralındaki '1' neyi ifade eder?", options: ["Bir kopyanın uzakta ya da çevrimdışı tutulması", "Bir yedek yazılımı kullanmak", "Bir günlük saklama süresi", "Tek bir disk kullanmak"], obj: "h4" },
-      { id: "080479e4", q: "Yedek tesis seçeneklerini devralma hızı en yavaştan en hızlıya (maliyet de en düşükten en yükseğe) sıralayan seçenek hangisidir?", options: ["Cold, warm, hot","Hot, warm, cold","Warm, cold, hot","Hot, cold, warm"], obj: "h3" }
+      { id: "080479e4", q: "Yedek tesis seçeneklerini devralma hızı en yavaştan en hızlıya (maliyet de en düşükten en yükseğe) sıralayan seçenek hangisidir?", options: ["Cold, warm, hot","Hot, warm, cold","Warm, cold, hot","Hot, cold, warm"], obj: "h3" },
+      { id: "7924b1af", q: "Bir e-ticaret sitesi kampanya saatlerinde yavaşlıyor, geceleri ise sunucuların çoğu boşta kalıyor. Ekip sunucu sayısını yüke göre otomatik artırıp azaltmak istiyor. Hangi çözüm uygundur?", options: ["Soğuk site (cold site)", "Otomatik ölçekleme (autoscaling)", "Disk aynalama (RAID 1)", "Değişmez (immutable) yedekleme"], obj: "h3" },
+      { id: "4143bfe4", q: "Veri merkezindeki kritik bir sunucunun tek güç kaynağı arızalanınca sunucu kapandı. Bu tekil hata noktasını gidermek için sunucuya ne eklenmelidir?", options: ["Aşırı gerilim koruyucu (surge protector)", "Sıcak site (hot site)", "Yedekli güç kaynağı (redundant power supply)", "Uzak konumda yedek (off-site backup)"], obj: "h3" }
     ],
     interview: [
       { q: "RTO ve RPO nedir?", a: "RTO sistemin kesintiden sonra ne kadar sürede geri gelmesi gerektiğini, RPO ise en fazla ne kadar veri kaybının kabul edilebilir olduğunu belirtir. Yedekleme sıklığı ve felaket kurtarma stratejisi bunlara göre seçilir." },
@@ -410,10 +433,14 @@
         "MDM: mobil cihaz yönetimi ile ayar, silme, şifreleme zorunluluğu.",
         "USB/çıkarılabilir ortam kısıtlaması."
       ] },
-      { t: "warn", h: "Tuzak", text: "Sertleştirme bir kerelik iş değildir. Yamalar çıkar, ayarlar kayar. Baseline ile karşılaştırıp sapmayı sürekli izlemek gerekir." }
+      { t: "warn", h: "Tuzak", text: "Sertleştirme bir kerelik iş değildir. Yamalar çıkar, ayarlar kayar. Baseline ile karşılaştırıp sapmayı sürekli izlemek gerekir." },
+      { t: "steps", h: "İşletim sistemi sertleştirme araçları (V8)", items: [
+        "Grup İlkesi (Group Policy, GPO): Windows etki alanında parola kuralı, USB engeli, kilit ekranı gibi ayarları yüzlerce makineye merkezden dağıtır ve uygulatır.",
+        "SELinux: Linux çekirdeğinde zorunlu erişim denetimi (MAC) uygular. Bir süreç ele geçirilse bile politikanın izin vermediği dosyalara ve portlara erişemez; hasarı sınırlar."
+      ] }
     ],
     objectives: [
-      { id: "h1", text: "Yeni kurulan bir sistemde uygulanacak sertleştirme adımlarını ve güvenli protokol tercihlerini seçebilirsin." },
+      { id: "h1", text: "Yeni kurulan bir sistemde uygulanacak sertleştirme adımlarını, güvenli protokol tercihlerini ve Grup İlkesi ile SELinux gibi işletim sistemi araçlarının rolünü seçebilirsin." },
       { id: "h2", text: "Altın imaj, CIS Benchmarks ve baseline kavramlarını amaçlarına göre eşleştirebilirsin." },
       { id: "h3", text: "Bir sistemin baseline'dan sapmasını (drift) tanıyıp sürekli izlenmesi gerektiğini bulabilirsin." }
     ],
@@ -430,7 +457,8 @@
       { id: "91daeb64", q: "Önceden sertleştirilmiş şablon sanal makineye ne denir?", options: ["Altın imaj (golden image)", "Honeypot", "Sandbox", "Jump server"], obj: "h2" },
       { id: "998fdebd", q: "CIS Benchmarks nedir?", options: ["Güvenli yapılandırma rehberleri", "Zafiyet puanı", "Saldırı türü", "Şifreleme algoritması"], obj: "h2" },
       { id: "adb391b7", q: "Üç ay önce sertleştirilen sunucuda, bir yöneticinin sonradan açtığı port baseline ile karşılaştırınca ortaya çıkıyor. Bu durum nasıl adlandırılır?", options: ["Yapılandırma sapması (drift)", "Altın imaj", "Honeypot", "Zero-day"], obj: "h3" },
-      { id: "ff281718", q: "Bir switch'in sertleştirilmesi için hangisi doğrudur?", options: ["Kullanılmayan portları kapatmak, Telnet yerine SSH kullanmak ve yönetimi ayrı VLAN'dan yapmak", "Varsayılan parolayı kolay hatırlansın diye korumak ve kullanılmayan portları açık bırakmak", "Tüm portları açık bırakıp yalnızca trafiği izleyerek riski yönetmeye çalışmak", "Yönetimi herkese açık kullanıcı VLAN'ından Telnet ile yapmak ve logları kapatmak"], obj: "h1" }
+      { id: "ff281718", q: "Bir switch'in sertleştirilmesi için hangisi doğrudur?", options: ["Kullanılmayan portları kapatmak, Telnet yerine SSH kullanmak ve yönetimi ayrı VLAN'dan yapmak", "Varsayılan parolayı kolay hatırlansın diye korumak ve kullanılmayan portları açık bırakmak", "Tüm portları açık bırakıp yalnızca trafiği izleyerek riski yönetmeye çalışmak", "Yönetimi herkese açık kullanıcı VLAN'ından Telnet ile yapmak ve logları kapatmak"], obj: "h1" },
+      { id: "176da637", q: "Bir Linux web sunucusunda uygulama süreci ele geçirilmiş ve saldırgan /home altındaki dosyalara erişmeye çalışıyor, ama işletim sistemi politikası buna izin vermiyor. Bu davranışı sağlayan mekanizma hangisidir?", options: ["Grup İlkesi (GPO)", "TLS denetimi", "SELinux (zorunlu erişim denetimi)", "NAC"], obj: "h1" }
     ],
     interview: [
       { q: "Sertleştirme nedir?", a: "Bir sistemi gereksiz servis ve ayarlardan arındırıp güvenli yapılandırmayla çalıştırmaktır. Varsayılan hesapları değiştirme, yama, en az yetki, host güvenlik duvarı ve loglama gibi adımları içerir." },

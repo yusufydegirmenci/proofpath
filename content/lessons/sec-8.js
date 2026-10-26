@@ -1,8 +1,8 @@
-/* Siber güvenlik (Security+ SY0-701 temelli) · sabit dersler 39-42 */
+/* Siber güvenlik (Security+ SY0-801 (V8) temelli) · sabit dersler 39-42 */
 (function () {
   var L = ((window.PP_LESSONS = window.PP_LESSONS || {}).sec = (window.PP_LESSONS.sec || {}));
-  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-701)", url: "https://www.comptia.org/certifications/security" };
-  var PM = { title: "Professor Messer: Security+ SY0-701 (ücretsiz video kursu)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
+  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-801, V8)", url: "https://www.comptia.org/certifications/security" };
+  var PM = { title: "Professor Messer: Security+ (ücretsiz video kursu, SY0-701 sürümü)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
   function res(a, why) { var o = {}; for (var k in a) o[k] = a[k]; o.why = why; return o; }
 
   /* 39 ──────────────────────────────────────────── Aldatma ve bozma teknolojileri */
@@ -80,12 +80,16 @@
         t: "warn",
         h: "Hukuki ve etik sınır",
         text: "Tuzak savunma amaçlıdır. Saldırgana karşılık olarak onun sistemlerine girmek (hack back) yasa dışıdır. Çalışanların kişisel cihazlarını haber vermeden tuzak yapmak ya da gerçek müşteri verisini yem olarak kullanmak da kabul edilemez. Tuzakta toplanan veri de gizlilik kurallarına tabidir."
-      }
+      },
+      { t: "steps", h: "Canary hesap", items: [
+        "Canary hesap: gerçek kullanıcısı olmayan, cazip adlı sahte hesap (ör. 'yedek-yonetici'). Hiçbir yasal süreç bu hesabı kullanmadığı için oturum açma denemesi, parola püskürtme ya da çalınmış bilgi göstergesidir ve anında alarm üretir.",
+        "Honeytoken'ın hesap biçimidir; aynı mantık sahte API anahtarı, sahte veritabanı kaydı ve sahte dosya (honeyfile) için de geçerlidir."
+      ] }
     ],
     objectives: [
       {
         id: "h1",
-        text: "Honeypot, honeynet, honeyfile ve honeytoken'ı amaçlarına göre ayırt edebilirsin."
+        text: "Honeypot, honeynet, honeyfile, honeytoken ve canary hesabı amaçlarına göre ayırt edebilirsin."
       },
       {
         id: "h2",
@@ -112,7 +116,8 @@
       { id: "177f6ac1", q: "Honeytoken kaynaklı uyarıların yanlış alarm oranı neden genellikle düşüktür?", options: ["Meşru bir kullanıcının onu kullanmak için nedeni yoktur; kullanım şüphelidir","Saldırganın trafiğini otomatik olarak şifreleyip tuzağa yönlendirerek etkisiz hale getirir","Ağ tarayıcılarını ve yedekleme yazılımlarını devre dışı bırakır","Saldırganın IP adresini değiştirip izini kaybettirir"], obj: "h3" },
       { id: "ed3403ea", q: "Bir kurum honeypot kurmayı planlıyor. Hukuki ve etik açıdan en doğru yaklaşım hangisidir?", options: ["Saldırganı yakalamak için onun sistemlerine girip delil toplayarak olayı kanıtlamak","Yem olarak gerçek müşteri kayıtlarını kullanıp tuzağı daha inandırıcı hale getirmek","Çalışanlara haber vermeden kişisel cihazlarını tuzak olarak kullanmak","Hukuk onayı alıp yalnızca kendi sistemlerinde, kayıt kuralları belli olarak kurmak"], obj: "h3" },
       { id: "0f8719fc", q: "Ekip, birden çok tuzak sunucudan oluşan ve gerçek bir kurum ağını taklit eden yalıtılmış bir ortam kuruyor. Bu düzenek hangisidir?", options: ["Honeypot (tek tuzak sistem)","Honeynet (tuzak ağ)","Honeyfile (yem dosya)","DNS sinkhole (yönlendirme)"], obj: "h1" },
-      { id: "b7f3274a", q: "Savunma ekibi, saldırganın ya da zararlının gördüğü sensör ve ölçüm yanıtlarını bilerek yanıltıcı hale getiriyor. Bu teknik hangisidir?", options: ["Honeytoken (sahte kimlik kaydı)","Sandbox (yalıtılmış ortam)","Sahte telemetri (yanıltıcı ölçüm)","DNS sinkhole (yönlendirme)"], obj: "h2" }
+      { id: "b7f3274a", q: "Savunma ekibi, saldırganın ya da zararlının gördüğü sensör ve ölçüm yanıtlarını bilerek yanıltıcı hale getiriyor. Bu teknik hangisidir?", options: ["Honeytoken (sahte kimlik kaydı)","Sandbox (yalıtılmış ortam)","Sahte telemetri (yanıltıcı ölçüm)","DNS sinkhole (yönlendirme)"], obj: "h2" },
+      { id: "91fbd4a2", q: "Dizin hizmetinde hiçbir sürecin kullanmadığı 'yedek-yonetici' adlı cazip bir hesap açılıyor ve bu hesaba yapılan her oturum açma denemesi anında alarm üretiyor. Bu kontrol nedir?", options: ["Canary hesap (honeytoken biçimi)", "Honeynet", "Sandbox", "DNS sinkhole"], obj: "h1" }
     ],
     interview: [
       {
@@ -245,7 +250,14 @@
         t: "warn",
         h: "Tuzak",
         text: "IDS 'engelledi' demez; engelleyen IPS'tir. 'Tek araç yeter' de yanılgıdır: NIDS ağ trafiğini, HIDS konak dosyalarını, DLP veri hareketini, NAC cihaz kabulünü, EDR uç nokta davranışını görür. Katmanlar birbirini tamamlar."
-      }
+      },
+      { t: "steps", h: "E-posta kimlik doğrulama: SPF, DKIM, DMARC, BIMI", items: [
+        "SPF: alan adı sahibi DNS'te 'bu alan adı adına şu sunucular e-posta gönderebilir' listesini yayımlar; alıcı gönderen sunucuyu listeye göre kontrol eder.",
+        "DKIM: gönderen sunucu iletiyi özel anahtarla imzalar, alıcı DNS'teki açık anahtarla doğrular; iletinin yolda değişmediğini ve alanın yetkili olduğunu gösterir.",
+        "DMARC: SPF ve/veya DKIM sonucunun görünen 'From' alanıyla uyumunu şart koşar ve başarısız iletiye ne yapılacağını belirler (none: yalnızca raporla, quarantine: karantina, reject: reddet); alan sahibi raporlar alır.",
+        "BIMI: DMARC'ı güçlü uygulayan alan adlarının logosunun destekleyen e-posta istemcilerinde gösterilmesi; marka güveni sağlar.",
+        "Ek: hız sınırlama (rate limiting) kaba kuvvet ve DoS'u yavaşlatır; UTM birçok güvenlik işlevini tek cihazda toplar; güvenlik duvarı Katman 4 (port) ya da Katman 7 (uygulama) düzeyinde çalışabilir."
+      ] }
     ],
     objectives: [
       {
@@ -259,7 +271,8 @@
       {
         id: "h3",
         text: "Tehdit avı ile alarm yönetimi farkını ve yanlış pozitif/negatif ayarını doğru yorumlayabilirsin."
-      }
+      },
+      { id: "h4", text: "SPF, DKIM, DMARC ve BIMI'nin e-posta sahteciliğine karşı ne yaptığını ayırt edebilirsin." }
     ],
     summary: [
       "IDS yalnızca tespit eder ve uyarı verir; IPS hat üzerinde durup kötü trafiği engelleyebilir.",
@@ -277,7 +290,10 @@
       { id: "b6568bbe", q: "Güvenlik ekibi uç nokta, e-posta, ağ ve bulut telemetrisini tek yerde ilişkilendirip bir saldırı zincirini bütün olarak görmek istiyor. Hangi çözüm bu amaca en uygundur?", options: ["EDR (uç nokta tespit ve yanıt)","HIDS (konak tabanlı tespit)","NAC (cihaz kabulü ve sağlık denetimi)","XDR (genişletilmiş tespit ve yanıt)"], obj: "h2" },
       { id: "00f0f2c5", q: "Bir dizüstü bilgisayarda şüpheli süreç davranışı görüldü. Ekip, uç nokta telemetrisini inceleyip makineyi ağdan yalıtmak istiyor. Hangi çözüm bu işi yapar?", options: ["NAC (ağ erişim denetimi)","EDR (uç nokta tespit ve yanıt)","DLP (veri sızıntısı önleme)","IDS (kopya trafikte uyarı verir)"], obj: "h2" },
       { id: "18d1a876", q: "Hiçbir alarm yokken bir analist 'saldırgan zaten içeride olabilir ve düzenli aralıklarla dışarıya bağlantı kuruyordur' varsayımıyla ağ kayıtlarında bunu doğrulayacak izleri arıyor. Bu çalışma hangisidir?", options: ["Alarm triyajı ve olay sıralaması","Yanlış pozitif oranını düşürme ayarı","Hipotez güdümlü tehdit avı","Zafiyet taraması (bilinen açık listesi)"], obj: "h3" },
-      { id: "80af0261", q: "Yeni bir IPS kuralı sonrasında yöneticinin meşru yedekleme trafiği engellendi. Bu hangi durumdur ve doğru tepki nedir?", options: ["Yanlış pozitif; kurala istisna ya da eşik ayarı yapıp test etmek","Yanlış negatif; IPS'i kalıcı olarak kapatıp tüm kuralları silmek","Yanlış pozitif; alarmları yok sayıp kuralı olduğu gibi bırakmak","Yanlış negatif; yedekleme trafiğini baştan yasaklamak"], obj: "h3" }
+      { id: "80af0261", q: "Yeni bir IPS kuralı sonrasında yöneticinin meşru yedekleme trafiği engellendi. Bu hangi durumdur ve doğru tepki nedir?", options: ["Yanlış pozitif; kurala istisna ya da eşik ayarı yapıp test etmek","Yanlış negatif; IPS'i kalıcı olarak kapatıp tüm kuralları silmek","Yanlış pozitif; alarmları yok sayıp kuralı olduğu gibi bırakmak","Yanlış negatif; yedekleme trafiğini baştan yasaklamak"], obj: "h3" },
+      { id: "da0e92fc", q: "Bir şirketin alan adı adına gönderilmiş gibi görünen sahte faturalar müşterilere ulaşıyor. Yönetici, kimlik doğrulaması başarısız iletilerin alıcılarca reddedilmesini ve raporlanmasını istiyor. Hangi kayıt/politika bunu sağlar?", options: ["DMARC (reject politikası)", "Yalnızca SPF kaydı", "Yalnızca DKIM imzası", "BIMI logosu"], obj: "h4" },
+      { id: "b748beea", q: "Gönderen sunucu giden her iletiyi özel anahtarla imzalıyor ve alıcılar DNS'teki açık anahtarla doğruluyor. Bu mekanizma hangisidir?", options: ["SPF", "DMARC", "TLS (STARTTLS)", "DKIM"], obj: "h4" },
+      { id: "2316b3b9", q: "Bir alan adı sahibi DNS'e, kendi alan adı adına hangi sunucuların e-posta gönderebileceğini listeleyen bir kayıt ekliyor. Bu kayıt hangisidir?", options: ["DKIM imza kaydı", "DMARC raporlama politikası", "BIMI logo kaydı", "SPF kaydı"], obj: "h4" }
     ],
     interview: [
       {

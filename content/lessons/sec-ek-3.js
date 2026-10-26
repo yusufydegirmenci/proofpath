@@ -41,7 +41,7 @@
       ]
     },
     kaynaklar: [
-      S("61/r2", "800-61 Rev. 2: Computer Security Incident Handling Guide", "Aldatma yöntemlerini doğrudan anlatmaz; tespit, analiz ve olay yönetimi akışını gösterir. Tuzak uyarılarının nasıl ele alınacağını bu akış içinde düşünmeye yardımcı olur.")
+      S("61/r3", "800-61 Rev. 3: Incident Response Recommendations and Considerations for Cybersecurity Risk Management", "Aldatma yöntemlerini doğrudan anlatmaz; tespit, analiz ve olay yönetimi akışını gösterir. Tuzak uyarılarının nasıl ele alınacağını bu akış içinde düşünmeye yardımcı olur.")
     ],
     telafi: "Takıldıysan tek bir araç seç (honeytoken) ve üç soruyu cevapla: Ne işe yarar? Kim ona dokunmamalı? Dokunulursa kime haber gider?",
     sonraki: "Sonraki ders: Tespit ve önleme araçları (IDS/IPS, DLP, NAC, EDR/XDR). Tuzak uyarılarının yanında ağ ve uç nokta alarmlarını nasıl ayarlayacağını göreceksin."

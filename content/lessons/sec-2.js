@@ -1,8 +1,8 @@
-/* Siber güvenlik (Security+ SY0-701 temelli) · sabit dersler 7-12 */
+/* Siber güvenlik (Security+ SY0-801 (V8) temelli) · sabit dersler 7-12 */
 (function () {
   var L = ((window.PP_LESSONS = window.PP_LESSONS || {}).sec = (window.PP_LESSONS.sec || {}));
-  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-701)", url: "https://www.comptia.org/certifications/security" };
-  var PM = { title: "Professor Messer: Security+ SY0-701 (ücretsiz video kursu)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
+  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-801, V8)", url: "https://www.comptia.org/certifications/security" };
+  var PM = { title: "Professor Messer: Security+ (ücretsiz video kursu, SY0-701 sürümü)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
   var OWASP = { title: "OWASP Top 10", url: "https://owasp.org/www-project-top-ten/", type: "doc", level: "orta", lang: "EN" };
   var CISA = { title: "CISA: Secure Our World (temel güvenlik alışkanlıkları)", url: "https://www.cisa.gov/secure-our-world", type: "doc", level: "başlangıç", lang: "EN" };
   function res(a, why) { var o = {}; for (var k in a) o[k] = a[k]; o.why = why; return o; }
@@ -49,10 +49,15 @@
         "Rapor etme kültürü: 'şüpheli' butonu ve güvenlik ekibine hızlı bildirim.",
         "MFA, e-posta filtreleme ve düzenli simülasyonlu eğitim."
       ] },
-      { t: "warn", h: "Tuzak", text: "Teknik önlemler kadar kültür de belirleyicidir: kimsenin 'çok meşgulüm' diye doğrulamayı atlamadığı bir kurum." }
+      { t: "warn", h: "Tuzak", text: "Teknik önlemler kadar kültür de belirleyicidir: kimsenin 'çok meşgulüm' diye doğrulamayı atlamadığı bir kurum." },
+      { t: "steps", h: "QR kod ve yapay zekâ destekli sahtecilik (V8)", items: [
+        "Quishing: QR koda gizlenmiş zararlı bağlantıyla yapılan oltalama. Kod; poster, e-posta ya da otoparktaki sahte ödeme etiketi olabilir. Kullanıcı adresi göremeden tarar, e-posta filtrelerinin görüntü içindeki bağlantıyı yakalaması zorlaşır.",
+        "Deepfake: yapay zekâ ile üretilmiş ses ya da görüntü; yönetici sesiyle para talebi (vishing) ya da görüntülü toplantıda sahte kimlik için kullanılır.",
+        "Savunma: ikinci kanaldan doğrulama, önceden kararlaştırılmış kod sözcük ve ödemelerde çift onay."
+      ] }
     ],
     objectives: [
-      { id: "h1", text: "Phishing, spear phishing, whaling, smishing ve vishing saldırılarını hedef ve kanala göre ayırt edebilirsin." },
+      { id: "h1", text: "Phishing, spear phishing, whaling, smishing, vishing ve quishing saldırılarını hedef ve kanala göre ayırt edebilirsin." },
       { id: "h2", text: "Tailgating, shoulder surfing, dumpster diving ve baiting gibi fiziksel teknikleri bir senaryodan tanıyabilirsin." },
       { id: "h3", text: "Pharming, watering hole ve typosquatting saldırılarını birbirinden ayırt edebilirsin." },
       { id: "h4", text: "Acil para talebi içeren bir mesajdaki baskı tekniğini bulup doğru savunmayı (ikinci kanaldan doğrulama) seçebilirsin." }
@@ -72,7 +77,8 @@
       { id: "7a1f5236", q: "Genel müdürden geldiği söylenen 'acil IBAN değişikliği' e-postası için en doğru ilk adım nedir?", options: ["Tutar küçükse işlemi yapıp sonra bildirmek", "Gönderene yanıt yazıp doğrulamasını istemek", "Telefonla ya da başka bir kanaldan talebi doğrulamak", "E-postayı silip kimseye söylememek"], obj: "h4" },
       { id: "140dee78", q: "'Hesabın 1 saat içinde kapatılacak, hemen bağlantıya tıkla!' mesajında ağırlıklı olarak hangi baskı tekniği kullanılıyor?", options: ["Ödül", "Sempati", "Aciliyet ve korku", "Otorite"], obj: "h4" },
       { id: "3e5c5c7c", q: "Çalışanların sık ziyaret ettiği bir sektör forumu ele geçirilip siteyi açanlara zararlı yazılım bulaştırılıyor. Bu hangisidir?", options: ["Pharming", "Typosquatting", "Watering hole", "Vishing"], obj: "h3" },
-      { id: "620b029b", q: "Ofiste birinin omzunun üzerinden ekrana bakarak parolasını öğrenmek hangisidir?", options: ["Dumpster diving", "Baiting", "Pharming", "Shoulder surfing"], obj: "h2" }
+      { id: "620b029b", q: "Ofiste birinin omzunun üzerinden ekrana bakarak parolasını öğrenmek hangisidir?", options: ["Dumpster diving", "Baiting", "Pharming", "Shoulder surfing"], obj: "h2" },
+      { id: "be38b8a1", q: "Çalışanlar otoparktaki ödeme direğine yapıştırılmış bir QR kodu okutup sahte bir ödeme sayfasına kart bilgisi giriyor. Bu saldırı hangisidir?", options: ["Smishing", "Vishing", "Pharming", "Quishing"], obj: "h1" }
     ],
     interview: [
       { q: "Phishing e-postasını nasıl anlarsın?", a: "Gönderen adresine ve bağlantının gerçek adresine bakarım, aciliyet ve tehdit dilini ve beklenmedik eki fark ederim. Para ya da parola isteyen talepleri başka bir kanaldan doğrularım ve şüpheliyse güvenlik ekibine bildiririm." },
@@ -206,12 +212,18 @@
         "Replay: yakalanan geçerli mesajı tekrar göndermek. Savunma: zaman damgası, nonce."
       ] },
       { t: "box", h: "Ayırt etme", text: "Switch'te MAC tablosunu doldurmak (MAC flooding) switch'i hub gibi davranmaya zorlar; port security ile önlenir. VLAN hopping'e karşı kullanılmayan portları kapat, native VLAN'ı değiştir." },
-      { t: "warn", h: "Tuzak", text: "Password spraying ile brute force karıştırılır: brute force bir hesaba çok parola dener, spraying çok hesaba az parola dener." }
+      { t: "warn", h: "Tuzak", text: "Password spraying ile brute force karıştırılır: brute force bir hesaba çok parola dener, spraying çok hesaba az parola dener." },
+      { t: "steps", h: "Protokol düşürme ve kullanıcı numaralandırma (V8)", items: [
+        "Protocol downgrade: saldırgan iletişimin iki ucunu da daha eski ve zayıf bir sürüme (ör. eski TLS, SSL, WEP, zayıf şifre takımı) geri düşmeye zorlar, sonra o sürümün bilinen açıklarını kullanır. Savunma: sunucuda eski sürümleri kapatmak ve güçlü sürümü zorunlu kılmak.",
+        "Kullanıcı numaralandırma (user enumeration): giriş ya da parola sıfırlama formu, hesabın var olup olmadığını ele veren farklı cevaplar verir ('kullanıcı bulunamadı' ya da cevap süresi farkı). Saldırgan geçerli kullanıcı listesi çıkarıp parola püskürtmeye geçer.",
+        "Savunma: iki durumda da aynı genel hata mesajı, hız sınırlama (rate limiting) ve MFA."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "ARP spoofing, DNS poisoning ve rogue DHCP saldırılarını tanıyıp her birine karşı savunmayı (DAI, DNSSEC, DHCP snooping) eşleştirebilirsin." },
       { id: "h2", text: "Brute force, password spraying ve credential stuffing saldırılarını deneme biçimine göre ayırt edebilirsin." },
-      { id: "h3", text: "DoS ve DDoS saldırılarını volumetrik, protokol (SYN flood) ve uygulama katmanı olarak sınıflandırabilirsin." }
+      { id: "h3", text: "DoS ve DDoS saldırılarını volumetrik, protokol (SYN flood) ve uygulama katmanı olarak sınıflandırabilirsin." },
+      { id: "h4", text: "Protokol düşürme ve kullanıcı numaralandırma saldırılarını tanıyıp uygun savunmayı seçebilirsin." }
     ],
     summary: [
       "ARP spoofing yerel ağda sahte ARP cevabıyla trafiği çeker; savunması DAI'dir (DHCP snooping ile birlikte).",
@@ -226,7 +238,9 @@
       { id: "17f6c82d", q: "Rogue DHCP sunucusuna karşı switch'te hangi özellik kullanılır?", options: ["DHCP snooping", "STP", "NAT", "PoE"], obj: "h1" },
       { id: "0ee14842", q: "SYN flood hangi tür saldırıdır?", options: ["Protokol tabanlı DoS", "Parola saldırısı", "Sosyal mühendislik", "MITM"], obj: "h3" },
       { id: "267eaadb", q: "Başka bir sitedeki sızıntıdan alınan gerçek kullanıcı adı/parola çiftlerini hedef sitede denemek hangisidir?", options: ["Brute force", "Password spraying", "Credential stuffing", "Replay"], obj: "h2" },
-      { id: "5f2cb041", q: "Sahte DNS cevaplarına karşı kayıtların dijital imzayla doğrulanmasını sağlayan önlem hangisidir?", options: ["DAI", "DHCP snooping", "Port security", "DNSSEC"], obj: "h1" }
+      { id: "5f2cb041", q: "Sahte DNS cevaplarına karşı kayıtların dijital imzayla doğrulanmasını sağlayan önlem hangisidir?", options: ["DAI", "DHCP snooping", "Port security", "DNSSEC"], obj: "h1" },
+      { id: "d357c829", q: "Saldırgan, istemci ile sunucu arasındaki el sıkışmaya karışıp TLS 1.3 yerine eski ve açığı bilinen bir sürümün kullanılmasını sağlıyor. Bu saldırı hangisidir?", options: ["Replay saldırısı", "Protokol düşürme (downgrade) saldırısı", "DNS önbellek zehirlenmesi", "Parola püskürtme"], obj: "h4" },
+      { id: "226f0b2a", q: "Bir giriş sayfası yanlış kullanıcı adında 'Böyle bir kullanıcı yok', doğru kullanıcı adı ama yanlış parolada 'Parola hatalı' diyor. Saldırgan bu farktan ne öğrenir ve en iyi düzeltme nedir?", options: ["Parolanın uzunluğunu; hata mesajını daha ayrıntılı yapmak", "Oturum belirtecini; çerezi HttpOnly yapmak", "Sunucunun yazılım sürümünü; banner'ı gizlemek", "Hangi hesapların var olduğunu; iki durumda da aynı genel hata mesajını göstermek"], obj: "h4" }
     ],
     interview: [
       { q: "DDoS saldırısına karşı ne yaparsın?", a: "Trafiği ve türünü hızla analiz ederim, CDN ya da DDoS koruma servisine yönlendiririm, hız sınırlama ve filtre uygularım ve ISP ile iletişime geçerim. Önceden de kapasite ve olay planı hazır olmalıdır." },
@@ -249,7 +263,7 @@
   /* 10 ──────────────────────────────────────────── Uygulama saldırıları */
   L[10] = {
     hook: "Uygulama saldırılarında saldırgan formdaki bir kutuyu bile komut girişine çevirebilir. Kök neden: girdiye körü körüne güvenmek.",
-    homework: "OWASP Top 10 listesine bak ve her maddeyi tek cümleyle kendi kelimelerinle yaz. En çok merak ettiğin ikisini seç.",
+    homework: "OWASP Top 10 (2025 sürümü) listesine bak ve her maddeyi tek cümleyle kendi kelimelerinle yaz. En çok merak ettiğin ikisini seç.",
     warmup: {
       recap: [{ point: "Kullanıcıdan gelen veriye güvenilmez.", example: "Form alanı, URL parametresi" }],
       concepts: [
@@ -278,12 +292,18 @@
         "WAF (web uygulaması güvenlik duvarı) ek katman olur, asıl çözümün yerine geçmez.",
         "Sır (parola, anahtar) kodda tutulmaz."
       ] },
-      { t: "warn", h: "Tuzak", text: "WAF, hatalı kodu düzeltmez. Asıl çözüm kodda; WAF geçici ve ek bir korumadır." }
+      { t: "warn", h: "Tuzak", text: "WAF, hatalı kodu düzeltmez. Asıl çözüm kodda; WAF geçici ve ek bir korumadır." },
+      { t: "steps", h: "OWASP Top 10 (2025 sürümü)", items: [
+        "2025 listesi: A01 Bozuk erişim denetimi, A02 Güvenlik yanlış yapılandırması, A03 Yazılım tedarik zinciri hataları, A04 Kriptografik hatalar, A05 Enjeksiyon, A06 Güvensiz tasarım, A07 Kimlik doğrulama hataları, A08 Yazılım ve veri bütünlüğü hataları, A09 Güvenlik günlüğü ve uyarı hataları, A10 İstisnai durumların yanlış ele alınması.",
+        "2021'e göre değişenler: SSRF ayrı madde olmaktan çıkıp bozuk erişim denetimine katıldı; 'Savunmasız ve eski bileşenler' yerini daha geniş kapsamlı 'Yazılım tedarik zinciri hataları'na bıraktı; 'İstisnai durumların yanlış ele alınması' yeni eklendi.",
+        "İstisnai durumların yanlış ele alınması: hata anında uygulamanın yığın izi, sorgu ya da bağlantı dizesi göstermesi, hatayı yutması veya güvensiz varsayılana düşmesi. Savunma: genel kullanıcı mesajı, ayrıntıyı yalnızca günlüğe yazmak, hata durumunda güvenli (kapalı) davranmak."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "SQL injection girdisini tanıyıp en etkili savunmanın parametreli sorgu olduğunu seçebilirsin." },
       { id: "h2", text: "XSS, CSRF ve SSRF saldırılarını nerede ve kimin adına çalıştıklarına göre ayırt edebilirsin." },
-      { id: "h3", text: "../../ içeren bir girdiyi path traversal olarak tanıyabilirsin." }
+      { id: "h3", text: "../../ içeren bir girdiyi path traversal olarak tanıyabilirsin." },
+      { id: "h4", text: "OWASP Top 10 (2025) listesinin başlıca maddelerini ve istisnai durumların yanlış ele alınmasını (güvensiz hata yönetimi) tanıyabilirsin." }
     ],
     summary: [
       "Enjeksiyon saldırılarının ortak kökü, kullanıcı verisinin komut ya da sorgu olarak çalışmasıdır; diğer saldırılar da girdiye ya da oturuma körü körüne güvenmekten doğar.",
@@ -297,7 +317,8 @@
       { id: "2b28ad34", q: "Başka kullanıcıların tarayıcısında çalışan zararlı JavaScript hangi saldırıdır?", options: ["XSS", "CSRF", "SSRF", "Buffer overflow"], obj: "h2" },
       { id: "6b110126", q: "Kullanıcının açık oturumunu kullanarak istemeden işlem yaptırma hangisidir?", options: ["CSRF", "XSS", "Path traversal", "Replay"], obj: "h2" },
       { id: "547c8f31", q: "../../etc/passwd gibi bir girdi hangi saldırıya işaret eder?", options: ["Path traversal", "SQL injection", "XSS", "DDoS"], obj: "h3" },
-      { id: "f55a350d", q: "Saldırgan bir web uygulamasını, dışarıdan erişilemeyen iç ağdaki bir yönetim servisine istek göndermeye zorluyor. Bu hangisidir?", options: ["XSS", "CSRF", "SSRF", "Buffer overflow"], obj: "h2" }
+      { id: "f55a350d", q: "Saldırgan bir web uygulamasını, dışarıdan erişilemeyen iç ağdaki bir yönetim servisine istek göndermeye zorluyor. Bu hangisidir?", options: ["XSS", "CSRF", "SSRF", "Buffer overflow"], obj: "h2" },
+      { id: "18c2a7d4", q: "Bir web uygulaması beklenmedik bir hata oluşunca kullanıcıya tam yığın izini ve veritabanı bağlantı dizesini gösteriyor. Bu, hangi zafiyet türünün örneğidir?", options: ["İstisnai durumların güvensiz ele alınması (hata yönetimi hatası)", "SQL enjeksiyonu", "Çapraz site istek sahteciliği (CSRF)", "Dizin gezinme (path traversal)"], obj: "h4" }
     ],
     interview: [
       { q: "SQL injection nedir, nasıl önlenir?", a: "Kullanıcı girdisinin SQL sorgusuna komut olarak karışmasıdır. Parametreli sorgularla, girdi doğrulamayla ve veritabanı hesabına en az yetki vererek önlenir." },
@@ -349,11 +370,16 @@
         "Sızma testi: açığı gerçekten sömürmeyi dener; izin ve kapsam şarttır."
       ] },
       { t: "box", h: "Öncelik nasıl verilir?", text: "Yalnızca CVSS'e değil: sömürü internette var mı, varlık dışa açık mı, hangi veri var, telafi edici kontrol var mı sorularına bak. İnternete açık kritik sistemdeki yüksek puanlı açık, iç ağdaki test makinesinden önce kapanır." },
-      { t: "warn", h: "Tuzak", text: "Zafiyet taraması ile sızma testi aynı şey değildir. Tarama bulur ve listeler; sızma testi insanla bulguları zincirleyip gerçek etkiyi gösterir. Yanlış pozitifleri (false positive) tarama sonrası doğrulaman gerekir." }
+      { t: "warn", h: "Tuzak", text: "Zafiyet taraması ile sızma testi aynı şey değildir. Tarama bulur ve listeler; sızma testi insanla bulguları zincirleyip gerçek etkiyi gösterir. Yanlış pozitifleri (false positive) tarama sonrası doğrulaman gerekir." },
+      { t: "steps", h: "Zafiyet kimlikleri: CVE, CWE, CVSS", items: [
+        "CVE: belirli bir üründeki belirli bir zafiyetin benzersiz numarasıdır (ör. CVE-yıl-sayı biçimi).",
+        "CWE: zafiyetin arkasındaki zayıflık türlerinin listesidir (ör. bellek taşması, enjeksiyon, hardcoded kimlik bilgisi); tek bir ürünü değil hata sınıfını anlatır.",
+        "CVSS: zafiyetin ciddiyetini 0-10 arasında puanlar. Kısa ezber: CWE 'hata türü', CVE 'bu üründeki o hata', CVSS 'ne kadar ciddi'."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "Bir senaryodaki zafiyeti türüne (zero-day, yapılandırma hatası, end-of-life, tedarik zinciri) göre sınıflandırabilirsin." },
-      { id: "h2", text: "CVE, CVSS, zafiyet taraması ve sızma testinin rollerini ayırt edebilirsin." },
+      { id: "h2", text: "CVE, CWE, CVSS, zafiyet taraması ve sızma testinin rollerini ayırt edebilirsin." },
       { id: "h3", text: "İki bulgudan hangisinin önce kapatılacağını CVSS, sömürü durumu ve varlığın dışa açıklığına bakarak seçebilirsin." }
     ],
     summary: [
@@ -370,7 +396,8 @@
       { id: "a4c19945", q: "Tarayıcının bulduğu ama gerçekte olmayan bir bulguya ne denir?", options: ["False positive", "False negative", "Zero-day", "Exploit"], obj: "h2" },
       { id: "791744bd", q: "Üreticisi desteğini bitirdiği için artık hiç yama yayımlamayan bir işletim sistemi hangi zafiyet türüne örnektir?", options: ["End-of-life sistem", "Zero-day", "Yanlış pozitif", "Sızma testi"], obj: "h1" },
       { id: "4774f970", q: "İki bulgu var: (A) iç ağdaki test makinesinde CVSS 9.8 ama bilinen sömürü yok; (B) internete açık müşteri portalında CVSS 7.5 ve internette çalışan sömürü kodu mevcut. Hangisi önce kapatılmalıdır?", options: ["B: dışa açık ve sömürüsü hazır", "A: çünkü puanı daha yüksek", "İkisi de aynı anda, sıra önemsiz", "Hangisinin yaması daha kolaysa o"], obj: "h3" },
-      { id: "569f6a37", q: "Bir kurumun, kapsamı ve izni yazılı belirlenmiş şekilde yetkili bir uzmandan bulunan açıkları gerçekten sömürüp gerçek etkiyi göstermesini istemesi hangisidir?", options: ["Sızma testi","Zafiyet taraması","CVE araması","CVSS puanlaması"], obj: "h2" }
+      { id: "569f6a37", q: "Bir kurumun, kapsamı ve izni yazılı belirlenmiş şekilde yetkili bir uzmandan bulunan açıkları gerçekten sömürüp gerçek etkiyi göstermesini istemesi hangisidir?", options: ["Sızma testi","Zafiyet taraması","CVE araması","CVSS puanlaması"], obj: "h2" },
+      { id: "e236653f", q: "Güvenlik ekibi, farklı ürünlerdeki birçok açığın aynı kök hata türünden (ör. girdi doğrulamasının eksikliği) kaynaklandığını raporlamak istiyor. Hata türlerini sınıflandıran liste hangisidir?", options: ["CVE", "CVSS", "CISA KEV", "CWE"], obj: "h2" }
     ],
     interview: [
       { q: "Zafiyet taraması ile sızma testi arasındaki fark nedir?", a: "Zafiyet taraması otomatik araçla bilinen açıkları listeler. Sızma testi yetkiyle açıkları gerçekten sömürmeyi dener, etkiyi gösterir ve bulguları zincirler. İkisi de kapsam ve izinle yapılır." },
