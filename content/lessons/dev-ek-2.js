@@ -88,6 +88,6 @@
       K("HCP Terraform belgeleri", "https://developer.hashicorp.com/terraform/cloud-docs", "Workspace, proje ve ekip özelliklerinin resmî belgesi.")
     ],
     telafi: "Takıldıysan önce şunu sor: bu değer girdi mi, çıktı mı, yoksa state'te mi duruyor? Sonra plan'ı oku; plan okunmadan apply etme.",
-    sonraki: "DevOps yolunun son konusunu tamamladın. Şimdi yerel bir proje seçip derle, test et, paketle, Kubernetes'e yerel olarak dağıt ve izle; öğrendiklerini uçtan uca birleştir."
+    sonraki: "Sıradaki konu: Monolitten mikroservise. Terraform'dan sonra Kubernetes tarafını LFS158 ve KCNA sırasıyla derinleştireceksin; mikroservis mimarisiyle başlayacaksın."
   };
 })();
