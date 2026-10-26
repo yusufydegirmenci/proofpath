@@ -138,6 +138,41 @@ function lessonQuiz(l){
     h("div",{class:"qz-list"},items),
     done===qs.length?qzResult(l,ok,qs.length):null);
 }
+/* Faz 21: bölüm sonu "bilgi testi" — ders sınavından AYRI hafif katman. Soru metni PP_BILGI'de (anahtar yok); her şık seçilince sunucudan anlık geri bildirim gelir
+   (PP.ogr.sunucu.bilgi). Puan, deneme ya da ustalık kaydı YOK; "Yeniden çöz" sınırsız. Bölümün son dersinin Notlar adımında görünür. */
+function bilgiBolum(l){
+  var m=/^s-([a-z]+)-(\d+)$/.exec(l&&l.topicId||""),B=window.PP_BILGI&&m?window.PP_BILGI[m[1]]:null;if(!B)return null;
+  for(var n in B){var d=B[n].dersler;if(d&&d[1]===+m[2])return {hedef:"bolum:"+m[1]+":"+n+":bilgi",b:B[n],n:n}}
+  return null;
+}
+function bilgiDurum(hedef){var L=S.les;L.bilgi=L.bilgi||{};return L.bilgi[hedef]||(L.bilgi[hedef]={sec:{},sonuc:{},bekle:{}})}
+function bilgiSec(bo,q,j){
+  var d=bilgiDurum(bo.hedef);if(d.sonuc[q.id]||d.bekle[q.id])return;
+  d.sec[q.id]=j;d.bekle[q.id]=true;draw();
+  PP.ogr.sunucu.bilgi(bo.hedef,q.id,q.options[j]).then(function(r){d.bekle[q.id]=false;if(r.ok){d.sonuc[q.id]=r;d.hata=null}else d.hata=r.mesaj,delete d.sec[q.id];draw()},function(){d.bekle[q.id]=false;delete d.sec[q.id];d.hata=PP.ogr.sunucu.MESAJ.hata;draw()});
+}
+function lessonBilgi(l){
+  var bo=bilgiBolum(l);if(!bo||!Array.isArray(bo.b.sorular)||!bo.b.sorular.length)return null;
+  var d=bilgiDurum(bo.hedef),qs=bo.b.sorular,say=0,dogru=0;
+  var items=qs.map(function(q,i){
+    var r=d.sonuc[q.id],pk=d.sec[q.id];if(r){say++;if(r.dogruMu)dogru++}
+    var card=h("div",{class:"qz"+(r?(r.dogruMu?" ok":" no"):""),"data-bilgi-soru":q.id},
+      h("div",{class:"qz-h"},h("span",{class:"qz-n"},String(i+1)),h("span",{class:"qz-q"},q.q),r?h("span",{class:"qz-b "+(r.dogruMu?"ok":"no")},r.dogruMu?"Doğru":"Yanlış"):null));
+    card.append(h("div",{class:"qz-os"},q.options.map(function(o,j){
+      var cls="qz-o";if(r){if(o===r.dogru)cls+=" ok";else if(j===pk)cls+=" no";else cls+=" dim"}
+      return h("button",{type:"button",class:cls,disabled:!!(r||d.bekle[q.id]),"aria-pressed":pk===j?"true":"false",onclick:function(){bilgiSec(bo,q,j)}},h("b",null,String.fromCharCode(65+j)),h("span",null,o),
+        r&&o===r.dogru?h("i",{"aria-hidden":"true"},"✓"):(r&&j===pk&&!r.dogruMu?h("i",{"aria-hidden":"true"},"✗"):null))})));
+    if(r){var wn=!r.dogruMu&&r.whyNot&&pk!=null?r.whyNot[q.options[pk]]:null;
+      card.append(h("div",{class:"qz-fb "+(r.dogruMu?"ok":"no")},h("b",null,r.dogruMu?"Doğru! ":"Doğrusu: "+r.dogru+". "),r.why||"",
+        wn?h("div",{class:"small",style:"margin-top:6px"},h("b",null,"Seçtiğin cevap neden olmadı: "),wn):null))}
+    return card});
+  return h("div",{class:"panel","data-bilgi-testi":bo.hedef},h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:center"},h("h2",null,"Bölüm sonu bilgi testi"),
+      h("span",{class:"pill"},say?dogru+"/"+say+" doğru":qs.length+" soru")),
+    h("div",{class:"small mute"},(bo.b.baslik?bo.b.baslik+". ":"")+"Puansız ve ilerlemeni etkilemez; her şıkta anında geri bildirim alırsın, istediğin kadar yeniden çözebilirsin. Hesapsızken ya da çevrimdışıyken çalışmaz."),
+    d.hata?h("div",{class:"lbox warn",role:"status","data-bilgi-hata":"1"},h("p",{style:"margin:0"},d.hata)):null,
+    h("div",{class:"qz-list"},items),
+    say?h("button",{class:"btn ghost",type:"button",style:"margin-top:8px","data-bilgi-yenile":"1",onclick:function(){delete S.les.bilgi[bo.hedef];draw()}},"Yeniden çöz"):null);
+}
 /* Faz 4: mini sınav %80 kapısı (PP.ogr.kapi.miniSinav), başarısızlıkta telafi önerisi ve yeniden deneme */
 /* Soru için doğru cevap/açıklama: eski (istemci) sorularda answer/why; sunucuya bağlı derslerde GEÇİLİNCE yerelde saklanan sunucu açıklaması, yoksa boş */
 function qzAnahtar(l,q){
@@ -266,6 +301,7 @@ function renderLessonRoom(){
       miss.length?h("div",{class:"lr-miss"},h("div",{class:"label",style:"color:var(--bad)"},"Kaçırdıkların (tekrar listende)"),miss.map(function(q){var kz=qzAnahtar(l,q);return h("div",{class:"qz-fb no"},h("b",null,q.q),h("div",null,"Doğru: "+kz.dogru),kz.why?h("div",{class:"small"},kz.why):null)})):(qsx.length?h("div",{class:"qz-sum all"},h("b",null,"✓"),h("span",null,"Kaçırdığın soru yok.")):null)));
     body.push(h("div",{class:"nb"},h("i",{class:"nb-tape"}),ntPageEl({id:"l:"+l.id,grp:"Ders notları",title:l.title||"Ders",kind:"l",d:l})));
     var sn=typeof lrSenaryo==="function"?lrSenaryo(l):null;if(sn)sn.forEach(function(x){body.push(x)});
+    var bg=lessonBilgi(l);if(bg)body.push(bg);
     var dd=lcDone(k);
     body.push(h("div",{class:"panel"},dd?h("div",{class:"qz-sum all"},h("b","✓"),h("span",null,"Ders tamamlandı. Sıradaki konu açıldı.")):h("div",{class:"small mute"},"Eksik adımlar: "+LR_STEPS.slice(0,4).filter(function(x){return !lrDone(l,x[0])}).map(function(x){return x[1]}).join(", ")),
       h("div",{class:"row",style:"margin-top:8px"},h("button",{class:"btn big",type:"button",onclick:lrClose},"Derslere dön"),(typeof lrAlistir==="function"?lrAlistir(l,function(){lrSet(l,"alis")}):null),
