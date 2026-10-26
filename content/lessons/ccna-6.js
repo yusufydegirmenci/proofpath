@@ -380,7 +380,7 @@
         t: "steps",
         h: "Bantlar ve standartlar",
         items: [
-          "2.4 GHz: menzili uzun, duvar geçişi iyi, kanal sayısı az ve kalabalık; çakışmayan kanallar 1, 6 ve 11'dir (ABD kanal planında). Mikrodalga ve Bluetooth gibi cihazlar da parazit yapar.",
+          "2.4 GHz: menzili uzun, duvar geçişi iyi, kanal sayısı az ve kalabalık; çakışmayan kanallar 1, 6 ve 11'dir (ABD kanal planında; kanal kümesi bölgeye göre değişir). Mikrodalga ve Bluetooth gibi cihazlar da parazit yapar.",
           "5 GHz: daha çok kanal, daha az parazit ve yüksek hız; menzil kısa, duvar geçişi daha zayıftır.",
           "6 GHz (Wi-Fi 6E ve sonrası): daha da geniş temiz kanallar; menzil kısa ve cihaz desteği gerekir.",
           "802.11n (Wi-Fi 4) 2.4 ve 5 GHz'de, 802.11ac (Wi-Fi 5) yalnız 5 GHz'de, 802.11ax (Wi-Fi 6) 2.4 ve 5 GHz'de (6E ile 6 GHz'de) çalışır.",
@@ -551,7 +551,7 @@
       {
         t: "box",
         h: "Ping çıktısını oku",
-        text: "Cisco ping'de '!' yanıt geldi, '.' zaman aşımı, 'U' hedefe ulaşılamadı demektir. Windows'ta 'Request timed out' yanıt gelmedi, 'Destination host unreachable' yol bulunamadı anlamına gelir. Hiçbir ping cevabı, güvenlik duvarının ICMP'yi bilerek engellemediğini kanıtlamaz."
+        text: "Cisco ping'de '!' yanıt geldi, '.' zaman aşımı, 'U' hedefe ulaşılamadı demektir. Windows'ta 'Request timed out' yanıt gelmedi, 'Destination host unreachable' yol bulunamadı anlamına gelir. Cevapsız bir ping tek başına arıza kanıtı değildir; güvenlik duvarı ICMP'yi bilerek engelliyor olabilir."
       },
       {
         t: "warn",
