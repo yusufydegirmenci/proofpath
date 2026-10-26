@@ -63,7 +63,7 @@
       { id: "b2ee29d8", q: "DHCP'nin 4 adımı hangi sırayla ilerler?", options: ["Discover, Offer, Request, Acknowledge", "Request, Offer, Discover, Acknowledge", "Offer, Discover, Acknowledge, Request", "Discover, Request, Offer, Acknowledge"], obj: "h1" },
       { id: "d4979ae3", q: "ping 8.8.8.8 çalışıyor ama ping google.com çalışmıyor. Sorun nerede?", options: ["DHCP", "DNS", "Kablo", "Switch portu"], obj: "h2" },
       { id: "dcd4b49e", q: "DNS'de alan adını IPv4 adresine çeviren kayıt türü hangisidir?", options: ["MX", "CNAME", "A", "PTR"], obj: "h3" },
-      { id: "3e0b786c", q: "DHCP sunucusu farklı bir ağdaysa router'a hangi komut eklenir?", options: ["ip helper-address", "ip dhcp pool", "ip route", "ip nat inside"], obj: "h4" },
+      { id: "3e0b786c", q: "DHCP sunucusu farklı bir ağdaysa router'a hangi komut eklenir?", options: ["ip helper-address", "ip dhcp pool ile havuz tanımlamak", "ip route ile istekleri uzak ağa yönlendirmek", "ip nat inside"], obj: "h4" },
       { id: "49c581b9", q: "Bir bilgisayarın IP'sini bırakıp yenisini istemek için hangi komutlar kullanılır?", options: ["ipconfig /release ve /renew", "ping ve tracert", "arp -a ve nslookup", "netstat ve route"], obj: "h4" }
     ],
     interview: [
@@ -140,7 +140,7 @@
       "PAT'ta arayüzler ip nat inside/outside ile işaretlenir, ACL çevrilecek ağı seçer, 'overload' eklenir ve show ip nat translations ile doğrulanır."
     ],
     quiz: [
-      { id: "2f0509b9", q: "Birçok iç cihazı tek bir genel IP ile internete çıkaran NAT türü hangisidir?", options: ["Static NAT", "Dynamic NAT", "PAT (overload)", "Reverse NAT"], obj: "h1" },
+      { id: "2f0509b9", q: "Birçok iç cihazı tek bir genel IP ile internete çıkaran NAT türü hangisidir?", options: ["Static NAT, adresleri bire bir eşleyen tür", "Dynamic NAT, adresleri havuzdan eşleyen tür", "PAT (overload)", "Reverse NAT"], obj: "h1" },
       { id: "8751b468", q: "İç ağdaki bir sunucunun dışarıdan erişilebilmesi için hangi NAT uygun olur?", options: ["Static NAT", "PAT ile rastgele port", "Hiçbiri", "DHCP"], obj: "h1" },
       { id: "cd9cdbc8", q: "'Inside global' adres nedir?", options: ["İç cihazın internette görünen adresi", "İç cihazın gerçek özel adresi", "Hedef sunucunun adresi", "Gateway adresi"], obj: "h2" },
       { id: "ff53ad59", q: "192.168.10.5 adresli iç cihaz internete 203.0.113.5 adresiyle çıkıyor. 203.0.113.5 hangi adrestir?", options: ["Inside local", "Inside global", "Outside local", "Outside global"], obj: "h2" },
@@ -321,7 +321,7 @@
       { id: "adab419b", q: "OSPF'in administrative distance değeri kaçtır?", options: ["1", "90", "110", "120"], obj: "h1" },
       { id: "a26dad6b", q: "Tüm OSPF alanlarının bağlanması gereken omurga alanı hangisidir?", options: ["Area 1", "Area 0", "Area 100", "Area 255"], obj: "h2" },
       { id: "ffeb29f2", q: "OSPF komşuluğunun tamamlanmış hali hangi durumdur?", options: ["Init", "2-Way", "Full", "Down"], obj: "h3" },
-      { id: "e148b700", q: "OSPF komşularını gösteren komut hangisidir?", options: ["show ip ospf neighbor", "show ip route", "show ospf peers", "show interfaces"], obj: "h3" },
+      { id: "e148b700", q: "OSPF komşularını gösteren komut hangisidir?", options: ["show ip ospf neighbor", "show ip route", "show ospf peers ile komşu listesi", "show interfaces ile arayüz hat durumu"], obj: "h3" },
       { id: "2a9de062", q: "Router ID elle verilmezse neye göre seçilir?", options: ["En yüksek loopback IP, yoksa en yüksek aktif arayüz IP", "En küçük MAC adresi", "Rastgele", "Hostname"], obj: "h4" },
       { id: "6333a3db", q: "Ethernet gibi çok erişimli bir bağlantıda OSPF router'ları hello paketlerini hangi çoklu yayın adresine gönderir?", options: ["224.0.0.5", "224.0.0.6", "224.0.0.9", "224.0.0.10"], obj: "h3" },
       { id: "66f84e5a", q: "DR ya da BDR olmayan bir OSPF router'ı, link durumu güncellemesini DR'ye iletmek için hangi adrese gönderir?", options: ["224.0.0.5", "224.0.0.2", "224.0.0.6", "224.0.0.9"], obj: "h3" },
@@ -419,7 +419,7 @@
       { id: "c7f26b54", q: "2.4 GHz bandında çakışmayan kanallar hangileridir?", options: ["1, 6, 11", "1, 2, 3", "2, 4, 6", "5, 10, 15"], obj: "h1" },
       { id: "b98dd11a", q: "Çok sayıda AP'yi merkezden yöneten cihaz hangisidir?", options: ["Switch", "WLC", "Firewall", "Modem"], obj: "h3" },
       { id: "467dc618", q: "Hangi güvenlik standardı en güçlü ve günceldir?", options: ["WEP", "WPA", "WPA2", "WPA3"], obj: "h4" },
-      { id: "3dfc2422", q: "5 GHz hakkında hangisi doğrudur?", options: ["Menzili 2.4 GHz'den uzundur", "Daha hızlı ama menzili kısadır", "Sadece 802.11b kullanır", "Duvardan en iyi geçen banttır"], obj: "h2" },
+      { id: "3dfc2422", q: "5 GHz hakkında hangisi doğrudur?", options: ["Menzili 2.4 GHz'den uzundur, bu yüzden geniş alanda tercih edilir", "Daha hızlı ama menzili kısadır", "Sadece 802.11b kullanır", "Duvardan en iyi geçen banttır, kalın duvarlarda bile sinyal kaybetmez"], obj: "h2" },
       { id: "b17b03d4", q: "SSID nedir?", options: ["AP'nin MAC adresi", "Kablosuz ağın adı", "Şifreleme türü", "Kanal numarası"], obj: "h3" },
       { id: "06556373", q: "Aşağıdaki kablosuz güvenlik seçeneklerinden hangisi en az güvenli kabul edilir?", options: ["WPA2-Personal (AES)", "WPA3-Personal (SAE)", "WEP", "WPA2-Enterprise (802.1X)"], obj: "h4" },
       { id: "f3358eb3", q: "WEP'in pratikte kırılabilir olmasının temel nedeni hangisidir?", options: ["RC4'ü kısa (24 bit) ve tekrar eden bir başlatma vektörüyle (IV) kullanması", "802.1X sunucusu gerektirmesi", "AES-CCMP şifrelemesinin eski olması", "SAE el sıkışmasının çevrimdışı sözlük saldırısına açık olması"], obj: "h4" }

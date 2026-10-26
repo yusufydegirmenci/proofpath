@@ -61,7 +61,7 @@
       { id: "33727e26", q: "IDS ile IPS arasındaki fark nedir?", options: ["IDS alarm verir, IPS engeller", "IDS engeller, IPS alarm verir", "İkisi de aynıdır", "IDS sadece loglar tutar"], obj: "h3" },
       { id: "11b38266", q: "Web uygulamasını SQL injection ve XSS isteklerine karşı filtreleyen çözüm hangisidir?", options: ["WAF", "NAC", "VPN", "DHCP"], obj: "h3" },
       { id: "6c05c2df", q: "Kurallar sırayla şöyledir: (1) İzin ver, any → 10.0.5.20, TCP 443; (2) Engelle, any → any, her protokol. 10.0.5.20 adresine gelen bir TCP 22 paketine ne olur?", options: ["Engellenir: 1. kural eşleşmez, 2. kural eşleşip engeller", "İzin verilir: hedef adresi 1. kuralla eşleşiyor", "İzin verilir: kurallar toplu değerlendirilir", "Rastgele bir kural uygulanır"], obj: "h2" },
-      { id: "e2cd2f7e", q: "Her paketi bağlantı geçmişini bilmeden tek tek kurala göre değerlendiren, bu yüzden dönüş trafiği için ayrı kural isteyen güvenlik duvarı türü hangisidir?", options: ["Stateless paket filtresi", "Stateful", "NGFW", "Uygulama katmanı proxy"], obj: "h1" }
+      { id: "e2cd2f7e", q: "Her paketi bağlantı geçmişini bilmeden tek tek kurala göre değerlendiren, bu yüzden dönüş trafiği için ayrı kural isteyen güvenlik duvarı türü hangisidir?", options: ["Stateless paket filtresi", "Stateful güvenlik duvarı (bağlantı izleyen)", "NGFW (yeni nesil güvenlik duvarı)", "Uygulama katmanı proxy"], obj: "h1" }
     ],
     interview: [
       { q: "Güvenlik duvarında en az yetki nasıl uygulanır?", a: "Varsayılan olarak her şeyi engeller, yalnızca gerekli kaynak, hedef, protokol ve port için izin kuralı yazarım. Kuralları belgeler ve düzenli gözden geçiririm." },
@@ -127,10 +127,10 @@
     ],
     quiz: [
       { id: "d0f66afd", q: "İki ofisin ağlarını birbirine bağlayan VPN türü hangisidir?", options: ["Site-to-site", "Remote access", "Split tunnel", "Proxy"], obj: "h1" },
-      { id: "c3f3a8ec", q: "Yalnızca şirket trafiğini VPN'den geçiren, kalan trafiği doğrudan internetten çıkaran yapı hangisidir?", options: ["Split tunnel", "Full tunnel", "Air gap", "DMZ"], obj: "h2" },
+      { id: "c3f3a8ec", q: "Yalnızca şirket trafiğini VPN'den geçiren, kalan trafiği doğrudan internetten çıkaran yapı hangisidir?", options: ["Split tunnel", "Full tunnel (tüm trafik tünelde)", "Air gap (ağdan tam kopukluk)", "DMZ"], obj: "h2" },
       { id: "98d278b4", q: "IPsec'te hem şifreleme hem bütünlük sağlayan bileşen hangisidir?", options: ["ESP", "AH", "DNS", "NAT"], obj: "h3" },
       { id: "324e98e2", q: "VPN güvenliği için zorunlu tutulması en doğru olan hangisidir?", options: ["MFA", "Parolayı e-postayla göndermek", "Eski protokol", "Herkese yönetici hakkı"], obj: "h4" },
-      { id: "ee57b204", q: "Evden çalışan tek bir çalışanın kendi bilgisayarından şirket ağına güvenli bağlanması için hangi VPN türü kullanılır?", options: ["Remote access VPN", "Site-to-site VPN", "Air gap", "Honeypot"], obj: "h1" },
+      { id: "ee57b204", q: "Evden çalışan tek bir çalışanın kendi bilgisayarından şirket ağına güvenli bağlanması için hangi VPN türü kullanılır?", options: ["Remote access VPN", "Site-to-site VPN (iki ofis arası)", "Air gap", "Honeypot (saldırgan tuzağı)"], obj: "h1" },
       { id: "9070c30d", q: "Güvenlik ekibi tüm çalışan trafiğinin şirket güvenlik duvarından geçip izlenmesini istiyor. Hangi yapı kurulmalıdır?", options: ["Full tunnel", "Split tunnel", "Always-on VPN", "Site-to-site VPN"], obj: "h2" },
       { id: "a25216a6", q: "IPsec'te tüm IP paketini yeni bir IP başlığıyla saran ve site-to-site VPN'de kullanılan mod hangisidir?", options: ["Tunnel modu", "Transport modu", "AH", "IKE"], obj: "h3" }
     ],
@@ -206,10 +206,10 @@
       "Bulut güvenliğinin temelleri MFA, en az yetki, kök hesabı kullanmama, beklerken ve aktarılırken şifreleme ile loglamadır."
     ],
     quiz: [
-      { id: "9a309b0c", q: "SaaS modelinde müşterinin hâlâ sorumlu olduğu şey hangisidir?", options: ["Veri ve kullanıcı erişimi", "Fiziksel veri merkezi", "Hypervisor yaması", "Ağ kabloları"], obj: "h1" },
+      { id: "9a309b0c", q: "SaaS modelinde müşterinin hâlâ sorumlu olduğu şey hangisidir?", options: ["Veri ve kullanıcı erişimi", "Fiziksel veri merkezinin güvenliği ve elektrik altyapısı", "Hypervisor yaması ve sanallaştırma katmanı güncellemeleri", "Ağ kabloları"], obj: "h1" },
       { id: "545a1cdd", q: "IaaS'ta sanal makinenin işletim sistemi yamasından kim sorumludur?", options: ["Müşteri", "Bulut sağlayıcısı", "ISP", "Kimse"], obj: "h1" },
       { id: "d334366d", q: "Kontrolsüz şekilde çoğalan, yamalanmayan sanal makineler hangi riskin örneğidir?", options: ["VM sprawl", "VM escape", "Rogue DHCP", "Tailgating"], obj: "h3" },
-      { id: "e10d6b64", q: "Bulut ortamında en yaygın veri sızıntısı nedeni hangisidir?", options: ["Yanlış yapılandırma", "Zero-day", "Fiziksel hırsızlık", "DDoS"], obj: "h2" },
+      { id: "e10d6b64", q: "Bulut ortamında en yaygın veri sızıntısı nedeni hangisidir?", options: ["Yanlış yapılandırma", "Zero-day (yamasız bilinmeyen açık)", "Fiziksel hırsızlık", "DDoS (dağıtık hizmet engelleme)"], obj: "h2" },
       { id: "7441b330", q: "PaaS modelinde müşterinin yönetmeye devam ettiği şey hangisidir?", options: ["Uygulama ve veri", "İşletim sistemi yaması ve hypervisor", "Fiziksel veri merkezi güvenliği", "Ağ donanımı ve sunucu rafları"], obj: "h1" },
       { id: "26b3197a", q: "Bir geliştirici veritabanı yedeğini herkese açık bulut depolama kovasına koydu. İlk önlem hangisi olmalıdır?", options: ["Kovada herkese açık erişimi kapatıp erişimi en az yetkiyle sınırlamak", "Hypervisor'u yamalamak", "Sanal makine sayısını azaltmak", "Sağlayıcıdan veri merkezini yeniden kurmasını istemek"], obj: "h2" },
       { id: "3c0ef1a6", q: "Bir sanal makineyi ele geçiren saldırganın hypervisor'a ve komşu sanal makinelere ulaşması hangi riskle anılır?", options: ["VM escape", "VM sprawl", "Tokenizasyon", "Split tunnel"], obj: "h3" },
@@ -291,13 +291,13 @@
       "Veri sahibi sınıfı ve erişimi belirler, veri koruyucu teknik olarak saklar ve korur."
     ],
     quiz: [
-      { id: "2fb185c9", q: "Verinin ağda taşınırken korunması hangi veri halini ifade eder?", options: ["Aktarılırken (in transit)", "Beklerken (at rest)", "Kullanımda (in use)", "Arşivde"], obj: "h1" },
-      { id: "b1762729", q: "Kredi kartı numarasını sistemde anlamsız bir jetonla değiştirmek hangisidir?", options: ["Tokenizasyon", "Hashing", "Bitirme", "Yedekleme"], obj: "h2" },
+      { id: "2fb185c9", q: "Verinin ağda taşınırken korunması hangi veri halini ifade eder?", options: ["Aktarılırken (in transit)", "Beklerken (at rest, diskte ya da veritabanında duran veri)", "Kullanımda (in use, bellekte işlenen veri)", "Arşivde"], obj: "h1" },
+      { id: "b1762729", q: "Kredi kartı numarasını sistemde anlamsız bir jetonla değiştirmek hangisidir?", options: ["Tokenizasyon", "Hashing (tek yönlü özet fonksiyonu)", "Bitirme", "Yedekleme (veriyi başka bir konuma kopyalama)"], obj: "h2" },
       { id: "75dd5f52", q: "Kurumdan çıkan e-postalarda TC kimlik numarası desenini yakalayıp engelleyen çözüm hangisidir?", options: ["DLP", "IDS", "NAC", "VPN"], obj: "h2" },
       { id: "69bbab61", q: "Verinin önem düzeyini ve erişimini belirleyen rol hangisidir?", options: ["Veri sahibi (owner)", "Veri koruyucu (custodian)", "Kullanıcı", "Ağ yöneticisi"], obj: "h3" },
       { id: "a1835a2b", q: "Veritabanı dosyalarını diskte AES ile şifrelemek verinin hangi halini korur?", options: ["Beklerken (at rest)", "Aktarılırken (in transit)", "Kullanımda (in use)", "Hiçbirini"], obj: "h1" },
       { id: "67926482", q: "Ekranda bir kart numarasının yalnızca son dört hanesinin görünüp geri kalanının yıldız olarak gösterilmesi hangisidir?", options: ["Maskeleme", "Şifreleme", "Tokenizasyon", "Hashing"], obj: "h2" },
-      { id: "9c3a05aa", q: "Müşteri veritabanını teknik olarak saklayan, yedekleyen ve altyapısını işleten BT ekibi hangi rolü üstlenmiştir?", options: ["Veri koruyucu (custodian)", "Veri sahibi (owner)", "Son kullanıcı", "Denetçi"], obj: "h3" },
+      { id: "9c3a05aa", q: "Müşteri veritabanını teknik olarak saklayan, yedekleyen ve altyapısını işleten BT ekibi hangi rolü üstlenmiştir?", options: ["Veri koruyucu (custodian)", "Veri sahibi (owner, sınıf ve erişimi belirleyen iş yetkilisi)", "Son kullanıcı", "Denetçi (kontrollerin uygunluğunu bağımsız değerlendiren kişi)"], obj: "h3" },
       { id: "88ac5cbf", q: "Bir kurumun veri sözlüğünü tutan, alan tanımlarının ve kalite kurallarının tutarlı olmasını sağlayan kişi hangi rolü üstlenir?", options: ["Veri sahibi (data owner)", "Veri koruyucu (data custodian)", "Veri görevlisi (data steward)", "Veri işleyen (data processor)"], obj: "h3" },
       { id: "c7d21e90", q: "Bir hastane, hasta kayıtlarını araştırma ekibine vermeden önce ad ve kimlik numarası gibi doğrudan tanımlayıcıları kaldırıyor. Bu işlem hangisidir?", options: ["Kimliksizleştirme (deidentification)", "Anahtar emanet ve kurtarma (key escrow)", "Hava boşluğu ile fiziksel yalıtım", "Yasal bekletme (legal hold) kaydı"], obj: "h4" },
       { id: "e2531ed0", q: "Bir perakendeci müşteri verilerini bir bulut CRM sağlayıcısına işletiyor; sağlayıcı da e-posta gönderimi için üçüncü bir şirketten hizmet alıyor. Bu üçüncü şirketin rolü nedir?", options: ["Alt işleyen (subprocessor)", "Veri sorumlusu (controller)", "Veri öznesi", "Veri koruyucu (custodian)"], obj: "h3" }
@@ -378,11 +378,11 @@
       { id: "c0993ef4", q: "Hazır ve çalışan, en hızlı devralan yedek tesis hangisidir?", options: ["Hot site", "Cold site", "Warm site", "Air gap"], obj: "h3" },
       { id: "5e07df81", q: "RAID için hangisi doğrudur?", options: ["Yedekleme yerine geçmez", "Fidye yazılımına karşı korur", "Silinen dosyayı geri getirir", "Hepsi"], obj: "h4" },
       { id: "20b5dfdf", q: "Bir sistemin kesintiden sonra en geç 4 saat içinde tekrar çalışır hale getirilmesi gerektiği belirtiliyor. Bu hangi metriktir?", options: ["RTO", "RPO", "BIA", "Failover"], obj: "h1" },
-      { id: "7110cbc2", q: "Geri dönüşte son tam yedeğin yanı sıra o günden itibaren alınan tüm yedeklerin sırayla uygulanması gereken tür hangisidir?", options: ["Artımlı (incremental)", "Fark (differential)", "Tam (full)", "RAID"], obj: "h2" },
+      { id: "7110cbc2", q: "Geri dönüşte son tam yedeğin yanı sıra o günden itibaren alınan tüm yedeklerin sırayla uygulanması gereken tür hangisidir?", options: ["Artımlı (incremental)", "Fark (differential), son tam yedekten sonraki değişiklikler", "Tam (full), tüm verinin kopyası", "RAID"], obj: "h2" },
       { id: "80c4f2c7", q: "3-2-1 yedekleme kuralındaki '1' neyi ifade eder?", options: ["Bir kopyanın uzakta ya da çevrimdışı tutulması", "Bir yedek yazılımı kullanmak", "Bir günlük saklama süresi", "Tek bir disk kullanmak"], obj: "h4" },
       { id: "080479e4", q: "Yedek tesis seçeneklerini devralma hızı en yavaştan en hızlıya (maliyet de en düşükten en yükseğe) sıralayan seçenek hangisidir?", options: ["Cold, warm, hot","Hot, warm, cold","Warm, cold, hot","Hot, cold, warm"], obj: "h3" },
-      { id: "7924b1af", q: "Bir e-ticaret sitesi kampanya saatlerinde yavaşlıyor, geceleri ise sunucuların çoğu boşta kalıyor. Ekip sunucu sayısını yüke göre otomatik artırıp azaltmak istiyor. Hangi çözüm uygundur?", options: ["Soğuk site (cold site)", "Otomatik ölçekleme (autoscaling)", "Disk aynalama (RAID 1)", "Değişmez (immutable) yedekleme"], obj: "h3" },
-      { id: "4143bfe4", q: "Veri merkezindeki kritik bir sunucunun tek güç kaynağı arızalanınca sunucu kapandı. Bu tekil hata noktasını gidermek için sunucuya ne eklenmelidir?", options: ["Aşırı gerilim koruyucu (surge protector)", "Sıcak site (hot site)", "Yedekli güç kaynağı (redundant power supply)", "Uzak konumda yedek (off-site backup)"], obj: "h3" }
+      { id: "7924b1af", q: "Bir e-ticaret sitesi kampanya saatlerinde yavaşlıyor, geceleri ise sunucuların çoğu boşta kalıyor. Ekip sunucu sayısını yüke göre otomatik artırıp azaltmak istiyor. Hangi çözüm uygundur?", options: ["Soğuk site (cold site), felaket sonrası kurulacak boş tesis", "Otomatik ölçekleme (autoscaling)", "Disk aynalama (RAID 1) ile iki diske eşzamanlı yazma", "Değişmez (immutable) yedekleme"], obj: "h3" },
+      { id: "4143bfe4", q: "Veri merkezindeki kritik bir sunucunun tek güç kaynağı arızalanınca sunucu kapandı. Bu tekil hata noktasını gidermek için sunucuya ne eklenmelidir?", options: ["Aşırı gerilim koruyucu (surge protector) ile birlikte ek bir yalıtım trafosu", "Sıcak site (hot site)", "Yedekli güç kaynağı (redundant power supply)", "Uzak konumda yedek (off-site backup) ve düzenli geri yükleme testi"], obj: "h3" }
     ],
     interview: [
       { q: "RTO ve RPO nedir?", a: "RTO sistemin kesintiden sonra ne kadar sürede geri gelmesi gerektiğini, RPO ise en fazla ne kadar veri kaybının kabul edilebilir olduğunu belirtir. Yedekleme sıklığı ve felaket kurtarma stratejisi bunlara göre seçilir." },
@@ -462,7 +462,7 @@
       { id: "91daeb64", q: "Önceden sertleştirilmiş şablon sanal makineye ne denir?", options: ["Altın imaj (golden image)", "Honeypot", "Sandbox", "Jump server"], obj: "h2" },
       { id: "998fdebd", q: "CIS Benchmarks nedir?", options: ["Güvenli yapılandırma rehberleri", "Zafiyet puanı", "Saldırı türü", "Şifreleme algoritması"], obj: "h2" },
       { id: "adb391b7", q: "Üç ay önce sertleştirilen sunucuda, bir yöneticinin sonradan açtığı port baseline ile karşılaştırınca ortaya çıkıyor. Bu durum nasıl adlandırılır?", options: ["Yapılandırma sapması (drift)", "Altın imaj", "Honeypot", "Zero-day"], obj: "h3" },
-      { id: "ff281718", q: "Bir switch'in sertleştirilmesi için hangisi doğrudur?", options: ["Kullanılmayan portları kapatmak, Telnet yerine SSH kullanmak ve yönetimi ayrı VLAN'dan yapmak", "Varsayılan parolayı kolay hatırlansın diye korumak ve kullanılmayan portları açık bırakmak", "Tüm portları açık bırakıp yalnızca trafiği izleyerek riski yönetmeye çalışmak", "Yönetimi herkese açık kullanıcı VLAN'ından Telnet ile yapmak ve logları kapatmak"], obj: "h1" },
+      { id: "ff281718", q: "Bir switch'in sertleştirilmesi için hangisi doğrudur?", options: ["Kullanılmayan portları kapatmak, Telnet yerine SSH kullanmak ve yönetimi ayrı VLAN'dan yapmak", "Varsayılan parolayı kolay hatırlansın diye korumak, kullanılmayan portları açık bırakmak ve yönetimi tüm ağdan erişilebilir tutmak", "Tüm portları açık bırakıp yalnızca trafiği izleyerek riski yönetmeye çalışmak", "Yönetimi herkese açık kullanıcı VLAN'ından Telnet ile yapmak, logları kapatmak ve erişimi tek bir ortak hesapla vermek"], obj: "h1" },
       { id: "176da637", q: "Bir Linux web sunucusunda uygulama süreci ele geçirilmiş ve saldırgan /home altındaki dosyalara erişmeye çalışıyor, ama işletim sistemi politikası buna izin vermiyor. Bu davranışı sağlayan mekanizma hangisidir?", options: ["Grup İlkesi (GPO)", "TLS denetimi", "SELinux (zorunlu erişim denetimi)", "NAC"], obj: "h1" }
     ],
     interview: [

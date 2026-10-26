@@ -63,8 +63,8 @@
 ], obj: "h1" },
       { id: "dfda0e05", q: "Farklı AZ'lerdeki Linux sunucuların paylaştığı bir dosya sisteminin dosyalarının çoğu aylardır açılmıyor. Uygulamayı değiştirmeden depolama maliyetini düşürmek istiyorsun. Ne yaparsın?", options: [
   "EFS'te yaşam döngüsü yönetimiyle seyrek dosyaları ucuz sınıfa taşırsın",
-  "Bütün veriyi tek bir EBS gp3 birimine taşıyıp her sunucuya bağlarsın",
-  "Dosya sistemini FSx for Lustre ile değiştirirsin",
+  "Bütün veriyi tek bir EBS gp3 birimine taşıyıp Multi-Attach ile her sunucuya bağlarsın",
+  "Dosya sistemini yüksek hızlı FSx for Lustre ile değiştirip S3 deposu ile eşleştirirsin",
   "Verileri instance store'a kopyalarsın"
 ], obj: "h2" },
       { id: "5fd51d53", q: "Şirket içinde NetApp ONTAP kullanan bir ekip, aynı protokolleri (NFS, SMB, iSCSI) ve anlık görüntü/klonlama araçlarını değiştirmeden bulutta çalıştırmak istiyor. Hangi hizmet doğrudan uygundur?", options: [
@@ -167,9 +167,9 @@
 ], obj: "h2" },
       { id: "353876ab", q: "Birkaç VPC Transit Gateway ile bağlı. Ekip VPC'ler arası ve internete çıkan trafikte durum bilgili denetim, IPS imzaları ve alan adı bazlı filtreleme istiyor. Hangi hizmet bunu sağlar?", options: [
   "AWS Network Firewall",
-  "AWS WAF",
+  "AWS WAF web uygulaması güvenlik duvarı",
   "Güvenlik grubu",
-  "AWS Shield Advanced"
+  "AWS Shield Advanced DDoS koruma planı"
 ], obj: "h3" },
       { id: "23cfb97e", q: "AWS Organizations altındaki onlarca hesapta WAF kurallarını, güvenlik grubu ilkelerini ve Network Firewall kurallarını merkezden uygulamak ve yeni hesaplara kendiliğinden yaymak isteniyor. Hangi hizmet kullanılır?", options: [
   "AWS Security Hub",
@@ -371,9 +371,9 @@
   "S3 bölgeler arası çoğaltma"
 ], obj: "h3" },
       { id: "f03b34ba", q: "Birincil bölgedeki uygulama sağlık denetimini geçemediğinde kullanıcıların kendiliğinden ikincil bölgeye yönlendirilmesi isteniyor. Hangi çözüm bunu sağlar?", options: [
-  "Route 53 basit (simple) yönlendirme",
+  "Route 53 basit (simple) yönlendirme ile iki bölgenin IP adresini tek kayda yazmak",
   "Route 53 sağlık denetimli failover yönlendirme politikası",
-  "ALB'de çapraz bölge (cross-zone) yük dengelemeyi açmak",
+  "ALB'de çapraz bölge (cross-zone) yük dengelemeyi tüm hedef gruplarda açmak",
   "AWS Backup kasası kilidi"
 ], obj: "h4" },
       { id: "92386abf", q: "Şirket RPO'yu 24 saatten 5 dakikaya indirmek istiyor. Aşağıdakilerden hangisi doğrudan RPO'yu etkiler?", options: [

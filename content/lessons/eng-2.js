@@ -56,7 +56,7 @@
     ],
     quiz: [
       { id: "91ac90ff", q: "'Dün iki laptop güncelledim.' hangisidir?", options: ["Yesterday I updated two laptops.", "Yesterday I update two laptops.", "Yesterday I will update two laptops.", "Yesterday I am updating two laptops."], obj: "h1" },
-      { id: "97a472cf", q: "'Onay bekliyorum.' hangisidir?", options: ["I'm waiting for approval.", "I wait to approval.", "I'm wait approval.", "I waiting approval."], obj: "h3" },
+      { id: "97a472cf", q: "'Onay bekliyorum.' hangisidir?", options: ["I'm waiting for approval.", "I wait to approval from the team.", "I'm wait approval.", "I waiting approval from the manager."], obj: "h3" },
       { id: "dc56955d", q: "Engelin yoksa ne dersin?", options: ["No blockers.", "I have blocker none.", "Blockers no have.", "Not blocker."], obj: "h3" },
       { id: "99c64946", q: "'Bugün sunucuyu yeniden başlatacağım.' hangisidir?", options: ["Today I'll restart the server.", "Today I restarted the server.", "Today I'll to restart the server.", "Today I restart will the server."], obj: "h2" },
       { id: "55e12a4f", q: "'Dün sunucuyu yeniden başlattım.' cümlesinin doğru İngilizcesi hangisidir?", options: ["Yesterday I restarted the server.","Yesterday I restart the server.","Yesterday I have restarted the server.","Yesterday I will restart the server."], obj: "h1" },
@@ -285,13 +285,13 @@
       "Environment satırına işletim sistemi, yazılım sürümü ve bağlantı bilgisi yazılır (Windows 11, VPN client 5.2, home Wi-Fi)."
     ],
     quiz: [
-      { id: "df2b93e3", q: "Raporda 'beklenen sonuç' için hangi başlık kullanılır?", options: ["Expected result", "Wanted ending", "Hope answer", "Future result"], obj: "h1" },
+      { id: "df2b93e3", q: "Raporda 'beklenen sonuç' için hangi başlık kullanılır?", options: ["Expected result", "Wanted ending, istenen sonuç bölümü", "Hope answer, umulan cevap başlığı", "Future result"], obj: "h1" },
       { id: "61b42d2b", q: "'Güncellemeden sonra başladı.' hangisi?", options: ["It started after the update.", "It start after update.", "It starts before the update yesterday.", "It started from update after."], obj: "h2" },
       { id: "1dafce13", q: "Hata mesajı için en iyi yaklaşım hangisi?", options: ["Kelimesi kelimesine kopyalamak", "Kendi cümlenle özetlemek", "Sadece 'error' yazmak", "Hiç yazmamak"], obj: "h3" },
       { id: "afb3a167", q: "'Steps to reproduce' ne demek?", options: ["Hatayı tekrar oluşturma adımları", "Çözüm adımları", "Kurulum adımları", "Yedekleme adımları"], obj: "h1" },
       { id: "1a46c2a4", q: "Hata her denemede ortaya çıkıyor. Bunu raporda nasıl yazarsın?", options: ["It happens every time.","It happen every time.","It happens every times.","It happens ever time."], obj: "h2" },
       { id: "39fd5be0", q: "Bir kullanıcı sadece 'It doesn't work.' yazdı. En faydalı ilk cevap hangisidir?", options: ["What error message do you see, and when did it start?","Please try again later.","Everything works on my side.","Can you describe it in one word?"], obj: "h3" },
-      { id: "128a4a87", q: "Raporda 'Environment' satırına ne yazılır?", options: ["Windows 11, VPN client 5.2, home Wi-Fi","The connection stays active.","1) Open the VPN client 2) Connect","This bug is very annoying."], obj: "h1" }
+      { id: "128a4a87", q: "Raporda 'Environment' satırına ne yazılır?", options: ["Windows 11, VPN client 5.2, home Wi-Fi","The connection stays active after the user logs in.","1) Open the VPN client 2) Enter the password 3) Connect","This bug is very annoying."], obj: "h1" }
     ],
     interview: [
       { q: "How do you report a bug to a development team?", a: "I write a clear title and list the steps to reproduce, the expected result and the actual result. I add the exact error message, the environment, and a screenshot. I also say how often it happens." },
@@ -363,9 +363,9 @@
       "Metni ezberlemek yerine anahtar kelimeyle anlat; telefonla kaydet, dinle ve iki kez kısalt."
     ],
     quiz: [
-      { id: "79cf670e", q: "'Tell me about yourself' cevabında en iyi yapı hangisi?", options: ["Şimdi – geçmiş – güçlü yön – hedef", "Doğumdan bugüne tüm hayat", "Sadece hobiler", "Sadece maaş beklentisi"], obj: "h1" },
+      { id: "79cf670e", q: "'Tell me about yourself' cevabında en iyi yapı hangisi?", options: ["Şimdi – geçmiş – güçlü yön – hedef", "Doğumdan bugüne tüm hayat hikâyesi ayrıntılarıyla", "Sadece hobiler ve boş zamanda yaptığın ilgi alanları", "Sadece maaş beklentisi"], obj: "h1" },
       { id: "76f8f804", q: "'İki yıllık deneyimim var.' hangisi?", options: ["I have two years of experience.", "I am two years experience.", "I have experience of two year.", "I had two years experience now."], obj: "h2" },
-      { id: "a0ad3311", q: "'Güçlü yönüm sorun gidermek.' hangisi?", options: ["My strength is troubleshooting.", "My strong is troubleshoot.", "I strength troubleshooting.", "Strength mine troubleshooting."], obj: "h3" },
+      { id: "a0ad3311", q: "'Güçlü yönüm sorun gidermek.' hangisi?", options: ["My strength is troubleshooting.", "My strong is troubleshoot of the system problems.", "I strength troubleshooting every production problem.", "Strength mine troubleshooting."], obj: "h3" },
       { id: "7ccc9043", q: "Cevap süresi kaç saniye civarı olmalı?", options: ["Yaklaşık 60 saniye", "5 saniye", "10 dakika", "30 dakika"], obj: "h1" },
       { id: "1d6abe5a", q: "'Üç yıldır BT desteğinde çalışıyorum.' cümlesinin doğru İngilizcesi hangisidir?", options: ["I have been working in IT support for three years.","I am working in IT support since three years.","I work in IT support since three years.","I have been working in IT support since three years."], obj: "h2" },
       { id: "c288aaff", q: "'Hedefim ağ mühendisi olmak.' cümlesinin doğru İngilizcesi hangisidir?", options: ["My goal is to become a network engineer.","My goal is become a network engineer.","My goal are to become a network engineer.","My goal to becoming network engineer is."], obj: "h3" },

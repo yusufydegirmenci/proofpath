@@ -96,7 +96,7 @@
   "Her nesnenin Glacier sınıfında olması",
   "Kaynak ve hedef kovalarda sürümlemenin açık olması"
 ], obj: "h4" },
-      { id: "6f47eca3", q: "Beş yıl saklanması gereken ama yılda en fazla bir kez, saatler içinde ulaşılabilmesi yeterli olan büyük bir arşiv için en düşük maliyetli S3 seçeneği hangisidir?", options: ["S3 Glacier Deep Archive sınıfı", "S3 Standard", "S3 Standard-IA", "S3 Glacier Flexible Retrieval"], obj: "h4" },
+      { id: "6f47eca3", q: "Beş yıl saklanması gereken ama yılda en fazla bir kez, saatler içinde ulaşılabilmesi yeterli olan büyük bir arşiv için en düşük maliyetli S3 seçeneği hangisidir?", options: ["S3 Glacier Deep Archive sınıfı", "S3 Standard sınıfında çok bölgeli çoğaltma", "S3 Standard-IA sınıfı, tek bölgede çoklu AZ", "S3 Glacier Flexible Retrieval"], obj: "h4" },
       { id: "fe0dafe3", q: "Küçük (100 GB) bir veritabanı diskinde tutarlı 3.000 IOPS yeterli ve hedef en düşük maliyet. Hangi EBS seçimi uygundur?", options: ["gp2 birimini 1 TB'a büyütmek","gp3 birimi","io2 Block Express birimi","st1 (verim odaklı HDD) birimi"], obj: "h1" },
       { id: "07535fe2", q: "Kritik bir veritabanı tek birimde 16.000 IOPS'tan fazla ve %99,999 dayanıklılık gerektiriyor. Hangi EBS türü seçilmelidir?", options: ["gp3","sc1 (soğuk HDD)","io2 (sağlanmış IOPS SSD)","st1 (verim odaklı HDD, sıralı iş yükleri)"], obj: "h1" },
       { id: "a9050319", q: "Üç ayda bir erişilen ama erişildiğinde milisaniyeler içinde okunması gereken arşiv verisi için en düşük maliyetli S3 sınıfı hangisidir?", options: ["S3 Standard","S3 Glacier Instant Retrieval","S3 Glacier Flexible Retrieval","S3 Glacier Deep Archive"], obj: "h1" }
@@ -293,7 +293,7 @@
     ],
     quiz: [
       { id: "8dec2367", q: "Aşağıdakilerden hangisi AWS Well-Architected Framework'ün altı direğinden biri DEĞİLDİR?", options: ["Güvenilirlik", "Taşınabilirlik", "Performans verimliliği", "Sürdürülebilirlik"], obj: "h1" },
-      { id: "e2aec4d5", q: "Geçen aylardaki harcamayı hizmete göre görselleştirmek ve önümüzdeki aylar için tahmin görmek istiyorsun. Hangi araç kullanılır?", options: ["AWS Cost Explorer", "AWS Config", "Amazon Inspector", "AWS CloudTrail"], obj: "h2" },
+      { id: "e2aec4d5", q: "Geçen aylardaki harcamayı hizmete göre görselleştirmek ve önümüzdeki aylar için tahmin görmek istiyorsun. Hangi araç kullanılır?", options: ["AWS Cost Explorer", "AWS Config yapılandırma izleme hizmeti", "Amazon Inspector", "AWS CloudTrail API denetim kaydı"], obj: "h2" },
       { id: "144e2793", q: "Aylık harcama tahmini bir eşiği aşacak gibi olduğunda e-posta ile uyarılmak istiyorsun. Hangi hizmet uygundur?", options: ["AWS Trusted Advisor'ın güvenlik kontrolleri", "Amazon Macie", "AWS Shield Standard", "AWS Budgets"], obj: "h2" },
       { id: "57afaa88", q: "Birden çok takım aynı hesabı kullanıyor ve harcamayı takım bazında ayırmak istiyorsun. Ne yapmalısın?", options: [
   "Her takımın EC2 örneklerine ayrı bir ad kuralı vermek",
@@ -301,7 +301,7 @@
   "Takım etiketi koyup maliyet ayırma etiketi olarak etkinleştirmek",
   "Her takıma ayrı bir VPC açıp ağları ayırmak"
 ], obj: "h2" },
-      { id: "f17c68aa", q: "Çalışan bir EC2 filosunun çoğu örneği düşük CPU ve bellek kullanıyor. Boyut küçültme önerisi almak için hangi hizmet kullanılır?", options: ["AWS Budgets", "AWS Organizations", "AWS Compute Optimizer", "Amazon Route 53"], obj: "h2" },
+      { id: "f17c68aa", q: "Çalışan bir EC2 filosunun çoğu örneği düşük CPU ve bellek kullanıyor. Boyut küçültme önerisi almak için hangi hizmet kullanılır?", options: ["AWS Budgets ile maliyet eşiği ve uyarı tanımlamak", "AWS Organizations ile hesapları merkezî olarak yönetmek", "AWS Compute Optimizer", "Amazon Route 53"], obj: "h2" },
       { id: "444ff004", q: "Yıl boyunca sürekli çalışan, öngörülebilir taban yük için indirim almak ve zaman içinde örnek ailesini ya da hizmetini (EC2, Fargate, Lambda) değiştirebilmek istiyorsun. Hangi seçenek uygundur?", options: ["Spot örnekleri", "EC2 Instance Savings Plans", "Reserved Instances", "Compute Savings Plans"], obj: "h3" },
       { id: "403969fa", q: "Kesintiye dayanıklı, durumsuz ve esnek zamanlı bir toplu işleme işini en düşük maliyetle çalıştırmak istiyorsun. Hangi seçenek uygundur?", options: ["Spot örnekleri", "Reserved örnekleri, üç yıl taahhütle", "Dedicated Host", "Yalnızca On-Demand"], obj: "h3" },
       { id: "900d5396", q: "Organizasyondaki on hesabın toplam kullanımının hacimli fiyat indirimlerine birlikte sayılmasını istiyorsun. Hangi özellik bunu sağlar?", options: [
@@ -393,9 +393,9 @@
       { id: "f1d17901", q: "S3'teki CSV ve Parquet dosyalarını sunucu kurmadan, standart SQL ile ara sıra sorgulamak istiyorsun. Hangi hizmet uygundur?", options: ["Amazon EMR", "Amazon OpenSearch Service", "AWS Glue", "Amazon Athena"], obj: "h2" },
       { id: "a4d7f8f2", q: "Athena sorgu maliyetini ve süresini düşürmek için S3'teki büyük CSV veri setine ne yapılmalıdır?", options: [
   "Her sorguda tüm veriyi taramak",
-  "Veriyi tek bir büyük sıkıştırılmamış dosyaya birleştirmek",
+  "Veriyi tek bir büyük sıkıştırılmamış CSV dosyasına birleştirip tek seferde okumak",
   "Parquet gibi sütunlu biçime çevirip sıkıştırmak ve bölümlemek",
-  "Veriyi Athena'dan önce ElastiCache'e kopyalamak"
+  "Veriyi Athena'dan önce ElastiCache'e kopyalayıp sorguları oradan çalıştırmak"
 ], obj: "h2" },
       { id: "93618bd8", q: "Çok sayıda analist, petabayt ölçeğine varan yapılandırılmış veri üzerinde karmaşık birleştirme ve toplama sorgularını sürekli ve hızlı çalıştıracak. Hangi hizmet daha uygundur?", options: [
   "Amazon Athena tek başına, her sorguda yeniden tarayarak",

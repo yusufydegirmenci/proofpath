@@ -163,7 +163,7 @@
     quiz: [
       { id: "3921c46a", q: "STP'nin temel amacı nedir?", options: ["Hız artırmak", "Layer 2 döngülerini önlemek", "IP dağıtmak", "VLAN oluşturmak"], obj: "h2" },
       { id: "097234e1", q: "Root bridge nasıl seçilir?", options: ["En yüksek IP adresi", "En düşük Bridge ID", "En çok port", "En hızlı switch"], obj: "h1" },
-      { id: "1f755f31", q: "PortFast hangi porta uygulanır?", options: ["Switch'ler arası trunk", "Uç cihaz (bilgisayar) portu", "Router portu", "Her porta"], obj: "h3" },
+      { id: "1f755f31", q: "PortFast hangi porta uygulanır?", options: ["Switch'ler arası trunk portlarının tamamı", "Uç cihaz (bilgisayar) portu", "Router portu", "Her porta, tüm switch portlarına birden"], obj: "h3" },
       { id: "5c03ee8d", q: "Birden çok fiziksel linki tek mantıksal link yapan teknoloji hangisidir?", options: ["VLAN", "EtherChannel", "NAT", "HSRP"], obj: "h4" },
       { id: "030d4cc1", q: "LACP için iki tarafın moduna ne uygun olur?", options: ["passive-passive", "active-passive", "auto-auto", "desirable-auto"], obj: "h4" },
       { id: "47a77aab", q: "VLAN 1'de SW1 (öncelik 32769, MAC 0000.0C00.0002), SW2 (öncelik 32769, MAC 0000.0C00.0001) ve SW3 (öncelik 4097, MAC 0000.0C00.00FF) var. Root bridge hangisidir?", options: ["SW1","SW2","SW3","Öncelikler eşit olmadığı için root seçilemez"], obj: "h1" },
@@ -356,10 +356,10 @@
       { id: "41db8745", q: "QoS'un sınırı nedir?", options: ["Bant genişliği yaratır", "Yoğunlukta önceliği belirler, ek bant yaratmaz", "Sadece Wi-Fi'da çalışır", "Şifreleme yapar"], obj: "h4" },
       { id: "8d615bd6", q: "Ses (VoIP) trafiğinde tek yön gecikme için kabul edilen üst sınır yaklaşık kaçtır?", options: ["150 ms","30 ms","500 ms","1 saniye"], obj: "h1" },
       { id: "71793ed3", q: "Kuyruk tamamen dolmadan önce bazı paketleri bilerek düşürerek tıkanıklığı önleyen mekanizma hangisidir?", options: ["Congestion avoidance (örn. WRED)","Marking","Shaping","Classification"], obj: "h2" },
-      { id: "83855104", q: "Özel bir işaret taşımayan, normal en iyi çaba (best effort) trafiğin DSCP değeri nedir?", options: ["Default (0)","EF (46)","AF41","CS1"], obj: "h3" },
+      { id: "83855104", q: "Özel bir işaret taşımayan, normal en iyi çaba (best effort) trafiğin DSCP değeri nedir?", options: ["Default (0)","EF (46), ses için ayrılmış sınıf","AF41, video benzeri trafik için garantili sınıf","CS1"], obj: "h3" },
       { id: "7601c002", q: "Ağ, kullanıcı bilgisayarlarından gelen DSCP işaretlerine neden güvenmemeli ve işareti silip yeniden yazmalıdır?", options: ["Kullanıcı kendi trafiğine ses önceliği yazıp ağı haksız kullanabilir","DSCP alanı IP başlığında bulunmaz","Switch'ler DSCP işaretini okuyamaz","DSCP işaretleri yalnızca ses telefonlarına yazılabilir"], obj: "h4" },
       { id: "dc9c6821", q: "Switch'te 802.1Q etiketindeki CoS önceliği, router'dan geçen pakette korunmak istenirse IP başlığında hangi alana eşlenir?", options: ["TTL", "Protocol", "DSCP (DS alanı)", "Fragment Offset"], obj: "h3" },
-      { id: "c4fac04c", q: "CoS (Class of Service) değeri hangi başlıkta taşınır?", options: ["802.1Q VLAN etiketinde, 3 bitlik alanda", "IP başlığında, 6 bitlik alanda", "TCP başlığında, 8 bitlik alanda", "Ethernet FCS alanında, 3 bitlik alanda"], obj: "h3" }
+      { id: "c4fac04c", q: "CoS (Class of Service) değeri hangi başlıkta taşınır?", options: ["802.1Q VLAN etiketinde, 3 bitlik alanda", "IP başlığındaki ToS baytının, 6 bitlik DSCP alanında", "TCP başlığında, bayrak bitlerinin yanındaki 8 bitlik alanda", "Ethernet FCS alanında, 3 bitlik alanda"], obj: "h3" }
     ],
     interview: [
       { q: "QoS nedir, neden gerekli?", a: "Ağdaki trafiği türüne göre önceliklendirme mekanizmasıdır. Ses ve video gibi gecikmeye duyarlı trafiğin, dosya indirme gibi toleranslı trafik yüzünden bozulmasını yoğunluk anında önlemek için gerekir." },
@@ -455,8 +455,8 @@
       { id: "7a424230", q: "Ansible için hangisi doğrudur?", options: ["Ajan gerektirir", "Ajan gerektirmez ve YAML playbook kullanır", "Sadece Windows'ta çalışır", "Sadece router'larda çalışır"], obj: "h4" },
       { id: "7393b93f", q: "Controller'ın uygulamalara sunduğu arayüz hangisidir?", options: ["Northbound API", "Southbound API", "Console API", "VLAN API"], obj: "h1" },
       { id: "0d0d505f", q: "Kontrol düzlemi (control plane) ne yapar?", options: ["Paketi donanımda iletir", "Paketin nasıl iletileceğine karar verir", "Cihazı fiziksel olarak yönetir", "Kabloyu taşır"], obj: "h1" },
-      { id: "be1ee193", q: "HTTP 404 yanıtı ne demektir?", options: ["Başarılı", "Yetkisiz", "Kaynak bulunamadı", "Sunucu hatası"], obj: "h2" },
-      { id: "6295f5e5", q: "Yönetici SSH ile bir switch'e bağlanıp VLAN yapılandırıyor. Bu işlem hangi düzleme aittir?", options: ["Management plane","Data plane","Control plane","Southbound API"], obj: "h1" },
+      { id: "be1ee193", q: "HTTP 404 yanıtı ne demektir?", options: ["Başarılı, istek sorunsuz tamamlandı", "Yetkisiz", "Kaynak bulunamadı", "Sunucu tarafında iç hata oluştu"], obj: "h2" },
+      { id: "6295f5e5", q: "Yönetici SSH ile bir switch'e bağlanıp VLAN yapılandırıyor. Bu işlem hangi düzleme aittir?", options: ["Management plane","Data plane, trafik iletimini yapan düzlem","Control plane","Southbound API, controller cihaz arayüzü"], obj: "h1" },
       { id: "6d4867db", q: "Controller'ın cihazlarla konuşmak için kullandığı southbound arayüze örnek hangisidir?", options: ["NETCONF","JSON","YAML","Ansible playbook"], obj: "h1" },
       { id: "ffa8aff0", q: "REST API sunucusu geçersiz kimlik bilgisiyle gelen bir isteğe hangi kodu döndürür?", options: ["401","200","404","500"], obj: "h2" },
       { id: "3057145b", q: "Girinti ile yazılan, süslü parantez ve tırnak gerektirmeyen, Ansible dosyalarında kullanılan veri formatı hangisidir?", options: ["YAML","JSON","XML","CSV"], obj: "h3" },

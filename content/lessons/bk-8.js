@@ -71,10 +71,10 @@
   "Yalnızca kök kullanıcı için reddedilir, diğer kimlikler silebilir"
 ], obj: "h1" },
       { id: "b288bbdb", q: "Bir hesapta SCP her eyleme izin veriyor. Hesaptaki yeni bir IAM kullanıcısına hiçbir politika bağlanmadı. Kullanıcı S3 kovalarını listeleyebilir mi?", options: [
-  "Evet; SCP'deki geniş izin kullanıcıya geçer",
+  "Evet; SCP'deki geniş izin hesaptaki tüm kimliklere otomatik olarak geçer",
   "Evet, ama yalnızca okuma eylemleri için",
   "Hayır; SCP yalnızca tavan çizer, kullanıcıya izin vermez",
-  "Hayır, çünkü SCP yalnızca kök kullanıcıya uygulanır"
+  "Hayır, çünkü SCP yalnızca hesabın kök kullanıcısına uygulanır, IAM kullanıcılarına değil"
 ], obj: "h2" },
       { id: "ef53ec4b", q: "Bir kullanıcıya AdministratorAccess politikası bağlı, ama izin sınırı yalnızca S3 ve EC2 eylemlerine izin veriyor. Kullanıcı bir DynamoDB tablosu oluşturabilir mi?", options: [
   "Evet; AdministratorAccess her sınırı aşar",
@@ -193,7 +193,7 @@
       { id: "aaaac9ae", q: "Sunucuların ve konteyner imajlarının bilinen yazılım açıklarını (CVE) sürekli taratmak istiyorsun. Hangi hizmet uygundur?", options: ["Amazon Inspector", "Amazon GuardDuty", "AWS Config", "AWS CloudTrail"], obj: "h2" },
       { id: "1a56d144", q: "Güvenlik ekibi, 'hiçbir güvenlik grubu 22 numaralı portu herkese (0.0.0.0/0) açmasın' kuralına uymayan kaynakları listelemek ve yapılandırma geçmişini görmek istiyor. Hangi hizmet kullanılır?", options: ["Amazon GuardDuty", "AWS WAF", "AWS Config", "Amazon Macie"], obj: "h3" },
       { id: "a52aea64", q: "GuardDuty, Inspector ve Macie bulgularını tek bir ekranda toplamak ve güvenlik standartlarına göre kontrolleri çalıştırmak için hangi hizmet kullanılır?", options: ["AWS CloudFormation", "Amazon Route 53", "AWS Systems Manager Parameter Store", "AWS Security Hub"], obj: "h3" },
-      { id: "a3c3a832", q: "Organizasyonundaki onlarca hesapta aynı WAF kurallarını ve güvenlik grubu politikasını merkezden uygulamak ve uyumsuz hesapları görmek istiyorsun. Hangi hizmet bu iş içindir?", options: ["Amazon GuardDuty", "AWS Firewall Manager", "AWS Shield Standard", "Amazon Macie"], obj: "h4" }
+      { id: "a3c3a832", q: "Organizasyonundaki onlarca hesapta aynı WAF kurallarını ve güvenlik grubu politikasını merkezden uygulamak ve uyumsuz hesapları görmek istiyorsun. Hangi hizmet bu iş içindir?", options: ["Amazon GuardDuty tehdit tespit hizmeti", "AWS Firewall Manager", "AWS Shield Standard", "Amazon Macie ile hassas veri keşfi"], obj: "h4" }
     ],
     interview: [
       { q: "WAF ile güvenlik grubu arasındaki fark nedir?", a: "Güvenlik grubu ağ katmanında IP, port ve protokole göre izin verir. WAF ise HTTP isteğinin içeriğine bakar; SQL enjeksiyonu, XSS ve hız sınırı gibi uygulama katmanı kurallarını uygular." },
@@ -301,7 +301,7 @@
 ], obj: "h3" },
       { id: "4e070d7b", q: "Onlarca VPC ve şirket içi bir ağ, merkezi bir yönlendirme noktasında buluşacak. Peering ağı ise yönetilemeyecek kadar karmaşık olurdu. Hangi hizmet bu işe uygundur?", options: ["Amazon CloudFront", "Egress-only Internet Gateway", "VPC Flow Logs", "AWS Transit Gateway"], obj: "h3" },
       { id: "2a938f8f", q: "Bir özel alt ağdaki ağ arayüzüne gelen ve reddedilen bağlantı denemelerinin hangi kaynak IP'lerden geldiğini incelemek istiyorsun. Hangi özellik kullanılır?", options: ["VPC Flow Logs", "Route 53 sağlık denetimi", "AWS KMS anahtar politikası", "S3 Intelligent-Tiering"], obj: "h4" },
-      { id: "f2afa3f6", q: "IPv6 kullanan özel alt ağdaki kaynakların internete çıkmasını, ama dışarıdan içeri başlatılan bağlantıları kabul etmemesini istiyorsun. Hangi bileşen kullanılır?", options: ["Public alt ağda NAT Gateway", "Gateway endpoint", "Egress-only Internet Gateway", "Transit Gateway"], obj: "h4" }
+      { id: "f2afa3f6", q: "IPv6 kullanan özel alt ağdaki kaynakların internete çıkmasını, ama dışarıdan içeri başlatılan bağlantıları kabul etmemesini istiyorsun. Hangi bileşen kullanılır?", options: ["Public alt ağda yüksek erişilebilir NAT Gateway", "VPC içinde S3 için Gateway endpoint ve yol tablosu", "Egress-only Internet Gateway", "Transit Gateway"], obj: "h4" }
     ],
     interview: [
       { q: "Gateway endpoint ile interface endpoint arasındaki fark nedir?", a: "Gateway endpoint yalnız S3 ve DynamoDB içindir, yönlendirme tablosu kuralıyla çalışır ve ek ücreti yoktur. Interface endpoint alt ağda bir ENI açar, birçok servisi destekler ve PrivateLink ile çalışır; saatlik ve veri ücreti vardır." },
@@ -396,9 +396,9 @@
 ], obj: "h3" },
       { id: "842b3170", q: "Şirket içi NFS paylaşımındaki dosyaların her gece S3'e eşitlenmesi, aktarımın doğrulanması ve işin zamanlanması isteniyor. Hangi hizmet bu iş için tasarlanmıştır?", options: ["AWS Snowball Edge", "Amazon ElastiCache", "AWS DataSync", "AWS Direct Connect"], obj: "h3" },
       { id: "77699fe7", q: "Şirket içi bir yedekleme uygulaması SMB/NFS dosya paylaşımı bekliyor, ama veriler S3'te saklanacak ve sık erişilenler yerelde önbelleklenecek. Hangi çözüm uygundur?", options: [
-  "AWS Transfer Family",
+  "AWS Transfer Family ile SFTP sunucusu kurup dosyaları S3'e yazmak",
   "S3 File Gateway (Storage Gateway)",
-  "Amazon EBS birimi",
+  "Amazon EBS birimi ile şirket içi sunucuya blok depolama bağlamak",
   "AWS Database Migration Service"
 ], obj: "h3" },
       { id: "9786fce6", q: "Çalışan bir ticari Oracle veritabanı, minimum kesintiyle PostgreSQL uyumlu bir yönetilen veritabanına taşınacak ve şema dönüşümü gerekiyor. Hangi hizmet çifti kullanılır?", options: [

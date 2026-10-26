@@ -193,10 +193,10 @@
     quiz: [
       { id: "7700133d", q: "Uygulamadan önce hangi kaynakların değişeceğini gösteren özellik nedir?", options: ["Change set", "Drift detection", "Stack policy", "Export"], obj: "h2" },
       { id: "ba485688", q: "CloudFormation şablonunda zorunlu bölüm hangisidir?", options: ["Resources", "Outputs", "Parameters", "Mappings"], obj: "h1" },
-      { id: "caa0cdd5", q: "Elle yapılan değişiklikleri tespit eden özellik hangisidir?", options: ["Drift detection", "Change set", "Rollback", "Transform"], obj: "h2" },
+      { id: "caa0cdd5", q: "Elle yapılan değişiklikleri tespit eden özellik hangisidir?", options: ["Drift detection", "Change set, uygulamadan önce planlanan değişiklikleri gösterir", "Rollback, hata sonrası yığını önceki duruma döndürme işlemi", "Transform"], obj: "h2" },
       { id: "51f2430d", q: "SAM'in CloudFormation'a eklediği nedir?", options: ["Sunucusuz kaynaklar için kısa sözdizimi", "Yeni bir bulut", "Veritabanı motoru", "DNS servisi"], obj: "h4" },
       { id: "e18d6b55", q: "Yığın silinirken veriyi korumak için hangi ayar kullanılır?", options: ["DeletionPolicy: Retain", "Outputs", "Mappings", "Metadata"], obj: "h3" },
-      { id: "8fb310e3", q: "Bir veritabanı kaynağı için yığın silinirken silmeden hemen önce son bir yedek (snapshot) alınmasını istiyorsun. Hangi ayar kullanılır?", options: ["DeletionPolicy: Snapshot","DeletionPolicy: Delete","DeletionPolicy: Retain","Stack policy"], obj: "h3" },
+      { id: "8fb310e3", q: "Bir veritabanı kaynağı için yığın silinirken silmeden hemen önce son bir yedek (snapshot) alınmasını istiyorsun. Hangi ayar kullanılır?", options: ["DeletionPolicy: Snapshot","DeletionPolicy: Delete ile kaynağı silmek","DeletionPolicy: Retain ile kaynağı korumak","Stack policy"], obj: "h3" },
       { id: "58b51e43", q: "Şablonun başına Transform: AWS::Serverless-2016-10-31 eklemek ne sağlar?", options: ["AWS::Serverless::Function gibi kısa sunucusuz kaynak türleri kullanılabilir","Şablon otomatik olarak Terraform'a çevrilir","Yığın birden çok bölgeye kendiliğinden dağıtılır","Drift detection otomatik çalışmaya başlar"], obj: "h4" }
     ],
     interview: [
@@ -263,10 +263,10 @@
     ],
     quiz: [
       { id: "084236e3", q: "Derleme ve test adımını yürüten servis hangisidir?", options: ["CodeBuild", "CodeDeploy", "CloudTrail", "Route 53"], obj: "h1" },
-      { id: "3e1d21be", q: "Yeni ortam kurup trafiği geçirerek hızlı geri dönüş sağlayan strateji hangisidir?", options: ["Blue/Green", "In-place", "Rolling", "Manuel"], obj: "h3" },
-      { id: "4bbbb6c8", q: "Aşamaları bir araya getiren orkestratör hangisidir?", options: ["CodePipeline", "CodeBuild", "Cognito", "KMS"], obj: "h1" },
+      { id: "3e1d21be", q: "Yeni ortam kurup trafiği geçirerek hızlı geri dönüş sağlayan strateji hangisidir?", options: ["Blue/Green", "In-place ile mevcut örnekleri güncelleme", "Rolling ile gruplar hâlinde güncelleme", "Manuel"], obj: "h3" },
+      { id: "4bbbb6c8", q: "Aşamaları bir araya getiren orkestratör hangisidir?", options: ["CodePipeline", "CodeBuild derleme ve test hizmeti", "Cognito kullanıcı havuzu hizmeti", "KMS"], obj: "h1" },
       { id: "2f99ae43", q: "Lambda'da trafiği kademeli yeni sürüme kaydırmak için ne kullanılır?", options: ["Alias ve CodeDeploy canary/linear", "VPC peering", "Edge location", "Snowball"], obj: "h4" },
-      { id: "7fa64389", q: "Derleme tanım dosyasının adı nedir?", options: ["buildspec.yml", "appspec.json", "Dockerfile", "template.txt"], obj: "h2" },
+      { id: "7fa64389", q: "Derleme tanım dosyasının adı nedir?", options: ["buildspec.yml", "appspec.json dağıtım tanım dosyası", "Dockerfile imaj tanım dosyası", "template.txt"], obj: "h2" },
       { id: "8f54e86e", q: "buildspec.yml dosyasında pytest gibi test komutları genellikle nereye yazılır?", options: ["phases altındaki build bölümünün commands listesine","artifacts.files listesine","Resources bölümüne","appspec hooks bölümüne"], obj: "h2" },
       { id: "9f991f37", q: "Ek ortam kurmadan, örnekleri gruplar hâlinde güncelleyen dağıtım stratejisi hangisidir?", options: ["Rolling","Blue/Green","Canary","Manuel onay aşaması"], obj: "h3" }
     ],
@@ -340,7 +340,7 @@
     quiz: [
       { id: "0e944a2e", q: "SQS kuyruğundan mesaj işleyen Beanstalk ortamı türü hangisidir?", options: ["Worker", "Web sunucu", "Edge", "Batch"], obj: "h1" },
       { id: "687477fd", q: "Yeni örnek grubu kurup güvenli geri alma sağlayan dağıtım politikası hangisidir?", options: ["Immutable", "All at once", "Manuel", "Tek örnek"], obj: "h2" },
-      { id: "8e1079c8", q: "Beanstalk yapılandırma dosyaları hangi klasörde tutulur?", options: [".ebextensions", "/etc/aws", "buildspec", ".github"], obj: "h3" },
+      { id: "8e1079c8", q: "Beanstalk yapılandırma dosyaları hangi klasörde tutulur?", options: [".ebextensions", "/etc/aws altındaki sunucu yapılandırma dizini", "buildspec.yml dosyasının bulunduğu derleme klasörü", ".github"], obj: "h3" },
       { id: "9867b670", q: "Üretimde veritabanı için doğru tercih nedir?", options: ["RDS'i ortamın dışında oluşturmak", "Ortam içinde RDS", "Dosyada saklamak", "Lambda'ya gömmek"], obj: "h3" },
       { id: "5e585d54", q: "Beanstalk hangi hizmet modeline örnektir?", options: ["PaaS", "IaaS tek başına", "SaaS", "Colocation"], obj: "h4" }
     ],

@@ -54,7 +54,7 @@
       { id: "c70f3ff5", q: "Okuma trafiğini dağıtmak için hangisi kullanılır?", options: ["Read Replica", "Multi-AZ örnek dağıtımının bekleme örneği", "Snapshot", "Parameter group"], obj: "h1" },
       { id: "60057089", q: "AZ arızasında otomatik geçişi sağlayan özellik hangisidir?", options: ["Multi-AZ", "Read Replica", "Snapshot", "IAM"], obj: "h1" },
       { id: "64b4bd08", q: "Lambda'dan RDS'e çok bağlantı açılıyorsa hangisi yardımcı olur?", options: ["RDS Proxy", "S3", "CloudFront", "Route 53"], obj: "h3" },
-      { id: "264e0087", q: "Bir snapshot'tan geri yükleme ne üretir?", options: ["Yeni bir veritabanı örneği", "Mevcut örneği değiştirir", "Hiçbir şey", "Yeni bir kova"], obj: "h2" },
+      { id: "264e0087", q: "Bir snapshot'tan geri yükleme ne üretir?", options: ["Yeni bir veritabanı örneği", "Mevcut örneği aynı uç noktada değiştirir", "Hiçbir şey", "Yeni bir S3 kovası ve yedek nesneleri"], obj: "h2" },
       { id: "c66428c8", q: "Veritabanı örneği nerede olmalıdır?", options: ["Özel alt ağda", "Herkese açık alt ağda", "S3'te", "Lambda içinde"], obj: "h3" },
       { id: "77d651db", q: "Muhasebe kayıtları gibi JOIN'li raporlama ve işlem (transaction) bütünlüğü isteyen ilişkisel veri için hangisi daha uygundur?", options: ["RDS PostgreSQL","DynamoDB ile tek tablo","ElastiCache Memcached","S3 Standard"], obj: "h4" },
       { id: "7af78afb", q: "Otomatik yedekler ile manuel snapshot arasındaki saklama farkı hangisidir?", options: ["Otomatik yedek 1-35 gün saklanır; manuel snapshot siz silene dek kalır","Her ikisi de 35 gün sonra kendiliğinden silinir","Manuel snapshot 1 gün sonra silinir, otomatik yedek sonsuza kadar kalır","Otomatik yedek saklanmaz, yalnız snapshot vardır"], obj: "h2" },
@@ -124,7 +124,7 @@
       { id: "fcadefd3", q: "Önce önbelleğe bakıp bulunamazsa veritabanından okuyup önbelleğe yazan strateji hangisidir?", options: ["Lazy loading", "Write-through", "Sharding", "Failover"], obj: "h1" },
       { id: "6e7dcbd4", q: "Sıralı küme ve kalıcılık gibi zengin özellikler hangi motorda vardır?", options: ["Redis", "Memcached", "Her ikisi eşit", "Hiçbiri"], obj: "h2" },
       { id: "fff6fdc9", q: "Verinin önbellekte ne kadar geçerli kalacağını belirleyen ayar nedir?", options: ["TTL", "ARN", "CIDR", "MTU"], obj: "h3" },
-      { id: "b4d76d6c", q: "Her yazmada önbelleği de güncelleyen strateji hangisidir?", options: ["Write-through", "Lazy loading", "Read replica", "Backoff"], obj: "h1" },
+      { id: "b4d76d6c", q: "Her yazmada önbelleği de güncelleyen strateji hangisidir?", options: ["Write-through", "Lazy loading ile okuma ıskasında doldurma", "Read replica ile okuma yükünü dağıtma", "Backoff"], obj: "h1" },
       { id: "f6a2b03a", q: "Yalnızca DynamoDB okumalarını, istemci kodunu neredeyse değiştirmeden hızlandırmak için en uygun önbellek hangisidir?", options: ["DAX","ElastiCache Memcached","RDS Proxy","SQS"], obj: "h4" },
       { id: "c48213c6", q: "Ürün fiyatı veritabanında değişti ama önbellekte eski fiyat görünüyor. Bu eskimeyi sınırlamanın doğru yolu hangisidir?", options: ["Kısa bir TTL vermek ve güncellemede önbellek girişini geçersiz kılmak","TTL'yi 30 güne çıkarmak","Fiyatı yalnızca önbelleğe yazmak","Memcached'e geçmek"], obj: "h3" }
     ],
@@ -192,9 +192,9 @@
       "Lambda durumsuzdur ve aynı olay iki kez gelebilir; kalıcı veri DynamoDB veya S3'e yazılır, fonksiyon idempotent tasarlanır."
     ],
     quiz: [
-      { id: "14356098", q: "Bir Lambda çağrısının en uzun süresi nedir?", options: ["15 dakika", "5 dakika", "1 saat", "Sınırsız"], obj: "h1" },
+      { id: "14356098", q: "Bir Lambda çağrısının en uzun süresi nedir?", options: ["15 dakika", "5 dakika, yapılandırmayla uzatılamaz", "1 saat, yapılandırmayla ayarlanabilir", "Sınırsız"], obj: "h1" },
       { id: "c5c3c382", q: "Fonksiyonun AWS servislerine erişim izni nereden gelir?", options: ["Yürütme rolü", "Kodun içindeki anahtar", "Kova politikası tek başına", "Route 53"], obj: "h2" },
-      { id: "f6a2a523", q: "Soğuk başlangıcı azaltmak için hangisi kullanılır?", options: ["Provisioned concurrency", "Daha uzun zaman aşımı", "Daha çok log", "Layers"], obj: "h3" },
+      { id: "f6a2a523", q: "Soğuk başlangıcı azaltmak için hangisi kullanılır?", options: ["Provisioned concurrency", "Daha uzun zaman aşımı süresi tanımlamak", "Daha çok ayrıntılı log seviyesi açmak", "Layers"], obj: "h3" },
       { id: "29d56c08", q: "Asenkron çağrıda hata olursa Lambda ne yapar?", options: ["Varsayılan olarak 2 kez daha dener", "Hemen siler", "Hiç denemez", "Kullanıcıya sorar"], obj: "h4" },
       { id: "0ce5b86c", q: "Neden Lambda idempotent yazılmalıdır?", options: ["Aynı olay birden fazla kez gelebilir", "Daha hızlı olur", "Daha ucuz olur", "Zorunlu değildir"], obj: "h4" },
       { id: "f2b72a86", q: "Tek bir adımı yaklaşık 40 dakika süren bir veri dönüştürme işi için hangi yaklaşım uygundur?", options: ["ECS/Fargate veya AWS Batch gibi uzun çalışabilen bir servis","Lambda zaman aşımını 40 dakikaya çıkarmak","Lambda belleğini 10 GB yapmak","Provisioned concurrency açmak"], obj: "h1" },
@@ -346,9 +346,9 @@
       "Beklemeyi Lambda içinde sleep ile değil Wait durumuyla yap; insan onayı için waitForTaskToken kalıbı akışı token gelene dek durdurur."
     ],
     quiz: [
-      { id: "0b61ba69", q: "Adım başarısız olursa belirli bir duruma yönlendiren yapı hangisidir?", options: ["Catch", "Pass", "Wait", "Map"], obj: "h2" },
+      { id: "0b61ba69", q: "Adım başarısız olursa belirli bir duruma yönlendiren yapı hangisidir?", options: ["Catch", "Pass durumu ile veri aktarımı", "Wait durumu ile bekleme sonrası yönlendirme", "Map"], obj: "h2" },
       { id: "20889996", q: "Listedeki her öğe için aynı işlemi yapan durum hangisidir?", options: ["Map", "Choice", "Wait", "Succeed"], obj: "h1" },
-      { id: "88c7ac6f", q: "1 yıla kadar süren, tam yürütme geçmişi tutan tür hangisidir?", options: ["Standard", "Express", "Lambda", "Batch"], obj: "h3" },
+      { id: "88c7ac6f", q: "1 yıla kadar süren, tam yürütme geçmişi tutan tür hangisidir?", options: ["Standard", "Express iş akışı türü", "Lambda ile uzun süreli işlem", "Batch"], obj: "h3" },
       { id: "cd471fc7", q: "İnsan onayı gelene kadar bekleyen akış için ne kullanılır?", options: ["Task token (waitForTaskToken)", "Sadece Wait 1 gün", "S3 olayı", "CloudFront"], obj: "h4" },
       { id: "ed6cf957", q: "Saga kalıbı neyi çözer?", options: ["Dağıtık işlemde telafi ile geri alma", "DNS çözümleme", "Disk şifreleme", "Önbellek ısıtma"], obj: "h2" },
       { id: "e8691e29", q: "Sipariş tutarı 1000'den büyükse yönetici onayı adımına, değilse doğrudan ödemeye giden bir dallanma için hangi state kullanılır?", options: ["Choice","Parallel","Pass","Succeed"], obj: "h1" },
@@ -418,7 +418,7 @@
     quiz: [
       { id: "96ea3586", q: "İşlenemeyen mesajların toplandığı kuyruğa ne denir?", options: ["DLQ", "FIFO", "Delay queue", "Stream"], obj: "h3" },
       { id: "a422f0bf", q: "Sıra ve tekrar önleme gerekiyorsa hangi tür seçilir?", options: ["FIFO", "Standard", "SNS", "Kinesis Firehose"], obj: "h1" },
-      { id: "b18bbed6", q: "Tüketici mesajı alınca onu diğerlerinden gizleyen ayar nedir?", options: ["Visibility timeout", "Retention period", "Delay seconds", "Long polling"], obj: "h2" },
+      { id: "b18bbed6", q: "Tüketici mesajı alınca onu diğerlerinden gizleyen ayar nedir?", options: ["Visibility timeout", "Retention period ile saklama süresi ayarı", "Delay seconds ile gecikmeli teslim ayarı", "Long polling"], obj: "h2" },
       { id: "856a1e7b", q: "Boş yanıtları azaltan ve maliyeti düşüren yöntem hangisidir?", options: ["Long polling", "Short polling", "FIFO", "DLQ"], obj: "h4" },
       { id: "5f8a6215", q: "Standard SQS için doğru ifade hangisidir?", options: ["En az bir kez teslim, sıra garantisi yok", "Her zaman tam bir kez", "Sıra garantili", "Sadece 10 mesaj"], obj: "h1" },
       { id: "9aeb1130", q: "Lambda zaman aşımı 60 saniye iken kuyruğun visibility timeout değeri 30 saniye bırakılırsa ne olur?", options: ["Mesaj işlem sürerken tekrar görünür ve çift işlenebilir","Mesaj hemen otomatik olarak ölü mektup kuyruğuna taşınır","Kuyruk kendiliğinden FIFO türüne dönüşür ve sırayı korur","Mesaj kuyruktan kalıcı olarak silinir ve bir daha işlenmez"], obj: "h2" },

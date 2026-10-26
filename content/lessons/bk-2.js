@@ -57,7 +57,7 @@
     ],
     quiz: [
       { id: "cf55feed", q: "Paylaşılan sorumluluk modelinde müşteri neyden sorumludur?", options: ["Bulut İÇİNDEKİ güvenlik (IAM, veri, yapılandırma)","Fiziksel veri merkezi","Hipervizör","Güç ve soğutma"], obj: "h1" },
-      { id: "f75459c9", q: "Bir bölge içindeki bağımsız veri merkezi gruplarına ne denir?", options: ["Availability Zone","Edge location","Bucket","VPC peering"], obj: "h2" },
+      { id: "f75459c9", q: "Bir bölge içindeki bağımsız veri merkezi gruplarına ne denir?", options: ["Availability Zone","Edge location, içeriği kullanıcıya yaklaştıran küresel kenar konumu","Bucket, S3'te nesneleri tutan veri kapsayıcısı","VPC peering"], obj: "h2" },
       { id: "309ba087", q: "Kök hesap için ilk yapılması gereken nedir?", options: ["MFA etkinleştirmek ve günlük işte kullanmamak","Erişim anahtarı oluşturmak","Herkesle paylaşmak","Parolayı basit tutmak"], obj: "h3" },
       { id: "a15e88ac", q: "Kodu platforma yükleyip altındaki sunucu ve işletim sistemini platforma bıraktığın model (ör. Elastic Beanstalk) hangisidir?", options: ["IaaS","SaaS","Colocation","PaaS"], obj: "h4" },
       { id: "7e675881", q: "Sunucuyu hiç yönetmediğin model hangisidir?", options: ["Sunucusuz (serverless)","IaaS","Fiziksel sunucu","Colocation"], obj: "h4" }
@@ -186,7 +186,7 @@
       "--query JMESPath ile çıktıdan alan seçer; --profile ve --region hangi kimlik ve bölgeyi belirler."
     ],
     quiz: [
-      { id: "ecb1a4bc", q: "Kimin adına işlem yaptığını gösteren komut hangisidir?", options: ["aws s3 ls","aws configure list-all","aws sts get-caller-identity","aws iam delete-user"], obj: "h1" },
+      { id: "ecb1a4bc", q: "Kimin adına işlem yaptığını gösteren komut hangisidir?", options: ["aws s3 ls ile hesaptaki tüm kovaları listelemek","aws configure list-all ile yerel yapılandırma ayarlarını listelemek","aws sts get-caller-identity","aws iam delete-user"], obj: "h1" },
       { id: "9e6bdccd", q: "Python için AWS SDK'sının adı nedir?", options: ["pandas","django","numpy","boto3"], obj: "h2" },
       { id: "0c24d4f8", q: "Lambda içindeki kod AWS'ye nasıl yetkilenmelidir?", options: ["Kodda gömülü anahtarla","Parolayla","Anonim","Yürütme rolü üzerinden"], obj: "h3" },
       { id: "51158993", q: "CLI çıktısını süzmek için hangi bayrak kullanılır?", options: ["--dry","--force","--wait-all","--query"], obj: "h4" }
@@ -261,8 +261,8 @@
     ],
     quiz: [
       { id: "6ebaead7", q: "Uygulama sunucusunu geçmeden kullanıcıya doğrudan S3'e yükleme izni vermenin yolu nedir?", options: ["Kovayı herkese açmak","Kök anahtar paylaşmak","FTP","Presigned URL"], obj: "h1" },
-      { id: "a3c4091c", q: "Seyrek erişilen veriyi otomatik taşıyan ve maliyeti düşüren özellik hangisidir?", options: ["CORS","Presigned URL","Event bildirimi","Lifecycle kuralı"], obj: "h2" },
-      { id: "a75d351f", q: "Yanlışlıkla silmeye veya üzerine yazmaya karşı hangi özellik korur?", options: ["Transfer Acceleration","Sürümleme (versioning)","Requester Pays","CORS"], obj: "h2" },
+      { id: "a3c4091c", q: "Seyrek erişilen veriyi otomatik taşıyan ve maliyeti düşüren özellik hangisidir?", options: ["CORS kuralları ile köken yönetimi","Presigned URL ile süreli erişim bağlantısı","Event bildirimi","Lifecycle kuralı"], obj: "h2" },
+      { id: "a75d351f", q: "Yanlışlıkla silmeye veya üzerine yazmaya karşı hangi özellik korur?", options: ["Transfer Acceleration ile çok bölgeli hızlı yükleme","Sürümleme (versioning)","Requester Pays","CORS ile köken bazlı erişim kuralı"], obj: "h2" },
       { id: "20b3435d", q: "S3'te klasörler gerçekte nedir?", options: ["Fiziksel dizinler","Anahtar önekleri","Ayrı kovalar","Veritabanı tabloları"], obj: "h3" },
       { id: "265212fb", q: "Yüklenen dosyaya otomatik tepki vermek için hangisi kullanılır?", options: ["IAM kullanıcı","Route 53","S3 olay bildirimi ve Lambda","Cron"], obj: "h4" }
     ],

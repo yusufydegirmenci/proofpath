@@ -142,7 +142,7 @@
         id: "22f2f053",
         "q": "Mikroservis mimarisi her proje için monolitten daha iyi bir seçimdir.",
         "options": [
-          "Doğru",
+          "Doğru; mikroservis her durumda monolitten üstündür",
           "Yanlış"
         ],
         "obj": "h1"
@@ -162,10 +162,10 @@
         id: "237d16c5",
         "q": "Kampanya gününde yalnız sepet işlevi yoğun yük alıyor. Mikroservis mimarisi burada hangi avantajı sağlar?",
         "options": [
-          "Tüm servisler otomatik olarak aynı hızda çalışır",
+          "Tüm servisler yük altında otomatik olarak aynı hızda çalışır ve ölçeklenir",
           "Ağ gecikmesi sıfıra iner",
           "Yalnız sepet servisinin kopya sayısı artırılabilir",
-          "Veritabanı tutarlılığı kendiliğinden sağlanır"
+          "Servisler arası veritabanı tutarlılığı kendiliğinden ve ek çaba gerektirmeden sağlanır"
         ],
         "obj": "h2"
       },
@@ -185,9 +185,9 @@
         "q": "'Servis başına veri' ilkesi ne söyler?",
         "options": [
           "Her servis kendi verisinin sahibidir; başkası ona yalnız servisin API'siyle ulaşır",
-          "Tüm servisler aynı tabloya doğrudan yazar ve şemayı birlikte değiştirir",
+          "Tüm servisler aynı tabloya doğrudan yazar ve şemayı her sürümde ortak bir değişiklik kuruluyla birlikte değiştirir",
           "Veri yalnız önbellekte tutulur ve hiçbir kalıcı veritabanı kullanılmaz",
-          "Veritabanı her zaman en büyük servise aittir; diğer servisler doğrudan sorgular"
+          "Veritabanı her zaman en çok trafik alan en büyük servise aittir; diğer servisler doğrudan sorgular"
         ],
         "obj": "h3"
       },
@@ -195,9 +195,9 @@
         id: "6b0fda3f",
         "q": "Büyük bir monoliti güvenli biçimde mikroservislere taşımak için hangi yaklaşım önerilir?",
         "options": [
-          "Tüm sistemi sıfırdan yazıp tek gecede canlıya almak",
+          "Tüm sistemi sıfırdan yeniden yazıp, paralel çalıştırma yapmadan eski sistemi kapatıp tek gecede canlıya almak",
           "Monoliti olduğu gibi bırakıp hiçbir işlevi taşımamak",
-          "Önce tüm veritabanını silip servisleri boş şemadan yeniden doldurmak",
+          "Önce tüm veritabanını silip servisleri boş şemadan yeniden doldurarak veriyi sıfırdan üretmek",
           "Boğucu incir: işlevleri tek tek yeni servise taşıyıp monoliti küçültmek"
         ],
         "obj": "h3"
@@ -453,9 +453,9 @@
         id: "b600f167",
         "q": "Bir nesne etcd'ye yazılmadan önce hangi aşama son söz sahibidir?",
         "options": [
-          "Kimlik doğrulama",
+          "Kimlik doğrulama ve istemci sertifikası denetimi",
           "Admission control",
-          "Yetkilendirme",
+          "Yetkilendirme (RBAC) denetimi",
           "Scheduler"
         ],
         "obj": "h1"
@@ -464,7 +464,7 @@
         id: "2851382e",
         "q": "Admission control aşaması get ve list gibi okuma isteklerini de engelleyebilir.",
         "options": [
-          "Doğru",
+          "Doğru; okuma istekleri de admission denetiminden geçer",
           "Yanlış"
         ],
         "obj": "h1"
@@ -794,7 +794,7 @@
         id: "aeba152e",
         "q": "ExternalName türü trafiği kendi üzerinden proxy'ler.",
         "options": [
-          "Doğru",
+          "Doğru; ExternalName trafiği kendi üzerinden proxy'ler",
           "Yanlış"
         ],
         "obj": "h2"
@@ -1108,8 +1108,8 @@
         "q": "Üç kopyalı bir ReplicaSet'in Pod'larından biri silinirse ne olur?",
         "options": [
           "ReplicaSet kayıp Pod'un yerine yenisini açar",
-          "Kopya sayısı kalıcı olarak 2'ye düşer",
-          "Küme tamamen durur",
+          "Kopya sayısı kalıcı olarak 2'ye düşer ve ReplicaSet yeni Pod açmaz",
+          "Küme tamamen durur ve kalan iki Pod da otomatik sonlandırılır",
           "Service silinir"
         ],
         "obj": "h2"
@@ -1129,9 +1129,9 @@
         id: "3f6dc848",
         "q": "Rolling update ve geri alma ile ilgili hangisi Deployment'ın görevidir?",
         "options": [
-          "Düğümlere ağ kuralı kurmak ve Service trafiğini yönlendirmek",
+          "Her düğümde iptables ya da IPVS ağ kuralı kurmak ve Service trafiğini Pod'lara yönlendirmek",
           "Sürüm geçişini ve geri almayı ReplicaSet'ler üzerinden yönetmek",
-          "etcd yedeği almak ve geri yüklemek",
+          "Kümenin durumunu tutan etcd'nin yedeğini düzenli almak ve gerektiğinde geri yüklemek",
           "İmaj derleyip registry'ye göndermek"
         ],
         "obj": "h2"
@@ -1140,7 +1140,7 @@
         id: "fd825ed4",
         "q": "ReplicaSet tek başına rolling update ve geri alma yapar.",
         "options": [
-          "Doğru",
+          "Doğru; ReplicaSet sürüm geçişini ve geri almayı kendisi yönetir",
           "Yanlış"
         ],
         "obj": "h2"
@@ -1389,9 +1389,9 @@
         id: "c26827d5",
         "q": "kubectl run ile bir Pod oluşturma isteği ilk olarak hangi bileşene gider?",
         "options": [
-          "Scheduler",
+          "Scheduler (kube-scheduler bileşeni)",
           "API sunucusu",
-          "Kubelet",
+          "Hedef düğümdeki Kubelet",
           "etcd"
         ],
         "obj": "h1"
@@ -1400,10 +1400,10 @@
         id: "59b78b06",
         "q": "Pod nesnesi etcd'ye ilk yazıldığında nodeName alanı nasıldır?",
         "options": [
-          "Kubelet tarafından doldurulur",
+          "Kubelet tarafından Pod oluşturulduğu anda doldurulur",
           "Boştur; scheduler daha sonra doldurur",
           "kube-proxy tarafından doldurulur",
-          "Her zaman rastgele bir düğüm adıdır"
+          "Her zaman API sunucusunun seçtiği rastgele bir düğüm adıdır"
         ],
         "obj": "h1"
       },
@@ -1442,8 +1442,8 @@
         id: "73965862",
         "q": "Hangileri yalnız API sunucusu aracılığıyla çalışır, etcd ile doğrudan konuşmaz?",
         "options": [
-          "Scheduler",
-          "Kubelet",
+          "Scheduler (kube-scheduler bileşeni)",
+          "Kubelet (her düğümde çalışan düğüm ajanı)",
           "Controller manager",
           "Yukarıdakilerin hepsi"
         ],
@@ -1453,10 +1453,10 @@
         id: "2c5dc136",
         "q": "Pod'un NODE sütunu boş ve durumu Pending. En olası neden nedir?",
         "options": [
-          "Kubelet imajı registry'den çekemedi",
+          "Kubelet imajı registry'den çekemedi ve kapsayıcı başlatılamadı",
           "kube-proxy kural kurma sırasında çöktü",
           "Scheduler Pod için uygun bir düğüm bulamadı",
-          "Container runtime yanlış sürümde çalışıyor"
+          "Container runtime düğümde yanlış sürümde çalışıyor ve Pod başlatılamıyor"
         ],
         "obj": "h2"
       },
@@ -1464,7 +1464,7 @@
         id: "34798188",
         "q": "Bileşenler (scheduler, kubelet) etcd'ye doğrudan yazar.",
         "options": [
-          "Doğru",
+          "Doğru; bileşenler durumu etcd'ye doğrudan yazıp okur",
           "Yanlış"
         ],
         "obj": "h2"
@@ -1724,7 +1724,7 @@
         id: "b9c054bb",
         "q": "Kubernetes 1.24'te dockershim'in kaldırılması Docker ile oluşturulmuş imajların artık çalışmayacağı anlamına gelir.",
         "options": [
-          "Doğru",
+          "Doğru; Docker ile oluşturulmuş imajlar artık hiçbir çalışma zamanında çalışmaz",
           "Yanlış"
         ],
         "obj": "h1"
@@ -1744,8 +1744,8 @@
         id: "9c9c7543",
         "q": "Pod YAML'ında runtimeClassName alanı ne işe yarar?",
         "options": [
-          "Pod'un hangi düğümde çalışacağını doğrudan belirler",
-          "İmajın hangi registry'den çekileceğini belirler",
+          "Pod'un hangi düğümde çalışacağını, zamanlayıcıyı atlayarak doğrudan belirler",
+          "İmajın hangi registry'den ve hangi kimlik bilgisiyle çekileceğini belirler",
           "Pod'un hangi runtime yapılandırmasıyla çalışacağını seçer",
           "Pod'un kaç kopya çalışacağını belirler"
         ],
@@ -1797,7 +1797,7 @@
         id: "4d2e71d8",
         "q": "Yalnız bir CRD oluşturmak, kümede o kaynak için otomatik iş yapılmasını sağlar.",
         "options": [
-          "Doğru",
+          "Doğru; CRD oluşturulur oluşturulmaz kaynak için iş otomatik yürütülür",
           "Yanlış"
         ],
         "obj": "h3"
@@ -1828,9 +1828,9 @@
         id: "cefa8459",
         "q": "Operator içindeki denetim döngüsü hangi mantıkla çalışır?",
         "options": [
-          "Rastgele aralıklarla seçtiği Pod'ları silerek kaos yaratır",
+          "Rastgele aralıklarla seçtiği Pod'ları silerek kaos yaratır ve dayanıklılığı test eder",
           "Yalnız log toplar ve durumu hiç değiştirmez",
-          "Her değişiklikten önce kullanıcıdan manuel onay bekler",
+          "Her değişiklikten önce kullanıcıdan manuel onay bekler ve onaysız hiçbir işlem yapmaz",
           "İstenen durumu gerçek durumla karşılaştırır ve farkı kapatır"
         ],
         "obj": "h4"
@@ -1839,10 +1839,10 @@
         id: "b96fc5d2",
         "q": "Bir CRD uygulandı ve kaynak oluşturuldu ama hiçbir şey olmuyor. En olası neden nedir?",
         "options": [
-          "CRD etcd'ye hiçbir koşulda yazılamaz",
+          "CRD etcd'ye hiçbir koşulda yazılamaz ve API sunucusu tarafından reddedilir",
           "Kaynağı izleyen bir denetleyici (Operator) çalışmıyor",
           "kubectl özel kaynakları hiçbir zaman göstermez",
-          "Özel kaynaklar yalnız gece belirli saatlerde çalışır"
+          "Özel kaynaklar yalnız gece belirli saatlerde çalışır ve gündüz askıya alınır"
         ],
         "obj": "h4"
       },
@@ -2055,8 +2055,8 @@
         id: "4ce5c3c3",
         "q": "Hangileri RBAC'ta bir Binding'in özneleri (subject) olabilir?",
         "options": [
-          "Kullanıcı (User)",
-          "Grup (Group)",
+          "Kullanıcı (User), örneğin sertifika ile doğrulanan kişi",
+          "Grup (Group), örneğin bir ekibin tüm üyeleri",
           "ServiceAccount",
           "Yukarıdakilerin hepsi"
         ],
@@ -2110,7 +2110,7 @@
         id: "71f6e1ac",
         "q": "PodSecurityPolicy hâlâ güncel Kubernetes sürümlerinde Pod güvenliğini uygulayan yerleşik mekanizmadır.",
         "options": [
-          "Doğru",
+          "Doğru; PodSecurityPolicy güncel sürümlerde de varsayılan güvenlik mekanizmasıdır",
           "Yanlış"
         ],
         "obj": "h3"
@@ -2152,10 +2152,10 @@
         id: "567dde92",
         "q": "Bir ad alanına Pod Security enforce=restricted etiketi konduktan sonra, root olarak çalışan bir Pod oluşturulmak istenirse ne olur?",
         "options": [
-          "Pod çalışır ama uyarı verir",
+          "Pod çalışır ama kullanıcıya ihlal uyarısı verilir",
           "Admission aşamasında reddedilir",
           "Pod başka ad alanına taşınır",
-          "Yalnız loglanır"
+          "Yalnız denetim loguna kaydedilir, Pod çalışır"
         ],
         "obj": "h4"
       }
@@ -2315,8 +2315,8 @@
         "q": "Gözlemlenebilirlikte birlikte kullanılan üç temel veri türü hangisidir?",
         "options": [
           "CPU, bellek ve disk",
-          "Pod, Service ve Ingress",
-          "Build, test ve deploy",
+          "Pod, Service ve Ingress gibi Kubernetes nesneleri",
+          "Build, test ve deploy aşamalarından oluşan hat",
           "Metrik, log ve iz (trace)"
         ],
         "obj": "h1"
@@ -2326,8 +2326,8 @@
         "q": "Bir isteğin servisler arasında hangi yolu izlediğini ve her adımda ne kadar sürdüğünü hangi sinyal gösterir?",
         "options": [
           "İz (trace)",
-          "Metrik",
-          "Log",
+          "Metrik (zaman serisi sayaçlar)",
+          "Log (bileşen olay kaydı)",
           "Etiket"
         ],
         "obj": "h1"
@@ -2336,7 +2336,7 @@
         id: "a3063438",
         "q": "Metrik ve log aynı şeydir; biri diğerinin yerine tam olarak geçer.",
         "options": [
-          "Doğru",
+          "Doğru; metrik ve log aynı veriyi sunar, biri diğerinin yerini tamamen alır",
           "Yanlış"
         ],
         "obj": "h1"
@@ -2378,8 +2378,8 @@
         id: "fc109732",
         "q": "kubectl top pods komutunun çalışması için genellikle hangi bileşen kurulu olmalıdır?",
         "options": [
-          "Jaeger",
-          "Alertmanager",
+          "Jaeger (dağıtık iz toplama aracı)",
+          "Alertmanager (uyarı yönlendirme bileşeni)",
           "Helm",
           "metrics-server"
         ],

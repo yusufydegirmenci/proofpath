@@ -76,12 +76,12 @@
       { id: "a3f6c1d2", q: "Bir ATM'nin kart yuvasına takılan ince bir aparat, kartın manyetik şeridindeki veriyi sessizce kopyalıyor. Bu saldırı hangisidir?", options: ["Skimming", "Tailgating", "Shoulder surfing", "Baiting"], obj: "h4" },
       { id: "b8e04a7c", q: "Veri merkezi girişinde ikinci kapı, birinci kapı kapanmadan açılmıyor; amaç yetkili birinin peşinden sızmayı zorlaştırmak. Bu kontrol hangisidir?", options: ["Erişim vestibülü (access vestibule)", "Güvenlik kamerası kayıt sistemi (CCTV)", "Çevre aydınlatma ve hareket sensörü", "Ziyaretçi kayıt defteri ve rozet"], obj: "h4" },
       { id: "17637fe4", q: "Yetkili çalışanın arkasından kapıdan sızmak hangisidir?", options: ["Tailgating", "Vishing", "Typosquatting", "Pharming"], obj: "h2" },
-      { id: "e27fd259", q: "Telefonla arayıp 'IT destekten arıyorum, parolanı söyle' demek hangisine girer?", options: ["Vishing / pretexting", "Dumpster diving", "Watering hole", "Smishing"], obj: "h1" },
-      { id: "0f30e4c8", q: "Gogle.com gibi benzer yazımlı alan adı kaydetmek hangisidir?", options: ["Typosquatting", "Tailgating", "Whaling", "Baiting"], obj: "h3" },
+      { id: "e27fd259", q: "Telefonla arayıp 'IT destekten arıyorum, parolanı söyle' demek hangisine girer?", options: ["Vishing / pretexting", "Dumpster diving (çöpten atılmış belge toplama)", "Watering hole (hedefin sık ziyaret ettiği siteyi ele geçirme)", "Smishing"], obj: "h1" },
+      { id: "0f30e4c8", q: "Gogle.com gibi benzer yazımlı alan adı kaydetmek hangisidir?", options: ["Typosquatting", "Tailgating (yetkili birinin ardından kapıdan geçme)", "Whaling (üst düzey yöneticilere yönelik phishing)", "Baiting"], obj: "h3" },
       { id: "7a1f5236", q: "Genel müdürden geldiği söylenen 'acil IBAN değişikliği' e-postası için en doğru ilk adım nedir?", options: ["Tutar küçükse işlemi yapıp sonra bildirmek", "Gönderene yanıt yazıp doğrulamasını istemek", "Telefonla ya da başka bir kanaldan talebi doğrulamak", "E-postayı silip kimseye söylememek"], obj: "h4" },
       { id: "140dee78", q: "'Hesabın 1 saat içinde kapatılacak, hemen bağlantıya tıkla!' mesajında ağırlıklı olarak hangi baskı tekniği kullanılıyor?", options: ["Ödül", "Sempati", "Aciliyet ve korku", "Otorite"], obj: "h4" },
       { id: "3e5c5c7c", q: "Çalışanların sık ziyaret ettiği bir sektör forumu ele geçirilip siteyi açanlara zararlı yazılım bulaştırılıyor. Bu hangisidir?", options: ["Pharming", "Typosquatting", "Watering hole", "Vishing"], obj: "h3" },
-      { id: "620b029b", q: "Ofiste birinin omzunun üzerinden ekrana bakarak parolasını öğrenmek hangisidir?", options: ["Dumpster diving", "Baiting", "Pharming", "Shoulder surfing"], obj: "h2" },
+      { id: "620b029b", q: "Ofiste birinin omzunun üzerinden ekrana bakarak parolasını öğrenmek hangisidir?", options: ["Dumpster diving (çöpten belge toplama)", "Baiting (USB gibi yem bırakma)", "Pharming", "Shoulder surfing"], obj: "h2" },
       { id: "be38b8a1", q: "Çalışanlar otoparktaki ödeme direğine yapıştırılmış bir QR kodu okutup sahte bir ödeme sayfasına kart bilgisi giriyor. Bu saldırı hangisidir?", options: ["Smishing", "Vishing", "Pharming", "Quishing"], obj: "h1" }
     ],
     interview: [
@@ -157,7 +157,7 @@
     ],
     quiz: [
       { id: "b4b012da", q: "Kullanıcı etkileşimi olmadan ağ üzerinden kendi kendine yayılan zararlı hangisidir?", options: ["Solucan", "Truva atı", "Keylogger", "Mantık bombası"], obj: "h1" },
-      { id: "2a561e08", q: "Faydalı bir program gibi görünüp içinde zararlı yük taşıyan yazılım hangisidir?", options: ["Truva atı", "Solucan", "Botnet", "Rootkit"], obj: "h1" },
+      { id: "2a561e08", q: "Faydalı bir program gibi görünüp içinde zararlı yük taşıyan yazılım hangisidir?", options: ["Truva atı", "Solucan (kendiliğinden yayılan zararlı)", "Botnet", "Rootkit (kendini gizleyen yazılım)"], obj: "h1" },
       { id: "f424e298", q: "Fidye yazılımına karşı en etkili önlem hangisidir?", options: ["Çevrimdışı yedek ve düzenli test", "Parolayı sık değiştirmek", "Yedeği her zaman ağa bağlı tutmak", "Tüm dosyaları tek paylaşımda toplamak"], obj: "h3" },
       { id: "e39ad6ad", q: "3-2-1 yedekleme kuralında '1' neyi ifade eder?", options: ["Bir kopya çevrimdışı ya da uzakta", "Bir kullanıcı", "Bir gün", "Bir sunucu"], obj: "h3" },
       { id: "c7fede34", q: "Çalışanın ekranında fidye notu çıktı. İlk müdahale hangisidir?", options: ["Cihazın gücünü hemen kesip dosyaları silmek", "Cihazı yeniden başlatıp dosyaları kurtarmayı denemek", "Cihazı ağdan ayırıp güvenlik ekibine bildirmek", "Fidyeyi hemen ödemek"], obj: "h2" },
@@ -238,10 +238,10 @@
     ],
     quiz: [
       { id: "5f2dc9ae", q: "Yerel ağda sahte ARP cevaplarıyla trafiği saldırganın üzerinden geçirmek hangisidir?", options: ["ARP spoofing", "DNS poisoning", "SYN flood", "Replay"], obj: "h1" },
-      { id: "c78955fb", q: "Çok sayıda hesapta birkaç yaygın parolayı denemek hangisidir?", options: ["Password spraying", "Brute force", "Replay", "MITM"], obj: "h2" },
+      { id: "c78955fb", q: "Çok sayıda hesapta birkaç yaygın parolayı denemek hangisidir?", options: ["Password spraying", "Brute force (tek hesaba çok sayıda parola deneme)", "Replay (yakalanmış geçerli mesajı yeniden gönderme)", "MITM"], obj: "h2" },
       { id: "17f6c82d", q: "Rogue DHCP sunucusuna karşı switch'te hangi özellik kullanılır?", options: ["DHCP snooping", "STP", "NAT", "PoE"], obj: "h1" },
-      { id: "0ee14842", q: "SYN flood hangi tür saldırıdır?", options: ["Protokol tabanlı DoS", "Parola saldırısı", "Sosyal mühendislik", "MITM"], obj: "h3" },
-      { id: "267eaadb", q: "Başka bir sitedeki sızıntıdan alınan gerçek kullanıcı adı/parola çiftlerini hedef sitede denemek hangisidir?", options: ["Brute force", "Password spraying", "Credential stuffing", "Replay"], obj: "h2" },
+      { id: "0ee14842", q: "SYN flood hangi tür saldırıdır?", options: ["Protokol tabanlı DoS", "Parola saldırısı (hesap tahmini)", "Sosyal mühendislik (kullanıcıyı kandırma)", "MITM"], obj: "h3" },
+      { id: "267eaadb", q: "Başka bir sitedeki sızıntıdan alınan gerçek kullanıcı adı/parola çiftlerini hedef sitede denemek hangisidir?", options: ["Brute force (tüm parolaları deneme)", "Password spraying (yaygın parola listesi)", "Credential stuffing", "Replay"], obj: "h2" },
       { id: "5f2cb041", q: "Sahte DNS cevaplarına karşı kayıtların dijital imzayla doğrulanmasını sağlayan önlem hangisidir?", options: ["DAI", "DHCP snooping", "Port security", "DNSSEC"], obj: "h1" },
       { id: "d357c829", q: "Saldırgan, istemci ile sunucu arasındaki el sıkışmaya karışıp TLS 1.3 yerine eski ve açığı bilinen bir sürümün kullanılmasını sağlıyor. Bu saldırı hangisidir?", options: ["Replay saldırısı", "Protokol düşürme (downgrade) saldırısı", "DNS önbellek zehirlenmesi", "Parola püskürtme"], obj: "h4" },
       { id: "226f0b2a", q: "Bir giriş sayfası yanlış kullanıcı adında 'Böyle bir kullanıcı yok', doğru kullanıcı adı ama yanlış parolada 'Parola hatalı' diyor. Saldırgan bu farktan ne öğrenir ve en iyi düzeltme nedir?", options: ["Parolanın uzunluğunu; hata mesajını daha ayrıntılı yapmak", "Oturum belirtecini; çerezi HttpOnly yapmak", "Sunucunun yazılım sürümünü; banner'ı gizlemek", "Hangi hesapların var olduğunu; iki durumda da aynı genel hata mesajını göstermek"], obj: "h4" }
@@ -317,10 +317,10 @@
       "WAF ek bir katmandır ve hatalı kodu düzeltmez; asıl çözüm kodda yapılır."
     ],
     quiz: [
-      { id: "281ec6c5", q: "SQL injection'a karşı en etkili savunma hangisidir?", options: ["Parametreli sorgu", "Sadece WAF", "Parolayı uzatmak", "HTTPS kullanmak"], obj: "h1" },
+      { id: "281ec6c5", q: "SQL injection'a karşı en etkili savunma hangisidir?", options: ["Parametreli sorgu", "Yalnızca WAF kuralları eklemek", "Parolayı uzatmak", "HTTPS ile trafiği şifrelemek"], obj: "h1" },
       { id: "2b28ad34", q: "Başka kullanıcıların tarayıcısında çalışan zararlı JavaScript hangi saldırıdır?", options: ["XSS", "CSRF", "SSRF", "Buffer overflow"], obj: "h2" },
       { id: "6b110126", q: "Kullanıcının açık oturumunu kullanarak istemeden işlem yaptırma hangisidir?", options: ["CSRF", "XSS", "Path traversal", "Replay"], obj: "h2" },
-      { id: "547c8f31", q: "../../etc/passwd gibi bir girdi hangi saldırıya işaret eder?", options: ["Path traversal", "SQL injection", "XSS", "DDoS"], obj: "h3" },
+      { id: "547c8f31", q: "../../etc/passwd gibi bir girdi hangi saldırıya işaret eder?", options: ["Path traversal", "SQL injection (sorgu manipülasyonu)", "XSS (betik enjeksiyonu)", "DDoS"], obj: "h3" },
       { id: "f55a350d", q: "Saldırgan bir web uygulamasını, dışarıdan erişilemeyen iç ağdaki bir yönetim servisine istek göndermeye zorluyor. Bu hangisidir?", options: ["XSS", "CSRF", "SSRF", "Buffer overflow"], obj: "h2" },
       { id: "18c2a7d4", q: "Bir web uygulaması beklenmedik bir hata oluşunca kullanıcıya tam yığın izini ve veritabanı bağlantı dizesini gösteriyor. Bu, hangi zafiyet türünün örneğidir?", options: ["İstisnai durumların güvensiz ele alınması (hata yönetimi hatası)", "SQL enjeksiyonu", "Çapraz site istek sahteciliği (CSRF)", "Dizin gezinme (path traversal)"], obj: "h4" },
       { id: "ea7c5971", q: "Hangi İKİ kontrol XSS (siteler arası betik çalıştırma) saldırılarına karşı etkilidir?", options: ["Çıktı kodlaması (output encoding)", "Content Security Policy (CSP)", "Parola karmaşıklığı kuralını sıkılaştırmak", "TLS sürümünü yükseltmek", "Sunucuda port taramasını engellemek"], multi: 2, obj: "h2" }
@@ -397,9 +397,9 @@
     quiz: [
       { id: "d3554b18", q: "Üreticinin henüz bilmediği ve yaması olmayan zafiyet nasıl adlandırılır?", options: ["Zero-day", "End-of-life", "Misconfiguration", "False positive"], obj: "h1" },
       { id: "d5be7499", q: "Zafiyetin şiddetini 0-10 arası puanlayan sistem hangisidir?", options: ["CVSS", "CVE", "SIEM", "DLP"], obj: "h2" },
-      { id: "cb1193b2", q: "Varsayılan parolanın değiştirilmemesi hangi zafiyet türüdür?", options: ["Yapılandırma hatası", "Zero-day", "Buffer overflow", "Tedarik zinciri"], obj: "h1" },
+      { id: "cb1193b2", q: "Varsayılan parolanın değiştirilmemesi hangi zafiyet türüdür?", options: ["Yapılandırma hatası", "Zero-day (üreticinin henüz bilmediği kod zafiyeti)", "Buffer overflow (kod düzeyinde bellek taşması hatası)", "Tedarik zinciri"], obj: "h1" },
       { id: "a4c19945", q: "Tarayıcının bulduğu ama gerçekte olmayan bir bulguya ne denir?", options: ["False positive", "False negative", "Zero-day", "Exploit"], obj: "h2" },
-      { id: "791744bd", q: "Üreticisi desteğini bitirdiği için artık hiç yama yayımlamayan bir işletim sistemi hangi zafiyet türüne örnektir?", options: ["End-of-life sistem", "Zero-day", "Yanlış pozitif", "Sızma testi"], obj: "h1" },
+      { id: "791744bd", q: "Üreticisi desteğini bitirdiği için artık hiç yama yayımlamayan bir işletim sistemi hangi zafiyet türüne örnektir?", options: ["End-of-life sistem", "Zero-day (üreticinin henüz bilmediği açık)", "Yanlış pozitif (taramanın verdiği hatalı alarm)", "Sızma testi"], obj: "h1" },
       { id: "4774f970", q: "İki bulgu var: (A) iç ağdaki test makinesinde CVSS 9.8 ama bilinen sömürü yok; (B) internete açık müşteri portalında CVSS 7.5 ve internette çalışan sömürü kodu mevcut. Hangisi önce kapatılmalıdır?", options: ["B: dışa açık ve sömürüsü hazır", "A: çünkü puanı daha yüksek", "İkisi de aynı anda, sıra önemsiz", "Hangisinin yaması daha kolaysa o"], obj: "h3" },
       { id: "569f6a37", q: "Bir kurumun, kapsamı ve izni yazılı belirlenmiş şekilde yetkili bir uzmandan bulunan açıkları gerçekten sömürüp gerçek etkiyi göstermesini istemesi hangisidir?", options: ["Sızma testi","Zafiyet taraması","CVE araması","CVSS puanlaması"], obj: "h2" },
       { id: "e236653f", q: "Güvenlik ekibi, farklı ürünlerdeki birçok açığın aynı kök hata türünden (ör. girdi doğrulamasının eksikliği) kaynaklandığını raporlamak istiyor. Hata türlerini sınıflandıran liste hangisidir?", options: ["CVE", "CVSS", "CISA KEV", "CWE"], obj: "h2" }
@@ -471,11 +471,11 @@
     ],
     quiz: [
       { id: "5a8fdef8", q: "İnternete açık web sunucusu hangi bölgeye yerleştirilir?", options: ["DMZ", "Yönetim ağı", "Kullanıcı ağı", "Air gap"], obj: "h1" },
-      { id: "01345129", q: "Segmentasyonun temel güvenlik faydası nedir?", options: ["Saldırının yayılmasını sınırlar", "İnterneti hızlandırır", "Parolayı güçlendirir", "Lisans maliyetini düşürür"], obj: "h1" },
-      { id: "9ae34017", q: "Kritik bir sistemi ağdan fiziksel olarak tamamen ayırmak hangisidir?", options: ["Air gap", "DMZ", "VLAN", "NAT"], obj: "h2" },
-      { id: "fb596526", q: "Switch portuna izinsiz cihaz bağlanmasını engelleyen standart hangisidir?", options: ["802.1X", "NTP", "SNMP", "DHCP"], obj: "h3" },
+      { id: "01345129", q: "Segmentasyonun temel güvenlik faydası nedir?", options: ["Saldırının yayılmasını sınırlar", "İnterneti hızlandırır ve ağdaki gecikmeyi belirgin biçimde azaltır", "Parolayı güçlendirir", "Lisans maliyetini düşürür ve yönetim yükünü ciddi ölçüde azaltır"], obj: "h1" },
+      { id: "9ae34017", q: "Kritik bir sistemi ağdan fiziksel olarak tamamen ayırmak hangisidir?", options: ["Air gap", "DMZ (ağa bağlı kalan tampon bölge)", "VLAN (mantıksal ağ ayrımı)", "NAT"], obj: "h2" },
+      { id: "fb596526", q: "Switch portuna izinsiz cihaz bağlanmasını engelleyen standart hangisidir?", options: ["802.1X", "NTP (ağ zaman protokolü)", "SNMP (ağ yönetim protokolü)", "DHCP"], obj: "h3" },
       { id: "1adf63b5", q: "İki VLAN tanımlandı, VLAN'lar arası yönlendirme açık ama aralarında hiçbir ACL ya da güvenlik duvarı kuralı yok. Güvenlik açısından durum nedir?", options: ["Ayrım göstermeliktir; yönlendirme filtrelenmediği için trafik VLAN'lar arasında geçebilir", "VLAN'lar kendiliğinden tam yalıtım sağlar; yönlendirme açık olsa da trafik karışmaz", "Trafik yalnızca şifreliyse VLAN'lar arasında geçebilir, düz metin trafik engellenir", "Sorun yalnızca iki VLAN fiziksel olarak aynı kabloyu paylaşıyorsa ortaya çıkar"], obj: "h2" },
-      { id: "b313193d", q: "Yönetilen sunuculara erişimin tek ve izlenen bir noktadan yapılmasını sağlayan sistem hangisidir?", options: ["Bastion host (jump server)", "Honeypot", "Air gap", "Stateless paket filtresi"], obj: "h3" },
+      { id: "b313193d", q: "Yönetilen sunuculara erişimin tek ve izlenen bir noktadan yapılmasını sağlayan sistem hangisidir?", options: ["Bastion host (jump server)", "Honeypot (saldırganı çeken tuzak sistem)", "Air gap (ağdan koparılmış sistem)", "Stateless paket filtresi"], obj: "h3" },
       { id: "1de02f42", q: "Ağa bağlanmak isteyen bir cihazın kimliği ya da sağlık durumu (yama, antivirüs) uygun değilse onu ağa almayan ya da karantina bölgesine yönlendiren kontrol hangisidir?", options: ["NAC","Honeypot","DMZ","Air gap"], obj: "h3" }
     ],
     interview: [
