@@ -64,6 +64,9 @@
         t: "p",
         text: "int ile float çarpılınca sonuç float olur. int() ondalık kısmı kırpar: 3.9 değeri 3 olur. Metne dönüşüm str() ile yapılır; metin ile sayı + ile birleşmez."
       },
+      { t: "h", text: "Sayı yazım biçimleri ve kayan nokta" },
+      { t: "cmd", lang: "python", text: "print(0b1010)         # 10   (ikilik)\nprint(0o20)           # 16   (sekizlik)\nprint(0xFF)           # 255  (onaltılık)\nprint(1_000_000)      # 1000000  (okunması için alt çizgi)\nprint(bin(10), oct(16), hex(255))   # 0b1010 0o20 0xff\nprint(int(\"ff\", 16), int(\"1101\", 2))   # 255 13\nprint(1e3, type(1e3))   # 1000.0 <class 'float'>\n\nprint(0.1 * 3)             # 0.30000000000000004\nprint(0.1 * 3 == 0.3)      # False\nprint(round(0.1 * 3, 2) == 0.3)        # True\nprint(abs(0.1 * 3 - 0.3) < 1e-9)       # True" },
+      { t: "steps", h: "Kurallar", items: ["0b, 0o ve 0x önekleri sayıyı ikilik, sekizlik ve onaltılık yazar; print yine onluk gösterir. bin(), oct() ve hex() ters yönde metin üretir, int(metin, taban) metni tabanda okur.","Bilgisayar sayıları ikilik düzende saklar. 0.1 gibi bazı ondalıklar ikilikte sonsuz sürer, bu yüzden float yaklaşık saklanır ve 0.1 * 3 tam 0.3 olmaz.","Float'ları == ile karşılaştırma. Ya yuvarla (round) ya da farkın çok küçük olup olmadığına bak. Para gibi tam sonuç isteyen yerde kuruş cinsinden tam sayı kullan."] },
       { t: "h", text: "Kendin dene" },
       { t: "alan", id: "py-1-tutar" },
       { t: "h", text: "Bozuk kodu bul ve düzelt" },
@@ -80,14 +83,14 @@
     ],
     objectives: [
       { id: "h1", text: "Geçerli ve geçersiz değişken adlarını ayırt edip bir değere ad vererek sonradan değiştirebilirsin." },
-      { id: "h2", text: "int, float, str ve bool türlerini örnek değerlere bakarak tanıyıp type() ile doğrulayabilirsin." },
+      { id: "h2", text: "int, float, str ve bool türlerini örnek değerlere bakarak tanıyıp type() ile doğrulayabilirsin; 0b, 0o, 0x yazımlarını okuyup float'ın yaklaşık saklandığını bilirsin." },
       { id: "h3", text: "int(), float() ve str() ile tür dönüşümü yapıp hata verecek dönüşümü önceden söyleyebilirsin." },
       { id: "h4", text: "Birkaç satırlık bir kodda değişkenlerin her satırdan sonra aldığı değeri elle izleyebilirsin." }
     ],
     summary: ["Değişken, değere verilen addır; ad = değer biçiminde bağlanır.", "Ad harf ya da alt çizgiyle başlar, rakam içerebilir, tire ve boşluk içermez; büyük küçük harf ayrılır.", "Dört temel tür: int (12), float (7.5), str (\"kalem\"), bool (True).", "int(), float(), str() tür dönüştürür; int(\"3.5\") hata verir, int(3.9) ise 3 döndürür.", "Kodu çalıştırmadan önce her satırdan sonra değişkenlerin değerini kâğıda yazarak izle."],
     prereq: [],
     minutes: 30,
-    sonDogrulama: "2026-10-24",
+    sonDogrulama: "2026-10-26",
     surum: "2026-10-v1",
     quiz: [
       {
@@ -137,6 +140,24 @@
         q: "x = 2, y = x * 3, x = 10 çalıştı. print(y) ne yazar?",
         options: ["30", "2", "10", "6"],
         obj: "h4"
+      },
+      {
+        id: "2c41c0a7",
+        q: "print(0o17 + 0b11) kodu ne yazdırır?",
+        options: ["20", "Hata verir", "18", "1711"],
+        obj: "h2"
+      },
+      {
+        id: "6df65fec",
+        q: "print(0.1 + 0.2 == 0.3) kodu ne yazdırır?",
+        options: ["False", "True", "0.3", "Hata verir"],
+        obj: "h2"
+      },
+      {
+        id: "c47c23ff",
+        q: "print(int(\"101\", 2)) kodu ne yazdırır?",
+        options: ["101", "3", "Hata verir", "5"],
+        obj: "h3"
       }
     ],
     interview: [
