@@ -176,7 +176,7 @@
     quiz: [
       { id: "655e3549", q: "Değişiklikleri uzak depoya göndermek için hangi komut kullanılır?", options: ["git push", "git pull", "git add", "git status"], obj: "h1" },
       { id: "9297fa4a", q: "Paylaşılan dalda bir commit'i güvenle geri almanın yolu hangisidir?", options: ["git revert", "git reset --hard", "dosyayı silmek", "git init"], obj: "h2" },
-      { id: "05b6d708", q: "Yeni bir dal açmak için hangisi kullanılır?", options: ["git switch -c dal", "git clone dal", "git push dal", "git merge dal"], obj: "h2" },
+      { id: "05b6d708", q: "Yeni bir dal açmak için hangisi kullanılır?", options: ["git switch -c dal", "git clone dal komutuyla depoyu yeni bir dizine kopyalamak", "git push dal", "git merge dal ile mevcut dalı bulunduğun dala birleştirmek"], obj: "h2" },
       { id: "77dcde3e", q: "feature/login dalındaki işi main dalına almak için hangisini yaparsın?", options: ["git revert feature/login", "git switch -c main", "main'e geçip git merge feature/login", "git add feature/login"], obj: "h2" },
       { id: "8a3cf7d7", q: "Yanlışlıkla bir erişim anahtarı commit ettin. İlk ne yaparsın?", options: ["Anahtarı iptal edip yenisini oluştururum", "Hiçbir şey yapmam", "Sadece dosyayı silerim", "Depoyu herkese açarım"], obj: "h3" },
       { id: "87789c84", q: "Bir değişikliği uzak depoya göndermenin doğru sırası hangisidir?", options: ["git commit, git add, git push", "git push, git add, git commit", "git add, git push, git commit", "git add, git commit, git push"], obj: "h1" }
@@ -242,7 +242,7 @@
     quiz: [
       { id: "a74238f4", q: "Hiç eşleşmesi olmasa da soldaki tablonun tüm satırlarını getiren birleştirme hangisidir?", options: ["LEFT JOIN", "INNER JOIN", "CROSS APPLY", "UNION"], obj: "h1" },
       { id: "e69d401d", q: "SQL injection'ı önlemenin temel yolu nedir?", options: ["Parametreli sorgu", "Tırnakları elle silmek", "Sorguyu şifrelemek", "Tabloyu gizlemek"], obj: "h4" },
-      { id: "2be05e53", q: "Birden çok adımı ya hep ya hiç yapan yapı nedir?", options: ["Transaction", "Index", "View", "Alias"], obj: "h3" },
+      { id: "2be05e53", q: "Birden çok adımı ya hep ya hiç yapan yapı nedir?", options: ["Transaction", "Index, aranan sütunlarda sorguyu hızlandıran yapı", "View, kayıtlı bir sorgudan oluşan sanal tablo", "Alias"], obj: "h3" },
       { id: "4b222874", q: "WHERE'siz UPDATE ne yapar?", options: ["Tablodaki tüm satırları günceller", "Hiçbir şey", "Hata verir", "Sadece ilk satırı günceller"], obj: "h2" },
       { id: "23c6c375", q: "Her satırı benzersiz tanımlayan sütuna ne denir?", options: ["Primary key", "Foreign key", "Alias", "Cursor"], obj: "h1" },
       { id: "bd4a2d48", q: "Yalnızca id değeri 7 olan müşterinin şehrini değiştirmek için hangi sorgu güvenlidir?", options: ["UPDATE customers SET sehir = 'Ankara';", "UPDATE customers SET sehir = 'Ankara' WHERE 1 = 1;", "UPDATE customers SET sehir = 'Ankara' WHERE id = 7;", "UPDATE customers SET sehir = 'Ankara' WHERE id > 0;"], obj: "h2" }

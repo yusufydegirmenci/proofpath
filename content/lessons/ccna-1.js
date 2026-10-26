@@ -68,7 +68,7 @@
       { id: "f168ff6a", q: "Farklı iki ağı birbirine bağlayan cihaz hangisidir?", options: ["Switch", "Router", "Yazıcı", "Access point"], obj: "h1" },
       { id: "76513e08", q: "Bakır UTP kablonun standart en uzun mesafesi nedir?", options: ["10 metre", "100 metre", "1 kilometre", "10 kilometre"], obj: "h2" },
       { id: "73f45c3e", q: "Tek bir ofis binasındaki ağ hangi türdür?", options: ["WAN", "LAN", "İnternet", "VPN"], obj: "h2" },
-      { id: "83e3546d", q: "Wi-Fi ile bağlanmak için ağa hangi cihaz eklenir?", options: ["Access point", "Hub", "Fiber kablo", "Firewall"], obj: "h1" },
+      { id: "83e3546d", q: "Wi-Fi ile bağlanmak için ağa hangi cihaz eklenir?", options: ["Access point", "Hub ile kablolu bir yayın cihazı", "Fiber kablo", "Firewall, kurallara göre trafik süzen cihaz"], obj: "h1" },
       { id: "78ec9d2f", q: "'ping 127.0.0.1' neyi test eder?", options: ["İnterneti", "Router'ı", "Bilgisayarın kendi ağ yazılımını", "DNS sunucusunu"], obj: "h3" },
       { id: "4c41fe3f", q: "ipconfig'te IPv4 adresin görünüyor ve ping 127.0.0.1 cevap veriyor, ama Default Gateway'e ping cevapsız. Sorunu önce nerede ararsın?", options: ["Bilgisayarın kendi ağ yazılımında", "Hedef web sitesinin sunucusunda", "Bilgisayarla gateway arasındaki bağlantıda (kablo, switch portu, router)", "DNS çözümlemesinde"], obj: "h3" }
     ],
@@ -158,7 +158,7 @@
       { id: "2736eddc", q: "255.255.255.0 maskesinin kısa yazımı nedir?", options: ["/16", "/24", "/28", "/8"], obj: "h4" },
       { id: "4ec8f367", q: "192.168.1.0/24 ağında kullanılabilir host adresi aralığı hangisidir?", options: ["192.168.1.0 – 192.168.1.255", "192.168.1.0 – 192.168.1.254", "192.168.1.1 – 192.168.1.254", "192.168.1.1 – 192.168.1.255"], obj: "h1" },
       { id: "c072b9ac", q: "192.168.5.130/24 adresinin bulunduğu ağın broadcast adresi nedir?", options: ["192.168.5.0", "192.168.5.130", "192.168.5.254", "192.168.5.255"], obj: "h1" },
-      { id: "6e319b06", q: "192.168.1.10/24 ile hangi adres aynı ağdadır?", options: ["192.168.2.10", "192.168.1.200", "10.0.0.10", "192.168.0.10"], obj: "h2" }
+      { id: "6e319b06", q: "192.168.1.10/24 ile hangi adres aynı ağdadır?", options: ["192.168.2.10, /24 maskeyle", "192.168.1.200", "10.0.0.10", "192.168.0.10, aynı /24 maskeyle"], obj: "h2" }
     ],
     interview: [
       { q: "Alt ağ maskesi ne işe yarar?", a: "IP adresinin hangi bölümünün ağ, hangi bölümünün host olduğunu belirler. Cihaz, hedefin kendi ağında olup olmadığını maskeye bakarak anlar. Aynı ağdaysa doğrudan gönderir, değilse gateway'e gönderir." },
@@ -353,9 +353,9 @@
       { id: "3876cbb6", q: "Switch'in her portu neyi oluşturur?", options: ["Ayrı bir broadcast domain", "Ayrı bir collision domain", "Ayrı bir VLAN", "Ayrı bir alt ağ"], obj: "h3" },
       { id: "b1f21db2", q: "VLAN tanımlanmamış tek bir switch'in 8 portunun hepsi kullanılıyor. Kaç collision domain ve kaç broadcast domain vardır?", options: ["1 collision, 8 broadcast", "8 collision, 8 broadcast", "1 collision, 1 broadcast", "8 collision, 1 broadcast"], obj: "h3" },
       { id: "86f37e99", q: "Bir router'ın iki arayüzüne birer switch bağlı ve hiçbirinde VLAN yok. Toplam kaç broadcast domain vardır?", options: ["1", "2", "3", "4"], obj: "h3" },
-      { id: "c3266e63", q: "Cisco switch'te MAC tablosunu hangi komut gösterir?", options: ["show ip route", "show mac address-table", "show vlan brief", "show running-config"], obj: "h4" },
+      { id: "c3266e63", q: "Cisco switch'te MAC tablosunu hangi komut gösterir?", options: ["show ip route", "show mac address-table", "show vlan brief ile VLAN ve port listesi", "show running-config ile geçerli yapılandırma"], obj: "h4" },
       { id: "90524eb3", q: "Ethernet çerçevesinde hata denetimi için kullanılan ve çerçevenin sonunda bulunan alan hangisidir?", options: ["Preamble","Tür/uzunluk","Hedef MAC","FCS"], obj: "h1" },
-      { id: "744c128b", q: "Switch MAC tablosunu doldururken hangi alana bakar?", options: ["Gelen çerçevenin hedef MAC adresine","Paketin hedef IP adresine","Gelen çerçevenin kaynak MAC adresine","Tür/uzunluk alanına"], obj: "h1" },
+      { id: "744c128b", q: "Switch MAC tablosunu doldururken hangi alana bakar?", options: ["Gelen çerçevenin hedef MAC adresine ve çıkış portuna","Paketin hedef IP adresine ve alt ağ maskesine","Gelen çerçevenin kaynak MAC adresine","Tür/uzunluk alanına"], obj: "h1" },
       { id: "007423a8", q: "Bir çerçevenin hedef MAC adresi FF:FF:FF:FF:FF:FF. Switch ne yapar?", options: ["Çerçeveyi düşürür","Geldiği port hariç tüm portlara gönderir","Tablodaki ilk porta gönderir","Çerçeveyi yalnız router portuna gönderir"], obj: "h1" },
       { id: "8d4a4d18", q: "Standart Ethernet çerçevesinin (ön söz hariç, etiketsiz) boyutu kaç bayt aralığındadır?", options: ["64-1518","32-512","1500-9000","46-1500"], obj: "h1" },
       { id: "7c22dd5c", q: "MAC tablosunda kaydı olmayan bir hedefe çerçeve geldiğinde switch sonuç olarak neyi öğrenir?", options: ["Hedef MAC adresinin hangi portta olduğunu","Hedef IP adresini","Hiçbir şey öğrenmez","Çerçevenin kaynak MAC adresini ve giriş portunu"], obj: "h1" }
@@ -441,12 +441,12 @@
     ],
     quiz: [
       { id: "fdcb9445", q: "VLAN'ların temel amacı nedir?", options: ["Hızı artırmak", "Bir switch'i mantıksal ağlara bölmek", "Şifreleme yapmak", "IP adresi dağıtmak"], obj: "h1" },
-      { id: "6329e426", q: "Aşağıdakilerden hangisi VLAN kullanmanın doğrudan faydasıdır?", options: ["Kablo uzunluğu sınırını 100 metreden artırmak", "Tüm trafiği otomatik şifrelemek", "Cihazlara otomatik IP adresi dağıtmak", "Departmanları ayırıp broadcast alanını küçültmek"], obj: "h1" },
+      { id: "6329e426", q: "Aşağıdakilerden hangisi VLAN kullanmanın doğrudan faydasıdır?", options: ["Bakır kablonun 100 metrelik uzunluk sınırını fiziksel olarak aşmak", "Tüm VLAN trafiğini uçtan uca otomatik olarak şifreleyip korumak", "Cihazlara otomatik IP adresi dağıtmak", "Departmanları ayırıp broadcast alanını küçültmek"], obj: "h1" },
       { id: "eee214c8", q: "Bir bilgisayarın bağlandığı port ile iki switch'i bağlayan uplink portu için doğru eşleşme hangisidir?", options: ["Bilgisayar: trunk, uplink: access", "Her ikisi de access", "Bilgisayar: access, uplink: trunk", "Her ikisi de trunk"], obj: "h2" },
       { id: "b55edca6", q: "Birden fazla VLAN'ın trafiğini taşıyan switch portu hangisidir?", options: ["Access port", "Trunk port", "Console port", "Loopback"], obj: "h2" },
       { id: "534f5507", q: "Farklı VLAN'daki iki cihazın konuşabilmesi için ne gerekir?", options: ["Daha uzun kablo", "Yönlendirme yapan bir cihaz (router ya da L3 switch)", "Aynı MAC adresi", "Hub"], obj: "h3" },
-      { id: "863f4870", q: "Portu VLAN 30'a atayan komut hangisidir?", options: ["switchport mode trunk", "switchport access vlan 30", "vlan 30 access", "ip vlan 30"], obj: "h4" },
-      { id: "225e3972", q: "VLAN ve port eşleşmesini özet gösteren komut hangisidir?", options: ["show vlan brief", "show ip route", "show version", "show clock"], obj: "h4" }
+      { id: "863f4870", q: "Portu VLAN 30'a atayan komut hangisidir?", options: ["switchport mode trunk", "switchport access vlan 30", "vlan 30 access komutu ile port ataması", "ip vlan 30 komutunu arayüz modunda girerek"], obj: "h4" },
+      { id: "225e3972", q: "VLAN ve port eşleşmesini özet gösteren komut hangisidir?", options: ["show vlan brief", "show ip route komutu, bağlantılı ağları listeler", "show version, cihaz sürüm bilgisini listeler", "show clock"], obj: "h4" }
     ],
     interview: [
       { q: "VLAN nedir, neden kullanılır?", a: "Bir fiziksel switch üzerinde ayrı mantıksal ağlar oluşturmaktır. Güvenlik (departmanları ayırma), performans (broadcast domain'i küçültme) ve esneklik için kullanılır." },
@@ -526,7 +526,7 @@
     ],
     quiz: [
       { id: "5c70cb56", q: "Router, hedef ağ için birden çok eşleşme bulursa hangisini seçer?", options: ["En kısa prefix", "En uzun prefix (en spesifik)", "Rastgele", "İlk yazılanı"], obj: "h1" },
-      { id: "f7901442", q: "Routing tablosunda 'S' harfi neyi gösterir?", options: ["Switch", "Static route", "Secure", "Subnet"], obj: "h2" },
+      { id: "f7901442", q: "Routing tablosunda 'S' harfi neyi gösterir?", options: ["Switch, yani yönlendirme tablosundaki anahtar kaydı", "Static route", "Secure", "Subnet, doğrudan bağlı alt ağ kaydı"], obj: "h2" },
       { id: "19426cb0", q: "Bilinmeyen tüm hedefler için kullanılan route hangisidir?", options: ["0.0.0.0/0", "255.255.255.255/32", "127.0.0.0/8", "10.0.0.0/8"], obj: "h3" },
       { id: "425af39d", q: "Static route'un administrative distance değeri varsayılan olarak kaçtır?", options: ["0", "1", "90", "110"], obj: "h1" },
       { id: "15495b38", q: "A router'ına B ağını gösterdin ama ping cevap dönmüyor. En olası sebep nedir?", options: ["Kablo fazla uzun", "B router'ında A ağına dönüş yolu yok", "Switch bozuk", "DNS hatası"], obj: "h4" },

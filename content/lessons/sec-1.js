@@ -53,7 +53,7 @@
     quiz: [
       { id: "2745a447", q: "Bir çalışan müşteri tablosundaki bir fiyatı izinsiz değiştirdi. Hangi güvenlik hedefi bozuldu?", options: ["Bütünlük", "Gizlilik", "Erişilebilirlik", "İnkâr edememe"], obj: "h1" },
       { id: "6abc829a", q: "DDoS saldırısıyla bir web sitesi saatlerce kapalı kaldı. Etkilenen hedef hangisi?", options: ["Erişilebilirlik", "Gizlilik", "Bütünlük", "Kimlik doğrulama"], obj: "h1" },
-      { id: "82e4236a", q: "'Kimsin?' sorusuna cevap veren AAA bileşeni hangisidir?", options: ["Authentication", "Authorization", "Accounting", "Availability"], obj: "h2" },
+      { id: "82e4236a", q: "'Kimsin?' sorusuna cevap veren AAA bileşeni hangisidir?", options: ["Authentication", "Authorization (yetkilendirme)", "Accounting (kayıt tutma)", "Availability"], obj: "h2" },
       { id: "aadcf15f", q: "Dijital imza ve log kayıtları en çok hangi kavrama katkı sağlar?", options: ["İnkâr edememe (non-repudiation)", "Yedekleme", "Ağ segmentasyonu", "Şifre sıfırlama"], obj: "h3" }
     ],
     interview: [
@@ -127,7 +127,7 @@
       { id: "cf92b0e4", q: "Yamalanamayan eski bir sunucuyu ayrı bir ağa taşımak hangi kontrol işlevidir?", options: ["Telafi edici", "Caydırıcı", "Düzeltici", "Yönlendirici"], obj: "h2" },
       { id: "367418de", q: "Log analizi ve IDS hangi işlev grubuna girer?", options: ["Dedektif", "Önleyici", "Caydırıcı", "Düzeltici"], obj: "h2" },
       { id: "abe827ab", q: "Güvenlik politikası ve risk değerlendirmesi hangi kategoridedir?", options: ["Yönetimsel", "Teknik", "Fiziksel", "Operasyonel"], obj: "h1" },
-      { id: "b5d0970b", q: "Çalışanlara verilen güvenlik farkındalık eğitimi hangi kategoridedir?", options: ["Teknik", "Yönetimsel", "Operasyonel", "Fiziksel"], obj: "h1" },
+      { id: "b5d0970b", q: "Çalışanlara verilen güvenlik farkındalık eğitimi hangi kategoridedir?", options: ["Teknik kontrol (yazılım ya da donanım)", "Yönetimsel (politika ve risk)", "Operasyonel", "Fiziksel"], obj: "h1" },
       { id: "daf5593f", q: "'Bu alan kamerayla izlenmektedir' tabelasının ana işlevi nedir?", options: ["Caydırıcı", "Düzeltici", "Dedektif", "Telafi edici"], obj: "h2" },
       { id: "df2b5cdd", q: "Bir hastane girişte kart okuyucu, ağda güvenlik duvarı, cihazlarda EDR ve veritabanında şifreleme kullanıyor. Biri kart okuyucuyu atlatsa bile diğer katmanlar saldırıyı zorlaştırıyor. Bu yaklaşım hangisidir?", options: ["Telafi edici kontrol (compensating control)", "Derinlemesine savunma (defense in depth)", "Görev ayrımı (separation of duties)", "Hava boşluğu (air gap)"], obj: "h3" }
     ],
@@ -411,10 +411,10 @@
       "Tehdit vektörü saldırganın girdiği yoldur (e-posta, USB, açık servis); aktör ve motivasyondan ayrı bir kavramdır."
     ],
     quiz: [
-      { id: "909b424e",q:"Fidye yazılımıyla para kazanmayı hedefleyen, organize ve kaynaklı grup hangisidir?",options:["Organize suç grubu","Hacktivist","Script kiddie","Gölge BT"],obj:"h1" },
-      { id: "2dc5dbc7",q:"Uzun süreli, gizli casusluk yürüten ve en yüksek kaynağa sahip aktör hangisidir?",options:["Devlet destekli (APT)","Script kiddie","Hacktivist","Kazara iç tehdit"],obj:"h1" },
+      { id: "909b424e",q:"Fidye yazılımıyla para kazanmayı hedefleyen, organize ve kaynaklı grup hangisidir?",options:["Organize suç grubu","Hacktivist (siyasi ya da ideolojik amaçlı saldırgan)","Script kiddie (hazır araç kullanan düşük yetenekli kişi)","Gölge BT"],obj:"h1" },
+      { id: "2dc5dbc7",q:"Uzun süreli, gizli casusluk yürüten ve en yüksek kaynağa sahip aktör hangisidir?",options:["Devlet destekli (APT)","Script kiddie (hazır araç kullanan düşük yetenekli saldırgan)","Hacktivist (siyasi mesaj vermek için görünür eylemler yapan)","Kazara iç tehdit"],obj:"h1" },
       { id: "a6564d73",q:"Çalışanın onaysız bir bulut depolama hizmeti kullanması neyi gösterir?",options:["Gölge BT","Hacktivizm","DDoS","Zero-day"],obj:"h1" },
-      { id: "426d25f4",q:"Hazır araçlarla saldıran düşük yetenekli kişi nasıl adlandırılır?",options:["Script kiddie","APT","Insider","Organize suç"],obj:"h1" },
+      { id: "426d25f4",q:"Hazır araçlarla saldıran düşük yetenekli kişi nasıl adlandırılır?",options:["Script kiddie","APT (devlet destekli grup)","Insider (içeriden yetkili kullanıcı)","Organize suç"],obj:"h1" },
       { id: "32e9560b",q:"Yetkili bir çalışan, bilmeden zararlı bir e-posta ekini açtı. Olay, çalışanın rolüne göre hangi tehdit türüdür?",options:["Kasıtlı iç tehdit","Hacktivist","Kazara iç tehdit","Organize suç grubu"],obj:"h2" },
       { id: "628a34f6",q:"Saldırgan phishing e-postasıyla kuruma girdi. Bu saldırıda e-posta neyi temsil eder?",options:["Tehdit aktörü","Motivasyon","Kontrol işlevi","Tehdit vektörü"],obj:"h3" }
     ],

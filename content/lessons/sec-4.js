@@ -55,10 +55,10 @@
     ],
     quiz: [
       { id: "762f2e0d", q: "Varlık yönetiminin güvenlik açısından ilk faydası nedir?", options: ["Neyin korunması gerektiğini bilmek", "İnterneti hızlandırmak", "Parolaları güçlendirmek", "Lisansı ucuzlatmak"], obj: "h2" },
-      { id: "09e81785", q: "Diski kurtarılamaz hale getirmenin geleneksel fiziksel yöntemi hangisidir?", options: ["Parçalama (shredding)", "Format atmak", "Dosyayı silmek", "Yeniden adlandırmak"], obj: "h3" },
-      { id: "cc6f910e", q: "Her varlık için atanması gereken sorumlu kişiye ne denir?", options: ["Owner (sahip)", "Attacker", "Auditor", "Proxy"], obj: "h2" },
+      { id: "09e81785", q: "Diski kurtarılamaz hale getirmenin geleneksel fiziksel yöntemi hangisidir?", options: ["Parçalama (shredding)", "Hızlı format atmak (yalnızca dosya tablosunu sıfırlayan işlem)", "Dosyayı silmek ve çöp kutusunu boşaltmak", "Yeniden adlandırmak"], obj: "h3" },
+      { id: "cc6f910e", q: "Her varlık için atanması gereken sorumlu kişiye ne denir?", options: ["Owner (sahip)", "Attacker", "Auditor (uygunluğu bağımsız değerlendiren denetçi)", "Proxy (istemci adına çalışan vekil sunucu)"], obj: "h2" },
       { id: "6d725b53", q: "Normal 'dosyayı sil' komutu neden yeterli değildir?", options: ["Veri diskte kalır ve kurtarılabilir", "Dosya hemen yeniden oluşur", "Disk bozulur", "Ağı yavaşlatır"], obj: "h3" },
-      { id: "5c722295", q: "Eski bir sunucunun verisi güvenli silinip kaydı envanterden kapatılıyor. Bu varlık yaşam döngüsünün hangi aşamasıdır?", options: ["Elden çıkarma", "Edinme", "Kayıt", "Bakım"], obj: "h1" },
+      { id: "5c722295", q: "Eski bir sunucunun verisi güvenli silinip kaydı envanterden kapatılıyor. Bu varlık yaşam döngüsünün hangi aşamasıdır?", options: ["Elden çıkarma", "Edinme ve tedarik aşaması", "Envantere kayıt ve sınıflandırma", "Bakım"], obj: "h1" },
       { id: "69059499", q: "Şifrelenmiş bir SSD'nin verisini, sürücünün şifreleme anahtarını yok ederek ulaşılmaz kılmak hangisidir?", options: ["Kriptografik silme", "Hızlı format", "Dosya sistemini yeniden adlandırma", "Çöp kutusunu boşaltma"], obj: "h3" }
     ],
     interview: [
@@ -133,7 +133,7 @@
     ],
     quiz: [
       { id: "00a3e5d5", q: "Kimlik bilgisiyle yapılan (credentialed) taramanın avantajı nedir?", options: ["Daha doğru ve derin sonuç verir", "Daha hızlı olur", "Ağa yük bindirmez", "Yama gerektirmez"], obj: "h2" },
-      { id: "b1999b7e", q: "Zafiyet düzeltildikten hemen sonraki adım nedir?", options: ["Yeniden tarayıp doğrulamak", "Raporu silmek", "Servisi kapatmak", "Parolayı değiştirmek"], obj: "h1" },
+      { id: "b1999b7e", q: "Zafiyet düzeltildikten hemen sonraki adım nedir?", options: ["Yeniden tarayıp doğrulamak", "Raporu silerek kaydı kapatmak ve süreci sonlandırmak", "Servisi kapatmak", "Parolayı değiştirip tüm oturumları sonlandırmak"], obj: "h1" },
       { id: "a7e2a4d0", q: "Yama uygularken en doğru yaklaşım hangisidir?", options: ["Önce test, sonra kademeli yaygınlaştırma", "Hepsine aynı anda", "Hiç test etmeden", "Sadece yılda bir"], obj: "h3" },
       { id: "27b10776", q: "CISA KEV listesi ne içerir?", options: ["Aktif olarak sömürülen bilinen zafiyetler", "Tüm CVE'ler", "Parolalar", "Sertifika listesi"], obj: "h2" },
       { id: "d8ede161", q: "Tarama tamamlandı ve ham bulgular geldi. Yama yapmadan önce yapılacak analiz adımı hangisidir?", options: ["Yanlış pozitifleri ayıklayıp CVSS ve bağlama göre önceliklendirmek", "Tüm bulguları aynı önceliğe koymak", "Bulguları yayınlamadan silmek", "Her bulguya aynı anda yama uygulamak"], obj: "h1" },
@@ -218,7 +218,7 @@
       { id: "e5a07b36", q: "SOC'ye günde yüzlerce düşük değerli uyarı geliyor ve analistler gerçek olayları gözden kaçırıyor. En uygun iyileştirme hangisidir?", options: ["Eşik ve istisnaları gözden geçirip uyarı kurallarını ayarlamak", "Tüm uyarıları kapatıp yalnızca haftalık rapora güvenmek ve beklemek", "Günlük kaynaklarının yarısını SIEM'e göndermeyi durdurup beklemek", "Analist sayısını artırıp kuralları hiç değiştirmemek ve izlemek"], obj: "h4" },
       { id: "b99d4e98", q: "Farklı kaynaklardan gelen olayları birleştirip şüpheli desen bulmaya ne denir?", options: ["İlişkilendirme (correlation)", "Yedekleme", "Şifreleme", "Maskeleme"], obj: "h2" },
       { id: "464995b3", q: "Log analizinde zaman damgalarının doğru olması için hangi servis önemlidir?", options: ["NTP", "DHCP", "SMTP", "FTP"], obj: "h4" },
-      { id: "316ca665", q: "Alarmdan sonra müdahaleyi otomatikleştiren çözüm hangisidir?", options: ["SOAR", "DLP", "NAT", "CDN"], obj: "h3" },
+      { id: "316ca665", q: "Alarmdan sonra müdahaleyi otomatikleştiren çözüm hangisidir?", options: ["SOAR", "DLP (veri sızıntısı önleme)", "NAT (ağ adresi çevirisi)", "CDN"], obj: "h3" },
       { id: "231137df", q: "Başarısız oturum açma olayı hangi Windows olay numarasıdır?", options: ["4625", "4624", "1102", "7045"], obj: "h1" },
       { id: "fd7c45ee", q: "Güvenlik analisti, paket içeriğine bakmadan hangi iç sunucunun gece boyunca dışarıdaki bir adrese çok büyük hacimde veri gönderdiğini görmek istiyor. Hangi veri kaynağı hem uygun hem de hafiftir?", options: ["Tam paket yakalama (PCAP)", "Antivirüs imza güncelleme günlüğü", "NetFlow / IPFIX akış kayıtları", "SNMP trap bildirimleri"], obj: "h1" },
       { id: "cfd0e8ae", q: "Aynı kullanıcı hesabıyla İstanbul'dan, 20 dakika sonra São Paulo'dan oturum açılıyor. Bu durum hangi göstergeye örnektir?", options: ["İmkânsız seyahat (impossible travel)", "Hesap kilitleme eşiği aşımı", "Protokol düşürme", "Log manipülasyonu"], obj: "h1" }
@@ -299,12 +299,12 @@
       "SMS kodu MFA'dır ama zayıftır (SIM swap); uygulama kodu ya da FIDO2 anahtarı tercih edilir."
     ],
     quiz: [
-      { id: "2a683325", q: "Parola + telefondaki uygulama kodu hangi faktör türlerini birleştirir?", options: ["Bildiğin + sahip olduğun", "Bildiğin + bildiğin", "Olduğun + olduğun", "Hepsi aynı"], obj: "h1" },
-      { id: "acf1bbbe", q: "İzinleri kişiye değil role bağlayan model hangisidir?", options: ["RBAC", "DAC", "MAC", "NAT"], obj: "h2" },
+      { id: "2a683325", q: "Parola + telefondaki uygulama kodu hangi faktör türlerini birleştirir?", options: ["Bildiğin + sahip olduğun", "Bildiğin + bildiğin (parola ile güvenlik sorusu gibi)", "Olduğun + olduğun (parmak izi ile yüz tanıma gibi)", "Hepsi aynı"], obj: "h1" },
+      { id: "acf1bbbe", q: "İzinleri kişiye değil role bağlayan model hangisidir?", options: ["RBAC", "DAC (isteğe bağlı erişim kontrolü)", "MAC (zorunlu erişim kontrolü)", "NAT"], obj: "h2" },
       { id: "56c40315", q: "Parola ve güvenlik sorusu birlikte kullanılırsa bu MFA midir?", options: ["Hayır, ikisi de 'bildiğin' faktörü", "Evet", "Sadece bankalarda", "Sadece mobilde"], obj: "h1" },
       { id: "82350d58", q: "Bir kullanıcının kendi görevini yapmak için gereken minimum yetkiye sahip olması hangi ilkedir?", options: ["En az yetki (least privilege)", "Görev ayrımı", "Tek oturum açma", "Federasyon"], obj: "h3" },
       { id: "cbf98d1d", q: "Muhasebeden satın almaya geçen bir çalışan, her iki birimin uygulamalarına hâlâ yetkili. Yıllar içinde çok sayıda kişi bu şekilde gereğinden fazla yetki biriktirmiş. Bu duruma ne denir ve en iyi önlem nedir?", options: ["Ayrıcalık yükseltme saldırısı; parola uzunluğunu artırmak", "Görev rotasyonu; çalışanları zorunlu tatile göndermek", "Gölge BT; onaysız uygulamaları engellemek", "Ayrıcalık birikimi (privilege creep); rol değişikliğinde eski yetkileri kaldırmak ve düzenli erişim gözden geçirmesi yapmak"], obj: "h4" },
-      { id: "03ac49b8", q: "Bir kurum Windows ortamındaki servis hesabının parolasını hiçbir insanın bilmemesini ve sistemin düzenli olarak otomatik döndürmesini istiyor. Hangi çözüm uygundur?", options: ["Paylaşılan yönetici hesabı", "Grup yönetilen hizmet hesabı (gMSA)", "Acil erişim (break-glass) hesabı", "Parolasız yerel hesap"], obj: "h4" },
+      { id: "03ac49b8", q: "Bir kurum Windows ortamındaki servis hesabının parolasını hiçbir insanın bilmemesini ve sistemin düzenli olarak otomatik döndürmesini istiyor. Hangi çözüm uygundur?", options: ["Ekibin ortak kullandığı paylaşılan yönetici hesabı (parola elle yenilenir)", "Grup yönetilen hizmet hesabı (gMSA)", "Acil erişim (break-glass) hesabı", "Parolasız yerel hesap (kimlik doğrulaması gerektirmeyen hizmet hesabı)"], obj: "h4" },
       { id: "8cfef998", q: "Active Directory etki alanında kullanıcı bir kez oturum açtıktan sonra dosya sunucusuna ve intranete parola sormadan erişiyor. Parola servislere gönderilmeden kimlik hangi mekanizmayla kanıtlanıyor?", options: ["Kerberos biletleri (TGT ve servis bileti)", "Her serviste hash'lenmiş parolanın yeniden gönderilmesi", "Her bağlantıda zorunlu istemci sertifikası", "RADIUS hesap kayıtları (accounting)"], obj: "h4" }
     ],
     interview: [

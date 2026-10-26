@@ -60,9 +60,9 @@
     quiz: [
       { id: "ddb58c9f", q: "KMS doğrudan en fazla kaç KB veriyi şifreleyebilir?", options: ["4 KB", "4 GB", "256 MB", "1 TB"], obj: "h3" },
       { id: "cb808b4a", q: "Veriyi veri anahtarıyla, veri anahtarını KMS anahtarıyla şifreleme yöntemine ne denir?", options: ["Envelope encryption", "Hashing", "Salting", "Tokenization"], obj: "h2" },
-      { id: "854d6b25", q: "Politikasını ve rotasyonunu kontrol edebildiğin anahtar türü hangisidir?", options: ["Customer managed key", "AWS owned key", "AWS managed key", "Hiçbiri"], obj: "h1" },
+      { id: "854d6b25", q: "Politikasını ve rotasyonunu kontrol edebildiğin anahtar türü hangisidir?", options: ["Customer managed key", "AWS owned key, AWS'nin çok müşteri adına yönettiği anahtar", "AWS managed key, hesabında görünen ve otomatik dönen anahtar", "Hiçbiri"], obj: "h1" },
       { id: "b2f471bf", q: "Bir KMS anahtarı silinmeye planlanırsa ne olur?", options: ["7-30 gün bekleme süresi uygulanır", "Anında silinir", "Hiç silinmez", "S3'e taşınır"], obj: "h4" },
-      { id: "83779b5c", q: "KMS anahtar kullanımı nerede kayıt altına alınır?", options: ["CloudTrail", "Route 53", "SQS", "ECR"], obj: "h4" },
+      { id: "83779b5c", q: "KMS anahtar kullanımı nerede kayıt altına alınır?", options: ["CloudTrail", "Route 53 DNS kayıt günlüğü", "SQS kuyruk mesaj günlüğü", "ECR"], obj: "h4" },
       { id: "3bb6e151", q: "Bir bankanın uyumluluk kuralı, şifreleme anahtarlarının yalnızca kendisine ayrılmış tek kiracılı bir donanım güvenlik modülünde tutulmasını ve AWS'nin anahtar malzemesine erişememesini şart koşuyor. Hangi hizmet kullanılmalıdır?", options: ["AWS tarafından yönetilen KMS anahtarı (varsayılan anahtar)","AWS Secrets Manager","AWS Certificate Manager (ACM)","AWS CloudHSM"], obj: "h4" },
       { id: "6378223c", q: "Eski bir uygulama anahtar işlemlerini PKCS#11 arayüzüyle yapıyor ve kod değiştirilemiyor. Anahtarlar AWS'de tutulacak. Hangi hizmet bu arayüzü destekler?", options: ["Amazon Cognito","AWS CloudHSM","Yalnızca AWS KMS'nin kendi API'si","AWS Systems Manager Parameter Store"], obj: "h4" }
     ],
@@ -134,11 +134,11 @@
       "Lambda'da parolayı açık metin ortam değişkenine yazma; çalışma anında oku ve önbellekle."
     ],
     quiz: [
-      { id: "c919f703", q: "Veritabanı parolasını otomatik döndürmek için hangi servis uygundur?", options: ["Secrets Manager", "S3", "CloudFront", "SNS"], obj: "h1" },
+      { id: "c919f703", q: "Veritabanı parolasını otomatik döndürmek için hangi servis uygundur?", options: ["Secrets Manager", "S3 ile parolayı şifreli nesne olarak saklamak", "CloudFront ile parolayı uç konumlarda önbelleğe almak", "SNS"], obj: "h1" },
       { id: "e8b9334a", q: "Ücretsiz standart parametre depolayabilen servis hangisidir?", options: ["Parameter Store", "Secrets Manager", "KMS", "Cognito"], obj: "h2" },
-      { id: "83c9b07e", q: "Parameter Store'da şifreli değer için hangi tür kullanılır?", options: ["SecureString", "String", "StringList", "BinaryDoc"], obj: "h2" },
+      { id: "83c9b07e", q: "Parameter Store'da şifreli değer için hangi tür kullanılır?", options: ["SecureString", "String türü ve KMS anahtarı atamak", "StringList türünde şifreli liste tutmak", "BinaryDoc"], obj: "h2" },
       { id: "9d1816b0", q: "Secrets Manager'dan parola okumak için gerekli IAM eylemi hangisidir?", options: ["secretsmanager:GetSecretValue", "s3:GetObject", "ec2:RunInstances", "sqs:SendMessage"], obj: "h3" },
-      { id: "38e9799c", q: "Parola için en kötü yaklaşım hangisidir?", options: ["Kodda sabit yazmak", "Secrets Manager", "SecureString", "Rotasyon"], obj: "h4" }
+      { id: "38e9799c", q: "Parola için en kötü yaklaşım hangisidir?", options: ["Kodda sabit yazmak", "Secrets Manager'da şifreli saklamak", "SecureString parametre türü kullanmak", "Rotasyon"], obj: "h4" }
     ],
     interview: [
       { q: "Secrets Manager ve Parameter Store farkı?", a: "Secrets Manager gizli bilgiler için tasarlanmıştır: otomatik rotasyon, sürümleme, hesaplar arası paylaşım ve ücretlidir. Parameter Store daha çok yapılandırma içindir, standart katman ücretsizdir, SecureString ile şifreli saklayabilir ama yerleşik rotasyonu yoktur." },
@@ -206,9 +206,9 @@
     ],
     quiz: [
       { id: "08f8c107", q: "Kayıt ve giriş yapan, JWT üreten Cognito bileşeni hangisidir?", options: ["User pool", "Identity pool", "IAM role", "KMS key"], obj: "h1" },
-      { id: "5cd3a45f", q: "Kullanıcıya geçici AWS kimlik bilgisi veren bileşen hangisidir?", options: ["Identity pool", "User pool", "Hosted UI", "WAF"], obj: "h1" },
+      { id: "5cd3a45f", q: "Kullanıcıya geçici AWS kimlik bilgisi veren bileşen hangisidir?", options: ["Identity pool", "User pool, kullanıcı dizini ve oturum açma hizmeti", "Hosted UI, Cognito'nun barındırılan oturum açma sayfası", "WAF"], obj: "h1" },
       { id: "f24a08e2", q: "API yetkilendirmede kullanılan token hangisidir?", options: ["Access token", "Refresh token", "Parola özeti", "Çerez"], obj: "h2" },
-      { id: "bbb9d85c", q: "Yeni token almak için kullanılan uzun ömürlü token hangisidir?", options: ["Refresh token", "ID token", "Access token", "API anahtarı"], obj: "h2" },
+      { id: "bbb9d85c", q: "Yeni token almak için kullanılan uzun ömürlü token hangisidir?", options: ["Refresh token", "ID token kimlik iddiası belirteci", "Access token ile API yetkilendirmesi", "API anahtarı"], obj: "h2" },
       { id: "8f9a90fd", q: "Kayıt öncesi özel doğrulama yapmak için ne kullanılır?", options: ["Lambda tetikleyicisi", "S3 olayı", "Route 53", "VPC"], obj: "h3" }
     ],
     interview: [
@@ -277,11 +277,11 @@
       "Logları JSON yaz; parola ve kişisel veriyi loglama."
     ],
     quiz: [
-      { id: "b77ba5ca", q: "Log içindeki desenden metrik üreten özellik hangisidir?", options: ["Metric filter", "X-Ray", "Lifecycle", "Stage"], obj: "h2" },
+      { id: "b77ba5ca", q: "Log içindeki desenden metrik üreten özellik hangisidir?", options: ["Metric filter", "X-Ray ile istekleri uçtan uca izleyen servis haritası", "Lifecycle kuralıyla eski nesneleri veya imajları temizlemek", "Stage"], obj: "h2" },
       { id: "5a7dfdd2", q: "Günlüklerde sorgu dili ile arama yapan araç hangisidir?", options: ["Logs Insights", "CloudTrail", "Config", "Inspector"], obj: "h1" },
       { id: "647fbf22", q: "Alarm durumlarından hangisi veri yetersizliğini gösterir?", options: ["INSUFFICIENT_DATA", "OK", "ALARM", "PAUSED"], obj: "h3" },
       { id: "f6e1fe56", q: "Alarm tetiklenince e-posta göndermek için hangi servis eylem hedefi olur?", options: ["SNS", "S3", "KMS", "ECR"], obj: "h3" },
-      { id: "57752e2c", q: "Log maliyetini sınırlamak için ne yapılır?", options: ["Saklama süresi ayarlamak", "Hiç log tutmamak", "Kök kullanıcı kullanmak", "Logları herkese açmak"], obj: "h4" }
+      { id: "57752e2c", q: "Log maliyetini sınırlamak için ne yapılır?", options: ["Saklama süresi ayarlamak", "Hiç log tutmamak ve izlemeyi kapatmak", "Kök kullanıcı kullanmak", "Logları herkese açık bir kovaya aktarmak"], obj: "h4" }
     ],
     interview: [
       { q: "CloudWatch ile CloudTrail farkı nedir?", a: "CloudWatch performans ve uygulama izlemedir: metrik, log, alarm. CloudTrail 'kim hangi API'yi ne zaman çağırdı' denetim kaydıdır." },
@@ -348,7 +348,7 @@
     ],
     quiz: [
       { id: "3c662b18", q: "Bir isteğin servisler arası uçtan uca yolunu gösteren yapı nedir?", options: ["Trace", "Alarm", "Bucket", "Stage"], obj: "h1" },
-      { id: "6c277206", q: "Aranabilir (indekslenen) ek veri hangisidir?", options: ["Annotation", "Metadata", "Log", "Layer"], obj: "h2" },
+      { id: "6c277206", q: "Aranabilir (indekslenen) ek veri hangisidir?", options: ["Annotation", "Metadata ile ek ayrıntı verisi", "Log kayıtlarına eklenen alan", "Layer"], obj: "h2" },
       { id: "e67cbb82", q: "Lambda için X-Ray'i etkinleştirmek ne gerektirir?", options: ["Active tracing ayarı ve rol izni", "EC2 kurmak", "VPC peering", "KMS anahtarı"], obj: "h3" },
       { id: "6616b2d0", q: "X-Ray maliyetini ve gürültüyü azaltan mekanizma nedir?", options: ["Örnekleme (sampling)", "Şifreleme", "Rotasyon", "Replika"], obj: "h4" },
       { id: "77d5ddb7", q: "Servisler arası bağımlılık ve gecikmeyi görsel gösteren çıktı nedir?", options: ["Servis haritası", "Dockerfile", "Change set", "Lifecycle kuralı"], obj: "h1" }

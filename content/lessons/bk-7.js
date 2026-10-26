@@ -54,7 +54,7 @@
       { id: "14f84440", q: "Yapılandırmayı doğrulayıp kademeli ve otomatik geri alma ile dağıtan servis hangisidir?", options: ["AppConfig", "Parameter Store", "S3", "SNS"], obj: "h1" },
       { id: "3592499a", q: "Özellik bayrağının amacı nedir?", options: ["Özelliği yeniden dağıtmadan açıp kapatmak", "Disk şifrelemek", "DNS çözmek", "Yedek almak"], obj: "h2" },
       { id: "401baa81", q: "Parola gibi gizli bilgi için en uygun servis hangisidir?", options: ["Secrets Manager", "AppConfig özellik bayrağı", "S3 genel kova", "Ortam değişkeni açık metin"], obj: "h3" },
-      { id: "4382e807", q: "Lambda'da AppConfig'i verimli okumak için ne kullanılır?", options: ["AppConfig Lambda uzantısı (katman)", "Her istekte doğrudan API çağrısı", "Kodu yeniden dağıtmak", "VPC peering"], obj: "h4" },
+      { id: "4382e807", q: "Lambda'da AppConfig'i verimli okumak için ne kullanılır?", options: ["AppConfig Lambda uzantısı (katman)", "Her istekte AppConfig API'sine doğrudan çağrı yapmak", "Yapılandırma her değiştiğinde kodu yeniden dağıtmak", "VPC peering"], obj: "h4" },
       { id: "740db43b", q: "Parameter Store hangisini sağlamaz?", options: ["Kademeli dağıtım ve otomatik geri alma", "Hiyerarşik adlandırma", "SecureString", "Sürüm geçmişi"], obj: "h1" }
     ],
     interview: [
@@ -125,9 +125,9 @@
     ],
     quiz: [
       { id: "6230ea38", q: "CDK uygulamasının derlenip CloudFormation şablonu ürettiği komut hangisidir?", options: ["cdk synth", "cdk bootstrap", "cdk destroy", "cdk list-only"], obj: "h1" },
-      { id: "5d336f95", q: "CDK'de bir tablonun Lambda'ya okuma-yazma izni vermesi nasıl yapılır?", options: ["tablo.grantReadWriteData(fn)", "Kök anahtar paylaşmak", "Kovayı açmak", "Elle JSON yazmak zorunlu"], obj: "h2" },
+      { id: "5d336f95", q: "CDK'de bir tablonun Lambda'ya okuma-yazma izni vermesi nasıl yapılır?", options: ["tablo.grantReadWriteData(fn)", "Kök kullanıcının erişim anahtarını fonksiyonun ortam değişkenine yazmak", "Kovayı açmak", "Her seferinde IAM politikasını elle JSON olarak yazmak zorunludur"], obj: "h2" },
       { id: "967f8275", q: "Dağıtımdan önce değişiklik farkını gösteren komut hangisidir?", options: ["cdk diff", "cdk init", "cdk ls", "cdk docs"], obj: "h1" },
-      { id: "5379b438", q: "GraphQL'de bir alanın verisinin nereden geleceğini tanımlayan yapı nedir?", options: ["Resolver", "Stage", "Layer", "Shard"], obj: "h3" },
+      { id: "5379b438", q: "GraphQL'de bir alanın verisinin nereden geleceğini tanımlayan yapı nedir?", options: ["Resolver", "Stage, API Gateway'de bir API sürümünün yayımlandığı dağıtım aşaması", "Layer, Lambda fonksiyonlarına ortak kütüphane ekleyen katman yapısı", "Shard"], obj: "h3" },
       { id: "21b402bf", q: "AppSync'te gerçek zamanlı güncelleme hangi yapıyla sağlanır?", options: ["Subscription", "Query", "Scan", "Trail"], obj: "h3" }
     ],
     interview: [

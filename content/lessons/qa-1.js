@@ -140,8 +140,8 @@
         "id": "54dc4a0d",
         "q": "Aşağıdaki ifadelerden hangisi doğrulama ile geçerlemeyi doğru ayırır?",
         "options": [
-          "Doğrulama kullanıcıya, geçerleme belirtime bakar",
-          "Doğrulama yalnız canlıda, geçerleme yalnız geliştirmede yapılır",
+          "Doğrulama gerçek kullanıcıya ve ihtiyaçlara, geçerleme ise yazılı belirtime bakar",
+          "Doğrulama yalnız canlı ortamda, geçerleme ise yalnız geliştirme ortamında yapılır",
           "Doğrulama 'doğru mu yaptık', geçerleme 'doğru şeyi mi yaptık' sorusudur",
           "İkisi aynı etkinliğin iki adıdır"
         ],
@@ -152,9 +152,9 @@
         "q": "Şartname 'günlük havale limiti 50.000 TL' diyor. Uygulama bunu birebir yapıyor ama müşteriler günlük işleri için limiti yetersiz bulup şikâyet ediyor. Doğru yorum hangisidir?",
         "options": [
           "Doğrulama geçti; geçerleme sorunu var, çünkü belirtim ihtiyacı doğru yansıtmıyor",
-          "Doğrulama başarısız; kod belirtimi yanlış uygulamış",
+          "Doğrulama başarısız; kod belirtimdeki 50.000 TL limitini yanlış uygulamış ve testler bunu kaçırmış",
           "Her ikisi de başarılı; şikâyetler önemsizdir",
-          "Bu bir hata ayıklama sorunudur; kodu yeniden yazmak yeter"
+          "Bu bir hata ayıklama sorunudur; kodu yeniden yazıp yeniden dağıtmak sorunu kökten çözer"
         ],
         "obj": "h2"
       },
@@ -162,9 +162,9 @@
         "id": "b14de573",
         "q": "Hangi etkinlik ağırlıklı olarak geçerleme sayılır?",
         "options": [
-          "Gereksinim belgesindeki maddeleri test senaryolarıyla satır satır eşlemek",
+          "Gereksinim belgesindeki maddeleri izlenebilirlik tablosu üzerinden test senaryolarıyla satır satır eşlemek",
           "Gerçek kullanıcılarla ürünün işlerini görüp görmediğine dair deneme yapmak",
-          "Tasarım belgesinin gereksinimlerle tutarlılığını kontrol etmek",
+          "Tasarım belgesinin gereksinimlerle tutarlılığını ekip içi inceleme toplantısında kontrol etmek",
           "Derleyici uyarılarını sıfıra indirmek"
         ],
         "obj": "h2"
@@ -195,10 +195,10 @@
         "id": "305e2fad",
         "q": "CTFL 4.0.1'e göre kabul testi ağırlıklı olarak neye odaklanır?",
         "options": [
-          "Yalnız bileşenler arasındaki arayüz hatalarına",
-          "Kodun her satırının koşulmasına",
+          "Yalnız bileşenler arasındaki arayüz hatalarının ve veri alışverişi sorunlarının bulunmasına",
+          "Kaynak kodun her satırının ve her dalının birim düzeyinde koşulmasına",
           "Geçerlemeye ve sistemin dağıtıma hazır olduğunu göstermeye",
-          "Yalnız performans ölçümüne"
+          "Yalnız yük altında performans ve verimlilik ölçümüne"
         ],
         "obj": "h4"
       },
@@ -207,8 +207,8 @@
         "q": "Statik test (örneğin gereksinim incelemesi) ile ilgili hangisi doğrudur?",
         "options": [
           "Yalnız doğrulama amacıyla uygulanabilir",
-          "Yalnız kod yazıldıktan sonra uygulanabilir",
-          "Yürütme gerektirdiği için dinamik testten sayılır",
+          "Yalnız kod yazıldıktan ve derleme başarıyla tamamlandıktan sonra uygulanabilir",
+          "Test nesnesinin yürütülmesini gerektirdiği için dinamik testten sayılır",
           "Hem doğrulama hem geçerleme amacıyla uygulanabilir"
         ],
         "obj": "h4"
@@ -382,10 +382,10 @@
         "id": "8cb89053",
         "q": "Hangisi test esası olabilir?",
         "options": [
-          "Test yürütme günlüğü",
+          "Test yürütme günlüğü ve her koşuma ait ayrıntılı kusur kayıtları",
           "Kabul ölçütleri yazılmış bir kullanıcı hikâyesi",
           "Otomasyon betiğinin çıktısı",
-          "Test tamamlama raporu"
+          "Test tamamlama raporu ve çıkış ölçütlerinin değerlendirme özeti"
         ],
         "obj": "h1"
       },
@@ -393,10 +393,10 @@
         "id": "689a6f43",
         "q": "Testware için hangisi doğrudur?",
         "options": [
-          "Yalnız otomatik test betikleridir",
-          "Yalnız test planıdır",
+          "Yalnız otomatik test betikleri ile bunların çalıştırma günlükleridir",
+          "Yalnız planlama faaliyetinin ürettiği test planı ve takvim belgesidir",
           "Test faaliyetlerinin çıktısı olan iş ürünlerinin tamamıdır",
-          "Test edilen yazılımın kaynak koduna denir"
+          "Test edilen yazılımın kaynak koduna ve derlenmiş sürümlerine denir"
         ],
         "obj": "h1"
       },
@@ -427,8 +427,8 @@
         "q": "Taslak servis, sürücü ve benzetici gibi öğeler hangi grup testware'e girer?",
         "options": [
           "Test uygulama: test ortamı öğeleri",
-          "Test analizi: test koşulları",
-          "Test planlama: giriş ölçütleri",
+          "Test analizi: gereksinimlerden türetilen test koşulları ve kapsam öğeleri",
+          "Test planlama: giriş ve çıkış ölçütleriyle test yaklaşımı bölümleri",
           "Test tamamlama: öğrenilen dersler"
         ],
         "obj": "h2"
@@ -449,9 +449,9 @@
         "q": "Test sonuçlarının risklere bağlanması ne sağlar?",
         "options": [
           "Test nesnesinde kalan artık riski değerlendirmeyi",
-          "Test süresini kısaltmayı",
+          "Test süresini kısaltmayı ve kalan testlerin koşulmasını gereksiz kılmayı",
           "Gereksinimleri çoğaltmayı",
-          "Kodu hızlandırmayı"
+          "Kodu hızlandırmayı ve çalışma zamanı performansını iyileştirmeyi"
         ],
         "obj": "h3"
       },
@@ -470,8 +470,8 @@
         "id": "1d84577f",
         "q": "İzlenebilirlik tablosunda bir gereksinimin yanında hiç test durumu yoksa bu neyi gösterir?",
         "options": [
-          "Gereksinimin kusursuz olduğunu",
-          "Gereksinimin gereksiz olduğunu",
+          "Gereksinimin kusursuz olduğunu ve test gerektirmediğini",
+          "Gereksinimin gereksiz olduğunu ve kapsamdan çıkarılması gerektiğini",
           "Testin otomatik koştuğunu",
           "Gereksinimin testle kapsanmadığını"
         ],
@@ -658,8 +658,8 @@
         "id": "117bcb3a",
         "q": "'Test kusurların varlığını gösterir, yokluğunu göstermez' ilkesi ne söyler?",
         "options": [
-          "Test hiçbir kusur bulamaz",
-          "Kusur bulunursa test başarısızdır",
+          "Test hiçbir kusur bulamaz, yalnızca kusurun olmadığını doğrulayabilir ve kanıtlayabilir",
+          "Kusur bulunursa test başarısız sayılır ve test nesnesi doğrudan reddedilmelidir",
           "Test yalnız kusuru bulunan nesneler için gereklidir",
           "Hiç kusur bulunmaması testin nesnenin doğruluğunu kanıtladığı anlamına gelmez"
         ],
@@ -681,9 +681,9 @@
         "q": "Bir ekip aylardır aynı 250 testi koşturuyor, hepsi geçiyor, ama canlıda yeni kusurlar çıkıyor. Hangi ilke en çok uyuyor?",
         "options": [
           "Testler eskir (pestisit paradoksu)",
-          "Kapsamlı test imkânsızdır",
-          "Bağlama bağlılık",
-          "Erken test"
+          "Kapsamlı test imkânsızdır (her girdi birleşimi denenemez)",
+          "Bağlama bağlılık (yaklaşım bağlama göre seçilir)",
+          "Erken test (faaliyetler yaşam döngüsünün başında başlar)"
         ],
         "obj": "h2"
       },
@@ -735,10 +735,10 @@
         "id": "c477ecf7",
         "q": "Risk tabanlı test planında kusur kümelerinin yeri nedir?",
         "options": [
-          "Kümeler dikkate alınmaz",
+          "Kümeler dikkate alınmaz, çünkü risk yalnızca bireysel kusur sayısından hesaplanır",
           "Küme yalnız geçmiş projelere aittir",
           "Öngörülen ve gözlenen kusur kümeleri riskin önemli bir girdisidir",
-          "Küme yalnız performans testinde kullanılır"
+          "Küme yalnız performans testinde kullanılır ve diğer test türlerinde risk girdisi sayılmaz"
         ],
         "obj": "h4"
       },
@@ -746,9 +746,9 @@
         "id": "e718e97f",
         "q": "Kusursuzluk yanılgısı ilkesinin vardığı sonuç hangisidir?",
         "options": [
-          "Planlama ve raporlama",
-          "Birim ve entegrasyon",
-          "Statik ve dinamik analiz",
+          "Planlama ve raporlama faaliyetlerinin ayrı ekiplerce yürütülmesi",
+          "Birim ve entegrasyon testlerinin ayrı seviyelerde yapılması",
+          "Statik ve dinamik analiz tekniklerinin birlikte uygulanması",
           "Doğrulamanın yanında geçerleme de gerekir"
         ],
         "obj": "h4"
@@ -912,8 +912,8 @@
         "q": "ISO/IEC 20246 tabanlı genel inceleme sürecinin doğru sırası hangisidir?",
         "options": [
           "Planlama, başlatma, bireysel inceleme, iletişim ve analiz, düzeltme ve raporlama",
-          "Bireysel inceleme, planlama, başlatma, raporlama, analiz",
-          "Planlama, raporlama, bireysel inceleme, başlatma, analiz",
+          "Bireysel inceleme, planlama, başlatma, iletişim ve analiz, düzeltme ve raporlama, son olarak onay",
+          "Planlama, raporlama, bireysel inceleme, başlatma, iletişim ve analiz, düzeltme ve son kontrol",
           "Başlatma, planlama, analiz, bireysel inceleme, raporlama"
         ],
         "obj": "h1"
@@ -933,10 +933,10 @@
         "id": "85f95161",
         "q": "'İletişim ve analiz' adımında her anomali için ne kararlaştırılır?",
         "options": [
-          "Yalnız yazarın adı",
+          "Yalnızca anomalinin sahibi olarak yazarın adı ve unvanı",
           "Durumu, sahibi ve gerekli eylem",
-          "Yalnız ürünün kalitesi",
-          "Yalnız inceleme tarihi"
+          "Yalnız ürünün genel kalite düzeyi ve olgunluğu",
+          "Yalnız inceleme tarihi ve toplantı yeri"
         ],
         "obj": "h1"
       },
@@ -955,10 +955,10 @@
         "id": "c5bbf81e",
         "q": "Süreyi yöneten, tartışmada arabuluculuk yapan ve herkesin rahat konuşabildiği ortamı sağlayan rol hangisidir?",
         "options": [
-          "Kâtip",
-          "Gözden geçiren",
+          "Kâtip (toplantı kararlarını kaydeden kişi)",
+          "Gözden geçiren (ürünü inceleyip bulgu raporlayan kişi)",
           "Moderatör (kolaylaştırıcı)",
-          "Yönetici"
+          "Yönetici (inceleme kararını verip kaynak sağlayan kişi)"
         ],
         "obj": "h2"
       },
@@ -966,9 +966,9 @@
         "id": "b6324c4f",
         "q": "İncelemenin genel sorumluluğunu alıp kimlerin katılacağına ve toplantının nerede ve ne zaman yapılacağına karar veren rol hangisidir?",
         "options": [
-          "Kâtip",
-          "Yazar",
-          "Moderatör",
+          "Kâtip (toplantı kayıtlarını tutan kişi)",
+          "Yazar (incelenen ürünü hazırlayan kişi)",
+          "Moderatör (toplantı akışını yöneten kolaylaştırıcı rol)",
           "İnceleme lideri"
         ],
         "obj": "h2"
@@ -978,9 +978,9 @@
         "q": "Bir ekip inceleme yaptı: herkes konuştu, kimse karar yazmadı. Bir hafta sonra bulguların çoğu unutuldu. Hangi rol eksikti?",
         "options": [
           "Kâtip (kayıt tutan)",
-          "Gözden geçiren",
-          "Yazar",
-          "Yönetici"
+          "Gözden geçiren (bulguları dile getiren katılımcılar)",
+          "Yazar (incelenen ürünü hazırlayan kişi)",
+          "Yönetici (kaynak sağlayan ve inceleme kararı veren kişi)"
         ],
         "obj": "h3"
       },
@@ -989,8 +989,8 @@
         "q": "Toplantı her seferinde konudan sapıp iki saat sürüyor. En olası eksik hangisi?",
         "options": [
           "Süreyi ve akışı yöneten bir moderatör",
-          "Daha çok yazar",
-          "Daha çok kâtip",
+          "Daha çok yazar ve her konu için ayrı bir belge hazırlayan ekip",
+          "Daha çok kâtip ve ayrıntılı toplantı kaydı tutan görevli",
           "Daha çok yönetici"
         ],
         "obj": "h3"
@@ -999,9 +999,9 @@
         "id": "2825e0f3",
         "q": "Aşağıdakilerden hangisi incelemenin başarı etkenlerinden değildir?",
         "options": [
-          "Net amaçlar ve ölçülebilir çıkış ölçütleri",
+          "Net amaçlar ve ölçülebilir çıkış ölçütleri belirlenip inceleme öncesinde katılımcılara iletilmesi",
           "İncelemeyi küçük parçalar halinde yapmak",
-          "Katılımcılara hazırlık için yeterli süre vermek",
+          "Katılımcılara bireysel hazırlık için yeterli süre ve gerekli belgeleri önceden vermek",
           "Katılımcıların performansını değerlendirmeyi inceleme amacı yapmak"
         ],
         "obj": "h4"
@@ -1174,9 +1174,9 @@
         "q": "Tanımlı bir süreci ve zorunlu belgelenmiş çıktısı olmayan, temel amacı anomali bulmak olan inceleme türü hangisidir?",
         "options": [
           "Gayriresmî inceleme",
-          "Inspection",
-          "Teknik inceleme",
-          "Walkthrough"
+          "Inspection (genel inceleme sürecini tam izleyen resmî tür)",
+          "Teknik inceleme (moderatör ve teknik yeterli katılımcılarla yapılan tür)",
+          "Walkthrough (yazar tarafından yönetilen, çok amaçlı tür)"
         ],
         "obj": "h1"
       },
@@ -1445,9 +1445,9 @@
         "id": "1724079d",
         "q": "Planning Poker için hangisi doğrudur?",
         "options": [
-          "Orana dayalı bir tekniktir",
+          "Geçmiş projelerden elde edilen oranlara dayalı, tamamen sayısal bir tekniktir",
           "Wideband Delphi'nin çevik yazılımda sık kullanılan bir türüdür",
-          "Yalnız performans testi tahmininde kullanılır",
+          "Yalnız performans testi tahmininde ve yalnızca tek seferlik, sprint dışı planlamada kullanılır",
           "Tahmini tek kişi yapar"
         ],
         "obj": "h4"
@@ -1696,10 +1696,10 @@
         "id": "d0926f2c",
         "q": "Hangisi tipik bir giriş ölçütüdür?",
         "options": [
-          "Kapsam oranının ulaşılması",
+          "Hedeflenen kapsam oranına ulaşılmış olması ve raporlanması",
           "Testlerin tamamlandığı raporu",
           "Test ortamı ve test verisinin hazır olması",
-          "Çözülmemiş kusurların sıfır olması"
+          "Çözülmemiş kusurların sıfıra inmesi ve hepsinin kapatılmış olması"
         ],
         "obj": "h1"
       },
@@ -1707,9 +1707,9 @@
         "id": "ccae93bb",
         "q": "Hangisi tipik bir çıkış ölçütüdür?",
         "options": [
-          "Test verisinin hazır olması",
+          "Test verisinin hazırlanıp test ortamına yüklenmiş ve erişilebilir olması",
           "Test nesnesinin duman testini geçmesi",
-          "Test ortamının kurulu olması",
+          "Test ortamının kurulu ve gerekli araçlarla yapılandırılmış olması, testlerden önce",
           "Planlanan testlerin koşulması ve bulunan kusurların raporlanması"
         ],
         "obj": "h1"
@@ -1718,9 +1718,9 @@
         "id": "15c94b5d",
         "q": "Çevik ekiplerde bir kullanıcı hikâyesinin geliştirme ya da test faaliyetlerine başlayabilmesi için sağlaması gereken ölçütlere ne denir?",
         "options": [
-          "Definition of Done",
+          "Definition of Done (iterasyon sonunda kullanılan ölçütler)",
           "Test planı",
-          "Risk matrisi",
+          "Risk matrisi (olasılık ve etki eksenli sınıflandırma tablosu)",
           "Definition of Ready"
         ],
         "obj": "h2"
@@ -1740,10 +1740,10 @@
         "id": "e792a169",
         "q": "Aşağıdakilerden hangisi Definition of Ready'ye uygun bir maddedir?",
         "options": [
-          "Tüm otomatik testler geçmiştir",
+          "Hikâyeye bağlı tüm otomatik testler çalıştırılmış ve geçmiştir",
           "Hikâyede test edilebilir kabul ölçütleri yazılmıştır",
           "Kod üretime alınmıştır",
-          "Sprint gözden geçirmesi yapılmıştır"
+          "Sprint gözden geçirmesi yapılmış ve paydaş geri bildirimi alınmıştır"
         ],
         "obj": "h2"
       },
@@ -2218,9 +2218,9 @@
         "id": "1766e463",
         "q": "Sınırlı girişli karar tablosunda bir koşulun yerinde '-' varsa ne anlama gelir?",
         "options": [
-          "Koşul bu birleşimde olamaz",
+          "Koşul bu birleşimde mantıksal olarak olamaz, kural tablodan çıkarılır",
           "Koşulun değeri o kuralın sonucunu etkilemez",
-          "Eylem gerçekleşmez",
+          "Eylem bu kuralda gerçekleşmez ve ilgili satır boş bırakılır",
           "Koşul doğrudur"
         ],
         "obj": "h1"
@@ -2229,9 +2229,9 @@
         "id": "9c934a60",
         "q": "'N/A' notasyonu ne anlama gelir?",
         "options": [
-          "Koşulun önemi yok",
+          "Koşulun önemi yok, değeri o kuralın sonucunu hiçbir şekilde etkilemez",
           "Eylem iki kez çalışır",
-          "Koşul yanlıştır",
+          "Koşul yanlıştır ve bu nedenle ilgili kuralın eylemi hiçbir zaman çalıştırılmaz",
           "Koşul o kural için uygulanamaz (olanaksız birleşim)"
         ],
         "obj": "h1"
@@ -2251,10 +2251,10 @@
         "id": "901d3777",
         "q": "Koşul sayısı 3'ten 5'e çıkarsa tam tablodaki sütun sayısı kaç kat artar?",
         "options": [
-          "2 kat",
+          "2 kat (tek koşul eklenince 8'den 16'ya)",
           "4 kat (8'den 32'ye)",
-          "Aynı kalır",
-          "6 kat"
+          "Aynı kalır (sütun sayısı koşul sayısından bağımsızdır)",
+          "6 kat (8'den 48'e çıkarak büyür)"
         ],
         "obj": "h2"
       },
@@ -2273,10 +2273,10 @@
         "id": "2db16875",
         "q": "Aynı kuralda üye olmayan, sepeti 250 TL ve kuponu olmayan müşteri (Y, D, Y) ne alır?",
         "options": [
-          "Ücretsiz kargo",
-          "%10 indirim",
+          "Ücretsiz kargo hakkı kazanır ve sipariş kargoya verilir",
+          "%10 indirim hakkı kazanır ve sepet tutarı düşer",
           "Hiçbir eylem gerçekleşmez",
-          "İndirim ve kargo"
+          "İndirim ve ücretsiz kargo birlikte uygulanır"
         ],
         "obj": "h3"
       },
@@ -2471,9 +2471,9 @@
         "q": "Hangi durum geçişi kapsam ölçütünün kapsam öğeleri tek tek geçerli geçişlerdir ve en yaygın kullanılanıdır?",
         "options": [
           "Geçerli geçişler kapsamı (0-switch)",
-          "Tüm durumlar kapsamı",
-          "Tüm geçişler kapsamı",
-          "Her seçim kapsamı"
+          "Tüm durumlar kapsamı (her durum en az bir kez ziyaret edilir)",
+          "Tüm geçişler kapsamı (geçersiz geçişler dahil tablo hücreleri)",
+          "Her seçim kapsamı (her sınıftan en az bir değer, Each Choice)"
         ],
         "obj": "h1"
       },
@@ -2514,10 +2514,10 @@
         "id": "f96e109d",
         "q": "Aynı modelde 5 durum ve 4 olay var. Durum tablosunda kaç hücre bulunur ve kaçı geçersizdir?",
         "options": [
-          "9 hücre, 4'ü geçersiz",
+          "9 hücre (5 + 4), bunların 4'ü geçersiz",
           "20 hücre, 15'i geçersiz",
-          "20 hücre, 5'i geçersiz",
-          "5 hücre, 0 geçersiz"
+          "20 hücre, 5'i geçersiz ve 15'i geçerli geçiş",
+          "5 hücre (yalnız durum sayısı kadar), 0 geçersiz"
         ],
         "obj": "h2"
       },
@@ -2733,9 +2733,9 @@
         "id": "9a720f83",
         "q": "Dal kapsamı ile ifade kapsamı arasındaki ilişki hangisidir?",
         "options": [
-          "%100 ifade kapsamı %100 dal kapsamını sağlar",
+          "%100 ifade kapsamı %100 dal kapsamını da sağlar; çünkü her ifade bir dalın içindedir",
           "İkisi her zaman eşittir",
-          "Birbirleriyle ilgisizdir",
+          "Birbirleriyle ilgisizdir; biri kontrol akışını diğeri veri akışını ölçer, aralarında ilişki yoktur",
           "%100 dal kapsamı %100 ifade kapsamını da sağlar; tersi doğru değildir"
         ],
         "obj": "h1"
@@ -2779,8 +2779,8 @@
         "options": [
           "1",
           "2 (örneğin x = 11 ve x = 3)",
-          "3",
-          "4"
+          "3 (örneğin x = 11, x = 3 ve bir sınır değer)",
+          "4 (her karar sonucu için ayrı iki test, toplam dört)"
         ],
         "obj": "h4"
       },
@@ -2810,10 +2810,10 @@
         "id": "e8fb2db9",
         "q": "Aynı kodda x = 10 testi koştu ve y=20 ifadesi koşmadı. Yalnızca bu ifadeyi de koşturmak için hangi girdi yeterlidir?",
         "options": [
-          "x = 3",
+          "x = 3 (ilk karar koşulu sağlanmayan küçük bir değer)",
           "x = 12",
-          "x = 5",
-          "x = 6"
+          "x = 5 (ilk kararın sınır değerinde sınanan girdi)",
+          "x = 6 (ilk kararı geçen en küçük tam sayı değer)"
         ],
         "obj": "h4"
       }
@@ -2974,10 +2974,10 @@
         "id": "395bebbd",
         "q": "Niceliksel yaklaşımda risk düzeyi nasıl hesaplanır?",
         "options": [
-          "Olasılık ile etkinin toplamıyla",
+          "Risk olasılığı ile risk etkisinin aritmetik toplamının alınmasıyla",
           "Risk olasılığı ile risk etkisinin çarpımıyla",
-          "Yalnız etkiyle",
-          "Yalnız olasılıkla"
+          "Yalnızca risk etkisinin parasal büyüklüğüne bakılarak",
+          "Yalnızca risk olasılığının yüzdesine bakılarak"
         ],
         "obj": "h1"
       },
@@ -3029,9 +3029,9 @@
         "id": "256fe5bd",
         "q": "'Tedarikçi bileşenin teslimi iki hafta gecikti ve takvim kayıyor.' Bu hangi tür risktir?",
         "options": [
-          "Ürün riski",
-          "Risk sayılmaz",
-          "Güvenlik riski",
+          "Ürün riski (kalite özelliklerine bağlı yazılım sorunu)",
+          "Risk sayılmaz (yalnızca olağan bir iş akışı sapmasıdır)",
+          "Güvenlik riski (yetkisiz erişime açık zafiyet)",
           "Proje riski (tedarikçi sorunu)"
         ],
         "obj": "h3"
@@ -3040,9 +3040,9 @@
         "id": "4b757312",
         "q": "'Uygulama sepet toplamında KDV'yi iki kez ekliyor.' Bu hangi tür risktir?",
         "options": [
-          "Proje riski",
-          "Tedarikçi riski",
-          "Kişi riski",
+          "Proje riski (takvim ve kaynak yönetimi sorunu)",
+          "Tedarikçi riski (dış bileşen teslimi sorunu)",
+          "Kişi riski (ekip üyelerinin beceri eksikliği)",
           "Ürün riski (yanlış hesaplama)"
         ],
         "obj": "h3"
@@ -3074,8 +3074,8 @@
         "q": "Regresyon test takımları neden otomasyon için güçlü adaydır?",
         "options": [
           "Çok kez koşulur ve her sürümle büyür",
-          "Yalnız bir kez koşulur",
-          "Hiç değişmez ve hiç koşulmaz",
+          "Yalnız bir kez koşulur ve sürümler arasında yeniden kullanılmaz",
+          "Hiç değişmez, hiç koşulmaz ve yalnızca arşivde tutulur",
           "Elle yapmak imkânsızdır"
         ],
         "obj": "h4"

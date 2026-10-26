@@ -56,7 +56,7 @@
       "Sadece cezaya dayalı program hataların saklanmasına ve olay müdahalesinin gecikmesine yol açar."
     ],
     quiz: [
-      { id: "794e9218", q: "Etkili bir farkındalık programının özelliği hangisidir?", options: ["Sürekli, kısa ve role özel", "Yılda bir kez uzun sunum", "Sadece BT ekibine yönelik", "Yalnızca ceza"], obj: "h1" },
+      { id: "794e9218", q: "Etkili bir farkındalık programının özelliği hangisidir?", options: ["Sürekli, kısa ve role özel", "Yılda bir kez, tüm çalışanlara aynı içerikle uzun sunum", "Sadece BT ekibine yönelik teknik eğitim", "Yalnızca ceza"], obj: "h1" },
       { id: "88e771f9", q: "Oltalama simülasyonunun amacı nedir?", options: ["Çalışanların tepkisini ölçmek ve eğitmek", "Çalışanları cezalandırmak", "Ağı yavaşlatmak", "Parolaları toplamak"], obj: "h2" },
       { id: "c9895b0d", q: "Hangi metrik bildirim kültürünü gösterir?", options: ["Şüpheli maili raporlama oranı ve süresi", "Sunucu uptime'ı", "Disk boyutu", "Yedek sayısı"], obj: "h3" },
       { id: "64380148", q: "Yönetici düzeyine hedefli oltalamaya ne denir?", options: ["Whaling", "Smishing", "Tailgating", "Pharming"], obj: "h4" },
@@ -134,9 +134,9 @@
       "Sorumluluk, yapay zekâ çıktısını kullanan insandadır."
     ],
     quiz: [
-      { id: "6b250285", q: "Dış içerikteki gizli talimatlarla bir modelin yönlendirilmesine ne denir?", options: ["Prompt injection", "Phishing", "Tailgating", "Hashing"], obj: "h1" },
+      { id: "6b250285", q: "Dış içerikteki gizli talimatlarla bir modelin yönlendirilmesine ne denir?", options: ["Prompt injection", "Phishing (kullanıcıyı sahte mesajla kandırma saldırısı)", "Tailgating (yetkili birinin ardından izinsiz giriş)", "Hashing"], obj: "h1" },
       { id: "ab5c0ee0", q: "BT onayı olmadan yapay zekâ araçlarının kullanılmasına ne denir?", options: ["Shadow AI", "Zero Trust", "Failover", "Sandboxing"], obj: "h2" },
-      { id: "70a7b9c4", q: "Modelin güvenle yazdığı ama yanlış olan çıktısına ne denir?", options: ["Hallucination", "Encryption", "Replay", "Pivoting"], obj: "h3" },
+      { id: "70a7b9c4", q: "Modelin güvenle yazdığı ama yanlış olan çıktısına ne denir?", options: ["Hallucination", "Encryption (veriyi gizlemek için şifreleme işlemi)", "Replay (yakalanan mesajın yeniden gönderildiği saldırı)", "Pivoting"], obj: "h3" },
       { id: "8a1857b3", q: "Yapay zekâ ajanı için doğru yetki yaklaşımı hangisidir?", options: ["Sadece gereken araç ve veri", "Tam yönetici", "Tüm veritabanı", "Yetkisiz"], obj: "h4" },
       { id: "ad11a03c", q: "Saldırgan, bir zararlı yazılım sınıflandırıcısını yanıltmak için dosyaya modelin 'zararsız' diye öğrendiği özellikleri ekliyor ve tespit edilmeden geçiyor. Modelin kendisi ve eğitim verisi değişmiyor. Bu saldırı hangisidir?", options: ["Zehirleme (poisoning)", "Prompt injection", "Kaçınma (evasion)", "Halüsinasyon (hallucination)"], obj: "h1" },
       { id: "f8f79551", q: "İşe alım ekibinin kullandığı model, geçmiş işe alım verileriyle eğitildiği için belirli bir grubun adaylarını sistematik olarak düşük puanlıyor. Bu hangi riskin örneğidir?", options: ["Zehirleme (poisoning)", "Önyargı (bias)", "Jailbreak", "Kaçınma (evasion)"], obj: "h3" },
@@ -214,7 +214,7 @@
       { id: "3d585d3b", q: "Zero Trust'ın temel ilkesi hangisidir?", options: ["Hiçbir isteğe otomatik güvenme, her zaman doğrula", "İç ağdakilere tam güven", "Sadece güvenlik duvarı", "Parola yeterli"], obj: "h1" },
       { id: "f31fd4b7", q: "'Assume breach' ne demektir?", options: ["İhlalin zaten olmuş olabileceğini varsayıp hasarı sınırlamak", "İhlal asla olmaz", "Sadece dışarıyı izlemek", "Logları kapatmak"], obj: "h2" },
       { id: "27f72d92", q: "Erişim kararının verildiği Zero Trust bileşeni hangisidir?", options: ["Kontrol düzlemi (politika motoru)", "Veri düzlemi kablosu", "Yazıcı", "Yedek sunucu"], obj: "h3" },
-      { id: "2939120e", q: "Ağı küçük bölgelere ayırıp bölgeler arası trafiği denetlemeye ne denir?", options: ["Mikro segmentasyon", "Hashing", "Salting", "Tokenization"], obj: "h4" },
+      { id: "2939120e", q: "Ağı küçük bölgelere ayırıp bölgeler arası trafiği denetlemeye ne denir?", options: ["Mikro segmentasyon", "Hashing (veriyi sabit uzunlukta özete çevirme)", "Salting (parola özetlerine rastgele değer ekleme)", "Tokenization"], obj: "h4" },
       { id: "66169b65", q: "Bir kurum, uzaktan çalışanların şirket VPN'ine bağlanmadan da web filtreleme, bulut uygulama denetimi ve erişim politikası altında olmasını; denetimin bulutta yapılmasını istiyor. Hangi mimari bu ihtiyacı karşılar?", options: ["Hava boşluğu (air gap)", "Yalnızca site-to-site IPsec VPN", "Security Service Edge (SSE)", "DMZ içinde bastion host"], obj: "h4" },
       { id: "341baf58", q: "Bir kurumun internet çıkışındaki güvenlik cihazı arızalanırsa hiç trafik geçmemeli; erişilebilirlikten çok güvenlik önceliklidir. Hangi arıza modu seçilmelidir?", options: ["Fail-open", "Aktif-aktif yedeklilik", "Fail-closed (fail-secure)", "Bölünmüş tünel (split tunnel)"], obj: "h2" },
       { id: "c74e37cf", q: "Bir kurum, şube ağ bağlantısını (SD-WAN) ve bulut tabanlı güvenlik hizmetlerini tek bir bulut hizmetinde birleştirmek istiyor. Bu birleşik model hangisidir?", options: ["Yalnızca SSE", "SASE", "Kod olarak altyapı (IaC)", "Honeynet"], obj: "h4" }
@@ -286,7 +286,7 @@
       "Geri alma planı olmayan değişiklik kumardır."
     ],
     quiz: [
-      { id: "1b0818c3", q: "Bir değişikliğin hangi sistemleri etkileyeceğini inceleyen adıma ne denir?", options: ["Etki analizi", "Yedekleme", "Şifreleme", "Hashing"], obj: "h1" },
+      { id: "1b0818c3", q: "Bir değişikliğin hangi sistemleri etkileyeceğini inceleyen adıma ne denir?", options: ["Etki analizi", "Yedekleme (verinin başka yere kopyalanması)", "Şifreleme (veriyi okunamaz hale getirme işlemi)", "Hashing"], obj: "h1" },
       { id: "37e768d5", q: "Değişiklik sorun çıkarırsa önceki duruma dönmeye ne denir?", options: ["Rollback", "Failover", "Escalation", "Quarantine"], obj: "h2" },
       { id: "48efee39", q: "Önceden onaylı, düşük riskli, tekrarlayan değişiklik türü hangisidir?", options: ["Standart değişiklik", "Acil değişiklik", "Kayıtsız değişiklik", "Gizli değişiklik"], obj: "h3" },
       { id: "238ac0f4", q: "Değişiklik taleplerini inceleyip onaylayan kurulun adı nedir?", options: ["CAB", "SIEM", "SOC", "NOC"], obj: "h4" },
