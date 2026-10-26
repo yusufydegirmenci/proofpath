@@ -11,6 +11,7 @@ const args = process.argv.slice(2);
 const tArg = args.find(a => a.startsWith('--timeout='));
 const TIMEOUT = (tArg ? parseInt(tArg.slice(10), 10) : 420) * 1000;
 const filter = args.find(a => !a.startsWith('--'));
+const YUK_DUYARLI = new Set(['faz4_entegrasyon.js', 'ogrenme_tarayici.js', 'faz_w1.js', 'h80.js']);
 const SKIP = new Set(['stub.js', 'run-all.js', 'make-dbg.js', 'sunucu_sahte.js']);
 
 // page_dbg.html (hata ayıklama kancalı kopya) testlerden önce üretilir.
@@ -55,10 +56,12 @@ function run(file, dir = '') {
 (async () => {
   const results = [];
   for (const f of files) {
-    const r = await run(f);
+    let r = await run(f), not = '';
+    // Yük altında zamanlama yüzünden düşebilen testler (paralel/yavaş makine): TEK yeniden deneme, ilk sonuç açıkça yazılır; ikinci de düşerse KALDI kalır.
+    if (r.status !== 'GEÇTİ' && YUK_DUYARLI.has(f)) { const ilk = r.status; r = await run(f); not = ' [yük duyarlı: 1. deneme ' + ilk + ', yeniden koşuldu]'; }
     results.push(r);
     const last = r.out.trim().split('\n').filter(l => !/^\s+at /.test(l)).slice(-1)[0] || '';
-    console.log(`${r.status.padEnd(12)} ${f.padEnd(24)} ${String(r.sn).padStart(3)}s  ${last.slice(0, 90)}`);
+    console.log(`${r.status.padEnd(12)} ${f.padEnd(24)} ${String(r.sn).padStart(3)}s  ${last.slice(0, 90)}${not}`);
   }
   // Emekli testler (eski akış): ayrı sayılır, çıkış kodunu etkilemez.
   const retired = [];

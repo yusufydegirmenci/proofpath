@@ -42,4 +42,20 @@ window.__notify=notify;
 
 
 
+/* Faz 35: assert içermeyen (yalnız yazdıran/ekran görüntüsü alan) testler artık SAYFA HATASI olursa çıkış 1 verir.
+   Ana betik assert/ok/eq/process.exit/check/expect içeriyorsa dokunulmaz (kendi denetimi var). Yeni test yazarken kendi assert'ini ekle. */
+const SAYFA_HATALARI=[];
+(function(){
+  let src='';try{src=require('fs').readFileSync(require.main.filename,'utf8')}catch(e){}
+  if(!src||/assert|\bok\(|\beq\(|process\.exit|\bcheck\(|expect\(/.test(src))return;
+  const izle=p=>p.on('pageerror',e=>SAYFA_HATALARI.push(String(e.message).slice(0,160)));
+  const launch=chromium.launch.bind(chromium);
+  chromium.launch=async(...a)=>{
+    const b=await launch(...a),nc=b.newContext.bind(b),np=b.newPage.bind(b);
+    b.newContext=async(...x)=>{const c=await nc(...x);c.on('page',izle);return c};
+    b.newPage=async(...x)=>{const p=await np(...x);izle(p);return p};
+    return b;
+  };
+  process.on('exit',()=>{if(SAYFA_HATALARI.length){console.error('HATA  sayfa hatası ('+SAYFA_HATALARI.length+'): '+SAYFA_HATALARI.slice(0,3).join(' | '));process.exitCode=1}});
+})();
 module.exports={INIT,chromium};
