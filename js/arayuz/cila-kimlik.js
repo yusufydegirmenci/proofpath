@@ -1,6 +1,6 @@
 "use strict";
 /* ---- v15: cila (mini başlık, Daha menüsü, Akademi Kimliği) ---- */
-var TT={bugun:["Bugün","Günlük rota"],ders:["Ders","Bugünün dersi"],sinif:["Sınıf","Canlı sorular"],sehir:["Ağ Şehri","Bina bina ilerle"],oyun:["Oyun","Koş, sür, öğren"],atolye:["Atölye","Program ve alıştırma"],masa:["Masa","Destek talepleri"],lig:["Lig","Arkadaşlarla yarış"],gazete:["Gazete","Haber ve etkinlikler"],proje:["Proje","Birlikte yapalım"],sozluk:["Sözlük","Kelimelerin anlamı"],rehber:["Rehber","Nasıl çalışır?"],ayar:["Ayarlar","Okuma"],mul:["Mülakat","Sesli prova"],oku:["Okuma","Çocuk öyküleri"],ofis:["Ofis","Hikâye ve Müdür"],sayilar:["Sayılar","İlerleme"],oduller:["Ödüller","Kimlik ve ödüller"]};
+var TT={bugun:["Bugün","Günlük rota"],ders:["Ders","Bugünün dersi"],sinif:["Sınıf","Canlı sorular"],sehir:["Ağ Şehri","Bina bina ilerle"],oyun:["Oyun","Koş, sür, öğren"],atolye:["Atölye","Program ve alıştırma"],masa:["Masa","Destek talepleri"],lig:["Lig","Arkadaşlarla yarış"],gazete:["Gazete","Haber ve etkinlikler"],proje:["Proje","Birlikte yapalım"],sozluk:["Sözlük","Kelimelerin anlamı"],kaynakca:["Kaynakça","Kaynaklar ve telif notu"],rehber:["Rehber","Nasıl çalışır?"],ayar:["Ayarlar","Okuma"],mul:["Mülakat","Sesli prova"],oku:["Okuma","Çocuk öyküleri"],ofis:["Ofis","Hikâye ve Müdür"],sayilar:["Sayılar","İlerleme"],oduller:["Ödüller","Kimlik ve ödüller"]};
 var PRIMARY={bugun:1,ders:1,sinif:1,oyun:1,atolye:1};
 S.more=false;
 function miniHero(){
@@ -26,12 +26,12 @@ function moreSheet(){
   }
   var sections;
   if(S.pf.simple){
-    sections=[[null,[["rehber","Rehber","Burada nasıl öğrenirsin?"],["sozluk","Sözlük","Kelimelerin anlamı"],["ayar","Ayarlar","Yazı boyu, tema, tempo"]],""]];
+    sections=[[null,[["rehber","Rehber","Burada nasıl öğrenirsin?"],["sozluk","Sözlük","Kelimelerin anlamı"],["kaynakca","Kaynakça","Kaynaklar ve telif notu"],["ayar","Ayarlar","Yazı boyu, tema, tempo"]],""]];
   }else{
     sections=[["Şehir ve iş",[["sehir","Ağ Şehri","Her bina bir konu, ilerledikçe yükselir"],["masa","Masa","Müşterilerle ilgilen, destek talepleri"],["gazete","Gazete","Haber ve etkinlikler"],["ofis","Ofis","İş hikâyesi, Müdür raporu"]],""],
       ["Çalış ve üret",[["proje","Proje","Adımlara böl, XP kazan"],["mul","Mülakat","Sesli prova, model cevap"],["oku","Okuma","Hikâye, kelime, not"],["sayilar","Sayılar","Grafik ve ısı haritası"]],""],
       ["Takip ve ödül",[["lig","Lig","Arkadaşlarla sıralama"]],""],
-      ["Yardım",[["rehber","Rehber"],["sozluk","Sözlük"],["ayar","Ayarlar"]],"sm"]];
+      ["Yardım",[["rehber","Rehber"],["sozluk","Sözlük"],["kaynakca","Kaynakça"],["ayar","Ayarlar"]],"sm"]];
   }
   return h("div",{class:"msheet-bg",onclick:function(e){if(e.target===e.currentTarget)close()}},
     h("div",{class:"msheet v2",role:"dialog","aria-label":"Daha fazla"},h("div",{class:"grab"}),

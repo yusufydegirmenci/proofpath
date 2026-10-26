@@ -1,4 +1,4 @@
-// Faz 5 tur 5: Backend (46 konu) ve DevOps (18 konu) ders eki: 15 öğe puanı, kaynak denetimi, Anlatım/Alıştırma görünürlüğü, 390 px.
+// Faz 5 tur 5: Backend (51 konu) ve DevOps (18 konu) ders eki: 15 öğe puanı, kaynak denetimi, Anlatım/Alıştırma görünürlüğü, 390 px.
 // Hata → çıkış 1.
 const path = require('path');
 const { INIT, chromium } = require('./stub.js');
@@ -19,7 +19,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   await p.goto(U + '#ders');
   await p.waitForTimeout(1500);
 
-  for (const [yol, n, ad] of [['bk', 46, 'Backend'], ['dev', 22, 'DevOps']]) {
+  for (const [yol, n, ad] of [['bk', 51, 'Backend'], ['dev', 30, 'DevOps']]) {
     const puan = await p.evaluate((yol) => TMAP[yol].map((T, i) => {
       const e = (PP_EK[yol] || {})[i] || {};
       const net = (x) => typeof x === 'string' ? x.trim().length > 20 : !!x;
@@ -36,7 +36,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
     console.log('INFO  ' + ad + ' kaynaksız konular: ' + puan.filter(x => x.eksik.length).map(x => x.i + ':' + x.ad).join(', '));
     ok(puan.filter(x => !x.eksik.length).length >= Math.floor(n / 2), ad + ' kaynaklı (15/15) konu sayısı ≥ yarısı (' + puan.filter(x => !x.eksik.length).length + ')');
     eq(await p.evaluate((yol) => Object.keys(PP_EK[yol]).length, yol), n, 'PP_EK.' + yol + ' ' + n + ' girdi');
-    eq(await p.evaluate((yol) => Object.keys(PP_EK[yol]).every(k => (PP_EK[yol][k].kaynaklar || []).every(s => s.t && s.neden && ['2026-10-12', '2026-10-19'].includes(s.dogrulama) && /^https:\/\/[a-z0-9.-]+(\/|$)/.test(s.u))), yol), true, ad + ': her kaynakta ad, neden, tarih 2026-10-12 ya da 2026-10-19 (gerçek doğrulama günleri), https adresi');
+    eq(await p.evaluate((yol) => Object.keys(PP_EK[yol]).every(k => (PP_EK[yol][k].kaynaklar || []).every(s => s.t && s.neden && ['2026-10-12', '2026-10-19', '2026-10-26'].includes(s.dogrulama) && /^https:\/\/[a-z0-9.-]+(\/|$)/.test(s.u))), yol), true, ad + ': her kaynakta ad, neden, tarih 2026-10-12, 2026-10-19 ya da 2026-10-26 (gerçek doğrulama günleri), https adresi');
     eq(await p.evaluate((yol) => Object.entries(PP_EK[yol]).filter(([k, e]) => { const u = (e.kaynaklar || []).map(x => x.u); return u.length !== new Set(u).size; }).map(([k]) => k), yol), [], ad + ': bir konunun kaynak listesinde aynı adres iki kez geçmez');
     // "sonraki" alanı bir sonraki konu adını anar (son konu hariç)
     eq(await p.evaluate((yol) => TMAP[yol].slice(0, -1).map((T, i) => [i, (PP_EK[yol][i].sonraki || '').indexOf(TMAP[yol][i + 1].k) >= 0]).filter(x => !x[1]).map(x => x[0]), yol), [], ad + ': "sonraki" bir sonraki konuyu anar');
@@ -44,7 +44,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   // Rota/lab bağı bu turda eklenmedi: bk/dev eklerinde lab alanı yok (etiket dürüstlüğü)
   eq(await p.evaluate(() => [...Object.values(PP_EK.bk), ...Object.values(PP_EK.dev)].filter(e => e.lab).length), 0, 'bk/dev eki lab bağlantısı iddia etmez (lab sonraki tura)');
   // Yol çakışması: bk/dev eki sec/net/ccna girdilerini bozmadı
-  eq(await p.evaluate(() => [Object.keys(PP_EK.sec).length, Object.keys(PP_EK.net).length, Object.keys(PP_EK.ccna).length]), [39, 18, 23], 'diğer yolların ek girdileri sağlam');
+  eq(await p.evaluate(() => [Object.keys(PP_EK.sec).length, Object.keys(PP_EK.net).length, Object.keys(PP_EK.ccna).length]), [39, 18, 29], 'diğer yolların ek girdileri sağlam');
 
   // Anlatım ve Alıştırma blokları bk ve dev derste görünür
   for (const [yol, n, bolum, beklenen] of [['bk', 2, 'anlat', ['analoji', 'hatalar', 'gecme']], ['dev', 6, 'alis', ['rehberli', 'bagimsiz', 'telafi']]]) {

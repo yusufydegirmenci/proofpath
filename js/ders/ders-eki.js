@@ -178,6 +178,7 @@
     { yol: "ccna", konu: 8, lab: ["ccna-acl"] },
     { yol: "ccna", konu: 9, lab: ["ccna-ospf"] },
     { yol: "ccna", konu: 13, lab: ["ccna-vlan"] },
+    { yol: "ccna", konu: 27, lab: ["ccna-evag"] },
     { yol: "va", ders: "va0-1", alan: ["va0-1-sql","va0-1-py"] },
     { yol: "va", ders: "va0-2", alan: ["va0-2-sql","va0-2-py"] },
     { yol: "va", ders: "va0-3", alan: ["va0-3-sql","va0-3-py"] },

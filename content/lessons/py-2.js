@@ -66,6 +66,9 @@
         lang: "python",
         text: "for satir in range(1, 4):\n    for sutun in range(1, 4):\n        print(satir * sutun, end=\" \")\n    print()\n# 1 2 3\n# 2 4 6\n# 3 6 9"
       },
+      { t: "h", text: "for-else ve while-else: arama kalıbı" },
+      { t: "cmd", lang: "python", text: "for n in [4, 9, 15]:\n    if n % 7 == 0:\n        print(\"7'nin katı bulundu:\", n)\n        break\nelse:\n    print(\"listede 7'nin katı yok\")      # listede 7'nin katı yok\n\nfor n in [4, 14, 15]:\n    if n % 7 == 0:\n        print(\"7'nin katı bulundu:\", n)   # 7'nin katı bulundu: 14\n        break\nelse:\n    print(\"listede 7'nin katı yok\")      # çalışmaz, break döngüyü kesti\n\nsayi = 0\nwhile sayi < 3:\n    sayi += 1\nelse:\n    print(\"while normal bitti, sayi =\", sayi)   # sayi = 3\n\nfor x in []:\n    pass\nelse:\n    print(\"boş dizide de else çalışır\")" },
+      { t: "steps", h: "else ne zaman çalışır?", items: ["for ya da while'ın else bloğu, döngü break ile kesilmeden doğal olarak biterse çalışır. Yani else \"aradığım bulunamadı\" anlamına gelir.","continue else'i engellemez; yalnız break (ve işlevde return) döngüyü kesip else'i atlatır.","Dizi boşsa döngü hiç dönmez ama normal bitmiş sayılır, else çalışır. Bu, arama kalıbında bir bulunamadı bayrağı değişkeni yazmaktan kurtarır."] },
       { t: "h", text: "Kendin dene" },
       { t: "alan", id: "py-5-ciro" },
       { t: "h", text: "Bozuk kodu bul ve düzelt" },
@@ -79,12 +82,12 @@
       { id: "h1", text: "range(son), range(başla, son) ve range(başla, son, adım) ifadelerinin ürettiği sayıları tam olarak yazabilirsin." },
       { id: "h2", text: "while döngüsünün kaç tur döneceğini ve sonunda değişkenin değerini hesaplayıp sonsuz döngüye yol açan eksiği bulabilirsin." },
       { id: "h3", text: "break ve continue içeren bir döngünün çıktısını sırayla yazabilirsin." },
-      { id: "h4", text: "Döngünün else bloğunun ne zaman çalıştığını ve 'bir eksik ya da fazla' sınır hatalarını (off-by-one) açıklayabilirsin." }
+      { id: "h4", text: "Döngünün else bloğunun ne zaman çalıştığını (break, boş dizi, doğal bitiş) ve \"bir eksik ya da fazla\" sınır hatalarını (off-by-one) açıklayabilirsin." }
     ],
     summary: ["for her turda bir eleman alır; range(n) 0'dan n-1'e kadardır, son değer hariçtir.", "while koşul doğru kaldıkça döner; koşulu değiştiren satır gövdede yoksa sonsuz döngü olur.", "break döngüyü bitirir, continue sıradaki ture geçer.", "for ve while'ın else bloğu, döngü break ile kesilmeden bittiğinde çalışır.", "İç içe döngüde iç döngü her dış turda baştan döner; girinti hangi döngüye ait olduğunu söyler."],
     prereq: [4],
     minutes: 35,
-    sonDogrulama: "2026-10-24",
+    sonDogrulama: "2026-10-26",
     surum: "2026-10-v1",
     quiz: [
       {
@@ -133,6 +136,18 @@
         id: "d42efb10",
         q: "Bir kişi 1'den 5'e kadar yazdırmak için for i in range(5) yazdı. Sorun nedir?",
         options: ["0'dan 4'e kadar yazar; range(1, 6) gerekir", "5'e kadar yazar, sorun yok", "Sözdizimi hatası", "range yalnız while ile kullanılır"],
+        obj: "h4"
+      },
+      {
+        id: "b37fa09c",
+        q: "for i in range(3):\n    if i == 5:\n        break\nelse:\n    print(\"bitti\")\nprint(\"son\")\nkodu ne yazdırır?",
+        options: ["son", "bitti, son", "bitti", "Hata verir"],
+        obj: "h4"
+      },
+      {
+        id: "3b7be92a",
+        q: "n = 0\nwhile n < 3:\n    n += 1\n    if n == 2:\n        break\nelse:\n    print(\"else\")\nprint(n)\nkodu ne yazdırır?",
+        options: ["2", "else, 2", "3", "else, 3"],
         obj: "h4"
       }
     ],
@@ -218,6 +233,12 @@
         h: "Dikkat",
         text: "b = a kopya değil, aynı listeye ikinci addır. sorted(a) yeni liste döndürür, a.sort() ise listeyi yerinde sıralar ve None döndürür. Tek elemanlı demet için virgül şart: (5,)."
       },
+      { t: "h", text: "Dilim uç durumları" },
+      { t: "cmd", lang: "python", text: "s = [\"a\", \"b\", \"c\", \"d\", \"e\"]\nprint(s[1:100])      # ['b', 'c', 'd', 'e']   (sınır aşımı hata vermez)\nprint(s[-2:])        # ['d', 'e']\nprint(s[:-1])        # ['a', 'b', 'c', 'd']\nprint(s[::2])        # ['a', 'c', 'e']\nprint(s[::-1])       # ['e', 'd', 'c', 'b', 'a']\nprint(s[3:1])        # []   (başlangıç sondan büyük)\nprint(s[2:2])        # []\n# print(s[10])       # IndexError (tek sıra numarası sınır dışı)\ns[1:3] = [\"X\"]       # dilime atama: iki elemanı bir ile değiştirir\nprint(s)             # ['a', 'X', 'd', 'e']\ndel s[0]\nprint(s)             # ['X', 'd', 'e']\nprint(\"d\" in s)      # True" },
+      { t: "steps", h: "Dilim kuralları", items: ["liste[baş:son:adım]: baş dahil, son dahil değil. Sınır liste uzunluğunu aşarsa hata değil, listenin sonuna kadar alınır.","Negatif adım sondan başa gezer: [::-1] listeyi ters çevirir. Başlangıç sondan büyükse (adım pozitifken) sonuç boş listedir.","Tek bir sıra numarası sınır dışıysa IndexError olur, dilim olmaz. Dilime atama listeyi uzatıp kısaltabilir; del ile eleman ya da dilim silinir; in üyeliği denetler."] },
+      { t: "h", text: "Takma ad ve kopya farkı (iç içe)" },
+      { t: "cmd", lang: "python", text: "a = [1, 2]\nb = a               # takma ad: iki ad, tek liste\nc = a[:]            # kopya\nd = list(a)         # kopya\na.append(3)\nprint(b, c, d)      # [1, 2, 3] [1, 2] [1, 2]\nprint(a is b, a is c)    # True False\n\nic = [[1], [2]]\nkopya = ic[:]       # yüzeysel kopya: iç listeler paylaşılır\nkopya[0].append(9)\nprint(ic)           # [[1, 9], [2]]\n\nimport copy\nderin = copy.deepcopy(ic)    # iç listeler de kopyalanır\nderin[0].append(7)\nprint(ic, derin)    # [[1, 9], [2]] [[1, 9, 7], [2]]" },
+      { t: "steps", h: "Hatırla", items: ["b = a yeni liste yapmaz; ikinci bir ad ekler. Birinden yapılan değişiklik ötekinde görünür. is iki adın aynı nesneyi gösterip göstermediğine bakar.","a[:] ve list(a) yeni bir dış liste yapar ama iç listeler paylaşılır (yüzeysel kopya).","İç içe yapıda tam bağımsız kopya için copy.deepcopy kullanılır."] },
       { t: "h", text: "Kendin dene" },
       { t: "alan", id: "py-6-liste" },
       { t: "h", text: "Bozuk kodu bul ve düzelt" },
@@ -228,15 +249,15 @@
       }
     ],
     objectives: [
-      { id: "h1", text: "Pozitif ve negatif sıra numaralarıyla eleman seçip liste[baş:son] dilimini yazabilirsin." },
-      { id: "h2", text: "append, insert, remove, pop, sorted ve sort'un sonucunu söyleyip b = a ile a[:] farkını açıklayabilirsin." },
+      { id: "h1", text: "Pozitif ve negatif sıra numaralarıyla eleman seçip liste[baş:son:adım] dilimini, uç durumlarıyla (sınır aşımı, negatif adım) yazabilirsin." },
+      { id: "h2", text: "append, insert, remove, pop, sorted ve sort'un sonucunu söyleyip b = a ile a[:] farkını (iç içe listede yüzeysel kopya dahil) açıklayabilirsin." },
       { id: "h3", text: "Demetin değiştirilemez olduğunu bilip tek elemanlı demeti doğru yazabilirsin." },
       { id: "h4", text: "Demet açma (x, y = nokta) ve IndexError gibi hataları öngörüp düzeltebilirsin." }
     ],
     summary: ["Liste [ ] ile yazılır, değiştirilebilir; sıra 0'dan başlar, -1 sondur.", "liste[baş:son] dilimi baş dahil, son hariç yeni liste verir.", "append sona, insert araya ekler; remove değerle, pop sıradan siler; sort yerinde sıralar ve None döndürür, sorted yeni liste verir.", "b = a aynı listeye ikinci addır; kopya için a[:] ya da a.copy().", "Demet ( ) ile yazılır ve değişmez; tek elemanlı demet (5,) biçimindedir; x, y = (4, 7) demeti açar."],
     prereq: [5],
     minutes: 35,
-    sonDogrulama: "2026-10-24",
+    sonDogrulama: "2026-10-26",
     surum: "2026-10-v1",
     quiz: [
       {
@@ -286,6 +307,24 @@
         q: "liste = [10, 20, 30] iken liste[3] ne yapar?",
         options: ["30 döndürür", "IndexError verir", "None döndürür", "KeyError verir"],
         obj: "h4"
+      },
+      {
+        id: "441246ce",
+        q: "s = [10, 20, 30, 40, 50]\nprint(s[3:10])\nkodu ne yazdırır?",
+        options: ["Hata verir (IndexError)", "[40]", "[]", "[40, 50]"],
+        obj: "h1"
+      },
+      {
+        id: "68c70e6f",
+        q: "s = [10, 20, 30, 40, 50]\nprint(s[::-2])\nkodu ne yazdırır?",
+        options: ["[50, 40, 30, 20, 10]", "[50, 30, 10]", "[10, 30, 50]", "[40, 20]"],
+        obj: "h1"
+      },
+      {
+        id: "50f7f5c1",
+        q: "a = [[1, 2], [3]]\nb = a[:]\nb[0].append(9)\nprint(a)\nkodu ne yazdırır?",
+        options: ["[[1, 2], [3]]", "[[1, 2, 9], [3, 9]]", "[[1, 2, 9], [3]]", "Hata verir"],
+        obj: "h2"
       }
     ],
     interview: [
@@ -522,6 +561,12 @@
         h: "Dikkat",
         text: "Fonksiyon, çağrılmadan önce tanımlanmış olmalıdır; aksi halde NameError alırsın. Dışarıdaki değişkenleri global ile değiştirmek zorunda kalıyorsan çoğu zaman bunu parametre ve return ile yapmak daha temizdir."
       },
+      { t: "h", text: "Kapsam: gölgeleme, global ve nonlocal" },
+      { t: "cmd", lang: "python", text: "ad = \"genel\"\ndef golge():\n    ad = \"yerel\"        # yeni bir yerel ad; genel ad değişmez\n    return ad\nprint(golge(), ad)      # yerel genel\n\ntoplam = 0\ndef ekle(x):\n    global toplam       # genel adı değiştirmek için bildirim şart\n    toplam += x\nekle(5)\nekle(2)\nprint(toplam)           # 7\n\ndef dis():\n    n = 0\n    def ic():\n        nonlocal n      # dıştaki işlevin n'i\n        n += 10\n    ic()\n    return n\nprint(dis())            # 10\n\nprint(len(\"abc\"))       # 3\nlen = 5                 # yerleşik len adı artık bir sayıyı gösteriyor\n# print(len(\"abc\"))     # TypeError: 'int' object is not callable\ndel len                 # yerleşik len geri gelir\nprint(len(\"abc\"))       # 3" },
+      { t: "steps", h: "Ad nerede aranır?", items: ["Python adı sırayla yerelde, çevreleyen işlevde, genelde ve yerleşiklerde arar (LEGB). Okurken dışarıya bakabilir; atama yaparken ise ad o işlevde yerel olur.","Genel ya da çevreleyen işlevdeki adı değiştirmek istiyorsan global ya da nonlocal bildirmen gerekir. Bildirmeden atarsan yeni bir yerel ad doğar ve UnboundLocalError ya da gölgeleme olur.","Çoğu zaman global yerine parametre ve return kullanmak daha temizdir: işlevin neye bağlı olduğu imzasında görünür."] },
+      { t: "h", text: "Ayrılmış sözcük tuzağı" },
+      { t: "cmd", lang: "python", text: "import keyword\nprint(keyword.iskeyword(\"in\"))       # True\nprint(keyword.iskeyword(\"print\"))    # False  (print bir yerleşik işlev)\nprint(keyword.iskeyword(\"True\"))     # True   (büyük harfle yazılan sabit de ayrılmıştır)\nprint(len(keyword.kwlist) > 30)      # True" },
+      { t: "steps", h: "Kurallar", items: ["in, is, def, class, lambda, pass, for, if gibi ayrılmış sözcükler değişken ya da parametre adı olamaz. def f(in=1): satırı çalışmadan önce SyntaxError verir.","print, len, sum gibi yerleşik işlev adları ayrılmış sözcük değildir; kullanabilirsin ama gölgelersen işlev kaybolur. Bu yüzden onları ad olarak seçme.","Ad seçerken adet, fiyat_tl, toplam_tutar gibi anlamlı ve ayrılmışlarla çakışmayan adlar kullan."] },
       { t: "h", text: "Kendin dene" },
       { t: "alan", id: "py-8-islev" },
       { t: "h", text: "Bozuk kodu bul ve düzelt" },
@@ -537,13 +582,13 @@
         text: "def ile varsayılan değerli parametreleri olan bir fonksiyon tanımlayıp konumlu ve anahtar sözcüklü çağrıların sonucunu söyleyebilirsin."
       },
       { id: "h2", text: "return'ün fonksiyonu bitirip değer verdiğini ve return olmayan fonksiyonun None döndürdüğünü açıklayabilirsin." },
-      { id: "h3", text: "Yerel ve global adların hangi değeri göstereceğini ve global'in ne zaman gerektiğini söyleyebilirsin." },
-      { id: "h4", text: "Tanım sırası, eksik ya da fazla argüman ve return unutma gibi hataları bulup düzeltebilirsin." }
+      { id: "h3", text: "Yerel, global ve nonlocal adların hangi değeri göstereceğini, global ve nonlocal'in ne zaman gerektiğini ve gölgelemeyi söyleyebilirsin." },
+      { id: "h4", text: "Tanım sırası, eksik ya da fazla argüman, return unutma ve ayrılmış sözcüğü ad yapma gibi hataları bulup düzeltebilirsin." }
     ],
     summary: ["def ad(parametreler): ile tanımlanır; çağrılana kadar gövde çalışmaz.", "return değeri çağırana verir ve fonksiyonu bitirir; return yoksa sonuç None olur.", "Parametre tanımdaki addır, argüman çağrıdaki değerdir. Varsayılan değerler sondaki parametrelerde olur.", "Fonksiyon içinde atanan ad yereldir; dıştakini değiştirmek için global gerekir ama parametre ve return tercih edilir.", "Fonksiyon çağrılmadan önce tanımlanmalı; argüman sayısı tanımla uyuşmalıdır."],
     prereq: [7],
     minutes: 35,
-    sonDogrulama: "2026-10-24",
+    sonDogrulama: "2026-10-26",
     surum: "2026-10-v1",
     quiz: [
       {
@@ -592,6 +637,24 @@
         id: "0988cacc",
         q: "Tanımı iki parametreli olan tutar(adet, fiyat) fonksiyonuna tutar(3, 2, 1) yazılırsa ne olur?",
         options: ["TypeError", "6", "NameError", "ValueError"],
+        obj: "h4"
+      },
+      {
+        id: "c0261298",
+        q: "def dis():\n    n = 0\n    def ic():\n        nonlocal n\n        n += 1\n    ic()\n    ic()\n    return n\nprint(dis())\nkodu ne yazdırır?",
+        options: ["0", "1", "2", "Hata verir"],
+        obj: "h3"
+      },
+      {
+        id: "8454804a",
+        q: "sayac = 5\ndef artir():\n    print(sayac)\n    sayac = 6\nartir()\nkodu çalıştırılınca ne olur?",
+        options: ["Hata verir (UnboundLocalError)", "5 yazar", "6 yazar", "5 yazar, sonra 6 yazar"],
+        obj: "h3"
+      },
+      {
+        id: "349c70de",
+        q: "def fun(in=2, out=3):\n    return in + out\nkodu için hangisi doğrudur?",
+        options: ["fun() çağrısı 5 döndürür", "Tanım geçer, hata fun() çağrılınca çıkar", "out ayrılmış sözcük olduğu için hata verir", "in ayrılmış sözcüktür: SyntaxError"],
         obj: "h4"
       }
     ],

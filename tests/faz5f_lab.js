@@ -119,17 +119,17 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   const tam = (tr, n) => { const o = {}; for (let i = 1; i <= n; i++) o['ders:' + tr + ':' + i] = true; return o; };
   const lk = (id, n) => Array.from({ length: n }, (_, i) => ({ id: 'k' + id + i, tur: 'lab', hedef: 'lab:' + id + ':s' + (i + 1), kapi: null, dogrulama: 'istemci' }));
   const oneri = (yol, du) => p.evaluate(([yol, du]) => { const r = PP.ogr.oneri.sonraki(PP.ogr.ui.graf(), yol, du); return r && [r.tip, r.lab, r.ders]; }, [yol, du]);
-  const hepsiCcna = [].concat(lk('ccna-altag', 4), lk('ccna-rota', 4), lk('ccna-acl', 6), lk('ccna-vlan', 4), lk('ccna-nat', 4));
-  eq(await oneri('ccna', { ...du0, dersTamam: tam('ccna', 23), kanitlar: hepsiCcna.concat(lk('ccna-ospf', 4)) }), ['lab', 'ccna-dhcp', 'ders:ccna:7'], 'graf: ccna dersleri tamam, DHCP lab eksik → DHCP önerilir (blok değil)');
-  eq(await oneri('ccna', { ...du0, dersTamam: tam('ccna', 23), kanitlar: hepsiCcna.concat(lk('ccna-dhcp', 4)) }), ['lab', 'ccna-ospf', 'ders:ccna:10'], 'graf: DHCP tamam, OSPF lab eksik → OSPF önerilir');
-  eq(await oneri('ccna', { ...du0, dersTamam: tam('ccna', 23), kanitlar: hepsiCcna.concat(lk('ccna-dhcp', 4), lk('ccna-ospf', 3)) }), ['lab', 'ccna-ospf', 'ders:ccna:10'], 'graf: OSPF 3/4 senaryo → hâlâ öneri');
-  eq(await oneri('ccna', { ...du0, dersTamam: tam('ccna', 23), kanitlar: hepsiCcna.concat(lk('ccna-dhcp', 4), lk('ccna-ospf', 4)) }), ['tamam', null, null], 'graf: hepsi tamam → tamam');
-  eq(await oneri('ccna', { ...du0, dersTamam: tam('ccna', 23), kanitlar: hepsiCcna.concat(lk('net-dhcp', 4), lk('net-ospf', 4)) }), ['lab', 'ccna-ospf', 'ders:ccna:10'], 'graf: net DHCP/OSPF kanıtları ccna önerisini kapatmaz (sızıntı yok; en sondaki eksik lab önerilir)');
+  const hepsiCcna = [].concat(lk('ccna-altag', 4), lk('ccna-evag', 4), lk('ccna-rota', 4), lk('ccna-acl', 6), lk('ccna-vlan', 4), lk('ccna-nat', 4));
+  eq(await oneri('ccna', { ...du0, dersTamam: tam('ccna', 29), kanitlar: hepsiCcna.concat(lk('ccna-ospf', 4)) }), ['lab', 'ccna-dhcp', 'ders:ccna:7'], 'graf: ccna dersleri tamam, DHCP lab eksik → DHCP önerilir (blok değil)');
+  eq(await oneri('ccna', { ...du0, dersTamam: tam('ccna', 29), kanitlar: hepsiCcna.concat(lk('ccna-dhcp', 4)) }), ['lab', 'ccna-ospf', 'ders:ccna:10'], 'graf: DHCP tamam, OSPF lab eksik → OSPF önerilir');
+  eq(await oneri('ccna', { ...du0, dersTamam: tam('ccna', 29), kanitlar: hepsiCcna.concat(lk('ccna-dhcp', 4), lk('ccna-ospf', 3)) }), ['lab', 'ccna-ospf', 'ders:ccna:10'], 'graf: OSPF 3/4 senaryo → hâlâ öneri');
+  eq(await oneri('ccna', { ...du0, dersTamam: tam('ccna', 29), kanitlar: hepsiCcna.concat(lk('ccna-dhcp', 4), lk('ccna-ospf', 4)) }), ['tamam', null, null], 'graf: hepsi tamam → tamam');
+  eq(await oneri('ccna', { ...du0, dersTamam: tam('ccna', 29), kanitlar: hepsiCcna.concat(lk('net-dhcp', 4), lk('net-ospf', 4)) }), ['lab', 'ccna-ospf', 'ders:ccna:10'], 'graf: net DHCP/OSPF kanıtları ccna önerisini kapatmaz (sızıntı yok; en sondaki eksik lab önerilir)');
   eq(await p.evaluate((du) => { const r = PP.ogr.oneri.sonrakiLab(PP.ogr.ui.graf(), 'net', du); return r && r.lab; }, { ...du0, dersTamam: tam('net', 7), kanitlar: lk('net-rota', 4).concat(lk('net-nat', 4)) }), 'net-ospf', 'graf: net 7 tamam, OSPF lab eksik → öneri');
   eq(await p.evaluate((du) => { const r = PP.ogr.oneri.sonrakiLab(PP.ogr.ui.graf(), 'net', du); return r && r.lab; }, { ...du0, dersTamam: tam('net', 10), kanitlar: lk('net-rota', 4).concat(lk('net-nat', 4), lk('net-ospf', 4), lk('net-vlan', 4)) }), 'net-dhcp', 'graf: net 10 tamam, DHCP lab eksik → öneri');
 
   // 7) QA (18) ve teknik İngilizce (11) ders eki: 15 öğe puanı
-  for (const [yol, n, ad, kaynaksizBeklenen] of [['qa', 22, 'QA', []], ['eng', 15, 'İngilizce', [0, 9, 10]]]) {
+  for (const [yol, n, ad, kaynaksizBeklenen] of [['qa', 34, 'QA', []], ['eng', 15, 'İngilizce', [0, 9, 10]]]) {
     const puan = await p.evaluate((yol) => TMAP[yol].map((T, i) => {
       const e = (PP_EK[yol] || {})[i] || {};
       const net = (x) => typeof x === 'string' ? x.trim().length > 20 : !!x;
@@ -145,7 +145,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
     eq(puan.map(x => ({ i: x.i, eksik: x.eksik.filter(k => !/kaynak/.test(k)) })).filter(x => x.eksik.length), [], ad + ': 14 çekirdek öğe tam (kaynak koşullu)');
     eq(puan.filter(x => x.eksik.length).map(x => x.i), kaynaksizBeklenen, ad + ': kaynaksız konular beklenen (doğrulanamayan sayfa eklenmedi)');
     eq(await p.evaluate((yol) => Object.keys(PP_EK[yol]).length, yol), n, 'PP_EK.' + yol + ' ' + n + ' girdi');
-    eq(await p.evaluate((yol) => Object.keys(PP_EK[yol]).every(k => (PP_EK[yol][k].kaynaklar || []).every(s => s.t && s.neden && ['2026-10-12', '2026-10-19'].includes(s.dogrulama) && /^https:\/\/[a-z0-9.-]+(\/|$)/.test(s.u))), yol), true, ad + ': her kaynakta ad, neden, tarih 2026-10-12, https adresi');
+    eq(await p.evaluate((yol) => Object.keys(PP_EK[yol]).every(k => (PP_EK[yol][k].kaynaklar || []).every(s => s.t && s.neden && ['2026-10-12', '2026-10-19', '2026-10-26'].includes(s.dogrulama) && /^https:\/\/[a-z0-9.-]+(\/|$)/.test(s.u))), yol), true, ad + ': her kaynakta ad, neden, tarih 2026-10-12, https adresi');
     eq(await p.evaluate((yol) => { const u = Object.values(PP_EK[yol]).flatMap(e => (e.kaynaklar || []).map(k => k.u)); return u.length > 0 && Object.values(PP_EK[yol]).every(e => { const x = (e.kaynaklar || []).map(k => k.u); return x.length === new Set(x).size; }); }, yol), true, ad + ': bir konuda aynı kaynak iki kez yok');
     eq(await p.evaluate((yol) => TMAP[yol].slice(0, -1).map((T, i) => [i, (PP_EK[yol][i].sonraki || '').indexOf(TMAP[yol][i + 1].k) >= 0]).filter(x => !x[1]).map(x => x[0]), yol), [], ad + ': "sonraki" bir sonraki konuyu anar');
     eq(await p.evaluate((yol) => /Yolun sonu/.test(PP_EK[yol][Object.keys(PP_EK[yol]).length - 1].sonraki), yol), true, ad + ': son konu "Yolun sonu" der');
@@ -155,7 +155,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   }
   // İngilizce: sınav ya da seviye iddiası yok; QA'da sertifika iddiası yalnız sayfa bağlantısı
   eq(await p.evaluate(() => /IELTS|TOEFL|CEFR|\bPTE\b|\b[ABC][12]\b|sınav puanı|sertifika puanı/.test(JSON.stringify(PP_EK.eng))), false, 'İngilizce eki sınav/seviye/puan iddiası içermez');
-  eq(await p.evaluate(() => [Object.keys(PP_EK.sec).length, Object.keys(PP_EK.net).length, Object.keys(PP_EK.ccna).length, Object.keys(PP_EK.bk).length, Object.keys(PP_EK.dev).length]), [39, 18, 23, 46, 22], 'diğer yolların ek girdileri sağlam');
+  eq(await p.evaluate(() => [Object.keys(PP_EK.sec).length, Object.keys(PP_EK.net).length, Object.keys(PP_EK.ccna).length, Object.keys(PP_EK.bk).length, Object.keys(PP_EK.dev).length]), [39, 18, 29, 51, 30], 'diğer yolların ek girdileri sağlam');
 
   // Anlatım ve Alıştırma blokları qa ve eng derste görünür
   for (const [yol, n, bolum, beklenen] of [['qa', 3, 'anlat', ['analoji', 'hatalar', 'gecme', 'kaynaklar']], ['qa', 18, 'alis', ['rehberli', 'bagimsiz', 'telafi']], ['eng', 2, 'anlat', ['analoji', 'hatalar', 'gecme', 'kaynaklar', 'sonraki']], ['eng', 11, 'alis', ['rehberli', 'bagimsiz', 'telafi']]]) {

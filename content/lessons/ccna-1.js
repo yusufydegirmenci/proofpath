@@ -307,19 +307,48 @@
       ] },
       { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "# Windows:\nipconfig /all\narp -a\n\n# Cisco switch:\nshow mac address-table\nshow interfaces status\nshow interfaces fastethernet0/1" },
       { t: "box", h: "Elle dene", text: "1) Windows'ta cmd aç. 2) 'ipconfig /all' yaz, 'Physical Address' satırını bul: bu MAC adresin. 3) 'arp -a' yaz: IP-MAC eşleşmelerini gör. 4) Çıktıda 'ff-ff-ff-ff-ff-ff' görürsen bu broadcast MAC'idir; ARP sorusu bu adrese gider." },
+      { t: "h", text: "Çerçeve alanları ve MAC tablosu (Faz 20 eki)" },
+      {
+        t: "steps",
+        h: "Ethernet çerçevesi alanları",
+        items: [
+          "Ön söz (preamble) ve başlangıç ayırıcısı: alıcının saatini eşler; genellikle çerçeve uzunluğuna sayılmaz.",
+          "Hedef MAC (6 bayt) ve kaynak MAC (6 bayt): çerçevenin kime gittiği ve kimden geldiği. Hedef alanı önce okunur, switch karar verirken buna bakar.",
+          "Tür/uzunluk (2 bayt): içindeki yükün IPv4 mü IPv6 mı olduğunu gösterir.",
+          "Veri (46-1500 bayt): üst katman paketi; 46 bayttan kısaysa doldurulur. Tavan 1500 bayt MTU olarak bilinir.",
+          "FCS (4 bayt): çerçeve sonunda hata denetim değeri; alıcı kendi hesapladığıyla karşılaştırır, uyuşmazsa çerçeveyi atar.",
+          "Toplam çerçeve boyutu (ön söz hariç) 64 ile 1518 bayt arasındadır (VLAN etiketiyle 1522). 64 bayttan kısa parçalara 'runt' denir."
+        ]
+      },
+      {
+        t: "steps",
+        h: "MAC tablosu öğrenme ve yayın",
+        items: [
+          "Öğrenme: switch yalnız kaynak MAC'e bakarak tabloyu doldurur (MAC → giriş portu).",
+          "İletme: hedef MAC tabloda varsa yalnız o porta gider (bilinen unicast).",
+          "Yayın (flooding): hedef tabloda yoksa (bilinmeyen unicast), yayın (FF:FF:FF:FF:FF:FF) ya da çoklu yayın ise çerçeve geldiği port hariç tüm portlara gider.",
+          "Kaynak MAC'i yayın adresi olamaz; switch hiçbir zaman yayın adresini 'öğrenmez'.",
+          "Kayıt süresi dolarsa (varsayılan 300 s) silinir; bir cihaz porta taşınırsa yeni portta görüldüğünde kayıt güncellenir."
+        ]
+      },
       { t: "warn", h: "Tuzak", text: "Switch IP adresine bakmaz, MAC adresine bakar (katman 2). IP'ye göre yol seçen router'dır (katman 3). Karıştırırsan mülakatta puan kaybedersin." }
     ],
     objectives: [
       { id: "h1", text: "Switch'in MAC tablosunu nasıl öğrendiğini ve hedef MAC tabloda varken ya da yokken çerçeveyi ne yaptığını açıklayabilirsin." },
       { id: "h2", text: "ARP'nin ne işe yaradığını söyleyip IP adresi ile MAC adresi arasındaki farkı ayırt edebilirsin." },
       { id: "h3", text: "Switch portu ve router arayüzü için collision domain ile broadcast domain sayısını ayırt edebilirsin." },
-      { id: "h4", text: "Switch'te MAC tablosunu gösteren komutu (show mac address-table) bulabilirsin." }
+      { id: "h4", text: "Switch'te MAC tablosunu gösteren komutu (show mac address-table) bulabilirsin." },
+      {
+  id: "h5",
+  text: "Ethernet çerçevesinin alanlarını (hedef/kaynak MAC, tür, veri, FCS) ve MAC tablosunun öğrenme ile yayın davranışını açıklayabilirsin."
+}
     ],
     summary: [
       "MAC adresi ağ kartına üretici tarafından verilen 48 bitlik fiziksel adrestir; switch IP'ye değil MAC'e bakar (katman 2).",
       "Switch kaynak MAC'i porta bağlayarak öğrenir; hedef tabloda varsa yalnız o porta, yoksa ya da broadcast ise geldiği port hariç tüm portlara gönderir.",
       "ARP, aynı ağdaki bir IP'nin MAC adresini broadcast soruyla bulur ve sonucu ARP tablosunda saklar.",
-      "Switch'in her portu ayrı collision domain'dir; switch (VLAN yoksa) tek broadcast domain'dir, router her arayüzde broadcast'i durdurur."
+      "Switch'in her portu ayrı collision domain'dir; switch (VLAN yoksa) tek broadcast domain'dir, router her arayüzde broadcast'i durdurur.",
+      "Ethernet çerçevesi hedef/kaynak MAC, tür, veri (46-1500 bayt) ve sonda FCS taşır (64-1518 bayt); switch yalnız kaynak MAC'i öğrenir, bilinmeyen hedef ve yayın çerçevelerini geldiği port hariç tüm portlara yayar."
     ],
     quiz: [
       { id: "30363d0b", q: "Switch gelen bir çerçevenin hedef MAC adresini tablosunda bulamazsa ne yapar?", options: ["Çerçeveyi atar", "Geldiği port hariç tüm portlara gönderir", "Router'a gönderir", "Sadece ilk porta gönderir"], obj: "h1" },
@@ -328,7 +357,12 @@
       { id: "3876cbb6", q: "Switch'in her portu neyi oluşturur?", options: ["Ayrı bir broadcast domain", "Ayrı bir collision domain", "Ayrı bir VLAN", "Ayrı bir alt ağ"], obj: "h3" },
       { id: "b1f21db2", q: "VLAN tanımlanmamış tek bir switch'in 8 portunun hepsi kullanılıyor. Kaç collision domain ve kaç broadcast domain vardır?", options: ["1 collision, 8 broadcast", "8 collision, 8 broadcast", "1 collision, 1 broadcast", "8 collision, 1 broadcast"], obj: "h3" },
       { id: "86f37e99", q: "Bir router'ın iki arayüzüne birer switch bağlı ve hiçbirinde VLAN yok. Toplam kaç broadcast domain vardır?", options: ["1", "2", "3", "4"], obj: "h3" },
-      { id: "c3266e63", q: "Cisco switch'te MAC tablosunu hangi komut gösterir?", options: ["show ip route", "show mac address-table", "show vlan brief", "show running-config"], obj: "h4" }
+      { id: "c3266e63", q: "Cisco switch'te MAC tablosunu hangi komut gösterir?", options: ["show ip route", "show mac address-table", "show vlan brief", "show running-config"], obj: "h4" },
+      { id: "90524eb3", q: "Ethernet çerçevesinde hata denetimi için kullanılan ve çerçevenin sonunda bulunan alan hangisidir?", options: ["Preamble","Tür/uzunluk","Hedef MAC","FCS"], obj: "h5" },
+      { id: "744c128b", q: "Switch MAC tablosunu doldururken hangi alana bakar?", options: ["Gelen çerçevenin hedef MAC adresine","Paketin hedef IP adresine","Gelen çerçevenin kaynak MAC adresine","Tür/uzunluk alanına"], obj: "h5" },
+      { id: "007423a8", q: "Bir çerçevenin hedef MAC adresi FF:FF:FF:FF:FF:FF. Switch ne yapar?", options: ["Çerçeveyi düşürür","Geldiği port hariç tüm portlara gönderir","Tablodaki ilk porta gönderir","Çerçeveyi yalnız router portuna gönderir"], obj: "h5" },
+      { id: "8d4a4d18", q: "Standart Ethernet çerçevesinin (ön söz hariç, etiketsiz) boyutu kaç bayt aralığındadır?", options: ["64-1518","32-512","1500-9000","46-1500"], obj: "h5" },
+      { id: "7c22dd5c", q: "MAC tablosunda kaydı olmayan bir hedefe çerçeve geldiğinde switch sonuç olarak neyi öğrenir?", options: ["Hedef MAC adresinin hangi portta olduğunu","Hedef IP adresini","Hiçbir şey öğrenmez","Çerçevenin kaynak MAC adresini ve giriş portunu"], obj: "h5" }
     ],
     interview: [
       { q: "Switch nasıl karar verir?", a: "Gelen çerçevenin kaynak MAC adresini porta bağlayıp MAC tablosuna yazar. Hedef MAC tabloda varsa yalnızca o porta, yoksa ya da broadcast ise geldiği port hariç tüm portlara gönderir." },
