@@ -324,12 +324,25 @@
       { t: "box", h: "Seçim", text: "Hızlı taşıma, geleneksel uygulama, az altyapı bilgisi: Beanstalk. Olay tabanlı kısa işler: Lambda. Konteynerler: ECS/EKS/App Runner. Tam kontrol: EC2." },
       { t: "warn", h: "Tuzak", text: "Beanstalk ortamını konsoldan elle değiştirmek ve .ebextensions ile çakıştırmak. Kalıcı değişikliği yapılandırma dosyasında tut." }
     ],
+    objectives: [
+      { id: "h1", text: "Web sunucu ve Worker ortam türlerini işlevlerine göre ayırt edebilirsin." },
+      { id: "h2", text: "All at once, Rolling, Immutable ve Blue/Green dağıtım politikalarını özelliklerine göre eşleştirebilirsin." },
+      { id: "h3", text: ".ebextensions ile ortamı yapılandırabilir ve veritabanını ortamın dışında tutmanın nedenini açıklayabilirsin." },
+      { id: "h4", text: "Beanstalk'ın PaaS niteliğini ve hangi durumda tercih edileceğini açıklayabilirsin." }
+    ],
+    summary: [
+      "Beanstalk kodu paketleyip ortamı kurar; kaynaklar hesabında görünür ve kontrol edilebilir.",
+      "İki ortam türü var: Web sunucu (HTTP) ve Worker (SQS kuyruğundan mesaj işler).",
+      "Dağıtım politikaları: All at once, Rolling, Rolling with additional batch, Immutable, Traffic splitting, Blue/Green.",
+      "Yapılandırma .ebextensions klasöründeki .config dosyalarıyla yapılır; kalıcı değişiklik dosyada tutulur.",
+      "Üretimde RDS ortamın dışında oluşturulur, çünkü ortam silinince içindeki veritabanı da silinir."
+    ],
     quiz: [
-      { id: "0e944a2e", q: "SQS kuyruğundan mesaj işleyen Beanstalk ortamı türü hangisidir?", options: ["Worker", "Web sunucu", "Edge", "Batch"] },
-      { id: "687477fd", q: "Yeni örnek grubu kurup güvenli geri alma sağlayan dağıtım politikası hangisidir?", options: ["Immutable", "All at once", "Manuel", "Tek örnek"] },
-      { id: "8e1079c8", q: "Beanstalk yapılandırma dosyaları hangi klasörde tutulur?", options: [".ebextensions", "/etc/aws", "buildspec", ".github"] },
-      { id: "9867b670", q: "Üretimde veritabanı için doğru tercih nedir?", options: ["RDS'i ortamın dışında oluşturmak", "Ortam içinde RDS", "Dosyada saklamak", "Lambda'ya gömmek"] },
-      { id: "5e585d54", q: "Beanstalk hangi hizmet modeline örnektir?", options: ["PaaS", "IaaS tek başına", "SaaS", "Colocation"] }
+      { id: "0e944a2e", q: "SQS kuyruğundan mesaj işleyen Beanstalk ortamı türü hangisidir?", options: ["Worker", "Web sunucu", "Edge", "Batch"], obj: "h1" },
+      { id: "687477fd", q: "Yeni örnek grubu kurup güvenli geri alma sağlayan dağıtım politikası hangisidir?", options: ["Immutable", "All at once", "Manuel", "Tek örnek"], obj: "h2" },
+      { id: "8e1079c8", q: "Beanstalk yapılandırma dosyaları hangi klasörde tutulur?", options: [".ebextensions", "/etc/aws", "buildspec", ".github"], obj: "h3" },
+      { id: "9867b670", q: "Üretimde veritabanı için doğru tercih nedir?", options: ["RDS'i ortamın dışında oluşturmak", "Ortam içinde RDS", "Dosyada saklamak", "Lambda'ya gömmek"], obj: "h3" },
+      { id: "5e585d54", q: "Beanstalk hangi hizmet modeline örnektir?", options: ["PaaS", "IaaS tek başına", "SaaS", "Colocation"], obj: "h4" }
     ],
     interview: [
       { q: "Beanstalk ne zaman uygun?", a: "Geleneksel web uygulamasını az altyapı yönetimiyle hızla AWS'ye taşımak istediğimde. Kaynaklar hâlâ benim hesabımda olduğundan gerektiğinde ince ayar yapabilirim." },
@@ -380,12 +393,25 @@
       { t: "box", h: "Seçenekler", text: "ECS: AWS'nin kendi basit orkestratörü. EKS: yönetilen Kubernetes. App Runner: imajdan doğrudan web servisi. Fargate: ikisi için de sunucusuz hesaplama." },
       { t: "warn", h: "Tuzak", text: "Gizli bilgileri (parola, anahtar) imajın içine koymak. Secrets Manager veya Parameter Store'dan task tanımında secrets ile geçir." }
     ],
+    objectives: [
+      { id: "h1", text: "ECR'ın rolünü ve imajı depoya göndermenin temel adımlarını açıklayabilirsin." },
+      { id: "h2", text: "Cluster, task definition, task ve service kavramlarını ayırt edebilirsin." },
+      { id: "h3", text: "Task role ile task execution role arasındaki farkı belirtebilirsin." },
+      { id: "h4", text: "Fargate, EC2, ECS, EKS ve App Runner seçeneklerini amaçlarına göre eşleştirebilirsin." }
+    ],
+    summary: [
+      "Konteyner uygulamayı ve ortamını paketler; imaj ECR'a konur, ECS ile çalıştırılır.",
+      "ECS kavramları: cluster, task definition, task ve istenen sayıda görevi çalışır tutan service.",
+      "Başlatma türü Fargate (sunucusuz) veya EC2 olabilir.",
+      "Task execution role imaj çekme ve günlük yazma içindir; task role uygulamanın servis çağrıları içindir.",
+      "Parola ve anahtarlar imaja konmaz; Secrets Manager veya Parameter Store'dan secrets ile geçirilir."
+    ],
     quiz: [
-      { id: "09c23f00", q: "Konteyner imajlarını depolayan AWS servisi hangisidir?", options: ["ECR", "ECS", "S3 Glacier", "RDS"] },
-      { id: "25150855", q: "Sunucu yönetmeden konteyner çalıştırmanın seçeneği hangisidir?", options: ["Fargate", "EC2 başlatma türü", "Bastion", "Direct Connect"] },
-      { id: "13d12542", q: "Konteyner içindeki uygulamanın DynamoDB'ye erişmesi hangi rolle yapılır?", options: ["Task role", "Task execution role", "Root", "Service-linked role"] },
-      { id: "f9dc0ef7", q: "İstenen sayıda görevi sürekli çalışır tutan ECS yapısı hangisidir?", options: ["Service", "Task definition", "Registry", "Layer"] },
-      { id: "c162272c", q: "Yönetilen Kubernetes servisi hangisidir?", options: ["EKS", "ECS", "ECR", "SQS"] }
+      { id: "09c23f00", q: "Konteyner imajlarını depolayan AWS servisi hangisidir?", options: ["ECR", "ECS", "S3 Glacier", "RDS"], obj: "h1" },
+      { id: "25150855", q: "Sunucu yönetmeden konteyner çalıştırmanın seçeneği hangisidir?", options: ["Fargate", "EC2 başlatma türü", "Bastion", "Direct Connect"], obj: "h4" },
+      { id: "13d12542", q: "Konteyner içindeki uygulamanın DynamoDB'ye erişmesi hangi rolle yapılır?", options: ["Task role", "Task execution role", "Root", "Service-linked role"], obj: "h3" },
+      { id: "f9dc0ef7", q: "İstenen sayıda görevi sürekli çalışır tutan ECS yapısı hangisidir?", options: ["Service", "Task definition", "Registry", "Layer"], obj: "h2" },
+      { id: "c162272c", q: "Yönetilen Kubernetes servisi hangisidir?", options: ["EKS", "ECS", "ECR", "SQS"], obj: "h4" }
     ],
     interview: [
       { q: "ECS ile EKS farkı nedir?", a: "ECS AWS'nin kendi daha basit orkestratörüdür. EKS yönetilen Kubernetes'tir: taşınabilirlik ve geniş ekosistem sunar, öğrenme eğrisi daha diktir." },

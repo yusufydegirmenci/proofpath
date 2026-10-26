@@ -246,7 +246,10 @@
       { id: "160a8ba2", q: "/26 maskesinin blok büyüklüğü kaçtır?", options: ["32", "64", "128", "192"], obj: "h1" },
       { id: "9f813436", q: "192.168.10.77/26 adresinin ağ adresi nedir?", options: ["192.168.10.0", "192.168.10.64", "192.168.10.77", "192.168.10.128"], obj: "h2" },
       { id: "f86c5722", q: "İki router arasındaki noktadan noktaya bağlantı için en uygun maske hangisidir?", options: ["/24", "/28", "/30", "/16"], obj: "h3" },
-      { id: "7f2fdcb6", q: "192.168.10.0/24 ağını 4 eşit alt ağa bölmek için yeni maske ne olmalı?", options: ["/25", "/26", "/27", "/28"], obj: "h3" }
+      { id: "7f2fdcb6", q: "192.168.10.0/24 ağını 4 eşit alt ağa bölmek için yeni maske ne olmalı?", options: ["/25", "/26", "/27", "/28"], obj: "h3" },
+      { id: "6ddb1693", q: "10.20.77.9/21 adresinin bulunduğu alt ağda kullanılabilir host aralığı hangisidir?", options: ["10.20.64.1 - 10.20.71.254", "10.20.72.1 - 10.20.79.254", "10.20.77.1 - 10.20.77.254", "10.20.72.0 - 10.20.79.255"], obj: "h2" },
+      { id: "d1c36c14", q: "192.168.5.0/24 Class C ağı /28 maskesiyle bölünürse kaç alt ağ ve alt ağ başına kaç kullanılabilir host elde edilir?", options: ["8 alt ağ, 30 host", "16 alt ağ, 16 host", "16 alt ağ, 14 host", "14 alt ağ, 16 host"], obj: "h1" },
+      { id: "eefea2ca", q: "172.30.100.200/20 adresinin bulunduğu alt ağın broadcast adresi nedir?", options: ["172.30.100.255", "172.30.96.255", "172.30.127.255", "172.30.111.255"], obj: "h2" }
     ],
     interview: [
       { q: "Neden subnetting yaparız?", a: "Büyük bir ağı küçük parçalara bölmek için. Böylece broadcast trafiği azalır, güvenlik kuralları departman bazında yazılabilir, IP adresleri israf edilmez ve ağ yönetimi kolaylaşır." },
