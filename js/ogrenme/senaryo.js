@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Ders sonu İngilizce iş senaryosu kartları (PP.senaryo, W1).
+   NE YAPAR: Yanıtın yapısını ve anahtar kavramı (mustMention) denetler; anlamı/dilbilgisini değerlendirmez; sonuç kapı, not veya ustalık sayılmaz (SAYILIR hepsi false).
+   SORUN OLURSA: Cevaplar yalnız ya_pp_ogr.tercih.senaryo içinde. Kart içeriği content/senaryo/*.js (index.html'de bu dosyadan önce yüklenir). Arayüz js/ders/senaryo-ui.js ve js/atolye/va-ui.js.
+   YENİ ÖZELLİK: Kart content/senaryo/'ya eklenir; tests/faz_w1.js güncellenir. */
 /* ---- PP.senaryo: ders sonu İngilizce iş senaryosu (W1) — saf mantık + yerel kayıt ----
    Kart: gerçekçi İngilizce belge (ticket, bug raporu, Slack mesajı…) + kısa İngilizce yanıt görevi. Sunucusuz, yapay zekâsız.
    Denetim yalnız YAPIYI (şablon alanları, asgari uzunluk) ve ANAHTAR KAVRAMI (mustMention, eş anlamlılarla) sayar; anlamı, doğruluğu ve dilbilgisini DEĞERLENDİRMEZ.

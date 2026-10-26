@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Kalıcı öğrenme deposu (PP.ogr.depo).
+   NE YAPAR: Deneme, kanıt ve proje kayıtlarını tek localStorage anahtarında tutar; denemeler yalnız eklenir, düzeltme yeni kayıttır; başka anahtara yazmaz.
+   SORUN OLURSA: Anahtar ya_pp_ogr (bozuk veri için ya_pp_ogr_bozuk da kullanılır); tercih ve geri bildirim alt alanları da bu kayıtta. Şema sürümü O.SURUM (cekirdek.js). Testlerde depo sahte localStorage ile verilir.
+   YENİ ÖZELLİK: Yeni kayıt alanı depo.js'e eklenir; tests/ogrenme.js (depo bölümü) ve faz12b_geri_bildirim.js, faz21_bilgi.js güncellenir. */
 /* ---- Kalıcı depo: yalnız YENİ anahtar ya_pp_ogr. Mevcut depolama anahtarlarına yazmaz, hiçbir şeyi silmez. ----
    Biçim: {v:1, denemeler:[], kanitlar:[], projeler:{}}  (denemeler yalnız eklenir; düzeltme yeni kayıttır) */
 (function (g) {

@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Model ile mevcut uygulama arasındaki bağlama katmanı (PP.ogr.ui).
+   NE YAPAR: Eski hesapları yeniden yazmaz; mevcut işlevleri çağırıp ders/konu için tek özet verir; grafik ilk kullanımda kurulur.
+   SORUN OLURSA: Eski küreseller S, h, QB, pathOf, totalXp, rankInfo, streakInfo, lessonsDone yalnız çağrı anında okunur, yükleme anında dokunulmaz (yükleme sırası). Çağıranlar js/ders/*, js/atolye/koc-ui.js, plan-ui.js.
+   YENİ ÖZELLİK: Yeni özet alanı ui.js'e eklenir, ilgili ekran dosyasında kullanılır; tests/faz4_entegrasyon.js ve ogrenme_tarayici.js güncellenir. */
 /* ---- Uygulama bağlama katmanı: model ↔ mevcut uygulama. Eski hesapları YENİDEN YAZMAZ; ilgili işlevleri çağırıp tek özet verir. ----
    Eski küreseller (S, h, QB, pathOf, totalXp, rankInfo, streakInfo, lessonsDone) yalnız çağrı anında kullanılır. */
 (function (g) {

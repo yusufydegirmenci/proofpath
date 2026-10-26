@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ofis sekmesi (renderOffice), hikâye ve müdür raporu. NE YAPAR: Sezon/bölüm hikâyesini (S.story) ve müdür panelini gösterir; kurucu olmayan hesapta hikâye yoksa açıklayıcı boş durum çizer.
+   SORUN OLURSA: renderManager js/masa/masa-mudur.js'te, S.story baslat.js'te story/main belgesinden dinlenir; S.nonOwner dalı ayrıdır.
+   YENİ ÖZELLİK: Yeni ofis bölümü renderOffice çıktı listesine eklenir; özel test yok, tests/run-all.js ile smoke yoklanır (tests/smoke.js). */
 /* ---- Ofis ---- */
 function renderOffice(){
   if(S.nonOwner&&!S.story)return [h("div",{class:"panel"},h("div",{class:"label"},"Ofis"),h("h2",null,"Hikâye ve Müdür raporu"),h("div",{class:"small mute"},"Bu bölüm kurucunun günlük koç görevlerine bağlı olduğu için senin hesabında şimdilik boş. Dersler, Masa, Sınıf, Oyun, Proje ve Atölye tam çalışıyor."),h("div",{class:"row"},h("button",{class:"btn",type:"button",onclick:function(){goTab("ders")}},"Derse git")))];

@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Oyun sekmesi, Kartlar bölümü (ağ noktası bilgi kartları). NE YAPAR: GM_FACTS ağ noktası başına kısa anlatım/örnek/ipucu tutar; gmCardsUpdate oyun sonucundan doğru sayılarını kartlara işler, gmCardsTab Bronz/Gümüş/Altın kart ızgarasını çizer.
+   SORUN OLURSA: localStorage ya_cards (nokta: {ok,n,d}) altin-vurus.js syncOut ile eşitlenir. Kart adları ag-kuryesi.js gmClass çıktısı ve GM_ORDER ile birebir uyuşmalı. Çizim gmIcon (ag-kuryesi.js) ve canvas.gc-ic ile yapılır. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni kart: GM_FACTS girdisi (+ ag-kuryesi.js eşlemesi). Testler: tests/h83.js (eşitleme) ve tests/h84.js (Kartlar sekmesi). */
 /* ---- v53 oyunda öğren: ağ noktası bilgi kartları ---- */
 var GM_FACTS={
 "Ev Ağı":{t:"Evindeki ya da ofisindeki küçük ağ. Cihazlar bir switch ya da Wi-Fi erişim noktasına bağlanır.",e:"Telefonun ve bilgisayarın aynı Wi-Fi'ye bağlıysa aynı ev ağındasın.",k:"Ev ağlarında genelde 192.168.x.x gibi özel IP adresleri kullanılır."},

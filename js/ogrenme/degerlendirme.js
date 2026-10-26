@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Değerlendirme, puan/eşik/kritik hedef/varyant/telafi/eşdeğerlik (PP.ogr.deg).
+   NE YAPAR: Saf işlevler: (grafik, denemeler) girdisinden hedef durumu ve nedeni hesaplar; depolamaya yazmaz.
+   SORUN OLURSA: kapi.js bu modülü yükleme anında okur, bu yüzden kapi.js'ten önce yüklenmeli (sıra: graf, degerlendirme, kapi). Eski formüller tests/hesaplar.js ile birebir kalmalı.
+   YENİ ÖZELLİK: Yeni hesap O.deg'e eklenir; tests/ogrenme.js'e birim test yazılır. */
 /* ---- Değerlendirme (M§11): puan, eşik, kritik hedef, varyant, telafi, eşdeğerlik (yollar arası aktarım) ----
    Tüm işlevler saftır: (grafik, denemeler) → sonuç. Depolamaya yazmaz. */
 (function (g) {

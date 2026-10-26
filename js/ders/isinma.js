@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > ısınma (geçen derse bakış, bugünün kavram ve kelimeleri). NE YAPAR: Ders verisindeki warmup alanını temizleyip (cleanWarm) ısınma kartını üretir; kelimeyi kelime bankasına ekler (addWordToBank).
+   SORUN OLURSA: Önceki ders prevLesson ile lessonsOf'tan bulunur (rota-ders.js'e bağlı); S.sample/S.db/S.canWrite durumuna göre kayıt yapılır; ısınma kapısı ders-cekirdegi.js'tedir (ya_lc w bayrağı).
+   YENİ ÖZELLİK: Yeni ısınma alanı cleanWarm'ın pick listesine ve warmFromLesson'a eklenir; tests/t58a_ders_odasi.js ve tests/hesaplar.js güncellenir. */
 /* ---- Isınma: geçen derse bakış + bugünün kavram/kelimeleri ---- */
 function cleanWarm(w){
   if(!w||typeof w!=="object"||Array.isArray(w))return null;

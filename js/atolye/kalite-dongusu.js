@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Bugün/Ders sekmeleri: soru hata bildirimi, seri koruma jokeri, 5 dakika, seviye testi. NE YAPAR: qbFlag soru hata bildirimini (flags koleksiyonu), jokerOffer/jokerUse seri koruma jokerini, m5* 5 dakikalık turu ve pl* seviye testini (plStart/plLevel/plBand, plPanel) içerir.
+   SORUN OLURSA: localStorage ya_pl (iz başına seviye testi sonucu) altin-vurus.js syncOut ile eşitlenir; jokerler S.profile.jokerDates içinde. plPanel Bugün sekmesinde (S.pl.on), ders-cekirdegi.js ve kullanim-turu.js içinde kullanılır. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni tur: m5* gibi bir işlev + panel kaydı. Test: tests/hesaplar.js (seviye ve joker hesapları); h80/h82/h83 ya_pl kullanır. */
 /* ---- v32: kalite döngüsü, seri koruma, 5 dakika, haftalık özet, işe hazırlık ---- */
 S.qf={};
 function qbFlag(q){

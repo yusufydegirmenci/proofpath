@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Bilgi grafiğine dayalı en küçük sonraki adım önerisi (PP.ogr.oneri).
+   NE YAPAR: Grafik, ustalık durumu ve lab kanıtından tek adım + neden + varsa blok nedeni üretir (telafi, ilk bitmemiş ders, eksik lab, hepsi tamam).
+   SORUN OLURSA: Lab kanıtları öneriyi etkiler, kapıyı etkilemez. Ders kimliği - lab eşlemesi dosya içinde; senaryo sayısı lab tanımıyla aynı olmalı (tests/faz5b_ccna.js denetler). js/ altında doğrudan çağıran yok.
+   YENİ ÖZELLİK: Yeni lab eşlemesi buraya eklenir; tests/faz5b_ccna.js, faz5c_net.js, faz5d_lab.js, faz5f_lab.js güncellenir. */
 /* ---- Bilgi grafiğine dayalı "en küçük sonraki adım" (M§8.1, Faz 5 tur 2) ----
    Girdi: müfredat grafiği (önkoşullar), ustalık durumu (kanıtla), lab kanıtları. Çıktı: tek adım + neden + (varsa) blok nedeni.
    Sıra: (1) tamamlanmış ama kritik hedefi geçilmemiş ders → telafi; (2) ilk bitmemiş ders (kilitliyse nedeni ve önce yapılacak adım);

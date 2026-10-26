@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Tüm uygulama kabuğu, ana çizim (draw), sekme çubuğu, sekme yardım şeridi, takvim/indirme entegrasyonları. NE YAPAR: draw() sekmeyi gövde tablosundan seçip çizer, yardım şeridini ilk ziyarette açar, her çizim sonunda checkMilestones, syncDesk, syncLeagueMe, rtAward çağırır.
+   SORUN OLURSA: Yardım görüldü bayrakları localStorage ya_help; gövde tablosundaki render* işlevleri çağrı anında aranır (ilgili betik yüklenmemişse hata); odaklı girdi varken çizim ertelenir (pending/sched); S.more, S._helpOpen.
+   YENİ ÖZELLİK: Yeni sekme TABS (temel.js), buradaki gövde tablosu, NAV/TABHELP ve cila-kimlik.js TT'ye eklenir; tests/tur_c.js ve tests/mobil.js güncellenir. */
 /* ---- entegrasyonlar ---- */
 function calendarBlock(){
   var cal=(S.profile.calendar||{}).created===true;

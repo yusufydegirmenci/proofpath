@@ -18,7 +18,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(Object.keys(P).map(Number), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16], 'py hattı: 16 ders (1-16)');
   const baslik = vm.runInNewContext('(function(){' + fs.readFileSync(path.join(KOK, 'js/sinif/sinif.js'), 'utf8').match(/var STARTER=[\s\S]*?(?=\nfunction starterTopics)/)[0] + ';return STARTER.py})()');
   eq(baslik.map(x => x[0]), ['Değişkenler ve veri türleri', 'Giriş, çıkış ve metin biçimlendirme', 'Operatörler', 'Koşullar: if, elif, else', 'Döngüler: while ve for', 'Liste ve demet (tuple)', 'Sözlük ve küme', 'Fonksiyonlar', 'Hatalar: try, except, finally', 'Dize yöntemleri', 'Ders 0: Python nedir ve nasıl çalışır', 'Mantık ve bit operatörleri', 'Basit algoritmalar', 'İç içe listeler ve liste kavrayışı', 'Özyineleme ve üreteçler', 'Test ve hata ayıklama'], 'STARTER.py: 10 konu, sırası belirli');
-  const tm = vm.runInNewContext(fs.readFileSync(path.join(KOK, 'js/veri/tmap.js'), 'utf8').replace('"use strict";', '') + ';TMAP').py;
+  const tm = vm.runInNewContext(['tmap.js', 'tmap-py.js'].map(f => fs.readFileSync(path.join(KOK, 'js/veri', f), 'utf8').replace('"use strict";', '')).join(';') + ';TMAP').py;
   eq(tm.map(e => e.n[0]), baslik.map(x => x[0]), 'TMAP.py başlıkları STARTER.py ile birebir (ders 1-16 eşlemesi)');
   ok(tm.every(e => e.m.length === 4 && e.f.length === 2 && e.u.length === 3 && e.p.length === 3 && e.u.every(u => u.length === 4)), 'TMAP.py: her konuda 4 terim, 2 hata satırı, 3 hızlı soru, 3 hedef');
 

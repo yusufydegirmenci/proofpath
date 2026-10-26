@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Uyarlanabilir çalışma planı (PP.plan).
+   NE YAPAR: Tekrar kuyruğu, yolun kalan konuları ve müsaitlikten saf hesapla hafta ARALIĞI planı çıkarır; tahmin ile ölçülen ayrı etiketlenir; depolamaya yazmaz.
+   SORUN OLURSA: PP.ogr.tekrar ve önkoşul sıralamasına bağlıdır; arayüz js/atolye/plan-ui.js (ikiz.js ile birlikte). Kaçırılan gün cezasızdır, kesin tarih üretilmez.
+   YENİ ÖZELLİK: Yeni varsayım/kural plan.js'e eklenir, plan-ui.js'te gösterilir; tests/faz7_plan.js güncellenir. */
 /* ---- Uyarlanabilir plan (M§16, M§8.4) — saf hesap ----
    Girdi gerçek duruma bağlıdır: tekrar kuyruğu (PP.ogr.tekrar) + yoldaki kalan konular (sıralı önkoşul) + öğrencinin müsaitliği.
    İlkeler: tahmin ölçülenden ayrı etiketlenir; kesin tarih/olasılık yok (hafta ARALIĞI); varsayımlar listelenir;

@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders Odası/Atölye, Ağ Atölyesi (animasyon sahneleri) durum ve eşleme. NE YAPAR: nwLoad/nwSave/nwMark sahne başına ilerlemeyi (0-2) tutar; NW_RX ders konusunu sahneye bağlayan düzenli ifadeleri verir. motor.js ile birlikte NWENGINE_BEGIN/END işaretleri arasındadır, işaretleri silmeyin.
+   SORUN OLURSA: localStorage ya_nw ({sahneId: seviye}); nwMark syncPush çağırır ve altin-vurus.js syncOut ile eşitlenir. nw-sahne-v1.js ve v2.js bu dosyadan SONRA/ARASINDA yüklenir (index.html sırası). Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni konu eşlemesi NW_RX. Testler: tests/nwmap.js (nwFuzzy/NW_RX), tests/t59a_nw.js, tests/t60c_nw.js. */
 /* ---- v59: Ağ Atölyesi, sahne animasyonları ---- */
 var NW_KEY="ya_nw";
 function nwLoad(){try{var o=JSON.parse(localStorage.getItem(NW_KEY)||"null");return o&&typeof o==="object"?o:{}}catch(e){return {}}}

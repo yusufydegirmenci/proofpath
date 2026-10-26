@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Atölye > Veri Analitiği, Seviye 1 (elektronik tablo) ve Seviye 2 (SQL) projeleri. NE YAPAR: PP_PROJ.va dizisine Seviye 1-2 için 8 proje iter (seviye alanı ve steps dizisi).
+   SORUN OLURSA: proje-yeni-va.js'ten SONRA yüklenir (ikisi de K.va'ya ekler). atolye/va-ui.js p.seviye ile süzer; proje-birlestir.js adım dizilerini nesneye çevirir. Çözümler repoda tutulmaz (tests/va-cozumler-*.json). Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni proje burada K.va.push. Test: tests/faz10_va12.js (8 proje, arayüz 390 px). */
 (function (g) {
   var K = g.PP_PROJ = g.PP_PROJ || { tanim: {}, yeni: [], va: [] };
   K.va = K.va || [];

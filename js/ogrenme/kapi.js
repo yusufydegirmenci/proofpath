@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Kapılar; önkoşul, eşik, kritik hedefler ve her kilidin nedeni (PP.ogr.kapi).
+   NE YAPAR: İki katman: dersAcik (sayfa açma/ilerleme) ve degerlendir (kanıtla ustalık kapısı); her kilit neden kodu + mesaj taşır.
+   SORUN OLURSA: degerlendirme.js'ten sonra yüklenmeli (O.deg yükleme anında okunur). İstemci kapısı güvenli yetkilendirme değildir; güvenilir karar sunucu RPC ogr_kapi_degerlendir (sunucu.js). Çağıranlar: js/ders/ders-cekirdegi.js, ders-odasi.js, kademe-semt-sis.js, js/oyun/dino.js.
+   YENİ ÖZELLİK: Yeni neden kodu neden() ile eklenir; tests/ogrenme.js (kapı bölümü) güncellenir. */
 /* ---- Kapılar (M§6.1–6.2): önkoşul, eşik, kritik hedefler tek tek, kanıt, her kilidin nedeni ----
    İki ayrı katman: (1) İLERLEME = sayfa/ders açma (dersAcik), (2) USTALIK = kanıtla kapı geçme (degerlendir).
    Sayfa açmak ya da düğmeye basmak ustalık sayılmaz. İstemci tarafı kapı güvenli yetkilendirme DEĞİLDİR (bkz. sunucu taslağı). */

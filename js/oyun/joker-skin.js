@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Oyun sekmesi, Ağ Koşusu oyun motoru, jokerler ve skinler. NE YAPAR: gmStart/gmStage/gmLoop koşu-sürüş oyununu (canvas çizim, kapı soruları, sonuç ekranı gmResults) çalıştırır; GM_JK bilgi kristali jokerlerini, GM_SK koşucu/araba skinlerini ve gmWardrobe gardırobu yönetir.
+   SORUN OLURSA: Skin/oyuncu tercihi S.gm.sk ve S.gm.ps ile ya_gm içinde saklanır (gmSave, ag-kosusu.js). Oyun sonu gmCardsUpdate ve gqMark çağırır (bilgi-kartlari.js, tekrar-kuyrugu.js: önce yüklenmiş olmalı). Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni joker GM_JK/GM_JKS, yeni skin GM_SK ve gmDraw*. Test: tests/t57a_joker_skin.js ve tests/t59c_games.js. */
 /* ---- v57: jokerler (bilgi kristali) ve skinler ---- */
 var GM_JK={mag:{n:"Mıknatıs",t:8,d:"8 sn altınları sana çeker"},slow:{n:"Yavaşlat",t:8,d:"8 sn yol yavaşlar"},x2:{n:"×2 Puan",t:10,d:"10 sn her puan iki katı"}};
 var GM_JKS=["mag","slow","x2"];

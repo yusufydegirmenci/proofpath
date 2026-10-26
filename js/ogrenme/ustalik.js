@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Ustalık için tek tanım ve eski tanılama ölçüleri (PP.ogr.ustalik).
+   NE YAPAR: Ustalık yalnız kanıtla (deg.hedefDurumu, eşik %80); soru düzeyi, beceri tahmini ve yerleştirme/seviye düzeyi tanılama göstergeleri burada toplanır, tek başına geçti saymaz.
+   SORUN OLURSA: Formüller eski davranışla birebir (tests/hesaplar.js). Çağıranlar js/atolye/kalite-dongusu.js, kisisel-plan.js, js/oyun/ag-kosusu.js, dino.js, js/seviye/seviye-sinavi.js.
+   YENİ ÖZELLİK: Yeni gösterge buraya; tests/hesaplar.js ve tests/ogrenme.js güncellenir. */
 /* ---- Ustalık için TEK tanım (Faz 4) ----
    Ustalık (geçti/kaldı) YALNIZ kanıtla belirlenir: hedef başına son sayılan deneme ≥ eşik (%80), kritik hedefler tek tek
    → PP.ogr.deg.hedefDurumu / PP.ogr.kapi.ustalik. Aşağıdaki eski ölçüler aynı yerde toplanmış TANILAMA göstergeleridir;

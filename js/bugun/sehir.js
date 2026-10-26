@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ağ Şehri sekmesi (renderCity), bina çizimi ve sis. NE YAPAR: Konuları ustalığa ve son tekrar yaşına göre bina yüksekliği/pas durumuyla çizer; sis maskesi fogOf ile uygulanır.
+   SORUN OLURSA: Aşama/semt/sis mantığı kademe-semt-sis.js'tedir (ders klasörü), S._fog bu dosyada tutulur; PP.ogr.ilerleme ÖNCE yüklenmeli; building durumu t.status (locked, next, building, built) değerlerine bağlı.
+   YENİ ÖZELLİK: Yeni bina durumu building()'e, bölge görünümü renderCity'ye eklenir; tests/hesaplar.js ve tests/ogrenme.js güncellenir. */
 /* ---- Ağ Şehri ---- */
 function building(t,track){
   var m=Math.round(num(t.mastery)),a=daysAgo(t.lastReview),rust=(t.status==="built"||t.status==="building")&&m>0&&a!=null&&a>7;

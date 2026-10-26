@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Bugün ve Ders, günlük ilerleme/rota, kaynaklar, canlı ders üretimi, sekme geçişi (goTab). NE YAPAR: Günün progress belgesini okur/yazar (prog/setProg), ders listelerini (lessonsOf) ve koç sorusunu yönetir, alan alıştırmasını PP.alan'a bağlar (pyAlan).
+   SORUN OLURSA: Çok dosya goTab/prog/lessonsOf/setProg kullanır, adı değişmez; yazma S.db ve S.canWrite ister; durum S.les, S.lessons, S.progress; tests/faz5d_lab.js, faz5f_lab.js bu işlevlere dokunur.
+   YENİ ÖZELLİK: Yeni rota adımı routeSteps/lessonNav'a, yeni kaynak türü RTYPE'a eklenir; tests/faz_w1.js ve tests/faz5c_net.js güncellenir. */
 /* ---- ilerleme / rota / kaynak / canlı ders ---- */
 function goTab(t){tab=t;try{history.replaceState(null,"","#"+t)}catch(e){}draw();window.scrollTo(0,0)}
 function prog(){return S.progress.filter(function(p){return p.id===today()})[0]||{}}

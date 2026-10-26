@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > CCNA/ağ, VLAN/STP ve NAT/PAT karar lab'ları. NE YAPAR: Aynı VLAN, trunk geçişi, kök köprü, kök port ve NAT tablosu cevaplarını saf hesapla üretir; yerel simülasyon, gerçek switch/router yok.
+   SORUN OLURSA: Arayüz ve kanıt kaydı lab-karar.js'tedir (tip 'genel'), kanıt kapı değildir; lab-karar.js'ten SONRA yüklenir ve PP.lab'a eklenir; cevap sabiti elle yazılmaz.
+   YENİ ÖZELLİK: Yeni hesap fonksiyonu burada yazılıp genel tipe bağlanır; tests/faz5d_lab.js (VLAN/STP, NAT/PAT) güncellenir. */
 /* ---- Faz 5 tur 4: VLAN/STP ve NAT/PAT karar lab'ları (M§8.2) ----
    Form tabanlı karar lab'ı; tarayıcıda yerel simülasyon, gerçek switch/router yok. Kanıt kapı değildir (istemci doğrulaması).
    Doğru cevaplar saf hesaptan (kök köprü, kök port, NAT tablosu) çıkar; elle yazılmış sabit yok. Arayüz ve kanıt: lab-karar.js (tip "genel"). */

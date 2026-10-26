@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > CCNA/ağ proje alıştırması, ev ağı karar lab'ı (PP.lab, tip 'genel'). NE YAPAR: Form tabanlı karar sorularının doğru cevabını saf hesaptan (güvenlik, havuz, PAT, sertleştirme) üretir; gerçek router yok, yerel simülasyondur.
+   SORUN OLURSA: Arayüz ve kanıt kaydı lab-karar.js'te (kararPanel); o dosyadan SONRA yüklenir, PP.lab nesnesine kendini ekler; cevap sabiti elle yazılmaz, hesap değişirse sorular birlikte değişir.
+   YENİ ÖZELLİK: Yeni karar sorusu bu dosyada hesap + kayıt olarak eklenir (lab-karar.js'in genel tipine bağlanır); tests/faz5b_ccna.js ve tests/faz5f_lab.js güncellenir. */
 /* ---- Faz 20: Ev ağı karar lab'ı (proje: ev ağını kur) ----
    Form tabanlı karar lab'ı; tarayıcıda yerel simülasyon, gerçek router/Wi-Fi yok, başkasının ağına dokunulmaz. Kanıt kapı değildir (istemci doğrulaması).
    Doğru cevaplar saf hesaptan çıkar (en güçlü ortak güvenlik, havuz boyutu, PAT görünümü, sertleştirme kuralı); elle yazılmış sabit yok.

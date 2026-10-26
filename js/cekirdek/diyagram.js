@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders içeriği, sunucusuz SVG şema çizici (PP_DIYAGRAM). NE YAPAR: Düğüm (kutu/daire) ve ok listesinden ızgara yerleşimli statik SVG üretir; tüm metinler esc() ile kaçışlanır, öğrenci girdisi çizilmez, ham HTML eklenmez.
+   SORUN OLURSA: Tarayıcıda window.PP_DIYAGRAM, Node'da module.exports olarak açılır; ders verisindeki dugumler/oklar biçimi bozuksa şema boş çıkar; çağıran taraf ders verisidir.
+   YENİ ÖZELLİK: Yeni şekil/ok türü ciz()'e ve kayit örneklerine eklenir; tests/faz_k14_diyagram.js güncellenir. */
 /* ---- Sunucusuz SVG şema çizici: düğüm (kutu/daire) + ok listesinden ızgara yerleşimli statik SVG. ----
    Yalnız ders içeriği gösterir; öğrenci girdisi render edilmez. Tüm metinler esc() ile kaçışlanır, ham HTML/SVG enjekte edilmez. */
 (function (root) {

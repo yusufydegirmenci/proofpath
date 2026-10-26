@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Oyun sekmesi, Ağ Kuryesi kurgusu ve soru-ağ noktası eşlemesi. NE YAPAR: Mod başına hikâye metni (GM_STORY), ağ noktası listeleri (GM_NODES/GM_ORDER) ve soruyu anahtar kelimeyle bir ağ noktasına bağlayan gmClass içerir; gmSeen ilk oyun ipucunu tutar.
+   SORUN OLURSA: localStorage ya_gm_seen ("1") ilk-oynayış bayrağıdır ve syncOut ile eşitlenir. Yeni bir nokta eklenirse bilgi-kartlari.js GM_FACTS ve joker-skin/dino çizimleri (gmIcon) da eşleşmeli, yoksa kart açılmaz. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni nokta: GM_NODES/GM_ORDER/GM_KW + GM_FACTS girdisi. Test: tests/t59c_games.js ve tests/t60a_tracks.js (ya_gm_seen kullanır). */
 /* ---- v51 Ağ Kuryesi: kurgu ---- */
 var GM_STORY={
  daily:{tag:"GÜNLÜK TESLİMAT",n:"Paketi hedefe ulaştır",brief:"Sen bir veri paketisin. Ağ Şehri'nin ağ noktalarından geçip hedef sunucuya varman gerek. Her kapı bir kontrol noktası: doğru cevap seni bir sonraki noktaya taşır."},

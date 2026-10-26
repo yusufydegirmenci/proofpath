@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Geri bildirim, yerel kuyruk ve onaylı gönderme (PP.ogr.gb).
+   NE YAPAR: Hata/istek/şikayet/öneri kayıtlarını kuyruğa alır; gönderme yalnız kullanıcı onayıyla geri_bildirim tablosuna insert eder; kişisel veri toplanmaz.
+   SORUN OLURSA: Kuyruk ya_pp_ogr.geriBildirim altında; PP_MARKA (marka.js) gerekir, Node'da require ile yüklenir. Arayüz js/ders/geri-bildirim-ui.js ve js/yardim/kaynakca.js.
+   YENİ ÖZELLİK: Yeni tür TURLER'e eklenir; tests/faz12b_geri_bildirim.js ve faz12c_gonder.js güncellenir. */
 /* ---- Faz 12 V4/V5: geri bildirim yerel kuyruğu (ya_pp_ogr.geriBildirim) + onaylı gönderme (yalnız geri_bildirim tablosuna insert; otomatik gönderme yok).
    Kişisel veri toplanmaz: bağlam yalnız sekme, ders/proje kimliği, adım ve (hazır ders/proje için) başlıktır. Saf mantık, DOM yok. ---- */
 (function (g) {

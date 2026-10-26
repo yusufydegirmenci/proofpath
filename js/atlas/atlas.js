@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Atlas sekmesi (terim kartları, arama, grup filtresi).
+   NE YAPAR: S.at durumuna göre kartları süzer ve çizer (atlasMatch, atlasCard, atlasCards, renderAtlas).
+   SORUN OLURSA: Yükleme sırası: js/veri/atlas-1.js, atlas/durum.js, veri/atlas-2.js, atlas/liste.js, bu dosya; S.at durum.js'te tanımlanır. Bilinen kartlar ya_atlas anahtarında (atlasSave).
+   YENİ ÖZELLİK: Yeni terim js/veri/atlas-*.js dosyalarına, yeni yol atlası ATLAS_MAP'e; tests/h66.js, h83.js ve t60a_tracks.js güncellenir. */
 function atlasMatch(it){
   var q=S.at.q.trim().toLowerCase();
   if(S.at.g&&it.g!==S.at.g)return false;

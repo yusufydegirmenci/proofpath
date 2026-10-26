@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Mülakat Antrenmanı rubrik sonucu ve tekrarlayan zayıflık (PP.mulakat).
+   NE YAPAR: Mevcut mülakat ekranına rubrik ölçütleriyle sonuç kaydeder; aksan, uzunluk, özgüven puanlanmaz; kaynak (öz/insan/yapay zekâ) etiketlidir.
+   SORUN OLURSA: Kayıt ya_pp_ogr.tercih.mulakat (son 30). Arayüz js/proje/rapor-ui.js (renderRubrikPaneli, ivRubrikKaydet); ekran js/mulakat/sinav-haritasi.js'te.
+   YENİ ÖZELLİK: Yeni ölçüt KRITERLER'e eklenir, rapor-ui.js'te gösterilir; tests/faz8_kariyer.js güncellenir. */
 /* ---- Mülakat rubrik sonucu ve tekrarlayan zayıflık (M§8.7) — mevcut "Mülakat Antrenmanı"na eklenir, onu çoğaltmaz ----
    Değerlendirme yalnız rubrik ölçütleriyle yapılır; aksan, söz uzunluğu, özgüven ya da üslup puanlanmaz.
    Sonuç kaynağı etiketlidir (öz/insan/yapay zekâ); hiçbiri işe alım sonucu garantisi değildir. Kayıt: ya_pp_ogr.tercih.mulakat (son 30). */

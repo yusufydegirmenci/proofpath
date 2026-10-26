@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Masa (destek hattı, İngilizce ticket) ve Müdür paneli.
+   NE YAPAR: S.tickets, S.treplies, S.treviews, S.audit, S.avotes durumunu temizler; ticket cevabını denetler/gönderir (checkReply, submitReply); müdür panelini (renderManager) çizer.
+   SORUN OLURSA: Küresel S, str/num/pick/objs ve PP.ogr.seri.masa kullanılır (seri S.treplies[].date'ten); renderManager'ı js/bugun/ofis.js çağırır; bulut senkronu syncDesk.
+   YENİ ÖZELLİK: Yeni ticket alanı cleanTicket'e eklenir; bu dosyaya özel test yok, seri için tests/hesaplar.js güncellenir. */
 /* ---- v14: Masa (ticket) + Müdür ---- */
 var LV=[["1","A1","Tek cümle"],["2","A2","Kısa bildirim"],["3","A2-B1","Adım adım yönlendirme"],["4","B1","Profesyonel e-posta"],["5","B1+","Escalation ve yabancı ekip"]];
 S.tickets=[];S.treplies=[];S.treviews=[];S.audit=[];S.avotes=[];S.desk={};

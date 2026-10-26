@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Ayarlar > Güven merkezi, çevrimdışı (PWA) mod (PP.cevrimdisi).
+   NE YAPAR: Varsayılan kapalı service worker kabuğunu açar/kapatır; kapatınca önbelleği siler.
+   SORUN OLURSA: Bayrak localStorage pp_pwa (ya da ?pwa=1); yalnız https ve localhost'ta çalışır; sw.js ve manifest göreli adreslenir. Arayüz js/atolye/guven-ui.js. Önbellek URL listesini tests/faz9_cevrimdisi.js denetler.
+   YENİ ÖZELLİK: Önbelleğe yeni dosya eklenecekse sw.js listesi güncellenir; tests/faz9_cevrimdisi.js çalıştırılır. */
 /* ---- PWA / çevrimdışı kabuk (Faz 9) — varsayılan KAPALI ----
    Açmak: Ayarlar > Güven merkezi > "Çevrimdışı mod" ya da adres sonuna ?pwa=1. Kapatmak service worker'ı kaldırır ve kabuk önbelleğini siler.
    Yalnız https ve localhost'ta çalışır (tarayıcı kuralı). GitHub Pages alt yolu korunur: sw.js ve manifest göreli adreslenir. */

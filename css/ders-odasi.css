@@ -1,3 +1,6 @@
+/* ALAN: Ders sekmesi, Ders Odası (.lr-*, .an-*, .qz-*, .lab-*, .izle-*, .ses-*) stilleri. NE YAPAR: Ders odası başlığı, anlatım, mini sınav, lab/alan ve sesli ders bileşenlerinin stilini tanımlar.
+   SORUN OLURSA: Bağlanma sırası index.html dosyasındadır (marka.css en son); sonraki dosya önceki kuralı ezer. Sınıflar js/ders/ders-odasi.js, ders-eki.js, alan.js, sesli-ders.js içinde üretilir; hareket azaltma için prefers-reduced-motion kuralı vardır.
+   YENİ ÖZELLİK: Yeni ders bileşeni: sınıf burada, üretim js/ders/ altında. Testler: tests/mobil.js, tests/smoke.js. */
 .lr-head{position:relative;border-radius:22px;padding:14px 14px 12px;color:#fff;display:grid;gap:8px;margin-bottom:12px;background:radial-gradient(circle at 90% 0,rgba(255,255,255,.25),transparent 45%),linear-gradient(160deg,#2b1166,#15395f);box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .lr-head.lr-eng{background:radial-gradient(circle at 90% 0,rgba(255,255,255,.25),transparent 45%),linear-gradient(160deg,#7a2a10,#a8561e)}
 .lr-head.lr-sec{background:radial-gradient(circle at 90% 0,rgba(255,255,255,.2),transparent 45%),linear-gradient(160deg,#3d1a5c,#1a1030)}

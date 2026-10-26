@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Bugün sekmesi kişiye özel plan; Atölye > İşe hazırlık. NE YAPAR: Zayıf konu/ustalık hesabı (mastLevels, ppWeakIdx), kod tabanlı kişisel plan (renderPersonal, planPanel), haftalık özet (wkPanel) ve iş rolü eşleme (JR, jrScore, atJobs) içerir; yapay zekâ kullanmaz.
+   SORUN OLURSA: GS (ag-kosusu.js) ve QB (soru-bankasi.js) verisine dayanır. Rol listesi JR içindedir. renderPersonal bugun.js ve kullanim-turu.js içinden çağrılır. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni rol: JR girdisi; plan kuralı planSteps/personalInput. Testler: tests/personal_plan.js, tests/hesaplar.js (mastLevels, jrScore, hardQs). */
 /* ---- kişiye özel plan (kod ile, yapay zekâsız) ---- */
 function ppWeakIdx(){
   var a=[];Object.keys(GS.st).forEach(function(k){var q=QB[+k],s=GS.st[k];if(!q||!s||!s[1])return;var acc=s[0]/s[1];if(acc<.7||GS.bx[k]===0)a.push({i:+k,acc:acc,n:s[1]})});

@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Bugün/Ayarlar, kullanım turu, saatler, sık sorulanlar, ayarlar ekranı, hoş geldin kartı. NE YAPAR: tourPanel/timesPanel/faqPanel ile günün rotasını anlatır; renderSettings rahat okuma ve sade mod tercihlerini gösterir, renderSimpleToday sade modu çizer.
+   SORUN OLURSA: Tercihler S.pf (rehber-sozluk.js'te tanımlı ve ya_pf'ten yüklenir) üzerindedir, bu dosya ondan SONRA yüklenmeli; saat metinleri sabittir ve rota adımları routeSteps'e bağlıdır.
+   YENİ ÖZELLİK: Yeni ayar pfSeg/renderSettings'e ve S.pf alanına (rehber-sozluk.js savePf) eklenir; tests/mobil.js ve tests/kritik_akis.js güncellenir. */
 /* ---- v23: Kullanım turu, saatler, sık sorulanlar ---- */
 var TOURMIN={"CCNA: dersi oku":"8 dk","İngilizce: dersi oku":"8 dk"};
 function tourMin(t){return /dersi oku/.test(t)?"≈8 dk":/canlı soru/.test(t)?"≈5 dk":/ticket/.test(t)?"≈5 dk":/sesli/.test(t)?"≈2 dk":/3 satır/.test(t)?"≈1 dk":""}

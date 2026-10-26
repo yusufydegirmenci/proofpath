@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Oyun sekmesi Dino Koşusu; ayrıca rota haritası, rütbe kapıları, tema, ders girişi. NE YAPAR: Sonsuz kademeli soru üretimi (gmBuildTier) ve Dino oyunu (renderDino); ardından renderRoute rota haritası/durak XP, GATES rütbe kapıları, tema seçimi ve ders öncesi yönlendirme (lessonPlacement/lessonGuide).
+   SORUN OLURSA: Geç yüklenir (seviye-sinavi.js sonrası); başka betikler onu yalnız çağrı anında kullanır. localStorage: ya_dino (en iyi skor), ya_rt (rota), ya_theme (auto/light/dark). Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Kapı eşikleri GATES, durak XP rtAward/rtXp; Dino oyunu dnGo/dnTick. Testler: tests/t59c_games.js (Dino), tests/hesaplar.js (kapılar, XP), tests/h80.js (rota). */
 /* ---- v59: sonsuz kademe soruları ve Dino Koşusu ---- */
 var GM_TIER=["Çırak","Kalfa","Usta","Üstat","Efsane"];
 function gmTierOf(n){return Math.min(4,Math.floor(n/8))}

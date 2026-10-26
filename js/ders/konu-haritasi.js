@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > önizleme ve konu haritası (renderTMap, renderWarmup). NE YAPAR: Dersin konu eşlemesini (TMAP) bulanık eşleştirerek ders metnine bağlar ve önizleme gövdesini çizer.
+   SORUN OLURSA: TMAP js/veri/tmap-js.js'ten gelir (ÖNCE yüklenmeli); eşleme kök (ilk 5 harf) ve TM_STOP durdurma sözcükleriyle yapılır, yeni konu eşleşmiyorsa buraya bak; S.les ortak durumdur.
+   YENİ ÖZELLİK: Yeni eşleme kuralı tmFuzzy/tmFor'a eklenir; tests/tmcov.js ve tests/t60b_cov.js güncellenir. */
 /* ---- v56: Ders önizlemesi ve konu haritası ---- */
 function tmNorm(x){return String(x||"").toLowerCase().replace(/[^a-zçğıöşü0-9]+/g," ").trim()}
 var TM_STOP={"temel":1,"konu":1,"ders":1,"nedir":1,"kavra":1,"farki":1,"farkı":1,"nasil":1,"nasıl":1,"ornek":1,"örnek":1,"genel":1,"giris":1,"giriş":1,"bolum":1,"bölüm":1,"hazir":1,"hazır":1,"aws":1,"api":1,"güven":1,"guven":1,"cloud":1,"bulut":1,"yazil":1,"yazıl":1};

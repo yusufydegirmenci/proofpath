@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Koç paneli, yerel kural motoru ve isteğe bağlı sağlayıcı (PP.koc).
+   NE YAPAR: Yalnız gerçek kayıttan kanıtlı öneri verir; ilerleme/ustalık/kanıt yazamaz; sağlayıcı varsayılan kapalı; korumalı sınav sürerken cevap/ipucu vermez.
+   SORUN OLURSA: PP.ogr ve PPPersonal (content/personal.js) gerekir; çevrimdışı önbellek listesinde yolu geçer (tests/faz9_cevrimdisi.js). Arayüz js/atolye/koc-ui.js ve js/proje/rapor-ui.js.
+   YENİ ÖZELLİK: Yeni kural koc.js'e kanıt alanıyla eklenir, koc-ui.js'te gösterilir; tests/faz6_koc.js güncellenir (faz5b_ccna, faz7_plan, faz9_senkron da PP.koc kullanır). */
 /* ---- Koç (M§9): tek modül. Yerel kural motoru (PP.ogr + PPPersonal) + isteğe bağlı sağlayıcı (varsayılan KAPALI) ----
    İlkeler (test edilir):
    - Yalnız gerçek kayıttan konuşur; her öneri kanıtını taşır; veri yoksa "veri yok" der (uydurma geçmiş yok).

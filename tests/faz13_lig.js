@@ -33,7 +33,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   ok(!/update public\.docs set[^;]*updated_at/.test(mig), 'migration: RPC updated_at\'e dokunmaz (istemci taban sürümü bozulmaz)');
   ok(!/\b(drop table|delete from|truncate)\b/i.test(mig.replace(/--.*$/gm, '')), 'migration: yalnızca ek (rollback yorumda)');
 
-  const lig = oku('js/lig/lig-profil.js');
+  const lig = ['lig-profil', 'lig-isler', 'lig-gazete', 'lig-ekran'].map((x) => oku('js/lig/' + x + '.js')).join(' ');
   ok(/ligGonder\(today\(\)/.test(lig), 'istemci: cevap ogr.ligGonder ile gönderilir');
   ok(!/day\.(pts|ok|wok|tot|w)\s*=(?!=)/.test(lig), 'istemci: puan/doğru sayısı alanlarını artık yerelde hesaplamaz');
   const kabuk = oku('supabase-shim.js');

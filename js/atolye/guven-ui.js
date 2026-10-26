@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ayarlar sekmesi, Güven merkezi ve senkron durum rozeti. NE YAPAR: senkronRozet çevrimdışı/senkron durumunu gösterir, renderGuven Güven merkezini ve veri dışa aktarımını (gvnDisaAktar) sunar; mantık js/ogrenme/senkron.js ve guven.js içindedir.
+   SORUN OLURSA: localStorage pp_senkron anahtarı ve window.__ppShim.motor() (supabase-shim.js) kullanılır; motor yoksa senkronMotoru null döner. renderGuven ders/kullanim-turu.js içinden çağrılır. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni güven/senkron ayarı: renderGuven + ogrenme/senkron.js. Testler: tests/faz9_senkron.js, tests/faz9_cevrimdisi.js. */
 /* ---- Faz 9 arayüz: senkron durum rozeti ve Güven merkezi (Ayarlar sekmesi) ---- */
 function senkronMotoru() { try { return window.__ppShim && window.__ppShim.motor ? window.__ppShim.motor() : null; } catch (e) { return null; } }
 

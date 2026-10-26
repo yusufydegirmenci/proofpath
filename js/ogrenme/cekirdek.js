@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Öğrenme modeli çekirdeği; tek ad alanı window.PP.ogr.
+   NE YAPAR: Sürüm sabiti, seviye tanımları, gün/tarih yardımcıları (O.gun), sayı/yüzde/kopya yardımcıları; DOM yok, Node'da da yüklenir.
+   SORUN OLURSA: Tüm js/ogrenme dosyaları buna bağlıdır, index.html'de ilk yüklenmeli; O.SURUM depo şemasıdır (depo.js). Yükleyen testler: tests/ogrenme.js, faz10d, faz12b_geri_bildirim, faz12c_gonder, faz21_bilgi, faz22_coklu, faz9s_sunucu, faz_w1.
+   YENİ ÖZELLİK: Ortak yardımcı buraya; yeni modül index.html'e çekirdekten sonra eklenir, test yükleme listesine (tests/ogrenme.js) yazılır. */
 /* ---- Faz 3: öğrenme modeli çekirdeği. Tek ad alanı: window.PP.ogr (başka küresel ad yok). ----
    Saf mantık: DOM'a ve uygulamanın eski küresellerine dokunmaz (Node'da da yüklenebilir).
    Model belgesi: proofpath-ops kayitlar/DATA_MODEL.md */

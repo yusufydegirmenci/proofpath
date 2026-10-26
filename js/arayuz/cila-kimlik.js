@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Tüm sekmeler, mini başlık (TT), 'Daha' menüsü (moreSheet) ve Akademi Kimliği kartı (PNG). NE YAPAR: Sekme başlıklarını ve ana/ikincil sekme ayrımını (PRIMARY) tutar, kimlik kartını çizip PNG olarak kaydettirir.
+   SORUN OLURSA: Yeni sekme TT ve PRIMARY'ye eklenmezse başlık/menü eksik kalır; S.more, S.idc, S.dl (indirme katmanı) kullanır; draw() bu dosyadaki moreSheet'i çağırır.
+   YENİ ÖZELLİK: Yeni sekme TT'ye, kimlik alanı idStats/renderIdCard'a eklenir; tests/tur_c.js güncellenir. */
 /* ---- v15: cila (mini başlık, Daha menüsü, Akademi Kimliği) ---- */
 var TT={bugun:["Bugün","Günlük rota"],ders:["Ders","Bugünün dersi"],sinif:["Sınıf","Canlı sorular"],sehir:["Ağ Şehri","Bina bina ilerle"],oyun:["Oyun","Koş, sür, öğren"],atolye:["Atölye","Program ve alıştırma"],masa:["Masa","Destek talepleri"],lig:["Lig","Arkadaşlarla yarış"],gazete:["Gazete","Haber ve etkinlikler"],proje:["Proje","Birlikte yapalım"],sozluk:["Sözlük","Kelimelerin anlamı"],kaynakca:["Kaynakça","Kaynaklar ve telif notu"],rehber:["Rehber","Nasıl çalışır?"],ayar:["Ayarlar","Okuma"],mul:["Mülakat","Sesli prova"],oku:["Okuma","Çocuk öyküleri"],ofis:["Ofis","Hikâye ve Müdür"],sayilar:["Sayılar","İlerleme"],oduller:["Ödüller","Kimlik ve ödüller"]};
 var PRIMARY={bugun:1,ders:1,sinif:1,oyun:1,atolye:1};

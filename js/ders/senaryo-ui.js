@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders sonu, İngilizce iş senaryosu kartı (PP.senaryoUi, W1). NE YAPAR: Belge, görev, yazma ve 'Gönder ve örnek cevabı aç' akışını çizer; yapı ve anahtar kavram denetimi yapar, anlamı değerlendirmez, hiçbir yere göndermez.
+   SORUN OLURSA: Mantık js/ogrenme/senaryo.js (PP.senaryo) ve content/senaryo/*.js'tedir; taslak ve cevaplar yalnız ya_pp_ogr.tercih.senaryo içinde; kart isteğe bağlı olup ders tamamlamayı/kapıyı etkilemez.
+   YENİ ÖZELLİK: Yeni senaryo content/senaryo/ dosyasına eklenir ve index.html'e bağlanır; tests/faz_w1.js güncellenir. */
 /* ---- PP.senaryoUi: ders sonu İngilizce iş senaryosu kartı (W1) — arayüz ----
    Mantık/veri: js/ogrenme/senaryo.js (PP.senaryo), content/senaryo/*.js. Kart dersin 16. öğesidir: İSTEĞE BAĞLIDIR, ders tamamlamayı/kapıyı/ustalığı etkilemez.
    Akış: belge → görev → (sözlük, kalıplar, isteğe bağlı Türkçe ipucu) → yazma → "Gönder ve örnek cevabı aç" → yapı + anahtar kavram denetimi, öz-karşılaştırma, yan yana örnek cevap.

@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Sertifika haritası ve portfolyo paketi (proje detayı, dışa aktarma paneli).
+   NE YAPAR: Proje için README, .gitignore ve kanıt dosyaları üretir, harici kütüphanesiz ZIP olarak indirtir (crc32/zipFiles); certPanel ve exportPanel panellerini çizer.
+   SORUN OLURSA: S.pj (proje-atolyesi.js) önce yüklenmiş olmalı, burada S.pj.gh ve S.pj.msg başlatılır; TextEncoder gerekir.
+   YENİ ÖZELLİK: Yeni dosya türü pjFiles'a eklenir; bu dosyaya özel test yok, tests/faz8_proje.js proje akışını kapsar. */
 /* ---- v28 UI: sertifika haritası + portfolyo paketi ---- */
 S.pj.gh="";S.pj.msg="";
 var CRC_T=null;

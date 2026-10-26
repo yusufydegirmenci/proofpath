@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders sekmesi, hazır ders akışı (ısınma kapısı, sıralı kilit, ders yolu, sertifika paneli, renderLessonBase). NE YAPAR: Dersin hangi adımlarının tamamlandığını (ısınma, okuma, mini sınav, alıştırma) ders başına bayraklarla izler ve sıradaki dersi açar.
+   SORUN OLURSA: Bayraklar localStorage ya_lc içinde (lcSet/lcHas/lcDone); eski ya_lc js/ogrenme/eski.js ile OKUNUR, oraya yazılmaz; S.les ortak durumdur, S.nonOwner/S.sample yolları farklı davranır.
+   YENİ ÖZELLİK: Yeni ders adımı lcSet bayrağı ve renderLessonBase'e eklenir; tests/hesaplar.js (ilerleme hesapları) ve tests/ogrenme.js güncellenir. */
 /* ---- v47: hazır ders, sıralı kilit, ısınma kapısı ---- */
 var LC_KEY="ya_lc",LC_FROM="2026-10-08";
 function lcLoad(){try{var o=JSON.parse(localStorage.getItem(LC_KEY)||"null");return o&&typeof o==="object"?o:{}}catch(e){return {}}}

@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Lig + profil çekirdeği (günün lig soruları, puan/seviye, sıralama, arkadaş, meydan okuma, profil). Faz 37'de lig-profil.js 73 KB idi; iş havuzu, gazete ve giriş ekranı kendi dosyalarına ayrıldı.
+   NE YAPAR: soru havuzu QB (tohumlu karıştırma rngf/shuf), katsayı/bant (COEF, bandOf), günlük soru seçimi (dailyQs2), lig istatistiği (lgStats), cevap gönderimi (answerQ → ogr.ligGonder), ekranlar renderBoard/renderFriends/renderProfile/renderChallenge.
+   SORUN OLURSA: puan yerelde HESAPLANMAZ; kaynak sunucu RPC yanıtıdır (tests/faz13_lig.js kilitler). Soru sırası rngf/shuf tohumuna bağlı: QB sırasını ya da tohumu değiştirmek eski cevap kayıtlarını başka soruya kaydırır. Bu dosyanın ilk IIFE'si rngf/shuf'u yükleme anında çağırır → ikisi bu dosyada kalmalı (ayrı betiğe taşırsan sira.js kırmızı olur).
+   YENİ ÖZELLİK: lig ekranı bölümü → renderBoard/renderFriends/renderProfile; puan kuralı → supabase/migrations lig RPC'si + tests/faz13_lig.js; ilan (iş havuzu) lig-isler.js, gazete lig-gazete.js, sekme girişi lig-ekran.js. */
 /* v20: konu etiketli soru bankası (k = konu numarası: ccna c01-c27, eng e01-e13) */
 (function(){
   var TAG={0:["ccna",1],1:["ccna",4],2:["ccna",1],3:["ccna",17],4:["ccna",18],5:["ccna",16],6:["ccna",5],7:["ccna",3],8:["ccna",3],9:["ccna",4],10:["ccna",1],11:["ccna",7],12:["ccna",19],13:["ccna",5],14:["ccna",8],15:["ccna",10],16:["ccna",9],17:["ccna",8],18:["ccna",5],19:["ccna",15],
@@ -464,115 +468,3 @@ function renderProfile(){
   return out;
 }
 /* v35 ilan havuzu (herkes okur, görev yazar) */
-S.pool=[];S.pq={city:"",remote:false};
-function poolScore(x,R){
-  var s=(String(x.title||"")+" "+String(x.skills||"")).toLowerCase(),hit=0,kw=R.kw||[];
-  kw.forEach(function(k){if(s.indexOf(k)>=0)hit++});
-  var own=(R.sk||[]).filter(function(k){return s.indexOf(String(k).toLowerCase())>=0});
-  var role=x.role===R.id?40:0;
-  var sc=Math.min(100,role+Math.min(3,hit)*12+Math.min(4,own.length)*6+(role?evBonus(R):0));
-  var lv=String(x.level||"").toLowerCase();if(/senior|kıdemli|lead/.test(lv+" "+String(x.title||"").toLowerCase()))sc=0;
-  return {sc:sc,own:own};
-}
-function poolAge(x){var d=String(x.date||"").slice(0,10);if(!/^\d{4}-\d\d-\d\d$/.test(d))return 99;return Math.max(0,Math.round((new Date(today())-new Date(d))/864e5))}
-function renderJobsPool(){
-  var R=jrRole(),all=S.pool.filter(function(x){return x&&x.title&&safeUrl(x.url)&&poolAge(x)<=21});
-  var seg=h("div",{class:"seg",role:"group","aria-label":"Hedef rol"},JR.map(function(o){return h("button",{type:"button","aria-pressed":S.jr.role===o.id?"true":"false",onclick:function(){S.jr.role=o.id;draw()}},o.name)}));
-  var cities=[];all.forEach(function(x){var c=String(x.city||"").trim();if(c&&cities.indexOf(c)<0)cities.push(c)});cities.sort();
-  var L=all.map(function(x){var m=poolScore(x,R);return {x:x,m:m}}).filter(function(o){return o.m.sc>=30&&(!S.pq.city||String(o.x.city||"").trim()===S.pq.city)&&(!S.pq.remote||o.x.remote===true)});
-  L.sort(function(a,b){return b.m.sc-a.m.sc||poolAge(a.x)-poolAge(b.x)});
-  var out=[h("div",{class:"panel"},h("div",{class:"label"},"İlanlar"),h("h2",null,"Rolüne uyan güncel ilanlar"),seg,
-    cities.length?h("div",{class:"lscroll",style:"margin-top:8px"},[""].concat(cities).map(function(c){return h("button",{type:"button",class:"opt","aria-pressed":S.pq.city===c?"true":"false",onclick:function(){S.pq.city=c;draw()}},c||"Türkiye geneli")}).concat([h("button",{type:"button",class:"opt","aria-pressed":S.pq.remote?"true":"false",onclick:function(){S.pq.remote=!S.pq.remote;draw()}},"Uzaktan")])):null,
-    h("div",{class:"small mute",style:"margin-top:8px"},"İlanlar her gün otomatik toplanır ve herkes için aynıdır; uyum puanı seçtiğin role ve ilandaki becerilere göre bu cihazda hesaplanır. Başvurmadan önce ilanı kendin doğrula."))];
-  if(!all.length)out.push(h("div",{class:"panel"},h("div",{class:"empty"},"İlan havuzu henüz boş. Günlük toplama görevi çalıştıkça burada ilanlar birikecek.")));
-  else if(!L.length)out.push(h("div",{class:"panel"},h("div",{class:"empty"},"Bu filtreyle uyan ilan yok. Şehri ya da rolü değiştir.")));
-  else out.push(h("div",{class:"panel"},L.slice(0,20).map(function(o){var x=o.x,u=safeUrl(x.url),age=poolAge(x);
-    var miss=String(x.skills||"").split(/[,;]+/).map(function(z){return z.trim()}).filter(function(z){return z&&!o.m.own.some(function(k){return z.toLowerCase().indexOf(String(k).toLowerCase())>=0})}).slice(0,3);
-    return h("div",{class:"lbox"},h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:flex-start"},h("p",{style:"margin:0;font-weight:600"},String(x.title).slice(0,90)),h("span",{class:"pill"},"%"+o.m.sc)),
-      h("p",{class:"small mute",style:"margin:2px 0 0"},[x.company,x.city,x.remote?"uzaktan":"",x.level,age===0?"bugün":age+" gün önce"].filter(Boolean).join(" · ").slice(0,140)),
-      miss.length?h("p",{class:"small",style:"margin:4px 0 0"},"Bakılacak beceriler: "+miss.join(", ")):null,
-      h("a",{href:u,target:"_blank",rel:"noopener noreferrer"},"İlana git"))})));
-  return out;
-}
-/* v35 gazete: haberler ve etkinlikler (herkes okur, görev yazar) */
-S.gz=[];S.gzq={tag:"",view:"haber",msg:""};
-var GZ_TAGS=[["","Hepsi"],["qa","Test/QA"],["bk","Backend"],["sec","Siber"],["ai","Yapay zeka"],["cloud","Bulut"],["ag","Ağ/BT"],["kariyer","Kariyer"]];
-function gzClean(d){
-  if(!d||typeof d!=="object")return null;
-  var items=Array.isArray(d.items)?d.items:[];
-  var out=[];items.slice(0,60).forEach(function(x){
-    if(!x||typeof x!=="object"||!x.title)return;
-    var u=safeUrl(x.url);if(!u)return;
-    out.push({kind:x.kind==="etkinlik"?"etkinlik":"haber",title:String(x.title).slice(0,160),source:String(x.source||"").slice(0,60),url:u,summary:String(x.summary||"").slice(0,420),why:String(x.why||"").slice(0,320),tag:String(x.tag||"").slice(0,12),when:/^\d{4}-\d\d-\d\d/.test(String(x.when||""))?String(x.when).slice(0,16):"",where:String(x.where||"").slice(0,80),talk:String(x.talk||"").slice(0,420),cost:String(x.cost||"").slice(0,40),lang:String(x.lang||"").slice(0,4)});
-  });
-  return {id:String(d.id||""),date:String(d.date||d.id||"").slice(0,10),headline:String(d.headline||"").slice(0,200),items:out};
-}
-function gzEvents(){
-  var seen={},o=[];
-  S.gz.slice().sort(function(a,b){return b.date.localeCompare(a.date)}).slice(0,14).forEach(function(e){e.items.forEach(function(x){if(x.kind!=="etkinlik"||seen[x.url])return;seen[x.url]=1;o.push(x)})});
-  return o;
-}
-function gzDay(s){return String(s||"").slice(0,10)}
-function gzAddCal(x){
-  if(!S.mcp||!S.canWrite||S.guest||!x.when){return}
-  var d=gzDay(x.when),hm=/T(\d\d:\d\d)/.exec(x.when),st=hm?hm[1]:"10:00",eh=String((+st.slice(0,2)+2)%24).padStart(2,"0");
-  S.gzq.msg="Ekleniyor";draw();
-  S.mcp.callTool("Google Calendar","create_event",{summary:x.title.slice(0,100),startTime:d+"T"+st+":00",endTime:(+eh<+st.slice(0,2)?(function(){var n=new Date(d+"T12:00:00");n.setDate(n.getDate()+1);return n.getFullYear()+"-"+String(n.getMonth()+1).padStart(2,"0")+"-"+String(n.getDate()).padStart(2,"0")})():d)+"T"+eh+st.slice(2)+":00",timeZone:"Europe/Istanbul",description:(x.summary||"")+" "+x.url,location:x.where||"",useDefaultReminders:false,overrideReminders:[{method:"popup",minutes:60}]})
-   .then(function(){S.gzq.msg="Takvime eklendi.";draw()},function(e){var c=e&&e.code;S.gzq.msg=(c==="not_in_manifest"||c==="approval_required")?"Takvim izni verilmedi.":"Eklenemedi.";draw()});
-}
-function gzCard(x,ev){
-  var up=ev&&x.when&&gzDay(x.when)>=today(),past=ev&&x.when&&gzDay(x.when)<today();
-  return h("div",{class:"lbox"},
-    h("div",{style:"display:flex;justify-content:space-between;gap:8px;align-items:flex-start"},h("p",{style:"margin:0;font-weight:600"},x.title),x.tag?h("span",{class:"pill"},(GZ_TAGS.filter(function(t){return t[0]===x.tag})[0]||[0,x.tag])[1]):null),
-    ev?h("p",{class:"small",style:"margin:4px 0 0;font-weight:600"},[x.when?gzDay(x.when)+(/T/.test(x.when)?" "+x.when.slice(11,16):""):"tarih açıklanmadı",x.where,x.cost].filter(Boolean).join(" · ")):null,
-    x.summary?h("p",{class:"small",style:"margin:4px 0 0"},x.summary):null,
-    ev&&x.talk?h("p",{class:"small",style:"margin:4px 0 0"},h("b",null,past?"Neler anlatıldı: ":"Neler anlatılacak: "),x.talk):null,
-    x.why?h("p",{class:"small",style:"margin:4px 0 0"},h("b",null,"Neden önemli: "),x.why):null,
-    h("div",{class:"row",style:"margin-top:6px"},h("a",{href:x.url,target:"_blank",rel:"noopener noreferrer",onclick:function(){if(!num(prog().gz_n))setProg({gz_n:1})}},ev?"Etkinlik sayfası":"Haberi oku"+(x.source?" · "+x.source:"")),
-      up&&S.mcp&&S.canWrite&&!S.guest?h("button",{class:"btn ghost",type:"button",onclick:function(){gzAddCal(x)}},"Takvime ekle"):null));
-}
-function renderGazete(){
-  var Q=S.gzq,eds=S.gz.slice().sort(function(a,b){return b.date.localeCompare(a.date)}),cur=eds[0];
-  var seg=h("div",{class:"seg",role:"group","aria-label":"Bölüm"},[["haber","Haberler"],["etkinlik","Etkinlikler"]].map(function(o){return h("button",{type:"button","aria-pressed":Q.view===o[0]?"true":"false",onclick:function(){Q.view=o[0];Q.msg="";draw()}},o[1])}));
-  var tags=h("div",{class:"lscroll",style:"margin-top:8px"},GZ_TAGS.map(function(t){return h("button",{type:"button",class:"opt","aria-pressed":Q.tag===t[0]?"true":"false",onclick:function(){Q.tag=t[0];draw()}},t[1])}));
-  var out=[h("div",{class:"panel"},h("div",{class:"label"},"Gazete"+(cur?" · "+cur.date:"")),h("h2",null,cur&&cur.headline?cur.headline:"Yazılım dünyasından günün özeti"),seg,tags,
-    h("div",{class:"small mute",style:"margin-top:8px"},"Haberler ve etkinlikler her sabah otomatik derlenir; bağlantılar asıl kaynağa gider. Yazılar özet ve yorumdur, kararı vermeden önce kaynağı oku."),
-    Q.msg?h("div",{class:"small"},Q.msg):null)];
-  if(!cur){out.push(h("div",{class:"panel"},h("div",{class:"empty"},"İlk sayı henüz hazır değil. Günlük derleme görevi çalışınca burada çıkacak.")));return out}
-  if(Q.view==="haber"){
-    var L=cur.items.filter(function(x){return x.kind==="haber"&&(!Q.tag||x.tag===Q.tag)});
-    out.push(L.length?h("div",{class:"panel"},L.map(function(x){return gzCard(x,false)})):h("div",{class:"panel"},h("div",{class:"empty"},"Bu başlıkta bugün haber yok.")));
-  }else{
-    var E=gzEvents().filter(function(x){return !Q.tag||x.tag===Q.tag}),up=E.filter(function(x){return !x.when||gzDay(x.when)>=today()}).sort(function(a,b){return String(a.when||"9").localeCompare(String(b.when||"9"))}),pa=E.filter(function(x){return x.when&&gzDay(x.when)<today()}).sort(function(a,b){return b.when.localeCompare(a.when)});
-    out.push(h("div",{class:"panel"},h("h3",null,"Yaklaşanlar"),up.length?up.map(function(x){return gzCard(x,true)}):h("div",{class:"empty"},"Yaklaşan etkinlik bulunamadı.")));
-    if(pa.length)out.push(h("div",{class:"panel"},h("h3",null,"Geçenler ve anlatılanlar"),pa.slice(0,8).map(function(x){return gzCard(x,true)})));
-  }
-  return out;
-}
-function renderLeague(){
-  var L=S.lg,out=[];
-  if(S.guest&&!L._g){L._g=1}
-  out.push(seg([["bugun","Bugün"],["sira","Sıralama"],["arkadas","Arkadaşlar"],["ilan","İlanlar"],["gazete","Gazete"],["profil","Profilim"]],L.view,function(v){L.view=v;L.cmp=null}));
-  if(S.guest&&L.view==="bugun"&&!(myLeague()))out.push(h("div",{class:"panel"},h("div",{class:"label"},"Misafir"),h("h2",null,PP_MARKA.ad+" Ligi'ne hoş geldin"),
-    h("div",{class:"small mute"},"Önce Profilim'den başlangıç seviyeni ve haftalık hedefini seç, sonra günün 5 sorusunu çöz. Puanlar herkes için adil hesaplanır.")));
-  if(L.view==="bugun")out=out.concat(renderChallenge());
-  else if(L.view==="sira"){out=out.concat(renderBoard());var iv=renderInvite();if(iv)out.push(iv)}
-  else if(L.view==="arkadas")out=out.concat(renderFriends());
-  else if(L.view==="ilan")out=out.concat(renderJobsPool());
-  else if(L.view==="gazete")out=out.concat(renderGazete());
-  else out=out.concat(renderProfile());
-  return out;
-}
-function renderInvite(){
-  if(S.guest)return null;
-  return h("div",{class:"panel"},h("div",{class:"label"},"Arkadaş ekle"),h("h2",null,"Birlikte çalışın"),
-    h("div",{class:"small mute"},"1) Sayfanın Paylaş menüsünü aç. 2) Arkadaşını e-postasıyla ekle ve \"Contributor\" yetkisi ver. 3) Linki açınca sadece Lig'i görür; senin dersin, ticket ve notların ona kapalıdır. Tanımadığın birini ekleme."),
-    h("div",{class:"small mute"},"Sadece Görüntüleyici olan sıralamayı görür ama puan yazamaz."));
-}
-function leagueTeaser(){
-  if(S.guest||!S.me)return null;
-  var s=lgStats(myLeague()),n=num(s.today.tot),TN=qsFor(today(),myTier()).length||num(s.today.n)||5,rows=S.league.map(function(x){return lgStats(x).fair}).filter(function(v){return v!=null}).sort(function(a,b){return b-a}),pos=s.fair!=null?rows.indexOf(s.fair)+1:0;
-  return h("div",{class:"panel lgt"},h("div",{class:"lgt-l"},h("div",{class:"label"},"Lig"),h("b",null,n>=TN?"Bugünkü tur tamam · "+s.today.ok+"/"+TN:"Günün "+TN+" sorusu: "+n+"/"+TN),
-      h("small",null,S.league.length>1&&pos?("Adil sıran: "+pos+". / "+rows.length):("Lv"+(s.lv+1)+" "+s.lvName+" · "+s.tot+" puan"))),
-    h("button",{class:"btn"+(n>=TN?" ghost":""),type:"button",onclick:function(){S.lg.view=n>=TN?"sira":"bugun";goTab("lig")}},n>=TN?"Sıralama":"Çöz"));
-}

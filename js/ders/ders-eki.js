@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders sekmesi, ders eki (PP_EK) ve etkileşimli alt ağ lab'ı (PP.lab.altag). NE YAPAR: content/lessons/net-ek.js verisinden ders ekini çizer; alt ağ hesabı tarayıcıda saf yerel simülasyondur, kanıt PP.ogr.depo.kanitEkle ile 'lab' türünde eklenir (kapı kanıtı değil).
+   SORUN OLURSA: Diğer lab dosyaları (lab-karar, lab-ospf-dhcp) PP.lab.altag'a bağımlıdır; bu dosya cubuk.js ve parsons.js'ten SONRA, lab-karar.js'ten ÖNCE yüklenmelidir; ek verisi window.PP_EK[yol][TMAP dizini].
+   YENİ ÖZELLİK: Yeni ek öğe türü burada ve content/lessons/*-ek.js verisinde eklenir; tests/faz5_net.js ve tests/faz5e_ek.js güncellenir. */
 /* ---- Faz 5: ders eki (M§7 öğeleri) + etkileşimli alt ağ lab'ı (M§8.2) ----
    Ek veri: window.PP_EK[yol][TMAP dizini] (content/lessons/net-ek.js). Lab: tarayıcıda yerel simülasyon; gerçek cihaz yok.
    Lab saf hesabı PP.lab.altag; kanıt PP.ogr.depo.kanitEkle (tur "lab", kapı kanıtı değildir). */

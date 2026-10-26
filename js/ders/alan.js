@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ders > alıştırma sekmesi, ortak uygulama alanı (PP.alan: sql, python, js, sim). NE YAPAR: Dersteki kod alıştırmasını tarayıcı içinde çalıştırır (Web Worker; sql.js, Pyodide) ya da yalnız kural denetimi yapar; kanıt kaydı atar.
+   SORUN OLURSA: Dış kütüphane SRI/ağ hatasında çalıştırma kapanır, mesaj dürüsttür; alanları content/lessons/*-alan.js tanımlar (PP.alan.tanimla), kurulumu rota-ders.js çağırır; PP.cubuk (cubuk.js) ÖNCE yüklenmeli.
+   YENİ ÖZELLİK: Yeni tür TURLER/ETIKET/SINIR tablolarına ve calistir akışına eklenir; tests/faz10_alan.js, e1_editor.js, e2_adim.js güncellenir. */
 /* ---- PP.alan: ortak "uygulama alanı" (her derste kod yaz → canlı sonuç gör) — Faz 10 tur 2 ----
    Türler: sql (SQLite/WASM, sql.js), python (Pyodide), js (izole işçi), sim (kod çalışmaz; yalnız kural kontrolü).
    Etiket dürüsttür: çalışan = "gerçek çalışır", sim = "simülasyon"; çalıştırma kullanılamıyorsa bunu açıkça söyler.

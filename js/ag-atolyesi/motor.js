@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ağ Atölyesi (Animasyon Atölyesi) sahne oynatıcı ve liste ekranı. NE YAPAR: SVG sahne motoru: nwPlayer adım adım oynatır, NW sahne dizisini nw-sahne-v1/v2 verisinden birleştirir, nwFor/nwFuzzy bir dersi sahneyle eşler, nwQuiz mini sınavı, renderNw listeyi çizer.
+   SORUN OLURSA: NW (v1) ile NW_V2_DATA birleştirilir; aynı id'de v2 kazanır, eski ad eşleri NW_ALI ile korunur. Veriden önce yüklenirse sahne görünmez. Stil css/animasyon-atolyesi.css. tests/make-dbg.js NW_RX, nwFor, nwFuzzy adlarını açar. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni öğe çizimi nwIcon/NW_IC; yeni sahne js/veri/nw-sahne-v2.js. Testler: tests/t59a_nw.js, t60c_nw.js, nwmap.js, t60b_cov.js. */
 /* ---- v60: Animasyon Atölyesi motoru (nw2) ---- */
 var NW_W=360,NW_H=400;
 var NW_ACC={ccna:"#0b8f80",net:"#b9770e",eng:"#d97706",sec:"#6a50c8",bk:"#2f6db0",dev:"#2e8b57",qa:"#b23a68",py:"#c79a1d",js:"#d6b41f"};

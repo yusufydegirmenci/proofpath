@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Oyun sekmesi, Arena (düello) ve renderGame girişi. NE YAPAR: Bota ya da arkadaşa karşı 8 soruluk düelloyu (duStart/duAnswer/duElo), reyting ve lobiyi yönetir; renderGame Oyun sekmesinin ana işlevi olup ayarları kurar ve oyun-merkezi.js gameHub ile çizer.
+   SORUN OLURSA: localStorage ya_dz (reyting, seri, geçmiş) tutulur; giriş yapmış kullanıcıda saveMe({dz}) ile profile de yazılır (dzCanShare). Sekme eşlemesi cekirdek/cizim-yardim.js içinde oyun:renderGame. Yanlış cevaplar gqMark ile tekrar kuyruğuna gider. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Zorluk/bot ayarı DU_DIFF; yeni oyun sekmesi oyun-merkezi.js GH_TABS. Test: tests/h81.js (düello akışı). */
 /* ---- v49: Meydan oku (bilgisayara ve arkadaşa karşı düello) ---- */
 var DU_N=8,DU_LIM=15,DZ_KEY="ya_dz";
 var DU_DIFF={k:{n:"Kolay",bot:"Çaylak Bot",ini:"Ç",p:.5,t:[5,12],dd:1,xp:4,r:900,c:"#2fe08a"},o:{n:"Orta",bot:"Kıdemli Bot",ini:"K",p:.72,t:[3.5,9],dd:2,xp:8,r:1100,c:"#ffc233"},z:{n:"Zor",bot:"Usta Bot",ini:"U",p:.9,t:[2.2,6],dd:3,xp:14,r:1300,c:"#ff5d7d"}};

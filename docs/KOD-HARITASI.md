@@ -1,0 +1,26 @@
+# Kod haritası: hata olunca nereye bakılır
+
+Uygulama çerçevesiz, global kapsamlı betiklerden oluşur; `index.html` betikleri **sırayla** yükler (sıra denetimi: `node tests/sira.js`). Ortak durum `S` nesnesi (js/cekirdek/temel.js), ekran `draw()` ile (js/cekirdek/cizim-yardim.js) yeniden çizilir, sekmeler `TABS` listesindedir. Dosya başlıklarında **ALAN / NE YAPAR / SORUN OLURSA / YENİ ÖZELLİK** yorumu vardır; bu sayfa onların üst haritasıdır. Cevap anahtarı ve açıklamalar bu depoda YOKTUR (özel depoda, sunucuda).
+
+| Alan | Dosyalar | Görevi | Bağımlılık | Hata olursa önce şuraya bak |
+|---|---|---|---|---|
+| **Giriş / oturum** | `supabase-shim.js`, `js/giris/giris-ek.js`, `config.js`, `vendor/supabase-2.117.3.js`, `js/baslat.js` | Supabase istemcisi, `window.claude` katmanı, giriş/kayıt ekranı, ilk çizim, çevrimdışı iletisi | CDN supabase-js (yoksa `vendor/` kopyası) | Konsolda "supabase-js yüklenemedi" → `index.html` supabase etiketi ve `vendor/`. Hero boşsa `S.kimlik` (js/baslat.js). Test: `faz33_dayaniklilik` |
+| **Çekirdek / çizim** | `js/cekirdek/temel.js`, `cizim-yardim.js`, `ust-serit.js`, `diyagram.js` | `S`, `TABS`, `draw()`, üst şerit (hero), SVG şema çizici | Hepsi en önce yüklenir | Ekran hiç çizilmiyorsa `draw()` ve sekme gövdesi (`cizim-yardim.js`). `tests/smoke.js` her sekmeyi gezer |
+| **Ders içeriği** | `content/lessons/<hat>-N.js` (`PP_LESSONS`), `js/veri/tmap*.js` (`TMAP`, hat başına dosya), `js/veri/yollar.js`, `js/sinif/sinif.js` (`STARTER`) | Ders metni, konu haritası, hat/yol tanımı | `baslat.js` dersleri tembel yükler (`type="text/x-lazy"`), bitince `PP_DERS_HAZIR` | Ders boş/eksik → ders betiği 404 mü (Ağ sekmesi), `PP_LESSONS[hat][no]` var mı. Şema: `node tests/ogrenme.js` |
+| **Ders ekranı** | `js/ders/*.js` (`ders-cekirdegi`, `ders-odasi`, `ders-notlari`, `okuma-kosesi`, `lab-*`, `alan`…) | Isınma, anlatım, mini sınav, alıştırma, laboratuvarlar | `PP_LESSONS`, `PP.ogr` | Mini sınav yanlış çalışıyorsa `ders-odasi.js`. Lab → ilgili `lab-*.js` + `tests/faz5d_lab.js` |
+| **Sınav / öğrenme** | `js/ogrenme/*.js` (`PP.ogr`: `cekirdek`, `kapi`, `sunucu`, `depo`, `plan`, `tekrar`…), `content/sinav/seviye.js`, `js/seviye/seviye-sinavi.js` | Şema denetimi, kapı/ustalık kuralı, sunucu RPC'leri, yerel depo (`ya_pp_ogr`), seviye sınavı | Supabase RPC'leri (`supabase/migrations/`) | Sınav gönderilemiyor → `js/ogrenme/sunucu.js` (hata kodu eşlemesi) ve migration uygulanmış mı. Testler: `ogrenme`, `faz9s_*`, `faz4_entegrasyon` |
+| **Bilgi testi** | `content/bilgi/<hat>.js` (`PP_BILGI`), `js/ders/ders-odasi.js` (`bilgiSec`), `js/ogrenme/sunucu.js` (`bilgi()`) | Bölüm sonu puansız mini kontrol; yanlışta doğru şık AÇIKLANMAZ, "Tekrar dene" | `ogr_bilgi_kontrol` RPC | Yanıt gelmiyorsa RPC/hız sınırı iletisi. Test: `faz21_bilgi` |
+| **Çoklu seçim / boşluk** | `content/lessons/*` (soru `multi` alanı), `js/ders/ders-odasi.js`, `js/ogrenme/cekirdek.js` | Birden çok doğru şıklı sorular | Sunucu anahtarı sıralı JSON dizisi | Test: `coklu_kilit`, `faz22_coklu` |
+| **Lig / rozet** | `js/lig/lig-profil.js` (çekirdek), `lig-isler.js`, `lig-gazete.js`, `lig-ekran.js`, `js/bugun/oduller.js` | Günün lig soruları, puan (sunucuda hesaplanır), sıralama, profil, ilan, gazete, ödüller | `20261025_lig_sunucu.sql` RPC'si | Puan görünmüyor → `answerQ` → `ogr.ligGonder`. Test: `faz13_lig` |
+| **Plan** | `js/atolye/plan-ui.js`, `kisisel-plan.js`, `js/ogrenme/plan.js`, `program.js` | Takvim, kişisel plan, bitirme belgesi bağlantısı | `STARTER`, depo | Test: `faz7_plan`, `personal_plan` |
+| **Sözlük** | `js/yardim/rehber-sozluk.js`, `sozluk-birlestir.js`, `content/sozluk-ek.js` | A-Z sözlük; kaynak: elle girişler + ders kavram kartları + ek terimler | `PP_LESSONS` yüklenince önbellek sıfırlanır | Terim eksikse ek dosyaya satır ekle (ilk arama adı o dersin metninde geçmeli). Test: `sozluk` |
+| **Belge** | `belge.html`, `js/belge.js`, `js/belge-ui.js`, `marka.js` | Bağımsız bitirme belgesi + doğrulama kodu (SHA-256) | Yok (sunucusuz) | Test: `faz27_belge` |
+| **Atölye / oyun / ağ atölyesi** | `js/atolye/`, `js/oyun/`, `js/ag-atolyesi/` | Git/CV/VA atölyeleri, oyunlar, hareketli sahneler | `js/veri/nw-sahne-*.js`, `atlas-*.js` | İlgili dosya başlığına bak; testler `t57*`, `t58*`, `t59*`, `faz5*` |
+| **Veri dosyaları** | `js/veri/` | Proje tanımları, sahneler, atlas, soru bankası | Kodu okuyan dosyalar başlıkta yazılı | Şema bozulduysa `tests/faz12_kod.js` |
+| **Stil** | `css/*.css`, `marka.js`, `marka/` | Görünüm, marka adı/logosu tek yerden | `npm run marka` statik dosyaları eşitler | Görsel bozukluk → ilgili css; marka → `tests/marka.js` |
+| **Testler / araçlar** | `tests/`, `tools/` | `npm test` (`tests/run-all.js`), `npm run test:ogrenme`, marka/anahtar araçları | `tests/stub.js` sahte `window.claude` | Önce `node tests/sira.js` ve `node tests/smoke.js`; tek testi `node tests/<ad>.js` çalıştır |
+
+## Yeni özellik eklerken
+1. Hangi alan? Yukarıdaki satırdaki dosyaya ekle; yeni dosya gerekiyorsa `index.html`'e DOĞRU SIRAYA etiket koy ve `node tests/sira.js` çalıştır.
+2. Yeni test: `tests/<ad>.js` içine **assert** yaz (assert'siz test sayfa hatası dışında bir şeyi kanıtlamaz) ve gerekirse `tools/ogrenme-zinciri.js` listesine ekle.
+3. Dosya başlığındaki **YENİ ÖZELLİK** bölümünü güncel tut.

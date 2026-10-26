@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Ağ Şehri ve Ders, kademe (aşama), semt ve sis sistemi, kilometre taşı kutlamaları. NE YAPAR: Konuları semtlere gruplar, ustalığa göre aşamayı/sis maskesini hesaplar ve yeni kilometre taşını kuyruğa alıp gösterir.
+   SORUN OLURSA: Görülen taşlar localStorage ya_seen_v2 anahtarında (seenLoad/seenSave, bellek yedeği S._seenMem); S.ms = {queue, open}; cleanLesson/str/objs/pick burada tanımlıdır ve baslat.js listen() ile çağrılır.
+   YENİ ÖZELLİK: Yeni taş checkMilestones/quizMilestone'a, aşama metni stageCopy'ye eklenir; tests/hesaplar.js ve tests/ogrenme.js güncellenir. */
 /* ---- kademe, semt ve sis sistemi ---- */
 var HS=[46,50,62,84,108];
 function stageOf(t){return PP.ogr.ilerleme.asama(t)}

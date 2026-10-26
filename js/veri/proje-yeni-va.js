@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Atölye > Veri Analitiği, Seviye 0 projeleri. NE YAPAR: PP_PROJ.va dizisine Veri Analitiği Seviye 0 projelerini iter (seviye alanı ve steps dizisi); VA yolu PATHS'te olmadığı için ayrı listedir.
+   SORUN OLURSA: proje-birlestir.js adım dizilerini nesneye çevirir; atolye/va-ui.js PP_PROJ.va'yı p.seviye ile süzer, seviye alanı eksikse proje listede görünmez. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni VA projesi burada K.va.push (Seviye 1-2 için proje-yeni-va12.js). Testler: tests/faz10_va.js, tests/faz10_va12.js. */
 (function (g) {
   var K = g.PP_PROJ = g.PP_PROJ || { tanim: {}, yeni: [], va: [] };
   K.va = K.va || [];

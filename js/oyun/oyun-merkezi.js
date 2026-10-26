@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Oyun sekmesi iskeleti (Arena, Arcade, Dino, Fetih, Görevler, Kartlar) ve oyun geri bildirimi. NE YAPAR: gameHub oyuncu kartını ve sekme çubuğunu çizip her sekmenin içeriğini ilgili dosyadan (duello, dino, fetih, bilgi-kartlari) alır; fb* işlevleri her bölüm için üç seçenekli geri bildirim ve not kaydeder.
+   SORUN OLURSA: S.gtab seçili sekmeyi tutur. localStorage ya_fb (bölüm: {g,o,b,note}); altin-vurus.js syncOut içinde yok. Sekme eklerken GH_TABS ve gameHub içindeki dallar birlikte güncellenmeli. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni bölüm: GH_TABS + gameHub dalı + (varsa) FB_N. Test: tests/h84.js (.gh-nav sekmeleri). */
 /* ---- v50 oyun merkezi ---- */
 var GH_TABS=[["arena","Arena"],["arcade","Arcade"],["dino","Dino"],["fetih","Fetih"],["gorev","Görevler"],["kart","Kartlar"]];
 function ghCell(v,k){return h("div",{class:"gh-c"},h("b",null,String(v)),h("small",null,k))}

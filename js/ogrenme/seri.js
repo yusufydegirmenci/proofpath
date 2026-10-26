@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Seri (art arda gün) için tek tanım (PP.ogr.seri): çalışma, oyun, masa serileri.
+   NE YAPAR: Bugün etkinlik yoksa dünden sayar; köprü günleri (joker) seriyi kesmez ama sayılmaz; seri cezasızdır.
+   SORUN OLURSA: Kaynaklar S.days, S.progress, S.treplies (eski küresel durum); çağıranlar js/bugun/bugun.js, js/cekirdek/temel.js, js/lig/lig-profil.js, js/masa/masa-mudur.js, js/oyun/ag-kosusu.js. Formüller tests/hesaplar.js ile birebir kalmalı.
+   YENİ ÖZELLİK: Yeni seri türü seri.js'e eklenir; tests/ogrenme.js, hesaplar.js, faz10d.js güncellenir. */
 /* ---- Seri (art arda gün) için TEK tanım (Faz 4) ----
    Kural: bugün etkinlik yoksa dünden başlanır (seri gün bitmeden kırılmaz); ardışık etkin günler sayılır;
    köprü günleri (joker) seriyi kesmez ama sayılmaz. Seri cezasızdır: kırılması ilerleme/ustalık kaybettirmez.

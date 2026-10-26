@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Proje Atölyesi, sec/qa/bk yollarındaki mevcut projelerin ek tanım alanları. NE YAPAR: PP_PROJ.tanim[projeId] altına her proje için onkosul, gereksinim, kabul, rubrik, savunma, yetkinlikler, telafi, sonraki alanlarını yazar (sec1-4, qa1-4, bk1-4).
+   SORUN OLURSA: proje-birlestir.js bunları ALAN listesiyle PATHS projelerine kopyalar; yollar.js'ten ve birleştirmeden önce yüklenmeli, proje id'si yollar.js'te yoksa sessizce atlanır. Kabul ölçütlerini öğrenci kendi denetler. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni proje için yollar.js'e proje + burada K.tanim girdisi. Test: tests/faz8_proje.js. */
 (function (g) {
   var K = g.PP_PROJ = g.PP_PROJ || { tanim: {}, yeni: [], va: [] };
 

@@ -1,4 +1,8 @@
 "use strict";
+/* ALAN: Akran incelemesi (PP.akran) ve rapor paylaşımı (PP.paylasim).
+   NE YAPAR: İstemci modeli: rubrikli akran incelemesi ve belirteçli paylaşım; depo soyutlaması (kaydet/getir/guncelle) ile çalışır, gerçek sunucu bağlantısı yok.
+   SORUN OLURSA: js/ altında henüz çağıran arayüz yok (yalnız testte kullanılır); sunucu politikası supabase/migrations/20261013_paylasim_politikasi.sql ile uyumlu kalmalı; PP.ogr önce yüklenmeli.
+   YENİ ÖZELLİK: Arayüz bağlanırsa js/proje/rapor-ui.js gibi bir UI dosyasından çağrılır; tests/faz8_kariyer.js güncellenir. */
 /* ---- Akran incelemesi (M§13) ve rapor paylaşımı (M§8.6, M§12) — istemci modeli; sunucu politikası supabase/migrations/20261013_* ----
    Akran: rubrik proje adımlarından; AI/insan ayrımı zorunlu; görünürlük yalnız ilgililere; inceleme güvenilir yetkinlik durumunu DEĞİŞTİRMEZ.
    Paylaşım: belirteç yalnız oluşturulurken bir kez görünür, depoda yalnız özeti (SHA-256) tutulur; iptal edilen/süresi dolan paylaşım erişim vermez.

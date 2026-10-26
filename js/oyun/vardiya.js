@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Masa sekmesi, Vardiya (müşterili destek masası simülasyonu). NE YAPAR: Senaryolu müşteri sohbetini yürütür: seçenekler ve serbest metin vdScore ile etiket ağırlıklarına (VD_W) göre puanlanır, vdScreen/vdList arayüzü ve renderDesk Masa sekmesini (Vardiya/İngilizce talepler) kurar.
+   SORUN OLURSA: localStorage ya_vd ({h: geçmiş}); son 40 kayıt vdPack ile syncOut'a girer. Sekme eşlemesi cekirdek/cizim-yardim.js masa:renderDesk. tests/make-dbg.js VD_CU, vdScore, vdOpts adlarını açar; yeniden adlandırmayın. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni senaryo VD_SC, puan etiketi VD_W/VD_TAGN. Test: tests/t57d_vardiya.js. */
 /* ---- v57: Vardiya (müşterili destek masası simülasyonu) ---- */
 var VD_KEY="ya_vd";
 var VD_TAGN={greet:"selamladın",empathy:"empati kurdun",eta:"süre verdin",fix:"çözümü verdin",info:"doğru soruyu sordun",record:"kayıt açtın",priority:"önceliklendirdin",comms:"düzenli bilgi sözü verdin",root:"kök nedeni yazdın",blame:"suçladın",jargon:"jargon kullandın",wrong:"yanlış çözüm verdin"};

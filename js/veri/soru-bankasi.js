@@ -1,4 +1,7 @@
 "use strict";
+/* ALAN: Tüm soru tabanlı alanlar (oyun, düello, Alıştırma, Hata defteri, seviye testi) için soru bankası. NE YAPAR: QB dizisi: t iz, d zorluk, q soru, o seçenekler, a doğru seçenek indeksi, w gerekçe; sonraki kümeler QB_SEC, QB_BK, QB_NEW ile concat edilir. t:"_" girdileri sunucuya ayrılmış boş yer tutucudur.
+   SORUN OLURSA: Soru kimliği qb<DİZİ İNDEKSİ> olduğundan (ya_gq, GS) araya ekleme/silme/sıra değiştirme ilerlemeyi kaydırır; yalnız sona ekleyin. js/lig/lig-profil.js de QB.push eder. Okuyanlar: gmQB, hata-defteri.js, duello.js. Yükleme sırası tests/sira.js ile denetlenir.
+   YENİ ÖZELLİK: Yeni soru dizinin sonuna aynı şemayla. Testler: tests/tmcov.js, tests/faz9s_tarama.js (cevap sızıntısı taraması), tests/hesaplar.js. */
 var QB=[
  {t:"ccna",d:1,q:"Farklı ağları birbirine bağlayan ve paketleri IP adresine göre yönlendiren cihaz hangisi?",o:["Hub","Router","Repeater","Kablo"],a:1,w:"Router, ağlar arasında IP adresine bakarak yol seçer."},
  { t: "_", d: 1, q: "", o: [], a: 0, w: "" },
