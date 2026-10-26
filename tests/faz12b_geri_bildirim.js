@@ -289,8 +289,8 @@ const dersB = { tur: 'ders', sekme: 'ders', id: 'bk-1', baslik: 'HTTP temelleri'
   await ev(() => goTab('bugun')); await p.waitForTimeout(400);
   eq(await say('[data-guncellik]'), 1, 'Bugün ekranında güncellik satırı var');
   const sayac = await ev(() => { const o = PP.ogr.ders.dogrulamaOzeti(window.PP_LESSONS), e = document.querySelector('[data-guncellik]'); return { o, metin: e.textContent }; });
-  /* faz-k10/k11/k12: tarih taşıyan tek hat Python (16 ders, Faz 18) + JavaScript (8 ders), 2026-10-24/25; diğer dersler henüz doğrulama tarihi taşımaz */
-  ok(sayac.o.toplam > 50 && sayac.o.bayat === 0 && sayac.o.dogrulanmadi === sayac.o.toplam - 24, 'Python ve JavaScript dersleri (24) tarihli ve taze: bayat 0, kalan hepsi doğrulanmadı (' + JSON.stringify(sayac.o) + ')');
+  /* faz-k10/k11/k12: tarih taşıyan hatlar Python (16 ders, Faz 18) + JavaScript (8 ders) + QA yeni dersler (12 ders, Faz 19a), 2026-10-24/25/26; diğer dersler henüz doğrulama tarihi taşımaz */
+  ok(sayac.o.toplam > 50 && sayac.o.bayat === 0 && sayac.o.dogrulanmadi === sayac.o.toplam - 36, 'Python, JavaScript ve QA dersleri (36) tarihli ve taze: bayat 0, kalan hepsi doğrulanmadı (' + JSON.stringify(sayac.o) + ')');
   ok(sayac.metin.includes(sayac.o.toplam + ' ders') && sayac.metin.includes('0 bayat (6 ay+)') && sayac.metin.includes(sayac.o.dogrulanmadi + ' doğrulanmadı'), 'sayaç metni özetle aynı: ' + sayac.metin);
   const bayat = await ev(() => { const L = window.PP_LESSONS.bk; L[9999] = { sonDogrulama: PP.ogr.gun.ekle(PP.ogr.gun.bugun(), -250) }; const e = gbGuncellik(); delete L[9999]; const s = e.querySelector('[data-guncellik-bayat]'); return [s.dataset.guncellikBayat, s.style.color, s.textContent]; });
   eq(bayat, ['1', 'var(--bad)', '1 bayat (6 ay+)'], 'bir ders 6 aydan eskiyse sayaç 1 bayat gösterir ve kırmızılaşır');
