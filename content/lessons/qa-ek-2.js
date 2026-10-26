@@ -119,6 +119,6 @@
       CTFL
     ],
     telafi: "Takıldıysan önce kusuru tek cümleyle yaz ve 'bu neden oldu?' sorusunu sadece bir kez yanıtla. Sonra yanıtın yanına kanıtı yaz; kanıt yoksa o adımı 'varsayım' diye işaretle.",
-    sonraki: "Yolun sonu: QA yolunu bitirdin. Şimdi soru bankasıyla tekrar et ve proje atölyesinde kendi test planı, hata raporu ve bir kusur için kök neden notu hazırla."
+    sonraki: "Sıradaki konu: Doğrulama ve geçerleme: ürün doğru mu yapıldı, doğru ürün mü yapıldı. Test temellerine CTFL 4.0.1 gözüyle dönüp eksik kavramları ve K3 hesap sorularını tamamlayacaksın."
   };
 })();
