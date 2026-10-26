@@ -100,15 +100,17 @@ function lessonTerms(l){
     h("button",{class:"btn ghost",type:"button",onclick:function(){goTab("sozluk")}},"Tüm sözlüğü aç"));
 }
 S.gl={q:""};
+var _glAll=null;
+function glAll(){return _glAll||(_glAll=PP_SOZLUK.birlestir(GLOS,window.PP_LESSONS,window.PP_SOZLUK_EK))}
 function glRows(q){
   q=String(q||"").toLowerCase().trim();
-  var r=GLOS.filter(function(g){return !q||g[1].toLowerCase().indexOf(q)>=0||g[3].toLowerCase().indexOf(q)>=0||g[2].some(function(a){return a.indexOf(q)>=0})});
+  var r=glAll().filter(function(g){return !q||g.ad.toLowerCase().indexOf(q)>=0||g.tx.toLowerCase().indexOf(q)>=0||g.en.toLowerCase().indexOf(q)>=0||g.ara.some(function(a){return a.indexOf(q)>=0})});
   if(!r.length)return [h("div",{class:"empty"},"Bu kelimeyi sözlükte bulamadım. Dersin içinde geçtiği yerde 'Anlamadığım yer' kutusuna yazabilirsin.")];
-  return r.map(function(x){return h("div",{class:"gl-i"},h("b",null,x[1]),h("p",null,x[3]))});
+  return r.slice(0,120).map(function(x){var d=PP_SOZLUK.dersEtiket(x.ders);return h("div",{class:"gl-i"},h("b",null,x.ad),h("p",null,x.tx),d?h("div",{class:"small mute"},d):null)}).concat(r.length>120?[h("div",{class:"small mute"},"İlk 120 sonuç gösteriliyor; aramayı daralt.")]:[]);
 }
 function renderGlossary(){
   var list=h("div",{class:"gl-list",id:"gl-list"},glRows(S.gl.q));
-  var inp=h("input",{type:"search",placeholder:"Kelime ara, örn. router",maxlength:40,"aria-label":"Sözlükte ara",oninput:function(e){S.gl.q=e.target.value;var el=document.getElementById("gl-list");if(el)el.replaceChildren.apply(el,glRows(S.gl.q))}});inp.value=S.gl.q;
-  return [h("div",{class:"panel"},h("div",{class:"label"},"Sözlük"),h("h2",null,"Bilmediğin kelimeye bak"),h("div",{class:"small mute"},GLOS.length+" terim, günlük dille. Bir ders sırasında takıldığında buraya gel."),inp),h("div",{class:"panel"},list)];
+  var inp=h("input",{type:"search",placeholder:"Kelime ara, örn. load balancer",maxlength:40,"aria-label":"Sözlükte ara",oninput:function(e){S.gl.q=e.target.value;var el=document.getElementById("gl-list");if(el)el.replaceChildren.apply(el,glRows(S.gl.q))}});inp.value=S.gl.q;
+  return [h("div",{class:"panel"},h("div",{class:"label"},"Sözlük"),h("h2",null,"Bilmediğin kelimeye bak"),h("div",{class:"small mute"},glAll().length+" terim (A-Z), günlük dille; derste geçen kavramlar ders bilgisiyle. Bir ders sırasında takıldığında buraya gel."),inp),h("div",{class:"panel"},list)];
 }
 function guideStep(n,t,d){return h("div",{class:"gd-s"},h("span",{class:"gd-n"},String(n)),h("div",null,h("b",null,t),h("p",null,d)))}
