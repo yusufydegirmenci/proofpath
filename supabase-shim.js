@@ -22,6 +22,12 @@
   }
   if (!window.supabase || !window.supabase.createClient) {
     console.error("Proofpath: supabase-js yüklenemedi.");
+    var k = document.createElement("div");   /* boş sayfa yerine açık ileti + yenile */
+    k.setAttribute("role", "alert"); k.setAttribute("data-yuklenemedi", "1");
+    k.style.cssText = "position:fixed;inset:0;z-index:9999;display:grid;place-content:center;gap:12px;padding:24px;text-align:center;background:#0F1117;color:#E5E7EB;font:16px system-ui,sans-serif";
+    var m = document.createElement("p"); m.textContent = "Giriş bileşeni yüklenemedi. İnternet bağlantını kontrol edip sayfayı yenile.";
+    var b = document.createElement("button"); b.type = "button"; b.textContent = "Yenile"; b.style.cssText = "min-height:44px;padding:0 20px;font:inherit;border-radius:10px;border:0;background:#2563EB;color:#fff";
+    b.onclick = function () { location.reload(); }; k.appendChild(m); k.appendChild(b); document.body.appendChild(k);
     return;
   }
 
@@ -73,7 +79,7 @@
     ".ppa-btn{font:inherit;font-weight:700;font-size:16px;padding:12px 14px;border-radius:10px;border:0;cursor:pointer;" +
     "background:var(--net,#2d7d74);color:var(--on-net,#fff)}" +
     ".ppa-btn[disabled]{opacity:.6;cursor:wait}" +
-    ".ppa-link{font:inherit;font-size:13px;background:none;border:0;padding:4px 0;color:var(--net,#2d7d74);" +
+    ".ppa-link{font:inherit;font-size:13px;background:none;border:0;padding:12px 0;min-height:44px;color:var(--net,#2d7d74);" +
     "text-decoration:underline;cursor:pointer;justify-self:start}" +
     ".ppa-msg{font-size:13px;line-height:1.4;padding:9px 11px;border-radius:9px;display:none}" +
     ".ppa-msg.err{display:block;background:var(--rust-soft,#f2d9cb);color:var(--bad,#b04545)}" +

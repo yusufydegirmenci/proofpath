@@ -846,14 +846,15 @@ body{background:var(--bg)}
 <!-- Web sürümü: Claude Artifact dışında giriş + veri katmanı (Supabase). Artifact içinde kendiliğinden devre dışı kalır. -->
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3/dist/umd/supabase.js" integrity="sha384-BWcjm9OdFth9TbhCxZPdm+gAOUMAzQy9nmTs12ioXdCcbVnJaPMn+fMUoQCLt60R" crossorigin="anonymous"></script>
+<script>/* CDN yüklenemezse yerel kopya (aynı sürüm, özeti aynı) */if(!window.supabase){document.write('<script src="vendor/supabase-2.117.3.js"><'+'/script>')}</script>
 <script src="supabase-shim.js"></script>
 <!-- Sabit ders kütüphanesi: her dosya window.PP_LESSONS.<iz>[konu no] içine ders ekler -->
-<script src="content/lessons/ccna-1.js"></script>
-<script src="content/lessons/ccna-2.js"></script>
-<script src="content/lessons/ccna-3.js"></script>
-<script src="content/lessons/ccna-4.js"></script>
-<script src="content/lessons/ccna-5.js"></script>
-<script src="content/lessons/ccna-6.js"></script>
+<script src="content/lessons/ccna-1.js" type="text/x-lazy"></script>
+<script src="content/lessons/ccna-2.js" type="text/x-lazy"></script>
+<script src="content/lessons/ccna-3.js" type="text/x-lazy"></script>
+<script src="content/lessons/ccna-4.js" type="text/x-lazy"></script>
+<script src="content/lessons/ccna-5.js" type="text/x-lazy"></script>
+<script src="content/lessons/ccna-6.js" type="text/x-lazy"></script>
 <script src="content/bilgi/ccna.js"></script>
 <script src="content/bilgi/dev.js"></script>
 <script src="content/bilgi/qa.js"></script>
@@ -862,56 +863,56 @@ body{background:var(--bg)}
 <script src="content/bilgi/py.js"></script>
 <script src="content/bilgi/sec.js"></script>
 <script src="content/bilgi/bk.js"></script>
-<script src="content/lessons/eng-1.js"></script>
-<script src="content/lessons/eng-2.js"></script>
-<script src="content/lessons/sec-1.js"></script>
-<script src="content/lessons/sec-2.js"></script>
-<script src="content/lessons/sec-3.js"></script>
-<script src="content/lessons/sec-4.js"></script>
-<script src="content/lessons/sec-5.js"></script>
-<script src="content/lessons/sec-6.js"></script>
-<script src="content/lessons/sec-7.js"></script>
-<script src="content/lessons/sec-8.js"></script>
-<script src="content/lessons/bk-1.js"></script>
-<script src="content/lessons/bk-2.js"></script>
-<script src="content/lessons/bk-3.js"></script>
-<script src="content/lessons/bk-4.js"></script>
-<script src="content/lessons/bk-5.js"></script>
-<script src="content/lessons/bk-6.js"></script>
-<script src="content/lessons/bk-7.js"></script>
-<script src="content/lessons/bk-8.js"></script>
-<script src="content/lessons/bk-9.js"></script>
-<script src="content/lessons/bk-10.js"></script>
-<script src="content/lessons/eng-3.js"></script>
-<script src="content/lessons/py-1.js"></script>
-<script src="content/lessons/py-2.js"></script>
-<script src="content/lessons/py-3.js"></script>
-<script src="content/lessons/py-4.js"></script>
-<script src="content/lessons/py-alan.js"></script>
-<script src="content/lessons/js-1.js"></script>
-<script src="content/lessons/js-2.js"></script>
-<script src="content/lessons/js-alan.js"></script>
-<script src="content/lessons/qa-1.js"></script>
-<script src="content/lessons/dev-1.js"></script>
-<script src="content/lessons/net-ek.js"></script>
-<script src="content/lessons/ccna-ek.js"></script>
-<script src="content/lessons/ccna-ek-2.js"></script>
-<script src="content/lessons/sec-ek.js"></script>
-<script src="content/lessons/sec-ek-2.js"></script>
-<script src="content/lessons/sec-ek-3.js"></script>
-<script src="content/lessons/bk-ek-1.js"></script>
-<script src="content/lessons/bk-ek-2.js"></script>
-<script src="content/lessons/bk-ek-3.js"></script>
-<script src="content/lessons/bk-ek-4.js"></script>
-<script src="content/lessons/dev-ek.js"></script>
-<script src="content/lessons/dev-ek-2.js"></script>
-<script src="content/lessons/dev-ek-3.js"></script>
-<script src="content/lessons/qa-ek.js"></script>
-<script src="content/lessons/qa-ek-2.js"></script>
-<script src="content/lessons/qa-ek-3.js"></script>
-<script src="content/lessons/eng-ek.js"></script>
-<script src="content/lessons/eng-ek-2.js"></script>
-<script src="content/lessons/mulakat-ek.js"></script>
+<script src="content/lessons/eng-1.js" type="text/x-lazy"></script>
+<script src="content/lessons/eng-2.js" type="text/x-lazy"></script>
+<script src="content/lessons/sec-1.js" type="text/x-lazy"></script>
+<script src="content/lessons/sec-2.js" type="text/x-lazy"></script>
+<script src="content/lessons/sec-3.js" type="text/x-lazy"></script>
+<script src="content/lessons/sec-4.js" type="text/x-lazy"></script>
+<script src="content/lessons/sec-5.js" type="text/x-lazy"></script>
+<script src="content/lessons/sec-6.js" type="text/x-lazy"></script>
+<script src="content/lessons/sec-7.js" type="text/x-lazy"></script>
+<script src="content/lessons/sec-8.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-1.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-2.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-3.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-4.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-5.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-6.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-7.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-8.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-9.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-10.js" type="text/x-lazy"></script>
+<script src="content/lessons/eng-3.js" type="text/x-lazy"></script>
+<script src="content/lessons/py-1.js" type="text/x-lazy"></script>
+<script src="content/lessons/py-2.js" type="text/x-lazy"></script>
+<script src="content/lessons/py-3.js" type="text/x-lazy"></script>
+<script src="content/lessons/py-4.js" type="text/x-lazy"></script>
+<script src="content/lessons/py-alan.js" type="text/x-lazy"></script>
+<script src="content/lessons/js-1.js" type="text/x-lazy"></script>
+<script src="content/lessons/js-2.js" type="text/x-lazy"></script>
+<script src="content/lessons/js-alan.js" type="text/x-lazy"></script>
+<script src="content/lessons/qa-1.js" type="text/x-lazy"></script>
+<script src="content/lessons/dev-1.js" type="text/x-lazy"></script>
+<script src="content/lessons/net-ek.js" type="text/x-lazy"></script>
+<script src="content/lessons/ccna-ek.js" type="text/x-lazy"></script>
+<script src="content/lessons/ccna-ek-2.js" type="text/x-lazy"></script>
+<script src="content/lessons/sec-ek.js" type="text/x-lazy"></script>
+<script src="content/lessons/sec-ek-2.js" type="text/x-lazy"></script>
+<script src="content/lessons/sec-ek-3.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-ek-1.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-ek-2.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-ek-3.js" type="text/x-lazy"></script>
+<script src="content/lessons/bk-ek-4.js" type="text/x-lazy"></script>
+<script src="content/lessons/dev-ek.js" type="text/x-lazy"></script>
+<script src="content/lessons/dev-ek-2.js" type="text/x-lazy"></script>
+<script src="content/lessons/dev-ek-3.js" type="text/x-lazy"></script>
+<script src="content/lessons/qa-ek.js" type="text/x-lazy"></script>
+<script src="content/lessons/qa-ek-2.js" type="text/x-lazy"></script>
+<script src="content/lessons/qa-ek-3.js" type="text/x-lazy"></script>
+<script src="content/lessons/eng-ek.js" type="text/x-lazy"></script>
+<script src="content/lessons/eng-ek-2.js" type="text/x-lazy"></script>
+<script src="content/lessons/mulakat-ek.js" type="text/x-lazy"></script>
 <script src="content/sinav/seviye.js"></script>
 <script src="content/kaynakca.js"></script>
 <script src="content/sozluk-ek.js"></script>

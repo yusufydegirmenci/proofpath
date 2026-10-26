@@ -7,13 +7,14 @@ function listen(db,name,key){
 }
 S.ready2=false;setTimeout(function(){S.ready2=true;sched()},2500);
 S._t0=Date.now();
+S.kimlik=!(window.claude&&window.claude.use);   /* artifact/çevrimdışı ortamda hemen true; web'de oturum çözülünce */
 draw();
 if(window.claude&&window.claude.use){
   Promise.all([window.claude.use("db"),window.claude.use("user")]).then(function(r){
     var db0=r[0],user=r[1];
     if(!db0){if(window.ppGate)ppGate.ac();return}
     var nonOwner=false;try{nonOwner=!!(user&&user.isOwner&&user.isOwner()===false)}catch(e){}
-    S.nonOwner=nonOwner;try{draw()}catch(e){}if(window.ppGate)ppGate.ac();
+    S.kimlik=true;S.nonOwner=nonOwner;try{draw()}catch(e){}if(window.ppGate)ppGate.ac();
     return Promise.resolve(user&&user.id?user.id():null).catch(function(){return null}).then(function(uid){
     var db=db0;
     if(nonOwner&&uid){
@@ -42,3 +43,23 @@ if(window.claude&&window.claude.use){
   window.claude.use("mcp").then(function(m){S.mcp=m||null;sched()},function(){});
   window.claude.use("downloads").then(function(d){S.dl=d||null;sched()},function(){});
 }
+/* Ders içeriği (content/lessons, ~2,2 MB) ilk açılışı bloklamasın diye type="text/x-lazy" ile bekletilir; bütün betikler paralel iner, SIRAYLA çalışır (async=false), bitince ekran yenilenir. Testler index.html'den src listesini okur. */
+(function(){
+  var l=[].slice.call(document.querySelectorAll('script[type="text/x-lazy"]')),kalan=l.length;
+  function bitti(){if(--kalan>0)return;window.PP_DERS_HAZIR=true;try{draw()}catch(e){}}
+  if(!kalan){window.PP_DERS_HAZIR=true;return}
+  l.forEach(function(o){var s=document.createElement("script");s.async=false;s.onload=s.onerror=bitti;s.src=o.getAttribute("src");document.head.appendChild(s)});
+})();
+/* Çevrimdışı iletisi (servis çalışanı varsayılan KAPALI; yalnız açıklama): bağlantı koparsa okuma sürer, giriş/kayıt/sunucu işleri beklemeli. */
+(function(){
+  var k=null;
+  function goster(){
+    if(navigator.onLine!==false){if(k){k.remove();k=null}return}
+    if(k)return;
+    k=document.createElement("div");k.setAttribute("role","status");k.setAttribute("data-cevrimdisi","1");
+    k.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:9000;padding:10px 14px;border-radius:10px;background:#1F2937;color:#F9FAFB;font:14px system-ui,sans-serif;text-align:center";
+    k.textContent="Çevrimdışısın. Açık ekranı okuyabilirsin; giriş, kayıt ve sınav gönderimi bağlantı gelince çalışır.";
+    document.body.appendChild(k);
+  }
+  window.addEventListener("offline",goster);window.addEventListener("online",goster);goster();
+})();
