@@ -100,7 +100,7 @@
 ], obj: "h4" },
       { id: "6f47eca3", q: "Beş yıl saklanması gereken ama yılda en fazla bir kez, saatler içinde ulaşılabilmesi yeterli olan büyük bir arşiv için en düşük maliyetli S3 seçeneği hangisidir?", options: ["S3 Glacier Deep Archive sınıfı", "S3 Standard", "S3 Standard-IA", "S3 Glacier Flexible Retrieval"], obj: "h4" },
       { id: "fe0dafe3", q: "Küçük (100 GB) bir veritabanı diskinde tutarlı 3.000 IOPS yeterli ve hedef en düşük maliyet. Hangi EBS seçimi uygundur?", options: ["gp2 birimini 1 TB'a büyütmek","gp3 birimi","io2 Block Express birimi","st1 (verim odaklı HDD) birimi"], obj: "h5" },
-      { id: "07535fe2", q: "Kritik bir veritabanı tek birimde 16.000 IOPS'tan fazla ve %99,999 dayanıklılık gerektiriyor. Hangi EBS türü seçilmelidir?", options: ["gp3","sc1 (soğuk HDD)","io2 (sağlanmış IOPS SSD)","st1 (verim odaklı HDD)"], obj: "h5" },
+      { id: "07535fe2", q: "Kritik bir veritabanı tek birimde 16.000 IOPS'tan fazla ve %99,999 dayanıklılık gerektiriyor. Hangi EBS türü seçilmelidir?", options: ["gp3","sc1 (soğuk HDD)","io2 (sağlanmış IOPS SSD)","st1 (verim odaklı HDD, sıralı iş yükleri)"], obj: "h5" },
       { id: "a9050319", q: "Üç ayda bir erişilen ama erişildiğinde milisaniyeler içinde okunması gereken arşiv verisi için en düşük maliyetli S3 sınıfı hangisidir?", options: ["S3 Standard","S3 Glacier Instant Retrieval","S3 Glacier Flexible Retrieval","S3 Glacier Deep Archive"], obj: "h5" }
     ],
     interview: [
@@ -206,7 +206,7 @@
   "Geri yüklemeyi düzenli aralıklarla deneyip süresini ölçmek",
   "Yalnızca yedeklerin sayısını artırmak"
 ], obj: "h4" },
-      { id: "714a4c2b", q: "Pilot light stratejisinde ikinci bölgeye çekirdek veri sürekli çoğaltılıyor. Felaket ilan edildiğinde hangi adımlar gerekir?", options: ["Uygulama katmanını hazır AMI ile başlatıp ölçeklemek ve DNS'i ikinci bölgeye yönlendirmek","Veritabanını sıfırdan yedekten geri yüklemek","Hiçbir şey; ikinci bölge kendiliğinden tam kapasiteyle zaten çalışıyor","Birincil bölgenin geri gelmesini beklemek"], obj: "h5" },
+      { id: "714a4c2b", q: "Pilot light stratejisinde ikinci bölgeye çekirdek veri sürekli çoğaltılıyor. Felaket ilan edildiğinde hangi adımlar gerekir?", options: ["Uygulama katmanını hazır AMI ile başlatıp ölçeklemek ve DNS'i ikinci bölgeye yönlendirmek","Veritabanını sıfırdan en son yedekten geri yükleyip uygulamayı elle kurmak, ardından DNS'i çevirmek","Hiçbir şey; ikinci bölge kendiliğinden tam kapasiteyle zaten çalışıyor","Birincil bölgenin geri gelmesini beklemek"], obj: "h5" },
       { id: "d2e6efaa", q: "Bir şirket, şirket içi fiziksel ve sanal sunucularını AWS'ye sürekli blok düzeyinde çoğaltıp felakette dakikalar içinde AWS'de başlatmak istiyor. Hangi hizmet kullanılmalıdır?", options: ["Yalnızca günlük yedek planıyla AWS Backup","AWS Elastic Disaster Recovery","AWS DataSync","AWS Snowball Edge"], obj: "h5" }
     ],
     interview: [
@@ -413,7 +413,7 @@
       { id: "d1fefa1d", q: "Uygulama günlüklerinde tam metin arama yapmak ve gösterge panelleriyle olay analizi görmek istiyorsun. Hangi hizmet uygundur?", options: ["Amazon Redshift (veri ambarı)", "Amazon OpenSearch Service", "AWS Lake Formation", "Amazon Athena"], obj: "h3" },
       { id: "64984095", q: "Yöneticilerin iş verisini etkileşimli panolarla ve raporlarla görmesi isteniyor. Hangi hizmet bu iş içindir?", options: ["AWS Glue Data Catalog", "Amazon Athena", "Amazon QuickSight", "Amazon Redshift"], obj: "h4" },
       { id: "c14f6c98", q: "Veri gölünde farklı ekiplerin hangi tablo ve sütunlara erişebileceğini merkezi olarak yönetmek istiyorsun. Hangi hizmet bu işe uygundur?", options: ["AWS Glue", "Amazon Athena", "AWS IAM Identity Center", "AWS Lake Formation"], obj: "h4" },
-      { id: "e6e07daa", q: "Bir ekip RDS'teki müşteri verisinde kişisel alanları analizden önce kod yazmadan, görsel arayüzle maskelemek istiyor. Hangi hizmet bu işi yapar?", options: ["AWS Glue DataBrew","Amazon Macie","Amazon Athena","Amazon Textract"], obj: "h5" }
+      { id: "e6e07daa", q: "Bir ekip RDS'teki müşteri verisinde kişisel alanları analizden önce kod yazmadan, görsel arayüzle maskelemek istiyor. Hangi hizmet bu işi yapar?", options: ["AWS Glue DataBrew","Amazon Macie","Amazon Athena (S3 üzerinde SQL sorguları)","Amazon Textract"], obj: "h5" }
     ],
     interview: [
       { q: "Athena ile Redshift arasında nasıl seçersin?", a: "Ara sıra, ad hoc ve sunucu yönetmek istemediğim sorgular için Athena. Çok kullanıcılı, sürekli ve karmaşık analitik iş yüklerinde, performans öngörülebilirliği isterken Redshift veri ambarı." },
