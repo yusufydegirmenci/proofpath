@@ -358,20 +358,23 @@
         "AWS Schema Conversion Tool (SCT): motor değişirken (ör. ticari bir motordan PostgreSQL uyumluya) şemayı ve kodu dönüştürmeye yardım eder."
       ] },
       { t: "box", h: "Hangi araç, hangi ihtiyaç?", text: "Hızlı ve şifreli ağ bağlantısı: Site-to-Site VPN. Tutarlı gecikme ve yüksek verim: Direct Connect (yedeği VPN). Süregelen dosya eşitleme: DataSync. Çok büyük, bir defalık veri: Snow cihazı. Yerel uygulama bulut depolamayı yerel gibi görecek: Storage Gateway. Ortaklara SFTP: Transfer Family. Veritabanı geçişi: DMS (ve gerekirse SCT)." },
-      { t: "warn", h: "Tuzak", text: "Direct Connect'i 'otomatik şifreli' sanmak. Hat özel olsa da trafik varsayılan olarak şifrelenmez; gizlilik gereksinimi varsa VPN ya da hat şifrelemesi eklenmelidir. Ayrıca Direct Connect siparişinin kurulum süresi vardır; acil ihtiyaç için ilk adım VPN olabilir. Fiyat ve süre için resmî belgeden doğrula." }
+      { t: "warn", h: "Tuzak", text: "Direct Connect'i 'otomatik şifreli' sanmak. Hat özel olsa da trafik varsayılan olarak şifrelenmez; gizlilik gereksinimi varsa VPN ya da hat şifrelemesi eklenmelidir. Ayrıca Direct Connect siparişinin kurulum süresi vardır; acil ihtiyaç için ilk adım VPN olabilir. Fiyat ve süre için resmî belgeden doğrula." },
+      {t:"steps",h:"Snow ailesi cihazları (SAA-C03)",items:["Snowcone: en küçük ve hafif Snow cihazıdır; internetsiz ya da kısıtlı uç konumlarda az miktarda veriyi toplayıp AWS'ye götürmek veya DataSync ile çevrimiçi göndermek içindir.","Snowball Edge: yüzlerce terabayta kadar veri taşıma ve uçta yerel hesaplama (Storage Optimized ve Compute Optimized türleri).","Snowmobile: exabayt ölçeğinde (yüzlerce petabayt ve üzeri) veri için tır boyutunda taşıma hizmetidir.","Kural: ağ bant genişliği veriyi makul sürede taşımaya yetmiyorsa ya da bağlantı yoksa fiziksel cihaz. Snow ailesinin satış durumu zamanla değişebilir; güncel için resmî belgeyi oku."]}
     ],
     objectives: [
       { id: "h1", text: "Site-to-Site VPN, Direct Connect ve Client VPN'i ihtiyaca göre ayırt edebilirsin." },
       { id: "h2", text: "Direct Connect'in şifreleme ve dayanıklılık yönlerini (yedek VPN, çoklu konum) açıklayabilirsin." },
       { id: "h3", text: "DataSync, Snow ailesi, Storage Gateway ve Transfer Family'yi veri taşıma senaryosuna göre seçebilirsin." },
-      { id: "h4", text: "DMS ve SCT'nin veritabanı geçişindeki rolünü ayırt edebilirsin." }
+      { id: "h4", text: "DMS ve SCT'nin veritabanı geçişindeki rolünü ayırt edebilirsin." },
+      { id: "h5", text: "Snowcone, Snowball Edge ve Snowmobile arasında veri hacmine ve uç konuma göre seçim yapabilirsin." }
     ],
     summary: [
       "Site-to-Site VPN internet üzerinden şifreli ve hızlı kurulur; Direct Connect tutarlı gecikme ve yüksek verim için ayrılmış hattır ama kurulumu uzun sürer ve varsayılan olarak şifrelemez.",
       "Kritik hibrit bağlantıda iki konumlu Direct Connect ve yedek VPN kullanılır.",
       "DataSync çevrimiçi ve zamanlanabilir dosya eşitleme yapar; Snow cihazları çok büyük ya da bağlantısı zayıf yerlerdeki veri için fiziksel taşıma sağlar.",
       "Storage Gateway yerel uygulamalara önbellekli bulut depolama sunar; Transfer Family ortakların SFTP/FTPS/FTP ile S3'e doğrudan dosya yüklemesini sağlar.",
-      "DMS veritabanını çalışırken sürekli kopyalar; farklı motora geçişte SCT şemayı dönüştürür."
+      "DMS veritabanını çalışırken sürekli kopyalar; farklı motora geçişte SCT şemayı dönüştürür.",
+      "Snowcone en küçük taşınabilir cihazdır, Snowball Edge büyük hacim ve uç hesaplama, Snowmobile exabayt ölçeği içindir."
     ],
     quiz: [
       { id: "787fc2eb", q: "Bir şirket, veri merkeziyle AWS arasında şifreli bir bağlantıyı hızla devreye almak istiyor ve ayrılmış bir hatta ihtiyaç duymuyor. Hangi seçenek uygundur?", options: [
@@ -406,7 +409,9 @@
   "Snowball ve Storage Gateway",
   "Direct Connect ve Client VPN"
 ], obj: "h4" },
-      { id: "8f11fcd6", q: "Dış ortakların mevcut SFTP istemcileriyle dosyaları S3'e yüklemesini, ama sunucu yönetmeden yapmak istiyorsun. Hangi hizmet kullanılır?", options: ["AWS DataSync", "AWS Schema Conversion Tool", "Amazon Route 53", "AWS Transfer Family"], obj: "h3" }
+      { id: "8f11fcd6", q: "Dış ortakların mevcut SFTP istemcileriyle dosyaları S3'e yüklemesini, ama sunucu yönetmeden yapmak istiyorsun. Hangi hizmet kullanılır?", options: ["AWS DataSync", "AWS Schema Conversion Tool", "Amazon Route 53", "AWS Transfer Family"], obj: "h3" },
+      { id: "f47d1583", q: "Uzak bir saha istasyonunda internet yok ve birkaç terabaytlık sensör verisi toplanıyor. Cihaz sırt çantasına sığacak kadar küçük olmalı ve veri AWS'ye fiziksel olarak götürülecek. Hangi cihaz uygundur?", options: ["AWS Snowmobile","AWS Direct Connect","AWS Snowcone","AWS Storage Gateway"], obj: "h5" },
+      { id: "0cea8a28", q: "Bir şirket yaklaşık 200 petabayt veriyi birkaç hafta içinde AWS'ye taşımak istiyor; ağ yoluyla yıllar sürecek. Fiziksel taşıma düşünülürse hangi hizmet bu ölçeğe göre tasarlanmıştır?", options: ["AWS Snowcone","S3 Transfer Acceleration","Tek bir AWS DataSync ajanı","AWS Snowmobile"], obj: "h5" }
     ],
     interview: [
       { q: "Site-to-Site VPN ile Direct Connect arasında nasıl seçersin?", a: "Hızlı devreye alma ve düşük başlangıç masrafı için VPN; tutarlı gecikme, yüksek verim ve büyük veri hacmi için Direct Connect. Kritik sistemlerde ikisi birlikte kullanılır: Direct Connect ana, VPN yedek." },
