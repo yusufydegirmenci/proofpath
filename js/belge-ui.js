@@ -1,7 +1,11 @@
 (function () {
   var $ = function (i) { return document.getElementById(i); }, B = window.PPBelge, q = new URLSearchParams(location.search);
-  $("ad").value = q.get("ad") || ""; $("hat").value = q.get("hat") || ""; $("t").value = B.tarihGecerli(q.get("t") || "") ? q.get("t") : new Date().toISOString().slice(0, 10);
-  var dogrulaKipi = !!q.get("kod");
+  var M = window.PP_MARKA; if (M) { document.title = "Bitirme belgesi · " + M.ad; document.querySelectorAll("[data-marka]").forEach(function (e) { e.textContent = M.ad; }); }
+  var kes = function (s) { return String(s || "").slice(0, 80); };   // URL'den gelen ad/yol input maxlength'ini aşmasın
+  $("ad").value = kes(q.get("ad")); $("hat").value = kes(q.get("hat"));
+  var dogrulaKipi = !!q.get("kod"), tGecerli = B.tarihGecerli(q.get("t") || "");
+  $("t").value = tGecerli ? q.get("t") : (dogrulaKipi ? "" : new Date().toISOString().slice(0, 10));   // doğrulamada tarih sessizce bugüne dönmez
+  if ((dogrulaKipi || q.has("t")) && !tGecerli) $("sonuc").textContent = "Bağlantıda tarih (?t=) yok ya da geçersiz; doğrulamak için belgenin tarihini kendin gir.";
   if (dogrulaKipi) { $("kodK").hidden = false; $("kodG").value = q.get("kod"); $("b").textContent = "Doğrula"; }
   function goster(ad, hat, t, k) {
     $("oAd").textContent = ad; $("oHat").textContent = hat; $("oT").textContent = t; $("oKod").textContent = k; $("belge").hidden = false;
