@@ -10,7 +10,7 @@
 ["Idempotency anahtarı", "Idempotency anahtarı", ["idempotency"], "Yeniden denenen bir işlemin (örneğin ödemenin) iki kez uygulanmasını önlemek için isteğe eklenen benzersiz kimlik. Retry eklemeden önce tasarlanır.", "bk-31", "idempotency key"],
 ["Stateless", "Stateless (durumsuz)", ["stateless", "durumsuz"], "İstekler arasında oturum tutmayan tasarım: her istek kendine yeter. Oturum ve dosyalar sunucuda değil dışarıda tutulduğu için sunucu sayısı kolayca artırılır.", "bk-1", "stateless"],
 ["Stateful güvenlik duvarı", "Stateful (bağlantı izleyen) denetim", ["stateful"], "Bağlantı tablosunu tutan güvenlik duvarı türü. İç ağdan çıkan isteğe gelen cevabı otomatik kabul eder; paket filtreleme (stateless) ise her paketi tek tek bakar.", "sec-13", "stateful"],
-["Webhook", "Webhook", ["webhook"], "Bir olay olduğunda başka bir sisteme otomatik HTTP isteği gönderen geri çağrı. Dersler otomasyon araçları arasında ve Kubernetes yetkilendirme kipi olarak anar.", "sec-23", "webhook"],
+["Webhook", "Webhook", ["webhook"], "Bir olay olduğunda başka bir sisteme otomatik HTTP isteği gönderen geri çağrı. Ders, otomasyon araçları arasında sayar.", "sec-23", "webhook"],
 ["Hız sınırlama", "Hız sınırlama (rate limiting)", ["hız sınırlama", "rate limiting"], "Belirli sürede kabul edilen istek sayısını sınırlamak. Kaba kuvvet ve DoS saldırılarını yavaşlatır.", "sec-40", "rate limiting"],
 ["Sticky session", "Sticky session", ["sticky session"], "Yük dengeleyicinin aynı kullanıcının isteklerini hep aynı hedefe yönlendirmesi. Oturumu sunucuda tutan uygulamalarda işe yarar ama dengeyi bozabilir.", "bk-32", "sticky session"],
 ["Blue/Green", "Blue/Green dağıtım", ["blue/green"], "Yeni sürüm ayrı bir ortamda kurulur, hazır olunca trafik oraya geçirilir. Hızlı geri dönüş sağlar ama ek maliyeti vardır.", "bk-22", "blue/green deployment"],
@@ -39,7 +39,7 @@
 ["Jitter", "Jitter", ["jitter"], "Gecikmenin dalgalanması. Ses ve görüntüde kesinti ve bozulma yapar.", "ccna-16", "jitter"],
 ["Salt", "Salt (tuzlama)", ["salt"], "Parola hash'lenmeden önce her kullanıcıya eklenen rastgele değer. Aynı parolaların aynı hash'i vermesini ve hazır tablolarla eşleştirmeyi engeller.", "sec-3", "salt"],
 ["Rainbow table", "Rainbow table (hazır hash tablosu)", ["rainbow table"], "Bilinen parolaların önceden hesaplanmış hash'lerinden oluşan tablo. Salt bu tabloyu işe yaramaz yapar.", "sec-3", "rainbow table"],
-["TTL (paket)", "TTL (paketin ömrü)", ["ttl"], "Paketin ağda dolaşabileceği sınırlı atlama sayacı; traceroute bunu 1, 2, 3 diye artırarak yolu çıkarır. Ethernet çerçevesinde TTL yoktur, bu yüzden katman 2 döngüsünde çerçeve kendiliğinden ölmez.", "ccna-14", "time to live"],
+["TTL (paket)", "TTL (paketin ömrü)", ["ttl"], "Paketin ağda dolaşma ömrünü sınırlayan sayaç. Ethernet çerçevesinde TTL yoktur, bu yüzden katman 2 döngüsünde çerçeve kendiliğinden ölmez; çözüm STP'dir.", "ccna-14", "time to live"],
 ["Failover", "Failover (yedeğe geçiş)", ["failover"], "Asıl bileşen arızalanınca yedeğin devralması. İlk atlama yedekliliğinde (HSRP gibi) saniyeler içinde olur.", "ccna-22", "failover"],
 ["Mikroservis", "Mikroservis (microservice)", ["microservice", "mikroservis"], "Her biri kendi verisine sahip, bağımsız dağıtılabilen küçük hizmetler. Tek parça dağıtılan monolit uygulamanın karşıtıdır.", "dev-23", "microservice"],
 ["Property", "Property (özellik, alan)", ["property"], "Bir nesnenin adlandırılmış değerlerinden biri; örneğin fiyat nesnenin bir özelliğidir. Her anahtar bir ad, karşısındaki değer özelliğin değeridir.", "js-7", "property"]
