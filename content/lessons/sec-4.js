@@ -205,8 +205,7 @@
       { id: "h1", text: "İşletim sistemi, ağ cihazı, uygulama ve kimlik sistemi gibi log kaynaklarını ve NetFlow/IPFIX, syslog, SNMP gibi veri toplama yöntemlerini sayabilirsin." },
       { id: "h2", text: "SIEM'in toplama, normalleştirme ve ilişkilendirme işlevlerini örnekle açıklayabilirsin." },
       { id: "h3", text: "SOAR ile UEBA'nın ne yaptığını birbirinden ayırabilirsin." },
-      { id: "h4", text: "NTP ile saat senkronizasyonu gibi iyi log pratiklerini uygulayabilirsin." },
-      { id: "h5", text: "Çok sayıda düşük değerli uyarıyı uyarı ayarı (alert tuning) ile azaltma yaklaşımını seçebilirsin." }
+      { id: "h4", text: "NTP ile saat senkronizasyonu gibi iyi log pratiklerini uygulayabilir, çok sayıda düşük değerli uyarıyı uyarı ayarı (alert tuning) ile azaltmayı seçebilirsin." }
     ],
     summary: [
       "Loglar olaydan sonra ne olduğunu anlamanın temel kaynağıdır; SIEM bunları toplar, normalleştirir ve ilişkilendirir.",
@@ -216,7 +215,7 @@
       "Alarm yorgunluğu gerçek olayı gizler; kurallar sürekli ayarlanmalıdır."
     ],
     quiz: [
-      { id: "e5a07b36", q: "SOC'ye günde yüzlerce düşük değerli uyarı geliyor ve analistler gerçek olayları gözden kaçırıyor. En uygun iyileştirme hangisidir?", options: ["Eşik ve istisnaları gözden geçirip uyarı kurallarını ayarlamak", "Tüm uyarıları kapatıp yalnızca haftalık rapora güvenmek ve beklemek", "Günlük kaynaklarının yarısını SIEM'e göndermeyi durdurup beklemek", "Analist sayısını artırıp kuralları hiç değiştirmemek ve izlemek"], obj: "h5" },
+      { id: "e5a07b36", q: "SOC'ye günde yüzlerce düşük değerli uyarı geliyor ve analistler gerçek olayları gözden kaçırıyor. En uygun iyileştirme hangisidir?", options: ["Eşik ve istisnaları gözden geçirip uyarı kurallarını ayarlamak", "Tüm uyarıları kapatıp yalnızca haftalık rapora güvenmek ve beklemek", "Günlük kaynaklarının yarısını SIEM'e göndermeyi durdurup beklemek", "Analist sayısını artırıp kuralları hiç değiştirmemek ve izlemek"], obj: "h4" },
       { id: "b99d4e98", q: "Farklı kaynaklardan gelen olayları birleştirip şüpheli desen bulmaya ne denir?", options: ["İlişkilendirme (correlation)", "Yedekleme", "Şifreleme", "Maskeleme"], obj: "h2" },
       { id: "464995b3", q: "Log analizinde zaman damgalarının doğru olması için hangi servis önemlidir?", options: ["NTP", "DHCP", "SMTP", "FTP"], obj: "h4" },
       { id: "316ca665", q: "Alarmdan sonra müdahaleyi otomatikleştiren çözüm hangisidir?", options: ["SOAR", "DLP", "NAT", "CDN"], obj: "h3" },
@@ -376,8 +375,7 @@
       { id: "h1", text: "Güvenlikte otomasyonun kullanım alanlarını, yapay zekâ destekli örneklerini (taban çizgisi, ajan, sohbet botu) ve faydalarını sayabilirsin." },
       { id: "h2", text: "IaC, Ansible, betikleme ve SOAR gibi araç örneklerini tanıyabilirsin." },
       { id: "h3", text: "Otomasyonun risklerini (toplu hasar, tek hata noktası, teknik borç) açıklayabilirsin." },
-      { id: "h4", text: "Otomasyon hesapları için en az yetki ve sırları kasada tutma yaklaşımını uygulayabilirsin." },
-      { id: "h5", text: "Runbook ile playbook'u amaçlarına göre ayırt edebilirsin." }
+      { id: "h4", text: "Otomasyon hesapları için en az yetki ve sırları kasada tutma yaklaşımını uygulayabilir, runbook ile playbook'u amaçlarına göre ayırt edebilirsin." }
     ],
     summary: [
       "Otomasyon hesap yönetimi, yama, güvenlik duvarı kuralları ve olay müdahalesi gibi işleri tutarlı yapar.",
@@ -387,7 +385,7 @@
       "Otomasyon hesaplarına en az yetki ver, sırları kasada tut, değişiklikleri sürüm kontrolünde incele."
     ],
     quiz: [
-      { id: "d94b5a13", q: "Ekip, bir sunucuyu yamalama işini her seferinde aynı adımlarla yapmak için adım adım yazılı bir rutin prosedür hazırlıyor ve sonra otomasyona dönüştürmeyi planlıyor. Bu belge hangisidir?", options: ["Runbook", "Olay sonrası raporu (PIR)", "Risk kaydı (risk register)", "İş kapsamı belgesi (SOW)"], obj: "h5" },
+      { id: "d94b5a13", q: "Ekip, bir sunucuyu yamalama işini her seferinde aynı adımlarla yapmak için adım adım yazılı bir rutin prosedür hazırlıyor ve sonra otomasyona dönüştürmeyi planlıyor. Bu belge hangisidir?", options: ["Runbook", "Olay sonrası raporu (PIR)", "Risk kaydı (risk register)", "İş kapsamı belgesi (SOW)"], obj: "h4" },
       { id: "c195b94c", q: "Otomasyonun güvenlik açısından temel faydası nedir?", options: ["Tutarlılık ve hız, insan hatasını azaltma", "Parolaları kaldırmak", "Ağı kapatmak", "Log tutmamak"], obj: "h1" },
       { id: "a9781c87", q: "Altyapıyı kodla tanımlayıp tekrar edilebilir kurmaya ne denir?", options: ["IaC", "SIEM", "DLP", "RAID"], obj: "h2" },
       { id: "a92107b2", q: "Otomasyonun bir riski hangisidir?", options: ["Hatalı betiğin toplu hasar vermesi", "Ağın yavaşlaması", "Daha çok parola", "Sertifika süresi"], obj: "h3" },
