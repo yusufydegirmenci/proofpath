@@ -348,7 +348,7 @@
       ] },
       { t: "steps", h: "Veriyi buluta taşımak", items: [
         "DataSync: çevrimiçi, ağ üzerinden, zamanlanabilir ve doğrulamalı taşıma. Şirket içi NFS/SMB paylaşımlarından S3, EFS ve FSx'e sürekli eşitleme için uygundur.",
-        "Snow ailesi (Snowball gibi): fiziksel cihaz postayla gelir, veriyi içine kopyalarsın, geri gönderirsin, AWS S3'e yükler. Çok büyük veri ve düşük ya da pahalı bant genişliği için; uzak yerlerde bağlantısız çalışma (uç işlem) için de kullanılır. Snow cihaz ailesi yeni müşterilere kapanmış olabilir; sınav kapsamında anlatılır ama güncel durumu resmî AWS belgesinden doğrula.",
+        "Snow ailesi (Snowball gibi): fiziksel cihaz postayla gelir, veriyi içine kopyalarsın, geri gönderirsin, AWS S3'e yükler. Çok büyük veri ve düşük ya da pahalı bant genişliği için; uzak yerlerde bağlantısız çalışma (uç işlem) için de kullanılır. Güncel durum (AWS resmî duyurusu, Ekim 2026): Snowball Edge 7 Kasım 2025'ten beri yalnız mevcut müşterilere açıktır ve ticari bölgelerde destek 31 Aralık 2026'da sona erer; AWS yeni müşteriye hiçbir Snow cihazı sunmamaktadır. Yeni projelerde çevrimiçi aktarım için DataSync, fiziksel aktarım için AWS Data Transfer Terminal ya da ortak çözümleri düşün. SAA-C03 kılavuzu hâlâ Snow ailesini kapsamda listeler, bu yüzden kavram sınavda çıkabilir.",
         "Storage Gateway: şirket içi uygulamaların bulut depolamayı yerel depolama gibi kullanmasını sağlayan hibrit ağ geçididir. Dosya (S3 File Gateway), birim (Volume Gateway) ve bant (Tape Gateway) arayüzleri vardır; yerel önbellek tutar.",
         "AWS Transfer Family: SFTP, FTPS ve FTP protokolleriyle doğrudan S3 ya da EFS'ye dosya aktarımı; sunucu yönetimi yok, ortaklar mevcut istemcilerini kullanır.",
         "S3 Transfer Acceleration: uzak istemcilerin S3'e yükleme hızını kenar konumları üzerinden artırır."
@@ -410,8 +410,8 @@
   "Direct Connect ve Client VPN"
 ], obj: "h4" },
       { id: "8f11fcd6", q: "Dış ortakların mevcut SFTP istemcileriyle dosyaları S3'e yüklemesini, ama sunucu yönetmeden yapmak istiyorsun. Hangi hizmet kullanılır?", options: ["AWS DataSync", "AWS Schema Conversion Tool", "Amazon Route 53", "AWS Transfer Family"], obj: "h3" },
-      { id: "f47d1583", q: "Uzak bir saha istasyonunda internet yok ve birkaç terabaytlık sensör verisi toplanıyor. Cihaz sırt çantasına sığacak kadar küçük olmalı ve veri AWS'ye fiziksel olarak götürülecek. Hangi cihaz uygundur?", options: ["AWS Snowmobile","AWS Direct Connect","AWS Snowcone","AWS Storage Gateway"], obj: "h5" },
-      { id: "0cea8a28", q: "Bir şirket yaklaşık 200 petabayt veriyi birkaç hafta içinde AWS'ye taşımak istiyor; ağ yoluyla yıllar sürecek. Fiziksel taşıma düşünülürse hangi hizmet bu ölçeğe göre tasarlanmıştır?", options: ["AWS Snowcone","S3 Transfer Acceleration","Tek bir AWS DataSync ajanı","AWS Snowmobile"], obj: "h5" }
+      { id: "f47d1583", q: "Bir şirket fiziksel yedek kasetlerini ve kaset kütüphanesini kaldırmak istiyor; mevcut yedekleme yazılımı kaset (sanal kaset kütüphanesi) arayüzüyle çalışmaya devam edecek ve yedekler bulutta arşivlenecek. Hangi çözüm uygundur?", options: ["AWS Transfer Family","AWS Tape Gateway","Amazon EFS dosya sistemi","AWS DataSync ajanı"], obj: "h3" },
+      { id: "0cea8a28", q: "Dünyanın farklı yerlerindeki kullanıcılar, tek bir bölgedeki S3 bucket'ına büyük dosyalar yüklerken yavaşlık yaşıyor. Uygulamada en az değişiklikle yükleme hızını artıran S3 özelliği hangisidir?", options: ["S3 Object Lock","S3 Intelligent-Tiering (otomatik sınıf geçişi)","S3 Transfer Acceleration","S3 sürüm oluşturma"], obj: "h3" }
     ],
     interview: [
       { q: "Site-to-Site VPN ile Direct Connect arasında nasıl seçersin?", a: "Hızlı devreye alma ve düşük başlangıç masrafı için VPN; tutarlı gecikme, yüksek verim ve büyük veri hacmi için Direct Connect. Kritik sistemlerde ikisi birlikte kullanılır: Direct Connect ana, VPN yedek." },
