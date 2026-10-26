@@ -26,10 +26,10 @@ const sabit = [];
 tara('js').concat(tara('content'), ['supabase-shim.js']).forEach(f => {
   fs.readFileSync(path.join(KOK, f), 'utf8').split('\n').forEach((l, i) => {
     if (/^\s*(\/\/|\/\*|\*)/.test(l) || /console\.(warn|error|log)\(/.test(l)) return;
-    if (/["'`][^"'`\n]*proofpath/i.test(l)) sabit.push(f + ':' + (i + 1));
+    if (/["'`][^"'`\n]*(proofpath|fornex)/i.test(l.replace(/\/\*.*?\*\//g, '').replace(/fornex-(belge|yedek)/gi, ''))) sabit.push(f + ':' + (i + 1));   // 'fornex-belge' kod algoritması sabiti, dosya ön eki marka.dosya
   });
 });
-ok(sabit.length === 0, 'arayüz kodunda sabit "Proofpath" metni yok' + (sabit.length ? ': ' + sabit.join(', ') : ''));
+ok(sabit.length === 0, 'arayüz kodunda sabit "Proofpath"/"FORNEX" ad metni yok (marka.js\'ten okunur)' + (sabit.length ? ': ' + sabit.join(', ') : ''));
 
 if (hata) { console.log(hata + ' hata'); process.exit(1); }
 console.log('marka testi geçti');

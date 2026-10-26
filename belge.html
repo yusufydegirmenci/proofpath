@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bitirme belgesi · FORNEX</title>
+<script src="marka.js"></script>
 <link rel="icon" href="ikon.svg" type="image/svg+xml">
 <style>
 :root{--bg:#fff;--ink:#111827;--mute:#4B5563;--line:#9CA3AF;--acc:#2563EB;color-scheme:light dark}
@@ -10,10 +11,12 @@ main{max-width:720px;margin:0 auto;padding:16px;display:grid;gap:14px}
 label{display:grid;gap:4px;font-weight:600}input{font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:transparent;color:inherit}
 button{font:inherit;font-weight:700;padding:10px 14px;border:0;border-radius:8px;background:var(--acc);color:#fff;cursor:pointer}
 .belge{border:3px double var(--line);border-radius:12px;padding:28px 20px;text-align:center;display:grid;gap:10px}
+#sonuc{overflow-wrap:anywhere;word-break:break-word}
+.belge{overflow-wrap:anywhere}
 .belge h1{margin:0;font-size:26px}.ad{font-size:28px;font-weight:700;border-bottom:1px solid var(--line);padding-bottom:6px;overflow-wrap:anywhere}
 .kod{font-family:ui-monospace,monospace;font-size:18px;letter-spacing:1px}.not{color:var(--mute);font-size:13px;line-height:1.5}
 [hidden]{display:none}
-@media print{form,.yaz,.ara{display:none}main{padding:0}}
+@media print{:root{--bg:#fff;--ink:#111;--mute:#444;--line:#555;color-scheme:light}html,body{background:#fff!important;color:#111!important}form,.yaz,.ara,#sonuc{display:none!important}main{padding:0}}
 </style></head><body><main>
 <form id="f" class="ara"><h1>Bitirme belgesi</h1>
 <label>Adın soyadın<input id="ad" maxlength="80" autocomplete="name" required></label>
@@ -23,10 +26,10 @@ button{font:inherit;font-weight:700;padding:10px 14px;border:0;border-radius:8px
 <button type="submit" id="b">Belgeyi oluştur</button></form>
 <div id="sonuc" role="status"></div>
 <div class="belge" id="belge" hidden>
-<div class="not">FORNEX · bağımsız eğitim belgesi</div><h1>Bitirme belgesi</h1>
+<div class="not"><span data-marka>FORNEX</span> · bağımsız eğitim belgesi</div><h1>Bitirme belgesi</h1>
 <div class="ad" id="oAd"></div><div>şu yolun tüm konularını tamamladı:</div><div><b id="oHat"></b></div>
 <div id="oT"></div><div class="kod">Doğrulama kodu: <b id="oKod"></b></div>
-<div class="not">Bu belge FORNEX tarafından verilen bağımsız bir eğitim belgesidir; CompTIA, Cisco, AWS, ISTQB, Python Institute veya Linux Foundation gibi bir kurumun resmî sertifikası ya da sınav sonucu DEĞİLDİR. Kodu doğrulamak için bu sayfanın adresine kod, ad, yol ve tarih eklenir.</div>
+<div class="not">Bu belge <span data-marka>FORNEX</span> tarafından verilen bağımsız bir eğitim belgesidir; CompTIA, Cisco, AWS, ISTQB, Python Institute veya Linux Foundation gibi bir kurumun resmî sertifikası ya da sınav sonucu DEĞİLDİR. Kodu doğrulamak için bu sayfanın adresine kod, ad, yol ve tarih eklenir.</div>
 <div class="yaz"><button type="button" id="pr">Yazdır / PDF</button></div></div>
 <script src="js/belge.js"></script>
 <script src="js/belge-ui.js"></script>

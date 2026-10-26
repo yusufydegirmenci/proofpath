@@ -10,13 +10,14 @@ const DENETLE = process.argv.includes('--denetle');
 const TUR = { svg: 'image/svg+xml', png: 'image/png', webp: 'image/webp', ico: 'image/x-icon' };
 const logoTur = TUR[path.extname(M.logo).slice(1).toLowerCase()] || 'image/png';
 
-const oku = f => fs.readFileSync(path.join(KOK, f), 'utf8');
+const oku = f => fs.readFileSync(path.join(KOK, f), 'utf8').replace(/\r\n/g, '\n');   // Windows CRLF çalışma kopyası ile LF üretim karşılaştırılır
 const ikonEtiketi = `<link rel="icon" href="${M.logo}" type="${logoTur}">`;
 const ikonDegis = s => s.replace(/<link rel="icon"[^>]*>/, ikonEtiketi);
 
 const yeni = {
   'index.html': ikonDegis(oku('index.html').replace(/<title>[^<]*<\/title>/, `<title>${M.ad}</title>`)),
   '404.html': ikonDegis(oku('404.html').replace(/<title>([^<]*· )?[^<]*<\/title>/, (t, on) => `<title>${on || ''}${M.ad}</title>`)),
+  'belge.html': oku('belge.html').replace(/(<title>[^<]*· )[^<]*(<\/title>)/, (t, on, son) => on + M.ad + son),
   'sw.js': oku('sw.js').replace(/new URL\("[^"]+", self\.location\)\.href,\n(\s+new URL\("vendor)/, `new URL(${JSON.stringify(M.logo)}, self.location).href,\n$1`),
 };
 const man = JSON.parse(oku('manifest.webmanifest'));

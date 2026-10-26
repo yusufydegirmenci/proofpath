@@ -1,4 +1,4 @@
-# Proofpath
+# FORNEX
 
 Sekiz derslik, oyunlaştırılmış kişisel öğrenme uygulaması: **CCNA, Network, İngilizce, Siber güvenlik, Backend, DevOps, Test Uzmanı, Python**. Claude Artifact olarak çalışan, `index.html` + `css/` + `js/` yapısında bir uygulamadır; günlük dersleri zamanlanmış "koç" görevleri üretir, veriler artifact veritabanında tutulur.
 
