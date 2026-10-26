@@ -118,26 +118,36 @@
         "Soğuma süresi (cooldown) ve ısınma: yüzlerce ardışık ölçeklemeyi önler."
       ] },
       { t: "box", h: "Durumsuz tasarım", text: "Ölçeklemeye uygun uygulama oturum ve dosyaları örnek üzerinde tutmaz; oturumu ElastiCache/DynamoDB'ye, dosyayı S3'e koyar. Böylece herhangi bir örnek silinebilir." },
-      { t: "warn", h: "Tuzak", text: "Tek örnek ve elle yama: örnek bozulursa servis durur. En az iki AZ'de ASG ve sağlık denetimi kullan; örnekleri 'evcil hayvan' değil 'sürü' olarak gör." }
+      { t: "warn", h: "Tuzak", text: "Tek örnek ve elle yama: örnek bozulursa servis durur. En az iki AZ'de ASG ve sağlık denetimi kullan; örnekleri 'evcil hayvan' değil 'sürü' olarak gör." },
+      {t:"steps",h:"Yerleştirme grupları, ölçekleme politikaları ve GWLB (SAA-C03)",items:["Cluster yerleştirme grubu: örnekleri tek AZ içinde birbirine çok yakın koyar; en düşük ağ gecikmesi ve en yüksek aktarım sağlar (HPC, sıkı bağlı düğümler). Tek AZ'de olduğu için ortak arıza riski taşır.","Spread yerleştirme grubu: her örneği ayrı donanıma koyar; az sayıda kritik örneğin birlikte arızalanmasını önler (AZ başına sınırlı sayıda örnek).","Partition yerleştirme grubu: örnekleri ayrı raflara bölmeler; büyük dağıtık sistemler (Kafka, Cassandra, HDFS) için, bir bölmenin arızası diğerlerini etkilemez.","Ölçekleme politikaları: hedef izleme (bir metriği hedefte tutar; CloudWatch alarmlarını Auto Scaling sizin için oluşturur ve yönetir), adımlı (alarm eşiğine göre kademeli), zamanlanmış (bilinen tarih ve saatte kapasite), tahmine dayalı (yinelenen örüntüyü öğrenip önceden ölçekler).","Hedef grubunda bağlantı boşaltma (deregistration delay): hedef kayıttan çıkarılırken sürmekte olan isteklerin tamamlanması için beklenen süre. Uzun işlemlerde süreyi uzat.","Gateway Load Balancer (GWLB): üçüncü taraf güvenlik cihazlarını (güvenlik duvarı, IDS/IPS) şeffaf biçimde trafik yoluna koyar, GENEVE protokolüyle trafiği cihaz filosuna dağıtır ve ölçekler."]},
+      {t:"warn",h:"Yerleştirme grubu tuzağı",text:"Cluster yerleştirme grubu en düşük gecikmeyi verir ama tek AZ'dedir; yüksek erişilebilirlik gerekiyorsa tek başına yeterli değildir. Bağlantı boşaltma süresini çok uzun bırakmak da ölçek küçülmesini geciktirir."}
     ],
     objectives: [
       { id: "h1", text: "On-Demand, Reserved ve Spot fiyatlandırmasını, EBS ile instance store farkını ayırt edebilirsin." },
       { id: "h2", text: "ALB ve NLB'yi çalıştıkları katmana ve kullanım amacına göre ayırabilirsin." },
-      { id: "h3", text: "Auto Scaling Group'un sağlıksız örneği nasıl yenilediğini ve hedef takibi politikasının metriği hedefte tuttuğunu açıklayabilirsin." }
+      { id: "h3", text: "Auto Scaling Group'un sağlıksız örneği nasıl yenilediğini ve hedef takibi politikasının metriği hedefte tuttuğunu açıklayabilirsin." },
+      { id: "h4", text: "Yerleştirme grubu türlerini, ölçekleme politikalarını, bağlantı boşaltmayı ve GWLB'yi senaryoya göre seçebilirsin." }
     ],
     summary: [
       "EC2'de On-Demand esnektir, Reserved/Savings Plans taahhütle indirimlidir, Spot kesilebilir ama çok ucuzdur.",
       "EBS kalıcı örnek diskidir; instance store geçicidir ve örnekle birlikte kaybolur.",
       "ALB katman 7'de HTTP/HTTPS ve yol tabanlı yönlendirme yapar; NLB katman 4'te TCP/UDP içindir.",
       "Auto Scaling birden çok AZ'ye yayılır, sağlıksız örneği yeniler; hedef takibi metriği hedef değerde tutar.",
-      "Durumsuz tasarımda oturum ve dosyalar örnekte değil ElastiCache/DynamoDB ve S3'te tutulur."
+      "Durumsuz tasarımda oturum ve dosyalar örnekte değil ElastiCache/DynamoDB ve S3'te tutulur.",
+      "Cluster grubu gecikmeyi, spread grubu ayrı donanımı, partition grubu büyük dağıtık sistemleri; GWLB ise sanal güvenlik cihazlarını hedefler."
     ],
     quiz: [
       { id: "eb41faa7", q: "HTTP yol tabanlı yönlendirme yapan yük dengeleyici hangisidir?", options: ["ALB", "NLB", "Route 53 kaydı", "Gateway endpoint"], obj: "h2" },
       { id: "34eae9a5", q: "Kesilebilir ama çok ucuz EC2 seçeneği hangisidir?", options: ["Spot", "On-Demand", "Dedicated Host", "Reserved"], obj: "h1" },
       { id: "eec64949", q: "Sağlıksız örneği otomatik yenileyen yapı hangisidir?", options: ["Auto Scaling Group", "Subnet", "Bucket", "Alias"], obj: "h3" },
       { id: "c560d878", q: "Örnekle birlikte silinen geçici disk hangisidir?", options: ["Instance store", "EBS", "S3", "EFS"], obj: "h1" },
-      { id: "aa894bc2", q: "Hedef takibi ölçekleme politikası ne yapar?", options: ["Bir metriği hedef değerde tutacak şekilde ölçekler", "Her gün aynı saatte kapatır", "Sadece alarm gönderir", "Örnekleri şifreler"], obj: "h3" }
+      { id: "aa894bc2", q: "Hedef takibi ölçekleme politikası ne yapar?", options: ["Bir metriği hedef değerde tutacak şekilde ölçekler", "Her gün aynı saatte kapatır", "Sadece alarm gönderir", "Örnekleri şifreler"], obj: "h3" },
+      { id: "d2d248ab", q: "Sıkı bağlı bir yüksek performanslı hesaplama (HPC) iş yükünün düğümleri arasında en düşük ağ gecikmesi ve en yüksek aktarım hızı isteniyor. Hangi yerleştirme stratejisi kullanılmalıdır?", options: ["Spread yerleştirme grubu","Her örneği farklı bölgeye koymak","Partition yerleştirme grubu","Cluster yerleştirme grubu"], obj: "h4" },
+      { id: "1f7ea5b6", q: "Yalnızca birkaç kritik EC2 örneği çalışıyor ve bir donanım arızasının bu örneklerin ikisini birden etkilememesi isteniyor. Hangi strateji uygundur?", options: ["Cluster yerleştirme grubu","Instance store kullanmak","Tek bir Dedicated Host üzerinde çalıştırmak","Spread yerleştirme grubu"], obj: "h4" },
+      { id: "821b68fb", q: "Bir uygulama, örnekler yük dengeleyiciden çıkarılırken 10 dakikaya kadar süren yükleme işlemlerinin (varsayılan bağlantı boşaltma süresi 300 saniyedir) yarıda kesilmesinden şikâyetçi. Hedef grubunda hangi ayar değiştirilmelidir?", options: ["Bağlantı boşaltma (deregistration delay) süresini uzatmak","Sağlık denetimi aralığını kısaltmak","Yapışkan oturumları kapatmak","Çapraz bölge yük dengelemeyi kapatmak"], obj: "h4" },
+      { id: "672101d8", q: "Güvenlik ekibi, üçüncü taraf bir sanal güvenlik duvarı filosunu tüm VPC trafiğinin yolunda şeffaf biçimde çalıştırmak, ölçeklemek ve trafiği bu cihazlara dağıtmak istiyor. Hangi yük dengeleyici türü bu iş için tasarlanmıştır?", options: ["Application Load Balancer","Network Load Balancer","Classic Load Balancer","Gateway Load Balancer (GWLB)"], obj: "h4" },
+      { id: "90c69a64", q: "Bir şirket, yılda bir kez bilinen bir tarihte (kampanya günü) 09:00'dan itibaren kapasitenin önceden 20 örneğe çıkarılmasını istiyor. Hangi ölçekleme politikası uygundur?", options: ["Hedef izleme ölçeklemesi","Adımlı ölçekleme","Zamanlanmış ölçekleme","Soğuma süresini (cooldown) uzatmak"], obj: "h4" },
+      { id: "5aef3164", q: "Auto Scaling grubunda ortalama CPU'yu %50 civarında tutan bir hedef izleme politikası kuruluyor. Politikanın kullandığı CloudWatch alarmlarını kim oluşturur ve yönetir?", options: ["Her eşik için elle alarm oluşturmak gerekir","Alarmlar Route 53 tarafından oluşturulur","Auto Scaling, politika adına kendiliğinden oluşturur ve yönetir","Hedef izleme politikası alarm kullanmaz"], obj: "h4" }
     ],
     interview: [
       { q: "ALB ve NLB farkı?", a: "ALB katman 7'de HTTP/HTTPS, yol ve host tabanlı yönlendirme sunar. NLB katman 4'te TCP/UDP trafiği çok yüksek performansla ve sabit IP ile taşır." },
@@ -258,26 +268,32 @@
       ] },
       { t: "box", h: "Tipik mimari", text: "Kullanıcı → Route 53 (alias) → CloudFront → S3 (statik) ve /api/* → API Gateway/ALB. Dinamik içerikte bile bağlantı yönetimi ve TLS kenarda sonlanır." },
       { t: "box", h: "DNS TTL", text: "DNS kaydının TTL'si çözücülerin cevabı ne kadar önbellekte tutacağıdır. Geçişten önce TTL'yi kısalt." },
-      { t: "warn", h: "Tuzak", text: "S3 kovasını herkese açıp CloudFront'u atlatmak. Kovayı özel tut, OAC ile sadece CloudFront'a izin ver. Ayrıca kök alan adı için CNAME değil alias kullan." }
+      { t: "warn", h: "Tuzak", text: "S3 kovasını herkese açıp CloudFront'u atlatmak. Kovayı özel tut, OAC ile sadece CloudFront'a izin ver. Ayrıca kök alan adı için CNAME değil alias kullan." },
+      {t:"steps",h:"AWS Global Accelerator (SAA-C03)",items:["Global Accelerator, uygulamana iki sabit anycast IP verir ve kullanıcı trafiğini en yakın AWS kenar konumundan AWS global omurgası üzerinden en yakın sağlıklı uç noktaya (ALB, NLB, EC2, Elastic IP) taşır.","TCP ve UDP için çalışır; oyun, VoIP, IoT ve HTTP dışı protokoller uygundur. Sağlık denetimiyle bir bölge bozulduğunda trafik hızla (DNS önbelleğinin TTL süresi beklenmeden) sağlıklı bölgeye döner.","CloudFront içeriği kenarda önbelleğe alır (statik/dinamik HTTP içerik). Global Accelerator önbelleğe almaz; ağ yolunu hızlandırır ve sabit IP verir.","Güvenlik duvarında yalnızca belirli IP'lere izin veren istemciler için sabit IP işe yarar."]}
     ],
     objectives: [
       { id: "h1", text: "CloudFront'ta OAC, önbellek geçersiz kılma ve ACM sertifika bölgesi gibi ayarları doğru uygulayabilirsin." },
       { id: "h2", text: "Kök alan adını AWS kaynağına yönlendirmek için alias kaydı ile CNAME farkını açıklayabilirsin." },
-      { id: "h3", text: "Route 53 yönlendirme politikalarından kullanım durumuna uygun olanı seçebilirsin." }
+      { id: "h3", text: "Route 53 yönlendirme politikalarından kullanım durumuna uygun olanı seçebilirsin." },
+      { id: "h4", text: "Global Accelerator ile CloudFront'u (sabit anycast IP, TCP/UDP ve hızlı yük devri ile önbellekleme) ayırt edebilirsin." }
     ],
     summary: [
       "CloudFront içeriği kenar konumlarından sunar; hit durumunda kökene gidilmez.",
       "OAC ile S3 kovası özel kalır ve yalnızca CloudFront'tan okunur.",
       "İçeriği hemen yansıtmak için invalidation yerine sürümlü dosya adı tercih edilir; invalidation maliyetli olabilir.",
       "CloudFront için ACM sertifikası us-east-1 bölgesinde olmalıdır.",
-      "Route 53'te kök alan adında CNAME kullanılamaz, alias kaydı kullanılır; gecikme tabanlı politika en düşük gecikmeli bölgeye yönlendirir."
+      "Route 53'te kök alan adında CNAME kullanılamaz, alias kaydı kullanılır; gecikme tabanlı politika en düşük gecikmeli bölgeye yönlendirir.",
+      "Global Accelerator iki sabit anycast IP verir, TCP/UDP trafiğini AWS omurgasından en yakın sağlıklı uç noktaya taşır ve önbellek yapmaz."
     ],
     quiz: [
       { id: "284a0584", q: "S3'e doğrudan erişimi kapatıp sadece CloudFront'tan okutan özellik hangisidir?", options: ["Origin Access Control", "Presigned URL tek başına", "Versioning", "Lifecycle"], obj: "h1" },
       { id: "dd258e9b", q: "Kök alan adını (example.com) CloudFront'a yönlendirmek için ne kullanılır?", options: ["Alias kaydı", "CNAME", "MX", "TXT"], obj: "h2" },
       { id: "5248cf9e", q: "Gecikmesi en düşük bölgeye yönlendiren Route 53 politikası hangisidir?", options: ["Gecikme tabanlı", "Basit", "Ağırlıklı", "Sabit"], obj: "h3" },
       { id: "8fba2ac6", q: "CloudFront'ta güncellenen içeriği hemen yansıtmanın alternatifi olarak önerilen yöntem?", options: ["Sürümlü dosya adı", "Daha çok bellek", "Kök hesap", "VPN"], obj: "h1" },
-      { id: "ff873066", q: "CloudFront için ACM sertifikası hangi bölgede olmalıdır?", options: ["us-east-1", "eu-central-1", "ap-south-1", "Herhangi"], obj: "h1" }
+      { id: "ff873066", q: "CloudFront için ACM sertifikası hangi bölgede olmalıdır?", options: ["us-east-1", "eu-central-1", "ap-south-1", "Herhangi"], obj: "h1" },
+      { id: "5c72def7", q: "Dünyaya dağılmış kullanıcılara UDP üzerinden çalışan çok oyunculu bir oyun sunuluyor. Kullanıcıların tek bir sabit IP çiftine bağlanması, trafiğin AWS omurgasından en yakın sağlıklı bölgeye gitmesi ve bölge arızasında hızla yön değiştirmesi isteniyor. Hangi hizmet kullanılmalıdır?", options: ["Amazon CloudFront","Route 53 gecikme tabanlı yönlendirme","AWS Global Accelerator","S3 Transfer Acceleration"], obj: "h4" },
+      { id: "982af236", q: "Bir hizmet çok bölgede çalışıyor; kurumsal müşteriler güvenlik duvarında yalnızca iki sabit IP'ye izin veriyor. Hangi çözüm bu isteği karşılar?", options: ["Her ALB için ayrı Elastic IP vermek","Global Accelerator'ın iki statik anycast IP adresini kullanmak","Route 53 ağırlıklı kayıt","CloudFront dağıtımının alan adını izin listesine yazdırmak"], obj: "h4" },
+      { id: "d203a00b", q: "Hangi hizmet içeriği kenarda önbelleğe ALMAZ, ama trafiği AWS global ağı üzerinden hızlandırır ve sabit anycast IP sunar?", options: ["Amazon CloudFront","Amazon ElastiCache","AWS Direct Connect","AWS Global Accelerator"], obj: "h4" }
     ],
     interview: [
       { q: "CloudFront nasıl performans sağlar?", a: "İçeriği kenar konumlarında önbelleğe alır; kullanıcı yakın noktadan alır, köken yükü ve gecikme azalır. Ayrıca bağlantı yeniden kullanımı ve TLS sonlandırma sağlar." },
@@ -327,27 +343,31 @@
       { t: "box", h: "Kinesis ve SQS", text: "SQS: tek tüketici grubu, mesaj işlenince silinir, sıra yok (FIFO hariç), tekrar okunamaz. Kinesis: birden çok bağımsız tüketici, sıra shard içinde korunur, veri saklama süresi boyunca tekrar oynatılabilir." },
       { t: "box", h: "Hatalar", text: "ProvisionedThroughputExceededException: shard sınırı aşıldı. Sıcak shard: tek partition key çok yoğun. Çözüm: anahtarı dağıt, shard artır, backoff ile dene." },
       { t: "box", h: "Lambda ile", text: "Lambda shard başına bir toplu iş okur. Bir kayıt hata verirse tüm batch tekrar denenir ve shard bloklanabilir. Çözüm: BisectBatchOnFunctionError, MaximumRetryAttempts, hata hedefi (DLQ/SNS)." },
-      { t: "warn", h: "Tuzak", text: "Partition key olarak düşük çeşitlilikli alan (ülke kodu) seçmek: tek shard sıcak kalır, diğerleri boş." }
+      { t: "warn", h: "Tuzak", text: "Partition key olarak düşük çeşitlilikli alan (ülke kodu) seçmek: tek shard sıcak kalır, diğerleri boş." },
+      {t:"steps",h:"Amazon MSK (SAA-C03)",items:["Amazon MSK, Apache Kafka'nın yönetilen halidir. Kafka istemci kodu ve araçları değişmeden çalışır; sunucu kurulumu, yama ve çoklu AZ dağıtımı AWS'dedir.","MSK Serverless, kapasite planlamadan Kafka kullanmayı sağlar. Mevcut Kafka'yı taşıyorsan MSK; AWS'ye özgü, sıfırdan kurulan akışlar için Kinesis Data Streams daha az işletme yükü getirir.","MSK, Kinesis Data Streams ile aynı sorunu çözer ama API'si farklıdır: Kafka protokolü gerekiyorsa MSK, gerekmiyorsa Kinesis."]}
     ],
     objectives: [
       { id: "h1", text: "Partition key'in kaydı hangi shard'a götürdüğünü ve sıranın nasıl korunduğunu açıklayabilirsin." },
       { id: "h2", text: "Akışı S3 gibi hedeflere yönetilen şekilde yüklemek için Firehose'u seçebilirsin." },
       { id: "h3", text: "Kinesis Data Streams ile SQS arasındaki farkı (çoklu tüketici, tekrar okuma) ayırt edebilirsin." },
-      { id: "h4", text: "Shard sınırı aşımını ve sıcak shard sorununu partition key dağılımını iyileştirerek çözebilirsin." }
+      { id: "h4", text: "Shard sınırı aşımını ve sıcak shard sorununu partition key dağılımını iyileştirerek çözebilirsin." },
+      { id: "h5", text: "Mevcut Kafka iş yükü için Amazon MSK, AWS'ye özgü yeni akış için Kinesis Data Streams seçimini yapabilirsin." }
     ],
     summary: [
       "Data Streams gerçek zamanlı, sıralı ve tekrar okunabilir bir akıştır; Firehose akışı S3 gibi hedeflere yönetilen şekilde yükler.",
       "Partition key kaydın shard'ını belirler; aynı anahtar aynı shard'a gider ve sıra korunur.",
       "Kinesis birden çok bağımsız tüketiciye izin verir; SQS mesaj işlenince siler ve tekrar okunamaz.",
       "Shard sınırı aşılınca ProvisionedThroughputExceededException alınır; çözüm anahtarı dağıtmak, shard artırmak, backoff ile denemektir.",
-      "Düşük çeşitlilikli partition key (ülke kodu) tek shard'ı sıcak bırakır."
+      "Düşük çeşitlilikli partition key (ülke kodu) tek shard'ı sıcak bırakır.",
+      "Amazon MSK yönetilen Apache Kafka'dır; Kafka istemcilerini değiştirmeden taşımak için seçilir."
     ],
     quiz: [
       { id: "391f3eb2", q: "Kayıtların hangi shard'a gideceğini ne belirler?", options: ["Partition key", "Bucket adı", "ARN", "Subnet"], obj: "h1" },
       { id: "00fe92f5", q: "Akışı S3'e yönetilen şekilde boşaltan servis hangisidir?", options: ["Firehose", "Data Streams tek başına", "SQS", "Cognito"], obj: "h2" },
       { id: "2c0d0fb9", q: "Aynı veriyi birden çok bağımsız tüketicinin okuyabilmesi hangi servisin avantajıdır?", options: ["Kinesis Data Streams", "SQS standart", "SNS SMS", "Route 53"], obj: "h3" },
       { id: "61a139df", q: "Shard başına yazma sınırı nedir?", options: ["1 MB/sn veya 1000 kayıt/sn", "100 MB/sn", "1 KB/sn", "Sınırsız"], obj: "h4" },
-      { id: "06ad4c91", q: "Sıcak shard'ın çözümü hangisidir?", options: ["Partition key dağılımını iyileştirmek", "Daha çok log", "Parolayı değiştirmek", "KMS silmek"], obj: "h4" }
+      { id: "06ad4c91", q: "Sıcak shard'ın çözümü hangisidir?", options: ["Partition key dağılımını iyileştirmek", "Daha çok log", "Parolayı değiştirmek", "KMS silmek"], obj: "h4" },
+      { id: "58a79a6c", q: "Bir ekip, şirket içinde çalışan Apache Kafka uygulamalarını istemci kodunu değiştirmeden AWS'ye taşımak ve sunucu işletmek istemiyor. Hangi hizmet uygundur?", options: ["Amazon SQS","Amazon MSK","Amazon Kinesis Data Streams","Amazon SNS"], obj: "h5" }
     ],
     interview: [
       { q: "Kinesis Data Streams ve SQS farkı?", a: "Kinesis sıralı (shard içinde), birden çok tüketicinin okuyabildiği ve saklama süresince tekrar oynatılabilen bir akıştır. SQS mesajı bir tüketiciye teslim edip işlenince siler; sıra garantisi yalnızca FIFO'da vardır." },
