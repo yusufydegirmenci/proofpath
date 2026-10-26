@@ -3,7 +3,7 @@
    - Strateji: ağ önce, önbellek yedek (çevrimiçi kullanıcı hep güncel dosyayı alır; çevrimdışıyken son görülen sürüm açılır).
    - Kapsam: sw.js'nin bulunduğu klasör (GitHub Pages alt yolu korunur; mutlak "/" yolu kullanılmaz).
    - Yeni sürüm kendiliğinden devralmaz: istemci "guncelle" iletisi gönderirse skipWaiting yapılır (yarım kalan işi bölmemek için). */
-var SURUM = "2026-10-25-1";
+var SURUM = "2026-10-26-1";
 var KABUK = "pp-kabuk-" + SURUM;
 var SERBEST_DIS = /^https:\/\/(cdn\.jsdelivr\.net|fonts\.googleapis\.com|fonts\.gstatic\.com)\//;
 

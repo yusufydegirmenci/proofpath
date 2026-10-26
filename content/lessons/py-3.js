@@ -73,6 +73,12 @@
         h: "Dikkat",
         text: "Çıplak 'except:' her hatayı yutar; yazım hatan bile gizlenir. Yakalamak istediğin türü yaz. try tek başına olamaz: yanında en az bir except ya da finally gerekir."
       },
+      { t: "h", text: "İstisna hiyerarşisi" },
+      { t: "cmd", lang: "python", text: "print(issubclass(ZeroDivisionError, ArithmeticError))   # True\nprint(issubclass(KeyError, LookupError))                # True\nprint(issubclass(IndexError, LookupError))              # True\nprint(issubclass(ValueError, Exception))                # True\nprint(issubclass(KeyboardInterrupt, Exception))         # False\n\nliste = [1, 2]\ntry:\n    print(liste[5])\nexcept LookupError as e:                 # IndexError'ı da yakalar\n    print(\"arama hatası:\", type(e).__name__)    # arama hatası: IndexError\n\ntry:\n    int(\"x\")\nexcept (TypeError, ValueError) as e:     # iki tür tek blokta\n    print(\"dönüşüm:\", type(e).__name__)         # dönüşüm: ValueError" },
+      { t: "steps", h: "Hiyerarşi kuralları", items: ["İstisnalar bir ağaç oluşturur: ZeroDivisionError ArithmeticError'ın, KeyError ve IndexError LookupError'ın alt türüdür; hepsi Exception'ın altındadır.","Üst türü yazan except alt türleri de yakalar. except blokları yukarıdan aşağı denenir ve ilk uyan çalışır; bu yüzden önce ayrıntılı (alt tür), sonra genel tür yazılır.","KeyboardInterrupt ve SystemExit Exception'ın değil BaseException'ın altındadır; except Exception bunları yakalamaz."] },
+      { t: "h", text: "input() her zaman dize döndürür" },
+      { t: "cmd", lang: "python", text: "girdi = \"12\"          # input() ile gelen değeri taklit ediyoruz\nprint(type(girdi))    # <class 'str'>\ntry:\n    print(girdi + 1)\nexcept TypeError as e:\n    print(\"TypeError:\", e)   # TypeError: can only concatenate str (not \"int\") to str\nprint(int(girdi) + 1)     # 13\nprint(girdi * 2)          # 1212\ntry:\n    print(10 / \"2\")\nexcept TypeError as e:\n    print(\"TypeError:\", e)   # TypeError: unsupported operand type(s) for /: 'int' and 'str'" },
+      { t: "steps", h: "Hatırla", items: ["Kullanıcı sayı yazsa bile input() metin döndürür. Metin ile sayıyı toplayamaz ya da bölemezsin (TypeError); sayıyla işlem için önce int() ya da float() çevir.","Metin * sayı ise hata değil, tekrarlamadır: \"12\" * 2 sonucu \"1212\" olur. Bu, sessiz bir mantık hatasına yol açabilir.","Çevirme sırasında kullanıcı sayı yazmazsa ValueError oluşur; int(input()) çağrısını try bloğuna al."] },
       { t: "h", text: "Kendin dene" },
       { t: "alan", id: "py-9-hatali" },
       { t: "h", text: "Bozuk kodu bul ve düzelt" },
@@ -84,14 +90,14 @@
     ],
     objectives: [
       { id: "h1", text: "try, except ve sonraki satırların hangi sırayla çalıştığını izleyip çıktıyı söyleyebilirsin." },
-      { id: "h2", text: "ValueError, TypeError ve ZeroDivisionError hatalarını üreten ifadeleri ayırt edebilirsin." },
-      { id: "h3", text: "Doğru türü belirterek except yazıp türü uymayan hatanın yakalanmadığını bulabilirsin." },
+      { id: "h2", text: "ValueError, TypeError ve ZeroDivisionError hatalarını üreten ifadeleri, input() metin döndürdüğü için oluşan TypeError dahil, ayırt edebilirsin." },
+      { id: "h3", text: "Doğru türü belirterek except yazıp hiyerarşide üst türün alt türü de yakaladığını, türü uymayan hatanın yakalanmadığını bulabilirsin." },
       { id: "h4", text: "finally bloğunun ne zaman çalıştığını söyleyip eksik ya da yanlış yazılmış hata yakalamayı düzeltebilirsin." }
     ],
     summary: ["try bloğundaki hata türü except'tekiyle uyuşursa o blok çalışır ve program devam eder; hata yoksa except atlanır.", "ValueError uygunsuz değer, TypeError uygunsuz tür, ZeroDivisionError sıfıra bölmedir.", "Türü uymayan hata yakalanmaz; iki türü birlikte yakalamak için except (A, B): yazılır.", "finally hata olsun olmasın çalışır; çıplak except: hataları gizlediği için kaçınılır."],
     prereq: [8],
     minutes: 30,
-    sonDogrulama: "2026-10-25",
+    sonDogrulama: "2026-10-26",
     surum: "2026-10-v1",
     quiz: [
       {
@@ -141,6 +147,24 @@
         q: "try:\n    n = int(\"q\")\nexcept ValueError:\n    print(\"1\")\nfinally:\n    print(\"2\")\nprint(\"3\")\nkodu ne yazdırır?",
         options: ["1, 2, 3 sırasıyla", "1, 3", "2, 3", "1, 2"],
         obj: "h4"
+      },
+      {
+        id: "e2338db2",
+        q: "try:\n    print(10 / 0)\nexcept ArithmeticError:\n    print(\"a\")\nexcept ZeroDivisionError:\n    print(\"z\")\nkodu ne yazdırır?",
+        options: ["z", "a", "a, z", "Hata verir"],
+        obj: "h3"
+      },
+      {
+        id: "4ceeef22",
+        q: "d = {\"a\": 1}\ntry:\n    print(d[\"b\"])\nexcept LookupError:\n    print(\"yok\")\nkodu ne yazdırır?",
+        options: ["yok", "KeyError ile durur", "1", "None"],
+        obj: "h3"
+      },
+      {
+        id: "7b5b1563",
+        q: "Kullanıcı x = input() satırında 4 yazıp Enter'a basıyor. print(x * 2) ne yazdırır?",
+        options: ["8", "Hata verir", "4 4", "44"],
+        obj: "h2"
       }
     ],
     interview: [

@@ -134,6 +134,6 @@
       A("glue/latest/dg/what-is-glue.html", "AWS Belgesi: AWS Glue nedir", "ETL ve veri kataloğu kavramlarının resmî anlatımı.")
     ],
     telafi: "Takıldıysan iki soru sor: veri nerede duruyor ve soru ne sıklıkla, kaç kişi tarafından soruluyor? Ara sıra ise Athena, sürekli ve ağır ise Redshift düşün.",
-    sonraki: "Backend yolunun son konusunu bitirdin; şimdi elindeki konuları bir mimari tasarımında birleştirebilirsin."
+    sonraki: "Sıradaki konu: Depolama karşılaştırması: EBS, instance store, EFS, FSx ve S3 sınıfları."
   };
 })();

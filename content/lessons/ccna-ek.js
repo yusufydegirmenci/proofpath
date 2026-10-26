@@ -254,6 +254,6 @@
     hatalar: [["GRE'nin şifreleme yaptığını sanmak","GRE yalnızca kapsüller; gizlilik için IPsec gerekir."],["VPN'in uç cihazı da güvenli yaptığını sanmak","VPN yolu korur; uç cihazdaki zararlı yazılım yine kurumsal ağa ulaşabilir."],["Tünel ve taşıma modunu karıştırmak","Tünel modu özgün paketin tamamını sarar; taşıma modu yalnızca veriyi korur."]],
     gecme: {"olcut":"Mini sınavda %80 ve site-to-site ile uzaktan erişim VPN'ini, GRE ile IPsec farkını söyleyebilmek.","kritik":["GRE'nin şifreleme sağladığını sanmak","Uzaktan erişim VPN'in iki ağı birbirine bağladığını sanmak"]},
     telafi: "Takıldıysan önce 'kim kime bağlanıyor?' sorusunu çöz: ağ-ağ ise site-to-site, kullanıcı-ağ ise uzaktan erişim. Sonra GRE ve IPsec'i yan yana bir tabloda karşılaştır.",
-    sonraki: "Sıradaki: CCNA yolundaki konuları tekrar edip deneme sınavına geç."
+    sonraki: "Sıradaki konu: Protokoller, modeller ve kapsülleme. NetAcad hizasında PDU adlarını, OSI ile TCP/IP eşleşmesini ve yerel ile uzak hedefte adreslerin değişimini göreceksin."
   };
 })();

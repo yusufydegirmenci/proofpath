@@ -101,7 +101,7 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
     });
     return { tr, starter: STARTER[tr].length, tmap: TMAP[tr].length, ders: n, sorun, zincir };
   }));
-  eq(sira, [{ tr: 'net', starter: 18, tmap: 18, ders: 18, sorun: [], zincir: true }, { tr: 'dev', starter: 22, tmap: 22, ders: 22, sorun: [], zincir: true }, { tr: 'qa', starter: 22, tmap: 22, ders: 22, sorun: [], zincir: true }, { tr: 'py', starter: 10, tmap: 10, ders: 10, sorun: [], zincir: true }, { tr: 'js', starter: 8, tmap: 8, ders: 8, sorun: [], zincir: true }], 'önkoşul sırası: STARTER=TMAP, ders ve yetkinlik zinciri doğrusal (net, dev, qa, py, js)');
+  eq(sira, [{ tr: 'net', starter: 18, tmap: 18, ders: 18, sorun: [], zincir: true }, { tr: 'dev', starter: 30, tmap: 30, ders: 30, sorun: [], zincir: true }, { tr: 'qa', starter: 34, tmap: 34, ders: 34, sorun: [], zincir: true }, { tr: 'py', starter: 16, tmap: 16, ders: 16, sorun: [], zincir: true }, { tr: 'js', starter: 8, tmap: 8, ders: 8, sorun: [], zincir: true }], 'önkoşul sırası: STARTER=TMAP, ders ve yetkinlik zinciri doğrusal (net, dev, qa, py, js)');
   eq(await p.evaluate(() => PP.ogr.graf.dogrula(PP.ogr.ui.graf()).hata), [], 'müfredat grafiği: tutarlılık hatası yok');
 
   ok(errs.length === 0, 'sayfa hatası yok ' + errs.join('|'));
