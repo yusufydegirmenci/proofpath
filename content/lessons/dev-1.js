@@ -278,6 +278,16 @@
           "Monolit uygulamalar yalnız bir orkestratörle çalıştırılabilir"
         ],
         "obj": "h1"
+      },
+      {
+        "id": "36694fb7",
+        "q": "Twelve-Factor App ilkelerine göre uygulama yapılandırması (veritabanı adresi, parola gibi) nerede tutulmalıdır?",
+        "options": [
+          "Kaynak koda gömülü sabitlerde",
+          "İmaj içine yazılmış bir dosyada",
+          "Yalnızca geliştiricinin kendi dizüstü bilgisayarında",
+          "Ortamda, koddan ayrı (ör. ortam değişkenleri)"
+        ]
       }
     ],
     "interview": [
@@ -893,6 +903,16 @@
           "NodePort; her düğümde sabit port açar"
         ],
         "obj": "h1"
+      },
+      {
+        "id": "ab8cb4a8",
+        "q": "Pod ağını kurup Pod'lara IP adresi atayan eklentilerin (ör. Calico, Cilium) uyduğu Kubernetes arayüz standardı hangisidir?",
+        "options": [
+          "OCI (Open Container Initiative)",
+          "CSI (Container Storage Interface)",
+          "CRI (Container Runtime Interface)",
+          "CNI (Container Network Interface)"
+        ]
       }
     ],
     "interview": [
@@ -1196,6 +1216,26 @@
           "maxSurge 1, maxUnavailable 1"
         ],
         "obj": "h4"
+      },
+      {
+        "id": "6d9a1a20",
+        "q": "Bir uygulama konteyneri başlamadan önce yalnızca bir kez çalışıp biten hazırlık işi (ör. şema hazırlama, bağımlılığı bekleme) için hangi Pod özelliği kullanılır?",
+        "options": [
+          "DaemonSet",
+          "ResourceQuota",
+          "Liveness probe",
+          "Init container"
+        ]
+      },
+      {
+        "id": "228e7c0d",
+        "q": "Service mesh yapılarında (ör. Istio, Linkerd) her Pod'un yanına eklenip Pod'a giren ve çıkan trafiği yöneten bileşene ne denir?",
+        "options": [
+          "Ingress denetleyicisi",
+          "Sidecar proxy",
+          "kubelet",
+          "etcd (küme durumu deposu)"
+        ]
       }
     ],
     "interview": [
@@ -1500,6 +1540,16 @@
           "Service YAML'ındaki selector alanına"
         ],
         "obj": "h4"
+      },
+      {
+        "id": "8acc6f17",
+        "q": "Kubernetes kontrol düzleminde bulut sağlayıcıya özgü mantığı (ör. bulut yük dengeleyici oluşturma, düğüm yaşam döngüsü) çalıştıran bileşen hangisidir?",
+        "options": [
+          "kube-proxy (düğüm ağ kuralları)",
+          "cloud-controller-manager",
+          "etcd (küme durumu deposu)",
+          "kube-scheduler (Pod yerleştirme)"
+        ]
       }
     ],
     "interview": [
@@ -1801,6 +1851,16 @@
           "Özel kaynaklar yalnız gece belirli saatlerde çalışır"
         ],
         "obj": "h4"
+      },
+      {
+        "id": "5fae813a",
+        "q": "Kullanıcı bir PersistentVolumeClaim oluşturduğunda uygun depolamanın otomatik (dinamik) hazırlanmasını hangi Kubernetes nesnesi tanımlar?",
+        "options": [
+          "ConfigMap",
+          "StorageClass",
+          "ResourceQuota",
+          "Ingress"
+        ]
       }
     ],
     "interview": [
