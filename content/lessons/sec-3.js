@@ -255,11 +255,14 @@
       { t: "steps", h: "Sınıflandırma ve rol", items: [
         "Sınıflar: genel (public), iç (internal), gizli (confidential), çok gizli.",
         "Veri sahibi (owner): sınıfı ve erişimi belirler. Veri koruyucu (custodian): teknik olarak saklar ve korur.",
-        "Veri işleyen, kontrolör (KVKK/GDPR): kişisel veriyi işleme amacı ve yöntemini belirleyen/işleyen taraf."
+        "Veri işleyen, kontrolör (KVKK/GDPR): kişisel veriyi işleme amacı ve yöntemini belirleyen/işleyen taraf.",
+        "Veri operatörü (data operator) V8 rol listesinde adıyla geçer; hedef belgesi tanım vermez, bu yüzden ayrı bir sınav sorusu yoktur."
       ] },
       { t: "steps", h: "Koruma yöntemleri", items: [
         "Şifreleme: disk, dosya, veritabanı ve yedek.",
         "Maskeleme (masking): gösterimde kısmen gizleme (**** 1234).",
+        "Kimliksizleştirme (deidentification, V8): ad, kimlik numarası gibi doğrudan tanımlayıcıları kaldırıp kaydı bir kişiye bağlanamaz hale getirmek; araştırma ve analiz için veri paylaşımında kullanılır.",
+        "V8 listesinde ayrıca 'data transpose' (veri yer değiştirme) geçer; resmî hedef belgesi bu terimi tanımlamaz, bu yüzden burada yalnızca adı anılır.",
         "Tokenizasyon: hassas veriyi anlamsız bir jetonla değiştirme.",
         "Anonimleştirme / takma adlandırma (pseudonymization).",
         "DLP: sızıntıyı tespit ve engelleme.",
@@ -277,7 +280,8 @@
     objectives: [
       { id: "h1", text: "Verinin hangi halde (at rest, in transit, in use) olduğunu tanıyıp uygun korumayı eşleştirebilirsin." },
       { id: "h2", text: "Tokenizasyon, maskeleme ve DLP'yi ne yaptıklarına göre ayırt edebilirsin." },
-      { id: "h3", text: "Veri sahibi, koruyucu, görevlisi (steward), sorumlusu (controller), işleyen (processor) ve alt işleyen rollerini ayırt edebilirsin." }
+      { id: "h3", text: "Veri sahibi, koruyucu, görevlisi (steward), sorumlusu (controller), işleyen (processor) ve alt işleyen rollerini ayırt edebilirsin." },
+      { id: "h4", text: "Kimliksizleştirme (deidentification) ile maskeleme ve tokenizasyonu ayırt edebilirsin." }
     ],
     summary: [
       "Veri üç halde korunur: beklerken disk ve veritabanı şifrelemesiyle, aktarılırken TLS ve VPN ile, kullanımdayken erişim kontrolüyle.",
@@ -295,6 +299,7 @@
       { id: "67926482", q: "Ekranda bir kart numarasının yalnızca son dört hanesinin görünüp geri kalanının yıldız olarak gösterilmesi hangisidir?", options: ["Maskeleme", "Şifreleme", "Tokenizasyon", "Hashing"], obj: "h2" },
       { id: "9c3a05aa", q: "Müşteri veritabanını teknik olarak saklayan, yedekleyen ve altyapısını işleten BT ekibi hangi rolü üstlenmiştir?", options: ["Veri koruyucu (custodian)", "Veri sahibi (owner)", "Son kullanıcı", "Denetçi"], obj: "h3" },
       { id: "88ac5cbf", q: "Bir kurumun veri sözlüğünü tutan, alan tanımlarının ve kalite kurallarının tutarlı olmasını sağlayan kişi hangi rolü üstlenir?", options: ["Veri sahibi (data owner)", "Veri koruyucu (data custodian)", "Veri görevlisi (data steward)", "Veri işleyen (data processor)"], obj: "h3" },
+      { id: "c7d21e90", q: "Bir hastane, hasta kayıtlarını araştırma ekibine vermeden önce ad ve kimlik numarası gibi doğrudan tanımlayıcıları kaldırıyor. Bu işlem hangisidir?", options: ["Kimliksizleştirme (deidentification)", "Anahtar emanet (key escrow)", "Hava boşluğu (air gap)", "Yasal bekletme (legal hold)"], obj: "h4" },
       { id: "e2531ed0", q: "Bir perakendeci müşteri verilerini bir bulut CRM sağlayıcısına işletiyor; sağlayıcı da e-posta gönderimi için üçüncü bir şirketten hizmet alıyor. Bu üçüncü şirketin rolü nedir?", options: ["Alt işleyen (subprocessor)", "Veri sorumlusu (controller)", "Veri öznesi", "Veri koruyucu (custodian)"], obj: "h3" }
     ],
     interview: [

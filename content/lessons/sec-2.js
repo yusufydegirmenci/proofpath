@@ -34,7 +34,9 @@
         "Tailgating / piggybacking: yetkili birinin ardından kapıdan içeri girmek.",
         "Shoulder surfing: omuz üstünden ekrana ya da parola girişine bakmak.",
         "Dumpster diving: çöpten belge ve bilgi toplamak.",
-        "Baiting: USB bırakmak gibi merak uyandıran yemler."
+        "Baiting: USB bırakmak gibi merak uyandıran yemler.",
+        "Skimming (V8): ATM ya da ödeme cihazına takılan sahte okuyucuyla kart verisini kopyalamak.",
+        "Erişim vestibülü (access vestibule, eski adıyla mantrap): iki kapılı geçiş; ikinci kapı birincisi kapanmadan açılmaz. Kapıdan peşinden sızmayı (tailgating) zorlaştıran fiziksel kontroldür."
       ] },
       { t: "steps", h: "Web ve diğer", items: [
         "Pharming: kullanıcıyı sahte siteye yönlendirmek (DNS).",
@@ -60,7 +62,8 @@
       { id: "h1", text: "Phishing, spear phishing, whaling, smishing, vishing ve quishing saldırılarını hedef ve kanala göre ayırt edebilirsin." },
       { id: "h2", text: "Tailgating, shoulder surfing, dumpster diving ve baiting gibi fiziksel teknikleri bir senaryodan tanıyabilirsin." },
       { id: "h3", text: "Pharming, watering hole ve typosquatting saldırılarını birbirinden ayırt edebilirsin." },
-      { id: "h4", text: "Acil para talebi içeren bir mesajdaki baskı tekniğini bulup doğru savunmayı (ikinci kanaldan doğrulama) seçebilirsin." }
+      { id: "h4", text: "Acil para talebi içeren bir mesajdaki baskı tekniğini bulup doğru savunmayı (ikinci kanaldan doğrulama) seçebilirsin." },
+      { id: "h5", text: "Skimming saldırısını ve erişim vestibülünün (access vestibule) peşinden sızmaya karşı rolünü tanıyabilirsin." }
     ],
     summary: [
       "Phishing geniş kitleye, spear phishing belirli kişiye, whaling üst düzey yöneticilere yönelir; smishing SMS, vishing telefon kanalıdır.",
@@ -71,6 +74,8 @@
     ],
     quiz: [
       { id: "6edc78cd", q: "Bir yöneticiyi hedef alan özel hazırlanmış oltalama saldırısı nasıl adlandırılır?", options: ["Whaling", "Smishing", "Pharming", "Baiting"], obj: "h1" },
+      { id: "a3f6c1d2", q: "Bir ATM'nin kart yuvasına takılan ince bir aparat, kartın manyetik şeridindeki veriyi sessizce kopyalıyor. Bu saldırı hangisidir?", options: ["Skimming", "Tailgating", "Shoulder surfing", "Baiting"], obj: "h5" },
+      { id: "b8e04a7c", q: "Veri merkezi girişinde ikinci kapı, birinci kapı kapanmadan açılmıyor; amaç yetkili birinin peşinden sızmayı zorlaştırmak. Bu kontrol hangisidir?", options: ["Erişim vestibülü (access vestibule)", "Güvenlik kamerası kayıt sistemi (CCTV)", "Çevre aydınlatma ve hareket sensörü", "Ziyaretçi kayıt defteri ve rozet"], obj: "h5" },
       { id: "17637fe4", q: "Yetkili çalışanın arkasından kapıdan sızmak hangisidir?", options: ["Tailgating", "Vishing", "Typosquatting", "Pharming"], obj: "h2" },
       { id: "e27fd259", q: "Telefonla arayıp 'IT destekten arıyorum, parolanı söyle' demek hangisine girer?", options: ["Vishing / pretexting", "Dumpster diving", "Watering hole", "Smishing"], obj: "h1" },
       { id: "0f30e4c8", q: "Gogle.com gibi benzer yazımlı alan adı kaydetmek hangisidir?", options: ["Typosquatting", "Tailgating", "Whaling", "Baiting"], obj: "h3" },

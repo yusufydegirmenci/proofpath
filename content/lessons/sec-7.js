@@ -218,14 +218,16 @@
         "Mesaj tabanlı: e-posta, SMS, RCS (zengin içerikli mesajlaşma), anlık mesajlaşma ve iş birliği araçları. Görüntü tabanlı: QR kodlar ve gömülü içerik. Dosya tabanlı: gömülü makro, RTF ve PDF belgeleri.",
         "Tarayıcı tabanlı: zararlı eklentiler, JavaScript, parola yöneticisi eklentileri, çerezler ve oturum belirteçleri. Oturum belirteci çalınırsa saldırgan MFA tekrar sorulmadan o kullanıcı gibi davranabilir. Uzak erişim: RDP, VNC, VPN.",
         "Yerinde yaşama (living off the land): saldırgan PowerShell, WMI gibi sistemde zaten var olan güvenilir araçları kullanır; yeni zararlı dosya gerekmez, imza tabanlı antivirüs görmeyebilir.",
-        "Saldırı yüzeyi örnekleri: kodda gömülü sırlar (hardcoded secrets), herkese açık depo ve nesne depolama, güvensiz istisna yönetimi, yönetilmeyen cihaz ve eski kimlik bilgileri, kimlik sağlayıcılar, LLM'ler."
+        "Saldırı yüzeyi örnekleri: kodda gömülü sırlar (hardcoded secrets), herkese açık depo ve nesne depolama, güvensiz istisna yönetimi, yönetilmeyen cihaz ve eski kimlik bilgileri, kimlik sağlayıcılar, LLM'ler.",
+        "Gizli bilgi taraması (secrets scanning, V8): API anahtarı, parola ve belirteç gibi sırları commit öncesi (pre-commit) ve depo geçmişinde otomatik arar; bulunan sır iptal edilip yenilenir, yalnızca silmek yetmez."
       ] }
     ],
     objectives: [
       { id: "h1", text: "Bir saldırı senaryosunu doğru tehdit vektörüne (mesaj, ses, dosya, çıkarılabilir cihaz, tedarik zinciri gibi) eşleştirebilirsin." },
       { id: "h2", text: "Bir ortamın saldırı yüzeyini küçülten adımı gereksiz servisleri kapatma, yalıtma ve erişim kısıtlama arasından seçebilirsin." },
       { id: "h3", text: "Bir olayı vektör, aktör ve motivasyon olarak ayırarak doğru eşleştirmeyi seçebilirsin." },
-      { id: "h4", text: "Yerinde yaşama (living off the land), oturum belirteci çalma, gömülü sırlar ve herkese açık depo gibi V8 vektör ve saldırı yüzeyi örneklerini tanıyabilirsin." }
+      { id: "h4", text: "Yerinde yaşama (living off the land), oturum belirteci çalma, gömülü sırlar ve herkese açık depo gibi V8 vektör ve saldırı yüzeyi örneklerini tanıyabilirsin." },
+      { id: "h5", text: "Gizli bilgi taramasının (secrets scanning) sızıntıyı depoya girmeden yakalamadaki rolünü açıklayabilirsin." }
     ],
     summary: [
       "Tehdit vektörü saldırganın kullandığı yoldur: mesaj, ses, dosya ve görüntü, çıkarılabilir cihaz, tedarik zinciri, desteği bitmiş yazılım, güvenilmeyen ağ ve açık servisler gibi.",
@@ -242,6 +244,7 @@
       { id: "18a57efb", q: "Envanter taraması, internete açık bir RDP servisi ve artık kullanılmayan bir FTP sunucusunu gösterdi. En öncelikli adım nedir?", options: ["FTP'yi kapatıp RDP'yi VPN ve MFA arkasına almak ya da internetten kaldırmak","İki servisi de olduğu gibi bırakıp günlükleri günlük olarak incelemek ve raporlamak","Çalışanlara bu servislere dikkat etmelerini isteyen bir güvenlik e-postası göndermek","RDP portunu başka bir numaraya taşıyıp kullanılmayan FTP'yi de açık bırakmak"], obj: "h2" },
       { id: "bc6e4f1b", q: "Bir grup bir hastanenin sistemlerini şifreleyip kripto para karşılığı anahtar satmayı teklif ediyor. Başlıca motivasyon hangisidir?", options: ["Jeopolitik","İntikam","Felsefi/siyasi inanç","Finansal kazanç"], obj: "h3" },
       { id: "7da654b5", q: "Devlet destekli bir grup, rakip ülkenin kritik altyapısını kesintiye uğratmaya çalışıyor ve bir enerji şirketine e-posta ile saldırıyor. Doğru eşleştirme hangisidir?", options: ["Aktör: devlet destekli grup; vektör: e-posta; motivasyon: finansal kazanç","Aktör: devlet destekli grup; vektör: e-posta; motivasyon: jeopolitik","Aktör: enerji şirketi; vektör: e-posta; motivasyon: devlet destekli grup","Aktör: devlet destekli grup; vektör: jeopolitik; motivasyon: e-posta"], obj: "h3" },
+      { id: "f2c84d59", q: "Ekip, geliştiricilerin yanlışlıkla API anahtarı ya da parola içeren kodu depoya göndermesini daha gönderilmeden yakalamak istiyor. Hangi kontrol uygundur?", options: ["Commit öncesi (pre-commit) gizli bilgi taraması", "Depo erişim geçmişini yılda bir elle incelemek", "Anahtarları kodun içinde şifreleyip saklamak", "Tüm geliştiricilerin parolasını ayda bir değiştirmek"], obj: "h5" },
       { id: "87acef2b", q: "Saldırgan hedef sunucuda yeni zararlı dosya bırakmadan yalnızca Windows'a yerleşik PowerShell ve WMI ile komut çalıştırıyor. Bu teknik hangisidir?", options: ["Rootkit kurulumu", "Truva atı", "Tedarik zinciri saldırısı", "Yerinde yaşama (living off the land)"], obj: "h4" },
       { id: "55dd053e", q: "Bir geliştirici yanlışlıkla bulut erişim anahtarını kaynak koda yazıp herkese açık bir depoya yükledi. İlk ve en iyi adım hangisidir?", options: ["Depoyu özel yapıp anahtarı değiştirmemek", "Commit geçmişini temizleyip anahtarı değiştirmemek", "Anahtar uzunluğunu artırmak", "Anahtarı hemen iptal edip yenilemek ve sır taramasını otomatikleştirmek"], obj: "h4" },
       { id: "61e3ba20", q: "Çalışanlara zengin içerikli mesajlaşma (RCS) üzerinden sahte kargo bağlantısı gönderiliyor. Bu saldırı hangi vektör kategorisine girer?", options: ["Görüntü tabanlı vektör", "Mesaj tabanlı vektör", "Sinyal tabanlı vektör (RF/NFC)", "Çıkarılabilir ortam tabanlı vektör"], obj: "h4" },
