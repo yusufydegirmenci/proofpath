@@ -13,7 +13,7 @@ const bulunan = {}, kimlikler = new Set(); let tekrar = 0, bozuk = [];
 for (const yol in win.PP_LESSONS) for (const no in win.PP_LESSONS[yol]) (win.PP_LESSONS[yol][no].quiz || []).forEach(q => {
   if (kimlikler.has(q.id)) tekrar++; kimlikler.add(q.id);
   if (q.multi === undefined) return;
-  bulunan[yol + '-' + no] = q.id;
+  bulunan[yol + '-' + no + (bulunan[yol + '-' + no] ? '+' + q.id : '')] = q.id;   // aynı derste ikinci multi soru anahtarı ezmesin
   if (!(Number.isInteger(q.multi) && q.multi >= 2 && q.multi <= 4 && q.options.length >= q.multi + 1)) bozuk.push(yol + '-' + no);
 });
 const sirala = o => JSON.stringify(Object.keys(o).sort().map(k => [k, o[k]]));

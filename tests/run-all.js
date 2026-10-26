@@ -54,11 +54,11 @@ function run(file, dir = '') {
 }
 
 (async () => {
-  const results = [];
+  const results = []; let yenidenDenenen = 0;
   for (const f of files) {
     let r = await run(f), not = '';
     // Yük altında zamanlama yüzünden düşebilen testler (paralel/yavaş makine): TEK yeniden deneme, ilk sonuç açıkça yazılır; ikinci de düşerse KALDI kalır.
-    if (r.status !== 'GEÇTİ' && YUK_DUYARLI.has(f)) { const ilk = r.status; r = await run(f); not = ' [yük duyarlı: 1. deneme ' + ilk + ', yeniden koşuldu]'; }
+    if (r.status !== 'GEÇTİ' && YUK_DUYARLI.has(f)) { const ilk = r.status, ilkCikti = r.out; r = await run(f); r.out = '=== 1. DENEME (' + ilk + ') ===\n' + ilkCikti + '\n=== 2. DENEME ===\n' + r.out; yenidenDenenen++; not = ' [yük duyarlı: 1. deneme ' + ilk + ', yeniden koşuldu]'; }
     results.push(r);
     const last = r.out.trim().split('\n').filter(l => !/^\s+at /.test(l)).slice(-1)[0] || '';
     console.log(`${r.status.padEnd(12)} ${f.padEnd(24)} ${String(r.sn).padStart(3)}s  ${last.slice(0, 90)}${not}`);
@@ -74,6 +74,7 @@ function run(file, dir = '') {
   console.log('\n=== ÖZET ===');
   for (const s of ['GEÇTİ', 'KALDI', 'ZAMAN AŞIMI', 'ÇÖKTÜ']) console.log(s.padEnd(12), count(s));
   console.log('TOPLAM'.padEnd(12), results.length);
+  console.log('YENİDEN DENENEN'.padEnd(15), yenidenDenenen, '(yük duyarlı testler; 1. çıktı loga yazıldı)');
   console.log('EMEKLİ'.padEnd(12), retired.length, '(sayıma dahil değil)');
   const logDir = path.join(work, 'loglar');
   fs.mkdirSync(logDir, { recursive: true });
