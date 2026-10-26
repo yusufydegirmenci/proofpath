@@ -142,7 +142,7 @@
     return istemciAl().then(function (api) {
       if (!api || typeof api.bilgi !== "function") return hata("yetenek-yok");
       return Promise.resolve(api.bilgi(hedef, soruId, cevap)).then(function (r) {
-        if (r && r.error) return eslestir(r.error);
+        if (r && r.error) { var e = eslestir(r.error); if (e.neden === "cok-sik") e.mesaj = "Çok hızlı denedin. Bir dakika bekleyip yeniden dene."; return e; }
         var d = r && r.data;
         if (!d || typeof d.ok !== "boolean" || (d.ok && typeof d.dogru !== "string")) return hata("hata");   /* yanlışta sunucu doğru şıkkı ve why'ı VERMEZ (Faz 32) */
         return { ok: true, dogruMu: d.ok, dogru: d.ok ? d.dogru : "", why: d.ok && typeof d.why === "string" ? d.why : "", whyNot: d.whyNot && typeof d.whyNot === "object" ? d.whyNot : null };
