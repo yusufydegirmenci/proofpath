@@ -144,8 +144,8 @@
       return Promise.resolve(api.bilgi(hedef, soruId, cevap)).then(function (r) {
         if (r && r.error) return eslestir(r.error);
         var d = r && r.data;
-        if (!d || typeof d.ok !== "boolean" || typeof d.dogru !== "string") return hata("hata");
-        return { ok: true, dogruMu: d.ok, dogru: d.dogru, why: typeof d.why === "string" ? d.why : "", whyNot: d.whyNot && typeof d.whyNot === "object" ? d.whyNot : null };
+        if (!d || typeof d.ok !== "boolean" || (d.ok && typeof d.dogru !== "string")) return hata("hata");   /* yanlışta sunucu doğru şıkkı ve why'ı VERMEZ (Faz 32) */
+        return { ok: true, dogruMu: d.ok, dogru: d.ok ? d.dogru : "", why: d.ok && typeof d.why === "string" ? d.why : "", whyNot: d.whyNot && typeof d.whyNot === "object" ? d.whyNot : null };
       }, eslestir);
     });
   }
