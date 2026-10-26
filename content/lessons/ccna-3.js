@@ -73,7 +73,9 @@
       { id: "d51e3732", q: "Cisco router'ın IPv6 paketlerini yönlendirmesi için hangi komut gerekir?", options: ["ipv6 unicast-routing", "ip routing", "ipv6 enable", "ipv6 nat"], obj: "h4" },
       { id: "1ad92126", q: "Aşağıdaki adreslerden hangisi geçersizdir?", options: ["2001:db8::1","fe80::202:b3ff:fe1e:8329","2001::db8::1","::1"], obj: "h1" },
       { id: "47b405db", q: "Bir IPv6 adresi FF02::1 ile başlıyorsa bu adres hangi türdendir?", options: ["Multicast","Global unicast","Link-local","Unique local"], obj: "h2" },
-      { id: "430b6fbc", q: "2001:db8:acad:2::/64 ağına 2001:db8:acad:12::2 next-hop adresi üzerinden statik rota hangi komutla yazılır?", options: ["ipv6 route 2001:db8:acad:2::/64 2001:db8:acad:12::2","ip route 2001:db8:acad:2::/64 2001:db8:acad:12::2","ipv6 route 2001:db8:acad:2::/64 255.255.255.0 2001:db8:acad:12::2","ipv6 unicast-routing 2001:db8:acad:2::/64"], obj: "h4" }
+      { id: "430b6fbc", q: "2001:db8:acad:2::/64 ağına 2001:db8:acad:12::2 next-hop adresi üzerinden statik rota hangi komutla yazılır?", options: ["ipv6 route 2001:db8:acad:2::/64 2001:db8:acad:12::2","ip route 2001:db8:acad:2::/64 2001:db8:acad:12::2","ipv6 route 2001:db8:acad:2::/64 255.255.255.0 2001:db8:acad:12::2","ipv6 unicast-routing 2001:db8:acad:2::/64"], obj: "h4" },
+      { id: "0609739e", q: "FD12:3456:789A::1 adresi hangi IPv6 adres türüne aittir?", options: ["Global unicast", "Link-local", "Unique local (FC00::/7 içinde)", "Multicast"], obj: "h2" },
+      { id: "6c4b4248", q: "Kaynak adresi FE80::/10 aralığından olan bir paketi router aldığında ne yapar?", options: ["Varsayılan rotadan internete iletir", "Başka bir ağa yönlendirmez; adres yalnızca bağlı olduğu bağlantıda geçerlidir", "NAT ile global bir adrese çevirip iletir", "TTL değerini artırarak hedefe ulaştırır"], obj: "h2" }
     ],
     interview: [
       { q: "IPv6 neden geliştirildi?", a: "IPv4'ün 32 bitlik adres alanı tükendi. IPv6 128 bitlik adresleme ile neredeyse sınırsız adres sunar, ayrıca NAT ihtiyacını azaltır ve daha verimli bir başlık yapısı getirir." },
@@ -139,7 +141,8 @@
       { t: "steps", h: "Protokoller", items: [
         "LACP (802.3ad): açık standart. Modlar: active (teklif eder), passive (teklif bekler).",
         "PAgP: Cisco'ya özel. Modlar: desirable, auto.",
-        "On: protokol yok, elle zorla. Karşı taraf da 'on' olmalı."
+        "On: protokol yok, elle zorla. Karşı taraf da 'on' olmalı.",
+        "Sınır: CCNA düzeyinde bir demette en çok 8 link aktif olur; LACP destekleyen platformlarda aynı demet için 8 yedek (standby) link daha tutulabilir ve aktif link düşünce yedek devreye girer. Kesin sınır platforma göre değişebilir."
       ] },
       { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Switch(config)# interface range gigabitethernet0/1-2\nSwitch(config-if-range)# channel-group 1 mode active\nSwitch(config)# interface port-channel 1\nSwitch(config-if)# switchport mode trunk\n\nSwitch# show etherchannel summary" },
       { t: "warn", h: "Tuzak", text: "EtherChannel'da bağlanan portların hız, duplex, VLAN ve trunk ayarları aynı olmalıdır. Biri farklıysa kanal oluşmaz. Ayrıca iki taraf 'passive-passive' ya da 'auto-auto' kalırsa kimse teklif etmez ve kanal kurulmaz." }
@@ -148,14 +151,14 @@
       { id: "h1", text: "Switch'lerin öncelik ve MAC değerlerinden Bridge ID'yi karşılaştırıp root bridge'i bulabilirsin." },
       { id: "h2", text: "STP'nin döngüyü nasıl önlediğini ve root port, designated port, blocked port rollerini ayırt edip bağlantı hızından yol maliyetini bulabilirsin." },
       { id: "h3", text: "PortFast ve BPDU Guard'ı uç cihaz portuna uygulayan komutları yazabilir ve hangi portlarda kullanılmayacağını bulabilirsin." },
-      { id: "h4", text: "EtherChannel için LACP ve PAgP modlarının hangi çiftlerde kanal kurduğunu ayırt edebilirsin." }
+      { id: "h4", text: "EtherChannel için LACP ve PAgP modlarının hangi çiftlerde kanal kurduğunu ve bir demette en çok kaç linkin aktif olabileceğini söyleyebilirsin." }
     ],
     summary: [
       "Ethernet çerçevesinde TTL olmadığı için Layer 2 döngüsünde broadcast sonsuza kadar dolaşır ve broadcast storm ağı kilitler; STP fazla yolları bloklayarak bunu önler.",
       "Root bridge en düşük Bridge ID'ye sahip switch'tir: öncelik (varsayılan 32768 + VLAN no) önce, eşitse MAC adresi karar verir; 'spanning-tree vlan 1 priority 4096' ya da 'root primary' ile root seçilir.",
       "Klasik (short) yol maliyeti: 10 Mbps = 100, 100 Mbps = 19, 1 Gbps = 4, 10 Gbps = 2 (long yöntemde 1 Gbps = 20.000); roller root port, designated port ve bloklanan alternate porttur.",
       "802.1D'de blocking, listening, learning, forwarding geçişi 30-50 saniye sürer; RSTP (802.1w) saniyelere indirir, Cisco varsayılanı PVST+'tır (VLAN başına ayrı örnek).",
-      "PortFast ve BPDU Guard yalnızca uç cihaz portlarına yazılır; EtherChannel'da LACP active/passive, PAgP desirable/auto kullanır ve bağlanan portların hız, duplex, VLAN ayarı aynı olmalıdır."
+      "PortFast ve BPDU Guard yalnızca uç cihaz portlarına yazılır; EtherChannel'da LACP active/passive, PAgP desirable/auto kullanır, bağlanan portların hız, duplex, VLAN ayarı aynı olmalıdır ve bir demette en çok 8 link aktif olur."
     ],
     quiz: [
       { id: "3921c46a", q: "STP'nin temel amacı nedir?", options: ["Hız artırmak", "Layer 2 döngülerini önlemek", "IP dağıtmak", "VLAN oluşturmak"], obj: "h2" },
@@ -168,7 +171,9 @@
       { id: "20b65291", q: "Root olmayan bir switch'te root bridge'e en iyi yolu veren port hangi rolü alır?", options: ["Root port","Designated port","Alternate (blocked) port","Edge port"], obj: "h2" },
       { id: "b2605799", q: "Bilgisayar bağlanan portu hemen forwarding'e alıp porta yanlışlıkla switch takılırsa portu kapatması için hangi komut çifti yazılır?", options: ["spanning-tree portfast ve spanning-tree bpduguard enable","spanning-tree mode rapid-pvst ve channel-group 1 mode active","spanning-tree vlan 1 priority 4096 ve switchport mode trunk","spanning-tree vlan 1 root primary ve channel-group 1 mode on"], obj: "h3" },
       { id: "e5b1e954", q: "BPDU Guard'lı bir PortFast portuna BPDU gönderen bir switch bağlanırsa port ne olur?", options: ["Port err-disabled durumuna geçip kapanır","Port forwarding'de kalır ve BPDU yok sayılır","Port otomatik olarak root port seçilir","Port EtherChannel'a eklenir"], obj: "h3" },
-      { id: "ac611747", q: "Bir tarafta PAgP desirable, diğer tarafta PAgP auto yapılandırılırsa ne olur?", options: ["PAgP kanalı kurulur","Kanal kurulmaz, çünkü auto taraf teklif etmez","LACP kanalı kurulur","STP linklerden birini mutlaka bloklar"], obj: "h4" }
+      { id: "ac611747", q: "Bir tarafta PAgP desirable, diğer tarafta PAgP auto yapılandırılırsa ne olur?", options: ["PAgP kanalı kurulur","Kanal kurulmaz, çünkü auto taraf teklif etmez","LACP kanalı kurulur","STP linklerden birini mutlaka bloklar"], obj: "h4" },
+      { id: "874bffb2", q: "Tek bir EtherChannel (port-channel) demetinde en çok kaç fiziksel link aynı anda aktif olarak trafik taşıyabilir?", options: ["2", "4", "8", "16"], obj: "h4" },
+      { id: "e4c3e6db", q: "Platform 16 linke kadar LACP desteklediğine göre, 10 linkle yapılandırılan bir LACP demetinde ne olur?", options: ["10 linkin tamamı aktif olur", "8 link aktif, kalan 2 link yedek (standby) olur", "Demet kurulmaz", "Yalnızca ilk 4 link aktif olur"], obj: "h4" }
     ],
     interview: [
       { q: "STP neden gerekli?", a: "Switch'ler arasında yedek yol varsa döngü oluşur ve broadcast fırtınası ağı çökertir. STP fazla yolları bloklayarak döngüsüz bir topoloji sağlar, aktif yol bozulursa yedeği açar." },
@@ -324,7 +329,8 @@
       { t: "steps", h: "Bilmen gereken DSCP değerleri", items: [
         "EF (46): ses (VoIP) için en yüksek öncelik, düşük gecikmeli kuyrukta (LLQ) gider.",
         "AF serisi (örnek: AF41): video ve kritik veri için garantili sınıflar.",
-        "Default (0): normal en iyi çaba (best effort) trafiği."
+        "Default (0): normal en iyi çaba (best effort) trafiği.",
+        "CoS ile DSCP farkı: CoS, 802.1Q etiketindeki 3 bitlik alandır (0-7) ve yalnızca Katman 2'de, etiketli çerçevede bulunur. DSCP, IP başlığındaki DS alanının 6 bitidir (0-63) ve yönlendirmeden sonra da pakette kalır; bu yüzden CoS değerleri DSCP'ye eşlenir."
       ] },
       { t: "box", h: "Güven sınırı (trust boundary)", text: "İşaretlere nerede güveneceğini belirleyen yerdir. Örneğin IP telefonların işaretini kabul eder, kullanıcı bilgisayarlarından gelen işareti silip yeniden yazarsın. Böylece kimse kendi trafiğine 'ses önceliği' yazıp ağı haksız kullanamaz." },
       { t: "warn", h: "Tuzak", text: "QoS bant genişliği yaratmaz; yalnızca yoğunlukta hangi trafiğin önce gideceğini belirler. Hat hiç dolmuyorsa QoS fark ettirmez. Gerçek yetersizlik varsa hattı büyütmek gerekir." }
@@ -332,14 +338,14 @@
     objectives: [
       { id: "h1", text: "Ses, video, veri ve kritik uygulama trafiğini gecikme, jitter ve kayba duyarlılığına göre ayırt edebilir, ses için eşik değerlerini (≈150 ms, ≈30 ms, ≈%1) söyleyebilirsin." },
       { id: "h2", text: "Classification, marking, queuing, congestion avoidance, policing ve shaping mekanizmalarını görevlerine göre ayırt edebilirsin." },
-      { id: "h3", text: "Trafik türüne uygun DSCP değerini (EF 46, AF serisi, Default 0) seçebilirsin." },
+      { id: "h3", text: "Trafik türüne uygun DSCP değerini (EF 46, AF serisi, Default 0) seçebilir ve CoS'un 802.1Q etiketinde, DSCP'nin IP başlığında taşındığını söyleyebilirsin." },
       { id: "h4", text: "QoS'un neyi çözüp neyi çözmediğini (bant genişliği yaratmaz, trust boundary) ayırt edebilirsin." }
     ],
     summary: [
       "Ağın dört sorunu bant genişliği, gecikme, jitter ve paket kaybıdır; ses için tek yön gecikme yaklaşık 150 ms, jitter yaklaşık 30 ms ve kayıp yaklaşık %1 altında olmalıdır.",
       "QoS sırası: classification (ayır), marking (DSCP/CoS etiketi), queuing (kuyrukta öne geçir), congestion avoidance (örn. WRED), policing ve shaping.",
       "Policing aşan trafiği düşürür veya işaretler, shaping aynı trafiği kuyrukta bekletip yavaşlatır; biri kayıp, diğeri gecikme yaratır.",
-      "DSCP: EF (46) ses ve düşük gecikmeli kuyruk (LLQ), AF serisi (örn. AF41) video ve kritik veri, Default (0) best effort trafik.",
+      "DSCP: EF (46) ses ve düşük gecikmeli kuyruk (LLQ), AF serisi (örn. AF41) video ve kritik veri, Default (0) best effort trafik; DSCP IP başlığında 6 bit, Katman 2 CoS'u ise 802.1Q etiketinde 3 bittir.",
       "Trust boundary'de kullanıcı bilgisayarlarından gelen işaretler silinip yeniden yazılır; QoS yoğunlukta öncelik belirler ama bant genişliği yaratmaz."
     ],
     quiz: [
@@ -351,7 +357,9 @@
       { id: "8d615bd6", q: "Ses (VoIP) trafiğinde tek yön gecikme için kabul edilen üst sınır yaklaşık kaçtır?", options: ["150 ms","30 ms","500 ms","1 saniye"], obj: "h1" },
       { id: "71793ed3", q: "Kuyruk tamamen dolmadan önce bazı paketleri bilerek düşürerek tıkanıklığı önleyen mekanizma hangisidir?", options: ["Congestion avoidance (örn. WRED)","Marking","Shaping","Classification"], obj: "h2" },
       { id: "83855104", q: "Özel bir işaret taşımayan, normal en iyi çaba (best effort) trafiğin DSCP değeri nedir?", options: ["Default (0)","EF (46)","AF41","CS1"], obj: "h3" },
-      { id: "7601c002", q: "Ağ, kullanıcı bilgisayarlarından gelen DSCP işaretlerine neden güvenmemeli ve işareti silip yeniden yazmalıdır?", options: ["Kullanıcı kendi trafiğine ses önceliği yazıp ağı haksız kullanabilir","DSCP alanı IP başlığında bulunmaz","Switch'ler DSCP işaretini okuyamaz","DSCP işaretleri yalnızca ses telefonlarına yazılabilir"], obj: "h4" }
+      { id: "7601c002", q: "Ağ, kullanıcı bilgisayarlarından gelen DSCP işaretlerine neden güvenmemeli ve işareti silip yeniden yazmalıdır?", options: ["Kullanıcı kendi trafiğine ses önceliği yazıp ağı haksız kullanabilir","DSCP alanı IP başlığında bulunmaz","Switch'ler DSCP işaretini okuyamaz","DSCP işaretleri yalnızca ses telefonlarına yazılabilir"], obj: "h4" },
+      { id: "dc9c6821", q: "Switch'te 802.1Q etiketindeki CoS önceliği, router'dan geçen pakette korunmak istenirse IP başlığında hangi alana eşlenir?", options: ["TTL", "Protocol", "DSCP (DS alanı)", "Fragment Offset"], obj: "h3" },
+      { id: "c4fac04c", q: "CoS (Class of Service) değeri hangi başlıkta taşınır?", options: ["802.1Q VLAN etiketinde, 3 bitlik alanda", "IP başlığında, 6 bitlik alanda", "TCP başlığında, 8 bitlik alanda", "Ethernet FCS alanında, 3 bitlik alanda"], obj: "h3" }
     ],
     interview: [
       { q: "QoS nedir, neden gerekli?", a: "Ağdaki trafiği türüne göre önceliklendirme mekanizmasıdır. Ses ve video gibi gecikmeye duyarlı trafiğin, dosya indirme gibi toleranslı trafik yüzünden bozulmasını yoğunluk anında önlemek için gerekir." },
