@@ -32,11 +32,11 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
     return { i, ad: T.k, eksik: m.filter(x => !x[1]).map(x => x[0]) };
   }));
   const cekirdek = puan.map(x => ({ i: x.i, eksik: x.eksik.filter(k => !/kaynak/.test(k)) })).filter(x => x.eksik.length);
-  eq(cekirdek, [], 'CCNA 23 konu: 14 çekirdek öğe tam (kaynak koşullu)');
+  eq(cekirdek, [], 'CCNA 29 konu: 14 çekirdek öğe tam (kaynak koşullu)');
   console.log('INFO  kaynaksız konular (doğrulanabilir kaynak yok): ' + puan.filter(x => x.eksik.length).map(x => x.i + ':' + x.ad).join(', '));
   ok(puan.filter(x => !x.eksik.length).length >= 8, 'kaynaklı (15/15) konu sayısı ≥ 8');
-  const bad = await p.evaluate(() => Object.values(PP_EK.ccna).flatMap(e => (e.kaynaklar || []).map(k => k.u + '|' + k.dogrulama)).filter(s => !/^https:\/\/(www\.rfc-editor\.org\/rfc\/rfc\d+|www\.iana\.org\/)/.test(s) || !/2026-10-12$/.test(s)));
-  eq(bad, [], 'kaynaklar yalnız doğrulanmış alanlar ve doğrulama tarihi 2026-10-12');
+  const bad = await p.evaluate(() => Object.values(PP_EK.ccna).flatMap(e => (e.kaynaklar || []).map(k => k.u + '|' + k.dogrulama)).filter(s => !/^https:\/\/(www\.rfc-editor\.org\/rfc\/rfc\d+|www\.iana\.org\/|www\.netacad\.com\/courses\/networking-basics|www\.cisco\.com\/site\/us\/en\/learn\/training-certifications\/exams\/ccna\.html|www\.wi-fi\.org\/discover-wi-fi\/security)/.test(s) || !/2026-10-(12|26)$/.test(s)));
+  eq(bad, [], 'kaynaklar yalnız doğrulanmış alanlar (Faz 20: netacad, cisco, wi-fi.org; HTTP 200) ve doğrulama tarihi 2026-10-12 ya da 2026-10-26');
 
   // 2) Saf hesap (elle doğrulanmış bağımsız değerler)
   const K = (f, ...a) => p.evaluate(([f, a]) => PP.lab.karar[f](...a), [f, a]);
@@ -126,9 +126,9 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
   eq(await p.evaluate((du) => { const r = PP.ogr.oneri.sonrakiLab(PP.ogr.ui.graf(), 'ccna', du); return r && [r.tip, r.lab, r.ders]; }, { ...du0, dersTamam: tam(3) }), ['lab', 'ccna-altag', 'ders:ccna:3'], 'graf: son tamamlanan derste lab kanıtı yoksa lab önerilir');
   eq(await p.evaluate((du) => PP.ogr.oneri.sonrakiLab(PP.ogr.ui.graf(), 'ccna', du), { ...du0, dersTamam: tam(3), kanitlar: lk('ccna-altag', 4) }), null, 'graf: lab kanıtı tamam → lab önerisi kalkar (kanıt öneriyi değiştirir)');
   eq(await p.evaluate((du) => { const r = PP.ogr.oneri.sonrakiLab(PP.ogr.ui.graf(), 'ccna', du); return r && r.adim; }, { ...du0, dersTamam: tam(3), kanitlar: lk('ccna-altag', 3) }), 'Lab: Alt ağ laboratuvarı (3/4 senaryo).', 'graf: 3/4 senaryo → lab hâlâ önerilir');
-  eq(await S0({ ...du0, dersTamam: tam(23), kanitlar: [].concat(lk('ccna-altag', 4), lk('ccna-rota', 4), lk('ccna-acl', 6), lk('ccna-vlan', 4), lk('ccna-nat', 4), lk('ccna-dhcp', 4), lk('ccna-ospf', 4)) }), { tip: 'tamam', ders: null, lab: null, blok: false, neden: true }, 'graf: hepsi tamam');
-  eq(await S0({ ...du0, dersTamam: tam(23), kanitlar: lk('ccna-altag', 4) }), { tip: 'lab', ders: 'ders:ccna:14', lab: 'ccna-vlan', blok: false, neden: true }, 'graf: dersler tamam, eksik lab (en sondaki önce; tur 4 VLAN/STP lab en sonda)');
-  eq(await S0({ ...du0, dersTamam: tam(23), kanitlar: [].concat(lk('ccna-altag', 4), lk('ccna-vlan', 4), lk('ccna-nat', 4), lk('ccna-dhcp', 4), lk('ccna-ospf', 4)) }), { tip: 'lab', ders: 'ders:ccna:9', lab: 'ccna-acl', blok: false, neden: true }, 'graf: VLAN ve NAT lab tamam → ACL lab önerilir');
+  eq(await S0({ ...du0, dersTamam: tam(29), kanitlar: [].concat(lk('ccna-altag', 4), lk('ccna-evag', 4), lk('ccna-rota', 4), lk('ccna-acl', 6), lk('ccna-vlan', 4), lk('ccna-nat', 4), lk('ccna-dhcp', 4), lk('ccna-ospf', 4)) }), { tip: 'tamam', ders: null, lab: null, blok: false, neden: true }, 'graf: hepsi tamam');
+  eq(await S0({ ...du0, dersTamam: tam(29), kanitlar: [].concat(lk('ccna-altag', 4), lk('ccna-evag', 4)) }), { tip: 'lab', ders: 'ders:ccna:14', lab: 'ccna-vlan', blok: false, neden: true }, 'graf: dersler tamam, eksik lab (en sondaki önce; tur 4 VLAN/STP lab en sonda)');
+  eq(await S0({ ...du0, dersTamam: tam(29), kanitlar: [].concat(lk('ccna-altag', 4), lk('ccna-evag', 4), lk('ccna-vlan', 4), lk('ccna-nat', 4), lk('ccna-dhcp', 4), lk('ccna-ospf', 4)) }), { tip: 'lab', ders: 'ders:ccna:9', lab: 'ccna-acl', blok: false, neden: true }, 'graf: VLAN ve NAT lab tamam → ACL lab önerilir');
   // lab kanıtı kapıyı etkilemez
   eq(await p.evaluate(() => { const G = PP.ogr.ui.graf(), a = PP.ogr.kapi.dersAcik(G, 'ders:ccna:4', { dersTamam: {}, denemeler: [], kanitlar: [], projeler: {} }).acik, b = PP.ogr.kapi.dersAcik(G, 'ders:ccna:4', { dersTamam: {}, denemeler: [], kanitlar: [{ id: 'z', tur: 'lab', hedef: 'lab:net-altag:s1', kapi: null, dogrulama: 'istemci' }], projeler: {} }).acik; return [a, b]; }), [false, false], 'kapı: lab kanıtı ders kilidini açmaz');
   // Kritik hedef geçilmedi → telafi (blok nedeniyle)

@@ -19,7 +19,8 @@
     "ders:ccna:8": [{ id: "ccna-nat", ad: "NAT/PAT karar laboratuvarı", toplam: 4 }],
     "ders:ccna:14": [{ id: "ccna-vlan", ad: "VLAN ve STP karar laboratuvarı", toplam: 4 }],
     "ders:ccna:6": [{ id: "ccna-rota", ad: "Rota seçimi laboratuvarı", toplam: 4 }],
-    "ders:ccna:9": [{ id: "ccna-acl", ad: "ACL laboratuvarı", toplam: 6 }]
+    "ders:ccna:9": [{ id: "ccna-acl", ad: "ACL laboratuvarı", toplam: 6 }],
+    "ders:ccna:28": [{ id: "ccna-evag", ad: "Ev ağı karar laboratuvarı", toplam: 4 }]
   };
   function labDurum(kanitlar, lab) {
     var re = new RegExp("^lab:(" + lab.id + (lab.eski ? "|" + lab.eski : "") + "):([^:]+)$"), set = {};
