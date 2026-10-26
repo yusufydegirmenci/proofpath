@@ -41,27 +41,32 @@
         "Bölgeseldir; çok bölgeli anahtar (multi-Region key) desteklenir.",
         "KMS API çağrı kotaları vardır; büyük hacimde veri anahtarı önbellekleme veya S3 bucket key kullanılır."
       ] },
-      { t: "warn", h: "Tuzak", text: "Anahtarı silmeyi planlayıp 'zaten kullanılmıyor' demek: bu anahtarla şifreli bir yedek varsa veriye bir daha ulaşamazsın. Silmek yerine devre dışı bırakıp izle." }
+      { t: "warn", h: "Tuzak", text: "Anahtarı silmeyi planlayıp 'zaten kullanılmıyor' demek: bu anahtarla şifreli bir yedek varsa veriye bir daha ulaşamazsın. Silmek yerine devre dışı bırakıp izle." },
+      {t:"steps",h:"CloudHSM ve KMS farkı (SAA-C03)",items:["AWS CloudHSM, hesabına ayrılmış tek kiracılı bir donanım güvenlik modülü kümesidir; anahtarları yalnızca sen yönetirsin, AWS anahtar malzemesine erişemez.","Standart arayüzlerle çalışır: PKCS#11, Java JCE ve Microsoft CNG. Bu arayüzleri bekleyen uygulamalar için seçilir.","KMS yönetilen ve çok kiracılı bir hizmettir, çoğu AWS hizmetine doğrudan entegredir ve işletme yükü düşüktür. CloudHSM ise tek kiracılı özel donanım ve tam anahtar denetimi şartı olduğunda gerekir; kümeyi sen ölçeklersin ve yüksek erişilebilirlik için birden çok AZ'ye yayarsın.","KMS özel anahtar deposu (custom key store) olarak CloudHSM kümesine bağlanabilir."]}
     ],
     objectives: [
       { id: "h1", text: "AWS owned, AWS managed ve customer managed anahtar türlerini kontrol düzeyine göre ayırt edebilirsin." },
       { id: "h2", text: "Zarf şifreleme akışını GenerateDataKey ve Decrypt adımlarıyla anlatabilirsin." },
       { id: "h3", text: "KMS'in doğrudan şifreleyebildiği veri sınırını ve nedenini belirtebilirsin." },
-      { id: "h4", text: "Anahtar silme bekleme süresini ve CloudTrail kaydını güvenlik önlemi olarak açıklayabilirsin." }
+      { id: "h4", text: "Anahtar silme bekleme süresini ve CloudTrail kaydını güvenlik önlemi olarak açıklayabilirsin." },
+      { id: "h5", text: "KMS ile CloudHSM'i (çok kiracılı yönetilen hizmet ile tek kiracılı özel donanım) ayırt edebilirsin." }
     ],
     summary: [
       "KMS anahtarı S3, RDS, DynamoDB ile bütünleşir; erişim IAM ve anahtar politikasıyla denetlenir.",
       "Customer managed key'de politika, rotasyon ve silme zamanlaması sendedir.",
       "Zarf şifrelemede veri, veri anahtarıyla şifrelenir; KMS doğrudan en fazla 4 KB şifreler.",
       "Anahtar silme için 7-30 günlük bekleme vardır; silinen anahtarla şifreli veri kurtarılamaz.",
-      "Tüm anahtar kullanımı CloudTrail'e yazılır."
+      "Tüm anahtar kullanımı CloudTrail'e yazılır.",
+      "CloudHSM tek kiracılı özel HSM'dir ve PKCS#11/JCE/CNG sunar; tam anahtar denetimi şartı yoksa işletme yükü düşük olan KMS tercih edilir."
     ],
     quiz: [
       { id: "ddb58c9f", q: "KMS doğrudan en fazla kaç KB veriyi şifreleyebilir?", options: ["4 KB", "4 GB", "256 MB", "1 TB"], obj: "h3" },
       { id: "cb808b4a", q: "Veriyi veri anahtarıyla, veri anahtarını KMS anahtarıyla şifreleme yöntemine ne denir?", options: ["Envelope encryption", "Hashing", "Salting", "Tokenization"], obj: "h2" },
       { id: "854d6b25", q: "Politikasını ve rotasyonunu kontrol edebildiğin anahtar türü hangisidir?", options: ["Customer managed key", "AWS owned key", "AWS managed key", "Hiçbiri"], obj: "h1" },
       { id: "b2f471bf", q: "Bir KMS anahtarı silinmeye planlanırsa ne olur?", options: ["7-30 gün bekleme süresi uygulanır", "Anında silinir", "Hiç silinmez", "S3'e taşınır"], obj: "h4" },
-      { id: "83779b5c", q: "KMS anahtar kullanımı nerede kayıt altına alınır?", options: ["CloudTrail", "Route 53", "SQS", "ECR"], obj: "h4" }
+      { id: "83779b5c", q: "KMS anahtar kullanımı nerede kayıt altına alınır?", options: ["CloudTrail", "Route 53", "SQS", "ECR"], obj: "h4" },
+      { id: "3bb6e151", q: "Bir bankanın uyumluluk kuralı, şifreleme anahtarlarının yalnızca kendisine ayrılmış tek kiracılı bir donanım güvenlik modülünde tutulmasını ve AWS'nin anahtar malzemesine erişememesini şart koşuyor. Hangi hizmet kullanılmalıdır?", options: ["AWS tarafından yönetilen KMS anahtarı (varsayılan anahtar)","AWS Secrets Manager","AWS Certificate Manager (ACM)","AWS CloudHSM"], obj: "h5" },
+      { id: "6378223c", q: "Eski bir uygulama anahtar işlemlerini PKCS#11 arayüzüyle yapıyor ve kod değiştirilemiyor. Anahtarlar AWS'de tutulacak. Hangi hizmet bu arayüzü destekler?", options: ["Amazon Cognito","AWS CloudHSM","Yalnızca AWS KMS'nin kendi API'si","AWS Systems Manager Parameter Store"], obj: "h5" }
     ],
     interview: [
       { q: "Zarf şifreleme nedir, neden kullanılır?", a: "Veri, bir veri anahtarıyla şifrelenir; o veri anahtarı da KMS anahtarıyla şifrelenip veriyle saklanır. KMS 4 KB sınırı olduğundan ve büyük veride ağ yükünü azaltmak için bu yöntem kullanılır." },
