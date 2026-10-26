@@ -1,8 +1,8 @@
-/* Siber güvenlik (Security+ SY0-701 temelli) · sabit dersler 1-6 */
+/* Siber güvenlik (Security+ SY0-801 (V8) temelli) · sabit dersler 1-6 */
 (function () {
   var L = ((window.PP_LESSONS = window.PP_LESSONS || {}).sec = (window.PP_LESSONS.sec || {}));
-  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-701)", url: "https://www.comptia.org/certifications/security" };
-  var PM = { title: "Professor Messer: Security+ SY0-701 (ücretsiz video kursu)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
+  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-801, V8)", url: "https://www.comptia.org/certifications/security" };
+  var PM = { title: "Professor Messer: Security+ (ücretsiz video kursu, SY0-701 sürümü)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
   var NISTG = { title: "NIST Cybersecurity Framework", url: "https://www.nist.gov/cyberframework", type: "doc", level: "orta", lang: "EN" };
   var CISA = { title: "CISA: Secure Our World (temel güvenlik alışkanlıkları)", url: "https://www.cisa.gov/secure-our-world", type: "doc", level: "başlangıç", lang: "EN" };
   function res(a, why) { var o = {}; for (var k in a) o[k] = a[k]; o.why = why; return o; }
@@ -104,11 +104,17 @@
         "Yönlendirici (directive): ne yapılacağını söyler. Politikalar, kabul edilebilir kullanım kuralı."
       ] },
       { t: "box", h: "Örnek eşleme", text: "Kapı kartı okuyucusu: kategori fiziksel/teknik, işlev önleyici. Kamera: fiziksel, dedektif (ve caydırıcı). SIEM alarmı: teknik, dedektif. Güvenlik eğitimi: operasyonel, önleyici." },
-      { t: "warn", h: "Tuzak", text: "Sınavda aynı kontrol birden çok işlev taşıyabilir (kamera hem caydırıcı hem dedektif). Soru 'en iyi' hangisi diyorsa sorunun vurguladığı işleve bak." }
+      { t: "warn", h: "Tuzak", text: "Sınavda aynı kontrol birden çok işlev taşıyabilir (kamera hem caydırıcı hem dedektif). Soru 'en iyi' hangisi diyorsa sorunun vurguladığı işleve bak." },
+      { t: "steps", h: "Derinlemesine savunma ve en az yetki (V8)", items: [
+        "Derinlemesine savunma (defense in depth): tek bir kontrole güvenmek yerine birbirini tamamlayan birçok katman kullanılır (fiziksel, ağ, uç nokta, uygulama, veri, kimlik). Bir katman delinirse sıradaki katman saldırıyı yavaşlatır ya da durdurur.",
+        "Katmanlar farklı kontrol türlerinden oluşur: kilit (fiziksel), güvenlik duvarı (teknik), politika (yönetimsel), devriye (operasyonel). Aynı kontrolü üst üste koymak değil, birbirini tamamlayan türleri bir arada kullanmak hedeflenir.",
+        "En az yetki: kullanıcı ve süreçlere yalnızca işini yapmaya yetecek erişim verilir; Zero Trust da bu ilkeye dayanır."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "Bir kontrolü kategorisine (teknik, yönetimsel, operasyonel, fiziksel) yerleştirebilirsin." },
-      { id: "h2", text: "Bir kontrolün işlevini (önleyici, caydırıcı, dedektif, düzeltici, telafi edici, yönlendirici) söyleyebilirsin." }
+      { id: "h2", text: "Bir kontrolün işlevini (önleyici, caydırıcı, dedektif, düzeltici, telafi edici, yönlendirici) söyleyebilirsin." },
+      { id: "h3", text: "Derinlemesine savunmanın ne olduğunu ve tek bir kontrole güvenmenin neden riskli olduğunu açıklayabilirsin." }
     ],
     summary: [
       "Kontroller iki eksende okunur: kategori (kim ya da ne uyguluyor: teknik, yönetimsel, operasyonel, fiziksel) ve işlev (ne işe yarıyor).",
@@ -121,7 +127,8 @@
       { id: "367418de", q: "Log analizi ve IDS hangi işlev grubuna girer?", options: ["Dedektif", "Önleyici", "Caydırıcı", "Düzeltici"], obj: "h2" },
       { id: "abe827ab", q: "Güvenlik politikası ve risk değerlendirmesi hangi kategoridedir?", options: ["Yönetimsel", "Teknik", "Fiziksel", "Operasyonel"], obj: "h1" },
       { id: "b5d0970b", q: "Çalışanlara verilen güvenlik farkındalık eğitimi hangi kategoridedir?", options: ["Teknik", "Yönetimsel", "Operasyonel", "Fiziksel"], obj: "h1" },
-      { id: "daf5593f", q: "'Bu alan kamerayla izlenmektedir' tabelasının ana işlevi nedir?", options: ["Caydırıcı", "Düzeltici", "Dedektif", "Telafi edici"], obj: "h2" }
+      { id: "daf5593f", q: "'Bu alan kamerayla izlenmektedir' tabelasının ana işlevi nedir?", options: ["Caydırıcı", "Düzeltici", "Dedektif", "Telafi edici"], obj: "h2" },
+      { id: "df2b5cdd", q: "Bir hastane girişte kart okuyucu, ağda güvenlik duvarı, cihazlarda EDR ve veritabanında şifreleme kullanıyor. Biri kart okuyucuyu atlatsa bile diğer katmanlar saldırıyı zorlaştırıyor. Bu yaklaşım hangisidir?", options: ["Telafi edici kontrol (compensating control)", "Derinlemesine savunma (defense in depth)", "Görev ayrımı (separation of duties)", "Hava boşluğu (air gap)"], obj: "h3" }
     ],
     interview: [
       { q: "Güvenlik kontrolü türlerini anlat.", a: "Kategoriler teknik, yönetimsel, operasyonel ve fiziksel. İşlevler önleyici, caydırıcı, dedektif, düzeltici, telafi edici ve yönlendirici. İyi bir güvenlik programı sadece önleyiciye değil, tespit ve düzeltmeye de yatırım yapar." },
@@ -234,12 +241,19 @@
         "Disk şifreleme (BitLocker): simetrik AES."
       ] },
       { t: "box", h: "Ezber kuralı", text: "Şifreli göndermek: alıcının açık anahtarı. İmzalamak: kendi özel anahtarın. Özel anahtar asla paylaşılmaz." },
-      { t: "warn", h: "Tuzak", text: "'Açık anahtarla şifrele' ile 'özel anahtarla imzala' karıştırılır. İmza gizlilik sağlamaz, kimin yazdığını ve değişmediğini kanıtlar." }
+      { t: "warn", h: "Tuzak", text: "'Açık anahtarla şifrele' ile 'özel anahtarla imzala' karıştırılır. İmza gizlilik sağlamaz, kimin yazdığını ve değişmediğini kanıtlar." },
+      { t: "steps", h: "Şifreleme düzeyleri ve donanım güvenliği (V8)", items: [
+        "Düzeyler: tam disk (cihaz çalınınca korur, ama oturum açıkken veri açıktır), bölüm/birim (tek bir birimi), dosya (seçili dosyayı), veritabanı (depolamadaki veritabanı dosyalarını) ve kayıt/alan (tek satır ya da sütun; ör. kimlik numarası ayrı anahtarla, bu yüzden yönetici bile okuyamayabilir).",
+        "HSM (donanım güvenlik modülü): anahtarları üreten, saklayan ve imza/şifreleme işlemini kendi içinde yapan, kurcalamaya dayanıklı özel donanım. Özel anahtar cihazın dışına çıkmaz; kurum genelinde birçok uygulamaya ağdan hizmet verir (CA kök anahtarı, ödeme sistemleri).",
+        "TPM: tek bir bilgisayarın anakartındaki güvenlik çipi; disk şifreleme anahtarını önyükleme bütünlüğü bozulmadıkça açmaz ve cihaz kimliği sağlar. Secure enclave: işlemci içinde yalıtılmış bölge; kullanımdaki (in use) veriyi işletim sisteminden bile saklar.",
+        "Anahtar uzunluğu uzadıkça kaba kuvvet zorlaşır; ancak algoritma kusurluysa uzunluk kurtarmaz."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "Simetrik ve asimetrik şifrelemeyi anahtar sayısı ve hız bakımından ayırt edip AES ile RSA'yı doğru gruba koyabilirsin." },
       { id: "h2", text: "Gizlilik için hangi anahtarla şifreleyeceğini, dijital imza için hangi anahtarla imzalayacağını seçebilirsin." },
-      { id: "h3", text: "Büyük veri için hangi yöntemin uygun olduğunu söyleyip HTTPS'teki hibrit yapıyı açıklayabilirsin." }
+      { id: "h3", text: "Büyük veri için hangi yöntemin uygun olduğunu söyleyip HTTPS'teki hibrit yapıyı açıklayabilirsin." },
+      { id: "h4", text: "Tam disk, dosya, veritabanı ve kayıt düzeyi şifreleme arasından senaryoya uygun olanı ve HSM, TPM ile secure enclave'in rolünü seçebilirsin." }
     ],
     summary: [
       "Simetrikte tek ortak anahtar hem şifreler hem çözer; hızlıdır ama anahtarı güvenle iletmek zordur (örnek: AES).",
@@ -252,7 +266,10 @@
       { id: "5f76d905",q:"Büyük bir diskin şifrelenmesi için en uygun yöntem hangisi?",options:["Simetrik (AES)","Asimetrik (RSA) ile tüm veriyi şifrelemek","Hash","Base64"],obj:"h3" },
       { id: "fa18db2c",q:"Dijital imza oluşturmak için hangi anahtar kullanılır?",options:["Gönderenin özel anahtarı","Gönderenin açık anahtarı","Alıcının özel anahtarı","Ortak parola"],obj:"h2" },
       { id: "9d51bb82",q:"HTTPS bağlantısında genellikle ne olur?",options:["Asimetrikle anahtar anlaşılır, veri simetrik şifrelenir","Tüm veri RSA ile şifrelenir","Sadece hash kullanılır","Veri düz metin gider"],obj:"h3" },
-      { id: "06f559de",q:"Aşağıdakilerden hangisi simetrik şifreleme algoritmasıdır?",options:["RSA","ECC","AES","SHA-256"],obj:"h1" }
+      { id: "06f559de",q:"Aşağıdakilerden hangisi simetrik şifreleme algoritmasıdır?",options:["RSA","ECC","AES","SHA-256"],obj:"h1" },
+      { id: "9d380214", q: "Bir hastane, veritabanındaki yalnızca hasta kimlik numarası sütununun veritabanı yöneticileri dahil çoğu kullanıcıdan gizli kalmasını istiyor; diğer sütunlar açık kalabilir. Hangi şifreleme düzeyi uygundur?", options: ["Kayıt/alan (sütun) düzeyi şifreleme", "Tam disk şifreleme", "Bölüm (volume) şifreleme", "Yedek dosyasını dosya düzeyinde şifreleme"], obj: "h4" },
+      { id: "47de857d", q: "Bir kuruluş, kök CA özel anahtarının hiçbir koşulda dışa aktarılamayacağı, kurcalamaya dayanıklı ve birçok uygulamanın ağdan imza istediği merkezi bir donanım çözümü arıyor. Hangisi en uygundur?", options: ["HSM (donanım güvenlik modülü)", "TPM", "Secure enclave", "Yazılım tabanlı anahtar deposu"], obj: "h4" },
+      { id: "28bc0a3a", q: "Bir dizüstü bilgisayarın tam disk şifreleme anahtarının anakartta bağlı bir çipte tutulması ve önyükleme bütünlüğü bozulursa diskin açılmaması isteniyor. Hangi bileşen bunu sağlar?", options: ["HSM", "Parola yöneticisi", "DNS sinkhole", "TPM (Trusted Platform Module)"], obj: "h4" }
     ],
     interview: [
       { q: "Simetrik ve asimetrik şifreleme arasındaki fark nedir?", a: "Simetrikte tek ortak anahtar vardır, hızlıdır ama anahtar paylaşımı zordur. Asimetrikte açık ve özel anahtar çifti vardır, yavaştır ama anahtar paylaşımı ve imza sorununu çözer. Pratikte ikisi birlikte (HTTPS gibi) kullanılır." },
@@ -301,13 +318,18 @@
         "Anahtar sızarsa sertifika iptal edilir: CRL (iptal listesi) veya OCSP (anlık sorgu)."
       ] },
       { t: "box", h: "Self-signed ve wildcard", text: "Self-signed: kendi kendini imzalar, dışarıdan güvenilmez; test ve iç sistemlerde kullanılır. Wildcard (*.sirket.com): tek sertifika tek seviyedeki tüm alt alan adlarını (a.sirket.com) kapsar, ama anahtar sızarsa hepsi risk altına girer." },
-      { t: "warn", h: "Tuzak", text: "Sertifika siteyi 'güvenli' yapmaz, sadece kimliği ve şifrelemeyi doğrular. Kötü niyetli bir site de geçerli sertifika alabilir. Kilit simgesi 'bu site zararsız' demek değildir." }
+      { t: "warn", h: "Tuzak", text: "Sertifika siteyi 'güvenli' yapmaz, sadece kimliği ve şifrelemeyi doğrular. Kötü niyetli bir site de geçerli sertifika alabilir. Kilit simgesi 'bu site zararsız' demek değildir." },
+      { t: "steps", h: "Anahtar emanet ve sertifika türleri (V8)", items: [
+        "Anahtar emanet (key escrow): özel anahtarın bir kopyası güvenilir bir tarafta ya da kurumun sıkı denetimli kasasında saklanır. Çalışan ayrılır ya da anahtarını kaybederse şifreli veri kurtarılabilir; karşılığında emanet noktası yüksek değerli bir hedef olur.",
+        "Kendinden imzalı (self-signed) sertifikayı güvenilir bir CA değil, sahibi imzalar; tarayıcılar güvenmez, yalnızca iç testlerde makuldür. Üçüncü taraf (kamu) CA sertifikası tarayıcıların güvendiği kök zincirine bağlıdır.",
+        "Güven kökü (root of trust): zincirin başında koşulsuz güvenilen bileşen; kök CA ya da donanım (TPM, HSM) olabilir."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "Sertifikanın açık anahtarı bir kimlikle bağladığını ve bu bağı CA'nın imzasının doğruladığını söyleyebilirsin." },
       { id: "h2", text: "Güven zincirini (root CA, intermediate CA, sunucu sertifikası) sıralayıp tarayıcının zinciri nasıl doğruladığını açıklayabilirsin." },
       { id: "h3", text: "Tarayıcıdaki sertifika uyarısının olası nedenlerini (süresi dolma gibi) bulabilirsin." },
-      { id: "h4", text: "OCSP ve CRL ile iptal kontrolünü, CSR'nin rolünü ve wildcard sertifikanın riskini ayırt edebilirsin." }
+      { id: "h4", text: "OCSP ve CRL ile iptal kontrolünü, CSR'nin rolünü, wildcard sertifikanın riskini ve anahtar emanetin (key escrow) amacını ayırt edebilirsin." }
     ],
     summary: [
       "Sertifika, bir açık anahtarı bir kimlikle (site adı) bağlar; CA bu bağı dijital imzasıyla doğrular.",
@@ -322,7 +344,8 @@
       { id: "2de03970",q:"İptal edilmiş sertifikaları anlık sorgulamak için hangi mekanizma kullanılır?",options:["OCSP","CSR","DHCP","NTP"],obj:"h4" },
       { id: "8974128a",q:"Wildcard sertifikanın riski nedir?",options:["Anahtar sızarsa tüm alt alan adları etkilenir","Sadece tek siteyi kapsar","Şifreleme yapmaz","Süresi hiç dolmaz"],obj:"h4" },
       { id: "4872227f",q:"Tarayıcı bir sunucu sertifikasına güvenip güvenmeyeceğine nasıl karar verir?",options:["Site adının popüler olup olmadığına bakar","Zinciri yukarı doğru doğrulayıp güvenilen bir root CA'ya ulaşır","Kullanıcıdan sunucunun parolasını ister","Sertifikayı kendisi imzalar"],obj:"h2" },
-      { id: "4c915753",q:"Kullanıcı bankam.com adresine giriyor ama sunucunun sertifikası yalnızca odeme.bankam.net adı için verilmiş. Tarayıcı neden uyarı verir?",options:["Sertifikanın süresi dolmuş","Sertifikadaki alan adı girilen adresle uyuşmuyor","Sunucunun IP adresi değişmiş","Tarayıcı önbelleği dolu"],obj:"h3" }
+      { id: "4c915753",q:"Kullanıcı bankam.com adresine giriyor ama sunucunun sertifikası yalnızca odeme.bankam.net adı için verilmiş. Tarayıcı neden uyarı verir?",options:["Sertifikanın süresi dolmuş","Sertifikadaki alan adı girilen adresle uyuşmuyor","Sunucunun IP adresi değişmiş","Tarayıcı önbelleği dolu"],obj:"h3" },
+      { id: "802306ad", q: "Bir şirket, çalışan ayrılınca ya da anahtarını kaybedince şifreli verilere erişebilmek için özel anahtarların bir kopyasını ayrı ve sıkı denetimli bir kasada saklıyor. Bu uygulamanın adı nedir?", options: ["Sertifika sabitleme (certificate pinning)", "Anahtar germe (key stretching)", "Anahtar emanet (key escrow)", "OCSP stapling"], obj: "h4" }
     ],
     interview: [
       { q: "PKI nedir?", a: "Sertifikaları üreten, dağıtan, yenileyen ve iptal eden altyapıdır. Güven zinciri root CA'dan ara CA'ya ve sunucu sertifikasına uzanır. Tarayıcı zinciri doğrulayınca siteye güvenir." },

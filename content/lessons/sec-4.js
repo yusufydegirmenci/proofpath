@@ -1,8 +1,8 @@
-/* Siber güvenlik (Security+ SY0-701 temelli) · sabit dersler 19-24 */
+/* Siber güvenlik (Security+ SY0-801 (V8) temelli) · sabit dersler 19-24 */
 (function () {
   var L = ((window.PP_LESSONS = window.PP_LESSONS || {}).sec = (window.PP_LESSONS.sec || {}));
-  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-701)", url: "https://www.comptia.org/certifications/security" };
-  var PM = { title: "Professor Messer: Security+ SY0-701 (ücretsiz video kursu)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
+  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-801, V8)", url: "https://www.comptia.org/certifications/security" };
+  var PM = { title: "Professor Messer: Security+ (ücretsiz video kursu, SY0-701 sürümü)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
   var NISTG = { title: "NIST Cybersecurity Framework", url: "https://www.nist.gov/cyberframework", type: "doc", level: "orta", lang: "EN" };
   function res(a, why) { var o = {}; for (var k in a) o[k] = a[k]; o.why = why; return o; }
 
@@ -110,12 +110,19 @@
         "Tehdit istihbaratı, OSINT, bug bounty bulguları.",
         "Penetrasyon testi ve red/blue/purple team çalışmaları."
       ] },
-      { t: "warn", h: "Tuzak", text: "Tarama sonuçları 'iş bitti' demek değildir. Raporu okuyup önceliklendirmek ve kapatılanı doğrulamak asıl işin kendisidir." }
+      { t: "warn", h: "Tuzak", text: "Tarama sonuçları 'iş bitti' demek değildir. Raporu okuyup önceliklendirmek ve kapatılanı doğrulamak asıl işin kendisidir." },
+      { t: "steps", h: "Tespit yöntemleri ve raporlama (V8)", items: [
+        "IPAM (IP adres yönetimi): hangi IP'nin kime ve neye ait olduğunu kaydeder; kayıtta olmayan ama ağda IP alan cihaz, yönetilmeyen ya da sahte (rogue) cihaz sinyalidir ve tarama kapsamını netleştirir.",
+        "CSPM: bulut ortamlarını sürekli tarayıp yanlış yapılandırmaları (herkese açık depolama, aşırı geniş izin) bulur. Kaynak kod incelemesi zafiyetleri üretime çıkmadan koddan yakalar.",
+        "Önceliklendirme önem derecesine ve sızma testi raporuna göre yapılır; doğrulama düzeltmenin gerçekten işe yaradığını yeniden tarama ile kanıtlar.",
+        "Raporlama iç (yönetim ve teknik ekip) ve dış (denetçi, düzenleyici, müşteri) olarak ayrılır. Bug bounty ve sorumlu ifşa (responsible disclosure) politikası dışarıdan gelen bulguları düzenli kanala alır."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "Zafiyet yönetimi döngüsündeki adımların sırasını (tarama, analiz, düzeltme, doğrulama) bulabilirsin." },
       { id: "h2", text: "Kimlik bilgisiyle yapılan taramanın ve CISA KEV listesinin değerini ayırt edebilirsin." },
-      { id: "h3", text: "Yama dağıtım ve yamalanamayan sistem senaryolarında doğru yaklaşımı seçebilirsin." }
+      { id: "h3", text: "Yama dağıtım ve yamalanamayan sistem senaryolarında doğru yaklaşımı seçebilirsin." },
+      { id: "h4", text: "Tarama, IPAM, CSPM ve kaynak kod incelemesi gibi tespit yöntemlerini ve iç ile dış raporlamayı ayırt edebilirsin." }
     ],
     summary: [
       "Zafiyet yönetimi bir döngüdür: keşif, tarama, analiz, düzeltme, doğrulama ve rapor.",
@@ -130,7 +137,9 @@
       { id: "a7e2a4d0", q: "Yama uygularken en doğru yaklaşım hangisidir?", options: ["Önce test, sonra kademeli yaygınlaştırma", "Hepsine aynı anda", "Hiç test etmeden", "Sadece yılda bir"], obj: "h3" },
       { id: "27b10776", q: "CISA KEV listesi ne içerir?", options: ["Aktif olarak sömürülen bilinen zafiyetler", "Tüm CVE'ler", "Parolalar", "Sertifika listesi"], obj: "h2" },
       { id: "d8ede161", q: "Tarama tamamlandı ve ham bulgular geldi. Yama yapmadan önce yapılacak analiz adımı hangisidir?", options: ["Yanlış pozitifleri ayıklayıp CVSS ve bağlama göre önceliklendirmek", "Tüm bulguları aynı önceliğe koymak", "Bulguları yayınlamadan silmek", "Her bulguya aynı anda yama uygulamak"], obj: "h1" },
-      { id: "cdd35ce8", q: "Eski bir üretim sistemi yama kabul etmiyor. Doğru yaklaşım hangisidir?", options: ["Ağdan izole etme gibi telafi edici kontrol uygulayıp riski yazılı kabul ettirmek ve gözden geçirme tarihi koymak", "Zafiyeti kayda geçirmeden sessizce görmezden gelip sistemi çalıştırmak", "Sistemi internete açıp yamasız eski sürümün herkese erişilebilir kalmasını sağlamak", "Sistemi tarama kapsamından çıkarıp envanter kaydını silerek zafiyeti görünmez yapmak"], obj: "h3" }
+      { id: "cdd35ce8", q: "Eski bir üretim sistemi yama kabul etmiyor. Doğru yaklaşım hangisidir?", options: ["Ağdan izole etme gibi telafi edici kontrol uygulayıp riski yazılı kabul ettirmek ve gözden geçirme tarihi koymak", "Zafiyeti kayda geçirmeden sessizce görmezden gelip sistemi çalıştırmak", "Sistemi internete açıp yamasız eski sürümün herkese erişilebilir kalmasını sağlamak", "Sistemi tarama kapsamından çıkarıp envanter kaydını silerek zafiyeti görünmez yapmak"], obj: "h3" },
+      { id: "fd87b8d8", q: "Ağ ekibi, IPAM kayıtlarında bulunmayan ama ağda IP alıp çalışan birkaç cihaz fark ediyor. Bu bulgu hangi riske işaret eder?", options: ["Sertifika süresinin dolması", "Yönetilmeyen (unmanaged) ya da sahte (rogue) cihazlar", "Yetersiz yedekleme sıklığı", "Tarama aracının yanlış pozitif üretmesi"], obj: "h4" },
+      { id: "33c2e048", q: "Birden çok bulut hesabında depolama kovalarının yanlışlıkla herkese açık bırakılıp bırakılmadığını sürekli ve otomatik bulup raporlamak için hangi araç türü en uygundur?", options: ["Ağ tabanlı IDS", "WAF", "CSPM (bulut güvenlik duruşu yönetimi)", "UPS"], obj: "h4" }
     ],
     interview: [
       { q: "Zafiyet yönetimi sürecini anlat.", a: "Varlıkları keşfeder, tararım, bulguları CVSS ve bağlamla önceliklendiririm, yama ya da telafi edici kontrolle düzeltirim, yeniden tarayıp doğrularım ve rapor ederim. Bu bir döngüdür." },
@@ -184,10 +193,16 @@
         "Saklama süresi ve gizlilik (loglarda parola, kişisel veri olmasın).",
         "Syslog (ağ cihazları), NetFlow (akış verisi), paket yakalama (pcap)."
       ] },
-      { t: "warn", h: "Tuzak", text: "Alarm yorgunluğu: çok fazla düşük kaliteli alarm, gerçek olayın gözden kaçmasına yol açar. Kuralları sürekli ayarla." }
+      { t: "warn", h: "Tuzak", text: "Alarm yorgunluğu: çok fazla düşük kaliteli alarm, gerçek olayın gözden kaçmasına yol açar. Kuralları sürekli ayarla." },
+      { t: "steps", h: "Veri kaynakları, protokoller ve göstergeler (V8)", items: [
+        "NetFlow/IPFIX: paket içeriğini değil bağlantı özetini (kim kime, hangi port, ne kadar veri) taşır; beklenmeyen bağlantı ve büyük hacimli çıkışı görmek için hafif bir yoldur. IPFIX, NetFlow'un IETF standardı karşılığıdır.",
+        "syslog: cihazlardan merkezi log toplama. SNMP: cihaz durumunu izleme ve yönetme. Paket yakalama tam içerik verir ama çok depolama ister; port mirroring switch trafiğini analizöre kopyalar.",
+        "Ajanlı (agent) izleme cihaza yazılım kurar ve derin veri verir; ajansız (agentless) izleme yazılım kurmadan uzaktan sorgular, ajan kurulamayan cihazlarda işe yarar ama daha az ayrıntı verir.",
+        "Gösterge örnekleri: imkânsız seyahat (aynı hesap kısa sürede birbirinden çok uzak iki konumdan giriş yapar), hesap kilitlenme artışı, aynı anda çok sayıda oturum, log silme ya da değiştirme."
+      ] }
     ],
     objectives: [
-      { id: "h1", text: "İşletim sistemi, ağ cihazı, uygulama ve kimlik sistemi gibi log kaynaklarını sayabilirsin." },
+      { id: "h1", text: "İşletim sistemi, ağ cihazı, uygulama ve kimlik sistemi gibi log kaynaklarını ve NetFlow/IPFIX, syslog, SNMP gibi veri toplama yöntemlerini sayabilirsin." },
       { id: "h2", text: "SIEM'in toplama, normalleştirme ve ilişkilendirme işlevlerini örnekle açıklayabilirsin." },
       { id: "h3", text: "SOAR ile UEBA'nın ne yaptığını birbirinden ayırabilirsin." },
       { id: "h4", text: "NTP ile saat senkronizasyonu gibi iyi log pratiklerini uygulayabilirsin." }
@@ -203,7 +218,9 @@
       { id: "b99d4e98", q: "Farklı kaynaklardan gelen olayları birleştirip şüpheli desen bulmaya ne denir?", options: ["İlişkilendirme (correlation)", "Yedekleme", "Şifreleme", "Maskeleme"], obj: "h2" },
       { id: "464995b3", q: "Log analizinde zaman damgalarının doğru olması için hangi servis önemlidir?", options: ["NTP", "DHCP", "SMTP", "FTP"], obj: "h4" },
       { id: "316ca665", q: "Alarmdan sonra müdahaleyi otomatikleştiren çözüm hangisidir?", options: ["SOAR", "DLP", "NAT", "CDN"], obj: "h3" },
-      { id: "231137df", q: "Başarısız oturum açma olayı hangi Windows olay numarasıdır?", options: ["4625", "4624", "1102", "7045"], obj: "h1" }
+      { id: "231137df", q: "Başarısız oturum açma olayı hangi Windows olay numarasıdır?", options: ["4625", "4624", "1102", "7045"], obj: "h1" },
+      { id: "fd7c45ee", q: "Güvenlik analisti, paket içeriğine bakmadan hangi iç sunucunun gece boyunca dışarıdaki bir adrese çok büyük hacimde veri gönderdiğini görmek istiyor. Hangi veri kaynağı hem uygun hem de hafiftir?", options: ["Tam paket yakalama (PCAP)", "Antivirüs imza güncelleme günlüğü", "NetFlow / IPFIX akış kayıtları", "SNMP trap bildirimleri"], obj: "h1" },
+      { id: "cfd0e8ae", q: "Aynı kullanıcı hesabıyla İstanbul'dan, 20 dakika sonra São Paulo'dan oturum açılıyor. Bu durum hangi göstergeye örnektir?", options: ["İmkânsız seyahat (impossible travel)", "Hesap kilitleme eşiği aşımı", "Protokol düşürme", "Log manipülasyonu"], obj: "h1" }
     ],
     interview: [
       { q: "SIEM nedir?", a: "Çeşitli kaynaklardan logları toplayan, normalleştiren, ilişkilendiren ve alarm üreten merkezi sistemdir. Olay tespitini, araştırmayı ve uyum raporlamasını destekler." },
@@ -259,12 +276,19 @@
         "Parolasız: FIDO2/passkey."
       ] },
       { t: "box", h: "İlkeler", text: "En az yetki (least privilege), görev ayrımı (separation of duties), 'bilmesi gereken kadar' (need to know). Çalışan görev değiştirince ya da ayrılınca yetkiler güncellenmeli (joiner-mover-leaver)." },
-      { t: "warn", h: "Tuzak", text: "SMS kodu MFA'dır ama en zayıf biçimlerindendir (SIM swap). Mümkünse uygulama tabanlı kod ya da donanım anahtarı (FIDO2) kullan." }
+      { t: "warn", h: "Tuzak", text: "SMS kodu MFA'dır ama en zayıf biçimlerindendir (SIM swap). Mümkünse uygulama tabanlı kod ya da donanım anahtarı (FIDO2) kullan." },
+      { t: "steps", h: "Hesap türleri, Kerberos ve yetki yönetimi (V8)", items: [
+        "gMSA (grup yönetilen hizmet hesabı): Windows etki alanında parolası otomatik oluşturulan ve düzenli döndürülen servis hesabı; hiçbir insan parolayı bilmez, elle değiştirme ve paylaşma riski ortadan kalkar.",
+        "Ayrıcalık birikimi (privilege creep): kişi rol değiştirdikçe eski yetkileri silinmez ve zamanla gereğinden fazla yetki toplar. Çözüm: rol değişince yetkileri temizlemek ve düzenli erişim gözden geçirmesi.",
+        "Acil erişim (break-glass) hesabı: SSO/MFA çökerse kullanılmak üzere ayrılmış, çok sıkı korunan ve her kullanımı alarm üreten hesap. Kimlik kanıtlama (identity proofing): hesap açılırken kişinin gerçekten o kişi olduğunun doğrulanması; MFA yedek kodları telefon kaybında kullanılır ve güvenli saklanmalıdır.",
+        "Kerberos: etki alanında bilet tabanlı SSO. Kullanıcı bir kez anahtar dağıtım merkezinde (KDC) doğrulanır ve bilet verme bileti (TGT) alır; her servis için TGT ile servis bileti istenir, parola servislere gitmez. İstemci ile KDC saatleri birbirine yakın olmalıdır."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "Bildiğin, sahip olduğun ve olduğun faktör türlerini ayırıp MFA'yı doğru tanımlayabilirsin." },
       { id: "h2", text: "DAC, MAC, RBAC ve ABAC modellerini ayırt edebilirsin." },
-      { id: "h3", text: "En az yetki ve görev ayrımı gibi ilkeleri bir örneğe uygulayabilirsin." }
+      { id: "h3", text: "En az yetki ve görev ayrımı gibi ilkeleri bir örneğe uygulayabilirsin." },
+      { id: "h4", text: "gMSA, ayrıcalık birikimi, acil erişim hesabı ve Kerberos bilet mantığı gibi kimlik yönetimi kavramlarını ayırt edebilirsin." }
     ],
     summary: [
       "MFA farklı faktör türlerini birleştirir: bildiğin, sahip olduğun, olduğun.",
@@ -277,7 +301,10 @@
       { id: "2a683325", q: "Parola + telefondaki uygulama kodu hangi faktör türlerini birleştirir?", options: ["Bildiğin + sahip olduğun", "Bildiğin + bildiğin", "Olduğun + olduğun", "Hepsi aynı"], obj: "h1" },
       { id: "acf1bbbe", q: "İzinleri kişiye değil role bağlayan model hangisidir?", options: ["RBAC", "DAC", "MAC", "NAT"], obj: "h2" },
       { id: "56c40315", q: "Parola ve güvenlik sorusu birlikte kullanılırsa bu MFA midir?", options: ["Hayır, ikisi de 'bildiğin' faktörü", "Evet", "Sadece bankalarda", "Sadece mobilde"], obj: "h1" },
-      { id: "82350d58", q: "Bir kullanıcının kendi görevini yapmak için gereken minimum yetkiye sahip olması hangi ilkedir?", options: ["En az yetki (least privilege)", "Görev ayrımı", "Tek oturum açma", "Federasyon"], obj: "h3" }
+      { id: "82350d58", q: "Bir kullanıcının kendi görevini yapmak için gereken minimum yetkiye sahip olması hangi ilkedir?", options: ["En az yetki (least privilege)", "Görev ayrımı", "Tek oturum açma", "Federasyon"], obj: "h3" },
+      { id: "cbf98d1d", q: "Muhasebeden satın almaya geçen bir çalışan, her iki birimin uygulamalarına hâlâ yetkili. Yıllar içinde çok sayıda kişi bu şekilde gereğinden fazla yetki biriktirmiş. Bu duruma ne denir ve en iyi önlem nedir?", options: ["Ayrıcalık yükseltme saldırısı; parola uzunluğunu artırmak", "Görev rotasyonu; çalışanları zorunlu tatile göndermek", "Gölge BT; onaysız uygulamaları engellemek", "Ayrıcalık birikimi (privilege creep); rol değişikliğinde eski yetkileri kaldırmak ve düzenli erişim gözden geçirmesi yapmak"], obj: "h4" },
+      { id: "03ac49b8", q: "Bir kurum Windows ortamındaki servis hesabının parolasını hiçbir insanın bilmemesini ve sistemin düzenli olarak otomatik döndürmesini istiyor. Hangi çözüm uygundur?", options: ["Paylaşılan yönetici hesabı", "Grup yönetilen hizmet hesabı (gMSA)", "Acil erişim (break-glass) hesabı", "Parolasız yerel hesap"], obj: "h4" },
+      { id: "8cfef998", q: "Active Directory etki alanında kullanıcı bir kez oturum açtıktan sonra dosya sunucusuna ve intranete parola sormadan erişiyor. Parola servislere gönderilmeden kimlik hangi mekanizmayla kanıtlanıyor?", options: ["Kerberos biletleri (TGT ve servis bileti)", "Her serviste hash'lenmiş parolanın yeniden gönderilmesi", "Her bağlantıda zorunlu istemci sertifikası", "RADIUS hesap kayıtları (accounting)"], obj: "h4" }
     ],
     interview: [
       { q: "MFA neden önemlidir?", a: "Parola çalınsa ya da tahmin edilse bile saldırganın ikinci bir faktöre ihtiyacı olur. Kimlik tabanlı saldırıların çoğunu engeller. Tercihen uygulama tabanlı kod ya da FIDO2 anahtar kullanılır." },
@@ -331,10 +358,15 @@
         "Yüksek maliyet ve beceri gereksinimi."
       ] },
       { t: "box", h: "Araç örnekleri", text: "Betikleme (PowerShell, Python, Bash), yapılandırma yönetimi (Ansible), IaC (Terraform), API'ler ve webhook'lar, SOAR platformları." },
-      { t: "warn", h: "Tuzak", text: "Otomasyon yetkisi geniş tutulursa saldırganın en iyi hedefi olur. Otomasyon hesaplarına en az yetki ver, sırları kasada tut, değişiklikleri sürüm kontrolünde incele." }
+      { t: "warn", h: "Tuzak", text: "Otomasyon yetkisi geniş tutulursa saldırganın en iyi hedefi olur. Otomasyon hesaplarına en az yetki ver, sırları kasada tut, değişiklikleri sürüm kontrolünde incele." },
+      { t: "steps", h: "Yapay zekâ destekli otomasyon (V8)", items: [
+        "Kullanım alanları: kullanıcı ve kaynak sağlama, istenen durumu koruma, anomali tespiti, bilet yönetimi. Yapay zekâ ile: sohbet botu (analiste yardımcı), tahmine dayalı analiz, yapay zekâ destekli taban çizgisi (normal davranışı sürekli öğrenip sapmayı işaretler) ve ajan tabanlı (agentic) yapay zekâ (hedef verilince araçları kendisi çağırıp çok adımlı iş yapar).",
+        "Korkuluk (guardrail): otomasyonun yapabileceklerini sınırlayan kurallar; izinli eylem listesi, onay eşiği, geri alma ve insan onayı. Ajan yapay zekâda yüksek etkili eylemlerden önce insan onayı şarttır.",
+        "Hedeflenen sonuçlar: verimlilik, taban çizgisi uygulama, sürekli iyileştirme, daha az kesinti, proaktiflik. Riskler: karmaşıklık, süreç riski, tek hatanın toplu hasar vermesi."
+      ] }
     ],
     objectives: [
-      { id: "h1", text: "Güvenlikte otomasyonun kullanım alanlarını ve faydalarını sayabilirsin." },
+      { id: "h1", text: "Güvenlikte otomasyonun kullanım alanlarını, yapay zekâ destekli örneklerini (taban çizgisi, ajan, sohbet botu) ve faydalarını sayabilirsin." },
       { id: "h2", text: "IaC, Ansible, betikleme ve SOAR gibi araç örneklerini tanıyabilirsin." },
       { id: "h3", text: "Otomasyonun risklerini (toplu hasar, tek hata noktası, teknik borç) açıklayabilirsin." },
       { id: "h4", text: "Otomasyon hesapları için en az yetki ve sırları kasada tutma yaklaşımını uygulayabilirsin." }
@@ -350,7 +382,9 @@
       { id: "c195b94c", q: "Otomasyonun güvenlik açısından temel faydası nedir?", options: ["Tutarlılık ve hız, insan hatasını azaltma", "Parolaları kaldırmak", "Ağı kapatmak", "Log tutmamak"], obj: "h1" },
       { id: "a9781c87", q: "Altyapıyı kodla tanımlayıp tekrar edilebilir kurmaya ne denir?", options: ["IaC", "SIEM", "DLP", "RAID"], obj: "h2" },
       { id: "a92107b2", q: "Otomasyonun bir riski hangisidir?", options: ["Hatalı betiğin toplu hasar vermesi", "Ağın yavaşlaması", "Daha çok parola", "Sertifika süresi"], obj: "h3" },
-      { id: "ef57b5fe", q: "Otomasyon hesapları için en doğru yaklaşım nedir?", options: ["En az yetki ve sırların kasada tutulması", "Domain admin yetkisi", "Parolayı betiğe yazmak", "Ortak kullanıcı"], obj: "h4" }
+      { id: "ef57b5fe", q: "Otomasyon hesapları için en doğru yaklaşım nedir?", options: ["En az yetki ve sırların kasada tutulması", "Domain admin yetkisi", "Parolayı betiğe yazmak", "Ortak kullanıcı"], obj: "h4" },
+      { id: "0cd6d9f7", q: "SOC, yapay zekâ ajanının şüpheli hesapları kendiliğinden devre dışı bırakabilmesini istiyor. Yanlış pozitif durumunda iş kesintisi riskini azaltan en uygun tasarım hangisidir?", options: ["Ajana tüm kimlik sistemlerinde geniş yönetici yetkisi vermek", "Eylem kaydını kapatıp yalnızca sonucu raporlatmak", "Ajanı kuralsız bırakıp hatalarını olay sonrası düzeltmek", "Yüksek etkili eylemlerden önce insan onayı ve izinli eylem listesi (guardrail) uygulamak"], obj: "h1" },
+      { id: "f3d54d98", q: "Bir ekip, normal oturum açma saatlerini ve veri aktarım hacimlerini sürekli öğrenen, bunlardan sapmaları işaretleyen bir model kullanıyor. Bu yaklaşım nedir?", options: ["Yapay zekâ destekli taban çizgisi ile anomali tespiti", "İmza tabanlı tespit", "Statik erişim kontrol listesi (ACL)", "Masa başı tatbikat"], obj: "h1" }
     ],
     interview: [
       { q: "Güvenlikte otomasyon nerede kullanılır?", a: "Kullanıcı yaşam döngüsü, yama ve yapılandırma uyumu, alarm sonrası müdahale (SOAR), zafiyet tarama ve ticket akışı, CI/CD'de güvenlik testleri." },
@@ -375,7 +409,7 @@
       recap: [{ point: "SIEM alarm üretir; alarmdan sonra ne yapılacağını olay müdahale planı söyler.", example: "Playbook" }],
       concepts: [
         { term: "Olay (incident)", tr: "Güvenlik ihlali", summary: "Bilgi güvenliğini tehdit eden gerçekleşmiş ya da gerçekleşme ihtimali yüksek olay.", example: "Fidye yazılımı" },
-        { term: "IR planı", tr: "Müdahale planı", summary: "Rolleri, adımları ve iletişimi önceden belirleyen belge.", example: "NIST SP 800-61" }
+        { term: "IR planı", tr: "Müdahale planı", summary: "Rolleri, adımları ve iletişimi önceden belirleyen belge.", example: "NIST SP 800-61 Rev. 3" }
       ]
     },
     blocks: [
@@ -401,12 +435,18 @@
         "Kritik sistemlerde önce iş etkisini değerlendir.",
         "Kanıt toplamadan temizlik yapma (kök neden kaybolur)."
       ] },
-      { t: "warn", h: "Tuzak", text: "Sınavda sıralama sorulur: Hazırlık, Tespit ve Analiz, Sınırlama, Yok etme, Kurtarma, Ders çıkarma. Sınırlama, yok etmeden önce gelir; önce yayılmayı durdurursun." }
+      { t: "warn", h: "Tuzak", text: "Sınavda sıralama sorulur: Hazırlık, Tespit ve Analiz, Sınırlama, Yok etme, Kurtarma, Ders çıkarma. Sınırlama, yok etmeden önce gelir; önce yayılmayı durdurursun." },
+      { t: "steps", h: "Müzakere ve dış bildirim (V8)", items: [
+        "Fidye ödeme kararı yalnızca teknik bir karar değildir: hukuk, üst yönetim, sigorta, kolluk ve gerekirse uzman müzakereci birlikte değerlendirir. Ödemek verinin geri geleceğini garanti etmez ve tekrar hedef olma riskini artırır. Önce sınırlama yapılır, yedeklerin sağlamlığı kontrol edilir.",
+        "Bildirim ve dış raporlama: paydaşlar, müşteriler, kolluk ve düzenleyici. Kişisel veri ihlallerinde yasal bildirim süreleri (ör. GDPR'da 72 saat) olay doğrulanır doğrulanmaz hukukla birlikte yönetilir.",
+        "Olay sonrası: kök neden analizi (RCA) ve olay sonrası rapor (PIR); hazırlık tarafında eğitim, masa başı tatbikat, simülasyon ve playbook.",
+        "Kaynak notu: NIST SP 800-61 Rev. 3 (Nisan 2025), Rev. 2'nin yerini alan güncel rehberdir ve olay müdahalesini NIST CSF 2.0 işlevleriyle ilişkilendirir. Sınavda ve sektörde yaygın olan hazırlık-tespit-sınırlama-yok etme-kurtarma-ders çıkarma sırası bu derste temel alınır."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "Olay müdahalesinin altı aşamasını doğru sırayla sıralayabilirsin." },
-      { id: "h2", text: "Sınırlama, yok etme ve kurtarma aşamalarını birbirinden ayırabilirsin." },
-      { id: "h3", text: "Olay sonrası ders çıkarma toplantısının amacını açıklayabilirsin." },
+      { id: "h2", text: "Sınırlama, yok etme ve kurtarma aşamalarını ayırt edebilir; fidye ve veri ihlali olaylarında müzakere ile yasal dış bildirim kararını doğru verebilirsin." },
+      { id: "h3", text: "Olay sonrası ders çıkarma toplantısının, kök neden analizinin ve olay sonrası raporun amacını açıklayabilirsin." },
       { id: "h4", text: "Şüpheli bir cihazda ilk anda yapılacak adımları (kaydet, kanıtı koru, bildir) uygulayabilirsin." }
     ],
     summary: [
@@ -420,7 +460,9 @@
       { id: "1d446777", q: "Olay müdahalesinde ilk aşama hangisidir?", options: ["Hazırlık", "Sınırlama", "Yok etme", "Kurtarma"], obj: "h1" },
       { id: "0173ae17", q: "Yayılmayı durdurmak (örn. cihazı ağdan ayırmak) hangi aşamadır?", options: ["Sınırlama (containment)", "Kurtarma", "Ders çıkarma", "Hazırlık"], obj: "h2" },
       { id: "e40f1fb4", q: "Olay kapandıktan sonra yapılan toplantıya ne ad verilir?", options: ["Ders çıkarma (lessons learned)", "Sınırlama", "Tespit", "Hazırlık"], obj: "h3" },
-      { id: "34031ac9", q: "Şüpheli bilgisayarda ilk yapılması gereken doğru adım hangisidir?", options: ["Ağdan ayırıp güvenlik ekibine bildirmek", "Diski formatlamak", "Sessizce kullanmaya devam etmek", "Parolayı e-postayla göndermek"], obj: "h4" }
+      { id: "34031ac9", q: "Şüpheli bilgisayarda ilk yapılması gereken doğru adım hangisidir?", options: ["Ağdan ayırıp güvenlik ekibine bildirmek", "Diski formatlamak", "Sessizce kullanmaya devam etmek", "Parolayı e-postayla göndermek"], obj: "h4" },
+      { id: "97f8de5c", q: "Fidye yazılımı olayında yönetici 'ödeyelim, hemen çözülsün' diyor. En doğru yaklaşım hangisidir?", options: ["BT ekibinin hemen kendi başına ödemesi", "Kararı hukuk, üst yönetim, sigorta ve kolluk ile birlikte vermek; ödemenin veri kurtarmayı garanti etmediğini hesaba katmak", "Ödemeyi gizli tutup kolluğa ve sigortaya hiç haber vermemek", "Saldırganın talimatlarına uyup yedekleri silmek"], obj: "h2" },
+      { id: "86f5c50f", q: "Bir fidye olayında müşteri kişisel verilerinin çalındığı doğrulandı ve yasal bildirim süresi işlemeye başladı. Müdahale ekibi ne yapmalıdır?", options: ["Olay tamamen çözülene kadar bildirimi ertelemek", "Yalnızca basın açıklaması yayımlamak", "Hukuk ve uyum ekibiyle birlikte düzenleyiciye ve etkilenen kişilere yasal süre içinde bildirim yapmak", "Yalnızca iç BT ekibini bilgilendirmek"], obj: "h2" }
     ],
     interview: [
       { q: "Olay müdahale aşamalarını say.", a: "Hazırlık, tespit ve analiz, sınırlama, yok etme, kurtarma ve ders çıkarma. Önce yayılmayı durdurur, sonra kök nedeni temizler, sistemi güvenli şekilde geri getirir ve süreci iyileştiririm." },
@@ -435,7 +477,7 @@
     ],
     resources: [
       res(PM, "Olay müdahale süreci"),
-      { title: "NIST SP 800-61: Computer Security Incident Handling Guide", url: "https://csrc.nist.gov/pubs/sp/800/61/r2/final", type: "doc", why: "Olay müdahalesi için temel rehber", level: "orta", lang: "EN" }
+      { title: "NIST SP 800-61 Rev. 3: Incident Response Recommendations and Considerations for Cybersecurity Risk Management", url: "https://csrc.nist.gov/pubs/sp/800/61/r3/final", type: "doc", why: "Olay müdahalesi için güncel rehber (2025, Rev. 2'nin yerini aldı)", level: "orta", lang: "EN" }
     ],
     sources: [CT]
   };

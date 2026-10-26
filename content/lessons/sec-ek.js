@@ -112,7 +112,7 @@
     bagimsiz: "Kendi evin ya da küçük bir iş için bir sayfalık 'olay olursa' planı yaz: kime haber verilir, hangi cihaz ayrılır, hangi yedek geri yüklenir. Yalnız kâğıt üzerinde.",
     hatalar: [["Bilgisayarı hemen kapatmak", "Bellekteki kanıt kaybolur; önce ağdan ayır, sonra uzmana danış."], ["Planı olay anında yazmak", "Plan önceden yazılır ve tatbikatla denenir."], ["Olayı kapatıp dersleri almamak", "Olay sonrası inceleme ayrı bir aşamadır ve süreci iyileştirir."]],
     gecme: { olcut: "Mini sınavda %80 ve bir senaryoda aşamaları doğru sırayla ve gerekçesiyle sıralayabilmek.", kritik: ["Temizlemeyi sınırlamadan önce yapmak", "Müdahalede rol ve iletişim planı gerekmediğini sanmak"] },
-    kaynaklar: [S("61/r2", "800-61 Rev. 2: Computer Security Incident Handling Guide", "Olay müdahalesi yaşam döngüsü ve süreç yönergesi.")],
+    kaynaklar: [S("61/r3", "800-61 Rev. 3: Incident Response Recommendations and Considerations for Cybersecurity Risk Management", "NIST'in Nisan 2025'te yayımladığı güncel olay müdahalesi rehberidir; Rev. 2'nin yerini aldı ve olay müdahalesini CSF 2.0 işlevleriyle ilişkilendirir. Derste anlatılan hazırlık-tespit-sınırlama-yok etme-kurtarma-ders çıkarma akışı sınavda geçerli yaygın modeldir; Rev. 3 aynı işleri CSF işlevleri üzerinden anlatır.")],
     telafi: "Takıldıysan döngüyü bir daire olarak çiz ve bir olay için her aşamaya bir cümle yaz.",
     sonraki: "Sıradaki konu: risk yönetimi."
   };

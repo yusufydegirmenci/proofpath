@@ -1,8 +1,8 @@
-/* Siber güvenlik (Security+ SY0-701 temelli) · sabit dersler 31-34 */
+/* Siber güvenlik (Security+ SY0-801 (V8) temelli) · sabit dersler 31-34 */
 (function () {
   var L = ((window.PP_LESSONS = window.PP_LESSONS || {}).sec = (window.PP_LESSONS.sec || {}));
-  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-701)", url: "https://www.comptia.org/certifications/security" };
-  var PM = { title: "Professor Messer: Security+ SY0-701 (ücretsiz video kursu)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
+  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-801, V8)", url: "https://www.comptia.org/certifications/security" };
+  var PM = { title: "Professor Messer: Security+ (ücretsiz video kursu, SY0-701 sürümü)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
   function res(a, why) { var o = {}; for (var k in a) o[k] = a[k]; o.why = why; return o; }
 
   /* 31 ──────────────────────────────────────────── Farkındalık eğitimi */
@@ -35,10 +35,15 @@
         "Alışılmadık istek: hediye kartı, acil havale, parola paylaşımı.",
         "Bağlantının üzerine gelince farklı bir adres görünmesi."
       ] },
-      { t: "warn", h: "Tuzak", text: "Sadece cezalandırmaya dayalı program, insanları hatalarını saklamaya iter. Bu da olay müdahalesini geciktirir. Raporlamayı güvenli hâle getirmek en değerli kazanımdır." }
+      { t: "warn", h: "Tuzak", text: "Sadece cezalandırmaya dayalı program, insanları hatalarını saklamaya iter. Bu da olay müdahalesini geciktirir. Raporlamayı güvenli hâle getirmek en değerli kazanımdır." },
+      { t: "steps", h: "Eğitim türleri ve ölçme (V8)", items: [
+        "Eğitim türleri: başlangıç/oryantasyon (işe girişte), sürekli (düzenli tazeleme), hedefli (rolün özel riskine göre baştan tasarlanır, ör. finans ekibi için BEC) ve düzeltici (hata yapan kişiye olay sonrası verilir, ör. simülasyonda bağlantıya tıklayan çalışana).",
+        "Etkinlik ölçme: metrikler (tıklama ve raporlama oranı), yönetim raporları ve personel davranış risk puanı (tekrarlayan hatalara göre kişi ya da birim bazında; riskli gruplara ek eğitim).",
+        "Konular: sosyal mühendislik, parola ve kimlik bilgisi yönetimi, uzaktan/hibrit çalışma, BYOD, BEC, çıkarılabilir ortam ve kablolar (şüpheli USB, şarj kablosu), durumsal farkındalık ve operasyonel güvenlik (OPSEC)."
+      ] }
     ],
     objectives: [
-      { id: "h1", text: "Etkili bir farkındalık programının özelliklerini (sürekli, kısa, role özel, ölçülebilir) sayabilirsin." },
+      { id: "h1", text: "Etkili bir farkındalık programının özelliklerini (sürekli, kısa, role özel, ölçülebilir) ve eğitim türlerini (başlangıç, sürekli, hedefli, düzeltici) sayabilirsin." },
       { id: "h2", text: "Oltalama simülasyonunun amacını açıklayabilirsin." },
       { id: "h3", text: "Raporlama oranı ve süresi gibi bildirim kültürünü gösteren metrikleri ayırt edebilirsin." },
       { id: "h4", text: "Whaling'i yöneticilere hedefli oltalama olarak tanıyabilirsin." }
@@ -54,7 +59,8 @@
       { id: "794e9218", q: "Etkili bir farkındalık programının özelliği hangisidir?", options: ["Sürekli, kısa ve role özel", "Yılda bir kez uzun sunum", "Sadece BT ekibine yönelik", "Yalnızca ceza"], obj: "h1" },
       { id: "88e771f9", q: "Oltalama simülasyonunun amacı nedir?", options: ["Çalışanların tepkisini ölçmek ve eğitmek", "Çalışanları cezalandırmak", "Ağı yavaşlatmak", "Parolaları toplamak"], obj: "h2" },
       { id: "c9895b0d", q: "Hangi metrik bildirim kültürünü gösterir?", options: ["Şüpheli maili raporlama oranı ve süresi", "Sunucu uptime'ı", "Disk boyutu", "Yedek sayısı"], obj: "h3" },
-      { id: "64380148", q: "Yönetici düzeyine hedefli oltalamaya ne denir?", options: ["Whaling", "Smishing", "Tailgating", "Pharming"], obj: "h4" }
+      { id: "64380148", q: "Yönetici düzeyine hedefli oltalamaya ne denir?", options: ["Whaling", "Smishing", "Tailgating", "Pharming"], obj: "h4" },
+      { id: "dfd50255", q: "Oltalama simülasyonunda bağlantıya tıklayan çalışana, o olaya özel kısa bir eğitim atanıyor. Bu eğitim türü nedir?", options: ["Başlangıç (onboarding) eğitimi", "Düzeltici (corrective) eğitim", "Sürekli (ongoing) eğitim", "Hedefli (targeted) eğitim"], obj: "h1" }
     ],
     interview: [
       { q: "Farkındalık eğitiminin işe yaradığını nasıl ölçersin?", a: "Oltalama simülasyonlarında tıklama oranının düşmesine ve raporlama oranının yükselmesine bakarım. Ayrıca gerçek olay sayısı ve tespit süresi gibi sonuç metriklerini izlerim." },
@@ -105,12 +111,18 @@
         "Deepfake'e karşı doğrulama: acil para talebini ikinci kanaldan teyit et."
       ] },
       { t: "box", h: "Ayrım", text: "Prompt injection, modelin talimatlarını girdi yoluyla değiştirmeye çalışır. SQL injection ise veritabanı sorgusunu hedefler. İkisi de 'veriyi komut gibi yorumlatma' mantığına dayanır." },
-      { t: "warn", h: "Tuzak", text: "'Yapay zekâ bunu yazdı, doğrudur' diye kontrolsüz kullanmak risktir. Sorumluluk, çıktıyı kullanan insandadır." }
+      { t: "warn", h: "Tuzak", text: "'Yapay zekâ bunu yazdı, doğrudur' diye kontrolsüz kullanmak risktir. Sorumluluk, çıktıyı kullanan insandadır." },
+      { t: "steps", h: "Yapay zekâ tehdit sınıfları (V8)", items: [
+        "Model manipülasyonu: zehirleme (poisoning: eğitim verisini bozup modele yanlış öğretmek), kaçınma (evasion: modeli yanıltacak girdi hazırlayıp tespiti atlatmak; model değişmez), jailbreak (güvenlik kurallarını aşmak) ve prompt injection.",
+        "Veri ve gizlilik: modele yapıştırılan veri sızabilir ya da eğitimde ezberlenebilir; model çıktısı eğitim verisindeki kişisel bilgiyi açığa çıkarabilir.",
+        "Güvenilirlik: önyargı (bias) eğitim verisindeki dengesizlikten doğar ve haksız kararlar üretir; açıklanabilirlik (explainability) modelin neden o kararı verdiğinin anlaşılabilmesidir, kara kutu modeller denetimi zorlaştırır; hallucination uydurma çıktıdır.",
+        "Ajan riskleri: modelin bağlı olduğu araç ve eklentiler üzerinden kod çalıştırma ve oturum ele geçirme (session hijacking). Etik: izin, şeffaflık, adalet."
+      ] }
     ],
     objectives: [
-      { id: "h1", text: "Prompt injection saldırısını tanımlayıp SQL injection ile ortak mantığını açıklayabilirsin." },
+      { id: "h1", text: "Prompt injection saldırısını tanımlayıp SQL injection ile ortak mantığını ve zehirleme, kaçınma (evasion) ile jailbreak gibi model manipülasyon türlerini ayırt edebilirsin." },
       { id: "h2", text: "Shadow AI kavramını ve kontrolsüz yapay zekâ kullanımının veri sızıntısı riskini anlatabilirsin." },
-      { id: "h3", text: "Hatalı veya uydurma çıktının (hallucination) neden doğrulama gerektirdiğini açıklayabilirsin." },
+      { id: "h3", text: "Hatalı veya uydurma çıktının (hallucination) neden doğrulama gerektirdiğini, ayrıca önyargı (bias) ve açıklanabilirlik sorunlarını açıklayabilirsin." },
       { id: "h4", text: "Yapay zekâ ajanlarına en az yetki ilkesini nasıl uygulayacağını söyleyebilirsin." }
     ],
     summary: [
@@ -124,7 +136,10 @@
       { id: "6b250285", q: "Dış içerikteki gizli talimatlarla bir modelin yönlendirilmesine ne denir?", options: ["Prompt injection", "Phishing", "Tailgating", "Hashing"], obj: "h1" },
       { id: "ab5c0ee0", q: "BT onayı olmadan yapay zekâ araçlarının kullanılmasına ne denir?", options: ["Shadow AI", "Zero Trust", "Failover", "Sandboxing"], obj: "h2" },
       { id: "70a7b9c4", q: "Modelin güvenle yazdığı ama yanlış olan çıktısına ne denir?", options: ["Hallucination", "Encryption", "Replay", "Pivoting"], obj: "h3" },
-      { id: "8a1857b3", q: "Yapay zekâ ajanı için doğru yetki yaklaşımı hangisidir?", options: ["Sadece gereken araç ve veri", "Tam yönetici", "Tüm veritabanı", "Yetkisiz"], obj: "h4" }
+      { id: "8a1857b3", q: "Yapay zekâ ajanı için doğru yetki yaklaşımı hangisidir?", options: ["Sadece gereken araç ve veri", "Tam yönetici", "Tüm veritabanı", "Yetkisiz"], obj: "h4" },
+      { id: "ad11a03c", q: "Saldırgan, bir zararlı yazılım sınıflandırıcısını yanıltmak için dosyaya modelin 'zararsız' diye öğrendiği özellikleri ekliyor ve tespit edilmeden geçiyor. Modelin kendisi ve eğitim verisi değişmiyor. Bu saldırı hangisidir?", options: ["Zehirleme (poisoning)", "Prompt injection", "Kaçınma (evasion)", "Halüsinasyon (hallucination)"], obj: "h1" },
+      { id: "f8f79551", q: "İşe alım ekibinin kullandığı model, geçmiş işe alım verileriyle eğitildiği için belirli bir grubun adaylarını sistematik olarak düşük puanlıyor. Bu hangi riskin örneğidir?", options: ["Zehirleme (poisoning)", "Önyargı (bias)", "Jailbreak", "Kaçınma (evasion)"], obj: "h3" },
+      { id: "fe414afc", q: "Bir banka kredi reddi kararının nedenini müşteriye ve denetçiye anlatamıyor, çünkü kullandığı model karar gerekçesini sunmuyor. Eksik olan özellik hangisidir?", options: ["Açıklanabilirlik (explainability)", "Evasion direnci", "Veri minimizasyonu", "Jailbreak koruması"], obj: "h3" }
     ],
     interview: [
       { q: "Şirkette yapay zekâ araçlarını nasıl güvenli yönetirdin?", a: "Kabul edilebilir kullanım politikası yazar, onaylı kurumsal araçlar sağlarım. Veri sınıflandırması ve DLP ile gizli verinin çıkışını kontrol eder, çıktıların insan tarafından doğrulanmasını şart koşarım." },
@@ -173,13 +188,19 @@
         "Tehdit kapsamı azaltma (threat scope reduction): erişilebilir yüzeyi küçültme."
       ] },
       { t: "box", h: "VPN farkı", text: "Klasik VPN: bağlandıktan sonra ağa geniş erişim. Zero Trust: her uygulama için ayrı, bağlamsal erişim. Zero Trust bir ürün değil, bir mimari yaklaşımdır." },
-      { t: "warn", h: "Tuzak", text: "'Zero Trust ürünü aldık, bitti' demek yanlıştır. Kimlik yönetimi, cihaz yönetimi, segmentasyon ve izleme birlikte çalışmalıdır." }
+      { t: "warn", h: "Tuzak", text: "'Zero Trust ürünü aldık, bitti' demek yanlıştır. Kimlik yönetimi, cihaz yönetimi, segmentasyon ve izleme birlikte çalışmalıdır." },
+      { t: "steps", h: "Bulut güvenlik hizmetleri ve arıza modları (V8)", items: [
+        "SSE (Security Service Edge): güvenli web geçidi, bulut erişim denetimi ve sıfır güven ağ erişimi gibi güvenlik hizmetlerini buluttan sunar; kullanıcı nerede olursa olsun trafik bulutta denetlenir. SASE ise SSE'ye SD-WAN ağ işlevlerini ekleyen birleşik bulut modelidir.",
+        "Arıza modları: fail-open arızada trafiğe izin verir (erişilebilirlik önceliklidir); fail-closed (fail-secure) arızada keser (güvenlik önceliklidir). Seçim varlığın değerine ve kesintinin sonucuna bağlıdır.",
+        "Bant dışı yönetim (out-of-band): cihazı üretim ağından ayrı bir kanaldan (ayrı yönetim ağı, konsol) yönetmek; üretim ağı çökse ya da ele geçirilse bile yönetici erişimi sürer.",
+        "Zero Trust'ta cihazın sağlığı (güncel, şifreli, yönetilen) ve envanteri de erişim kararına katılır."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "Zero Trust'ın temel ilkesini (asla güvenme, her zaman doğrula) açıklayabilirsin." },
-      { id: "h2", text: "'Assume breach' yaklaşımını ve hasarı sınırlayan önlemleri anlatabilirsin." },
+      { id: "h2", text: "'Assume breach' yaklaşımını, hasarı sınırlayan önlemleri ve arıza modlarını (fail-open, fail-closed) anlatabilirsin." },
       { id: "h3", text: "Kontrol düzlemi ile veri düzleminin rollerini ayırt edebilirsin." },
-      { id: "h4", text: "Mikro segmentasyonun yatay hareketi nasıl sınırladığını söyleyebilirsin." }
+      { id: "h4", text: "Mikro segmentasyonun yatay hareketi nasıl sınırladığını, SSE ile SASE farkını ve bant dışı yönetimin rolünü söyleyebilirsin." }
     ],
     summary: [
       "Zero Trust'ta ağ konumu güven sağlamaz; her istek kimlik, cihaz sağlığı ve bağlamla doğrulanır.",
@@ -192,7 +213,10 @@
       { id: "3d585d3b", q: "Zero Trust'ın temel ilkesi hangisidir?", options: ["Hiçbir isteğe otomatik güvenme, her zaman doğrula", "İç ağdakilere tam güven", "Sadece güvenlik duvarı", "Parola yeterli"], obj: "h1" },
       { id: "f31fd4b7", q: "'Assume breach' ne demektir?", options: ["İhlalin zaten olmuş olabileceğini varsayıp hasarı sınırlamak", "İhlal asla olmaz", "Sadece dışarıyı izlemek", "Logları kapatmak"], obj: "h2" },
       { id: "27f72d92", q: "Erişim kararının verildiği Zero Trust bileşeni hangisidir?", options: ["Kontrol düzlemi (politika motoru)", "Veri düzlemi kablosu", "Yazıcı", "Yedek sunucu"], obj: "h3" },
-      { id: "2939120e", q: "Ağı küçük bölgelere ayırıp bölgeler arası trafiği denetlemeye ne denir?", options: ["Mikro segmentasyon", "Hashing", "Salting", "Tokenization"], obj: "h4" }
+      { id: "2939120e", q: "Ağı küçük bölgelere ayırıp bölgeler arası trafiği denetlemeye ne denir?", options: ["Mikro segmentasyon", "Hashing", "Salting", "Tokenization"], obj: "h4" },
+      { id: "66169b65", q: "Bir kurum, uzaktan çalışanların şirket VPN'ine bağlanmadan da web filtreleme, bulut uygulama denetimi ve erişim politikası altında olmasını; denetimin bulutta yapılmasını istiyor. Hangi mimari bu ihtiyacı karşılar?", options: ["Hava boşluğu (air gap)", "Yalnızca site-to-site IPsec VPN", "Security Service Edge (SSE)", "DMZ içinde bastion host"], obj: "h4" },
+      { id: "341baf58", q: "Bir kurumun internet çıkışındaki güvenlik cihazı arızalanırsa hiç trafik geçmemeli; erişilebilirlikten çok güvenlik önceliklidir. Hangi arıza modu seçilmelidir?", options: ["Fail-open", "Aktif-aktif yedeklilik", "Fail-closed (fail-secure)", "Bölünmüş tünel (split tunnel)"], obj: "h2" },
+      { id: "c74e37cf", q: "Bir kurum, şube ağ bağlantısını (SD-WAN) ve bulut tabanlı güvenlik hizmetlerini tek bir bulut hizmetinde birleştirmek istiyor. Bu birleşik model hangisidir?", options: ["Yalnızca SSE", "SASE", "Kod olarak altyapı (IaC)", "Honeynet"], obj: "h4" }
     ],
     interview: [
       { q: "Zero Trust nedir ve klasik çevre güvenliğinden farkı?", a: "Ağ konumuna güvenmeden her erişim isteğini kimlik, cihaz ve bağlama göre doğrulama yaklaşımıdır. Klasik modelde içeri giren güvenilir sayılırdı; Zero Trust'ta içeriye giriş hak vermez, her kaynak ayrıca doğrulanır." },
@@ -240,11 +264,16 @@
         "Acil (emergency): hızla uygulanır, sonradan gözden geçirilir."
       ] },
       { t: "box", h: "Güvenlik bağlantısı", text: "Yama yönetimi, yapılandırma değişikliği ve erişim güncellemesi değişiklik sürecinden geçmelidir. Ayrıca sürümleme ve konfigürasyon yönetimi (baseline, diyagram, sürüm kaydı) kimin neyi ne zaman değiştirdiğini gösterir." },
-      { t: "warn", h: "Tuzak", text: "Geri alma planı olmayan değişiklik kumardır. 'Çalışmazsa bakarız' bir plan değildir." }
+      { t: "warn", h: "Tuzak", text: "Geri alma planı olmayan değişiklik kumardır. 'Çalışmazsa bakarız' bir plan değildir." },
+      { t: "steps", h: "Değişiklik yönetimi ayrıntıları (V8)", items: [
+        "Onay süreci öğeleri: sahiplik, paydaşlar, etki analizi, test sonuçları, geri alma (backout) planı ve bakım penceresi (iş etkisinin en düşük olduğu önceden duyurulan zaman aralığı). Kurul: CAB.",
+        "İleri düzeltme (fail forward): değişiklik sorun çıkarınca eski sürüme dönmek yerine sorunu yeni bir düzeltmeyle çözerek ilerlemek. Geri dönüşü zor ya da riskli değişikliklerde (ör. geri dönüşü olmayan veri dönüşümü) tercih edilir.",
+        "Teknik sonuçlar: allow/deny listeleri güncellemesi, servis ve uygulama yeniden başlatma, kesinti, eski (legacy) uygulamalar ve bağımlılıklar. Belgeleme: diyagram, politika ve prosedür güncelleme; sürüm kontrolü. SOP: sık yapılan değişikliğin ayrıntılı adımları."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "Değişiklik yönetimi sürecinin adımlarını (talep, etki analizi, onay, test, uygulama, doğrulama) sıralayabilirsin." },
-      { id: "h2", text: "Geri alma (rollback) planının neden her değişiklikte hazır olması gerektiğini açıklayabilirsin." },
+      { id: "h2", text: "Geri alma (rollback) planının neden her değişiklikte hazır olması gerektiğini ve geri dönüşün zor olduğu yerde ileri düzeltmenin (fail forward) ne olduğunu açıklayabilirsin." },
       { id: "h3", text: "Standart, normal ve acil değişiklik türlerini birbirinden ayırabilirsin." },
       { id: "h4", text: "CAB'ın değişiklik sürecindeki onay rolünü söyleyebilirsin." }
     ],
@@ -259,7 +288,9 @@
       { id: "1b0818c3", q: "Bir değişikliğin hangi sistemleri etkileyeceğini inceleyen adıma ne denir?", options: ["Etki analizi", "Yedekleme", "Şifreleme", "Hashing"], obj: "h1" },
       { id: "37e768d5", q: "Değişiklik sorun çıkarırsa önceki duruma dönmeye ne denir?", options: ["Rollback", "Failover", "Escalation", "Quarantine"], obj: "h2" },
       { id: "48efee39", q: "Önceden onaylı, düşük riskli, tekrarlayan değişiklik türü hangisidir?", options: ["Standart değişiklik", "Acil değişiklik", "Kayıtsız değişiklik", "Gizli değişiklik"], obj: "h3" },
-      { id: "238ac0f4", q: "Değişiklik taleplerini inceleyip onaylayan kurulun adı nedir?", options: ["CAB", "SIEM", "SOC", "NOC"], obj: "h4" }
+      { id: "238ac0f4", q: "Değişiklik taleplerini inceleyip onaylayan kurulun adı nedir?", options: ["CAB", "SIEM", "SOC", "NOC"], obj: "h4" },
+      { id: "4ffe9765", q: "Bir veritabanı şema dönüşümü yarıda hata verdi; eski şemaya dönmek verileri tutarsız bırakacak. Ekip hatayı hızlı bir yamayla düzeltip yeni sürümle ilerliyor. Bu yaklaşım nedir?", options: ["İleri düzeltme (fail forward)", "Geri alma (backout / rollback)", "Acil değişiklik", "Standart değişiklik"], obj: "h2" },
+      { id: "23b21334", q: "Değişiklik yöneticisi, kesinti etkisini en aza indirmek için bir sunucu güncellemesini iş saatleri dışındaki, önceden duyurulmuş bir zaman aralığına planlıyor. Bu aralığa ne denir?", options: ["Geri alma penceresi", "Etki analizi", "CAB toplantısı", "Bakım penceresi (maintenance window)"], obj: "h2" }
     ],
     interview: [
       { q: "Güvenlik açısından değişiklik yönetimi neden önemli?", a: "Kayıtsız değişiklikler yanlış yapılandırma ve gizli açıklar yaratır, ayrıca olay incelemesini zorlaştırır. Süreç; etki analizi, onay, test, geri alma planı ve kayıtla hem kesintiyi hem açığı azaltır." },

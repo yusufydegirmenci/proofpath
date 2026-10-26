@@ -1,8 +1,8 @@
-/* Siber güvenlik (Security+ SY0-701 temelli) · sabit dersler 25-30 */
+/* Siber güvenlik (Security+ SY0-801 (V8) temelli) · sabit dersler 25-30 */
 (function () {
   var L = ((window.PP_LESSONS = window.PP_LESSONS || {}).sec = (window.PP_LESSONS.sec || {}));
-  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-701)", url: "https://www.comptia.org/certifications/security" };
-  var PM = { title: "Professor Messer: Security+ SY0-701 (ücretsiz video kursu)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
+  var CT = { title: "CompTIA Security+ sınav hedefleri (SY0-801, V8)", url: "https://www.comptia.org/certifications/security" };
+  var PM = { title: "Professor Messer: Security+ (ücretsiz video kursu, SY0-701 sürümü)", url: "https://www.professormesser.com/", type: "video", length: "Çok bölümlü", level: "başlangıç", lang: "EN" };
   var NISTG = { title: "NIST Cybersecurity Framework", url: "https://www.nist.gov/cyberframework", type: "doc", level: "orta", lang: "EN" };
   function res(a, why) { var o = {}; for (var k in a) o[k] = a[k]; o.why = why; return o; }
 
@@ -42,12 +42,17 @@
         "Raporlama: bulguları teknik olmayan okuyucuya anlaşılır yazmak.",
         "Geri alınan kanıt, olay müdahalesinde kök neden ve etkiyi belirler."
       ] },
-      { t: "warn", h: "Tuzak", text: "Şüpheli bilgisayarı 'bir bakayım' diye karıştırmak kanıtı bozar ve mahkemede geçersiz kılabilir. Önce karar ver: kanıt mı toplanacak, yoksa sadece acil sınırlama mı?" }
+      { t: "warn", h: "Tuzak", text: "Şüpheli bilgisayarı 'bir bakayım' diye karıştırmak kanıtı bozar ve mahkemede geçersiz kılabilir. Önce karar ver: kanıt mı toplanacak, yoksa sadece acil sınırlama mı?" },
+      { t: "steps", h: "Adli kanıt kaynakları (V8)", items: [
+        "Sistem imajı: diskin bit düzeyinde (bit-level) birebir kopyasıdır; silinmiş alanları da içerir. Analiz kopya üzerinde yapılır, asıl kanıt dokunulmadan kalır.",
+        "Bellek dökümü (memory dump): RAM'in kopyasıdır; çalışan süreçler, ağ bağlantıları, şifre anahtarları ve dosyasız zararlının izi buradadır. Cihaz kapanınca kaybolur, bu yüzden diskten önce alınır. Snapshot: sanal makinenin belirli andaki durumu.",
+        "Log bütünlüğü: loglar hash'lenir ve değiştirilemez depoya aktarılır; log silme ya da değiştirme kendi başına önemli bir göstergedir. Paydaşlar: İK (çalışan olayı) ve hukuk (delil geçerliliği)."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "Chain of custody kaydında nelerin belgelenmesi gerektiğini açıklayabilirsin." },
       { id: "h2", text: "Kanıt toplarken uçuculuk sırasını (CPU/önbellek ve bellek önce; disk ve arşivler sonra) uygulayabilirsin." },
-      { id: "h3", text: "Adli imajın hash ile aslıyla aynı olduğunu nasıl doğrulayacağını söyleyebilirsin." },
+      { id: "h3", text: "Adli imajın hash ile aslıyla aynı olduğunu ve bit düzeyi kopya, bellek dökümü ile snapshot farkını söyleyebilirsin." },
       { id: "h4", text: "Legal hold ve e-discovery kavramlarını tanımlayabilirsin." }
     ],
     summary: [
@@ -61,7 +66,8 @@
       { id: "4c0a7564", q: "Kanıtın kim tarafından, ne zaman alındığı ve nerede saklandığının kaydına ne denir?", options: ["Chain of custody", "Playbook", "Baseline", "Lease"], obj: "h1" },
       { id: "4b3be6c9", q: "Kanıt toplarken ilk hangi veri alınmalıdır?", options: ["En uçucu olan (bellek)", "Arşivlenmiş yedekler", "Kâğıt belgeler", "Uzak sunucu"], obj: "h2" },
       { id: "b465cc1f", q: "Adli imajın aslıyla aynı olduğunu hangi yöntem kanıtlar?", options: ["Hash karşılaştırması", "Dosya boyutu", "Dosya adı", "Tarih"], obj: "h3" },
-      { id: "090af604", q: "Dava ihtimali olduğunda ilgili verilerin silinmesini durdurma kararına ne denir?", options: ["Legal hold", "Sanitization", "Failover", "Rollback"], obj: "h4" }
+      { id: "090af604", q: "Dava ihtimali olduğunda ilgili verilerin silinmesini durdurma kararına ne denir?", options: ["Legal hold", "Sanitization", "Failover", "Rollback"], obj: "h4" },
+      { id: "f5115961", q: "Bir iş istasyonunda diske yazılmadan bellekte çalışan (dosyasız) bir zararlı şüphesi var ve cihaz hâlâ açık. İlk alınması gereken kanıt hangisidir?", options: ["Bellek dökümü (RAM görüntüsü)", "Sabit diskin bit düzeyi kopyası", "Uygulama kurulum dosyaları", "Eski yedek kasetleri"], obj: "h2" }
     ],
     interview: [
       { q: "Chain of custody nedir, neden önemlidir?", a: "Kanıtın toplandığı andan itibaren kim tarafından, ne zaman, nerede saklandığının ve kime devredildiğinin kaydıdır. Kanıtın değiştirilmediğini göstererek hukuki geçerliliğini sağlar." },
@@ -138,7 +144,8 @@
       { id: "4492b43d", q: "ALE nasıl hesaplanır?", options: ["SLE × ARO", "SLE + ARO", "Varlık değeri / ARO", "ARO − SLE"], obj: "h1" },
       { id: "5960a155", q: "Siber sigorta satın almak hangi risk stratejisidir?", options: ["Aktarma (transfer)", "Azaltma", "Kaçınma", "Kabul"], obj: "h2" },
       { id: "93d7e8b2", q: "Önlemler uygulandıktan sonra kalan riske ne denir?", options: ["Artık risk (residual)", "Doğal risk (inherent)", "Risk iştahı", "Risk kaydı"], obj: "h3" },
-      { id: "facc759f", q: "Riskli bir hizmeti tamamen kapatmak hangi stratejidir?", options: ["Kaçınma", "Aktarma", "Azaltma", "Kabul"], obj: "h4" }
+      { id: "facc759f", q: "Riskli bir hizmeti tamamen kapatmak hangi stratejidir?", options: ["Kaçınma", "Aktarma", "Azaltma", "Kabul"], obj: "h4" },
+      { id: "892ffbc4", q: "Bir sunucunun değeri 400.000 TL. Bir olayda değerinin %25'ini kaybedeceği tahmin ediliyor ve olayın yılda 0,5 kez gerçekleşmesi bekleniyor. ALE kaç TL'dir?", options: ["100.000 TL", "200.000 TL", "25.000 TL", "50.000 TL"], obj: "h1" }
     ],
     interview: [
       { q: "Risk yönetimi nasıl yapılır?", a: "Varlık, tehdit ve zafiyetleri tanımlarım, olasılık ve etkiyi değerlendiririm, risk kaydında önceliklendiririm, azaltma, aktarma, kabul ya da kaçınma ile ele alırım ve artık riski izlerim." },
@@ -259,11 +266,16 @@
         "Hizmet sağlayıcı: bulut, MSP, ödeme sağlayıcı ihlalleri.",
         "Alt yükleniciler: zincirin görünmeyen halkaları."
       ] },
-      { t: "warn", h: "Tuzak", text: "'Büyük firma güvenlidir' varsayımı tehlikelidir. Her tedarikçiyi riske göre değerlendir; kritik olanı daha sık ve derin incele." }
+      { t: "warn", h: "Tuzak", text: "'Büyük firma güvenlidir' varsayımı tehlikelidir. Her tedarikçiyi riske göre değerlendir; kritik olanı daha sık ve derin incele." },
+      { t: "steps", h: "Satın alma ve sözleşme ayrıntıları (V8)", items: [
+        "Satıcı seçimi: RFI (bilgi isteği: pazarda ne var), RFP (teklif isteği: ayrıntılı çözüm ve fiyat), RFQ (fiyat teklifi isteği: ihtiyaç net, yalnızca fiyat), EOI (ilgi beyanı: tedarikçinin katılma isteğini bildirmesi). Gerekli özen (due diligence) ve çıkar çatışması kontrolü yapılır.",
+        "Sözleşme belgeleri: MSA (çerçeve ana sözleşme), SOW (iş kapsamı ve teslimatlar), SLA (ölçülebilir hizmet seviyesi), SLO (hedef değer), MOU/MOA (niyet ve anlaşma mektubu; MOU genellikle niyet beyanıdır), NDA (gizlilik).",
+        "İzleme: denetim hakkı (right to audit), hizmet seviyesi izleme, satıcı kaydı, uyum beyanı (attestation) ve sızma testi izni. Kısıtlar: satıcı bağımlılığı (vendor lock-in), yargı yetkisi, bütçe."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "Tedarikçi yaşam döngüsünün dört aşamasını (seçim öncesi, sözleşme, süreç boyunca, çıkış) sıralayabilirsin." },
-      { id: "h2", text: "SLA, NDA, SOW ve DPA gibi sözleşme belgelerini işlevlerine göre ayırt edebilirsin." },
+      { id: "h2", text: "SLA, SLO, NDA, MSA, SOW ve DPA gibi sözleşme belgeleri ile RFI, RFP ve RFQ gibi satın alma isteklerini işlevlerine göre ayırt edebilirsin." },
       { id: "h3", text: "SBOM'un ne olduğunu ve yazılım tedarik zinciri riskini nasıl görünür kıldığını açıklayabilirsin." },
       { id: "h4", text: "Tedarikçi çıkışında yapılması gereken adımları (erişim kapatma, veri iadesi ve silme) belirtebilirsin." }
     ],
@@ -278,7 +290,9 @@
       { id: "770548e6", q: "Tedarikçiye satın almadan önce yapılan güvenlik incelemesine ne ad verilir?", options: ["Due diligence", "Hardening", "Patching", "Failover"], obj: "h1" },
       { id: "d3c5dd21", q: "Hizmetin erişilebilirlik ve süre taahhütlerini içeren belge hangisidir?", options: ["SLA", "NDA", "SOW", "DPA"], obj: "h2" },
       { id: "db704b8b", q: "Yazılımın içerdiği tüm bileşenlerin listesine ne denir?", options: ["SBOM", "SIEM", "SLE", "SSID"], obj: "h3" },
-      { id: "4cc22294", q: "Tedarikçi ile sözleşme bittiğinde ne yapılmalıdır?", options: ["Erişim kapatılır, veri iade ve imha edilir", "Hiçbir şey", "Parola paylaşılır", "Logları silinir"], obj: "h4" }
+      { id: "4cc22294", q: "Tedarikçi ile sözleşme bittiğinde ne yapılmalıdır?", options: ["Erişim kapatılır, veri iade ve imha edilir", "Hiçbir şey", "Parola paylaşılır", "Logları silinir"], obj: "h4" },
+      { id: "93d4d89a", q: "Bir kurum, ihtiyacı tamamen net olan standart donanım için birkaç tedarikçiden yalnızca fiyat teklifi almak istiyor. Hangi belgeyi yayınlamalıdır?", options: ["RFI (bilgi isteği)", "RFP (teklif isteği)", "RFQ (fiyat teklifi isteği)", "SOW (iş kapsamı belgesi)"], obj: "h2" },
+      { id: "09db1679", q: "Bir ana sözleşme altında farklı projeler için her seferinde ayrı iş kapsamı ve teslimat belgeleri yazılıyor. Ortak hukuki şartları taşıyan çerçeve belge hangisidir?", options: ["SOW", "MSA (ana hizmet sözleşmesi)", "NDA", "SLO"], obj: "h2" }
     ],
     interview: [
       { q: "Üçüncü taraf riski nasıl yönetilir?", a: "Seçimden önce due diligence ve güvenlik anketi yaparım, sözleşmede SLA, ihlal bildirimi ve denetim hakkı belirlerim, süreç boyunca izler ve gözden geçiririm, çıkışta erişimi kapatıp veriyi iade ve imha ettiririm." },
@@ -330,12 +344,17 @@
         "İç ve dış denetim, düzeltici eylem planı.",
         "Veri envanteri ve veri akış haritası."
       ] },
-      { t: "warn", h: "Tuzak", text: "Veri sorumlusu ile veri işleyen karıştırılır. Sorumlu amacı belirler, işleyen onun adına işler. İkisinin de yükümlülüğü vardır." }
+      { t: "warn", h: "Tuzak", text: "Veri sorumlusu ile veri işleyen karıştırılır. Sorumlu amacı belirler, işleyen onun adına işler. İkisinin de yükümlülüğü vardır." },
+      { t: "steps", h: "Gizlilik hakları ve uyum eğitimi (V8)", items: [
+        "Veri öznesinin hakları: silinme ('unutulma'), düzeltme, işlemeyi kısıtlama ve itiraz; ayrıca açık rıza (opt-in) ya da çıkış (opt-out) tercihi.",
+        "Veri sorumlusu (controller) amaç ve yöntemi belirler; işleyen (processor) onun adına işler. Sorumluluk işleyene devredilerek ortadan kalkmaz.",
+        "Uyum eğitimi konuları: veri işleme, kara para aklamayı ve terörün finansmanını önleme (AML/CTF), rüşvetle mücadele. Uyumsuzluğun sonuçları: itibar kaybı, mali ceza, yasal yaptırım, sözleşme ihlali, yaptırımlar ve lisans kaybı."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "KVKK, GDPR, PCI DSS, HIPAA ve SOX gibi düzenlemeleri kapsamlarına göre eşleştirebilirsin." },
       { id: "h2", text: "GDPR'daki ihlal bildirim süresini (72 saat) söyleyebilirsin." },
-      { id: "h3", text: "Veri minimizasyonu dahil kişisel veri ilkelerini örneklerle açıklayabilirsin." },
+      { id: "h3", text: "Veri minimizasyonu dahil kişisel veri ilkelerini ve veri öznesi haklarını (silinme, düzeltme, itiraz) örneklerle açıklayabilirsin." },
       { id: "h4", text: "Uyum ile güvenlik arasındaki farkı gerekçesiyle anlatabilirsin." }
     ],
     summary: [
@@ -349,7 +368,9 @@
       { id: "5bf9249f", q: "Kartlı ödeme verisi işleyen kuruluşlara yönelik standart hangisidir?", options: ["PCI DSS", "HIPAA", "SOX", "FERPA"], obj: "h1" },
       { id: "edad8372", q: "GDPR'da ihlal bildirimi için tipik süre nedir?", options: ["72 saat", "24 saat", "30 gün", "1 yıl"], obj: "h2" },
       { id: "4dd5bdc7", q: "Veri minimizasyonu ilkesi ne demektir?", options: ["Sadece gerekli veriyi toplamak", "Veriyi sıkıştırmak", "Veriyi şifrelemek", "Yedeği silmek"], obj: "h3" },
-      { id: "ce4bef03", q: "Uyum ile güvenlik arasında doğru ifade hangisidir?", options: ["Uyum asgari çıtadır, güvenlik sürekli ve risk temellidir", "İkisi aynı şeydir", "Uyum varsa ihlal olmaz", "Güvenlik yasal zorunluluktur"], obj: "h4" }
+      { id: "ce4bef03", q: "Uyum ile güvenlik arasında doğru ifade hangisidir?", options: ["Uyum asgari çıtadır, güvenlik sürekli ve risk temellidir", "İkisi aynı şeydir", "Uyum varsa ihlal olmaz", "Güvenlik yasal zorunluluktur"], obj: "h4" },
+      { id: "fc2a48de", q: "Bir müşteri artık hizmet almak istemediğini belirterek şirketten kendisiyle ilgili kişisel verilerin silinmesini talep ediyor. Bu talep hangi hakka dayanır?", options: ["Yasal bekletme (legal hold)", "Veri minimizasyonu", "Silinme (unutulma) hakkı", "Açık rıza (opt-in)"], obj: "h3" },
+      { id: "0f0c5a12", q: "Bulut CRM sağlayıcısı müşteri kayıtlarını yalnızca perakendecinin talimatlarına göre işliyor. Perakendeci kayıtların neden ve nasıl kullanılacağına karar veriyor. Roller hangisidir?", options: ["Perakendeci veri sorumlusu (controller), sağlayıcı veri işleyen (processor)", "Perakendeci veri işleyen, sağlayıcı veri sorumlusu", "Perakendeci veri öznesi, sağlayıcı alt işleyen", "Sağlayıcı veri sorumlusu, perakendeci veri koruyucu (custodian)"], obj: "h3" }
     ],
     interview: [
       { q: "KVKK ve GDPR'ı kısaca anlat.", a: "İkisi de kişisel verilerin korunmasına yönelik yasadır. KVKK Türkiye'de, GDPR AB vatandaşı verisini işleyen herkes için geçerlidir. Açık rıza, aydınlatma, veri minimizasyonu, ilgili kişi hakları ve ihlal bildirimi ortak konulardır." },
@@ -405,13 +426,18 @@
         "KPI/KRI: ortalama tespit süresi (MTTD), müdahale süresi (MTTR), yama süresi, phishing tıklama oranı.",
         "Olgunluk modelleri ve karşılaştırmalı değerlendirmeler."
       ] },
-      { t: "warn", h: "Tuzak", text: "İzinsiz sızma testi suçtur. Yazılı onay ve kapsam olmadan test yapma, 'iyi niyet' yetmez." }
+      { t: "warn", h: "Tuzak", text: "İzinsiz sızma testi suçtur. Yazılı onay ve kapsam olmadan test yapma, 'iyi niyet' yetmez." },
+      { t: "steps", h: "Denetim ve saldırı modelleri (V8)", items: [
+        "Denetim kapsamı: denetim tüzüğü (yetki, kapsam, bağımsızlık) ve sıklık. Veri toplama: örnekleme, anket, görüşme ve beyan (yönetimin 'kontrol çalışıyor' demesi, kanıtla doğrulanır).",
+        "Boşluk analizi (gap analysis): mevcut durum ile hedef çerçeve ya da standart arasındaki farkı bulur. Denetim türleri: iç, dış (bağımsız üçüncü taraf) ve düzenleyici; kıyaslama (benchmarking) ise kurumu emsallerle karşılaştırır.",
+        "MITRE ATT&CK: saldırgan taktik ve tekniklerinin bilgi tabanı; tespit kapsamını matriste göstermek için kullanılır. Cyber Kill Chain: saldırıyı sıralı aşamalara böler (keşif, silahlandırma, teslimat, istismar, kurulum, komuta-kontrol, hedef eylem). Diamond Model: her olayı dört köşeyle ilişkilendirir: saldırgan, yetenek, altyapı, kurban."
+      ] }
     ],
     objectives: [
       { id: "h1", text: "Sızma testini kara, beyaz ve gri kutu türlerine göre bilgi düzeyine bakarak ayırt edebilirsin." },
       { id: "h2", text: "Rules of Engagement belgesinin kapsam, zaman ve izinli yöntemleri belirlediğini açıklayabilirsin." },
       { id: "h3", text: "Red, blue ve purple team rollerini birbirinden ayırabilirsin." },
-      { id: "h4", text: "Zafiyet taraması ile sızma testi arasındaki farkı söyleyebilirsin." }
+      { id: "h4", text: "Zafiyet taraması ile sızma testi arasındaki farkı ve MITRE ATT&CK, Cyber Kill Chain ve Diamond Model gibi saldırı modellerini ayırt edebilirsin." }
     ],
     summary: [
       "İç denetim, dış denetim, düzenleyici denetim, zafiyet taraması ve sızma testi farklı şeylerdir.",
@@ -424,7 +450,9 @@
       { id: "bcac7a31", q: "Hedef hakkında hiçbir bilgi verilmeden yapılan sızma testi hangisidir?", options: ["Kara kutu (black box)", "Beyaz kutu", "Gri kutu", "Fiziksel"], obj: "h1" },
       { id: "918129dd", q: "Sızma testinde kapsam ve kuralları belirleyen belge hangisidir?", options: ["Rules of Engagement", "SLA", "NDA", "BIA"], obj: "h2" },
       { id: "e7679109", q: "Savunma takımının adı nedir?", options: ["Blue team", "Red team", "Purple team", "Green team"], obj: "h3" },
-      { id: "a6b5844b", q: "Otomatik araçla bilinen açıkları listeleyen çalışma nedir?", options: ["Zafiyet taraması", "Sızma testi", "Bug bounty", "Red team"], obj: "h4" }
+      { id: "a6b5844b", q: "Otomatik araçla bilinen açıkları listeleyen çalışma nedir?", options: ["Zafiyet taraması", "Sızma testi", "Bug bounty", "Red team"], obj: "h4" },
+      { id: "e2c1b998", q: "Güvenlik ekibi, tespit kurallarının hangi saldırgan tekniklerini kapsayıp hangilerini kaçırdığını matris üzerinde göstermek istiyor. Hangi kaynak en uygundur?", options: ["Cyber Kill Chain", "MITRE ATT&CK", "Diamond Model", "CVSS"], obj: "h4" },
+      { id: "68acc7fc", q: "Bir analist olayı saldırgan, yetenek, altyapı ve kurban arasındaki ilişkiyle çözümlüyor. Hangi model kullanılıyor?", options: ["Cyber Kill Chain", "MITRE ATT&CK", "STRIDE", "Diamond Model"], obj: "h4" }
     ],
     interview: [
       { q: "Zafiyet taraması ve sızma testi farkı nedir?", a: "Tarama otomatik ve geniş bilinen açıkları listeler. Sızma testi insanla, yetkiyle açıkları sömürüp zincirleyerek gerçek etkiyi gösterir. İkisinde de yazılı kapsam ve izin gerekir." },
