@@ -12,39 +12,39 @@
     "q": "console.log(typeof null, typeof undefined) ne yazdırır?",
     "options": [
      "object object",
-     "null undefined",
+     "undefined undefined",
      "object undefined",
-     "undefined undefined"
+     "null undefined"
     ]
    },
    {
     "id": "61253beb",
     "q": "console.log(\"5\" + 3, \"5\" - 3) ne yazdırır?",
     "options": [
+     "8 2",
      "53 53",
-     "8 8",
      "53 2",
-     "8 2"
+     "8 8"
     ]
    },
    {
     "id": "89a71d43",
     "q": "const toplam = 10; toplam = 20; satırları çalışınca ne olur?",
     "options": [
+     "TypeError fırlatılır",
      "Kod hiç çalışmaz (SyntaxError)",
      "Sessizce yok sayılır",
-     "toplam 20 olur",
-     "TypeError fırlatılır"
+     "toplam 20 olur"
     ]
    },
    {
     "id": "9a06bbc4",
     "q": "console.log(Boolean(\"0\"), Boolean([]), Boolean(NaN)) ne yazdırır?",
     "options": [
-     "false false true",
-     "true false false",
+     "false true false",
      "true true false",
-     "false true false"
+     "false false true",
+     "true false false"
     ]
    }
   ]
@@ -60,10 +60,10 @@
     "id": "56f7cb1e",
     "q": "let n = 5; do { console.log(n); n++; } while (n < 5); kodu ne yapar?",
     "options": [
-     "5 yazar, sonra durur",
-     "5 ve 6 yazar, sonra durur",
      "Hiçbir şey yazmaz",
-     "5, 6, 7 diye sonsuza kadar yazar"
+     "5 ve 6 yazar, sonra durur",
+     "5, 6, 7 diye sonsuza kadar yazar",
+     "5 yazar, sonra durur"
     ]
    },
    {
@@ -80,20 +80,20 @@
     "id": "02a7ec4f",
     "q": "const a = { n: 1 }; const b = a; b.n = 2; console.log(a.n) ne yazdırır?",
     "options": [
-     "TypeError fırlatılır",
      "undefined",
-     "1",
-     "2"
+     "TypeError fırlatılır",
+     "2",
+     "1"
     ]
    },
    {
     "id": "abfed4f7",
     "q": "const f = (x) => { x * 2 }; console.log(f(4)) ne yazdırır?",
     "options": [
-     "NaN",
-     "8",
      "Hata verir",
-     "undefined"
+     "undefined",
+     "NaN",
+     "8"
     ]
    }
   ]

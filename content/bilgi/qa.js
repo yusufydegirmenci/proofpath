@@ -11,38 +11,38 @@
     "id": "13106e60",
     "q": "Bir ekip, uygulamanın her ekranını tasarım belgesindeki taslakla yan yana koyup birebir aynı olduklarını onaylıyor. Bu çalışma hangi kavrama örnektir?",
     "options": [
-     "Doğrulama (verification) çalışmasına",
      "Kusur kümelenmesi ilkesinin uygulanmasına",
+     "Geçerleme (validation) çalışmasına",
      "Değişiklik sonrası regresyon testine",
-     "Geçerleme (validation) çalışmasına"
+     "Doğrulama (verification) çalışmasına"
     ]
    },
    {
     "id": "ac7c5b83",
     "q": "Bir formdaki alanların olası değer birleşimleri milyonları buluyor. 'Kapsamlı test mümkün değildir' ilkesine göre en doğru yaklaşım hangisidir?",
     "options": [
-     "Teknikler ve riske dayalı önceliklendirme kullanmak",
-     "Tüm birleşimleri zamana yayarak tek tek koşturmak",
      "Testi bırakıp kusurları kullanıcıların bulmasını beklemek",
-     "Yalnızca bir birleşimi sınayıp testi tamamlanmış saymak"
+     "Yalnızca bir birleşimi sınayıp testi tamamlanmış saymak",
+     "Teknikler ve riske dayalı önceliklendirme kullanmak",
+     "Tüm birleşimleri zamana yayarak tek tek koşturmak"
     ]
    },
    {
     "id": "f9bbc4b6",
     "q": "Bir geliştirici yazdığı SQL sorgusunu mola sırasında meslektaşına gösterip görüş alıyor; ne toplantı düzeni ne yazılı kayıt var. Bu hangi inceleme türüdür?",
     "options": [
-     "Gayriresmî inceleme (informal review)",
      "Yazarın yönettiği bir walkthrough oturumu",
      "Moderatörlü teknik inceleme toplantısı",
-     "Ölçüm toplanan resmî bir inspection"
+     "Ölçüm toplanan resmî bir inspection",
+     "Gayriresmî inceleme (informal review)"
     ]
    },
    {
     "id": "88c4c4e5",
     "q": "Orana dayalı test eforu tahmininde kullanılan oranlar hangi kaynaktan alınır?",
     "options": [
-     "Test aracı üreticilerinin yayımladığı sektör ortalamaları",
      "Kuruluşun önceki benzer projelerinden toplanan veriler",
+     "Test aracı üreticilerinin yayımladığı sektör ortalamaları",
      "En iyi, olası ve en kötü durum tahminlerinin ağırlıklı ortalaması",
      "Uzmanların birbirinden gizli yaptığı oylamaların sonuçları"
     ]
@@ -60,10 +60,10 @@
     "id": "8dc75350",
     "q": "Bir alan 10 ile 20 arasındaki tamsayıları (uçlar dahil) kabul ediyor. 3 değerli sınır değer analizinde üst sınır için hangi değerler sınanır?",
     "options": [
-     "19, 20 ve 21",
-     "20, 21 ve 22",
      "10, 15 ve 20",
-     "18, 20 ve 22"
+     "19, 20 ve 21",
+     "18, 20 ve 22",
+     "20, 21 ve 22"
     ]
    },
    {
@@ -80,10 +80,10 @@
     "id": "a96f3b87",
     "q": "Bir modülde 40 yürütülebilir ifade vardır ve testler bunlardan 34'ünü çalıştırmıştır. İfade kapsamı yaklaşık kaçtır?",
     "options": [
-     "%85",
-     "%6",
      "%34",
-     "%15"
+     "%15",
+     "%85",
+     "%6"
     ]
    },
    {
