@@ -478,6 +478,16 @@
           "Gereksinimin testle kapsanmadığını"
         ],
         "obj": "h4"
+      },
+      {
+        "id": "19a00bda",
+        "q": "Belirli bir test hedefine ulaşmak için test senaryolarının yürütme sırasına dizilmesi ve ilgili eylemlerin bir araya getirilmesine ne ad verilir?",
+        "options": [
+          "Hata raporu (sapma kaydı)",
+          "Test verisi (girdi değerleri)",
+          "Test prosedürü",
+          "Test amacı (hedef beyanı)"
+        ]
       }
     ],
     "interview": [
@@ -736,7 +746,7 @@
       },
       {
         "id": "e718e97f",
-        "q": "Kusursuzluk yanılgısı ilkesi hangi iki kavramı vurgular?",
+        "q": "Kusursuzluk yanılgısı ilkesinin vardığı sonuç hangisidir?",
         "options": [
           "Planlama ve raporlama",
           "Birim ve entegrasyon",
@@ -1786,6 +1796,26 @@
           "Backlog iyileştirme (refinement) toplantılarında hikâye üzerinde birlikte çalışırken"
         ],
         "obj": "h4"
+      },
+      {
+        "id": "cd2a5c2d",
+        "q": "Test izleme ile test kontrolü arasındaki ilişki hangisidir?",
+        "options": [
+          "İzleme yalnızca proje bittikten sonra yapılır",
+          "İzleme bilgi toplar, kontrol yönlendirir",
+          "İkisi aynı etkinliğin iki farklı adıdır",
+          "Kontrol bilgi toplar, izleme düzeltici eylem verir"
+        ]
+      },
+      {
+        "id": "da294a15",
+        "q": "Test stratejisi ile bir projenin test yaklaşımı arasındaki ilişki nasıldır?",
+        "options": [
+          "Yaklaşım, stratejinin projeye uyarlanmış hâlidir",
+          "Yaklaşım kuruluş geneli, strateji tek sprint içindir",
+          "Aynı kavramın eş anlamlı iki adıdır",
+          "Strateji hataları düzeltir, yaklaşım raporlar"
+        ]
       }
     ],
     "interview": [
@@ -3057,6 +3087,26 @@
           "Elle yapmak imkânsızdır"
         ],
         "obj": "h4"
+      },
+      {
+        "id": "0e0f2c79",
+        "q": "Ürün riski kontrolü hangi iki etkinlikten oluşur?",
+        "options": [
+          "Risk puanlama ve risk raporlama",
+          "Risk kabulü ve risk saklama",
+          "Risk tanımlama ve risk değerlendirme",
+          "Risk azaltma ve risk izleme"
+        ]
+      },
+      {
+        "id": "d482c09b",
+        "q": "Ekip bir ürün riskini analiz ettikten sonra, olası zararı sözleşmeyle bir sigortacıya devretmeye karar verdi. Bu hangi risk yanıtıdır?",
+        "options": [
+          "Beklenmedik durum planı",
+          "Testle risk azaltma",
+          "Risk kabulü",
+          "Risk transferi"
+        ]
       }
     ],
     "interview": [

@@ -69,7 +69,7 @@ const sorularTum = new Map(); // id -> {q, kaynak}
     w.PP_VA[k].sorular.forEach((q) => sorularTum.set(q.id, { q: q.q, kaynak: 'content/veri-analitigi/' + f + '.js', hedef: w.PP_VA[k].id }));
   }
   for (const y in global.__seviye) global.__seviye[y].sorular.forEach((q) => sorularTum.set(q.id, { q: q.q, kaynak: T.SEVIYE_DOSYA, hedef: 'seviye:' + y }));
-  eq(sorularTum.size, 1521, 'taranan sınav sorusu: 1430 ders (Faz 22: +8 çoklu seçim pilotu; Faz 20: +67 CCNA/Ağ NetAcad hizası; Faz 19b: +115 DevOps/Kubernetes LFS158 ve KCNA; Faz 19a: +114 QA ISTQB; Faz 18: +62 Python; Faz 17b: +25 AWS SAA-C03 karşılaştırma; Faz 17: +21 AWS SAA-C03; Faz 16: +52 Security+ V8) + 21 VA + 70 seviye = 1521');
+  eq(sorularTum.size, 1532, 'taranan sınav sorusu: 1441 ders (Faz 23: +11 QA/DevOps boşluk; Faz 22: +8 çoklu seçim pilotu; Faz 20: +67 CCNA/Ağ NetAcad hizası; Faz 19b: +115 DevOps/Kubernetes LFS158 ve KCNA; Faz 19a: +114 QA ISTQB; Faz 18: +62 Python; Faz 17b: +25 AWS SAA-C03 karşılaştırma; Faz 17: +21 AWS SAA-C03; Faz 16: +52 Security+ V8) + 21 VA + 70 seviye = 1532');
   let izlenen;
   /* izlenen + henüz eklenmemiş ama .gitignore'a takılmayan (yani commit'e girebilecek) dosyalar */
   try { izlenen = cp.execSync('git ls-files --cached --others --exclude-standard', { cwd: KOK, encoding: 'utf8' }).split('\n').filter(Boolean); } catch (e) { izlenen = null; }
