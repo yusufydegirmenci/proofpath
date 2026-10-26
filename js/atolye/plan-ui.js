@@ -56,6 +56,9 @@ function renderPlan() {
         y.belirsiz.map(function (b) { return h("div", { class: "mute" }, "Belirsiz: " + b.ad + " — " + b.neden + ". Netleşmesi için: " + b.gerekenKanit + "."); }),
         y.darbogaz ? h("div", null, h("b", null, "Darboğaz: "), y.darbogaz.hedef + " — " + y.darbogaz.neden) : null));
   }) : [];
+  var belgeler = girdi.yollar.filter(function (y) { return y.toplam > 0 && y.tamam >= y.toplam; }).map(function (y) {
+    return h("a", { class: "btn ghost", "data-belge": y.id, href: "belge.html?hat=" + encodeURIComponent(y.ad) + "&t=" + girdi.bugun, target: "_blank", rel: "noopener" }, y.ad + " bitirme belgesi");
+  });
   return h("div", { class: "panel plan", "data-plan": "panel" }, h("div", { class: "label" }, "Plan ve öğrenme ikizi"), h("h2", null, "Haftalık planın"),
     h("div", { class: "small", "data-plan": "telafi" }, P.telafi.metin),
     h("div", { class: "small mute", style: "margin-top:4px" }, h("b", null, "Ölçülen: "), "son 7 günde " + P.olculen.sonYediGunDk + " dk, " + P.olculen.aktifGun + " aktif gün."),
@@ -67,6 +70,9 @@ function renderPlan() {
     h("details", { class: "more" }, h("summary", null, "Alternatif takvimler"), h("div", { class: "morebox" }, kars)),
     h("details", { class: "more" }, h("summary", null, "Düzelt: müsaitliğin"), h("div", { class: "morebox", style: "display:grid;gap:8px" }, dkTuslari, gunTuslari, musaitBtn,
       h("div", { class: "small mute" }, "Takvimini sen belirlersin; plan sessizce değiştirilmez. Kaçırılan gün ceza ya da aciliyet üretmez."))),
+    h("details", { class: "more", "data-plan": "belge" }, h("summary", null, "Bitirme belgesi"), h("div", { class: "morebox", style: "display:grid;gap:6px" },
+      belgeler.length ? belgeler : h("div", { class: "small mute" }, "Bir yolun tüm konularını bitirince FORNEX bitirme belgesi burada açılır."),
+      h("div", { class: "small mute" }, "Bağımsız eğitim belgesidir; resmî sertifika ya da sınav sonucu değildir."))),
     h("details", { class: "more" }, h("summary", null, "Öğrenme ikizi (kayıtlara göre durum)"), h("div", { class: "morebox", style: "display:grid;gap:6px" }, ikiz,
       Z && Z.ekKanit.length ? h("div", { class: "small mute", "data-ikiz": "ek" }, Z.ekKanit.map(function (x) { return x.metin; }).join(" ")) : null,
       h("div", { class: "small mute" }, "Karar desteğidir; yetkinlik kararı değildir. Olasılık ya da kesin tarih vermez."))));
