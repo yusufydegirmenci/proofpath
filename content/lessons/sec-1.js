@@ -196,7 +196,8 @@
       { id: "176918db", q: "İndirilen dosyanın değişmediğini nasıl kontrol edersin?", options: ["Hash'i hesaplayıp yayımlananla karşılaştırırım", "Dosyayı şifrelerim", "Dosyayı zip'lerim", "Boyutuna bakarım"], obj: "h2" },
       { id: "fc9a1763", q: "Parola hash'lerinde 'salt' neden kullanılır?", options: ["Aynı parolaların aynı hash'i vermesini engellemek için", "Hash'i kısaltmak için", "Parolayı şifrelemek için", "Giriş hızını artırmak için"], obj: "h3" },
       { id: "98778746", q: "Aşağıdakilerden hangisi artık güvenlik amacıyla önerilmez?", options: ["MD5", "SHA-256", "SHA-3", "Argon2"], obj: "h3" },
-      { id: "52bfbe01", q: "Kullanıcı parolalarını veritabanında saklamak için en uygun yaklaşım hangisidir?", options: ["Parolayı AES ile şifreleyip anahtarı aynı sunucuda tutmak", "Tuzsuz MD5 ile hash'lemek", "Salt'lı ve bilerek yavaş bir algoritmayla hash'lemek (ör. bcrypt, Argon2)", "Tuzsuz SHA-256 ile hash'lemek"], obj: "h3" }
+      { id: "52bfbe01", q: "Kullanıcı parolalarını veritabanında saklamak için en uygun yaklaşım hangisidir?", options: ["Parolayı AES ile şifreleyip anahtarı aynı sunucuda tutmak", "Tuzsuz MD5 ile hash'lemek", "Salt'lı ve bilerek yavaş bir algoritmayla hash'lemek (ör. bcrypt, Argon2)", "Tuzsuz SHA-256 ile hash'lemek"], obj: "h3" },
+      { id: "a22ac518", q: "Hangi İKİ özellik kriptografik bir hash fonksiyonunu tanımlar?", options: ["Doğru anahtara sahip olan çıktıyı yeniden çözebilir", "Küçük girdi değişimi çıktıyı çok değiştirir", "Çıktı uzunluğu girdi uzunluğuyla birlikte büyür", "Çıktı geri çevrilemez (tek yönlü)", "Aynı özeti veren iki farklı girdi bulmak kolaydır"], multi: 2, obj: "h1" }
     ],
     interview: [
       { q: "Hash ile şifreleme arasındaki fark nedir?", a: "Şifreleme anahtarla geri çözülebilir, gizliliği hedefler. Hash tek yönlüdür, geri çevrilemez ve bütünlük kontrolü ya da parola doğrulama için kullanılır." },

@@ -106,15 +106,31 @@
   /* Ders hedefi → sunucu kapı kimliği (tohum: ders-ustalik:<yol>:<n>) */
   function dersKapisi(hedef) { var m = /^ders:([a-z]+):(\d+):sinav$/.exec(hedef || ""); return m ? "ders-ustalik:" + m[1] + ":" + m[2] : null; }
 
-  /* Sorular(id'li) ve seçilen şık indekslerinden gönderim cevapları: {soru_id: seçenek metni}; eksik cevap varsa null */
+  /* Çoklu seçim (Faz 22): q.multi = N → cevap, seçilen N şık metninin sıralı JSON dizisi metnidir (anahtardaki dogru ile aynı kurallı biçim;
+     sunucu karşılaştırması değişmez: p_cevaplar ->> soru_id = dogru). Tek cevaplı sorular eskisi gibi düz seçenek metni. */
+  function coklu(metinler) { return JSON.stringify(metinler.slice().sort()); }
+  /* Sorular(id'li) ve seçilen şık indekslerinden gönderim cevapları: {soru_id: seçenek metni}; eksik cevap varsa null.
+     Çoklu soruda secimler[i] tam q.multi tane farklı indeks dizisidir. */
   function cevaplar(sorular, secimler, secenekAlani) {
     var o = {}, alan = secenekAlani || "options";
     for (var i = 0; i < sorular.length; i++) {
       var q = sorular[i], j = secimler[i];
-      if (!q || typeof q.id !== "string" || !Array.isArray(q[alan]) || typeof j !== "number" || j < 0 || j >= q[alan].length) return null;
-      o[q.id] = q[alan][j];
+      if (!q || typeof q.id !== "string" || !Array.isArray(q[alan])) return null;
+      if (q.multi !== undefined) {
+        if (!Array.isArray(j) || j.length !== q.multi || new Set(j).size !== j.length) return null;
+        for (var t = 0; t < j.length; t++) if (typeof j[t] !== "number" || j[t] < 0 || j[t] >= q[alan].length) return null;
+        o[q.id] = coklu(j.map(function (x) { return q[alan][x]; }));
+      } else {
+        if (typeof j !== "number" || j < 0 || j >= q[alan].length) return null;
+        o[q.id] = q[alan][j];
+      }
     }
     return o;
+  }
+  /* Anahtar/cevap metni → seçenek metinleri dizisi ("[" ile başlıyorsa çoklu, değilse tek elemanlı) */
+  function dogruListesi(d) {
+    if (typeof d === "string" && d.charAt(0) === "[") { try { var a = JSON.parse(d); if (Array.isArray(a)) return a.map(String); } catch (e) { /* düz metin */ } }
+    return d == null || d === "" ? [] : [String(d)];
   }
 
   /* Bölüm sonu bilgi testi (Faz 21): tek soru, anlık geri bildirim; puansız, deneme/ustalık kaydı YOK (depo.sunucuEkle çağrılmaz).
@@ -134,5 +150,5 @@
     });
   }
 
-  O.sunucu = { MESAJ: MESAJ, yapilandir: yapilandir, gonder: gonder, kapi: kapi, bilgi: bilgi, dersKapisi: dersKapisi, aciklama: aciklama, cevaplar: cevaplar, eslestir: eslestir, cevrimici: cevrimici, oturumVar: oturumVar };
+  O.sunucu = { MESAJ: MESAJ, yapilandir: yapilandir, gonder: gonder, kapi: kapi, bilgi: bilgi, dersKapisi: dersKapisi, aciklama: aciklama, cevaplar: cevaplar, coklu: coklu, dogruListesi: dogruListesi, eslestir: eslestir, cevrimici: cevrimici, oturumVar: oturumVar };
 })(typeof window !== "undefined" ? window : globalThis);

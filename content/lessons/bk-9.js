@@ -207,7 +207,8 @@
   "Yalnızca yedeklerin sayısını artırmak"
 ], obj: "h4" },
       { id: "714a4c2b", q: "Pilot light stratejisinde ikinci bölgeye çekirdek veri sürekli çoğaltılıyor. Felaket ilan edildiğinde hangi adımlar gerekir?", options: ["Uygulama katmanını hazır AMI ile başlatıp ölçeklemek ve DNS'i ikinci bölgeye yönlendirmek","Veritabanını sıfırdan en son yedekten geri yükleyip uygulamayı elle kurmak, ardından DNS'i çevirmek","Hiçbir şey; ikinci bölge kendiliğinden tam kapasiteyle zaten çalışıyor","Birincil bölgenin geri gelmesini beklemek"], obj: "h5" },
-      { id: "d2e6efaa", q: "Bir şirket, şirket içi fiziksel ve sanal sunucularını AWS'ye sürekli blok düzeyinde çoğaltıp felakette dakikalar içinde AWS'de başlatmak istiyor. Hangi hizmet kullanılmalıdır?", options: ["Yalnızca günlük yedek planıyla AWS Backup","AWS Elastic Disaster Recovery","AWS DataSync","AWS Snowball Edge"], obj: "h5" }
+      { id: "d2e6efaa", q: "Bir şirket, şirket içi fiziksel ve sanal sunucularını AWS'ye sürekli blok düzeyinde çoğaltıp felakette dakikalar içinde AWS'de başlatmak istiyor. Hangi hizmet kullanılmalıdır?", options: ["Yalnızca günlük yedek planıyla AWS Backup","AWS Elastic Disaster Recovery","AWS DataSync","AWS Snowball Edge"], obj: "h5" },
+      { id: "eb136ae5", q: "Hangi İKİ felaket kurtarma stratejisi, pilot light stratejisinden daha kısa kurtarma süresi (RTO) sağlar?", options: ["Backup and restore", "Yalnızca günlük anlık görüntü almak", "Yedekleri kasete yazıp saklamak", "Warm standby", "Multi-site active/active"], multi: 2, obj: "h2" }
     ],
     interview: [
       { q: "RPO ve RTO arasındaki fark nedir?", a: "RPO ne kadar veri kaybına katlanılabileceğini (zaman olarak), RTO hizmetin ne kadar sürede geri gelmesi gerektiğini söyler. İkisi de iş birimiyle belirlenir ve strateji seçimini yönlendirir." },

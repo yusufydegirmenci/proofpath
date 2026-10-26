@@ -99,21 +99,32 @@
             } else say.anahtarDenetimiAtlandi++;
           }
           var anahtarVar = !sunucu || (typeof anahtar === "function" && ans !== undefined);
+          /* Faz 22 çoklu seçim: yalnız sunucuya ayrılmış soruda (multi: 2-4); anahtarın dogru değeri sıralı JSON dizisi metni, tam multi tane seçenek */
+          var coklu = q.multi !== undefined, dogrular = [ans];
+          if (coklu) {
+            if (!sunucu) hata.push(s + ": multi yalnız sunucuya ayrılmış soruda olabilir");
+            if (!(typeof q.multi === "number" && q.multi >= 2 && q.multi <= 4 && q.multi % 1 === 0) || o.length < q.multi + 1) hata.push(s + ": multi 2-4 olmalı ve seçenek sayısı multi+1'den az olamaz");
+            if (anahtarVar) {
+              dogrular = [];
+              try { dogrular = JSON.parse(ans); } catch (e) { dogrular = []; }
+              if (!Array.isArray(dogrular) || dogrular.length !== q.multi || new Set(dogrular).size !== dogrular.length || JSON.stringify(dogrular.slice().sort()) !== ans) hata.push(s + ": çoklu anahtar sıralı JSON dizisi ve tam multi tane farklı seçenek olmalı");
+            }
+          }
           if (typeof q.q !== "string" || !q.q) hata.push(s + ": soru metni yok");
           if (o.length < 2) hata.push(s + ": seçenek yok");
-          else if (anahtarVar && o.indexOf(ans) < 0) hata.push(s + ": answer seçeneklerde yok");
+          else if (anahtarVar && (coklu ? !Array.isArray(dogrular) || dogrular.some(function (x) { return o.indexOf(x) < 0; }) : o.indexOf(ans) < 0)) hata.push(s + ": answer seçeneklerde yok");
           if (anahtarVar && (typeof why !== "string" || !why)) hata.push(s + ": why yok");
           if (q.obj !== undefined) { if (!(q.obj in hid)) hata.push(s + ": obj bilinmeyen hedefe işaret ediyor (" + q.obj + ")"); else hid[q.obj]++; }
           if (anahtarVar && wnot !== undefined) {
             if (!wnot || typeof wnot !== "object" || Array.isArray(wnot)) hata.push(s + ": whyNot nesne olmalı");
             else Object.keys(wnot).forEach(function (sx) {
               if (o.indexOf(sx) < 0) hata.push(s + ": whyNot anahtarı seçenek değil (" + sx + ")");
-              else if (sx === ans) hata.push(s + ": whyNot doğru seçenek için yazılamaz");
+              else if (coklu ? Array.isArray(dogrular) && dogrular.indexOf(sx) >= 0 : sx === ans) hata.push(s + ": whyNot doğru seçenek için yazılamaz");
               else if (typeof wnot[sx] !== "string" || !wnot[sx].trim()) hata.push(s + ": whyNot metni boş (" + sx + ")");
             });
           }
           if (anahtarVar) {
-            var yanlis = o.filter(function (x) { return x !== ans; }), var_ = yanlis.filter(function (x) { var t = wnot && typeof wnot === "object" ? wnot[x] : null; return typeof t === "string" && t.trim(); }).length;
+            var yanlis = o.filter(function (x) { return coklu ? !(Array.isArray(dogrular) && dogrular.indexOf(x) >= 0) : x !== ans; }), var_ = yanlis.filter(function (x) { var t = wnot && typeof wnot === "object" ? wnot[x] : null; return typeof t === "string" && t.trim(); }).length;
             say.yanlisSecenek += yanlis.length; say.whyNotVar += var_; e.whyNotEksik += yanlis.length - var_;
           }
         });

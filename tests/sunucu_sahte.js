@@ -6,9 +6,13 @@ const SAHTE_INIT = () => {
   const kimlikSayisi = (id) => parseInt(String(id).slice(0, 8), 16);
   const secenekler = (q) => q.options || q.o;
   window.__sentetikDogru = (q) => secenekler(q)[kimlikSayisi(q.id) % secenekler(q).length];
+  // Çoklu seçim (Faz 22): sentetik doğru = kimlikten türeyen ardışık multi şık; anahtar/cevap biçimi = seçenek metinlerinin sıralı JSON dizisi metni
+  const dogruIdx = (q) => Array.from({ length: q.multi || 1 }, (_, t) => (kimlikSayisi(q.id) + t) % q.o.length);
+  const dogruMetni = (q) => q.multi ? JSON.stringify(dogruIdx(q).map((i) => q.o[i]).sort()) : q.o[kimlikSayisi(q.id) % q.o.length];
+  window.__sentetikCoklu = (q) => dogruMetni({ id: q.id, o: q.options, multi: q.multi });
   function sorular(hedef) {
     let m;
-    if ((m = /^ders:([a-z]+):(\d+):sinav$/.exec(hedef))) { const d = (window.PP_LESSONS[m[1]] || {})[m[2]]; return d && d.quiz && d.quiz.map((q) => ({ id: q.id, o: q.options, agirlik: 1 })); }
+    if ((m = /^ders:([a-z]+):(\d+):sinav$/.exec(hedef))) { const d = (window.PP_LESSONS[m[1]] || {})[m[2]]; return d && d.quiz && d.quiz.map((q) => ({ id: q.id, o: q.options, multi: q.multi, agirlik: 1 })); }
     if ((m = /^seviye:([a-z]+)$/.exec(hedef))) { const s = (window.PP_SINAV && PP_SINAV.seviye || {})[m[1]]; return s && s.sorular.map((q) => ({ id: q.id, o: q.o, agirlik: q.d })); }
     for (const k of ['sinav0', 'sinav1', 'sinav2']) if (window.PP_VA && PP_VA[k] && PP_VA[k].id === hedef) return PP_VA[k].sorular.map((q) => ({ id: q.id, o: q.o, agirlik: 1 }));
     return null;
@@ -25,14 +29,15 @@ const SAHTE_INIT = () => {
       const n = (durum.deneme[hedef] = (durum.deneme[hedef] || 0) + 1);
       if (n > durum.sinir) return { data: null, error: { code: '54000', message: 'cok sik deneme; biraz bekle' } };
       let maks = 0, puan = 0, dogruN = 0;
-      S.forEach((q) => { maks += q.agirlik; if (cevaplar[q.id] === q.o[kimlikSayisi(q.id) % q.o.length]) { puan += q.agirlik; dogruN++; } });
+      S.forEach((q) => { maks += q.agirlik; if (cevaplar[q.id] === dogruMetni(q)) { puan += q.agirlik; dogruN++; } });
       const gecti = puan / maks >= 0.8;
       let anahtar = null;
       if (gecti) {
         anahtar = {};
         S.forEach((q) => {
-          const dogru = q.o[kimlikSayisi(q.id) % q.o.length], yanlisIlk = q.o.find((x) => x !== dogru);
-          anahtar[q.id] = { dogru, ok: cevaplar[q.id] === dogru, why: 'sentetik açıklama ' + q.id, whyNot: { [yanlisIlk]: 'sentetik neden ' + q.id } };
+          const dogru = dogruMetni(q), dg = q.multi ? JSON.parse(dogru) : [dogru], wn = {};
+          q.o.filter((x) => !dg.includes(x)).forEach((x) => { wn[x] = 'sentetik neden ' + q.id; });
+          anahtar[q.id] = { dogru, ok: cevaplar[q.id] === dogru, why: 'sentetik açıklama ' + q.id, whyNot: q.multi ? wn : { [q.o.find((x) => x !== dogru)]: 'sentetik neden ' + q.id } };
         });
       }
       return { data: { puan, maks, oran: Math.round((puan / maks) * 10000) / 10000, gecti, dogru_sayisi: dogruN, soru_sayisi: S.length, esik: 0.8, surum: '2026-10-v1', anahtar }, error: null };

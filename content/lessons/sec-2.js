@@ -318,7 +318,8 @@
       { id: "6b110126", q: "Kullanıcının açık oturumunu kullanarak istemeden işlem yaptırma hangisidir?", options: ["CSRF", "XSS", "Path traversal", "Replay"], obj: "h2" },
       { id: "547c8f31", q: "../../etc/passwd gibi bir girdi hangi saldırıya işaret eder?", options: ["Path traversal", "SQL injection", "XSS", "DDoS"], obj: "h3" },
       { id: "f55a350d", q: "Saldırgan bir web uygulamasını, dışarıdan erişilemeyen iç ağdaki bir yönetim servisine istek göndermeye zorluyor. Bu hangisidir?", options: ["XSS", "CSRF", "SSRF", "Buffer overflow"], obj: "h2" },
-      { id: "18c2a7d4", q: "Bir web uygulaması beklenmedik bir hata oluşunca kullanıcıya tam yığın izini ve veritabanı bağlantı dizesini gösteriyor. Bu, hangi zafiyet türünün örneğidir?", options: ["İstisnai durumların güvensiz ele alınması (hata yönetimi hatası)", "SQL enjeksiyonu", "Çapraz site istek sahteciliği (CSRF)", "Dizin gezinme (path traversal)"], obj: "h4" }
+      { id: "18c2a7d4", q: "Bir web uygulaması beklenmedik bir hata oluşunca kullanıcıya tam yığın izini ve veritabanı bağlantı dizesini gösteriyor. Bu, hangi zafiyet türünün örneğidir?", options: ["İstisnai durumların güvensiz ele alınması (hata yönetimi hatası)", "SQL enjeksiyonu", "Çapraz site istek sahteciliği (CSRF)", "Dizin gezinme (path traversal)"], obj: "h4" },
+      { id: "ea7c5971", q: "Hangi İKİ kontrol XSS (siteler arası betik çalıştırma) saldırılarına karşı etkilidir?", options: ["Çıktı kodlaması (output encoding)", "Content Security Policy (CSP)", "Parola karmaşıklığı kuralını sıkılaştırmak", "TLS sürümünü yükseltmek", "Sunucuda port taramasını engellemek"], multi: 2, obj: "h2" }
     ],
     interview: [
       { q: "SQL injection nedir, nasıl önlenir?", a: "Kullanıcı girdisinin SQL sorgusuna komut olarak karışmasıdır. Parametreli sorgularla, girdi doğrulamayla ve veritabanı hesabına en az yetki vererek önlenir." },
