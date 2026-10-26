@@ -365,16 +365,14 @@
       { id: "h1", text: "Site-to-Site VPN, Direct Connect ve Client VPN'i ihtiyaca göre ayırt edebilirsin." },
       { id: "h2", text: "Direct Connect'in şifreleme ve dayanıklılık yönlerini (yedek VPN, çoklu konum) açıklayabilirsin." },
       { id: "h3", text: "DataSync, Snow ailesi, Storage Gateway ve Transfer Family'yi veri taşıma senaryosuna göre seçebilirsin." },
-      { id: "h4", text: "DMS ve SCT'nin veritabanı geçişindeki rolünü ayırt edebilirsin." },
-      { id: "h5", text: "Snowcone, Snowball Edge ve Snowmobile arasında veri hacmine ve uç konuma göre seçim yapabilirsin." }
+      { id: "h4", text: "DMS ve SCT'nin veritabanı geçişindeki rolünü ayırt edip Snowcone, Snowball Edge ve Snowmobile arasında veri hacmine ve uç konuma göre seçim yapabilirsin." }
     ],
     summary: [
       "Site-to-Site VPN internet üzerinden şifreli ve hızlı kurulur; Direct Connect tutarlı gecikme ve yüksek verim için ayrılmış hattır ama kurulumu uzun sürer ve varsayılan olarak şifrelemez.",
       "Kritik hibrit bağlantıda iki konumlu Direct Connect ve yedek VPN kullanılır.",
       "DataSync çevrimiçi ve zamanlanabilir dosya eşitleme yapar; Snow cihazları çok büyük ya da bağlantısı zayıf yerlerdeki veri için fiziksel taşıma sağlar.",
       "Storage Gateway yerel uygulamalara önbellekli bulut depolama sunar; Transfer Family ortakların SFTP/FTPS/FTP ile S3'e doğrudan dosya yüklemesini sağlar.",
-      "DMS veritabanını çalışırken sürekli kopyalar; farklı motora geçişte SCT şemayı dönüştürür.",
-      "Snowcone en küçük taşınabilir cihazdır, Snowball Edge büyük hacim ve uç hesaplama, Snowmobile exabayt ölçeği içindir."
+      "DMS veritabanını çalışırken sürekli kopyalar; farklı motora geçişte SCT şemayı dönüştürür. Snowcone en küçük taşınabilir cihazdır, Snowball Edge büyük hacim ve uç hesaplama, Snowmobile exabayt ölçeği içindir."
     ],
     quiz: [
       { id: "787fc2eb", q: "Bir şirket, veri merkeziyle AWS arasında şifreli bir bağlantıyı hızla devreye almak istiyor ve ayrılmış bir hatta ihtiyaç duymuyor. Hangi seçenek uygundur?", options: [

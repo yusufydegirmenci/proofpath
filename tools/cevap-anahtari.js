@@ -337,6 +337,7 @@ function anahtarSqlOku(sql) {
         if (sql[i] === ")") { i++; break; }
         throw new Error("anahtar tohumu ayrıştırılamadı @" + i);
       }
+      if (typeof alan[5] === "string" && alan[5][0] === "{") alan[5] = JSON.parse(alan[5]); // ::jsonb eki olmayan satır (faz-17b)
       out.push(alan);
     }
   }

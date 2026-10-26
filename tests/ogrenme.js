@@ -481,10 +481,13 @@ function kapiOrnek() {
   // Cevap anahtarı sunucuda (Faz 9): yerelde gizli tohum varsa (supabase/seed/*_anahtar.sql; halka açık repoda YOK) answer/why/whyNot denetimi de çalışır;
   // yoksa açıkça ATLANDI yazılır (sessizce geçmez).
   const seedDir = path.join(__dirname, '..', 'supabase', 'seed'), anahtarDosyalari = fs.existsSync(seedDir) ? fs.readdirSync(seedDir).filter(f => /_anahtar\.sql$/.test(f)) : [];
+  // Özel ops deposu yan klasörde varsa onun tohumları da okunur (uygulama sırası: tam dosya → parca → ek-k → faz; sonraki dosya öncekini ezer)
+  const opsDir = path.join(__dirname, '..', '..', 'proofpath-ops', 'kayitlar', 'seed'), sira = f => /^faz-/.test(f) ? 3 : /^ek-k\d\.sql$/.test(f) ? 2 : /^parca-/.test(f) ? 1 : 0;
+  const opsDosyalari = fs.existsSync(opsDir) ? fs.readdirSync(opsDir).filter(f => /^(parca-\d|ek-k\d\.sql|faz-.*\.sql|20261018_2_ogr_anahtar\.sql)/.test(f) && !/hedef/.test(f)).sort((a, b) => sira(a) - sira(b) || (a < b ? -1 : 1)) : [];
   let cozucu = null;
-  if (anahtarDosyalari.length) {
-    const harita = new Map();
-    anahtarDosyalari.forEach(f => require('../tools/cevap-anahtari.js').anahtarSqlOku(fs.readFileSync(path.join(seedDir, f), 'utf8')).forEach(r => harita.set(r[0] + '|' + r[1] + '|' + r[2], { dogru: r[3], aciklama: r[5] || {} })));
+  if (anahtarDosyalari.length || opsDosyalari.length) {
+    const harita = new Map(), oku = (d, f) => require('../tools/cevap-anahtari.js').anahtarSqlOku(fs.readFileSync(path.join(d, f), 'utf8')).forEach(r => harita.set(r[0] + '|' + r[1] + '|' + r[2], { dogru: r[3], aciklama: r[5] || {} }));
+    anahtarDosyalari.forEach(f => oku(seedDir, f)); opsDosyalari.forEach(f => { try { oku(opsDir, f); } catch (e) { console.log('ATLANDI  ops tohumu ayrıştırılamadı: ' + f + ' (' + e.message + ')'); } });
     cozucu = (yol, no, id) => harita.get('ders:' + yol + ':' + no + ':sinav|v1|' + id) || null;
   }
   /* gerçek içerik gerçek bugüne göre denetlenir (sabit `bugun` yalnız yukarıdaki sahte örnekler içindir); aksi halde yeni yazılan dersin sonDogrulama tarihi "gelecekte" sayılırdı */

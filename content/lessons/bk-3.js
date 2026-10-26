@@ -41,16 +41,14 @@
       { id: "h1", text: "Multi-AZ ile Read Replica'yı amacına göre (arıza geçişi mi, okuma ölçeği mi) ayırt edebilirsin." },
       { id: "h2", text: "Otomatik yedek (1-35 gün, PITR) ile manuel snapshot'ı ayırt edip geri yüklemenin yeni bir örnek ürettiğini açıklayabilirsin." },
       { id: "h3", text: "Lambda kaynaklı bağlantı yığılmasına RDS Proxy'yi, ağ güvenliği için özel alt ağ ve güvenlik grubunu seçebilirsin." },
-      { id: "h4", text: "Bir iş yükü için RDS mi DynamoDB mi uygun olduğunu sorgu ve ölçek ihtiyacına göre belirleyebilirsin." },
-      { id: "h5", text: "Aurora Serverless v2'nin ne zaman (değişken, öngörülemeyen yük) sağlanmış Aurora'ya tercih edildiğini söyleyebilirsin." }
+      { id: "h4", text: "Bir iş yükü için RDS mi DynamoDB mi uygun olduğunu sorgu ve ölçek ihtiyacına göre belirleyip Aurora Serverless v2'nin değişken, öngörülemeyen yükte sağlanmış Aurora'ya tercih edildiğini söyleyebilirsin." }
     ],
     summary: [
       "Multi-AZ eşzamanlı bekleme örneğiyle otomatik failover sağlar ama Multi-AZ örnek dağıtımında bekleme okuma ölçeklemez (Multi-AZ DB cluster'da okunabilir bekleme örnekleri vardır); Read Replica eşzamansız kopyayla okuma yükünü dağıtır ve failover amaçlı değildir.",
       "Aurora 6 kopyalı dağıtık depolama kullanır ve 15 kopyaya kadar okuma sunar.",
       "Otomatik yedekler 1-35 gün saklanır ve belirli zamana geri dönüşe izin verir; manuel snapshot silinene dek kalır; her geri yükleme yeni bir örnek ve yeni uç nokta oluşturur.",
       "Çok sayıda eşzamanlı Lambda çağrısı bağlantıları tüketir; RDS Proxy bağlantıları havuzlar ve kimlik bilgisini Secrets Manager'dan yönetir.",
-      "Veritabanı özel alt ağda durur ve güvenlik grubu yalnızca uygulamanın grubuna izin verir; 0.0.0.0/0 ile 5432/3306 açmak tipik tuzaktır.",
-      "Aurora Serverless v2 kapasiteyi ACU adımlarıyla yüke göre otomatik ölçekler; değişken yükte işletme yükünü ve boşta maliyeti düşürür."
+      "Veritabanı özel alt ağda durur ve güvenlik grubu yalnızca uygulamanın grubuna izin verir; 0.0.0.0/0 ile 5432/3306 açmak tipik tuzaktır. Aurora Serverless v2 kapasiteyi ACU adımlarıyla yüke göre otomatik ölçekler; değişken yükte işletme yükünü ve boşta maliyeti düşürür."
     ],
     quiz: [
       { id: "c70f3ff5", q: "Okuma trafiğini dağıtmak için hangisi kullanılır?", options: ["Read Replica", "Multi-AZ örnek dağıtımının bekleme örneği", "Snapshot", "Parameter group"], obj: "h1" },
@@ -60,7 +58,7 @@
       { id: "c66428c8", q: "Veritabanı örneği nerede olmalıdır?", options: ["Özel alt ağda", "Herkese açık alt ağda", "S3'te", "Lambda içinde"], obj: "h3" },
       { id: "77d651db", q: "Muhasebe kayıtları gibi JOIN'li raporlama ve işlem (transaction) bütünlüğü isteyen ilişkisel veri için hangisi daha uygundur?", options: ["RDS PostgreSQL","DynamoDB ile tek tablo","ElastiCache Memcached","S3 Standard"], obj: "h4" },
       { id: "7af78afb", q: "Otomatik yedekler ile manuel snapshot arasındaki saklama farkı hangisidir?", options: ["Otomatik yedek 1-35 gün saklanır; manuel snapshot siz silene dek kalır","Her ikisi de 35 gün sonra kendiliğinden silinir","Manuel snapshot 1 gün sonra silinir, otomatik yedek sonsuza kadar kalır","Otomatik yedek saklanmaz, yalnız snapshot vardır"], obj: "h2" },
-      { id: "ad10cea4", q: "Gün boyu öngörülemez biçimde değişen, bazı saatlerde neredeyse hiç kullanılmayan bir uygulama MySQL uyumlu veritabanı istiyor. Kapasiteyi elle yönetmek ve tepe yüke göre sabit örnek ödemek istemiyorlar. Hangi seçenek uygundur?", options: ["En büyük örnek türünde sağlanmış tek bir RDS örneği","Aurora Global Database","Aurora Serverless v2","Amazon S3 üzerinde Athena sorguları"], obj: "h5" },
+      { id: "ad10cea4", q: "Gün boyu öngörülemez biçimde değişen, bazı saatlerde neredeyse hiç kullanılmayan bir uygulama MySQL uyumlu veritabanı istiyor. Kapasiteyi elle yönetmek ve tepe yüke göre sabit örnek ödemek istemiyorlar. Hangi seçenek uygundur?", options: ["En büyük örnek türünde sağlanmış tek bir RDS örneği","Aurora Global Database","Aurora Serverless v2","Amazon S3 üzerinde Athena sorguları"], obj: "h4" },
       { id: "3f95592c", q: "Okuma ağırlıklı bir RDS veritabanının okuma yükünü azaltmak için hangi İKİ çözüm uygundur?", options: ["Sağlanmış IOPS değerini düşürmek", "Veritabanını tek bir Availability Zone'a taşımak", "Bir ya da daha fazla okuma replikası eklemek", "Sık okunan sorgu sonuçlarını ElastiCache'te önbelleğe almak", "Multi-AZ DB instance dağıtımının bekleme örneğine okuma yönlendirmek"], multi: 2, obj: "h1" }
     ],
     interview: [

@@ -133,8 +133,7 @@
       "EBS kalıcı örnek diskidir; instance store geçicidir ve örnekle birlikte kaybolur.",
       "ALB katman 7'de HTTP/HTTPS ve yol tabanlı yönlendirme yapar; NLB katman 4'te TCP/UDP içindir.",
       "Auto Scaling birden çok AZ'ye yayılır, sağlıksız örneği yeniler; hedef takibi metriği hedef değerde tutar.",
-      "Durumsuz tasarımda oturum ve dosyalar örnekte değil ElastiCache/DynamoDB ve S3'te tutulur.",
-      "Cluster grubu gecikmeyi, spread grubu ayrı donanımı, partition grubu büyük dağıtık sistemleri; GWLB ise sanal güvenlik cihazlarını hedefler."
+      "Durumsuz tasarımda oturum ve dosyalar örnekte değil ElastiCache/DynamoDB ve S3'te tutulur. Cluster grubu gecikmeyi, spread grubu ayrı donanımı, partition grubu büyük dağıtık sistemleri; GWLB ise sanal güvenlik cihazlarını hedefler."
     ],
     quiz: [
       { id: "eb41faa7", q: "HTTP yol tabanlı yönlendirme yapan yük dengeleyici hangisidir?", options: ["ALB", "NLB", "Route 53 kaydı", "Gateway endpoint"], obj: "h2" },
@@ -282,8 +281,7 @@
       "OAC ile S3 kovası özel kalır ve yalnızca CloudFront'tan okunur.",
       "İçeriği hemen yansıtmak için invalidation yerine sürümlü dosya adı tercih edilir; invalidation maliyetli olabilir.",
       "CloudFront için ACM sertifikası us-east-1 bölgesinde olmalıdır.",
-      "Route 53'te kök alan adında CNAME kullanılamaz, alias kaydı kullanılır; gecikme tabanlı politika en düşük gecikmeli bölgeye yönlendirir.",
-      "Global Accelerator iki sabit anycast IP verir, TCP/UDP trafiğini AWS omurgasından en yakın sağlıklı uç noktaya taşır ve önbellek yapmaz."
+      "Route 53'te kök alan adında CNAME kullanılamaz, alias kaydı kullanılır; gecikme tabanlı politika en düşük gecikmeli bölgeye yönlendirir. Global Accelerator iki sabit anycast IP verir, TCP/UDP trafiğini AWS omurgasından en yakın sağlıklı uç noktaya taşır ve önbellek yapmaz."
     ],
     quiz: [
       { id: "284a0584", q: "S3'e doğrudan erişimi kapatıp sadece CloudFront'tan okutan özellik hangisidir?", options: ["Origin Access Control", "Presigned URL tek başına", "Versioning", "Lifecycle"], obj: "h1" },
@@ -350,16 +348,14 @@
       { id: "h1", text: "Partition key'in kaydı hangi shard'a götürdüğünü ve sıranın nasıl korunduğunu açıklayabilirsin." },
       { id: "h2", text: "Akışı S3 gibi hedeflere yönetilen şekilde yüklemek için Firehose'u seçebilirsin." },
       { id: "h3", text: "Kinesis Data Streams ile SQS arasındaki farkı (çoklu tüketici, tekrar okuma) ayırt edebilirsin." },
-      { id: "h4", text: "Shard sınırı aşımını ve sıcak shard sorununu partition key dağılımını iyileştirerek çözebilirsin." },
-      { id: "h5", text: "Mevcut Kafka iş yükü için Amazon MSK, AWS'ye özgü yeni akış için Kinesis Data Streams seçimini yapabilirsin." }
+      { id: "h4", text: "Shard sınırı aşımını ve sıcak shard sorununu partition key dağılımını iyileştirerek çözebilir, mevcut Kafka iş yükü için Amazon MSK, AWS'ye özgü yeni akış için Kinesis Data Streams seçebilirsin." }
     ],
     summary: [
       "Data Streams gerçek zamanlı, sıralı ve tekrar okunabilir bir akıştır; Firehose akışı S3 gibi hedeflere yönetilen şekilde yükler.",
       "Partition key kaydın shard'ını belirler; aynı anahtar aynı shard'a gider ve sıra korunur.",
       "Kinesis birden çok bağımsız tüketiciye izin verir; SQS mesaj işlenince siler ve tekrar okunamaz.",
       "Shard sınırı aşılınca ProvisionedThroughputExceededException alınır; çözüm anahtarı dağıtmak, shard artırmak, backoff ile denemektir.",
-      "Düşük çeşitlilikli partition key (ülke kodu) tek shard'ı sıcak bırakır.",
-      "Amazon MSK yönetilen Apache Kafka'dır; Kafka istemcilerini değiştirmeden taşımak için seçilir."
+      "Düşük çeşitlilikli partition key (ülke kodu) tek shard'ı sıcak bırakır. Amazon MSK yönetilen Apache Kafka'dır; Kafka istemcilerini değiştirmeden taşımak için seçilir."
     ],
     quiz: [
       { id: "391f3eb2", q: "Kayıtların hangi shard'a gideceğini ne belirler?", options: ["Partition key", "Bucket adı", "ARN", "Subnet"], obj: "h1" },
@@ -367,7 +363,7 @@
       { id: "2c0d0fb9", q: "Aynı veriyi birden çok bağımsız tüketicinin okuyabilmesi hangi servisin avantajıdır?", options: ["Kinesis Data Streams", "SQS standart", "SNS SMS", "Route 53"], obj: "h3" },
       { id: "61a139df", q: "Shard başına yazma sınırı nedir?", options: ["1 MB/sn veya 1000 kayıt/sn", "100 MB/sn", "1 KB/sn", "Sınırsız"], obj: "h4" },
       { id: "06ad4c91", q: "Sıcak shard'ın çözümü hangisidir?", options: ["Partition key dağılımını iyileştirmek", "Daha çok log", "Parolayı değiştirmek", "KMS silmek"], obj: "h4" },
-      { id: "58a79a6c", q: "Bir ekip, şirket içinde çalışan Apache Kafka uygulamalarını istemci kodunu değiştirmeden AWS'ye taşımak ve sunucu işletmek istemiyor. Hangi hizmet uygundur?", options: ["Amazon SQS","Amazon MSK","Amazon Kinesis Data Streams","Amazon SNS"], obj: "h5" }
+      { id: "58a79a6c", q: "Bir ekip, şirket içinde çalışan Apache Kafka uygulamalarını istemci kodunu değiştirmeden AWS'ye taşımak ve sunucu işletmek istemiyor. Hangi hizmet uygundur?", options: ["Amazon SQS","Amazon MSK","Amazon Kinesis Data Streams","Amazon SNS"], obj: "h4" }
     ],
     interview: [
       { q: "Kinesis Data Streams ve SQS farkı?", a: "Kinesis sıralı (shard içinde), birden çok tüketicinin okuyabildiği ve saklama süresince tekrar oynatılabilen bir akıştır. SQS mesajı bir tüketiciye teslim edip işlenince siler; sıra garantisi yalnızca FIFO'da vardır." },
