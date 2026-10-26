@@ -93,6 +93,7 @@ function coachBubble(st,rust){
     h("div",{class:"cmsg"},h("div",{class:"cwho"},"Koç Ağ"),h("div",null,heroMessage(st,rust))));
 }
 function renderHero(){
+  if(S.kimlik===false){hero.replaceChildren();return}   /* giriş/kimlik belli olmadan sabit ad ve dönem metni DOM'a girmez */
   if(tab!=="bugun"||S.pf.simple){hero.classList.add("mini");return miniHero()}
   hero.classList.remove("mini");
   var R=rankInfo(),st=streakInfo(),wk=weekInfo(),rust=rustList().length,td=new Date();
@@ -106,7 +107,7 @@ function renderHero(){
     h("div",{class:"hero-in"},
       academyBar(),
       h("div",{class:"greet"},h("div",{class:"label"},days[td.getDay()]+" · "+td.getDate()+" "+mons[td.getMonth()]),
-        h("h1",null,greeting()+(MYN()?", "+MYN():"")),coachBubble(st,rust),h("p",{class:"mantra"},mantra())),
+        h(window.ppGate&&ppGate.acik()?"h2":"h1",null,greeting()+(MYN()?", "+MYN():"")),coachBubble(st,rust),h("p",{class:"mantra"},mantra())),
       h("div",{class:"hero-row"},
         h("div",{class:"rankring"},ringBig(pct,gateMissing),h("div",{class:"c"},h("div",null,xpEl,h("br"),h("span",null,"XP")))),
         h("div",{style:"display:grid;gap:10px;min-width:0"},
