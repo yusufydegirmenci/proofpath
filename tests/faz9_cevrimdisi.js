@@ -148,6 +148,7 @@ const SAHTE = `
     ok(await p.evaluate(() => Object.keys(localStorage).some(k => k === 'pp_onbellek:uA:notes')), 'A2: çevrimdışı görüntü (son bilinen sunucu verisi) saklandı');
 
     // A3) Çevrimdışı: yazma kuyruğa girer, hata atmaz, yerel görünür; yenilemede çevrimdışı açılır; dönünce gönderilir
+    await p.waitForFunction(() => window.PP_DERS_HAZIR === true, null, { timeout: 15000 }); await p.waitForTimeout(500);   /* Faz 33: ders içeriği tembel yüklenir; bitmeden çevrimdışı olunursa uygulamanın kendi yazımı da kuyruğa girer */
     await p.evaluate(() => localStorage.setItem('__fakenet', 'off'));
     await p.evaluate(() => window.dispatchEvent(new Event('offline')));
     eq(await docSet(p, 'notes/n2', { t: 'cevrimdisi' }), 'tamam', 'A3: çevrimdışı yazma hata vermedi');
@@ -156,7 +157,7 @@ const SAHTE = `
     ok(/Çevrimdışı · 1 bekliyor/.test(await rozet(p)), 'A3: rozet "Çevrimdışı · 1 bekliyor"');
     eq(await docGet(p, 'notes/n2'), { t: 'cevrimdisi' }, 'A3: yerel görünüm yeni değeri gösteriyor');
     eq(await dbSatir(p, 'notes/n2'), null, 'A3: sunucuya henüz gitmedi');
-    await p.reload(); await p.waitForTimeout(1800);
+    await p.reload(); await p.waitForFunction(() => window.PP_DERS_HAZIR === true, null, { timeout: 15000 }); await p.waitForTimeout(1800);
     eq(await docGet(p, 'notes/n1'), { t: 'iki' }, 'A3: çevrimdışı yenilemede son bilinen veri okunuyor');
     eq((await motor(p)).d.bekleyen, 1, 'A3: kuyruk yenilemeden sonra da duruyor');
     await p.evaluate(() => { localStorage.removeItem('__fakenet'); window.dispatchEvent(new Event('online')); });

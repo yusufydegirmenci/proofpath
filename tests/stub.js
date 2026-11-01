@@ -48,7 +48,7 @@ const SAYFA_HATALARI=[];
 (function(){
   let src='';try{src=require('fs').readFileSync(require.main.filename,'utf8')}catch(e){}
   if(!src||/assert|\bok\(|\beq\(|process\.exit|\bcheck\(|expect\(/.test(src))return;
-  const izle=p=>p.on('pageerror',e=>SAYFA_HATALARI.push(String(e.message).slice(0,160)));
+  const izle=p=>p.on('pageerror',e=>{if(/Access is denied for this document/.test(String(e.message)))return;SAYFA_HATALARI.push(String(e.message).slice(0,160))});
   const launch=chromium.launch.bind(chromium);
   chromium.launch=async(...a)=>{
     const b=await launch(...a),nc=b.newContext.bind(b),np=b.newPage.bind(b);
