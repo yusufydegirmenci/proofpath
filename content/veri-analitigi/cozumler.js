@@ -1,5 +1,5 @@
 /* Veri Analitiği · uygulama alanlarının örnek çözümleri (PP.alan `cozum` yedeği; çözüm görülürse alıştırma kanıt sayılmaz).
-   Kaynak: tests/va-cozumler-*.json (cozum) + va0-* alanları. Her çözümün sonunda tek cümlelik 'Neden:' açıklaması vardır. Veri SENTETİKTİR. */
+   Kaynak: gizli depodaki va-cozumler-*.json (ops kayitlar/gizli/) + va0-* alanları. DİKKAT: bu dosya istemciye gider; çözümler herkese açıktır. Her çözümün sonunda tek cümlelik 'Neden:' açıklaması vardır. Veri SENTETİKTİR. */
 (window.PP_VA = window.PP_VA || {}).alanCozum = {
   "va0-1-sql": "SELECT COUNT(*) FROM siparis WHERE iade = 'evet'\n\nNeden: COUNT(*) yalnız WHERE'in süzdüğü satırları sayar; bu yüzden iade sütununda 'evet' yazan siparişler tek bir sayıya iner.",
   "va0-1-py": "sonuc = len([s for s in siparisler if s['iade'] == 'evet'])\n\nNeden: liste kapsamı yalnız s['iade'] == 'evet' olan sözlükleri bırakır ve len() kalanları sayarak tek sayı verir.",

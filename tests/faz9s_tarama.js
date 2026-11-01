@@ -142,12 +142,13 @@ const sorularTum = new Map(); // id -> {q, kaynak}
   }
 }
 
-// ---- 7) Bilgi: sınav dışı çözümler (kapsam kararı b: istemcide kalır)
+// ---- 7) Bilgi: sınav dışı çözümler (gizli depoya taşındı; public tests/ altında olmamalı)
 {
   const coz = fs.readdirSync(path.join(KOK, 'tests')).filter((f) => /^va-cozumler-.*\.json$/.test(f));
-  const kullanan = fs.readdirSync(path.join(KOK, 'tests')).filter((f) => /\.js$/.test(f) && f !== 'faz9s_tarama.js' && fs.readFileSync(path.join(KOK, 'tests', f), 'utf8').includes('va-cozumler-'));
-  console.log('BİLGİ  tests/va-cozumler-*.json: ' + coz.length + ' dosya (ders içi uygulama alanı çözümleri; sınav değil, kapsam kararı b). Kullanan testler: ' + (kullanan.join(', ') || 'yok'));
-  ok(coz.length === 3, 'tests/va-cozumler-*.json 3 dosya (silinmedi; özel depoya taşıma kararı kullanıcıda)');
+  ok(coz.length === 0, 'tests/ altında va-cozumler-*.json yok (gizli depoya taşındı: kayitlar/gizli/)');
+  const gizli = require('./gizli.js')();
+  if (!gizli.length) console.log('ATLANDI  gizli çözüm dosyaları yok (PP_GIZLI / ../proofpath-ops/kayitlar/gizli): içerik denetimi yapılmadı');
+  else ok(gizli.length >= 16, 'gizli depoda ' + gizli.length + ' alan çözümü okunuyor');
 }
 
 console.log(`\n${n} kontrol, ${fails} hata, ${bilinen} bilinen risk`);

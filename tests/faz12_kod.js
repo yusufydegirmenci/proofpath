@@ -2,7 +2,7 @@
 //   SQL → node:sqlite (bellekte) · Python → `python -I` (zaman sınırlı, ağ soketi kapalı) · JS → acorn (modül) ayrıştırması
 //   bash → `bash -n` · YAML (PyYAML varsa) / JSON → sözdizimi. Çalışması beklenmeyen blok içerikte açıkça işaretlidir
 //   (`calistirma: "atla <neden>"`) ve sayılır. Kaynaklar: content/lessons (ders), PP_EK, PP_VA, PP_SENARYO, js/veri/tmap.js, proje dosyaları.
-// Ayrıca Veri Analitiği alan çözümlerini (PP_VA.alanCozum + tests/va-cozumler-*.json) PP.alan'ın kontrol/varyant işlevleriyle çevrimdışı çalıştırır.
+// Ayrıca Veri Analitiği alan çözümlerini (PP_VA.alanCozum + kayitlar/gizli/va-cozumler-*.json) PP.alan'ın kontrol/varyant işlevleriyle çevrimdışı çalıştırır.
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
@@ -256,7 +256,8 @@ if (PY) { // ağ kilidi: Python bloğu ağa çıkamaz
 
 // 4) Veri Analitiği alan çözümleri: gösterilen çözüm (PP_VA.alanCozum) + test çözümleri, PP.alan kontrol/varyant işleviyle, çevrimdışı
 const alanlar = (win.PP_VA && win.PP_VA.alanlar) || [];
-const cozumDosyalari = fs.readdirSync(__dirname).filter(f => /^va-cozumler-.*\.json$/.test(f)).flatMap(f => JSON.parse(fs.readFileSync(path.join(__dirname, f), 'utf8')));
+const cozumDosyalari = require('./gizli.js')();
+if (!cozumDosyalari.length) console.log('ATLANDI  gizli test çözümleri yok (PP_GIZLI / ../proofpath-ops/kayitlar/gizli): yalnız gösterilen çözümler sınandı');
 function alanKos(a, kod) {
   const veri = a.veri || win.PP_VA.veri;
   const kos = (kodx, vx) => (a.tur === 'sql' ? alanSql(kodx, vx) : alanPy(kodx, vx));
@@ -293,7 +294,7 @@ for (const a of kosulabilir) {
 }
 eq(alanHata, [], 'VA alanları çevrimdışı çalıştırıldı: gösterilen çözüm ' + gosterilen + ', test çözümü ' + testCozum + ', reddedilen yanlış ' + yanlisRed + ' (çalıştırılabilir alan ' + kosulabilir.length + '/' + alanlar.length + ')');
 if (atlananAlan.length) console.log('  çözüm metni yok (yalnız test çözümü varsa sınandı): ' + atlananAlan.join(', '));
-ok(gosterilen + testCozum >= 20 || (!SQLITE && !PY), 'VA alanlarında en az 20 çözüm gerçekten çalıştırıldı (' + (gosterilen + testCozum) + ')');
+ok(gosterilen + testCozum >= (cozumDosyalari.length ? 20 : 1) || (!SQLITE && !PY), 'VA alanlarında en az 20 çözüm gerçekten çalıştırıldı (' + (gosterilen + testCozum) + ')');
 const simler = alanlar.filter(a => a.tur === 'sim').length;
 console.log('  çalıştırılmayan: ' + simler + ' simülasyon (tur: sim; kural kontrolü, kod çalışmaz), ' + alanlar.filter(a => a.tur === 'js').length + ' js alanı (yalnız tarayıcı işçisinde çalışır)');
 

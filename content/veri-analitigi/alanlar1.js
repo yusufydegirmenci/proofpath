@@ -2,7 +2,7 @@
    Yükleme sırası: seviye0.js, veri-ek.js (VA.yd, VA.veriKirli), alanlar.js, bu dosya.
    Elektronik tablo GERÇEKTEN çalıştırılmaz: `sim` alanları yalnız yazılan formül metnini ve sonucu kural tabanlı denetler.
    SQL/Python alanları "aynı işin SQL/Python karşılığı"dır. Kontrol işlevleri sabit cevap TUTMAZ; beklenen değer verilen veriden (v) hesaplanır.
-   Çözümler tests/va-cozumler-s1.json içindedir. Veri SENTETİKTİR. */
+   Test çözümleri gizli depodadır (tests/gizli.js). Veri SENTETİKTİR. */
 (function () {
   var VA = (window.PP_VA = window.PP_VA || {});
   VA.alanlar = VA.alanlar || [];

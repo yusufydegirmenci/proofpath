@@ -1,5 +1,5 @@
 // Faz 10 tur 3: Veri Analitiği Seviye 1 (elektronik tablo) + Seviye 2 (SQL): 16 ders (15 öğe), her derste çalışan alan, kontrol veriden sayar,
-// varyant testi (sabit cevap reddedilir), değerlendirmeler, 8 proje, arayüz (390 px). Çözümler tests/va-cozumler-*.json (public kodda cevap yok).
+// varyant testi (sabit cevap reddedilir), değerlendirmeler, 8 proje, arayüz (390 px). Çözümler gizli depoda (tests/gizli.js; public kodda cevap yok).
 // Gerçek çalıştırma jsDelivr'den sql.js/Pyodide indirir; ağ yoksa o bölümler "ATLANDI" yazar (geçti sayılmaz).
 const path = require('path'), fs = require('fs');
 const { INIT, chromium } = require('./stub.js');
@@ -104,7 +104,9 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
 
   // 8) Gerçek SQL/Python
   const agVar = await ev(async () => { try { const r = await fetch('https://cdn.jsdelivr.net/npm/sql.js@1.10.3/dist/sql-wasm.js', { method: 'HEAD', mode: 'cors' }); return r.ok; } catch (e) { return false; } });
-  const cozum = fs.readdirSync(__dirname).filter(f => /^va-cozumler-.*\.json$/.test(f)).flatMap(f => JSON.parse(fs.readFileSync(path.join(__dirname, f), 'utf8')));
+  const cozum = require('./gizli.js')();
+  if (!cozum.length) console.log('ATLANDI  gizli çözüm dosyası yok: bölüm 8 (gerçek SQL/Python çözüm testi) atlandı');
+  else {
   ok(cozum.length >= 16, 'çözüm dosyalarında ' + cozum.length + ' alan çözümü');
   const kapsam = await ev(() => PP_VA.alanlar.filter(a => /^va[12]-/.test(a.id) && a.tur !== 'sim').map(a => a.id));
   eq(kapsam.filter(id => !cozum.some(c => c.id === id)), [], 'çalışan her alan için test çözümü var');
@@ -133,6 +135,8 @@ const eq = (a, b, m) => { const s = JSON.stringify(a) === JSON.stringify(b); ok(
     }
     eq(hatali, [], 'gerçek çalıştırma: çözümler kabul, yanlışlar ve sabit cevaplar reddedilir (doğru ' + dogru + ', yanlış-reddedilen ' + yanlisRed + ', sabit-reddedilen ' + sabitRed + '/' + sabitDene + ')');
     ok(dogru >= 16 && sabitDene >= 16, 'en az 16 alan gerçekten çalıştırıldı ve sabit-cevap sınandı (' + dogru + '/' + sabitDene + ')');
+  }
+
   }
 
   // 9) Arayüz (390 px)
