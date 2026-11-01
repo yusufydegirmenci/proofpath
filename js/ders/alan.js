@@ -329,7 +329,7 @@
   function degerlendir(d, girdi, opts) {
     if (!d || typeof d.kontrol !== "function") return Promise.resolve({ ok: false, neden: "tanim-yok", mesaj: "Alan tanımı yok." });
     if (d.tur === "sim") {
-      var rs = kontrolSar(d, { tur: "sim", girdi: String(girdi == null ? "" : girdi) }, null);
+      var rs = kontrolSar(d, { tur: "sim", girdi: String(girdi == null ? "" : girdi) }, d.veri);
       return Promise.resolve({ ok: true, calisti: false, dogru: rs.dogru, mesaj: rs.mesaj, sonuc: null });
     }
     return calistir(d.tur, girdi, d.veri, opts).then(function (r) {
