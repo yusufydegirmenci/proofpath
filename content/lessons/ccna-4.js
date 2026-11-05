@@ -239,7 +239,7 @@
         "Kaynak port (16 bit) ve hedef port (16 bit).",
         "Sıra numarası (32 bit) ve onay numarası (32 bit).",
         "Başlık uzunluğu (4 bit): 32 bitlik kelime sayısıdır; 5 ile 15 arası olur, yani başlık 20 ile 60 bayttır.",
-        "Ayrılmış alan (reserved, 3 bit) ve kontrol bitleri (9 bit). Klasik anlatımda 6 bayrak sayılır: URG, ACK, PSH, RST, SYN, FIN.",
+        "Ayrılmış alan ve bayraklar: RFC 9293 şemasında 4 bit ayrılmış + 8 bayrak (CWR, ECE, URG, ACK, PSH, RST, SYN, FIN). Eski RFC 3540 NS bayrağını da ekleyip 3 bit ayrılmış + 9 bayrak sayar; klasik anlatım yalnız 6 bayrağı sayar (URG, ACK, PSH, RST, SYN, FIN). Üçü de aynı 16 bitlik alanı farklı bölüyor. (RFC 9293 metniyle satır satır doğrulanamadı.)",
         "Pencere boyutu (16 bit), sağlama toplamı (16 bit), acil işaretçi (urgent pointer, 16 bit).",
         "Seçenekler (options): isteğe bağlı, 32 bitin katları; başlığın 20 bayttan uzun olmasının nedeni budur."
       ] },

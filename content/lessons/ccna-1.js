@@ -40,9 +40,9 @@
       { t: "steps", h: "UTP kategorileri (yaklaşık sınırlar)", items: [
         "Cat3: eski, 10 Mbps Ethernet ve telefon hattı. Bugün yeni kurulumda kullanılmaz.",
         "Cat5e: 1 Gbps, 100 metreye kadar. Ev ve küçük ofiste hâlâ yaygın.",
-        "Cat6: 1 Gbps için 100 metre; 10 Gbps için yaklaşık 55 metreye kadar.",
+        "Cat6: 1 Gbps için 100 metre; 10GBASE-T ile en çok yaklaşık 55 metre, kurulum kalitesine bağlı (IEEE 802.3an, TIA-568).",
         "Cat6a: 10 Gbps, tam 100 metre. Yeni ofis kablolamasında sık seçilir.",
-        "Cat7: korumalı (shielded). ISO/IEC sınıfıdır, TIA kategorisi olarak tanınmaz.",
+        "Cat7: korumalı (shielded). Yalnız ISO/IEC 11801 sınıfıdır, TIA tanımaz.",
         "Cat8: 25/40 Gbps, yaklaşık 30 metre. Veri merkezinde sunucu-switch arası kısa bağlantılar için."
       ] },
       { t: "steps", h: "Fiber ve koaksiyel", items: [
