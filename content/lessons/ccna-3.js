@@ -47,6 +47,26 @@
         "Adres edinme: SLAAC (cihaz router duyurusundan kendine adres oluşturur), DHCPv6 ya da elle.",
         "Dokümantasyon adresi: 2001:db8::/32. Örneklerde bunu kullanırız."
       ] },
+      { t: "h", text: "IPv4 ve IPv6 başlıkları, parçalama ve TTL" },
+      { t: "steps", h: "IPv4 başlığı (20-60 bayt)", items: [
+        "Sürüm (4 bit) ve IHL (4 bit): başlık uzunluğu, 32 bitlik kelime sayısı; seçenek yoksa 5 yani 20 bayt.",
+        "Toplam uzunluk (16 bit), Tanımlayıcı (16 bit), Bayraklar (3 bit: ayrılmış, DF, MF) ve Parça ofseti (13 bit, 8 baytlık birimler).",
+        "TTL (8 bit): her router'da 1 azalır, 0 olunca paket atılır ve ICMP Time Exceeded döner.",
+        "Protokol (8 bit): içerideki veriyi söyler. 1 ICMP, 6 TCP, 17 UDP.",
+        "Başlık sağlama toplamı (16 bit), kaynak IP (32 bit), hedef IP (32 bit)."
+      ] },
+      { t: "steps", h: "Parçalama (fragmentation) ve MTU", items: [
+        "MTU bir bağlantının taşıyabildiği en büyük paket boyutudur; Ethernet'te tipik 1500 bayt.",
+        "Paket MTU'dan büyükse ve DF=0 ise router onu parçalara böler. Son parça hariç hepsinde MF=1 olur; parça ofseti parçanın yerini gösterir.",
+        "DF=1 ise router paketi atar ve kaynağa 'parçalama gerekli' ICMP mesajı döner.",
+        "Parçaları hedef birleştirir; bir parça kaybolursa tüm paket yeniden iletilmek zorundadır, bu yüzden parçalama verimsizdir."
+      ] },
+      { t: "steps", h: "IPv6 başlığı: sabit 40 bayt", items: [
+        "Sürüm, Trafik sınıfı (IPv4'teki servis türü karşılığı), Akış etiketi (20 bit), Yük uzunluğu, Sonraki başlık, Atlama sınırı, kaynak ve hedef adres (128'er bit).",
+        "Eşleme: TTL → Atlama sınırı (hop limit), Protokol → Sonraki başlık, Toplam uzunluk → Yük uzunluğu.",
+        "Başlık sağlama toplamı yoktur ve router'lar paketi parçalamaz; gerekirse yalnız kaynak parçalar. Seçenekler uzantı başlıklarına taşındı."
+      ] },
+      { t: "box", h: "TTL'den atlama sayısı çıkarma", text: "Gelen paketteki TTL'ye bakıp kaynağın başlangıç değerini tahmin edersin: yaygın değerler 64 (Linux, macOS), 128 (Windows), 255 (ağ cihazları). Örnek: Windows bir sunucudan TTL=118 geldiyse başlangıç 128 varsayılır, 128−118 = 10 router geçilmiştir. Bu bir tahmindir: başlangıç değeri değiştirilebilir. Karıştırma: DNS kaydındaki TTL saniye cinsinden önbellek süresidir, IP TTL ise atlama sayacıdır." },
       { t: "h", text: "Cisco router'da yapılandırma" },
       { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Router(config)# ipv6 unicast-routing\nRouter(config)# interface gigabitethernet0/0\nRouter(config-if)# ipv6 address 2001:db8:acad:1::1/64\nRouter(config-if)# ipv6 address fe80::1 link-local\nRouter(config-if)# no shutdown\n\n# Static route:\nRouter(config)# ipv6 route 2001:db8:acad:2::/64 2001:db8:acad:12::2\n\nRouter# show ipv6 interface brief\nRouter# show ipv6 route" },
       { t: "box", h: "Neden 'ipv6 unicast-routing'?", text: "Bu komut olmadan Cisco router IPv6 paketleri yönlendirmez. Arayüze adres verdin diye router otomatik yönlendirici olmaz." },
@@ -75,7 +95,9 @@
       { id: "47b405db", q: "Bir IPv6 adresi FF02::1 ile başlıyorsa bu adres hangi türdendir?", options: ["Multicast","Global unicast","Link-local","Unique local"], obj: "h2" },
       { id: "430b6fbc", q: "2001:db8:acad:2::/64 ağına 2001:db8:acad:12::2 next-hop adresi üzerinden statik rota hangi komutla yazılır?", options: ["ipv6 route 2001:db8:acad:2::/64 2001:db8:acad:12::2","ip route 2001:db8:acad:2::/64 2001:db8:acad:12::2","ipv6 route 2001:db8:acad:2::/64 255.255.255.0 2001:db8:acad:12::2","ipv6 unicast-routing 2001:db8:acad:2::/64"], obj: "h4" },
       { id: "0609739e", q: "FD12:3456:789A::1 adresi hangi IPv6 adres türüne aittir?", options: ["Global unicast", "Link-local", "Unique local (FC00::/7 içinde)", "Multicast"], obj: "h2" },
-      { id: "6c4b4248", q: "Kaynak adresi FE80::/10 aralığından olan bir paketi router aldığında ne yapar?", options: ["Varsayılan rotadan internete iletir", "Başka bir ağa yönlendirmez; adres yalnızca bağlı olduğu bağlantıda geçerlidir", "NAT ile global bir adrese çevirip iletir", "TTL değerini artırarak hedefe ulaştırır"], obj: "h2" }
+      { id: "6c4b4248", q: "Kaynak adresi FE80::/10 aralığından olan bir paketi router aldığında ne yapar?", options: ["Varsayılan rotadan internete iletir", "Başka bir ağa yönlendirmez; adres yalnızca bağlı olduğu bağlantıda geçerlidir", "NAT ile global bir adrese çevirip iletir", "TTL değerini artırarak hedefe ulaştırır"], obj: "h2" },
+      { id: "8e80ea26", q: "Bir Windows sunucudan gelen yanıtta TTL=118 görünüyor (başlangıç 128 varsayılıyor). Aradaki router sayısı kaçtır?", options: ["10", "118", "128", "246"], obj: "h3" },
+      { id: "ebdf4992", q: "DF bayrağı 1 olan bir paket, MTU'su paketten küçük bir bağlantıya geliyor. Router ne yapar?", options: ["Paketi atar ve ICMP ile kaynağı uyarır", "Paketi iki parçaya bölüp hedefe iletir", "TTL değerini artırıp paketi yeniden dener", "Paketin fazla kısmını kesip geri kalanını iletir"], obj: "h3" }
     ],
     interview: [
       { q: "IPv6 neden geliştirildi?", a: "IPv4'ün 32 bitlik adres alanı tükendi. IPv6 128 bitlik adresleme ile neredeyse sınırsız adres sunar, ayrıca NAT ihtiyacını azaltır ve daha verimli bir başlık yapısı getirir." },

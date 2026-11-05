@@ -234,6 +234,36 @@
         "IP adresi ve port numarasının birleşimine soket denir. Bir bağlantı kaynak ve hedef soketle tanımlanır.",
         "DNS sorguları normalde UDP 53 ile gider; yanıt büyükse ya da bölge aktarımı gerekiyorsa TCP 53 kullanılır."
       ] },
+      { t: "h", text: "TCP başlığı, bayraklar ve kapanış ayrıntısı" },
+      { t: "steps", h: "TCP başlığı alanları (en az 20 bayt = 160 bit)", items: [
+        "Kaynak port (16 bit) ve hedef port (16 bit).",
+        "Sıra numarası (32 bit) ve onay numarası (32 bit).",
+        "Başlık uzunluğu (4 bit): 32 bitlik kelime sayısıdır; 5 ile 15 arası olur, yani başlık 20 ile 60 bayttır.",
+        "Ayrılmış alan (reserved, 3 bit) ve kontrol bitleri (9 bit). Klasik anlatımda 6 bayrak sayılır: URG, ACK, PSH, RST, SYN, FIN.",
+        "Pencere boyutu (16 bit), sağlama toplamı (16 bit), acil işaretçi (urgent pointer, 16 bit).",
+        "Seçenekler (options): isteğe bağlı, 32 bitin katları; başlığın 20 bayttan uzun olmasının nedeni budur."
+      ] },
+      { t: "steps", h: "Bayraklar ne işe yarar?", items: [
+        "SYN: bağlantı kur, sıra numarasını eşitle.",
+        "ACK: onay numarası alanı geçerli, karşı tarafın verisini aldım.",
+        "FIN: gönderecek verim kalmadı, düzgün kapat.",
+        "RST: bağlantıyı hemen kes; kapalı porta gelen SYN buna yanıt alır.",
+        "PSH: veriyi tamponda bekletmeden uygulamaya ilet. URG: acil işaretçi geçerli (bugün nadiren kullanılır)."
+      ] },
+      { t: "steps", h: "Kapanış: 4 adım", items: [
+        "1. Bir taraf FIN gönderir (benim gönderecek verim bitti).",
+        "2. Karşı taraf ACK ile onaylar. Hâlâ veri gönderiyor olabilir, bağlantı yarım kapalıdır.",
+        "3. Karşı taraf işi bitince kendi FIN'ini gönderir.",
+        "4. İlk taraf ACK gönderir ve bir süre TIME-WAIT durumunda bekler; gecikmiş paketler yeni bağlantıya karışmasın diye."
+      ] },
+      { t: "box", h: "Akış kontrolü ile tıkanıklık kontrolü aynı şey değil", text: "Akış kontrolü ALICIYI korur: alıcı pencere boyutuyla 'bu kadar daha alabilirim' der. Tıkanıklık kontrolü AĞI korur: gönderici kayıp ve gecikmeden ağın dolduğunu sezince hızını düşürür, sonra yavaş yavaş artırır. Biri alıcının tamponuna, diğeri yoldaki router kuyruklarına bakar. UDP'de ikisi de yoktur. Çoklama (multiplexing) ise farklı uygulamaların port numaralarıyla aynı IP üzerinden aynı anda konuşabilmesidir." },
+      { t: "steps", h: "E-posta ve dosya aktarımı protokolleri", items: [
+        "SMTP: postayı GÖNDERİR. Sunucudan sunucuya 25; istemciden sunucuya gönderim için 587 (submission); örtük TLS ile 465.",
+        "POP3 (110, TLS ile 995): postayı cihaza İNDİRİR, genelde sunucudan siler.",
+        "IMAP (143, TLS ile 993): posta sunucuda kalır, birden çok cihaz eşitlenir.",
+        "FTP: kontrol bağlantısı 21, veri bağlantısı 20 (etkin kipte); parola ve veri şifresiz gider.",
+        "FTPS: FTP'nin TLS ile korunmuş hâli (21 ya da örtük 990). SFTP ise FTP'nin parçası DEĞİLDİR; SSH üzerinde çalışan ayrı bir dosya aktarım protokolüdür ve 22 kullanır."
+      ] },
       { t: "cmd", lang: "cmd", calistirma: "atla Windows komut satırı (Linux/macOS komutlarıyla karışık olabilir); bu ortamda çalıştırılmaz", text: "C:\\> netstat -an\n\n  Proto  Yerel Adres          Yabancı Adres        Durum\n  TCP    192.168.1.20:50234   203.0.113.10:443     ESTABLISHED\n  UDP    192.168.1.20:50871   *:*\n\n# Çıktı biçimi sisteme göre değişir. Yerel port yüksek ve geçici, uzak port hizmetin portudur." },
       { t: "warn", h: "Tuzak", text: "'UDP kötü, TCP iyi' yanılgısına düşme: UDP güvenilmez demek değildir, güvenilirliği uygulamaya bırakır. Port numarası da uygulamanın kendisi değildir; 443 numaralı portta başka bir hizmet çalıştırılabilir, bu yüzden port bilgisine tek başına güvenme." }
     ],
@@ -258,7 +288,9 @@
       { id: "9437d3f1", q: "Bir bilgisayar https://ornek.com sitesine bağlanıyor. Bağlantının kaynak ve hedef portları nasıl olur?", options: ["Kaynak 443, hedef geçici yüksek port","Kaynak 80, hedef 443","Kaynak geçici yüksek port, hedef 443","Kaynak 53, hedef 80"], obj: "h3" },
       { id: "fbb6b00b", q: "Bir DNS sorgusu normalde hangi protokol ve port ile gider?", options: ["UDP 53","TCP 25","UDP 123","TCP 22"], obj: "h3" },
       { id: "a2d2c446", q: "Alıcının tamponu dolmak üzere. TCP göndericinin hızını nasıl ayarlar?", options: ["Gönderici her segmenti iki kez yollar","Alıcı pencere boyutunu küçülterek bildirir","Alıcı bağlantıyı RST ile keser ve yeniden kurar","Gönderici sıra numaralarını sıfırlar"], obj: "h4" },
-      { id: "e9d50480", q: "Bir TCP segmentinin onayı (ACK) beklenen sürede gelmedi. TCP ne yapar?", options: ["Segmenti sessizce atar ve sonrakine geçer","Bağlantıyı hemen RST ile kapatır","Üçlü el sıkışmayı baştan başlatır","Onaysız segmenti yeniden iletir"], obj: "h4" }
+      { id: "e9d50480", q: "Bir TCP segmentinin onayı (ACK) beklenen sürede gelmedi. TCP ne yapar?", options: ["Segmenti sessizce atar ve sonrakine geçer","Bağlantıyı hemen RST ile kapatır","Üçlü el sıkışmayı baştan başlatır","Onaysız segmenti yeniden iletir"], obj: "h4" },
+      { id: "7fcf67d6", q: "Alıcının tamponu dolmak üzere olduğu için göndericiyi yavaşlatan mekanizma ile ağdaki kayıplar yüzünden göndericinin hızını düşürmesi sırasıyla hangi iki kavramdır?", options: ["Akış kontrolü, tıkanıklık kontrolü", "Tıkanıklık kontrolü, akış kontrolü", "Çoklama, akış kontrolü", "Yeniden iletim, çoklama"], obj: "h4" },
+      { id: "7d71c7da", q: "Bir kullanıcı postasını telefon, dizüstü ve tablette aynı anda güncel görmek istiyor; posta sunucuda kalmalı. Alma tarafında hangi protokol kullanılır?", options: ["IMAP", "POP3", "SMTP", "SFTP"], obj: "h3" }
     ],
     interview: [
       { q: "TCP ile UDP arasındaki fark nedir?", a: "TCP bağlantı kurar, sıra numarası verir, onay bekler ve kaybolan segmenti yeniden gönderir; güvenilirdir ama daha fazla yük taşır. UDP bağlantı kurmaz, onay beklemez; daha hızlıdır ve gecikmeye duyarlı uygulamalara uygundur." },
