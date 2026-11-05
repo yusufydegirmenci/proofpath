@@ -379,6 +379,25 @@
           "Kayıt süresi dolarsa (varsayılan 300 s) silinir; bir cihaz porta taşınırsa yeni portta görüldüğünde kayıt güncellenir."
         ]
       },
+      { t: "h", text: "Hub, switch, router: domain tablosu (Faz 42c)" },
+      { t: "steps", h: "Aynı soru, üç cihaz (VLAN yok varsayımıyla)", items: [
+        "Hub (katman 1): tüm portlar TEK collision domain ve TEK broadcast domain. Gelen sinyali herkese tekrarlar.",
+        "Switch (katman 2): HER PORT ayrı collision domain; broadcast domain tek (VLAN'sız).",
+        "Router (katman 3): her arayüz ayrı collision domain VE ayrı broadcast domain.",
+        "Örnek: 4 portlu hub 1 collision domain verir; 4 portlu switch 4 verir."
+      ] },
+      { t: "steps", h: "Duplex ve çarpışma", items: [
+        "Yarı çift yön (half duplex): aynı anda ya gönderir ya alır. Hub gibi paylaşılan ortamda CSMA/CD kullanılır: dinle, boşsa gönder, çarpışma olursa jam sinyali yay, rastgele süre bekle, yeniden dene.",
+        "Tam çift yön (full duplex): gönderme ve alma ayrı çiftlerde aynı anda olur. Çarpışma olmaz, CSMA/CD kapanır. Switch portu ile bilgisayar arasında normal durum budur.",
+        "Duplex uyuşmazlığı: bir uç tam, diğer uç yarı çift yöndeyse late collision ve CRC hataları artar, bağlantı yavaşlar.",
+        "Wi-Fi'da CSMA/CA kullanılır: çarpışma tespit edilemediği için önlemeye çalışılır (önce dinle, rastgele bekle, onay iste)."
+      ] },
+      { t: "steps", h: "Switch çerçeveyi ne zaman iletir?", items: [
+        "Store-and-forward: çerçevenin tamamını alır, FCS'yi denetler, hatalıysa atar, sonra iletir. Daha güvenli, biraz daha gecikmeli.",
+        "Cut-through: hedef MAC okunur okunmaz iletmeye başlar. Gecikme düşük ama hatalı çerçeve de iletilebilir.",
+        "Fragment-free: ilk 64 baytı bekler (çarpışma parçalarını eler), sonra iletir. Bugün çoğu Cisco switch store-and-forward çalışır."
+      ] },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Switch# show mac address-table\n          Mac Address Table\n-------------------------------------------\nVlan    Mac Address       Type        Ports\n----    -----------       --------    -----\n   1    0001.4299.1a01    DYNAMIC     Fa0/1\n   1    0001.4299.1a02    DYNAMIC     Fa0/2\n\n! Type DYNAMIC: öğrenilmiş (aging ile silinir). STATIC: elle yazılmış.\n! Hedef MAC bu listede yoksa switch çerçeveyi gelen port hariç tüm portlara yayar." },
       { t: "warn", h: "Tuzak", text: "Switch IP adresine bakmaz, MAC adresine bakar (katman 2). IP'ye göre yol seçen router'dır (katman 3). Karıştırırsan mülakatta puan kaybedersin." }
     ],
     objectives: [
@@ -406,7 +425,9 @@
       { id: "744c128b", q: "Switch MAC tablosunu doldururken hangi alana bakar?", options: ["Gelen çerçevenin hedef MAC adresine ve çıkış portuna","Paketin hedef IP adresine ve alt ağ maskesine","Gelen çerçevenin kaynak MAC adresine","Tür/uzunluk alanına"], obj: "h1" },
       { id: "007423a8", q: "Bir çerçevenin hedef MAC adresi FF:FF:FF:FF:FF:FF. Switch ne yapar?", options: ["Çerçeveyi düşürür","Geldiği port hariç tüm portlara gönderir","Tablodaki ilk porta gönderir","Çerçeveyi yalnız router portuna gönderir"], obj: "h1" },
       { id: "8d4a4d18", q: "Standart Ethernet çerçevesinin (ön söz hariç, etiketsiz) boyutu kaç bayt aralığındadır?", options: ["64-1518","32-512","1500-9000","46-1500"], obj: "h1" },
-      { id: "7c22dd5c", q: "MAC tablosunda kaydı olmayan bir hedefe çerçeve geldiğinde switch sonuç olarak neyi öğrenir?", options: ["Hedef MAC adresinin hangi portta olduğunu","Hedef IP adresini","Hiçbir şey öğrenmez","Çerçevenin kaynak MAC adresini ve giriş portunu"], obj: "h1" }
+      { id: "7c22dd5c", q: "MAC tablosunda kaydı olmayan bir hedefe çerçeve geldiğinde switch sonuç olarak neyi öğrenir?", options: ["Hedef MAC adresinin hangi portta olduğunu","Hedef IP adresini","Hiçbir şey öğrenmez","Çerçevenin kaynak MAC adresini ve giriş portunu"], obj: "h1" },
+      { id: "792e1610", q: "4 portu da dolu olan bir hub ile 4 portu da dolu olan bir switch'te (VLAN yok) collision domain sayıları sırasıyla kaçtır?", options: ["1 ve 4", "4 ve 1", "1 ve 1", "4 ve 4"], obj: "h3" },
+      { id: "74984202", q: "Bir switch hedef MAC adresini okur okumaz, çerçevenin geri kalanı gelmeden iletmeye başlıyor. Bu yöntemin adı nedir?", options: ["Cut-through", "Store-and-forward", "CSMA/CD", "ARP"], obj: "h1" }
     ],
     interview: [
       { q: "Switch nasıl karar verir?", a: "Gelen çerçevenin kaynak MAC adresini porta bağlayıp MAC tablosuna yazar. Hedef MAC tabloda varsa yalnızca o porta, yoksa ya da broadcast ise geldiği port hariç tüm portlara gönderir." },
@@ -556,6 +577,18 @@
         "O: OSPF ile öğrenilen yol.",
         "S* ya da 'Gateway of last resort': default route."
       ] },
+      { t: "h", text: "Yönlendirme protokolü sınıfları ve AD tablosu (Faz 42c)" },
+      { t: "steps", h: "Üç sınıf", items: [
+        "Distance vector (mesafe vektörü): router komşusunun söylediğine güvenir, 'şu ağa şu kadar uzaklıktayım' der. RIP (metrik atlama sayısı, en çok 15; 16 ulaşılamaz). EIGRP Cisco'nun gelişmiş distance vector protokolüdür.",
+        "Link state (bağlantı durumu): her router tüm topolojinin haritasını çıkarır, en kısa yolu SPF algoritmasıyla hesaplar. OSPF ve IS-IS. Daha hızlı yakınsar, daha çok bellek ister.",
+        "Path vector (yol vektörü): yolu geçilen AS numaraları listesiyle tutar. BGP, internet üzerinde şirketler ve operatörler (otonom sistemler) arasında kullanılır.",
+        "IGP kuruluş içi (RIP, EIGRP, OSPF, IS-IS), EGP kuruluşlar arası (BGP) çalışır."
+      ] },
+      { t: "steps", h: "Varsayılan administrative distance (küçük kazanır)", items: [
+        "Connected 0, Static 1, eBGP 20, EIGRP 90, OSPF 110, IS-IS 115, RIP 120, iBGP 200.",
+        "AD farklı kaynaklar arasında seçer; AYNI protokol içinde yolu metrik seçer (RIP atlama, OSPF cost).",
+        "show ip route kodları: C bağlı, L yerel, S statik, O OSPF, R RIP, D EIGRP, B BGP, S* varsayılan rota."
+      ] },
       { t: "box", h: "Dönüş yolu", text: "Static route'u iki yönlü düşün. A router'ına B ağını gösterdiysen, B router'ına da A ağını göstermelisin. Biri eksikse ping gider ama cevap dönmez." },
       { t: "warn", h: "Tuzak", text: "Arayüz 'no shutdown' ile açılmadıysa ya da IP verilmediyse tabloda C satırı görünmez. Önce 'show ip interface brief' ile arayüzün up/up olup olmadığına bak." }
     ],
@@ -578,7 +611,9 @@
       { id: "19426cb0", q: "Bilinmeyen tüm hedefler için kullanılan route hangisidir?", options: ["0.0.0.0/0", "255.255.255.255/32", "127.0.0.0/8", "10.0.0.0/8"], obj: "h3" },
       { id: "425af39d", q: "Static route'un administrative distance değeri varsayılan olarak kaçtır?", options: ["0", "1", "90", "110"], obj: "h1" },
       { id: "15495b38", q: "A router'ına B ağını gösterdin ama ping cevap dönmüyor. En olası sebep nedir?", options: ["Kablo fazla uzun", "B router'ında A ağına dönüş yolu yok", "Switch bozuk", "DNS hatası"], obj: "h4" },
-      { id: "1f9ccc52", q: "'show ip route' çıktısında bir satır 'L' koduyla başlıyor. Bu satır neyi gösterir?", options: ["OSPF ile öğrenilen yolu", "Router arayüzünün kendi IP adresini (/32)", "Elle yazılmış static route'u", "Default route'u"], obj: "h2" }
+      { id: "1f9ccc52", q: "'show ip route' çıktısında bir satır 'L' koduyla başlıyor. Bu satır neyi gösterir?", options: ["OSPF ile öğrenilen yolu", "Router arayüzünün kendi IP adresini (/32)", "Elle yazılmış static route'u", "Default route'u"], obj: "h2" },
+      { id: "90e72d15", q: "Aynı hedef ağı hem RIP hem OSPF aynı önekle (prefix) öğrendi. Router routing tablosuna hangisini koyar?", options: ["OSPF yolunu (AD 110)", "RIP yolunu (AD 120)", "İkisini birlikte kullanır", "Metriği küçük olanı seçer"], obj: "h1" },
+      { id: "64f53cdb", q: "BGP hangi yönlendirme protokolü sınıfındadır ve genelde nerede kullanılır?", options: ["Path vector, otonom sistemler arasında", "Distance vector, tek bir ofisin içinde", "Link state, tek bir kampüs ağının içinde", "Statik, yönetici her rotayı elle girer"], obj: "h1" }
     ],
     interview: [
       { q: "Router ile switch arasındaki fark nedir?", a: "Switch MAC adresine bakarak aynı ağ içinde çerçeve iletir. Router IP adresine bakarak farklı ağlar arasında paket yönlendirir ve routing tablosu kullanır." },
