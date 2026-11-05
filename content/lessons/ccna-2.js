@@ -44,6 +44,18 @@
       ] },
       { t: "cmd", lang: "cmd", calistirma: "atla Windows komut satırı (Linux/macOS komutlarıyla karışık olabilir); bu ortamda çalıştırılmaz", text: "REM Windows'ta:\nipconfig /release\nipconfig /renew\nipconfig /flushdns\nnslookup google.com\nping 8.8.8.8\nping google.com" },
       { t: "box", h: "DHCP mi DNS mi? Hızlı ayrım", text: "ping 8.8.8.8 çalışıyor ama ping google.com çalışmıyorsa sorun DNS'tedir. IP hiç yoksa ya da 169.254 görüyorsan sorun DHCP'dedir (ya da DHCP'ye ulaşılamıyor)." },
+      { t: "h", text: "DHCP doğrulama ve çıktı okuma (Faz 42d)" },
+      { t: "steps", h: "Cisco router'da DHCP", items: [
+        "'service dhcp' DHCP hizmetini açar (çoğu sürümde varsayılan açıktır).",
+        "'show ip dhcp binding': hangi IP'nin hangi MAC'e ne zamana kadar kiralandığını gösterir. 'show ip dhcp pool' havuz doluluğunu verir.",
+        "İstemcide APIPA (169.254.x.x) görüyorsan DHCP'ye ulaşılamamıştır."
+      ] },
+      { t: "steps", h: "İstemci çıktılarını okuma", items: [
+        "ipconfig /all: Physical Address (MAC), IPv4, Subnet Mask, Default Gateway, DHCP Server, DNS Servers, Lease Obtained/Expires alanlarını ver. Yanlış maske ya da gateway çoğu zaman elle yazılmış statik ayardır.",
+        "arp -a: IP-MAC eşleşmeleri; 'dynamic' öğrenilmiş, 'static' elle ya da sistem tanımlı. Gateway'in MAC'i burada görünür.",
+        "netstat -an: LISTENING port dinliyor, ESTABLISHED kurulu bağlantı, TIME_WAIT bağlantı yeni kapanmış, CLOSE_WAIT karşı taraf kapattı ama uygulama henüz kapatmadı.",
+        "Wireshark'ta Dup ACK aynı onayın yinelenmesidir (bir segment kayıp ya da sırasız). RST bağlantıyı reddeder ya da aniden keser; kapalı porta SYN gönderince RST gelir. FIN düzgün kapanıştır."
+      ] },
       { t: "warn", h: "Tuzak", text: "Ağda iki DHCP sunucusu olması (örneğin biri yanlışlıkla bağlanmış bir ev router'ı) yanlış gateway dağıtır ve ağın yarısı internete çıkamaz. 'Rogue DHCP' denir." }
     ],
     objectives: [
@@ -64,7 +76,9 @@
       { id: "d4979ae3", q: "ping 8.8.8.8 çalışıyor ama ping google.com çalışmıyor. Sorun nerede?", options: ["DHCP", "DNS", "Kablo", "Switch portu"], obj: "h2" },
       { id: "dcd4b49e", q: "DNS'de alan adını IPv4 adresine çeviren kayıt türü hangisidir?", options: ["MX", "CNAME", "A", "PTR"], obj: "h3" },
       { id: "3e0b786c", q: "DHCP sunucusu farklı bir ağdaysa router'a hangi komut eklenir?", options: ["ip helper-address", "ip dhcp pool ile havuz tanımlamak", "ip route ile istekleri uzak ağa yönlendirmek", "ip nat inside"], obj: "h4" },
-      { id: "49c581b9", q: "Bir bilgisayarın IP'sini bırakıp yenisini istemek için hangi komutlar kullanılır?", options: ["ipconfig /release ve /renew", "ping ve tracert", "arp -a ve nslookup", "netstat ve route"], obj: "h4" }
+      { id: "49c581b9", q: "Bir bilgisayarın IP'sini bırakıp yenisini istemek için hangi komutlar kullanılır?", options: ["ipconfig /release ve /renew", "ping ve tracert", "arp -a ve nslookup", "netstat ve route"], obj: "h4" },
+      { id: "a4108f5a", q: "Cisco router DHCP sunucusu olarak çalışırken hangi IP'nin hangi MAC adresine kiralandığını hangi komut gösterir?", options: ["show ip dhcp binding", "show ip route", "show mac address-table", "show ip interface brief"], obj: "h4" },
+      { id: "a267dee8", q: "Wireshark kaydında bir istemcinin kapalı bir TCP portuna gönderdiği SYN'e karşılık sunucudan hangi bayrak gelir?", options: ["RST", "SYN/ACK", "FIN", "PSH"], obj: "h2" }
     ],
     interview: [
       { q: "DHCP nedir, nasıl çalışır?", a: "Cihazlara IP, maske, gateway ve DNS bilgisini otomatik veren servistir. DORA ile çalışır: Discover, Offer, Request, Acknowledge. Adres belli süreliğine kiralanır." },

@@ -398,6 +398,30 @@
         "Fragment-free: ilk 64 baytı bekler (çarpışma parçalarını eler), sonra iletir. Bugün çoğu Cisco switch store-and-forward çalışır."
       ] },
       { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Switch# show mac address-table\n          Mac Address Table\n-------------------------------------------\nVlan    Mac Address       Type        Ports\n----    -----------       --------    -----\n   1    0001.4299.1a01    DYNAMIC     Fa0/1\n   1    0001.4299.1a02    DYNAMIC     Fa0/2\n\n! Type DYNAMIC: öğrenilmiş (aging ile silinir). STATIC: elle yazılmış.\n! Hedef MAC bu listede yoksa switch çerçeveyi gelen port hariç tüm portlara yayar." },
+      { t: "h", text: "IOS CLI temelleri (Faz 42d)" },
+      { t: "steps", h: "Modlar ve yardım", items: [
+        "Kullanıcı EXEC modu: istem 'Switch>'. Sınırlı izleme komutları.",
+        "Ayrıcalıklı EXEC: 'enable' ile girilir, istem 'Switch#'. Tüm show komutları ve 'configure terminal' buradan.",
+        "Global yapılandırma: 'Switch(config)#'. Alt modlar: 'Switch(config-if)#' (arayüz), 'Switch(config-line)#' (hat). 'exit' bir üst moda, 'end' ya da Ctrl+Z doğrudan # moduna döner.",
+        "'?' o noktada yazılabilecek komutları listeler (örn. 'show ?'); 'sh ru' gibi kısaltmalar çalışır, Tab tamamlar. 'Incomplete command' eksik parametre, 'Invalid input' yanlış yazım demektir.",
+        "hostname kuralı: harfle başlar, boşluk içermez, harf ya da rakamla biter, en çok 63 karakter.",
+        "'no ip domain-lookup': yanlış yazılan komutu alan adı sanıp DNS'e sormasın diye kapatılır; yoksa terminal dakikalarca bekler."
+      ] },
+      { t: "steps", h: "Arayüz ve yönetim IP'si", items: [
+        "Router arayüzü varsayılan KAPALIDIR: 'no shutdown' gerekir. Switch portları genelde açıktır.",
+        "'show ip interface brief': her arayüzün IP'sini, Status (katman 1) ve Protocol (katman 2) durumunu tek tabloda verir. up/up çalışıyor, administratively down 'no shutdown' unutulmuş demektir.",
+        "Switch'in yönetim IP'si SVI'ya verilir: 'interface vlan 1', 'ip address ...', 'no shutdown'. Başka ağdan erişim için 'ip default-gateway <router>' yazılır.",
+        "Switch'te port 2. katmandadır, IP almaz; IP VLAN arayüzüne (SVI) verilir."
+      ] },
+      { t: "steps", h: "Dört bellek ve kayıt", items: [
+        "ROM: açılış (bootstrap) kodu, POST. RAM: çalışan yapılandırma (running-config), geçici; kapanınca silinir.",
+        "NVRAM: startup-config, kalıcı. Flash: IOS imajı, kalıcı.",
+        "Kaydetmek için 'copy running-config startup-config' (kısa: 'write memory' ya da 'wr'). Kaydetmeden yeniden başlatırsan değişiklik gider.",
+        "'show version' IOS sürümünü, çalışma süresini ve bellek boyutlarını; 'show flash:' imaj dosyalarını gösterir.",
+        "Yedek: 'copy running-config tftp:'. TFTP UDP 69 kullanır ve şifresizdir; yalnız güvenilir iç ağda kullan."
+      ] },
+      { t: "cmd", lang: "ios", calistirma: "atla Cisco IOS komutları; cihaz ya da Packet Tracer gerekir", text: "Switch(config)# line console 0\nSwitch(config-line)# password <guclu-sifre>\nSwitch(config-line)# login\nSwitch(config-line)# exec-timeout 5 0\nSwitch(config-line)# exit\nSwitch(config)# enable secret <guclu-sifre>\nSwitch(config)# service password-encryption\nSwitch(config)# banner motd #Yetkisiz erisim yasaktir#\n\n! SSH kurulum SIRASI:\nSwitch(config)# hostname S1\nS1(config)# ip domain-name sirket.local\nS1(config)# crypto key generate rsa modulus 2048\nS1(config)# username yonetici secret <guclu-sifre>\nS1(config)# line vty 0 15\nS1(config-line)# transport input ssh\nS1(config-line)# login local\n\n! Bağlanma (istemciden):\nssh -l yonetici 192.168.1.2" },
+      { t: "box", h: "enable secret ve service password-encryption", text: "'enable secret' parolayı güçlü bir özetle (hash) saklar, 'enable password' açık metin tutar; ikisi de varsa secret geçerlidir. 'service password-encryption' yalnız düz metin parolaları zayıf (tip 7) bir kodlamayla gizler, gerçek koruma değildir. SSH için hostname ve ip domain-name olmadan RSA anahtarı üretilemez; bu yüzden sıra önemlidir. <guclu-sifre> yerine kendi parolanı yaz, gerçek parolayı paylaşma." },
       { t: "warn", h: "Tuzak", text: "Switch IP adresine bakmaz, MAC adresine bakar (katman 2). IP'ye göre yol seçen router'dır (katman 3). Karıştırırsan mülakatta puan kaybedersin." }
     ],
     objectives: [
@@ -427,7 +451,9 @@
       { id: "8d4a4d18", q: "Standart Ethernet çerçevesinin (ön söz hariç, etiketsiz) boyutu kaç bayt aralığındadır?", options: ["64-1518","32-512","1500-9000","46-1500"], obj: "h1" },
       { id: "7c22dd5c", q: "MAC tablosunda kaydı olmayan bir hedefe çerçeve geldiğinde switch sonuç olarak neyi öğrenir?", options: ["Hedef MAC adresinin hangi portta olduğunu","Hedef IP adresini","Hiçbir şey öğrenmez","Çerçevenin kaynak MAC adresini ve giriş portunu"], obj: "h1" },
       { id: "792e1610", q: "4 portu da dolu olan bir hub ile 4 portu da dolu olan bir switch'te (VLAN yok) collision domain sayıları sırasıyla kaçtır?", options: ["1 ve 4", "4 ve 1", "1 ve 1", "4 ve 4"], obj: "h3" },
-      { id: "74984202", q: "Bir switch hedef MAC adresini okur okumaz, çerçevenin geri kalanı gelmeden iletmeye başlıyor. Bu yöntemin adı nedir?", options: ["Cut-through", "Store-and-forward", "CSMA/CD", "ARP"], obj: "h1" }
+      { id: "74984202", q: "Bir switch hedef MAC adresini okur okumaz, çerçevenin geri kalanı gelmeden iletmeye başlıyor. Bu yöntemin adı nedir?", options: ["Cut-through", "Store-and-forward", "CSMA/CD", "ARP"], obj: "h1" },
+      { id: "3108cbca", q: "Cisco switch'te startup-config hangi bellekte kalıcı olarak saklanır?", options: ["NVRAM", "RAM", "Flash", "ROM"], obj: "h4" },
+      { id: "69e796f0", q: "Bir switch'te SSH için RSA anahtarı üretmeden (crypto key generate rsa) önce hangi iki ayar yapılmış olmalıdır?", options: ["hostname ve ip domain-name", "enable password ve banner motd", "line console 0 ve exec-timeout", "service dhcp ve ip helper-address"], obj: "h4" }
     ],
     interview: [
       { q: "Switch nasıl karar verir?", a: "Gelen çerçevenin kaynak MAC adresini porta bağlayıp MAC tablosuna yazar. Hedef MAC tabloda varsa yalnızca o porta, yoksa ya da broadcast ise geldiği port hariç tüm portlara gönderir." },

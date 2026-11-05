@@ -41,6 +41,7 @@
   };
 
   E[3] = {
+    parsons: "ccna-ssh-kurulum",
     analoji: { a: "Apartman kapıcısı: hangi daire hangi kapıda diye bir defter tutar, mektubu doğrudan o kapıya götürür.", sinir: "Kapıcı deftere önceden yazılmıştır; switch MAC tablosunu gelen çerçevelerin kaynak adresinden kendi öğrenir ve bilmediği adrese gelen çerçeveyi tüm portlara gönderir (flood)." },
     rehberli: ["Boş MAC tablosu olan bir switch'e A'dan B'ye çerçeve geldi. A'nın portunu tabloya yaz (kaynaktan öğrenme).", "B bilinmediği için çerçeve gelen port hariç tüm portlara gider (flood). B cevap verince B'nin portu da öğrenilir.", "Bundan sonra A↔B çerçeveleri yalnız ilgili portlardan geçer; tablodaki satırı yaz."],
     bagimsiz: "Bilgisayarında 'arp -a' çalıştır. Üç satır seç; IP-MAC eşlemesini yaz. Aynı ağdaki bir cihazın MAC'ini telefonla bulup tabloyla karşılaştır.",
@@ -64,6 +65,7 @@
   };
 
   E[5] = {
+    parsons: "ccna-arayuz-ip",
     analoji: { a: "Navigasyon: gideceğin adres için en ayrıntılı eşleşen tabelayı seçersin; hiçbiri uymazsa 'diğer yönler' tabelasına gidersin.", sinir: "Navigasyon en kısa yolu ölçüyle hesaplar; router önce en uzun önek eşleşmesini seçer, ölçü yalnız aynı önekler arasında devreye girer." },
     rehberli: ["Rota tablosuna bak: 10.0.0.0/8, 10.1.0.0/16, 10.1.2.0/24, 0.0.0.0/0. Hedef 10.1.2.77 dört satırdan hangisine uyar?", "Uyan satırların hepsini yaz ve en uzun öneki (en özgül olanı) seç: /24.", "Bir satır silinirse (/24) hedef hangi satırdan gider? Peki default rota da yoksa ne olur?"],
     bagimsiz: "Bilgisayarının rota tablosunu al ('route print' ya da 'ip route'). Default rotayı bul ve bir iç ağ satırı seç; bir hedef IP için hangi satırın seçileceğini elle belirle, sonra lab'daki dört senaryoyu çöz.",
