@@ -36,11 +36,53 @@
         "Düz kablo (straight-through): farklı tür cihazları bağlar. Örnek: bilgisayardan switch'e.",
         "Çapraz kablo (crossover): aynı tür cihazları bağlar. Örnek: switch'ten switch'e. Günümüz cihazlarının çoğu bunu otomatik algılar (Auto-MDIX)."
       ] },
+      { t: "h", text: "Fiziksel katman: ortam seçimi" },
+      { t: "steps", h: "UTP kategorileri (yaklaşık sınırlar)", items: [
+        "Cat3: eski, 10 Mbps Ethernet ve telefon hattı. Bugün yeni kurulumda kullanılmaz.",
+        "Cat5e: 1 Gbps, 100 metreye kadar. Ev ve küçük ofiste hâlâ yaygın.",
+        "Cat6: 1 Gbps için 100 metre; 10 Gbps için yaklaşık 55 metreye kadar.",
+        "Cat6a: 10 Gbps, tam 100 metre. Yeni ofis kablolamasında sık seçilir.",
+        "Cat7: korumalı (shielded). ISO/IEC sınıfıdır, TIA kategorisi olarak tanınmaz.",
+        "Cat8: 25/40 Gbps, yaklaşık 30 metre. Veri merkezinde sunucu-switch arası kısa bağlantılar için."
+      ] },
+      { t: "steps", h: "Fiber ve koaksiyel", items: [
+        "Tek modlu fiber (SMF): çok ince çekirdek (yaklaşık 9 mikron), lazer ışık kaynağı, kilometrelerce mesafe.",
+        "Çok modlu fiber (MMF): daha kalın çekirdek (50 ya da 62,5 mikron), LED ya da VCSEL ışık kaynağı, daha kısa mesafe (bina içi, kampüs).",
+        "Fiber konnektörleri: LC, SC, ST. Bakır UTP ucu ise RJ-45'tir.",
+        "Koaksiyel: eski Ethernet'te kullanıldı; bugün kablo TV ve kablo internet (DOCSIS) hattında görülür."
+      ] },
+      { t: "h", text: "T568A, T568B ve düz/çapraz kablo" },
+      { t: "steps", h: "RJ-45 uç sırası (1'den 8'e)", items: [
+        "T568A: beyaz-yeşil, yeşil, beyaz-turuncu, mavi, beyaz-mavi, turuncu, beyaz-kahve, kahve.",
+        "T568B: beyaz-turuncu, turuncu, beyaz-yeşil, mavi, beyaz-mavi, yeşil, beyaz-kahve, kahve.",
+        "Düz kablo: iki uçta da aynı standart (ikisi de A ya da ikisi de B).",
+        "Çapraz kablo: bir uçta T568A, diğer uçta T568B; gönderme ve alma çiftleri yer değiştirir.",
+        "10/100 Mbps Ethernet 1-2 (gönder) ve 3-6 (al) pinlerini kullanır; gigabit dört çiftin hepsini kullanır.",
+        "Auto-MDIX: port kablo türünü algılar, yanlış kabloyu kendi düzeltir."
+      ] },
+      { t: "box", h: "Bandwidth, throughput, goodput", text: "Bandwidth hattın kuramsal kapasitesidir (1 Gbps hat). Throughput belirli bir anda gerçekte ölçülen toplam hızdır; tıkanıklık, gecikme ve ek yük yüzünden bandwidth'ten düşüktür. Goodput ise başlıklar, kontrol trafiği ve yeniden iletimler çıkarıldıktan sonra kalan yararlı uygulama verisinin hızıdır; throughput'tan da düşük olur." },
+      { t: "p", text: "Kodlama hakkında kısa not: fiziksel katman bitleri ortama göre sinyale çevirir (bakırda gerilim değişimi, fiberde ışık darbesi, kablosuzda radyo dalgası). Manchester gibi kodlama yöntemleri sinyalin içine saat bilgisi de koyar. Sınavda ayrıntıdan çok 'fiziksel katman bitleri sinyale çevirir' cümlesi önemlidir." },
       { t: "h", text: "Ağ türleri" },
       { t: "steps", h: "Büyüklüğe göre", items: [
         "LAN (Local Area Network): tek bir bina ya da ofis. Senin ofis ağın.",
         "WAN (Wide Area Network): şehirler ve ülkeler arası. Genelde internet operatörünün hattı.",
         "İnternet: dünyadaki binlerce ağın birbirine bağlanmış hali."
+      ] },
+      { t: "h", text: "Ağ türleri: kapsama göre ayrıntı" },
+      { t: "steps", h: "Küçükten büyüğe (mesafeler yaklaşık, kesin standart değildir)", items: [
+        "PAN (kişisel ağ): kişinin çevresinde birkaç metre. Telefon-kulaklık Bluetooth bağlantısı, NFC, USB kablo.",
+        "LAN: tek bina ya da ofis. Teknoloji: Ethernet (IEEE 802.3) ve Wi-Fi (IEEE 802.11). Kurumun kendi sahip olduğu ağdır.",
+        "CAN (kampüs ağı): aynı kuruma ait birkaç binayı bağlar. Üniversite ya da fabrika kampüsü; binalar arası genelde fiber.",
+        "MAN (şehir ağı): bir şehri ya da bölgesini kapsar. Belediye ya da operatörün şehir içi fiber halkaları.",
+        "WAN: şehirler ve ülkeler arası. Çoğunlukla operatörden kiralanır: MPLS, VPN, uydu, 4G/5G, fiber hat."
+      ] },
+      { t: "box", h: "WAN topolojileri: göreli kıyas", text: "Point-to-point: iki konum arası tek hat; basit ve düşük gecikmeli, ama yeni konum eklemek yeni hat demek. Hub-and-spoke: şubeler merkeze bağlanır; ucuz ve ölçeklenir, merkez arızalanırsa şubeler birbirinden kopar. Full mesh: herkes herkese bağlı; n×(n−1)/2 hat, çok dayanıklı ama en pahalı. Partial mesh: yalnız önemli noktalar birbirine bağlı; maliyet ile dayanıklılık arasında denge. Dual-homed: bir konum iki ayrı hatla (çoğu zaman iki ayrı sağlayıcı ya da iki ayrı yönlendiriciyle) bağlanır; bir hat gidince diğeri devralır, kritik uygulamalar için. Bunlar göreli kıyastır; gerçek maliyet ve gecikme sağlayıcıya göre değişir." },
+      { t: "steps", h: "Standartları kim koyar?", items: [
+        "IEEE: LAN/MAN standartları (802.3 Ethernet, 802.11 Wi-Fi).",
+        "ISO: uluslararası standartlar, OSI başvuru modeli.",
+        "ITU-T: telekomünikasyon standartları (operatör ve ses/veri iletim hatları).",
+        "ANSI: ABD ulusal standart kuruluşu. Kablolama için TIA/EIA-568 gibi standartlar da bu ailede anılır.",
+        "IETF: internet protokollerinin RFC belgelerini yayımlar (IP, TCP, DNS)."
       ] },
       { t: "h", text: "Elle dene: bağlantıyı 4 adımda kontrol et" },
       { t: "steps", h: "Windows'ta", items: [
@@ -56,13 +98,15 @@
     objectives: [
       { id: "h1", text: "Switch, router, access point ve uç cihazın işini ayırt edip bir senaryoda hangisine ihtiyaç olduğunu seçebilirsin." },
       { id: "h2", text: "LAN ile WAN farkını ve bakır UTP kablonun mesafe sınırını söyleyebilirsin." },
-      { id: "h3", text: "ipconfig ve ping ile bağlantıyı sırayla (kendin, IP, gateway, internet) kontrol edip sorunun hangi adımda olduğunu bulabilirsin." }
+      { id: "h3", text: "ipconfig ve ping ile bağlantıyı sırayla (kendin, IP, gateway, internet) kontrol edip sorunun hangi adımda olduğunu bulabilirsin." },
+      { id: "h4", text: "Ağ türünü, WAN topolojisini, kablo/fiber ortamını (mesafe ve hıza göre) ve T568 düz/çapraz ayrımını bir senaryoda seçebilir, bandwidth, throughput ve goodput farkını açıklayabilirsin." }
     ],
     summary: [
       "Switch aynı ağdaki cihazları, router farklı ağları bağlar; access point kablosuz cihazları ağa katar.",
       "LAN tek bina ya da ofis, WAN şehirler arası ağdır; bakır UTP en çok 100 metre gider, daha uzağı için fiber gerekir.",
       "Bağlantı sorununu sırayla ara: kablo ve ışıklar, IP (ipconfig), gateway'e ping, sonra internete ping.",
-      "ping 127.0.0.1 yalnız bilgisayarının kendi ağ yazılımını sınar."
+      "ping 127.0.0.1 yalnız bilgisayarının kendi ağ yazılımını sınar.",
+      "Ağ türleri kapsamla ayrılır (PAN, LAN, CAN, MAN, WAN). Cat6a 10 Gbps'i 100 metrede taşır, kilometrelik mesafede tek modlu fiber gerekir; aynı T568 iki uçta düz, farklı çapraz kablodur. Goodput, throughput ve bandwidth'ten düşüktür."
     ],
     quiz: [
       { id: "f168ff6a", q: "Farklı iki ağı birbirine bağlayan cihaz hangisidir?", options: ["Switch", "Router", "Yazıcı", "Access point"], obj: "h1" },
@@ -70,7 +114,11 @@
       { id: "73f45c3e", q: "Tek bir ofis binasındaki ağ hangi türdür?", options: ["WAN", "LAN", "İnternet", "VPN"], obj: "h2" },
       { id: "83e3546d", q: "Wi-Fi ile bağlanmak için ağa hangi cihaz eklenir?", options: ["Access point", "Hub ile kablolu bir yayın cihazı", "Fiber kablo", "Firewall, kurallara göre trafik süzen cihaz"], obj: "h1" },
       { id: "78ec9d2f", q: "'ping 127.0.0.1' neyi test eder?", options: ["İnterneti", "Router'ı", "Bilgisayarın kendi ağ yazılımını", "DNS sunucusunu"], obj: "h3" },
-      { id: "4c41fe3f", q: "ipconfig'te IPv4 adresin görünüyor ve ping 127.0.0.1 cevap veriyor, ama Default Gateway'e ping cevapsız. Sorunu önce nerede ararsın?", options: ["Bilgisayarın kendi ağ yazılımında", "Hedef web sitesinin sunucusunda", "Bilgisayarla gateway arasındaki bağlantıda (kablo, switch portu, router)", "DNS çözümlemesinde"], obj: "h3" }
+      { id: "4c41fe3f", q: "ipconfig'te IPv4 adresin görünüyor ve ping 127.0.0.1 cevap veriyor, ama Default Gateway'e ping cevapsız. Sorunu önce nerede ararsın?", options: ["Bilgisayarın kendi ağ yazılımında", "Hedef web sitesinin sunucusunda", "Bilgisayarla gateway arasındaki bağlantıda (kablo, switch portu, router)", "DNS çözümlemesinde"], obj: "h3" },
+      { id: "f0041d11", q: "Merkez ofis ile 20 küçük şubeyi, şubeler arası trafik az olacak biçimde en düşük hat maliyetiyle bağlamak istiyorsun. Hangi WAN topolojisi uygun?", options: ["Hub-and-spoke", "Full mesh", "Her şube için ayrı bir point-to-point hat", "Dual-homed (her şubede iki sağlayıcı)"], obj: "h4" },
+      { id: "940075fb", q: "İki bina arası 2 kilometre ve fiber çekilecek. Hangi ortam uygun?", options: ["Tek modlu fiber (SMF)", "Cat6a UTP", "Cat8 UTP", "Çok modlu fiber (MMF)"], obj: "h4" },
+      { id: "eff4e3d2", q: "Bir kablonun bir ucu T568A, diğer ucu T568B ile sonlandırıldı. Bu kablo hangisidir?", options: ["Çapraz (crossover)", "Düz (straight-through)", "Fiber patch kablosu", "Koaksiyel kablo"], obj: "h4" },
+      { id: "6606ce57", q: "1 Gbps bir hatta başlıklar, kontrol trafiği ve yeniden iletimler çıkarıldıktan sonra yalnız yararlı kullanıcı verisinin hızı ölçülüyor. Bu değerin adı nedir?", options: ["Goodput", "Bandwidth", "Gecikme (latency)", "Jitter"], obj: "h4" }
     ],
     interview: [
       { q: "Switch ile router arasındaki fark nedir?", a: "Switch aynı ağdaki cihazları birbirine bağlar ve MAC adresine bakar. Router farklı ağları birbirine bağlar ve IP adresine bakıp yol seçer. Basitçe: switch bina içi kavşak, router şehir çıkışı." },
