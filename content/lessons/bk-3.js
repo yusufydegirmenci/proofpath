@@ -121,12 +121,12 @@
       "Önbellek kaybolabilir; kritik veri yalnız önbelleğe yazılmaz, eskime TTL ve geçersiz kılmayla sınırlanır."
     ],
     quiz: [
-      { id: "fcadefd3", q: "Önce önbelleğe bakıp bulunamazsa veritabanından okuyup önbelleğe yazan strateji hangisidir?", options: ["Lazy loading", "Write-through", "Sharding", "Failover"], obj: "h1" },
+      { id: "fcadefd3", q: "Önce önbelleğe bakıp bulunamazsa veritabanından okuyup önbelleğe yazan strateji hangisidir?", options: ["Failover", "Write-through", "Sharding", "Lazy loading"], obj: "h1" },
       { id: "6e7dcbd4", q: "Sıralı küme ve kalıcılık gibi zengin özellikler hangi motorda vardır?", options: ["Redis", "Memcached", "Her ikisi eşit", "Hiçbiri"], obj: "h2" },
-      { id: "fff6fdc9", q: "Verinin önbellekte ne kadar geçerli kalacağını belirleyen ayar nedir?", options: ["TTL", "ARN", "CIDR", "MTU"], obj: "h3" },
-      { id: "b4d76d6c", q: "Her yazmada önbelleği de güncelleyen strateji hangisidir?", options: ["Write-through", "Lazy loading ile okuma ıskasında doldurma", "Read replica ile okuma yükünü dağıtma", "Backoff"], obj: "h1" },
-      { id: "f6a2b03a", q: "Yalnızca DynamoDB okumalarını, istemci kodunu neredeyse değiştirmeden hızlandırmak için en uygun önbellek hangisidir?", options: ["DAX","ElastiCache Memcached","RDS Proxy","SQS"], obj: "h4" },
-      { id: "c48213c6", q: "Ürün fiyatı veritabanında değişti ama önbellekte eski fiyat görünüyor. Bu eskimeyi sınırlamanın doğru yolu hangisidir?", options: ["Kısa bir TTL vermek ve güncellemede önbellek girişini geçersiz kılmak","TTL'yi 30 güne çıkarmak","Fiyatı yalnızca önbelleğe yazmak","Memcached'e geçmek"], obj: "h3" }
+      { id: "fff6fdc9", q: "Verinin önbellekte ne kadar geçerli kalacağını belirleyen ayar nedir?", options: ["ARN", "TTL", "CIDR", "MTU"], obj: "h3" },
+      { id: "b4d76d6c", q: "Her yazmada önbelleği de güncelleyen strateji hangisidir?", options: ["Read replica ile okuma yükünü dağıtma", "Lazy loading ile okuma ıskasında doldurma", "Write-through", "Backoff"], obj: "h1" },
+      { id: "f6a2b03a", q: "Yalnızca DynamoDB okumalarını, istemci kodunu neredeyse değiştirmeden hızlandırmak için en uygun önbellek hangisidir?", options: ["SQS","ElastiCache Memcached","RDS Proxy","DAX"], obj: "h4" },
+      { id: "c48213c6", q: "Ürün fiyatı veritabanında değişti ama önbellekte eski fiyat görünüyor. Bu eskimeyi sınırlamanın doğru yolu hangisidir?", options: ["TTL'yi 30 güne çıkarmak","Kısa bir TTL vermek ve güncellemede önbellek girişini geçersiz kılmak","Fiyatı yalnızca önbelleğe yazmak","Memcached'e geçmek"], obj: "h3" }
     ],
     interview: [
       { q: "Lazy loading ve write-through farkı nedir?", a: "Lazy loading okuma anında önbelleği doldurur: sadece istenen veri önbellekte olur ama ilk istek yavaş ve veri eskiyebilir. Write-through yazma sırasında önbelleği günceller: veri taze, yazma yavaş, gereksiz veri depolanabilir." },
@@ -193,12 +193,12 @@
     ],
     quiz: [
       { id: "14356098", q: "Bir Lambda çağrısının en uzun süresi nedir?", options: ["15 dakika", "5 dakika, yapılandırmayla uzatılamaz", "1 saat, yapılandırmayla ayarlanabilir", "Sınırsız"], obj: "h1" },
-      { id: "c5c3c382", q: "Fonksiyonun AWS servislerine erişim izni nereden gelir?", options: ["Yürütme rolü", "Kodun içindeki anahtar", "Kova politikası tek başına", "Route 53"], obj: "h2" },
-      { id: "f6a2a523", q: "Soğuk başlangıcı azaltmak için hangisi kullanılır?", options: ["Provisioned concurrency", "Daha uzun zaman aşımı süresi tanımlamak", "Daha çok ayrıntılı log seviyesi açmak", "Layers"], obj: "h3" },
-      { id: "29d56c08", q: "Asenkron çağrıda hata olursa Lambda ne yapar?", options: ["Varsayılan olarak 2 kez daha dener", "Hemen siler", "Hiç denemez", "Kullanıcıya sorar"], obj: "h4" },
-      { id: "0ce5b86c", q: "Neden Lambda idempotent yazılmalıdır?", options: ["Aynı olay birden fazla kez gelebilir", "Daha hızlı olur", "Daha ucuz olur", "Zorunlu değildir"], obj: "h4" },
-      { id: "f2b72a86", q: "Tek bir adımı yaklaşık 40 dakika süren bir veri dönüştürme işi için hangi yaklaşım uygundur?", options: ["ECS/Fargate veya AWS Batch gibi uzun çalışabilen bir servis","Lambda zaman aşımını 40 dakikaya çıkarmak","Lambda belleğini 10 GB yapmak","Provisioned concurrency açmak"], obj: "h1" },
-      { id: "e66a0d2b", q: "Lambda fonksiyonu DynamoDB'ye yazarken AccessDenied hatası veriyor. İlk nereye bakılır?", options: ["Fonksiyonun yürütme rolündeki izin politikalarına","Zaman aşımı ayarına","Bellek boyutuna","Layer sürümüne"], obj: "h2" }
+      { id: "c5c3c382", q: "Fonksiyonun AWS servislerine erişim izni nereden gelir?", options: ["Kova politikası tek başına", "Kodun içindeki anahtar", "Yürütme rolü", "Route 53"], obj: "h2" },
+      { id: "f6a2a523", q: "Soğuk başlangıcı azaltmak için hangisi kullanılır?", options: ["Layers", "Daha uzun zaman aşımı süresi tanımlamak", "Daha çok ayrıntılı log seviyesi açmak", "Provisioned concurrency"], obj: "h3" },
+      { id: "29d56c08", q: "Asenkron çağrıda hata olursa Lambda ne yapar?", options: ["Hemen siler", "Varsayılan olarak 2 kez daha dener", "Hiç denemez", "Kullanıcıya sorar"], obj: "h4" },
+      { id: "0ce5b86c", q: "Neden Lambda idempotent yazılmalıdır?", options: ["Daha ucuz olur", "Daha hızlı olur", "Aynı olay birden fazla kez gelebilir", "Zorunlu değildir"], obj: "h4" },
+      { id: "f2b72a86", q: "Tek bir adımı yaklaşık 40 dakika süren bir veri dönüştürme işi için hangi yaklaşım uygundur?", options: ["Provisioned concurrency açmak","Lambda zaman aşımını 40 dakikaya çıkarmak","Lambda belleğini 10 GB yapmak","ECS/Fargate veya AWS Batch gibi uzun çalışabilen bir servis"], obj: "h1" },
+      { id: "e66a0d2b", q: "Lambda fonksiyonu DynamoDB'ye yazarken AccessDenied hatası veriyor. İlk nereye bakılır?", options: ["Zaman aşımı ayarına","Fonksiyonun yürütme rolündeki izin politikalarına","Bellek boyutuna","Layer sürümüne"], obj: "h2" }
     ],
     interview: [
       { q: "Cold start nedir, nasıl azaltılır?", a: "Yeni bir çalışma ortamı hazırlanırken oluşan ilk çağrı gecikmesidir. Provisioned concurrency, daha küçük paket, SDK'yı handler dışında başlatmak ve uygun çalışma zamanı seçmek gecikmeyi azaltır." },
@@ -270,14 +270,14 @@
       "Her aşamanın (dev, prod) kendi URL'si, önbelleği ve aşama değişkenleri olabilir; kanarya dağıtımıyla trafiğin bir kısmı yeni sürüme gider."
     ],
     quiz: [
-      { id: "05bae92b", q: "Lambda proxy entegrasyonunda Lambda'nın döndürmesi gereken şey nedir?", options: ["statusCode, headers ve body içeren nesne", "Sadece düz metin", "XML dosyası", "Boş değer"], obj: "h1" },
-      { id: "feddaec2", q: "Daha ucuz ve düşük gecikmeli, temel ihtiyaçlar için hangi tür uygundur?", options: ["HTTP API", "REST API", "WebSocket API", "SOAP"], obj: "h2" },
-      { id: "54ed5caf", q: "Son kullanıcı JWT'sini doğrulamak için hangisi kullanılır?", options: ["Cognito yetkilendirici", "API anahtarı", "Kova politikası", "Route 53"], obj: "h3" },
-      { id: "a0722a89", q: "Tarayıcıdan farklı kökenli API çağrısında engellenme hangi ayarla çözülür?", options: ["CORS", "TTL", "Stage", "WAF"], obj: "h4" },
+      { id: "05bae92b", q: "Lambda proxy entegrasyonunda Lambda'nın döndürmesi gereken şey nedir?", options: ["XML dosyası", "Sadece düz metin", "statusCode, headers ve body içeren nesne", "Boş değer"], obj: "h1" },
+      { id: "feddaec2", q: "Daha ucuz ve düşük gecikmeli, temel ihtiyaçlar için hangi tür uygundur?", options: ["SOAP", "REST API", "WebSocket API", "HTTP API"], obj: "h2" },
+      { id: "54ed5caf", q: "Son kullanıcı JWT'sini doğrulamak için hangisi kullanılır?", options: ["API anahtarı", "Cognito yetkilendirici", "Kova politikası", "Route 53"], obj: "h3" },
+      { id: "a0722a89", q: "Tarayıcıdan farklı kökenli API çağrısında engellenme hangi ayarla çözülür?", options: ["Stage", "TTL", "CORS", "WAF"], obj: "h4" },
       { id: "53d40c13", q: "API anahtarları ve kullanım planları hangi türde bulunur?", options: ["REST API", "Sadece WebSocket", "Hiçbirinde", "Sadece CLI"], obj: "h2" },
       { id: "2c6894f4", q: "İstemci kısa sürede çok fazla istek gönderip kısıtlamaya takılınca API Gateway hangi HTTP durum kodunu döndürür?", options: ["429","502","404","301"], obj: "h4" },
-      { id: "ad8f4c5e", q: "AWS'deki başka bir servisin (IAM kimliği olan) API'yi çağırmasını yetkilendirmek için hangisi uygundur?", options: ["IAM yetkilendirme","Cognito kullanıcı havuzu yetkilendiricisi","Yalnızca API anahtarı","Mock entegrasyon"], obj: "h3" },
-      { id: "72a9b5c0", q: "Lambda proxy entegrasyonunda cevaptaki body alanı nasıl olmalıdır?", options: ["Metin (string) olmalı; nesne önce JSON metnine çevrilir","Düz nesne veya sözlük olarak verilmeli","XML Document nesnesi olmalı","Her zaman bir sayı olmalı"], obj: "h1" }
+      { id: "ad8f4c5e", q: "AWS'deki başka bir servisin (IAM kimliği olan) API'yi çağırmasını yetkilendirmek için hangisi uygundur?", options: ["Mock entegrasyon","Cognito kullanıcı havuzu yetkilendiricisi","Yalnızca API anahtarı","IAM yetkilendirme"], obj: "h3" },
+      { id: "72a9b5c0", q: "Lambda proxy entegrasyonunda cevaptaki body alanı nasıl olmalıdır?", options: ["Düz nesne veya sözlük olarak verilmeli","Metin (string) olmalı; nesne önce JSON metnine çevrilir","XML Document nesnesi olmalı","Her zaman bir sayı olmalı"], obj: "h1" }
     ],
     interview: [
       { q: "HTTP API ve REST API arasındaki fark?", a: "HTTP API daha ucuz ve hızlıdır, temel proxy ihtiyaçları ve JWT yetkilendirme için yeterlidir. REST API daha çok özellik sunar: API anahtarı, kullanım planı, istek doğrulama, WAF, önbellek, dönüşümler." },
@@ -346,13 +346,13 @@
       "Beklemeyi Lambda içinde sleep ile değil Wait durumuyla yap; insan onayı için waitForTaskToken kalıbı akışı token gelene dek durdurur."
     ],
     quiz: [
-      { id: "0b61ba69", q: "Adım başarısız olursa belirli bir duruma yönlendiren yapı hangisidir?", options: ["Catch", "Pass durumu ile veri aktarımı", "Wait durumu ile bekleme sonrası yönlendirme", "Map"], obj: "h2" },
-      { id: "20889996", q: "Listedeki her öğe için aynı işlemi yapan durum hangisidir?", options: ["Map", "Choice", "Wait", "Succeed"], obj: "h1" },
-      { id: "88c7ac6f", q: "1 yıla kadar süren, tam yürütme geçmişi tutan tür hangisidir?", options: ["Standard", "Express iş akışı türü", "Lambda ile uzun süreli işlem", "Batch"], obj: "h3" },
-      { id: "cd471fc7", q: "İnsan onayı gelene kadar bekleyen akış için ne kullanılır?", options: ["Task token (waitForTaskToken)", "Sadece Wait 1 gün", "S3 olayı", "CloudFront"], obj: "h4" },
-      { id: "ed6cf957", q: "Saga kalıbı neyi çözer?", options: ["Dağıtık işlemde telafi ile geri alma", "DNS çözümleme", "Disk şifreleme", "Önbellek ısıtma"], obj: "h2" },
-      { id: "e8691e29", q: "Sipariş tutarı 1000'den büyükse yönetici onayı adımına, değilse doğrudan ödemeye giden bir dallanma için hangi state kullanılır?", options: ["Choice","Parallel","Pass","Succeed"], obj: "h1" },
-      { id: "27b28870", q: "Saniyede binlerce kısa (5 dakikadan kısa) IoT olayını işleyen ve en az bir kez çalışmayı kabul eden bir akış için hangi tür daha uygundur?", options: ["Express","Standard","Wait state","Pass state"], obj: "h3" }
+      { id: "0b61ba69", q: "Adım başarısız olursa belirli bir duruma yönlendiren yapı hangisidir?", options: ["Wait durumu ile bekleme sonrası yönlendirme", "Pass durumu ile veri aktarımı", "Catch", "Map"], obj: "h2" },
+      { id: "20889996", q: "Listedeki her öğe için aynı işlemi yapan durum hangisidir?", options: ["Succeed", "Choice", "Wait", "Map"], obj: "h1" },
+      { id: "88c7ac6f", q: "1 yıla kadar süren, tam yürütme geçmişi tutan tür hangisidir?", options: ["Express iş akışı türü", "Standard", "Lambda ile uzun süreli işlem", "Batch"], obj: "h3" },
+      { id: "cd471fc7", q: "İnsan onayı gelene kadar bekleyen akış için ne kullanılır?", options: ["S3 olayı", "Sadece Wait 1 gün", "Task token (waitForTaskToken)", "CloudFront"], obj: "h4" },
+      { id: "ed6cf957", q: "Saga kalıbı neyi çözer?", options: ["Önbellek ısıtma", "DNS çözümleme", "Disk şifreleme", "Dağıtık işlemde telafi ile geri alma"], obj: "h2" },
+      { id: "e8691e29", q: "Sipariş tutarı 1000'den büyükse yönetici onayı adımına, değilse doğrudan ödemeye giden bir dallanma için hangi state kullanılır?", options: ["Parallel","Choice","Pass","Succeed"], obj: "h1" },
+      { id: "27b28870", q: "Saniyede binlerce kısa (5 dakikadan kısa) IoT olayını işleyen ve en az bir kez çalışmayı kabul eden bir akış için hangi tür daha uygundur?", options: ["Wait state","Standard","Express","Pass state"], obj: "h3" }
     ],
     interview: [
       { q: "Neden Lambda içinde iç içe Lambda çağırmak yerine Step Functions?", a: "Step Functions durum, yeniden deneme, hata yolu, paralellik ve görsel izleme sağlar; Lambda zincirinde bunları kendin kodlarsın ve bekleme süresi için ücret ödersin." },
@@ -416,15 +416,15 @@
       "Long polling (en fazla 20 sn) boş yanıtları ve maliyeti azaltır; mesaj saklama 1 dakika-14 gündür (varsayılan 4), mesaj boyutu en fazla 256 KB (yeni sınır 1 MiB'ye çıkarıldı; güncel kotaya bak)."
     ],
     quiz: [
-      { id: "96ea3586", q: "İşlenemeyen mesajların toplandığı kuyruğa ne denir?", options: ["DLQ", "FIFO", "Delay queue", "Stream"], obj: "h3" },
-      { id: "a422f0bf", q: "Sıra ve tekrar önleme gerekiyorsa hangi tür seçilir?", options: ["FIFO", "Standard", "SNS", "Kinesis Firehose"], obj: "h1" },
-      { id: "b18bbed6", q: "Tüketici mesajı alınca onu diğerlerinden gizleyen ayar nedir?", options: ["Visibility timeout", "Retention period ile saklama süresi ayarı", "Delay seconds ile gecikmeli teslim ayarı", "Long polling"], obj: "h2" },
-      { id: "856a1e7b", q: "Boş yanıtları azaltan ve maliyeti düşüren yöntem hangisidir?", options: ["Long polling", "Short polling", "FIFO", "DLQ"], obj: "h4" },
-      { id: "5f8a6215", q: "Standard SQS için doğru ifade hangisidir?", options: ["En az bir kez teslim, sıra garantisi yok", "Her zaman tam bir kez", "Sıra garantili", "Sadece 10 mesaj"], obj: "h1" },
-      { id: "9aeb1130", q: "Lambda zaman aşımı 60 saniye iken kuyruğun visibility timeout değeri 30 saniye bırakılırsa ne olur?", options: ["Mesaj işlem sürerken tekrar görünür ve çift işlenebilir","Mesaj hemen otomatik olarak ölü mektup kuyruğuna taşınır","Kuyruk kendiliğinden FIFO türüne dönüşür ve sırayı korur","Mesaj kuyruktan kalıcı olarak silinir ve bir daha işlenmez"], obj: "h2" },
-      { id: "7daa5c9d", q: "maxReceiveCount 3 olan bir kuyrukta bir mesaj 3 kez alınıp silinemezse, sonraki alım girişiminde ne olur?", options: ["Mesaj sonraki alımda DLQ'ya taşınır","Mesaj ana kuyrukta sonsuza kadar denenir","Mesaj otomatik e-posta olarak gönderilir","Kuyruk silinir"], obj: "h3" },
-      { id: "3bb279bc", q: "SQS'ten toplu okuyan Lambda'da 10 mesajdan yalnızca 1'i başarısız oluyor. Yalnız onu yeniden denemek için ne kullanılır?", options: ["batchItemFailures ile kısmi toplu yanıt","Visibility timeout'u 0 yapmak","FIFO'ya geçmek","Long polling açmak"], obj: "h4" },
-      { id: "271e8f4a", q: "Hata düzeltildikten sonra DLQ'da biriken mesajları kaynak kuyruğa geri göndermek için ne yapılır?", options: ["DLQ redrive ile mesajları kaynak kuyruğa geri sürmek","Saklama süresini 14 güne çıkarıp mesajların kendiliğinden dönmesini beklemek","Visibility timeout değerini 0 yapıp mesajları hemen yeniden görünür kılmak","Ana kuyruğu FIFO türüne çevirip mesajları sıraya yeniden dizmek"], obj: "h3" }
+      { id: "96ea3586", q: "İşlenemeyen mesajların toplandığı kuyruğa ne denir?", options: ["Stream", "FIFO", "Delay queue", "DLQ"], obj: "h3" },
+      { id: "a422f0bf", q: "Sıra ve tekrar önleme gerekiyorsa hangi tür seçilir?", options: ["Standard", "FIFO", "SNS", "Kinesis Firehose"], obj: "h1" },
+      { id: "b18bbed6", q: "Tüketici mesajı alınca onu diğerlerinden gizleyen ayar nedir?", options: ["Delay seconds ile gecikmeli teslim ayarı", "Retention period ile saklama süresi ayarı", "Visibility timeout", "Long polling"], obj: "h2" },
+      { id: "856a1e7b", q: "Boş yanıtları azaltan ve maliyeti düşüren yöntem hangisidir?", options: ["DLQ", "Short polling", "FIFO", "Long polling"], obj: "h4" },
+      { id: "5f8a6215", q: "Standard SQS için doğru ifade hangisidir?", options: ["Her zaman tam bir kez", "En az bir kez teslim, sıra garantisi yok", "Sıra garantili", "Sadece 10 mesaj"], obj: "h1" },
+      { id: "9aeb1130", q: "Lambda zaman aşımı 60 saniye iken kuyruğun visibility timeout değeri 30 saniye bırakılırsa ne olur?", options: ["Kuyruk kendiliğinden FIFO türüne dönüşür ve sırayı korur","Mesaj hemen otomatik olarak ölü mektup kuyruğuna taşınır","Mesaj işlem sürerken tekrar görünür ve çift işlenebilir","Mesaj kuyruktan kalıcı olarak silinir ve bir daha işlenmez"], obj: "h2" },
+      { id: "7daa5c9d", q: "maxReceiveCount 3 olan bir kuyrukta bir mesaj 3 kez alınıp silinemezse, sonraki alım girişiminde ne olur?", options: ["Kuyruk silinir","Mesaj ana kuyrukta sonsuza kadar denenir","Mesaj otomatik e-posta olarak gönderilir","Mesaj sonraki alımda DLQ'ya taşınır"], obj: "h3" },
+      { id: "3bb279bc", q: "SQS'ten toplu okuyan Lambda'da 10 mesajdan yalnızca 1'i başarısız oluyor. Yalnız onu yeniden denemek için ne kullanılır?", options: ["Visibility timeout'u 0 yapmak","batchItemFailures ile kısmi toplu yanıt","FIFO'ya geçmek","Long polling açmak"], obj: "h4" },
+      { id: "271e8f4a", q: "Hata düzeltildikten sonra DLQ'da biriken mesajları kaynak kuyruğa geri göndermek için ne yapılır?", options: ["Visibility timeout değerini 0 yapıp mesajları hemen yeniden görünür kılmak","Saklama süresini 14 güne çıkarıp mesajların kendiliğinden dönmesini beklemek","DLQ redrive ile mesajları kaynak kuyruğa geri sürmek","Ana kuyruğu FIFO türüne çevirip mesajları sıraya yeniden dizmek"], obj: "h3" }
     ],
     interview: [
       { q: "SQS Standard ve FIFO farkı?", a: "Standard çok yüksek verim sunar ama en az bir kez teslim eder ve sırayı garanti etmez. FIFO sırayı korur ve tekrarı önler; verimi daha sınırlıdır." },

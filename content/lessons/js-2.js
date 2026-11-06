@@ -254,7 +254,7 @@
       {
         id: "60f2dce8",
         q: "const m = [4, 9]; m.map((n) => n - 1); (sonuç bir değişkene atanmadı) satırlarından sonra m nedir?",
-        options: ["[3, 8]","undefined","[4, 9]","[]"],
+        options: ["[4, 9]","undefined","[3, 8]","[]"],
         obj: "h1"
       },
       {

@@ -63,11 +63,11 @@
       "Şüpheli bilgisayarı karıştırmak kanıtı bozar; önce kanıt mı, acil sınırlama mı karar verilir."
     ],
     quiz: [
-      { id: "4c0a7564", q: "Kanıtın kim tarafından, ne zaman alındığı ve nerede saklandığının kaydına ne denir?", options: ["Chain of custody", "Playbook", "Baseline", "Lease"], obj: "h1" },
-      { id: "4b3be6c9", q: "Kanıt toplarken ilk hangi veri alınmalıdır?", options: ["En uçucu olan (bellek)", "Arşivlenmiş ve çevrimdışı saklanan yedekler", "Kâğıt belgeler", "Uzak sunucudaki merkezi log kayıtları"], obj: "h2" },
-      { id: "b465cc1f", q: "Adli imajın aslıyla aynı olduğunu hangi yöntem kanıtlar?", options: ["Hash karşılaştırması", "Dosya boyutu", "Dosya adı", "Tarih"], obj: "h3" },
-      { id: "090af604", q: "Dava ihtimali olduğunda ilgili verilerin silinmesini durdurma kararına ne denir?", options: ["Legal hold", "Sanitization", "Failover", "Rollback"], obj: "h4" },
-      { id: "f5115961", q: "Bir iş istasyonunda diske yazılmadan bellekte çalışan (dosyasız) bir zararlı şüphesi var ve cihaz hâlâ açık. İlk alınması gereken kanıt hangisidir?", options: ["Bellek dökümü (RAM görüntüsü)", "Sabit diskin bit düzeyi kopyası", "Uygulama kurulum dosyaları", "Eski yedek kasetleri"], obj: "h2" }
+      { id: "4c0a7564", q: "Kanıtın kim tarafından, ne zaman alındığı ve nerede saklandığının kaydına ne denir?", options: ["Baseline", "Playbook", "Chain of custody", "Lease"], obj: "h1" },
+      { id: "4b3be6c9", q: "Kanıt toplarken ilk hangi veri alınmalıdır?", options: ["Arşivlenmiş ve çevrimdışı saklanan yedekler", "En uçucu olan (bellek)", "Kâğıt belgeler", "Uzak sunucudaki merkezi log kayıtları"], obj: "h2" },
+      { id: "b465cc1f", q: "Adli imajın aslıyla aynı olduğunu hangi yöntem kanıtlar?", options: ["Tarih", "Dosya boyutu", "Dosya adı", "Hash karşılaştırması"], obj: "h3" },
+      { id: "090af604", q: "Dava ihtimali olduğunda ilgili verilerin silinmesini durdurma kararına ne denir?", options: ["Failover", "Sanitization", "Legal hold", "Rollback"], obj: "h4" },
+      { id: "f5115961", q: "Bir iş istasyonunda diske yazılmadan bellekte çalışan (dosyasız) bir zararlı şüphesi var ve cihaz hâlâ açık. İlk alınması gereken kanıt hangisidir?", options: ["Sabit diskin bit düzeyi kopyası", "Bellek dökümü (RAM görüntüsü)", "Uygulama kurulum dosyaları", "Eski yedek kasetleri"], obj: "h2" }
     ],
     interview: [
       { q: "Chain of custody nedir, neden önemlidir?", a: "Kanıtın toplandığı andan itibaren kim tarafından, ne zaman, nerede saklandığının ve kime devredildiğinin kaydıdır. Kanıtın değiştirilmediğini göstererek hukuki geçerliliğini sağlar." },
@@ -141,10 +141,10 @@
       "Sigorta riski ortadan kaldırmaz, sadece maddi sonucunu aktarır."
     ],
     quiz: [
-      { id: "4492b43d", q: "ALE nasıl hesaplanır?", options: ["SLE × ARO", "SLE + ARO", "Varlık değeri / ARO", "ARO − SLE"], obj: "h1" },
-      { id: "5960a155", q: "Siber sigorta satın almak hangi risk stratejisidir?", options: ["Aktarma (transfer)", "Azaltma", "Kaçınma", "Kabul"], obj: "h2" },
-      { id: "93d7e8b2", q: "Önlemler uygulandıktan sonra kalan riske ne denir?", options: ["Artık risk (residual)", "Doğal risk (inherent)", "Risk iştahı", "Risk kaydı"], obj: "h3" },
-      { id: "facc759f", q: "Riskli bir hizmeti tamamen kapatmak hangi stratejidir?", options: ["Kaçınma", "Aktarma", "Azaltma", "Kabul"], obj: "h4" },
+      { id: "4492b43d", q: "ALE nasıl hesaplanır?", options: ["ARO − SLE", "SLE + ARO", "Varlık değeri / ARO", "SLE × ARO"], obj: "h1" },
+      { id: "5960a155", q: "Siber sigorta satın almak hangi risk stratejisidir?", options: ["Kaçınma", "Azaltma", "Aktarma (transfer)", "Kabul"], obj: "h2" },
+      { id: "93d7e8b2", q: "Önlemler uygulandıktan sonra kalan riske ne denir?", options: ["Doğal risk (inherent)", "Artık risk (residual)", "Risk iştahı", "Risk kaydı"], obj: "h3" },
+      { id: "facc759f", q: "Riskli bir hizmeti tamamen kapatmak hangi stratejidir?", options: ["Kabul", "Aktarma", "Azaltma", "Kaçınma"], obj: "h4" },
       { id: "892ffbc4", q: "Bir sunucunun değeri 400.000 TL. Bir olayda değerinin %25'ini kaybedeceği tahmin ediliyor ve olayın yılda 0,5 kez gerçekleşmesi bekleniyor. ALE kaç TL'dir?", options: ["100.000 TL", "200.000 TL", "25.000 TL", "50.000 TL"], obj: "h1" }
     ],
     interview: [
@@ -211,9 +211,9 @@
       "Politika duyurulmalı, eğitimle desteklenmeli ve yılda en az bir kez gözden geçirilmelidir."
     ],
     quiz: [
-      { id: "692e25d1", q: "Adım adım talimat veren belge hangisidir?", options: ["Prosedür", "Politika", "Standart", "Kılavuz"], obj: "h1" },
-      { id: "c838972b", q: "Aynı kişinin hem ödeme talebini açıp hem onaylamasını engelleyen ilke nedir?", options: ["Görev ayrımı", "Görev rotasyonu", "En az yetki", "Temiz masa"], obj: "h2" },
-      { id: "850733e7", q: "Tavsiye niteliğinde, esnek öneri belgesine ne denir?", options: ["Kılavuz (guideline)", "Politika", "Standart", "Prosedür"], obj: "h1" },
+      { id: "692e25d1", q: "Adım adım talimat veren belge hangisidir?", options: ["Standart", "Politika", "Prosedür", "Kılavuz"], obj: "h1" },
+      { id: "c838972b", q: "Aynı kişinin hem ödeme talebini açıp hem onaylamasını engelleyen ilke nedir?", options: ["Görev rotasyonu", "Görev ayrımı", "En az yetki", "Temiz masa"], obj: "h2" },
+      { id: "850733e7", q: "Tavsiye niteliğinde, esnek öneri belgesine ne denir?", options: ["Prosedür", "Politika", "Standart", "Kılavuz (guideline)"], obj: "h1" },
       { id: "e4c176ce", q: "İşten ayrılan çalışan için hangi adım zorunludur?", options: ["Erişimlerin ve hesapların hemen kapatılması", "Parolanın değiştirilmesi", "Kişisel mesajların okunması", "Hiçbiri"], obj: "h3" }
     ],
     interview: [
@@ -287,9 +287,9 @@
       "'Büyük firma güvenlidir' varsayımı tehlikelidir; kritik tedarikçi daha sık ve derin incelenir."
     ],
     quiz: [
-      { id: "770548e6", q: "Tedarikçiye satın almadan önce yapılan güvenlik incelemesine ne ad verilir?", options: ["Due diligence", "Hardening (sistem yapılandırmasını sıkılaştırma çalışması)", "Patching", "Failover (arıza anında yedek sisteme geçiş mekanizması)"], obj: "h1" },
-      { id: "d3c5dd21", q: "Hizmetin erişilebilirlik ve süre taahhütlerini içeren belge hangisidir?", options: ["SLA", "NDA", "SOW", "DPA"], obj: "h2" },
-      { id: "db704b8b", q: "Yazılımın içerdiği tüm bileşenlerin listesine ne denir?", options: ["SBOM", "SIEM", "SLE", "SSID"], obj: "h3" },
+      { id: "770548e6", q: "Tedarikçiye satın almadan önce yapılan güvenlik incelemesine ne ad verilir?", options: ["Patching", "Hardening (sistem yapılandırmasını sıkılaştırma çalışması)", "Due diligence", "Failover (arıza anında yedek sisteme geçiş mekanizması)"], obj: "h1" },
+      { id: "d3c5dd21", q: "Hizmetin erişilebilirlik ve süre taahhütlerini içeren belge hangisidir?", options: ["NDA", "SLA", "SOW", "DPA"], obj: "h2" },
+      { id: "db704b8b", q: "Yazılımın içerdiği tüm bileşenlerin listesine ne denir?", options: ["SSID", "SIEM", "SLE", "SBOM"], obj: "h3" },
       { id: "4cc22294", q: "Tedarikçi ile sözleşme bittiğinde ne yapılmalıdır?", options: ["Erişim kapatılır, veri iade ve imha edilir", "Hiçbir şey", "Parola paylaşılır", "Logları silinir"], obj: "h4" },
       { id: "93d4d89a", q: "Bir kurum, ihtiyacı tamamen net olan standart donanım için birkaç tedarikçiden yalnızca fiyat teklifi almak istiyor. Hangi belgeyi yayınlamalıdır?", options: ["RFI (pazardaki çözümleri öğrenmek için bilgi isteği)", "RFP (ayrıntılı çözüm önerisi isteyen teklif isteği)", "RFQ (fiyat teklifi isteği)", "SOW (iş kapsamı belgesi)"], obj: "h2" },
       { id: "09db1679", q: "Bir ana sözleşme altında farklı projeler için her seferinde ayrı iş kapsamı ve teslimat belgeleri yazılıyor. Ortak hukuki şartları taşıyan çerçeve belge hangisidir?", options: ["SOW", "MSA (ana hizmet sözleşmesi)", "NDA", "SLO"], obj: "h2" }
@@ -370,12 +370,12 @@
       "Uyum asgari çıtadır; güvenlik risk temelli ve sürekli çabadır."
     ],
     quiz: [
-      { id: "5bf9249f", q: "Kartlı ödeme verisi işleyen kuruluşlara yönelik standart hangisidir?", options: ["PCI DSS", "HIPAA (ABD sağlık verisi gizliliği düzenlemesi)", "SOX (kurumsal finansal raporlama yasası)", "FERPA"], obj: "h1" },
+      { id: "5bf9249f", q: "Kartlı ödeme verisi işleyen kuruluşlara yönelik standart hangisidir?", options: ["SOX (kurumsal finansal raporlama yasası)", "HIPAA (ABD sağlık verisi gizliliği düzenlemesi)", "PCI DSS", "FERPA"], obj: "h1" },
       { id: "edad8372", q: "GDPR'da ihlal bildirimi için tipik süre nedir?", options: ["72 saat", "24 saat", "30 gün", "1 yıl"], obj: "h2" },
-      { id: "4dd5bdc7", q: "Veri minimizasyonu ilkesi ne demektir?", options: ["Sadece gerekli veriyi toplamak", "Veriyi sıkıştırmak", "Veriyi şifrelemek", "Yedeği silmek"], obj: "h3" },
-      { id: "ce4bef03", q: "Uyum ile güvenlik arasında doğru ifade hangisidir?", options: ["Uyum asgari çıtadır, güvenlik sürekli ve risk temellidir", "İkisi aynı şeydir", "Uyum varsa ihlal olmaz", "Güvenlik yasal zorunluluktur"], obj: "h4" },
+      { id: "4dd5bdc7", q: "Veri minimizasyonu ilkesi ne demektir?", options: ["Veriyi sıkıştırmak", "Sadece gerekli veriyi toplamak", "Veriyi şifrelemek", "Yedeği silmek"], obj: "h3" },
+      { id: "ce4bef03", q: "Uyum ile güvenlik arasında doğru ifade hangisidir?", options: ["Güvenlik yasal zorunluluktur", "İkisi aynı şeydir", "Uyum varsa ihlal olmaz", "Uyum asgari çıtadır, güvenlik sürekli ve risk temellidir"], obj: "h4" },
       { id: "fc2a48de", q: "Bir müşteri artık hizmet almak istemediğini belirterek şirketten kendisiyle ilgili kişisel verilerin silinmesini talep ediyor. Bu talep hangi hakka dayanır?", options: ["Yasal bekletme (legal hold)", "Veri minimizasyonu", "Silinme (unutulma) hakkı", "Açık rıza (opt-in)"], obj: "h3" },
-      { id: "0f0c5a12", q: "Bulut CRM sağlayıcısı müşteri kayıtlarını yalnızca perakendecinin talimatlarına göre işliyor. Perakendeci kayıtların neden ve nasıl kullanılacağına karar veriyor. Roller hangisidir?", options: ["Perakendeci veri sorumlusu (controller), sağlayıcı veri işleyen (processor)", "Perakendeci veri işleyen, sağlayıcı veri sorumlusu", "Perakendeci veri öznesi, sağlayıcı alt işleyen", "Sağlayıcı veri sorumlusu, perakendeci veri koruyucu (custodian)"], obj: "h3" },
+      { id: "0f0c5a12", q: "Bulut CRM sağlayıcısı müşteri kayıtlarını yalnızca perakendecinin talimatlarına göre işliyor. Perakendeci kayıtların neden ve nasıl kullanılacağına karar veriyor. Roller hangisidir?", options: ["Perakendeci veri öznesi, sağlayıcı alt işleyen", "Perakendeci veri işleyen, sağlayıcı veri sorumlusu", "Perakendeci veri sorumlusu (controller), sağlayıcı veri işleyen (processor)", "Sağlayıcı veri sorumlusu, perakendeci veri koruyucu (custodian)"], obj: "h3" },
       { id: "510eca13", q: "Aşağıdakilerden hangisi kişisel veriye örnektir?", options: ["Bir kişiyle ilişkilendirilebilen e-posta adresi","Hiçbir kişiye bağlanamayan, tamamen anonim toplu istatistik","Bir şirketin kurumsal logosunun görseli","Bir ürünün genel fiyat listesi"], obj: "h1" },
       { id: "7f6ec117", q: "Müşteri verilerinin hangi amaçla ve nasıl işleneceğine karar veren taraf hukuken ne olarak adlandırılır?", options: ["Veri işleyen taraf olarak (onun adına işleyen hizmet sağlayıcı)","Veri sorumlusu","İlgili kişi olarak, yani verisi işlenen gerçek kişi","Denetim otoritesi olarak, yani kontrol eden resmî kurum"], obj: "h1" },
       { id: "3135109c", q: "Bir şirket müşteri verilerinin sızdığını fark etti. Türkiye'de KVKK kapsamında Kuruma bildirim süresi nedir?", options: ["Yıl sonunda toplu bildirimle ve yıllık raporla birlikte","İhlal basında yayımlandıktan sonraki 30 gün içinde","Gecikmeksizin ve en geç 72 saat içinde","Bildirim zorunlu değildir, yalnız ceza gelirse yapılır"], obj: "h2" },
@@ -456,10 +456,10 @@
       "İzinsiz sızma testi suçtur; yazılı onay ve kapsam şarttır."
     ],
     quiz: [
-      { id: "bcac7a31", q: "Hedef hakkında hiçbir bilgi verilmeden yapılan sızma testi hangisidir?", options: ["Kara kutu (black box)", "Beyaz kutu", "Gri kutu", "Fiziksel"], obj: "h1" },
-      { id: "918129dd", q: "Sızma testinde kapsam ve kuralları belirleyen belge hangisidir?", options: ["Rules of Engagement", "SLA", "NDA", "BIA"], obj: "h2" },
-      { id: "e7679109", q: "Savunma takımının adı nedir?", options: ["Blue team", "Red team", "Purple team", "Green team"], obj: "h3" },
-      { id: "a6b5844b", q: "Otomatik araçla bilinen açıkları listeleyen çalışma nedir?", options: ["Zafiyet taraması", "Sızma testi (izinle açıkları gerçekten sömürmeyi deneyen çalışma)", "Bug bounty", "Red team (saldırgan rolünü üstlenen gerçekçi saldırı simülasyonu)"], obj: "h4" },
+      { id: "bcac7a31", q: "Hedef hakkında hiçbir bilgi verilmeden yapılan sızma testi hangisidir?", options: ["Beyaz kutu", "Kara kutu (black box)", "Gri kutu", "Fiziksel"], obj: "h1" },
+      { id: "918129dd", q: "Sızma testinde kapsam ve kuralları belirleyen belge hangisidir?", options: ["BIA", "SLA", "NDA", "Rules of Engagement"], obj: "h2" },
+      { id: "e7679109", q: "Savunma takımının adı nedir?", options: ["Purple team", "Red team", "Blue team", "Green team"], obj: "h3" },
+      { id: "a6b5844b", q: "Otomatik araçla bilinen açıkları listeleyen çalışma nedir?", options: ["Sızma testi (izinle açıkları gerçekten sömürmeyi deneyen çalışma)", "Zafiyet taraması", "Bug bounty", "Red team (saldırgan rolünü üstlenen gerçekçi saldırı simülasyonu)"], obj: "h4" },
       { id: "e2c1b998", q: "Güvenlik ekibi, tespit kurallarının hangi saldırgan tekniklerini kapsayıp hangilerini kaçırdığını matris üzerinde göstermek istiyor. Hangi kaynak en uygundur?", options: ["Cyber Kill Chain", "MITRE ATT&CK", "Diamond Model", "CVSS"], obj: "h4" },
       { id: "68acc7fc", q: "Bir analist olayı saldırgan, yetenek, altyapı ve kurban arasındaki ilişkiyle çözümlüyor. Hangi model kullanılıyor?", options: ["Cyber Kill Chain", "MITRE ATT&CK", "STRIDE", "Diamond Model"], obj: "h4" }
     ],

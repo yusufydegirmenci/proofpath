@@ -1205,12 +1205,7 @@
       {
         "id": "2c8d05bc",
         "q": "Bir ekip yeni kişileri eğitmek ve tasarım üzerinde fikir birliği sağlamak için, tasarımı yazarın anlatımıyla adım adım gözden geçiriyor. Bu hangi türdür?",
-        "options": [
-          "Inspection",
-          "Teknik inceleme",
-          "Walkthrough",
-          "Gayriresmî inceleme"
-        ],
+        "options": ["Walkthrough","Teknik inceleme","Inspection","Gayriresmî inceleme"],
         "obj": "h2"
       },
       {
@@ -1739,12 +1734,7 @@
       {
         "id": "e792a169",
         "q": "Aşağıdakilerden hangisi Definition of Ready'ye uygun bir maddedir?",
-        "options": [
-          "Hikâyeye bağlı tüm otomatik testler çalıştırılmış ve geçmiştir",
-          "Hikâyede test edilebilir kabul ölçütleri yazılmıştır",
-          "Kod üretime alınmıştır",
-          "Sprint gözden geçirmesi yapılmış ve paydaş geri bildirimi alınmıştır"
-        ],
+        "options": ["Hikâyede test edilebilir kabul ölçütleri yazılmıştır","Hikâyeye bağlı tüm otomatik testler çalıştırılmış ve geçmiştir","Kod üretime alınmıştır","Sprint gözden geçirmesi yapılmış ve paydaş geri bildirimi alınmıştır"],
         "obj": "h2"
       },
       {

@@ -359,8 +359,8 @@
       { id: "6b6463de", q: "'Bilgisayarı yeniden başlattın mı?' hangisidir?", options: ["Did you restart the computer?", "Do you restarted the computer?", "You did restart the computer?", "Have restart the computer?"], obj: "h1" },
       { id: "70c7f7f4", q: "'When ___ it start?' (geçmiş zamanda) boşluk hangisidir?", options: ["did", "does", "do", "is"], obj: "h2" },
       { id: "b72d5990", q: "'Does it work?' sorusundaki 'work' neden -s almaz?", options: ["Çünkü does üçüncü tekil kişi ekini taşır", "Çünkü it çoğuldur", "Çünkü fiil her zaman yalın yazılır", "Çünkü geçmiş zamandır"], obj: "h1" },
-      { id: "543fd711", q: "'Hangi hata mesajını görüyorsun?' hangisidir?", options: ["What error message do you see?", "What error message you see?", "Which you see error message?", "What do you see error message?"], obj: "h2" },
-      { id: "cf78b4e3", q: "Ekran görüntüsü istemek için nazik cümle hangisidir?", options: ["Can you send me a screenshot?", "Send screenshot now.", "You send screenshot to me when you have time?", "I want screenshot of the error page now."], obj: "h3" }
+      { id: "543fd711", q: "'Hangi hata mesajını görüyorsun?' hangisidir?", options: ["What do you see error message?", "What error message you see?", "Which you see error message?", "What error message do you see?"], obj: "h2" },
+      { id: "cf78b4e3", q: "Ekran görüntüsü istemek için nazik cümle hangisidir?", options: ["Send screenshot now.", "Can you send me a screenshot?", "You send screenshot to me when you have time?", "I want screenshot of the error page now."], obj: "h3" }
     ],
     interview: [
       { q: "A user says 'My computer is slow.' What questions do you ask?", a: "I ask: When did it start? Did you install anything new? What programs are open? Did you restart the computer? Does it happen all the time or only sometimes? Then I check the system." },
@@ -442,11 +442,11 @@
       "Olumsuzlar can't ve couldn't'tır; 'please' nezaketi artırır."
     ],
     quiz: [
-      { id: "832ef785", q: "Daha nazik rica hangisidir?", options: ["Could you help me?", "Help me.", "You help me with this, right?", "I want your help with this task."], obj: "h2" },
-      { id: "a2376d78", q: "'She ___ configure the router.' (yapabilir)", options: ["can", "cans", "can to", "is can"], obj: "h1" },
-      { id: "2c98b399", q: "'I ___ connect to the VPN.' (bağlanamıyorum)", options: ["can't", "don't can", "can not to", "am not can"], obj: "h1" },
-      { id: "2d6fe66a", q: "'Could I ask a question?' ne anlama gelir?", options: ["Bir soru sorabilir miyim?", "Artık soru sormayı bırakmanı istiyorum, lütfen", "Sen dün toplantıda bana bir soru sordun", "Soru sormam gerekiyor"], obj: "h2" },
-      { id: "ab7d4d09", q: "Doğru cümle hangisidir?", options: ["Can you send me the file?", "Can you to send me the file?", "Can you sending me the file?", "Can you sends me the file?"], obj: "h1" },
+      { id: "832ef785", q: "Daha nazik rica hangisidir?", options: ["You help me with this, right?", "Help me.", "Could you help me?", "I want your help with this task."], obj: "h2" },
+      { id: "a2376d78", q: "'She ___ configure the router.' (yapabilir)", options: ["is can", "cans", "can to", "can"], obj: "h1" },
+      { id: "2c98b399", q: "'I ___ connect to the VPN.' (bağlanamıyorum)", options: ["don't can", "can't", "can not to", "am not can"], obj: "h1" },
+      { id: "2d6fe66a", q: "'Could I ask a question?' ne anlama gelir?", options: ["Sen dün toplantıda bana bir soru sordun", "Artık soru sormayı bırakmanı istiyorum, lütfen", "Bir soru sorabilir miyim?", "Soru sormam gerekiyor"], obj: "h2" },
+      { id: "ab7d4d09", q: "Doğru cümle hangisidir?", options: ["Can you sends me the file?", "Can you to send me the file?", "Can you sending me the file?", "Can you send me the file?"], obj: "h1" },
       { id: "39bff1b8", q: "Yeni tanıştığın bir müşteriden, e-postayla log dosyası istiyorsun. Hangi cümle en uygun (nazik ve resmî) olur?", options: ["Can you send the log, mate?", "Send me the log.", "I need the log now.", "Could you please send me the log file?"], obj: "h2" }
     ],
     interview: [
@@ -528,11 +528,11 @@
       "Konu satırı kısa ve net olmalıdır; e-posta kısa yazılır ve tek konu içerir."
     ],
     quiz: [
-      { id: "19784d8b", q: "E-posta kapanışı için hangisi uygundur?", options: ["Best regards,", "See you in the toilet,", "Bye bye boss,", "Answer me,"], obj: "h1" },
-      { id: "4d1de083", q: "Ekte dosya gönderirken hangi cümle doğrudur?", options: ["Please find the file attached.", "Please find the file attach.", "Please attached the file find.", "The file is attach."], obj: "h2" },
-      { id: "e115e05b", q: "'Cevabınızı bekliyorum.' hangisidir?", options: ["I look forward to your reply.", "I wait your reply.", "I am waiting you.", "I hope reply."], obj: "h2" },
-      { id: "c56bb29b", q: "Resmî bir e-postaya nasıl başlanır?", options: ["Dear Mr. Smith,", "Hey bro, hope you are doing well,", "What's up Mr. Smith, how is it going,", "Yo,"], obj: "h1" },
-      { id: "85ecef33", q: "Konu satırı için en iyi örnek hangisidir?", options: ["Server maintenance on Saturday 22:00", "Hi", "Important!!!", "Please read"], obj: "h3" },
+      { id: "19784d8b", q: "E-posta kapanışı için hangisi uygundur?", options: ["See you in the toilet,", "Best regards,", "Bye bye boss,", "Answer me,"], obj: "h1" },
+      { id: "4d1de083", q: "Ekte dosya gönderirken hangi cümle doğrudur?", options: ["Please attached the file find.", "Please find the file attach.", "Please find the file attached.", "The file is attach."], obj: "h2" },
+      { id: "e115e05b", q: "'Cevabınızı bekliyorum.' hangisidir?", options: ["I hope reply.", "I wait your reply.", "I am waiting you.", "I look forward to your reply."], obj: "h2" },
+      { id: "c56bb29b", q: "Resmî bir e-postaya nasıl başlanır?", options: ["Hey bro, hope you are doing well,", "Dear Mr. Smith,", "What's up Mr. Smith, how is it going,", "Yo,"], obj: "h1" },
+      { id: "85ecef33", q: "Konu satırı için en iyi örnek hangisidir?", options: ["Important!!!", "Hi", "Server maintenance on Saturday 22:00", "Please read"], obj: "h3" },
       { id: "2df4ce8c", q: "Yöneticine yazdığın resmî e-postada selamlama ve kapanış çifti hangisi olur?", options: ["Hi mate, ... Cheers,", "Dear Ms. Yilmaz, ... Kind regards,", "Hey, ... Bye,", "Yo boss, ... See ya,"], obj: "h1" }
     ],
     interview: [

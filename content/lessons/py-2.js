@@ -269,7 +269,7 @@
       {
         id: "67126cc2",
         q: "m = [\"elma\", \"armut\", \"kiraz\"] iken m[1:3] nedir?",
-        options: ["['armut', 'kiraz']", "['elma', 'armut']", "['armut']", "['elma', 'armut', 'kiraz']"],
+        options: ["['armut']", "['elma', 'armut']", "['armut', 'kiraz']", "['elma', 'armut', 'kiraz']"],
         obj: "h1"
       },
       {
@@ -281,7 +281,7 @@
       {
         id: "3817a572",
         q: "sirali = a.sort() sonrasında sirali nedir?",
-        options: ["None", "Sıralanmış yeni liste", "a'nın bir kopyası", "Hata verir"],
+        options: ["Hata verir", "Sıralanmış yeni liste", "a'nın bir kopyası", "None"],
         obj: "h2"
       },
       {
@@ -299,7 +299,7 @@
       {
         id: "dba564d2",
         q: "x, y = (4, 7) çalıştıktan sonra y kaçtır?",
-        options: ["7", "4", "(4, 7)", "Hata verir"],
+        options: ["4", "7", "(4, 7)", "Hata verir"],
         obj: "h4"
       },
       {
@@ -439,7 +439,7 @@
       {
         id: "7e3217c9",
         q: "stok = {\"kalem\": 12} iken stok.get(\"makas\", 0) ne döndürür?",
-        options: ["0", "KeyError verir", "None", "\"makas\""],
+        options: ["None", "KeyError verir", "0", "\"makas\""],
         obj: "h1"
       },
       {
@@ -451,7 +451,7 @@
       {
         id: "6ead64cf",
         q: "for k, v in stok.items(): döngüsünde k ve v nedir?",
-        options: ["Sırayla anahtar ve değer", "Sırayla değer ve anahtar", "İkisi de anahtar", "Sıra numarası ve değer"],
+        options: ["Sıra numarası ve değer", "Sırayla değer ve anahtar", "İkisi de anahtar", "Sırayla anahtar ve değer"],
         obj: "h2"
       },
       {
@@ -463,7 +463,7 @@
       {
         id: "134cdf8a",
         q: "{1, 2, 3} & {3, 4} sonucu nedir?",
-        options: ["{3}", "{1, 2, 3, 4}", "{1, 2}", "{4}"],
+        options: ["{4}", "{1, 2, 3, 4}", "{1, 2}", "{3}"],
         obj: "h3"
       },
       {
@@ -475,7 +475,7 @@
       {
         id: "f5454700",
         q: "d = {[1, 2]: \"x\"} neden hata verir?",
-        options: ["Liste değiştirilebilir, anahtar olamaz", "Sözlük anahtarı metin olmalıdır", "Değer olarak metin yazılamaz", "Sözlük en çok bir anahtar alır"],
+        options: ["Sözlük en çok bir anahtar alır", "Sözlük anahtarı metin olmalıdır", "Değer olarak metin yazılamaz", "Liste değiştirilebilir, anahtar olamaz"],
         obj: "h4"
       }
     ],
@@ -612,7 +612,7 @@
       {
         id: "ffd47996",
         q: "return satırı çalışınca fonksiyon ne yapar?",
-        options: ["Hemen sonlanır ve değeri çağırana verir", "Yalnız değeri yazdırır", "Sonraki satıra devam eder", "Programın tamamını sonlandırır"],
+        options: ["Programın tamamını sonlandırır", "Yalnız değeri yazdırır", "Sonraki satıra devam eder", "Hemen sonlanır ve değeri çağırana verir"],
         obj: "h2"
       },
       {
@@ -624,7 +624,7 @@
       {
         id: "ce3f7fe6",
         q: "Fonksiyon içinde global sayac satırı ne işe yarar?",
-        options: ["Dıştaki sayac adını fonksiyonda değiştirmeyi sağlar", "Yeni bir fonksiyon tanımlar", "Değişkeni siler", "Sayacı sıfırlar"],
+        options: ["Sayacı sıfırlar", "Yeni bir fonksiyon tanımlar", "Değişkeni siler", "Dıştaki sayac adını fonksiyonda değiştirmeyi sağlar"],
         obj: "h3"
       },
       {
@@ -636,7 +636,7 @@
       {
         id: "0988cacc",
         q: "Tanımı iki parametreli olan tutar(adet, fiyat) fonksiyonuna tutar(3, 2, 1) yazılırsa ne olur?",
-        options: ["TypeError", "6", "NameError", "ValueError"],
+        options: ["NameError", "6", "TypeError", "ValueError"],
         obj: "h4"
       },
       {

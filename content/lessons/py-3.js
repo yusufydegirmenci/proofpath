@@ -103,43 +103,43 @@
       {
         id: "ef005a70",
         q: "try:\n    sayi = int(\"12a\")\n    print(\"temiz\")\nexcept ValueError:\n    print(\"hatalı\")\nprint(\"son\")\nkodu ne yazdırır?",
-        options: ["hatalı, ardından son", "temiz, ardından son", "Yalnız hatalı", "Program hata ile durur"],
+        options: ["Yalnız hatalı", "temiz, ardından son", "hatalı, ardından son", "Program hata ile durur"],
         obj: "h1"
       },
       {
         id: "24cbc17a",
         q: "try bloğunda hiç hata çıkmazsa except bloğuna ne olur?",
-        options: ["Çalışmaz, atlanır", "Her zaman çalışır", "Yalnız finally varsa çalışır", "Program durur"],
+        options: ["Yalnız finally varsa çalışır", "Her zaman çalışır", "Çalışmaz, atlanır", "Program durur"],
         obj: "h1"
       },
       {
         id: "ab5d59ef",
         q: "int(\"3.5\") ifadesi hangi hatayı verir?",
-        options: ["ValueError", "TypeError", "ZeroDivisionError", "NameError"],
+        options: ["ZeroDivisionError", "TypeError", "ValueError", "NameError"],
         obj: "h2"
       },
       {
         id: "533e21d2",
         q: "Hangi ifade TypeError üretir?",
-        options: ["\"5\" + 2", "int(\"5\") + 2", "\"5\" * 2", "float(\"5\") + 2"],
+        options: ["\"5\" * 2", "int(\"5\") + 2", "\"5\" + 2", "float(\"5\") + 2"],
         obj: "h2"
       },
       {
         id: "278c4c62",
         q: "try bloğunda 7 % 0 işlemi var ve yalnız except ValueError: yazılı. Ne olur?",
-        options: ["ZeroDivisionError yakalanmaz, program hata ile durur", "ValueError mesajı yazılır", "Sonuç 0 olur", "except bloğu yine de çalışır"],
+        options: ["Sonuç 0 olur", "ValueError mesajı yazılır", "ZeroDivisionError yakalanmaz, program hata ile durur", "except bloğu yine de çalışır"],
         obj: "h3"
       },
       {
         id: "49a9da9c",
         q: "except (ValueError, TypeError): satırı ne yapar?",
-        options: ["İki türden biri oluşursa blok çalışır", "Yalnız ikisi birlikte oluşursa çalışır", "SyntaxError verir", "Yalnız ilk türü yakalar"],
+        options: ["SyntaxError verir", "Yalnız ikisi birlikte oluşursa çalışır", "İki türden biri oluşursa blok çalışır", "Yalnız ilk türü yakalar"],
         obj: "h3"
       },
       {
         id: "05af33ba",
         q: "finally bloğu ne zaman çalışır?",
-        options: ["Hata olsun olmasın her durumda", "Yalnız hata olduğunda", "Yalnız hata olmadığında", "Yalnız except çalışmadıysa"],
+        options: ["Yalnız hata olduğunda", "Hata olsun olmasın her durumda", "Yalnız hata olmadığında", "Yalnız except çalışmadıysa"],
         obj: "h4"
       },
       {
@@ -157,7 +157,7 @@
       {
         id: "4ceeef22",
         q: "d = {\"a\": 1}\ntry:\n    print(d[\"b\"])\nexcept LookupError:\n    print(\"yok\")\nkodu ne yazdırır?",
-        options: ["yok", "KeyError ile durur", "1", "None"],
+        options: ["None", "KeyError ile durur", "1", "yok"],
         obj: "h3"
       },
       {
@@ -284,7 +284,7 @@
       {
         id: "f0d93a7a",
         q: "\"12 5  8\".split() ne döndürür?",
-        options: ["['12', '5', '8']", "['12', '5', '', '8']", "['12 5  8']", "[12, 5, 8]"],
+        options: ["['12 5  8']", "['12', '5', '', '8']", "['12', '5', '8']", "[12, 5, 8]"],
         obj: "h1"
       },
       {
@@ -296,13 +296,13 @@
       {
         id: "df61790c",
         q: "\"xxaxbxx\".strip(\"x\") ne döndürür?",
-        options: ["axb", "ab", "xxaxbxx", "xaxbx"],
+        options: ["ab", "axb", "xxaxbxx", "xaxbx"],
         obj: "h2"
       },
       {
         id: "f6d7ff65",
         q: "ad = \"ada\"\nad.replace(\"a\", \"e\")\nprint(ad)\nkodu ne yazdırır?",
-        options: ["ada", "ede", "eda", "Hata verir"],
+        options: ["Hata verir", "ede", "eda", "ada"],
         obj: "h2"
       },
       {

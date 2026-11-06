@@ -87,17 +87,17 @@
     ],
     quiz: [
       { id: "baaafed4", q: "2001:0db8:0000:0000:0000:0000:0000:0001 adresinin doğru kısaltması hangisidir?", options: ["2001:db8::1", "2001:db8:0:1", "2001::db8::1", "2001:db8:1"], obj: "h1" },
-      { id: "2302670b", q: "FE80:: ile başlayan adres türü hangisidir?", options: ["Global unicast", "Link-local", "Multicast", "Loopback"], obj: "h2" },
-      { id: "e8b5467b", q: "IPv6'da ARP'nin yerini hangi protokol alır?", options: ["DHCP", "NDP", "DNS", "ICMPv4"], obj: "h3" },
+      { id: "2302670b", q: "FE80:: ile başlayan adres türü hangisidir?", options: ["Global unicast", "Multicast", "Link-local", "Loopback"], obj: "h2" },
+      { id: "e8b5467b", q: "IPv6'da ARP'nin yerini hangi protokol alır?", options: ["DHCP", "DNS", "NDP", "ICMPv4"], obj: "h3" },
       { id: "9c7aacb5", q: "IPv6'da standart alt ağ uzunluğu nedir?", options: ["/24", "/48", "/64", "/128"], obj: "h3" },
-      { id: "d51e3732", q: "Cisco router'ın IPv6 paketlerini yönlendirmesi için hangi komut gerekir?", options: ["ipv6 unicast-routing", "ip routing", "ipv6 enable", "ipv6 nat"], obj: "h4" },
+      { id: "d51e3732", q: "Cisco router'ın IPv6 paketlerini yönlendirmesi için hangi komut gerekir?", options: ["ipv6 nat", "ip routing", "ipv6 enable", "ipv6 unicast-routing"], obj: "h4" },
       { id: "1ad92126", q: "Aşağıdaki adreslerden hangisi geçersizdir?", options: ["2001:db8::1","fe80::202:b3ff:fe1e:8329","2001::db8::1","::1"], obj: "h1" },
-      { id: "47b405db", q: "Bir IPv6 adresi FF02::1 ile başlıyorsa bu adres hangi türdendir?", options: ["Multicast","Global unicast","Link-local","Unique local"], obj: "h2" },
-      { id: "430b6fbc", q: "2001:db8:acad:2::/64 ağına 2001:db8:acad:12::2 next-hop adresi üzerinden statik rota hangi komutla yazılır?", options: ["ipv6 route 2001:db8:acad:2::/64 2001:db8:acad:12::2","ip route 2001:db8:acad:2::/64 2001:db8:acad:12::2","ipv6 route 2001:db8:acad:2::/64 255.255.255.0 2001:db8:acad:12::2","ipv6 unicast-routing 2001:db8:acad:2::/64"], obj: "h4" },
+      { id: "47b405db", q: "Bir IPv6 adresi FF02::1 ile başlıyorsa bu adres hangi türdendir?", options: ["Unique local","Global unicast","Link-local","Multicast"], obj: "h2" },
+      { id: "430b6fbc", q: "2001:db8:acad:2::/64 ağına 2001:db8:acad:12::2 next-hop adresi üzerinden statik rota hangi komutla yazılır?", options: ["ipv6 unicast-routing 2001:db8:acad:2::/64","ip route 2001:db8:acad:2::/64 2001:db8:acad:12::2","ipv6 route 2001:db8:acad:2::/64 255.255.255.0 2001:db8:acad:12::2","ipv6 route 2001:db8:acad:2::/64 2001:db8:acad:12::2"], obj: "h4" },
       { id: "0609739e", q: "FD12:3456:789A::1 adresi hangi IPv6 adres türüne aittir?", options: ["Global unicast", "Link-local", "Unique local (FC00::/7 içinde)", "Multicast"], obj: "h2" },
-      { id: "6c4b4248", q: "Kaynak adresi FE80::/10 aralığından olan bir paketi router aldığında ne yapar?", options: ["Varsayılan rotadan internete iletir", "Başka bir ağa yönlendirmez; adres yalnızca bağlı olduğu bağlantıda geçerlidir", "NAT ile global bir adrese çevirip iletir", "TTL değerini artırarak hedefe ulaştırır"], obj: "h2" },
+      { id: "6c4b4248", q: "Kaynak adresi FE80::/10 aralığından olan bir paketi router aldığında ne yapar?", options: ["Varsayılan rotadan internete iletir", "NAT ile global bir adrese çevirip iletir", "Başka bir ağa yönlendirmez; adres yalnızca bağlı olduğu bağlantıda geçerlidir", "TTL değerini artırarak hedefe ulaştırır"], obj: "h2" },
       { id: "8e80ea26", q: "Bir Windows sunucudan gelen yanıtta TTL=118 görünüyor (başlangıç 128 varsayılıyor). Aradaki router sayısı kaçtır?", options: ["10", "118", "128", "246"], obj: "h3" },
-      { id: "ebdf4992", q: "DF bayrağı 1 olan bir paket, MTU'su paketten küçük bir bağlantıya geliyor. Router ne yapar?", options: ["Paketi atar ve ICMP ile kaynağı uyarır", "Paketi iki parçaya bölüp hedefe iletir", "TTL değerini artırıp paketi yeniden dener", "Paketin fazla kısmını kesip geri kalanını iletir"], obj: "h3" }
+      { id: "ebdf4992", q: "DF bayrağı 1 olan bir paket, MTU'su paketten küçük bir bağlantıya geliyor. Router ne yapar?", options: ["Paketin fazla kısmını kesip geri kalanını iletir", "Paketi iki parçaya bölüp hedefe iletir", "TTL değerini artırıp paketi yeniden dener", "Paketi atar ve ICMP ile kaynağı uyarır"], obj: "h3" }
     ],
     interview: [
       { q: "IPv6 neden geliştirildi?", a: "IPv4'ün 32 bitlik adres alanı tükendi. IPv6 128 bitlik adresleme ile neredeyse sınırsız adres sunar, ayrıca NAT ihtiyacını azaltır ve daha verimli bir başlık yapısı getirir." },
@@ -183,19 +183,19 @@
       "PortFast ve BPDU Guard yalnızca uç cihaz portlarına yazılır; EtherChannel'da LACP active/passive, PAgP desirable/auto kullanır, bağlanan portların hız, duplex, VLAN ayarı aynı olmalıdır ve bir demette en çok 8 link aktif olur."
     ],
     quiz: [
-      { id: "3921c46a", q: "STP'nin temel amacı nedir?", options: ["Hız artırmak", "Layer 2 döngülerini önlemek", "IP dağıtmak", "VLAN oluşturmak"], obj: "h2" },
-      { id: "097234e1", q: "Root bridge nasıl seçilir?", options: ["En yüksek IP adresi", "En düşük Bridge ID", "En çok port", "En hızlı switch"], obj: "h1" },
-      { id: "1f755f31", q: "PortFast hangi porta uygulanır?", options: ["Switch'ler arası trunk portlarının tamamı", "Uç cihaz (bilgisayar) portu", "Router portu", "Her porta, tüm switch portlarına birden"], obj: "h3" },
-      { id: "5c03ee8d", q: "Birden çok fiziksel linki tek mantıksal link yapan teknoloji hangisidir?", options: ["VLAN", "EtherChannel", "NAT", "HSRP"], obj: "h4" },
-      { id: "030d4cc1", q: "LACP için iki tarafın moduna ne uygun olur?", options: ["passive-passive", "active-passive", "auto-auto", "desirable-auto"], obj: "h4" },
+      { id: "3921c46a", q: "STP'nin temel amacı nedir?", options: ["Hız artırmak", "IP dağıtmak", "Layer 2 döngülerini önlemek", "VLAN oluşturmak"], obj: "h2" },
+      { id: "097234e1", q: "Root bridge nasıl seçilir?", options: ["En yüksek IP adresi", "En çok port", "En düşük Bridge ID", "En hızlı switch"], obj: "h1" },
+      { id: "1f755f31", q: "PortFast hangi porta uygulanır?", options: ["Switch'ler arası trunk portlarının tamamı", "Router portu", "Uç cihaz (bilgisayar) portu", "Her porta, tüm switch portlarına birden"], obj: "h3" },
+      { id: "5c03ee8d", q: "Birden çok fiziksel linki tek mantıksal link yapan teknoloji hangisidir?", options: ["VLAN", "NAT", "EtherChannel", "HSRP"], obj: "h4" },
+      { id: "030d4cc1", q: "LACP için iki tarafın moduna ne uygun olur?", options: ["passive-passive", "auto-auto", "active-passive", "desirable-auto"], obj: "h4" },
       { id: "47a77aab", q: "VLAN 1'de SW1 (öncelik 32769, MAC 0000.0C00.0002), SW2 (öncelik 32769, MAC 0000.0C00.0001) ve SW3 (öncelik 4097, MAC 0000.0C00.00FF) var. Root bridge hangisidir?", options: ["SW1","SW2","SW3","Öncelikler eşit olmadığı için root seçilemez"], obj: "h1" },
       { id: "190773eb", q: "STP klasik (short) maliyet tablosuna göre 1 Gbps bir linkin yol maliyeti kaçtır?", options: ["4","19","2","100"], obj: "h2" },
-      { id: "20b65291", q: "Root olmayan bir switch'te root bridge'e en iyi yolu veren port hangi rolü alır?", options: ["Root port","Designated port","Alternate (blocked) port","Edge port"], obj: "h2" },
-      { id: "b2605799", q: "Bilgisayar bağlanan portu hemen forwarding'e alıp porta yanlışlıkla switch takılırsa portu kapatması için hangi komut çifti yazılır?", options: ["spanning-tree portfast ve spanning-tree bpduguard enable","spanning-tree mode rapid-pvst ve channel-group 1 mode active","spanning-tree vlan 1 priority 4096 ve switchport mode trunk","spanning-tree vlan 1 root primary ve channel-group 1 mode on"], obj: "h3" },
-      { id: "e5b1e954", q: "BPDU Guard'lı bir PortFast portuna BPDU gönderen bir switch bağlanırsa port ne olur?", options: ["Port err-disabled durumuna geçip kapanır","Port forwarding'de kalır ve BPDU yok sayılır","Port otomatik olarak root port seçilir","Port EtherChannel'a eklenir"], obj: "h3" },
-      { id: "ac611747", q: "Bir tarafta PAgP desirable, diğer tarafta PAgP auto yapılandırılırsa ne olur?", options: ["PAgP kanalı kurulur","Kanal kurulmaz, çünkü auto taraf teklif etmez","LACP kanalı kurulur","STP linklerden birini mutlaka bloklar"], obj: "h4" },
+      { id: "20b65291", q: "Root olmayan bir switch'te root bridge'e en iyi yolu veren port hangi rolü alır?", options: ["Edge port","Designated port","Alternate (blocked) port","Root port"], obj: "h2" },
+      { id: "b2605799", q: "Bilgisayar bağlanan portu hemen forwarding'e alıp porta yanlışlıkla switch takılırsa portu kapatması için hangi komut çifti yazılır?", options: ["spanning-tree vlan 1 root primary ve channel-group 1 mode on","spanning-tree mode rapid-pvst ve channel-group 1 mode active","spanning-tree vlan 1 priority 4096 ve switchport mode trunk","spanning-tree portfast ve spanning-tree bpduguard enable"], obj: "h3" },
+      { id: "e5b1e954", q: "BPDU Guard'lı bir PortFast portuna BPDU gönderen bir switch bağlanırsa port ne olur?", options: ["Port EtherChannel'a eklenir","Port forwarding'de kalır ve BPDU yok sayılır","Port otomatik olarak root port seçilir","Port err-disabled durumuna geçip kapanır"], obj: "h3" },
+      { id: "ac611747", q: "Bir tarafta PAgP desirable, diğer tarafta PAgP auto yapılandırılırsa ne olur?", options: ["STP linklerden birini mutlaka bloklar","Kanal kurulmaz, çünkü auto taraf teklif etmez","LACP kanalı kurulur","PAgP kanalı kurulur"], obj: "h4" },
       { id: "874bffb2", q: "Tek bir EtherChannel (port-channel) demetinde en çok kaç fiziksel link aynı anda aktif olarak trafik taşıyabilir?", options: ["2", "4", "8", "16"], obj: "h4" },
-      { id: "e4c3e6db", q: "Platform 16 linke kadar LACP desteklediğine göre, 10 linkle yapılandırılan bir LACP demetinde ne olur?", options: ["10 linkin tamamı aktif olur", "8 link aktif, kalan 2 link yedek (standby) olur", "Demet kurulmaz", "Yalnızca ilk 4 link aktif olur"], obj: "h4" }
+      { id: "e4c3e6db", q: "Platform 16 linke kadar LACP desteklediğine göre, 10 linkle yapılandırılan bir LACP demetinde ne olur?", options: ["10 linkin tamamı aktif olur", "Demet kurulmaz", "8 link aktif, kalan 2 link yedek (standby) olur", "Yalnızca ilk 4 link aktif olur"], obj: "h4" }
     ],
     interview: [
       { q: "STP neden gerekli?", a: "Switch'ler arasında yedek yol varsa döngü oluşur ve broadcast fırtınası ağı çökertir. STP fazla yolları bloklayarak döngüsüz bir topoloji sağlar, aktif yol bozulursa yedeği açar." },
@@ -276,16 +276,16 @@
       "SNMPv1 ve v2c topluluk adını düz metin taşır ('public', 'private' tahmin edilen varsayılanlardır); kimlik doğrulama ve şifreleme SNMPv3 ile gelir."
     ],
     quiz: [
-      { id: "13f72456", q: "NTP hangi portu kullanır?", options: ["UDP 123", "UDP 161", "UDP 514", "TCP 22"], obj: "h1" },
+      { id: "13f72456", q: "NTP hangi portu kullanır?", options: ["TCP 22", "UDP 161", "UDP 514", "UDP 123"], obj: "h1" },
       { id: "1aca5d61", q: "Syslog'da en ciddi seviye hangisidir?", options: ["0 (Emergency)", "3 (Error)", "6 (Informational)", "7 (Debugging)"], obj: "h2" },
-      { id: "d4bed02a", q: "SNMPv3'ün diğer sürümlerden farkı nedir?", options: ["Daha eski", "Kimlik doğrulama ve şifreleme sunar", "Yalnızca router'da çalışır", "TCP kullanır"], obj: "h3" },
-      { id: "e57e22a2", q: "'logging trap warnings' ne yapar?", options: ["Sadece 7. seviyeyi yollar", "0-4 seviyesindeki mesajları sunucuya yollar", "Logları kapatır", "Debug açar"], obj: "h2" },
+      { id: "d4bed02a", q: "SNMPv3'ün diğer sürümlerden farkı nedir?", options: ["Daha eski", "Yalnızca router'da çalışır", "Kimlik doğrulama ve şifreleme sunar", "TCP kullanır"], obj: "h3" },
+      { id: "e57e22a2", q: "'logging trap warnings' ne yapar?", options: ["Sadece 7. seviyeyi yollar", "Logları kapatır", "0-4 seviyesindeki mesajları sunucuya yollar", "Debug açar"], obj: "h2" },
       { id: "ed904372", q: "Cihaz önemli bir olayı yönetim istasyonuna kendiliğinden bildirmek için SNMP'de ne kullanır?", options: ["Get", "Set", "Trap", "Walk"], obj: "h3" },
-      { id: "036a974e", q: "SNMP manager, bir cihazdaki agent'a Get sorgusu gönderirken hedef port hangisidir?", options: ["UDP 161","UDP 162","UDP 123","UDP 514"], obj: "h1" },
-      { id: "c8b3bb27", q: "Syslog'da 4 numaralı seviyenin adı nedir?", options: ["Warning","Error","Notice","Critical"], obj: "h2" },
-      { id: "e1f40a07", q: "Yönetim istasyonu bir arayüzün ayarını agent üzerinden değiştirmek istiyor. Bu SNMP işlemi hangisidir?", options: ["Set","Get","Trap","MIB"], obj: "h3" },
-      { id: "19ab848d", q: "Router'ın 10.0.0.5 adresindeki NTP sunucusundan saat alması için hangi komut yazılır?", options: ["ntp server 10.0.0.5","logging host 10.0.0.5","snmp-server community 10.0.0.5 ro","clock set 10.0.0.5"], obj: "h4" },
-      { id: "2ecdfe5a", q: "Router'ın olay mesajlarını 10.0.0.9 adresindeki merkezi sunucuya göndermesi için hangi komut yazılır?", options: ["logging host 10.0.0.9","ntp server 10.0.0.9","snmp-server community 10.0.0.9 ro","service timestamps log 10.0.0.9"], obj: "h4" }
+      { id: "036a974e", q: "SNMP manager, bir cihazdaki agent'a Get sorgusu gönderirken hedef port hangisidir?", options: ["UDP 514","UDP 162","UDP 123","UDP 161"], obj: "h1" },
+      { id: "c8b3bb27", q: "Syslog'da 4 numaralı seviyenin adı nedir?", options: ["Critical","Error","Notice","Warning"], obj: "h2" },
+      { id: "e1f40a07", q: "Yönetim istasyonu bir arayüzün ayarını agent üzerinden değiştirmek istiyor. Bu SNMP işlemi hangisidir?", options: ["MIB","Get","Trap","Set"], obj: "h3" },
+      { id: "19ab848d", q: "Router'ın 10.0.0.5 adresindeki NTP sunucusundan saat alması için hangi komut yazılır?", options: ["clock set 10.0.0.5","logging host 10.0.0.5","snmp-server community 10.0.0.5 ro","ntp server 10.0.0.5"], obj: "h4" },
+      { id: "2ecdfe5a", q: "Router'ın olay mesajlarını 10.0.0.9 adresindeki merkezi sunucuya göndermesi için hangi komut yazılır?", options: ["service timestamps log 10.0.0.9","ntp server 10.0.0.9","snmp-server community 10.0.0.9 ro","logging host 10.0.0.9"], obj: "h4" }
     ],
     interview: [
       { q: "Neden ağ cihazlarında doğru saat önemlidir?", a: "Log'ları farklı cihazlar arasında doğru sıraya dizmek, güvenlik olaylarını araştırmak ve sertifika gibi zamana bağlı mekanizmaların çalışması için. NTP ile cihazları aynı kaynağa eşitlerim." },
@@ -372,16 +372,16 @@
     ],
     quiz: [
       { id: "5bf3a434", q: "Hangi trafik türü gecikme ve jitter'a en duyarlıdır?", options: ["E-posta", "Dosya indirme", "Ses (VoIP)", "Yedekleme"], obj: "h1" },
-      { id: "a63f4465", q: "QoS'ta paketlere öncelik etiketi koymaya ne denir?", options: ["Classification", "Marking", "Shaping", "Policing"], obj: "h2" },
-      { id: "8961eb4c", q: "Aşan trafiği düşüren mekanizma hangisidir?", options: ["Shaping", "Policing", "Queuing", "Marking"], obj: "h2" },
-      { id: "d4193fcf", q: "Ses trafiği için tipik DSCP değeri nedir?", options: ["EF (46)", "Default (0)", "AF11", "CS1"], obj: "h3" },
+      { id: "a63f4465", q: "QoS'ta paketlere öncelik etiketi koymaya ne denir?", options: ["Classification", "Shaping", "Marking", "Policing"], obj: "h2" },
+      { id: "8961eb4c", q: "Aşan trafiği düşüren mekanizma hangisidir?", options: ["Shaping", "Queuing", "Policing", "Marking"], obj: "h2" },
+      { id: "d4193fcf", q: "Ses trafiği için tipik DSCP değeri nedir?", options: ["CS1", "Default (0)", "AF11", "EF (46)"], obj: "h3" },
       { id: "41db8745", q: "QoS'un sınırı nedir?", options: ["Bant genişliği yaratır", "Yoğunlukta önceliği belirler, ek bant yaratmaz", "Sadece Wi-Fi'da çalışır", "Şifreleme yapar"], obj: "h4" },
       { id: "8d615bd6", q: "Ses (VoIP) trafiğinde tek yön gecikme için kabul edilen üst sınır yaklaşık kaçtır?", options: ["150 ms","30 ms","500 ms","1 saniye"], obj: "h1" },
-      { id: "71793ed3", q: "Kuyruk tamamen dolmadan önce bazı paketleri bilerek düşürerek tıkanıklığı önleyen mekanizma hangisidir?", options: ["Congestion avoidance (örn. WRED)","Marking","Shaping","Classification"], obj: "h2" },
-      { id: "83855104", q: "Özel bir işaret taşımayan, normal en iyi çaba (best effort) trafiğin DSCP değeri nedir?", options: ["Default (0)","EF (46), ses için ayrılmış sınıf","AF41, video benzeri trafik için garantili sınıf","CS1"], obj: "h3" },
-      { id: "7601c002", q: "Ağ, kullanıcı bilgisayarlarından gelen DSCP işaretlerine neden güvenmemeli ve işareti silip yeniden yazmalıdır?", options: ["Kullanıcı kendi trafiğine ses önceliği yazıp ağı haksız kullanabilir","DSCP alanı IP başlığında bulunmaz","Switch'ler DSCP işaretini okuyamaz","DSCP işaretleri yalnızca ses telefonlarına yazılabilir"], obj: "h4" },
+      { id: "71793ed3", q: "Kuyruk tamamen dolmadan önce bazı paketleri bilerek düşürerek tıkanıklığı önleyen mekanizma hangisidir?", options: ["Classification","Marking","Shaping","Congestion avoidance (örn. WRED)"], obj: "h2" },
+      { id: "83855104", q: "Özel bir işaret taşımayan, normal en iyi çaba (best effort) trafiğin DSCP değeri nedir?", options: ["CS1","EF (46), ses için ayrılmış sınıf","AF41, video benzeri trafik için garantili sınıf","Default (0)"], obj: "h3" },
+      { id: "7601c002", q: "Ağ, kullanıcı bilgisayarlarından gelen DSCP işaretlerine neden güvenmemeli ve işareti silip yeniden yazmalıdır?", options: ["DSCP işaretleri yalnızca ses telefonlarına yazılabilir","DSCP alanı IP başlığında bulunmaz","Switch'ler DSCP işaretini okuyamaz","Kullanıcı kendi trafiğine ses önceliği yazıp ağı haksız kullanabilir"], obj: "h4" },
       { id: "dc9c6821", q: "Switch'te 802.1Q etiketindeki CoS önceliği, router'dan geçen pakette korunmak istenirse IP başlığında hangi alana eşlenir?", options: ["TTL", "Protocol", "DSCP (DS alanı)", "Fragment Offset"], obj: "h3" },
-      { id: "c4fac04c", q: "CoS (Class of Service) değeri hangi başlıkta taşınır?", options: ["802.1Q VLAN etiketinde, 3 bitlik alanda", "IP başlığındaki ToS baytının, 6 bitlik DSCP alanında", "TCP başlığında, bayrak bitlerinin yanındaki 8 bitlik alanda", "Ethernet FCS alanında, 3 bitlik alanda"], obj: "h3" }
+      { id: "c4fac04c", q: "CoS (Class of Service) değeri hangi başlıkta taşınır?", options: ["Ethernet FCS alanında, 3 bitlik alanda", "IP başlığındaki ToS baytının, 6 bitlik DSCP alanında", "TCP başlığında, bayrak bitlerinin yanındaki 8 bitlik alanda", "802.1Q VLAN etiketinde, 3 bitlik alanda"], obj: "h3" }
     ],
     interview: [
       { q: "QoS nedir, neden gerekli?", a: "Ağdaki trafiği türüne göre önceliklendirme mekanizmasıdır. Ses ve video gibi gecikmeye duyarlı trafiğin, dosya indirme gibi toleranslı trafik yüzünden bozulmasını yoğunluk anında önlemek için gerekir." },
@@ -475,15 +475,15 @@
     quiz: [
       { id: "704b4b8d", q: "REST API'de kayıt oluşturmak için hangi HTTP fiili kullanılır?", options: ["GET", "POST", "DELETE", "HEAD"], obj: "h2" },
       { id: "7a424230", q: "Ansible için hangisi doğrudur?", options: ["Ajan gerektirir", "Ajan gerektirmez ve YAML playbook kullanır", "Sadece Windows'ta çalışır", "Sadece router'larda çalışır"], obj: "h4" },
-      { id: "7393b93f", q: "Controller'ın uygulamalara sunduğu arayüz hangisidir?", options: ["Northbound API", "Southbound API", "Console API", "VLAN API"], obj: "h1" },
+      { id: "7393b93f", q: "Controller'ın uygulamalara sunduğu arayüz hangisidir?", options: ["VLAN API", "Southbound API", "Console API", "Northbound API"], obj: "h1" },
       { id: "0d0d505f", q: "Kontrol düzlemi (control plane) ne yapar?", options: ["Paketi donanımda iletir", "Paketin nasıl iletileceğine karar verir", "Cihazı fiziksel olarak yönetir", "Kabloyu taşır"], obj: "h1" },
       { id: "be1ee193", q: "HTTP 404 yanıtı ne demektir?", options: ["Başarılı, istek sorunsuz tamamlandı", "Yetkisiz", "Kaynak bulunamadı", "Sunucu tarafında iç hata oluştu"], obj: "h2" },
-      { id: "6295f5e5", q: "Yönetici SSH ile bir switch'e bağlanıp VLAN yapılandırıyor. Bu işlem hangi düzleme aittir?", options: ["Management plane","Data plane, trafik iletimini yapan düzlem","Control plane","Southbound API, controller cihaz arayüzü"], obj: "h1" },
-      { id: "6d4867db", q: "Controller'ın cihazlarla konuşmak için kullandığı southbound arayüze örnek hangisidir?", options: ["NETCONF","JSON","YAML","Ansible playbook"], obj: "h1" },
+      { id: "6295f5e5", q: "Yönetici SSH ile bir switch'e bağlanıp VLAN yapılandırıyor. Bu işlem hangi düzleme aittir?", options: ["Southbound API, controller cihaz arayüzü","Data plane, trafik iletimini yapan düzlem","Control plane","Management plane"], obj: "h1" },
+      { id: "6d4867db", q: "Controller'ın cihazlarla konuşmak için kullandığı southbound arayüze örnek hangisidir?", options: ["Ansible playbook","JSON","YAML","NETCONF"], obj: "h1" },
       { id: "ffa8aff0", q: "REST API sunucusu geçersiz kimlik bilgisiyle gelen bir isteğe hangi kodu döndürür?", options: ["401","200","404","500"], obj: "h2" },
-      { id: "3057145b", q: "Girinti ile yazılan, süslü parantez ve tırnak gerektirmeyen, Ansible dosyalarında kullanılan veri formatı hangisidir?", options: ["YAML","JSON","XML","CSV"], obj: "h3" },
-      { id: "a345afce", q: "{ \"hostname\": \"R1\", \"interfaces\": [ { \"name\": \"Gi0/0\" } ] } metni hangi veri formatındadır?", options: ["JSON","YAML","XML","CSV"], obj: "h3" },
-      { id: "0c46e17c", q: "Puppet ve Chef için hangisi doğrudur?", options: ["Yönetilen cihazda bir ajan çalıştırırlar","Yalnızca SSH ile ajan kurmadan bağlanırlar","Yalnızca YAML playbook ile çalışırlar","Controller'ın northbound API'sinin başka adıdır"], obj: "h4" }
+      { id: "3057145b", q: "Girinti ile yazılan, süslü parantez ve tırnak gerektirmeyen, Ansible dosyalarında kullanılan veri formatı hangisidir?", options: ["CSV","JSON","XML","YAML"], obj: "h3" },
+      { id: "a345afce", q: "{ \"hostname\": \"R1\", \"interfaces\": [ { \"name\": \"Gi0/0\" } ] } metni hangi veri formatındadır?", options: ["CSV","YAML","XML","JSON"], obj: "h3" },
+      { id: "0c46e17c", q: "Puppet ve Chef için hangisi doğrudur?", options: ["Controller'ın northbound API'sinin başka adıdır","Yalnızca SSH ile ajan kurmadan bağlanırlar","Yalnızca YAML playbook ile çalışırlar","Yönetilen cihazda bir ajan çalıştırırlar"], obj: "h4" }
     ],
     interview: [
       { q: "Ağ otomasyonu neden önemli?", a: "Elle yapılandırma yavaştır ve insan hatasına açıktır. Otomasyon yüzlerce cihazı aynı şekilde, hızlı ve tekrarlanabilir biçimde yapılandırmayı sağlar, ayrıca değişikliklerin izlenmesini kolaylaştırır." },

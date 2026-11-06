@@ -55,13 +55,13 @@
       "Durumu 'It's done.', 'It's in progress.', 'It's almost ready.' ile söylersin; tüm güncelleme yaklaşık 30 saniyeyi geçmemelidir."
     ],
     quiz: [
-      { id: "91ac90ff", q: "'Dün iki laptop güncelledim.' hangisidir?", options: ["Yesterday I updated two laptops.", "Yesterday I update two laptops.", "Yesterday I will update two laptops.", "Yesterday I am updating two laptops."], obj: "h1" },
-      { id: "97a472cf", q: "'Onay bekliyorum.' hangisidir?", options: ["I'm waiting for approval.", "I wait to approval from the team.", "I'm wait approval.", "I waiting approval from the manager."], obj: "h3" },
-      { id: "dc56955d", q: "Engelin yoksa ne dersin?", options: ["No blockers.", "I have blocker none.", "Blockers no have.", "Not blocker."], obj: "h3" },
-      { id: "99c64946", q: "'Bugün sunucuyu yeniden başlatacağım.' hangisidir?", options: ["Today I'll restart the server.", "Today I restarted the server.", "Today I'll to restart the server.", "Today I restart will the server."], obj: "h2" },
-      { id: "55e12a4f", q: "'Dün sunucuyu yeniden başlattım.' cümlesinin doğru İngilizcesi hangisidir?", options: ["Yesterday I restarted the server.","Yesterday I restart the server.","Yesterday I have restarted the server.","Yesterday I will restart the server."], obj: "h1" },
-      { id: "a3b5a3d1", q: "'Bugün erişimi test edeceğim.' cümlesinin doğru İngilizcesi hangisidir?", options: ["Today I'm going to test the access.","Today I'm going test the access.","Today I going to test the access.","Today I'm going to tested the access."], obj: "h2" },
-      { id: "22544b27", q: "'Güvenlik duvarı kuralında takıldım.' cümlesinin doğru İngilizcesi hangisidir?", options: ["I'm stuck on the firewall rule.","I stuck on the firewall rule.","I'm stuck for the firewall rule.","I'm sticked on the firewall rule."], obj: "h3" }
+      { id: "91ac90ff", q: "'Dün iki laptop güncelledim.' hangisidir?", options: ["Yesterday I am updating two laptops.", "Yesterday I update two laptops.", "Yesterday I will update two laptops.", "Yesterday I updated two laptops."], obj: "h1" },
+      { id: "97a472cf", q: "'Onay bekliyorum.' hangisidir?", options: ["I wait to approval from the team.", "I'm waiting for approval.", "I'm wait approval.", "I waiting approval from the manager."], obj: "h3" },
+      { id: "dc56955d", q: "Engelin yoksa ne dersin?", options: ["Blockers no have.", "I have blocker none.", "No blockers.", "Not blocker."], obj: "h3" },
+      { id: "99c64946", q: "'Bugün sunucuyu yeniden başlatacağım.' hangisidir?", options: ["Today I restart will the server.", "Today I restarted the server.", "Today I'll to restart the server.", "Today I'll restart the server."], obj: "h2" },
+      { id: "55e12a4f", q: "'Dün sunucuyu yeniden başlattım.' cümlesinin doğru İngilizcesi hangisidir?", options: ["Yesterday I restart the server.","Yesterday I restarted the server.","Yesterday I have restarted the server.","Yesterday I will restart the server."], obj: "h1" },
+      { id: "a3b5a3d1", q: "'Bugün erişimi test edeceğim.' cümlesinin doğru İngilizcesi hangisidir?", options: ["Today I going to test the access.","Today I'm going test the access.","Today I'm going to test the access.","Today I'm going to tested the access."], obj: "h2" },
+      { id: "22544b27", q: "'Güvenlik duvarı kuralında takıldım.' cümlesinin doğru İngilizcesi hangisidir?", options: ["I'm sticked on the firewall rule.","I stuck on the firewall rule.","I'm stuck for the firewall rule.","I'm stuck on the firewall rule."], obj: "h3" }
     ],
     interview: [
       { q: "How do you give a daily update?", a: "I keep it short. I say what I did yesterday, what I will do today, and if anything blocks me. For example: Yesterday I fixed the VPN issue. Today I'll upgrade the switch. I'm waiting for approval from security." },
@@ -126,14 +126,14 @@
       "Tek başına 'What?' kaba duyulur, 'Sorry?' veya 'Pardon?' kullanılır; 'I didn't catch that' kişiyi suçlamaz, 'catch' burada duyup anlamak demektir."
     ],
     quiz: [
-      { id: "2599a83e", q: "Duymadığında en nazik seçenek hangisi?", options: ["Sorry, could you repeat that, please?", "What?", "Say again.", "I don't hear."], obj: "h1" },
-      { id: "5f2e9b98", q: "'Yani şunu mu demek istiyorsun?' doğrulaması hangisi?", options: ["Just to confirm, you mean the Friday deadline?", "You mean Friday I?", "Confirm you Friday?", "Is Friday you?"], obj: "h2" },
-      { id: "10532e1a", q: "'Biraz yavaş konuşur musunuz?' hangisi?", options: ["Could you speak a bit more slowly?", "Speak slow please you.", "You speak slowly can?", "Make slow your speak."], obj: "h3" },
-      { id: "af79b48c", q: "'I didn't catch that.' ne demek?", options: ["Duymadım / anlayamadım.", "Onu yakalayamadım (fiziksel).", "Katılmıyorum.", "Bitirdim."], obj: "h4" },
-      { id: "b944076b", q: "Müşteriyle toplantıda 'Bunu tekrar açıklar mısınız?' demek için en nazik seçenek hangisidir?", options: ["Could you explain that again, please?","Can you explain that again?","Explain that again.","You explain that again."], obj: "h1" },
-      { id: "51462f3e", q: "'Yani Perşembe mi demek istiyorsunuz?' diye doğrulamak için hangisi uygundur?", options: ["Just to confirm, you mean Thursday?","Just to confirm, you are meaning Thursday?","Just confirm, Thursday you?","To confirm just you mean Thursday."], obj: "h2" },
-      { id: "09eba42b", q: "'Bunu sohbete yazar mısınız?' demek için hangisi doğrudur?", options: ["Could you put that in the chat?","Could you putting that in the chat?","Could you to put that in the chat?","Do you put that in the chat?"], obj: "h3" },
-      { id: "26e5096d", q: "Duymadığın için kısa ve kaba durmayan bir şekilde 'Efendim?' demek istiyorsun. Hangisi uygundur?", options: ["Sorry?","What?","I don't understand you.","Say it."], obj: "h4" }
+      { id: "2599a83e", q: "Duymadığında en nazik seçenek hangisi?", options: ["I don't hear.", "What?", "Say again.", "Sorry, could you repeat that, please?"], obj: "h1" },
+      { id: "5f2e9b98", q: "'Yani şunu mu demek istiyorsun?' doğrulaması hangisi?", options: ["Is Friday you?", "You mean Friday I?", "Confirm you Friday?", "Just to confirm, you mean the Friday deadline?"], obj: "h2" },
+      { id: "10532e1a", q: "'Biraz yavaş konuşur musunuz?' hangisi?", options: ["Make slow your speak.", "Speak slow please you.", "You speak slowly can?", "Could you speak a bit more slowly?"], obj: "h3" },
+      { id: "af79b48c", q: "'I didn't catch that.' ne demek?", options: ["Katılmıyorum.", "Onu yakalayamadım (fiziksel).", "Duymadım / anlayamadım.", "Bitirdim."], obj: "h4" },
+      { id: "b944076b", q: "Müşteriyle toplantıda 'Bunu tekrar açıklar mısınız?' demek için en nazik seçenek hangisidir?", options: ["Explain that again.","Can you explain that again?","Could you explain that again, please?","You explain that again."], obj: "h1" },
+      { id: "51462f3e", q: "'Yani Perşembe mi demek istiyorsunuz?' diye doğrulamak için hangisi uygundur?", options: ["Just confirm, Thursday you?","Just to confirm, you are meaning Thursday?","Just to confirm, you mean Thursday?","To confirm just you mean Thursday."], obj: "h2" },
+      { id: "09eba42b", q: "'Bunu sohbete yazar mısınız?' demek için hangisi doğrudur?", options: ["Could you putting that in the chat?","Could you put that in the chat?","Could you to put that in the chat?","Do you put that in the chat?"], obj: "h3" },
+      { id: "26e5096d", q: "Duymadığın için kısa ve kaba durmayan bir şekilde 'Efendim?' demek istiyorsun. Hangisi uygundur?", options: ["Say it.","What?","I don't understand you.","Sorry?"], obj: "h4" }
     ],
     interview: [
       { q: "What do you do if you don't understand something in a meeting?", a: "I ask politely. I say, Sorry, could you repeat that, please? Then I confirm: Just to confirm, you mean ...? I also write a short summary after the meeting so everyone agrees." },
@@ -204,14 +204,14 @@
       "Sorun giderirken: issue/error, crash, freeze, check, troubleshoot, workaround (geçici çözüm), root cause (kök neden), resolved (çözüldü)."
     ],
     quiz: [
-      { id: "0f576289", q: "'Sorun gidermek' için doğru fiil hangisi?", options: ["troubleshoot", "trouble", "shootrouble", "problemize"], obj: "h1" },
-      { id: "e187081d", q: "'Parolayı sıfırladım.' hangisi?", options: ["I reset the password.", "I resetted the password.", "I reseted password.", "I am reset the password."], obj: "h2" },
-      { id: "460e8d8a", q: "'Geçici çözüm' İngilizcede nedir?", options: ["workaround", "workstation", "homework", "fixwork"], obj: "h1" },
-      { id: "fb841833", q: "Bir uygulama aniden kapandı. Hangi kelime uyar?", options: ["crash", "install", "upgrade", "permission"], obj: "h1" },
-      { id: "71ec0f9d", q: "'The user can't ___ in.' boşluğa ne gelir?", options: ["log", "login", "logged", "logging"], obj: "h3" },
-      { id: "18741c43", q: "'Dün güncellemeyi kurdum.' cümlesinin doğru İngilizcesi hangisidir?", options: ["I installed the update yesterday.","I install the update yesterday.","I have installed the update yesterday.","I installing the update yesterday."], obj: "h2" },
-      { id: "8bd23c65", q: "Bir kullanıcının Windows 10'dan Windows 11'e geçmesi için hangi sözcük en uygundur?", options: ["upgrade","update","uninstall","reset"], obj: "h3" },
-      { id: "e29ce89a", q: "'The ___ page does not load.' boşluğa ne gelir?", options: ["login","log in","logged","logging in"], obj: "h3" }
+      { id: "0f576289", q: "'Sorun gidermek' için doğru fiil hangisi?", options: ["shootrouble", "trouble", "troubleshoot", "problemize"], obj: "h1" },
+      { id: "e187081d", q: "'Parolayı sıfırladım.' hangisi?", options: ["I resetted the password.", "I reset the password.", "I reseted password.", "I am reset the password."], obj: "h2" },
+      { id: "460e8d8a", q: "'Geçici çözüm' İngilizcede nedir?", options: ["fixwork", "workstation", "homework", "workaround"], obj: "h1" },
+      { id: "fb841833", q: "Bir uygulama aniden kapandı. Hangi kelime uyar?", options: ["upgrade", "install", "crash", "permission"], obj: "h1" },
+      { id: "71ec0f9d", q: "'The user can't ___ in.' boşluğa ne gelir?", options: ["login", "log", "logged", "logging"], obj: "h3" },
+      { id: "18741c43", q: "'Dün güncellemeyi kurdum.' cümlesinin doğru İngilizcesi hangisidir?", options: ["I installing the update yesterday.","I install the update yesterday.","I have installed the update yesterday.","I installed the update yesterday."], obj: "h2" },
+      { id: "8bd23c65", q: "Bir kullanıcının Windows 10'dan Windows 11'e geçmesi için hangi sözcük en uygundur?", options: ["uninstall","update","upgrade","reset"], obj: "h3" },
+      { id: "e29ce89a", q: "'The ___ page does not load.' boşluğa ne gelir?", options: ["log in","login","logged","logging in"], obj: "h3" }
     ],
     interview: [
       { q: "What tools do you use to troubleshoot a network problem?", a: "First I check the physical connection and the IP settings. Then I use ping and traceroute to find where the connection stops. If needed, I check the logs and the firewall rules." },
@@ -285,13 +285,13 @@
       "Environment satırına işletim sistemi, yazılım sürümü ve bağlantı bilgisi yazılır (Windows 11, VPN client 5.2, home Wi-Fi)."
     ],
     quiz: [
-      { id: "df2b93e3", q: "Raporda 'beklenen sonuç' için hangi başlık kullanılır?", options: ["Expected result", "Wanted ending, istenen sonuç bölümü", "Hope answer, umulan cevap başlığı", "Future result"], obj: "h1" },
-      { id: "61b42d2b", q: "'Güncellemeden sonra başladı.' hangisi?", options: ["It started after the update.", "It start after update.", "It starts before the update yesterday.", "It started from update after."], obj: "h2" },
-      { id: "1dafce13", q: "Hata mesajı için en iyi yaklaşım hangisi?", options: ["Kelimesi kelimesine kopyalamak", "Kendi cümlenle özetlemek", "Sadece 'error' yazmak", "Hiç yazmamak"], obj: "h3" },
-      { id: "afb3a167", q: "'Steps to reproduce' ne demek?", options: ["Hatayı tekrar oluşturma adımları", "Çözüm adımları", "Kurulum adımları", "Yedekleme adımları"], obj: "h1" },
-      { id: "1a46c2a4", q: "Hata her denemede ortaya çıkıyor. Bunu raporda nasıl yazarsın?", options: ["It happens every time.","It happen every time.","It happens every times.","It happens ever time."], obj: "h2" },
-      { id: "39fd5be0", q: "Bir kullanıcı sadece 'It doesn't work.' yazdı. En faydalı ilk cevap hangisidir?", options: ["What error message do you see, and when did it start?","Please try again later.","Everything works on my side.","Can you describe it in one word?"], obj: "h3" },
-      { id: "128a4a87", q: "Raporda 'Environment' satırına ne yazılır?", options: ["Windows 11, VPN client 5.2, home Wi-Fi","The connection stays active after the user logs in.","1) Open the VPN client 2) Enter the password 3) Connect","This bug is very annoying."], obj: "h1" }
+      { id: "df2b93e3", q: "Raporda 'beklenen sonuç' için hangi başlık kullanılır?", options: ["Future result", "Wanted ending, istenen sonuç bölümü", "Hope answer, umulan cevap başlığı", "Expected result"], obj: "h1" },
+      { id: "61b42d2b", q: "'Güncellemeden sonra başladı.' hangisi?", options: ["It starts before the update yesterday.", "It start after update.", "It started after the update.", "It started from update after."], obj: "h2" },
+      { id: "1dafce13", q: "Hata mesajı için en iyi yaklaşım hangisi?", options: ["Kendi cümlenle özetlemek", "Kelimesi kelimesine kopyalamak", "Sadece 'error' yazmak", "Hiç yazmamak"], obj: "h3" },
+      { id: "afb3a167", q: "'Steps to reproduce' ne demek?", options: ["Yedekleme adımları", "Çözüm adımları", "Kurulum adımları", "Hatayı tekrar oluşturma adımları"], obj: "h1" },
+      { id: "1a46c2a4", q: "Hata her denemede ortaya çıkıyor. Bunu raporda nasıl yazarsın?", options: ["It happens every times.","It happen every time.","It happens every time.","It happens ever time."], obj: "h2" },
+      { id: "39fd5be0", q: "Bir kullanıcı sadece 'It doesn't work.' yazdı. En faydalı ilk cevap hangisidir?", options: ["Please try again later.","What error message do you see, and when did it start?","Everything works on my side.","Can you describe it in one word?"], obj: "h3" },
+      { id: "128a4a87", q: "Raporda 'Environment' satırına ne yazılır?", options: ["This bug is very annoying.","The connection stays active after the user logs in.","1) Open the VPN client 2) Enter the password 3) Connect","Windows 11, VPN client 5.2, home Wi-Fi"], obj: "h1" }
     ],
     interview: [
       { q: "How do you report a bug to a development team?", a: "I write a clear title and list the steps to reproduce, the expected result and the actual result. I add the exact error message, the environment, and a screenshot. I also say how often it happens." },
@@ -363,7 +363,7 @@
       "Metni ezberlemek yerine anahtar kelimeyle anlat; telefonla kaydet, dinle ve iki kez kısalt."
     ],
     quiz: [
-      { id: "79cf670e", q: "'Tell me about yourself' cevabında en iyi yapı hangisi?", options: ["Şimdi – geçmiş – güçlü yön – hedef", "Doğumdan bugüne tüm hayat hikâyesi ayrıntılarıyla", "Sadece hobiler ve boş zamanda yaptığın ilgi alanları", "Sadece maaş beklentisi"], obj: "h1" },
+      { id: "79cf670e", q: "'Tell me about yourself' cevabında en iyi yapı hangisi?", options: ["Sadece hobiler ve boş zamanda yaptığın ilgi alanları", "Doğumdan bugüne tüm hayat hikâyesi ayrıntılarıyla", "Şimdi – geçmiş – güçlü yön – hedef", "Sadece maaş beklentisi"], obj: "h1" },
       { id: "76f8f804", q: "'İki yıllık deneyimim var.' hangisi?", options: ["I have two years of experience.", "I am two years experience.", "I have experience of two year.", "I had two years experience now."], obj: "h2" },
       { id: "a0ad3311", q: "'Güçlü yönüm sorun gidermek.' hangisi?", options: ["My strength is troubleshooting.", "My strong is troubleshoot of the system problems.", "I strength troubleshooting every production problem.", "Strength mine troubleshooting."], obj: "h3" },
       { id: "7ccc9043", q: "Cevap süresi kaç saniye civarı olmalı?", options: ["Yaklaşık 60 saniye", "5 saniye", "10 dakika", "30 dakika"], obj: "h1" },

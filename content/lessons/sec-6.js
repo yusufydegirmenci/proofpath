@@ -56,8 +56,8 @@
       "Sadece cezaya dayalı program hataların saklanmasına ve olay müdahalesinin gecikmesine yol açar."
     ],
     quiz: [
-      { id: "794e9218", q: "Etkili bir farkındalık programının özelliği hangisidir?", options: ["Sürekli, kısa ve role özel", "Yılda bir kez, tüm çalışanlara aynı içerikle uzun sunum", "Sadece BT ekibine yönelik teknik eğitim", "Yalnızca ceza"], obj: "h1" },
-      { id: "88e771f9", q: "Oltalama simülasyonunun amacı nedir?", options: ["Çalışanların tepkisini ölçmek ve eğitmek", "Çalışanları cezalandırmak", "Ağı yavaşlatmak", "Parolaları toplamak"], obj: "h2" },
+      { id: "794e9218", q: "Etkili bir farkındalık programının özelliği hangisidir?", options: ["Yalnızca ceza", "Yılda bir kez, tüm çalışanlara aynı içerikle uzun sunum", "Sadece BT ekibine yönelik teknik eğitim", "Sürekli, kısa ve role özel"], obj: "h1" },
+      { id: "88e771f9", q: "Oltalama simülasyonunun amacı nedir?", options: ["Ağı yavaşlatmak", "Çalışanları cezalandırmak", "Çalışanların tepkisini ölçmek ve eğitmek", "Parolaları toplamak"], obj: "h2" },
       { id: "c9895b0d", q: "Hangi metrik bildirim kültürünü gösterir?", options: ["Şüpheli maili raporlama oranı ve süresi", "Sunucu uptime'ı", "Disk boyutu", "Yedek sayısı"], obj: "h3" },
       { id: "64380148", q: "Yönetici düzeyine hedefli oltalamaya ne denir?", options: ["Whaling", "Smishing", "Tailgating", "Pharming"], obj: "h4" },
       { id: "dfd50255", q: "Oltalama simülasyonunda bağlantıya tıklayan çalışana, o olaya özel kısa bir eğitim atanıyor. Bu eğitim türü nedir?", options: ["Başlangıç (onboarding) eğitimi", "Düzeltici (corrective) eğitim", "Sürekli (ongoing) eğitim", "Hedefli (targeted) eğitim"], obj: "h1" },

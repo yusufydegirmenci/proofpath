@@ -342,7 +342,7 @@
       { id: "c8dfd510", q: "Bir Ethernet segmentindeki tüm OSPF router'larının arayüz önceliği varsayılan değerde. DR seçiminde hangi ölçüt belirleyici olur?", options: ["En düşük router ID", "En yüksek router ID", "En küçük MAC adresi", "En kısa hello süresi"], obj: "h4" },
       { id: "08028ff4", q: "Bir arayüzde 'ip ospf priority 0' yazıldı. O arayüzün bağlı olduğu Ethernet segmentinde bu router için ne olur?", options: ["Otomatik olarak DR olur", "Yalnızca BDR olabilir", "OSPF komşulukları kurulamaz", "DR ya da BDR seçimine katılmaz, hiçbir zaman DR/BDR olamaz"], obj: "h4" },
       { id: "885e78f0", q: "Segmentte R1 (öncelik 1, router ID 3.3.3.3) DR olarak seçildi. Sonradan segmente öncelik 200 olan R2 bağlanırsa DR ne olur?", options: ["R2 hemen DR olur ve R1 DROther'a düşer", "R1 DR olarak kalır; DR seçimi önleyici (preemptive) değildir", "Router ID'si küçük olan DR seçilir", "Her hello'da seçim yeniden yapılır ve R2 kazanır"], obj: "h4" },
-      { id: "5a1c0275", q: "İki router'ı doğrudan birbirine bağlayan noktadan noktaya (point-to-point) bir OSPF bağlantısında DR/BDR seçimi hakkında hangisi doğrudur?", options: ["DR/BDR seçilmez; iki router doğrudan Full komşuluk kurar", "Router ID'si büyük olan DR, küçük olan BDR olur", "Yalnızca DR seçilir, BDR seçilmez", "Seçim yalnızca öncelik 0 ise yapılır"], obj: "h4" },
+      { id: "5a1c0275", q: "İki router'ı doğrudan birbirine bağlayan noktadan noktaya (point-to-point) bir OSPF bağlantısında DR/BDR seçimi hakkında hangisi doğrudur?", options: ["Seçim yalnızca öncelik 0 ise yapılır", "Router ID'si büyük olan DR, küçük olan BDR olur", "Yalnızca DR seçilir, BDR seçilmez", "DR/BDR seçilmez; iki router doğrudan Full komşuluk kurar"], obj: "h4" },
       { id: "976b9727", q: "OSPF'e 10.4.8.32/27 ağını dahil eden network komutunda hangi wildcard maske kullanılır?", options: ["0.0.0.32", "0.0.0.15", "0.0.0.224", "0.0.0.31"], obj: "h2" }
     ],
     interview: [
@@ -436,7 +436,7 @@
       { id: "3dfc2422", q: "5 GHz hakkında hangisi doğrudur?", options: ["Menzili 2.4 GHz'den uzundur, bu yüzden geniş alanda tercih edilir", "Daha hızlı ama menzili kısadır", "Sadece 802.11b kullanır", "Duvardan en iyi geçen banttır, kalın duvarlarda bile sinyal kaybetmez"], obj: "h2" },
       { id: "b17b03d4", q: "SSID nedir?", options: ["AP'nin MAC adresi", "Kablosuz ağın adı", "Şifreleme türü", "Kanal numarası"], obj: "h3" },
       { id: "06556373", q: "Aşağıdaki kablosuz güvenlik seçeneklerinden hangisi en az güvenli kabul edilir?", options: ["WPA2-Personal (AES)", "WPA3-Personal (SAE)", "WEP", "WPA2-Enterprise (802.1X)"], obj: "h4" },
-      { id: "f3358eb3", q: "WEP'in pratikte kırılabilir olmasının temel nedeni hangisidir?", options: ["RC4'ü kısa (24 bit) ve tekrar eden bir başlatma vektörüyle (IV) kullanması", "802.1X sunucusu gerektirmesi", "AES-CCMP şifrelemesinin eski olması", "SAE el sıkışmasının çevrimdışı sözlük saldırısına açık olması"], obj: "h4" }
+      { id: "f3358eb3", q: "WEP'in pratikte kırılabilir olmasının temel nedeni hangisidir?", options: ["SAE el sıkışmasının çevrimdışı sözlük saldırısına açık olması", "802.1X sunucusu gerektirmesi", "AES-CCMP şifrelemesinin eski olması", "RC4'ü kısa (24 bit) ve tekrar eden bir başlatma vektörüyle (IV) kullanması"], obj: "h4" }
     ],
     interview: [
       { q: "2.4 GHz ile 5 GHz farkı nedir?", a: "2.4 GHz'in menzili uzundur ve duvardan iyi geçer ama yavaş ve kalabalıktır. 5 GHz daha hızlı ve az parazitlidir ama menzili kısadır. Cihaz yakındaysa 5 GHz, uzaktaysa 2.4 GHz daha iyi çalışır." },
@@ -534,11 +534,11 @@
       { id: "2db0437d", q: "Phishing nedir?", options: ["Ağı aşırı yükleme", "Sahte e-posta ya da siteyle bilgi çalma", "Disk şifreleme", "Port tarama"], obj: "h1" },
       { id: "e707775b", q: "Saldırgan iki taraf arasına girip trafiği dinliyor ya da değiştiriyorsa bu saldırı hangisidir?", options: ["Phishing", "DoS", "Man-in-the-middle", "Malware"], obj: "h1" },
       { id: "330cb08f", q: "Fidye yazılımı ve trojan hangi saldırı grubuna girer?", options: ["DoS", "Phishing", "Man-in-the-middle", "Malware"], obj: "h1" },
-      { id: "03ea92d8", q: "Bir sunucuyu çok sayıda kaynaktan gelen istekle erişilemez yapma saldırısı hangisidir?", options: ["Phishing", "DDoS", "Malware", "Man-in-the-middle"], obj: "h1" },
-      { id: "7f7eeac8", q: "CIA üçlüsünde 'I' neyi temsil eder?", options: ["Identity", "Integrity", "Internet", "Interface"], obj: "h2" },
-      { id: "4dee65b4", q: "Yetkisiz bir cihaz takılınca portu kapatan port security ayarı hangisidir?", options: ["violation shutdown", "violation allow", "mode trunk", "storm-control"], obj: "h3" },
-      { id: "d0da1e83", q: "Cihaz yönetiminde hangisi önerilir?", options: ["Telnet", "SSH", "HTTP", "FTP"], obj: "h4" },
-      { id: "7352ed8e", q: "MFA (çok faktörlü doğrulama) ne sağlar?", options: ["Daha hızlı internet", "Parolaya ek ikinci bir doğrulama", "Otomatik yedekleme", "IP adresi atama"], obj: "h4" }
+      { id: "03ea92d8", q: "Bir sunucuyu çok sayıda kaynaktan gelen istekle erişilemez yapma saldırısı hangisidir?", options: ["Phishing", "Malware", "DDoS", "Man-in-the-middle"], obj: "h1" },
+      { id: "7f7eeac8", q: "CIA üçlüsünde 'I' neyi temsil eder?", options: ["Identity", "Internet", "Integrity", "Interface"], obj: "h2" },
+      { id: "4dee65b4", q: "Yetkisiz bir cihaz takılınca portu kapatan port security ayarı hangisidir?", options: ["storm-control", "violation allow", "mode trunk", "violation shutdown"], obj: "h3" },
+      { id: "d0da1e83", q: "Cihaz yönetiminde hangisi önerilir?", options: ["Telnet", "HTTP", "SSH", "FTP"], obj: "h4" },
+      { id: "7352ed8e", q: "MFA (çok faktörlü doğrulama) ne sağlar?", options: ["Daha hızlı internet", "Otomatik yedekleme", "Parolaya ek ikinci bir doğrulama", "IP adresi atama"], obj: "h4" }
     ],
     interview: [
       { q: "CIA üçlüsünü açıkla.", a: "Confidentiality veriyi yalnızca yetkililerin görmesi, Integrity verinin değiştirilmemesi, Availability sistemin gerektiğinde erişilebilir olmasıdır. Güvenlik önlemleri bu üç hedeften en az birini korumak için alınır." },

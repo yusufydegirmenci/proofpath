@@ -901,12 +901,7 @@
       {
         "id": "ab8cb4a8",
         "q": "Pod ağını kurup Pod'lara IP adresi atayan eklentilerin (ör. Calico, Cilium) uyduğu Kubernetes arayüz standardı hangisidir?",
-        "options": [
-          "OCI (Open Container Initiative)",
-          "CSI (Container Storage Interface)",
-          "CRI (Container Runtime Interface)",
-          "CNI (Container Network Interface)"
-        ]
+        "options": ["OCI (Open Container Initiative)","CNI (Container Network Interface)","CRI (Container Runtime Interface)","CSI (Container Storage Interface)"]
       }
     ],
     "interview": [
@@ -1159,23 +1154,13 @@
       {
         id: "ba4536b4",
         "q": "'siparis' Service'i 'odeme' ad alanında ise küme içinden tam DNS adı hangisidir?",
-        "options": [
-          "siparis.odeme.svc.cluster.local",
-          "odeme.siparis.svc.cluster.local",
-          "siparis.cluster.local.odeme",
-          "siparis.odeme.pod.local"
-        ],
+        "options": ["siparis.cluster.local.odeme","odeme.siparis.svc.cluster.local","siparis.odeme.svc.cluster.local","siparis.odeme.pod.local"],
         "obj": "h3"
       },
       {
         id: "bb5cddde",
         "q": "Bir Pod hazır değilken (readiness başarısız) Service trafiği için ne olur?",
-        "options": [
-          "Pod yine de diğerleriyle eşit oranda trafik almaya devam eder",
-          "Service nesnesi otomatik olarak silinir",
-          "Düğümdeki tüm Pod'lar yeniden başlatılır",
-          "Pod trafik almaz çünkü hazır uç noktalar arasına alınmaz"
-        ],
+        "options": ["Pod yine de diğerleriyle eşit oranda trafik almaya devam eder","Service nesnesi otomatik olarak silinir","Pod trafik almaz çünkü hazır uç noktalar arasına alınmaz","Düğümdeki tüm Pod'lar yeniden başlatılır"],
         "obj": "h3"
       },
       {
@@ -1203,23 +1188,13 @@
       {
         id: "0bc58c92",
         "q": "replicas: 4, maxSurge: %25, maxUnavailable: %25 için maxSurge ve maxUnavailable kaç Pod eder?",
-        "options": [
-          "maxSurge 2, maxUnavailable 2",
-          "maxSurge 0, maxUnavailable 1",
-          "maxSurge 1, maxUnavailable 0",
-          "maxSurge 1, maxUnavailable 1"
-        ],
+        "options": ["maxSurge 2, maxUnavailable 2","maxSurge 0, maxUnavailable 1","maxSurge 1, maxUnavailable 1","maxSurge 1, maxUnavailable 0"],
         "obj": "h4"
       },
       {
         "id": "6d9a1a20",
         "q": "Bir uygulama konteyneri başlamadan önce yalnızca bir kez çalışıp biten hazırlık işi (ör. şema hazırlama, bağımlılığı bekleme) için hangi Pod özelliği kullanılır?",
-        "options": [
-          "DaemonSet",
-          "ResourceQuota",
-          "Liveness probe",
-          "Init container"
-        ]
+        "options": ["DaemonSet","ResourceQuota","Init container","Liveness probe"]
       },
       {
         "id": "228e7c0d",
@@ -1410,12 +1385,7 @@
       {
         id: "30565939",
         "q": "Aşağıdakilerden hangisi kubectl run akışının doğru sırasıdır?",
-        "options": [
-          "Kubelet, scheduler, API sunucusu, etcd sırasıyla çalışır ve Pod bu yolla yazılır",
-          "Scheduler, API sunucusu, kubelet, etcd sırasıyla çalışır, ardından Pod kaydedilir",
-          "etcd, kubelet, API sunucusu, scheduler sırasıyla çalışır ve istek en sonda alınır",
-          "API sunucusu, etcd'ye yazım, scheduler'ın düğüm seçmesi, kubelet'in konteyneri başlatması"
-        ],
+        "options": ["Kubelet, scheduler, API sunucusu, etcd sırasıyla çalışır ve Pod bu yolla yazılır","API sunucusu, etcd'ye yazım, scheduler'ın düğüm seçmesi, kubelet'in konteyneri başlatması","etcd, kubelet, API sunucusu, scheduler sırasıyla çalışır ve istek en sonda alınır","Scheduler, API sunucusu, kubelet, etcd sırasıyla çalışır, ardından Pod kaydedilir"],
         "obj": "h1"
       },
       {
@@ -1430,12 +1400,7 @@
       {
         id: "f3e4ad4c",
         "q": "Düğümde imajı çekip konteyneri başlatmaktan hangi bileşen sorumludur?",
-        "options": [
-          "Kubelet, container runtime ile birlikte",
-          "Scheduler",
-          "kube-proxy",
-          "etcd"
-        ],
+        "options": ["kube-proxy","Scheduler","Kubelet, container runtime ile birlikte","etcd"],
         "obj": "h2"
       },
       {

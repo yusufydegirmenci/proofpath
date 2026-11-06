@@ -47,12 +47,12 @@
       "Teslim denemeleri bitince mesaj kaybolabilir; kritik tüketicide SQS aboneliği ve abonelik DLQ'su kullanılır."
     ],
     quiz: [
-      { id: "18161295", q: "Tek bir mesajı birden fazla abone sisteme dağıtma kalıbı hangisidir?", options: ["Fan-out", "Failover", "Sharding", "Backoff"], obj: "h1" },
-      { id: "6772f28a", q: "Aboneye yalnızca belirli mesajları ulaştıran özellik nedir?", options: ["Mesaj filtreleme politikası", "Visibility timeout", "TTL", "Long polling"], obj: "h3" },
-      { id: "daec92eb", q: "SNS ve SQS arasındaki temel fark nedir?", options: ["SNS itme tabanlı yayın-abonelik, SQS çekme tabanlı kuyruk", "İkisi aynı", "SNS kalıcı depolar", "SQS e-posta atar"], obj: "h2" },
-      { id: "a55e48ab", q: "SNS konusuna abone olabilecek bir hedef hangisidir?", options: ["Lambda fonksiyonu", "Bir EBS diski", "Bir IAM kullanıcısı", "Bir subnet"], obj: "h1" },
-      { id: "ebd55549", q: "SNS abonesi olan bir servis kısa süre ulaşılamaz oluyor. Mesajı kaybetmemek için ne yapılmalıdır?", options: ["Aboneyi SQS kuyruğu yapıp gerekirse DLQ eklemek","SNS'in mesajı kalıcı sakladığına güvenmek","TTL değerini artırmak","Long polling açmak"], obj: "h4" },
-      { id: "737ad1fc", q: "Sipariş konusunda yalnızca tutarı 1000'den büyük mesajların denetim kuyruğuna gitmesi isteniyor. Hangi özellik kullanılır?", options: ["Abonelik filtre politikası","SNS FIFO konusu","Mesaj saklama süresi","E-posta aboneliği"], obj: "h3" }
+      { id: "18161295", q: "Tek bir mesajı birden fazla abone sisteme dağıtma kalıbı hangisidir?", options: ["Backoff", "Failover", "Sharding", "Fan-out"], obj: "h1" },
+      { id: "6772f28a", q: "Aboneye yalnızca belirli mesajları ulaştıran özellik nedir?", options: ["Visibility timeout", "Mesaj filtreleme politikası", "TTL", "Long polling"], obj: "h3" },
+      { id: "daec92eb", q: "SNS ve SQS arasındaki temel fark nedir?", options: ["SNS kalıcı depolar", "İkisi aynı", "SNS itme tabanlı yayın-abonelik, SQS çekme tabanlı kuyruk", "SQS e-posta atar"], obj: "h2" },
+      { id: "a55e48ab", q: "SNS konusuna abone olabilecek bir hedef hangisidir?", options: ["Bir subnet", "Bir EBS diski", "Bir IAM kullanıcısı", "Lambda fonksiyonu"], obj: "h1" },
+      { id: "ebd55549", q: "SNS abonesi olan bir servis kısa süre ulaşılamaz oluyor. Mesajı kaybetmemek için ne yapılmalıdır?", options: ["SNS'in mesajı kalıcı sakladığına güvenmek","Aboneyi SQS kuyruğu yapıp gerekirse DLQ eklemek","TTL değerini artırmak","Long polling açmak"], obj: "h4" },
+      { id: "737ad1fc", q: "Sipariş konusunda yalnızca tutarı 1000'den büyük mesajların denetim kuyruğuna gitmesi isteniyor. Hangi özellik kullanılır?", options: ["Mesaj saklama süresi","SNS FIFO konusu","Abonelik filtre politikası","E-posta aboneliği"], obj: "h3" }
     ],
     interview: [
       { q: "SNS + SQS fan-out neden tercih edilir?", a: "Her tüketici kendi kuyruğuna sahip olur: bağımsız hızda işler, kendi yeniden deneme ve DLQ'sunu yönetir; biri çökse bile mesaj kuyrukta bekler. Üretici abonelerden habersiz kalır." },
@@ -118,13 +118,13 @@
       "Olay iletimi en az bir kez olduğundan hedefler idempotent olmalıdır; SNS basit ve yüksek hacimli bildirim için, EventBridge zengin olay yönlendirme için seçilir."
     ],
     quiz: [
-      { id: "a8c6c024", q: "Her gün belirli saatte Lambda çalıştırmak için ne kullanılır?", options: ["EventBridge zamanlanmış kural", "SQS visibility timeout", "S3 lifecycle", "IAM rolü"], obj: "h2" },
-      { id: "d6665882", q: "Olay deseni neyi belirler?", options: ["Hangi olayların kuralla eşleşeceğini", "Disk boyutunu", "Parola politikasını", "Bölge seçimini"], obj: "h1" },
-      { id: "353feac7", q: "Geçmiş olayları yeniden işlemeyi sağlayan özellik hangisidir?", options: ["Archive and replay", "Fan-out", "Long polling", "PITR"], obj: "h3" },
-      { id: "b199ed76", q: "Hangisi bir EventBridge kuralının hedefi olabilir?", options: ["Step Functions durum makinesi", "Bir alt ağın CIDR aralığı", "Bir IAM kullanıcısının parolası", "Bir EBS diskinin boyut ayarı"], obj: "h3" },
-      { id: "9695a421", q: "cron ifadeleri hangi saat diliminde değerlendirilir (klasik kural)?", options: ["UTC", "Yerel", "İstanbul", "PST"], obj: "h2" },
-      { id: "45f87967", q: "Şu desen hangi olayı yakalar: source 'aws.s3', detail-type 'Object Created', detail.bucket.name 'benim-kovam'?", options: ["benim-kovam kovasına nesne yüklendiğinde","Herhangi bir kovada nesne silindiğinde","Herhangi bir S3 kovasına nesne yüklendiğinde","Bir EC2 örneği durduğunda"], obj: "h1" },
-      { id: "d5251e83", q: "Ortak (partner) bir SaaS'tan gelen olayı içeriğine göre zengin biçimde süzüp Step Functions'a yönlendirmek için en uygun servis hangisidir?", options: ["EventBridge","SNS ile SMS aboneliği","SQS long polling","Lambda layers"], obj: "h4" }
+      { id: "a8c6c024", q: "Her gün belirli saatte Lambda çalıştırmak için ne kullanılır?", options: ["IAM rolü", "SQS visibility timeout", "S3 lifecycle", "EventBridge zamanlanmış kural"], obj: "h2" },
+      { id: "d6665882", q: "Olay deseni neyi belirler?", options: ["Disk boyutunu", "Hangi olayların kuralla eşleşeceğini", "Parola politikasını", "Bölge seçimini"], obj: "h1" },
+      { id: "353feac7", q: "Geçmiş olayları yeniden işlemeyi sağlayan özellik hangisidir?", options: ["Long polling", "Fan-out", "Archive and replay", "PITR"], obj: "h3" },
+      { id: "b199ed76", q: "Hangisi bir EventBridge kuralının hedefi olabilir?", options: ["Bir EBS diskinin boyut ayarı", "Bir alt ağın CIDR aralığı", "Bir IAM kullanıcısının parolası", "Step Functions durum makinesi"], obj: "h3" },
+      { id: "9695a421", q: "cron ifadeleri hangi saat diliminde değerlendirilir (klasik kural)?", options: ["Yerel", "UTC", "İstanbul", "PST"], obj: "h2" },
+      { id: "45f87967", q: "Şu desen hangi olayı yakalar: source 'aws.s3', detail-type 'Object Created', detail.bucket.name 'benim-kovam'?", options: ["Herhangi bir S3 kovasına nesne yüklendiğinde","Herhangi bir kovada nesne silindiğinde","benim-kovam kovasına nesne yüklendiğinde","Bir EC2 örneği durduğunda"], obj: "h1" },
+      { id: "d5251e83", q: "Ortak (partner) bir SaaS'tan gelen olayı içeriğine göre zengin biçimde süzüp Step Functions'a yönlendirmek için en uygun servis hangisidir?", options: ["Lambda layers","SNS ile SMS aboneliği","SQS long polling","EventBridge"], obj: "h4" }
     ],
     interview: [
       { q: "EventBridge ile SNS farkı nedir?", a: "EventBridge olay tabanlı mimari için zengin desen eşleme, SaaS ve AWS kaynak entegrasyonu, replay ve şema sunar. SNS yüksek hacimli, basit yayın-abonelik ve son kullanıcı bildirimleri için uygundur." },
@@ -191,13 +191,13 @@
       "Yığının yönettiği kaynağı konsoldan elle değiştirmek drift yaratır; değişiklik şablondan yapılmalıdır."
     ],
     quiz: [
-      { id: "7700133d", q: "Uygulamadan önce hangi kaynakların değişeceğini gösteren özellik nedir?", options: ["Change set", "Drift detection", "Stack policy", "Export"], obj: "h2" },
-      { id: "ba485688", q: "CloudFormation şablonunda zorunlu bölüm hangisidir?", options: ["Resources", "Outputs", "Parameters", "Mappings"], obj: "h1" },
-      { id: "caa0cdd5", q: "Elle yapılan değişiklikleri tespit eden özellik hangisidir?", options: ["Drift detection", "Change set, uygulamadan önce planlanan değişiklikleri gösterir", "Rollback, hata sonrası yığını önceki duruma döndürme işlemi", "Transform"], obj: "h2" },
-      { id: "51f2430d", q: "SAM'in CloudFormation'a eklediği nedir?", options: ["Sunucusuz kaynaklar için kısa sözdizimi", "Yeni bir bulut", "Veritabanı motoru", "DNS servisi"], obj: "h4" },
-      { id: "e18d6b55", q: "Yığın silinirken veriyi korumak için hangi ayar kullanılır?", options: ["DeletionPolicy: Retain", "Outputs", "Mappings", "Metadata"], obj: "h3" },
-      { id: "8fb310e3", q: "Bir veritabanı kaynağı için yığın silinirken silmeden hemen önce son bir yedek (snapshot) alınmasını istiyorsun. Hangi ayar kullanılır?", options: ["DeletionPolicy: Snapshot","DeletionPolicy: Delete ile kaynağı silmek","DeletionPolicy: Retain ile kaynağı korumak","Stack policy"], obj: "h3" },
-      { id: "58b51e43", q: "Şablonun başına Transform: AWS::Serverless-2016-10-31 eklemek ne sağlar?", options: ["AWS::Serverless::Function gibi kısa sunucusuz kaynak türleri kullanılabilir","Şablon otomatik olarak Terraform'a çevrilir","Yığın birden çok bölgeye kendiliğinden dağıtılır","Drift detection otomatik çalışmaya başlar"], obj: "h4" }
+      { id: "7700133d", q: "Uygulamadan önce hangi kaynakların değişeceğini gösteren özellik nedir?", options: ["Drift detection", "Change set", "Stack policy", "Export"], obj: "h2" },
+      { id: "ba485688", q: "CloudFormation şablonunda zorunlu bölüm hangisidir?", options: ["Parameters", "Outputs", "Resources", "Mappings"], obj: "h1" },
+      { id: "caa0cdd5", q: "Elle yapılan değişiklikleri tespit eden özellik hangisidir?", options: ["Transform", "Change set, uygulamadan önce planlanan değişiklikleri gösterir", "Rollback, hata sonrası yığını önceki duruma döndürme işlemi", "Drift detection"], obj: "h2" },
+      { id: "51f2430d", q: "SAM'in CloudFormation'a eklediği nedir?", options: ["Yeni bir bulut", "Sunucusuz kaynaklar için kısa sözdizimi", "Veritabanı motoru", "DNS servisi"], obj: "h4" },
+      { id: "e18d6b55", q: "Yığın silinirken veriyi korumak için hangi ayar kullanılır?", options: ["Mappings", "Outputs", "DeletionPolicy: Retain", "Metadata"], obj: "h3" },
+      { id: "8fb310e3", q: "Bir veritabanı kaynağı için yığın silinirken silmeden hemen önce son bir yedek (snapshot) alınmasını istiyorsun. Hangi ayar kullanılır?", options: ["Stack policy","DeletionPolicy: Delete ile kaynağı silmek","DeletionPolicy: Retain ile kaynağı korumak","DeletionPolicy: Snapshot"], obj: "h3" },
+      { id: "58b51e43", q: "Şablonun başına Transform: AWS::Serverless-2016-10-31 eklemek ne sağlar?", options: ["Şablon otomatik olarak Terraform'a çevrilir","AWS::Serverless::Function gibi kısa sunucusuz kaynak türleri kullanılabilir","Yığın birden çok bölgeye kendiliğinden dağıtılır","Drift detection otomatik çalışmaya başlar"], obj: "h4" }
     ],
     interview: [
       { q: "CloudFormation ve elle konsol kullanımı farkı?", a: "Şablon tekrarlanabilir, sürümlenebilir ve incelenebilir; ortamlar arası tutarlılık sağlar, geri alma ve silme kolaydır. Elle kurulum hataya ve ortamlar arası farka açıktır." },
@@ -262,13 +262,13 @@
       "Derleme sırasında parolalar koda yazılmaz, Secrets Manager veya Parameter Store kullanılır; testsiz boru hattı hatayı otomatik canlıya taşır."
     ],
     quiz: [
-      { id: "084236e3", q: "Derleme ve test adımını yürüten servis hangisidir?", options: ["CodeBuild", "CodeDeploy", "CloudTrail", "Route 53"], obj: "h1" },
-      { id: "3e1d21be", q: "Yeni ortam kurup trafiği geçirerek hızlı geri dönüş sağlayan strateji hangisidir?", options: ["Blue/Green", "In-place ile mevcut örnekleri güncelleme", "Rolling ile gruplar hâlinde güncelleme", "Manuel"], obj: "h3" },
-      { id: "4bbbb6c8", q: "Aşamaları bir araya getiren orkestratör hangisidir?", options: ["CodePipeline", "CodeBuild derleme ve test hizmeti", "Cognito kullanıcı havuzu hizmeti", "KMS"], obj: "h1" },
-      { id: "2f99ae43", q: "Lambda'da trafiği kademeli yeni sürüme kaydırmak için ne kullanılır?", options: ["Alias ve CodeDeploy canary/linear", "VPC peering", "Edge location", "Snowball"], obj: "h4" },
-      { id: "7fa64389", q: "Derleme tanım dosyasının adı nedir?", options: ["buildspec.yml", "appspec.json dağıtım tanım dosyası", "Dockerfile imaj tanım dosyası", "template.txt"], obj: "h2" },
-      { id: "8f54e86e", q: "buildspec.yml dosyasında pytest gibi test komutları genellikle nereye yazılır?", options: ["phases altındaki build bölümünün commands listesine","artifacts.files listesine","Resources bölümüne","appspec hooks bölümüne"], obj: "h2" },
-      { id: "9f991f37", q: "Ek ortam kurmadan, örnekleri gruplar hâlinde güncelleyen dağıtım stratejisi hangisidir?", options: ["Rolling","Blue/Green","Canary","Manuel onay aşaması"], obj: "h3" }
+      { id: "084236e3", q: "Derleme ve test adımını yürüten servis hangisidir?", options: ["CloudTrail", "CodeDeploy", "CodeBuild", "Route 53"], obj: "h1" },
+      { id: "3e1d21be", q: "Yeni ortam kurup trafiği geçirerek hızlı geri dönüş sağlayan strateji hangisidir?", options: ["Manuel", "In-place ile mevcut örnekleri güncelleme", "Rolling ile gruplar hâlinde güncelleme", "Blue/Green"], obj: "h3" },
+      { id: "4bbbb6c8", q: "Aşamaları bir araya getiren orkestratör hangisidir?", options: ["CodeBuild derleme ve test hizmeti", "CodePipeline", "Cognito kullanıcı havuzu hizmeti", "KMS"], obj: "h1" },
+      { id: "2f99ae43", q: "Lambda'da trafiği kademeli yeni sürüme kaydırmak için ne kullanılır?", options: ["Edge location", "VPC peering", "Alias ve CodeDeploy canary/linear", "Snowball"], obj: "h4" },
+      { id: "7fa64389", q: "Derleme tanım dosyasının adı nedir?", options: ["template.txt", "appspec.json dağıtım tanım dosyası", "Dockerfile imaj tanım dosyası", "buildspec.yml"], obj: "h2" },
+      { id: "8f54e86e", q: "buildspec.yml dosyasında pytest gibi test komutları genellikle nereye yazılır?", options: ["artifacts.files listesine","phases altındaki build bölümünün commands listesine","Resources bölümüne","appspec hooks bölümüne"], obj: "h2" },
+      { id: "9f991f37", q: "Ek ortam kurmadan, örnekleri gruplar hâlinde güncelleyen dağıtım stratejisi hangisidir?", options: ["Canary","Blue/Green","Rolling","Manuel onay aşaması"], obj: "h3" }
     ],
     interview: [
       { q: "Blue/Green ve Canary farkı nedir?", a: "Blue/Green tam yeni ortam kurup trafiği topluca geçirir, eski ortam geri dönüş için hazır kalır. Canary trafiğin küçük bir yüzdesini yeni sürüme gönderip izler, sorun yoksa kalanını kaydırır." },
@@ -338,11 +338,11 @@
       "Üretimde RDS ortamın dışında oluşturulur, çünkü ortam silinince içindeki veritabanı da silinir."
     ],
     quiz: [
-      { id: "0e944a2e", q: "SQS kuyruğundan mesaj işleyen Beanstalk ortamı türü hangisidir?", options: ["Worker", "Web sunucu", "Edge", "Batch"], obj: "h1" },
-      { id: "687477fd", q: "Yeni örnek grubu kurup güvenli geri alma sağlayan dağıtım politikası hangisidir?", options: ["Immutable", "All at once", "Manuel", "Tek örnek"], obj: "h2" },
-      { id: "8e1079c8", q: "Beanstalk yapılandırma dosyaları hangi klasörde tutulur?", options: [".ebextensions", "/etc/aws altındaki sunucu yapılandırma dizini", "buildspec.yml dosyasının bulunduğu derleme klasörü", ".github"], obj: "h3" },
-      { id: "9867b670", q: "Üretimde veritabanı için doğru tercih nedir?", options: ["RDS'i ortamın dışında oluşturmak", "Ortam içinde RDS", "Dosyada saklamak", "Lambda'ya gömmek"], obj: "h3" },
-      { id: "5e585d54", q: "Beanstalk hangi hizmet modeline örnektir?", options: ["PaaS", "IaaS tek başına", "SaaS", "Colocation"], obj: "h4" }
+      { id: "0e944a2e", q: "SQS kuyruğundan mesaj işleyen Beanstalk ortamı türü hangisidir?", options: ["Web sunucu", "Worker", "Edge", "Batch"], obj: "h1" },
+      { id: "687477fd", q: "Yeni örnek grubu kurup güvenli geri alma sağlayan dağıtım politikası hangisidir?", options: ["All at once", "Immutable", "Manuel", "Tek örnek"], obj: "h2" },
+      { id: "8e1079c8", q: "Beanstalk yapılandırma dosyaları hangi klasörde tutulur?", options: ["/etc/aws altındaki sunucu yapılandırma dizini", ".ebextensions", "buildspec.yml dosyasının bulunduğu derleme klasörü", ".github"], obj: "h3" },
+      { id: "9867b670", q: "Üretimde veritabanı için doğru tercih nedir?", options: ["Ortam içinde RDS", "RDS'i ortamın dışında oluşturmak", "Dosyada saklamak", "Lambda'ya gömmek"], obj: "h3" },
+      { id: "5e585d54", q: "Beanstalk hangi hizmet modeline örnektir?", options: ["IaaS tek başına", "PaaS", "SaaS", "Colocation"], obj: "h4" }
     ],
     interview: [
       { q: "Beanstalk ne zaman uygun?", a: "Geleneksel web uygulamasını az altyapı yönetimiyle hızla AWS'ye taşımak istediğimde. Kaynaklar hâlâ benim hesabımda olduğundan gerektiğinde ince ayar yapabilirim." },
@@ -407,11 +407,11 @@
       "Parola ve anahtarlar imaja konmaz; Secrets Manager veya Parameter Store'dan secrets ile geçirilir."
     ],
     quiz: [
-      { id: "09c23f00", q: "Konteyner imajlarını depolayan AWS servisi hangisidir?", options: ["ECR", "ECS", "S3 Glacier", "RDS"], obj: "h1" },
-      { id: "25150855", q: "Sunucu yönetmeden konteyner çalıştırmanın seçeneği hangisidir?", options: ["Fargate", "EC2 başlatma türü", "Bastion", "Direct Connect"], obj: "h4" },
-      { id: "13d12542", q: "Konteyner içindeki uygulamanın DynamoDB'ye erişmesi hangi rolle yapılır?", options: ["Task role", "Task execution role", "Root", "Service-linked role"], obj: "h3" },
-      { id: "f9dc0ef7", q: "İstenen sayıda görevi sürekli çalışır tutan ECS yapısı hangisidir?", options: ["Service", "Task definition", "Registry", "Layer"], obj: "h2" },
-      { id: "c162272c", q: "Yönetilen Kubernetes servisi hangisidir?", options: ["EKS", "ECS", "ECR", "SQS"], obj: "h4" }
+      { id: "09c23f00", q: "Konteyner imajlarını depolayan AWS servisi hangisidir?", options: ["ECS", "ECR", "S3 Glacier", "RDS"], obj: "h1" },
+      { id: "25150855", q: "Sunucu yönetmeden konteyner çalıştırmanın seçeneği hangisidir?", options: ["Direct Connect", "EC2 başlatma türü", "Bastion", "Fargate"], obj: "h4" },
+      { id: "13d12542", q: "Konteyner içindeki uygulamanın DynamoDB'ye erişmesi hangi rolle yapılır?", options: ["Root", "Task execution role", "Task role", "Service-linked role"], obj: "h3" },
+      { id: "f9dc0ef7", q: "İstenen sayıda görevi sürekli çalışır tutan ECS yapısı hangisidir?", options: ["Task definition", "Service", "Registry", "Layer"], obj: "h2" },
+      { id: "c162272c", q: "Yönetilen Kubernetes servisi hangisidir?", options: ["SQS", "ECS", "ECR", "EKS"], obj: "h4" }
     ],
     interview: [
       { q: "ECS ile EKS farkı nedir?", a: "ECS AWS'nin kendi daha basit orkestratörüdür. EKS yönetilen Kubernetes'tir: taşınabilirlik ve geniş ekosistem sunar, öğrenme eğrisi daha diktir." },
