@@ -191,7 +191,20 @@ insert into public.ogr_hedef (id, yetkinlik, kritik, esik, surum, uyumlu_surumle
   ('seviye:qa', 'yet:qa:sorular', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
   ('seviye:sec', 'yet:sec:sorular', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
   ('va0-sinav', 'yet:va:va0-sinav', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
-  ('va1-sinav', 'yet:va:va1-sinav', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
+  ('va1-sinav', 'yet:va:va1-sinav', false, 0.8, '2026-10-v1', array['eski-1']::text[]),,
+  ('ders:dev:2:sinav', 'yet:dev:2', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
+  ('ders:dev:3:sinav', 'yet:dev:3', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
+  ('ders:dev:4:sinav', 'yet:dev:4', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
+  ('ders:dev:5:sinav', 'yet:dev:5', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
+  ('ders:dev:6:sinav', 'yet:dev:6', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
+  ('ders:qa:1:sinav', 'yet:qa:1', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
+  ('ders:qa:2:sinav', 'yet:qa:2', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
+  ('ders:qa:3:sinav', 'yet:qa:3', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
+  ('ders:qa:4:sinav', 'yet:qa:4', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
+  ('ders:qa:5:sinav', 'yet:qa:5', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
+  ('ders:net:1:sinav', 'yet:net:1', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
+  ('ders:net:2:sinav', 'yet:net:2', false, 0.8, '2026-10-v1', array['eski-1']::text[]),
+  ('ders:net:3:sinav', 'yet:net:3', false, 0.8, '2026-10-v1', array['eski-1']::text[])
   ('va2-sinav', 'yet:va:va2-sinav', false, 0.8, '2026-10-v1', array['eski-1']::text[])
 on conflict (id) do update set yetkinlik = excluded.yetkinlik, kritik = excluded.kritik, esik = excluded.esik, surum = excluded.surum, uyumlu_surumler = excluded.uyumlu_surumler;
 
@@ -375,7 +388,20 @@ insert into public.ogr_kapi (id, seviye, esik) values
   ('ders-ustalik:sec:5', 'L1', 0.8),
   ('ders-ustalik:sec:6', 'L1', 0.8),
   ('ders-ustalik:sec:7', 'L1', 0.8),
-  ('ders-ustalik:sec:8', 'L1', 0.8),
+  ('ders-ustalik:sec:8', 'L1', 0.8),,
+  ('ders-ustalik:dev:2', 'L1', 0.8),
+  ('ders-ustalik:dev:3', 'L1', 0.8),
+  ('ders-ustalik:dev:4', 'L1', 0.8),
+  ('ders-ustalik:dev:5', 'L1', 0.8),
+  ('ders-ustalik:dev:6', 'L1', 0.8),
+  ('ders-ustalik:qa:1', 'L1', 0.8),
+  ('ders-ustalik:qa:2', 'L1', 0.8),
+  ('ders-ustalik:qa:3', 'L1', 0.8),
+  ('ders-ustalik:qa:4', 'L1', 0.8),
+  ('ders-ustalik:qa:5', 'L1', 0.8),
+  ('ders-ustalik:net:1', 'L1', 0.8),
+  ('ders-ustalik:net:2', 'L1', 0.8),
+  ('ders-ustalik:net:3', 'L1', 0.8)
   ('ders-ustalik:sec:9', 'L1', 0.8)
 on conflict (id) do nothing;
 
@@ -559,7 +585,20 @@ insert into public.ogr_kapi_hedef (kapi, hedef) values
   ('ders-ustalik:sec:5', 'ders:sec:5:sinav'),
   ('ders-ustalik:sec:6', 'ders:sec:6:sinav'),
   ('ders-ustalik:sec:7', 'ders:sec:7:sinav'),
-  ('ders-ustalik:sec:8', 'ders:sec:8:sinav'),
+  ('ders-ustalik:sec:8', 'ders:sec:8:sinav'),,
+  ('ders-ustalik:dev:2', 'ders:dev:2:sinav'),
+  ('ders-ustalik:dev:3', 'ders:dev:3:sinav'),
+  ('ders-ustalik:dev:4', 'ders:dev:4:sinav'),
+  ('ders-ustalik:dev:5', 'ders:dev:5:sinav'),
+  ('ders-ustalik:dev:6', 'ders:dev:6:sinav'),
+  ('ders-ustalik:qa:1', 'ders:qa:1:sinav'),
+  ('ders-ustalik:qa:2', 'ders:qa:2:sinav'),
+  ('ders-ustalik:qa:3', 'ders:qa:3:sinav'),
+  ('ders-ustalik:qa:4', 'ders:qa:4:sinav'),
+  ('ders-ustalik:qa:5', 'ders:qa:5:sinav'),
+  ('ders-ustalik:net:1', 'ders:net:1:sinav'),
+  ('ders-ustalik:net:2', 'ders:net:2:sinav'),
+  ('ders-ustalik:net:3', 'ders:net:3:sinav')
   ('ders-ustalik:sec:9', 'ders:sec:9:sinav')
 on conflict do nothing;
 commit;
