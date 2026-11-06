@@ -351,7 +351,7 @@
       },
       {
         "t": "p",
-        "text": "Bir bash betiği #!/usr/bin/env bash satırıyla başlar, dosya olarak kaydedilir ve bash betik.sh ile ya da chmod +x sonrası ./betik.sh ile çalışır. Değişken atarken eşittir işaretinin çevresinde boşluk bırakılmaz: ad=\"Ali\". Kullanırken $ad yazılır ve her zaman çift tırnakla korunur."
+        "text": "Bir bash betiği shebang satırıyla (#! ve yorumlayıcı yolu) başlar, dosya olarak kaydedilir ve bash betik.sh ile ya da chmod +x sonrası ./betik.sh ile çalışır. Değişken atarken eşittir işaretinin çevresinde boşluk bırakılmaz: ad=\"Ali\". Kullanırken $ad yazılır ve her zaman çift tırnakla korunur."
       },
       {
         "t": "steps",
@@ -433,7 +433,7 @@
       }
     ],
     "summary": [
-      "Betik #!/usr/bin/env bash ile başlar; değişkenler her zaman çift tırnakla kullanılır.",
+      "Betik shebang satırıyla başlar; değişkenler her zaman çift tırnakla kullanılır.",
       "Çıkış kodu 0 başarı, diğerleri hatadır; $? son komutun kodunu verir.",
       "set -euo pipefail hataları ve tanımsız değişkenleri sessizce geçmez.",
       "trap EXIT ile geçici kaynaklar hata olsa da temizlenir.",
@@ -982,7 +982,7 @@
         "t": "steps",
         "h": "Elle deneme",
         "items": [
-          "nslookup example.com ile alan adının IP adresini bul.",
+          "nslookup komutuyla example.com alan adının IP adresini bul.",
           "curl -sI https://example.com ile durum kodunu ve başlıkları oku.",
           "Olmayan bir yola istek at ve 404 aldığını doğrula.",
           "http:// ile başlayan bir adrese -I ile istek at, 301 ve Location varsa not et.",

@@ -386,7 +386,7 @@
         "h": "Elle deneme",
         "items": [
           "Bir komut satırı aç.",
-          "netstat -an | grep LISTENING (Linux'ta ss -ltn) çalıştır.",
+          "netstat -an çıktısında LISTENING satırlarını süz (Linux'ta ss -ltn) ve dinleyen portları yaz.",
           "Yerel adres sütunundaki port numaralarını yaz.",
           "Her portu iyi bilinen port tablosunda ara.",
           "Tabloda olmayanlar için \"bilmiyorum\" yaz, tahmin etme."
