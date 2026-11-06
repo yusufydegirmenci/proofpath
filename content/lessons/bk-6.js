@@ -27,7 +27,7 @@
         "Üst sınır: en fazla N deneme ve toplam süre.",
         "AWS SDK'ları bunu varsayılan yapar; ayarlanabilir."
       ] },
-      { t: "cmd", lang: "python", text: "import random, time\ndef cagir(fn, deneme=5):\n    for i in range(deneme):\n        try:\n            return fn()\n        except GeciciHata:\n            time.sleep(random.uniform(0, min(10, 0.1 * 2 ** i)))\n    raise" },
+      { t: "cmd", lang: "python", text: "import random, time\n\nclass GeciciHata(Exception):\n    pass\n\ndef cagir(fn, deneme=5):\n    for i in range(deneme):\n        try:\n            return fn()\n        except GeciciHata:\n            if i == deneme - 1:\n                raise  # son denemede hatayı olduğu gibi yukarı ilet\n            time.sleep(random.uniform(0, min(10, 0.1 * 2 ** i)))  # üstel geri çekilme + jitter" },
       { t: "steps", h: "Idempotency nasıl sağlanır?", items: [
         "İstemci benzersiz anahtar üretir (UUID) ve her tekrarda aynı anahtarı gönderir.",
         "Sunucu anahtarı kaydeder: işlenmişse kayıtlı sonucu döner, yeniden işlemez.",
