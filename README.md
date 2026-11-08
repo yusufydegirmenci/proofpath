@@ -67,22 +67,6 @@ Veri akışı: tarayıcı, `supabase-shim.js`, Supabase (HTTPS), PostgreSQL. Cla
 
 > Testler gerçek Supabase'e bağlanmaz; `tests/stub.js` sahte `window.claude` katmanını sağlar.
 
-## Teknoloji ve altyapı
-
-| Katman | Ne kullanılıyor | Not |
-|---|---|---|
-| Ön yüz | HTML, CSS, JavaScript | Çatı yok, derleme yok. `index.html` iskelet, kod `js/` altında, stiller `css/` altında. |
-| Veritabanı | PostgreSQL (Supabase) | Şema ve satır düzeyi güvenlik kuralları `supabase/schema.sql` içinde, değişiklikler `supabase/migrations/` altında (şu an 8 dosya). |
-| Giriş | Supabase Auth | E-posta ve şifre. |
-| İstemci kitaplığı | `supabase-js` 2.117.3 | `vendor/` altında, CDN'e bağlı değil. |
-| Kod editörü | CodeMirror 6.43.14 | `vendor/` altında, bütünlük (SRI) kontrolüyle yüklenir. |
-| Mobil | PWA | `manifest.webmanifest` ve `sw.js`; yalnız uygulama kabuğu önbelleğe alınır, kullanıcı verisi alınmaz. |
-| Barındırma | GitHub Pages | `main` dalından yayınlanır. |
-| Testler | Node.js, Playwright, acorn | Gerçek Supabase'e bağlanmaz, sahte `window.claude` katmanı kullanır. |
-| Yardımcı araçlar | Node.js ve bir Python betiği | Marka ve içerik araçları `tools/` altında. |
-
-Dil dağılımına GitHub'ın depo sayfasından da bakabilirsin; büyük çoğunluk JavaScript, ardından HTML, PL/pgSQL (veritabanı kodu), CSS ve Python gelir.
-
 ## Test
 
 ```bash
