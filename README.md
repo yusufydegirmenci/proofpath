@@ -42,6 +42,20 @@
 
 > `file://` ile açılışta bazı özellikler (SRI'li kod editörü, servis çalışanı) devre dışı kalır; tam deneyim için `http://` ya da canlı sürümü kullan.
 
+## Teknoloji özeti
+
+| Alan | Kullanılan | Nasıl |
+|---|---|---|
+| Diller | **JavaScript** (uygulama, kodun büyük bölümü), **HTML**, **CSS**, **PL/pgSQL** (veritabanı işlevleri), **Python** (içerik araçları) | Çerçevesiz, derleme adımı olmayan, global kapsamlı betikler. Yeni kod tek ad alanı `window.PP` altına yazılır. |
+| Veritabanı ve sunucu | **Supabase**: PostgreSQL, Auth, RLS ve `rpc` işlevleri | E-posta/şifre girişi. Veri `docs` ve `profiles` tablolarında, satır düzeyi güvenlikle kullanıcıya özeldir. Sınav puanı ve geçti kararı sunucu işlevlerinde hesaplanır (`supabase/migrations/`, 8 dosya; `supabase/schema.sql`). |
+| İstemci kitaplıkları | `supabase-js` 2.117.3 (CDN, yedeği `vendor/`), **CodeMirror 6** (`vendor/`, SRI doğrulamalı), **Pyodide 0.26.4** | Kod alıştırmalarında tarayıcıda Python (Pyodide), SQL ve JS düzenleyicisi. |
+| Barındırma | **GitHub Pages** (statik) | Sunucu kodu yoktur; yalnız Supabase'e HTTPS isteği gider. |
+| PWA | `manifest.webmanifest` ve `sw.js` | Uygulama kabuğu çevrimdışı açılır; kullanıcı verisi önbelleğe alınmaz. |
+| Güvenlik | İçerik Güvenlik Politikası (CSP), SRI, RLS, cevap anahtarları sunucuda | Cevap anahtarları depoda değil sunucudadır. Ayrıntı: [docs/GUVENLIK-CSP.md](docs/GUVENLIK-CSP.md). |
+| Test ve araçlar | **Node.js** betikleri, **Playwright** (Chromium), **acorn** | `tests/` altında çok sayıda test dosyası, `tools/` altında içerik ve denetim araçları. |
+
+Veri akışı: tarayıcı, `supabase-shim.js`, Supabase (HTTPS), PostgreSQL. Claude Artifact içinde çalışırken aynı arayüzü Artifact'ın kendi veri katmanı sağlar.
+
 ## Mimari
 
 - Ön yüz: derleme adımı olmayan, bağımlılıksız HTML/CSS/JS. `index.html` yalnız iskelet ve yükleme sırasıdır; stiller `css/` (7 dosya), uygulama kodu `js/` altında alan klasörlerine bölünmüştür (`cekirdek`, `bugun`, `ders`, `oyun`, `atolye`, `lig`, `proje`, `atlas`, `ag-atolyesi`, `seviye`, `masa`, `mulakat`, `yardim`, `arayuz`, `baslat.js`), büyük veri sabitleri `js/veri/` içindedir. Açık ve koyu tema, telefon genişliği desteklenir.
