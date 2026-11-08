@@ -1,5 +1,9 @@
 # FORNEX
 
+![HTML](https://img.shields.io/badge/HTML5-vanilla-E34F26?logo=html5&logoColor=white) ![CSS](https://img.shields.io/badge/CSS3-themes-1572B6?logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-no%20build-F7DF1E?logo=javascript&logoColor=black) ![Tests](https://img.shields.io/badge/tests-Playwright-2EAD33?logo=playwright&logoColor=white)
+
+**İçindekiler:** [Neler var](#neler-var) · [Mimari](#mimari) · [Hızlı başlangıç](#hızlı-başlangıç) · [Test](#test) · [Bilinen sınırlar](#bilinen-sınırlar) · [Senkron](#evdeki-bilgisayarda-çalışırken-kesintisiz-senkron)
+
 Sekiz derslik, oyunlaştırılmış kişisel öğrenme uygulaması: **CCNA, Network, İngilizce, Siber güvenlik, Backend, DevOps, Test Uzmanı, Python**. Claude Artifact olarak çalışan, `index.html` + `css/` + `js/` yapısında bir uygulamadır; günlük dersleri zamanlanmış "koç" görevleri üretir, veriler artifact veritabanında tutulur.
 
 ![Bugün ekranı](docs/ekran/bugun-masaustu.png)
@@ -30,6 +34,16 @@ Sekiz derslik, oyunlaştırılmış kişisel öğrenme uygulaması: **CCNA, Netw
 - Tasarım kararları: [docs/UX_ANALIZ.md](docs/UX_ANALIZ.md).
 
 > `index.html` içindeki `window.claude` çağrıları Claude Artifact ortamında çalışır. Normal bir tarayıcıda açarsan veri kaydı çalışmaz; arayüzü görmek için `tests/stub.js` içindeki sahte ortam kullanılır.
+
+## Hızlı başlangıç
+
+Hiç bilmeyen biri için adım adım:
+
+1. Bilgisayarınıza [Git](https://git-scm.com/downloads) ve [Node.js](https://nodejs.org/) (LTS) kurun.
+2. Depoyu indirin: `git clone https://github.com/yusufydegirmenci/proofpath`
+3. Klasöre girin: `cd proofpath`
+4. `index.html` dosyasını tarayıcıda açın. Derleme gerekmez.
+5. Normal tarayıcıda veri kaydı çalışmaz (aşağıdaki nota bakın). Arayüzü görmek için testlerin kullandığı sahte ortam `tests/stub.js` içindedir.
 
 ## Test
 
